@@ -15,20 +15,57 @@
  */
 package org.kuali.rice.kim.api.permission
 
+import java.util.List;
+
 import javax.xml.bind.JAXBContext
 import org.junit.Assert
 import org.junit.Test;
 
+import javax.xml.bind.Marshaller
+import javax.xml.bind.Unmarshaller
+import org.kuali.rice.kim.api.attribute.KimAttribute;
+import org.kuali.rice.kim.api.type.KimType;
+
 class PermissionTest {
 
+	private static final String OBJECT_ID = UUID.randomUUID()
+	private static final Long VERSION_NUMBER = new Long(1)
+	private static final boolean ACTIVE = "true"
+	
 	private static final String ID = "50"
 	private static final String NAMESPACE_CODE = "KUALI"
 	private static final String NAME = "PermissionName"
-	private static final String DESCRIPTION = "Some KIM Permission Description"
+	private static final String DESCRIPTION = "Some Permission Description"
 	private static final String TEMPLATE_ID = "7317791873"
-	private static final String OBJECT_ID = UUID.randomUUID()
-	private static final Long VERSION_NUMBER = new Long(1) 
-	private static final boolean ACTIVE = "true"
+
+	private static final String ATTRIBUTES_1_ID = "1"
+	private static final String ATTRIBUTES_1_PERMISSION_ID = "50"
+	private static final String ATTRIBUTES_1_VALUE = "Some Attribute Value 1"
+	private static final Long ATTRIBUTES_1_VER_NBR = new Long(1)
+	private static final String ATTRIBUTES_1_OBJ_ID = UUID.randomUUID()
+	
+	private static final KimType KIM_TYPE_1
+	private static final String KIM_TYPE_1_ID = "1"
+	private static final String KIM_TYPE_1_OBJ_ID = UUID.randomUUID()
+	static {
+		KimType.Builder builder = KimType.Builder.create()
+		builder.setId(KIM_TYPE_1_ID)
+		builder.setNamespaceCode(NAMESPACE_CODE)
+		builder.setActive(ACTIVE)
+		builder.setVersionNumber(VERSION_NUMBER)
+		builder.setObjectId(KIM_TYPE_1_OBJ_ID)
+		KIM_TYPE_1 = builder.build()
+	}
+		
+	private static final KimAttribute KIM_ATTRIBUTE_1
+	private static final String KIM_ATTRIBUTE_1_ID = "1"
+	private static final String KIM_ATTRIBUTE_1_COMPONENT_NAME = "the_component1"
+	private static final String KIM_ATTRIBUTE_1_NAME = "the_attribute1"
+	static {
+		KimAttribute.Builder builder = KimAttribute.Builder.create(KIM_ATTRIBUTE_1_COMPONENT_NAME, KIM_ATTRIBUTE_1_NAME, NAMESPACE_CODE)
+		builder.setId(KIM_ATTRIBUTE_1_ID)
+		KIM_ATTRIBUTE_1 = builder.build()
+	}
 	
 	private static final String XML = """
 		<permission xmlns="http://rice.kuali.org/kim/v2_0">
@@ -37,6 +74,29 @@ class PermissionTest {
 			<name>${NAME}</name>
 			<description>${DESCRIPTION}</description>
 			<templateId>${TEMPLATE_ID}</templateId>
+			<attributes>
+			    <attribute>
+	                <id>${ATTRIBUTES_1_ID}</id>
+	                <attributeValue>${ATTRIBUTES_1_VALUE}</attributeValue>
+	                <permissionId>${ATTRIBUTES_1_PERMISSION_ID}</permissionId>
+	                <versionNumber>${VERSION_NUMBER}</versionNumber>
+	                <objectId>${ATTRIBUTES_1_OBJ_ID}</objectId>
+	                <kimType>
+	                    <id>${KIM_TYPE_1_ID}</id>
+	                    <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
+	                    <active>${ACTIVE}</active>
+	                    <versionNumber>${VERSION_NUMBER}</versionNumber>
+	                    <objectId>${KIM_TYPE_1_OBJ_ID}</objectId>
+	                </kimType>
+	                <kimAttribute>
+                    	<id>${KIM_ATTRIBUTE_1_ID}</id>
+                    	<componentName>${KIM_ATTRIBUTE_1_COMPONENT_NAME}</componentName>
+						<attributeName>${KIM_ATTRIBUTE_1_NAME}</attributeName>
+						<namespaceCode>${NAMESPACE_CODE}</namespaceCode>
+						<versionNumber>${VERSION_NUMBER}</versionNumber>
+					</kimAttribute>					
+				</attribute>  
+			</attributes>
 			<active>${ACTIVE}</active>
 			<versionNumber>${VERSION_NUMBER}</versionNumber>
         	<objectId>${OBJECT_ID}</objectId>
@@ -72,30 +132,41 @@ class PermissionTest {
 	
 	@Test
 	public void test_Xml_Marshal_Unmarshal() {
-	  def jc = JAXBContext.newInstance(Permission.class)
-	  def marshaller = jc.createMarshaller()
-	  def sw = new StringWriter()
+	  JAXBContext jc = JAXBContext.newInstance(Permission.class)
+	  Marshaller marshaller = jc.createMarshaller()
+	  StringWriter sw = new StringWriter()
 
-	  def param = this.create()
-	  marshaller.marshal(param,sw)
+	  Permission permission = this.create()
+	  marshaller.marshal(permission,sw)
+	  String xml = sw.toString()
 
-	  def unmarshaller = jc.createUnmarshaller()
-	  def actual = unmarshaller.unmarshal(new StringReader(sw.toString()))
-	  def expected = unmarshaller.unmarshal(new StringReader(XML))
-
+	  Unmarshaller unmarshaller = jc.createUnmarshaller();
+	  Object actual = unmarshaller.unmarshal(new StringReader(xml))
+	  Object expected = unmarshaller.unmarshal(new StringReader(XML))
 	  Assert.assertEquals(expected,actual)
 	}
 	
 	private create() {
-		return Permission.Builder.create(new PermissionContract() {
-			String id = PermissionTest.ID
-			String namespaceCode = PermissionTest.NAMESPACE_CODE
-			String name = PermissionTest.NAME
-			String description = PermissionTest.DESCRIPTION
-			String templateId = PermissionTest.TEMPLATE_ID
-			boolean active = PermissionTest.ACTIVE
-			Long versionNumber = PermissionTest.VERSION_NUMBER
-			String objectId = PermissionTest.OBJECT_ID
+		Permission permission = Permission.Builder.create(new PermissionContract() {
+			String getId() {PermissionTest.ID}
+			String getNamespaceCode() {PermissionTest.NAMESPACE_CODE}
+			String getName() {PermissionTest.NAME}
+			String getDescription() {PermissionTest.DESCRIPTION}
+			String getTemplateId() {PermissionTest.TEMPLATE_ID}
+			List<PermissionAttribute> getAttributes() {[
+				PermissionAttribute.Builder.create(new PermissionAttributeContract() {
+					 String getId() {PermissionTest.ATTRIBUTES_1_ID}
+					 String getAttributeValue() {PermissionTest.ATTRIBUTES_1_VALUE}
+                     String getPermissionId() {PermissionTest.ATTRIBUTES_1_PERMISSION_ID}
+					 Long getVersionNumber() {PermissionTest.ATTRIBUTES_1_VER_NBR}
+					 KimType getKimType() {PermissionTest.KIM_TYPE_1}
+                     KimAttribute getKimAttribute() {PermissionTest.KIM_ATTRIBUTE_1}
+                     String getObjectId() {PermissionTest.ATTRIBUTES_1_OBJ_ID}}).build() ]}			
+			boolean isActive() {PermissionTest.ACTIVE.toBoolean()}
+			Long getVersionNumber() {PermissionTest.VERSION_NUMBER}
+			String getObjectId() {PermissionTest.OBJECT_ID}
 		}).build()
+		
+		return permission
 	}
 }

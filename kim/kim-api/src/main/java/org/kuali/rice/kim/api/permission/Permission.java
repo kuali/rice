@@ -16,28 +16,32 @@
 package org.kuali.rice.kim.api.permission;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.CoreConstants;
 import org.w3c.dom.Element;
 
 /**
  * An immutable representation of a {@link PermissionContract}.
  *
- * <p>To construct an instance of a KimPermission, use the {@link Permission.Builder} class.<p/>
+ * <p>To construct an instance of a Permission, use the {@link Permission.Builder} class.<p/>
  *
  * @see PermissionContract
  */
@@ -50,6 +54,7 @@ import org.w3c.dom.Element;
 		Permission.Elements.DESCRIPTION,
 		Permission.Elements.TEMPLATE_ID,
         Permission.Elements.ACTIVE,
+        Permission.Elements.ATTRIBUTES,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -73,8 +78,12 @@ public final class Permission implements PermissionContract, ModelObjectComplete
     @XmlElement(name = Permission.Elements.TEMPLATE_ID, required = true)
     private final String templateId;
     
+    @XmlElementWrapper(name = Elements.ATTRIBUTES, required = false)
+    @XmlElement(name = Elements.ATTRIBUTE, required = false)
+    private final List<PermissionAttribute> attributes;
+    
     @XmlElement(name = Permission.Elements.ACTIVE, required = false)
-    private final boolean active;
+    private boolean active;
 
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
@@ -96,6 +105,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         this.name = null;
         this.description = null;
         this.templateId = null;
+        this.attributes = null;
         this.active = false;
         this.versionNumber = Long.valueOf(1L);
         this.objectId = null;
@@ -111,7 +121,13 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         this.namespaceCode = builder.getNamespaceCode();
         this.name = builder.getName();
         this.description = builder.getDescription();
-        this.templateId = builder.getTemplateId();        
+        this.templateId = builder.getTemplateId(); 
+        this.attributes = new ArrayList<PermissionAttribute>();
+        if (!CollectionUtils.isEmpty(builder.getAttributes())) {
+            for (PermissionAttribute.Builder attribute : builder.getAttributes()) {
+                attributes.add(attribute.build());
+            }
+        }
         this.active = builder.isActive();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
@@ -158,13 +174,23 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionContract#isActive()
+	 * @see org.kuali.rice.core.api.mo.active.Inactivatable#isActive(boolean)
 	 */
 	@Override
 	public boolean isActive() {
 		return active;
 	}
-	
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.api.permission.PermissionContract#getAttributes()
+	 */
+	@Override
+	public List<PermissionAttribute> getAttributes() {
+		return this.attributes;
+	}
+
 	/**
 	 * @see org.kuali.rice.core.api.mo.Versioned#getVersionNumber()
 	 */
@@ -180,7 +206,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 	public String getObjectId() {
 		return objectId;
 	}
-
+	
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
@@ -197,7 +223,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
     }
 	
     /**
-     * This builder constructs a KimPermission enforcing the constraints of the {@link PermissionContract}.
+     * This builder constructs a Permission enforcing the constraints of the {@link PermissionContract}.
      */
     public static final class Builder implements PermissionContract, ModelBuilder, Serializable {
         private String id;
@@ -205,6 +231,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         private String name;
         private String description;
         private String templateId;
+        private List<PermissionAttribute.Builder> attributes;
         private Long versionNumber = 1L;
         private String objectId;
         private boolean active;
@@ -217,19 +244,26 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         }
 
         /**
-         * Creates a KimPermission with the required fields.
+         * Creates a Permission with the required fields.
          */
         public static Builder create(String id, String namespaceCode, String name, String templateId) {
             return new Builder(id, namespaceCode, name, templateId);
         }
 
         /**
-         * Creates a KimPermission from an existing {@link PermissionContract}.
+         * Creates a Permission from an existing {@link PermissionContract}.
          */
         public static Builder create(PermissionContract contract) {
             Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), contract.getTemplateId());
             builder.setDescription(contract.getDescription());
-            
+            List<PermissionAttribute.Builder> permissionAttributeBuilders = new ArrayList<PermissionAttribute.Builder>();
+            if (!CollectionUtils.isEmpty(contract.getAttributes())) {
+                for (PermissionAttributeContract attributeContract : contract.getAttributes()) {
+                    PermissionAttribute.Builder attributeBuilder = PermissionAttribute.Builder.create(attributeContract);
+                    permissionAttributeBuilders.add(attributeBuilder);
+                }
+            }
+            builder.setAttributes(permissionAttributeBuilders);
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -323,7 +357,16 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         public void setObjectId(final String objectId) {
             this.objectId = objectId;
         }
-        
+
+		@Override
+		public List<PermissionAttribute.Builder> getAttributes() {
+			return attributes;
+		}
+		
+		public void setAttributes(List<PermissionAttribute.Builder> attributes) {
+            this.attributes = attributes;
+        }
+		
         @Override
         public Permission build() {
             return new Permission(this);
@@ -348,7 +391,9 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         static final String NAMESPACE_CODE = "namespaceCode";
         static final String NAME = "name";
         static final String DESCRIPTION = "description";
-        static final String TEMPLATE_ID = "templateId";        
+        static final String TEMPLATE_ID = "templateId"; 
+        static final String ATTRIBUTES = "attributes";
+        static final String ATTRIBUTE = "attribute";
         static final String ACTIVE = "active";
     }
 }

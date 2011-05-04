@@ -15,54 +15,62 @@
  */
 package org.kuali.rice.kim.api.permission;
 
+import java.util.List;
+
 import org.kuali.rice.core.api.mo.GloballyUnique;
 import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.active.Inactivatable;
 
 /**
- * This is the contract for a KimPermission.  
+ * This is the contract for a KimPermission. Represents a single permission within the system.
+ * 
+ * Permissions are attached to roles. All authorization checks should be done against permissions,
+ * never against roles or groups.
  *  
  */
-public interface PermissionContract extends Versioned, GloballyUnique{
+public interface PermissionContract extends Versioned, GloballyUnique, Inactivatable{
 
     /**
-     * The unique identifier for the KIM Permission.
+     * The unique identifier for the Permission.
      *
      * @return id
      */
     String getId();
     
     /**
-     * The namespace code that this KIM Permission belongs too.
+     * The namespace code that this Permission belongs too.
      *
      * @return namespaceCode
      */
     String getNamespaceCode();
     
     /**
-     * The name of the KIM Permission.
+     * The name of the Permission.
      *
      * @return name
      */
     String getName();
     
     /**
-     * The description of the KIM Permission.
+     * The description of the Permission.
      *
      * @return description
      */
 	String getDescription();
 
     /**
-     * The Template ID referenced by the KIM Permission.
+     * The Template ID referenced by the Permission.
      * 
      * @return templateId
      */
-	String getTemplateId();    
-    
-    /**
-     * The flag indicating if the KIM Permission is active.
-     *
-     * @return active
-     */
-    boolean isActive();    
+	String getTemplateId();   
+	
+   /** 
+	 * List of Attributes for a Permission. 
+	 * 
+	 * @ return attributes
+	 */
+    // TODO does this need to extend something else?
+    // GroupContract has List<? extends GroupAttributeContract> getAttributes();
+    List<? extends PermissionAttributeContract> getAttributes();
 }

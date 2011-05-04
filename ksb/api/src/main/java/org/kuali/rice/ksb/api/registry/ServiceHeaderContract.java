@@ -21,6 +21,8 @@ public interface ServiceHeaderContract extends Versioned {
 	public String getType();
 	
 	public String getServiceVersion();
+	
+	public ServiceEndpointStatus getStatus();
 
 	public String getChecksum();
 	

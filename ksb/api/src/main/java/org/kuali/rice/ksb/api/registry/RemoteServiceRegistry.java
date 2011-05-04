@@ -30,11 +30,11 @@ public interface RemoteServiceRegistry {
 	
 	@WebMethod(operationName = "getServiceEndpoint")
 	@WebResult(name = "serviceEndpoint")
-	ServiceEndpoint getServiceEndpoint(@WebParam(name = "serviceEndpointId") String serviceEndpointId) throws RiceIllegalArgumentException;
+	ServiceEndpoint getServiceEndpoint(@WebParam(name = "serviceEndpointId") Long serviceEndpointId) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "getServiceEndpoints")
 	@WebResult(name = "serviceEndpoints")
-	List<ServiceEndpoint> getServiceEndpoints(@WebParam(name = "serviceEndpointIds") List<String> serviceEndpointIds) throws RiceIllegalArgumentException;
+	List<ServiceEndpoint> getServiceEndpoints(@WebParam(name = "serviceEndpointIds") List<Long> serviceEndpointIds) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "getServiceHeadersByName")
 	@WebResult(name = "serviceHeaders")
@@ -46,11 +46,11 @@ public interface RemoteServiceRegistry {
 	
 	@WebMethod(operationName = "getServiceDescriptor")
 	@WebResult(name = "serviceDescriptor")
-	ServiceDescriptor getServiceDescriptor(@WebParam(name = "serviceEndpointId") String serviceEndpointId) throws RiceIllegalArgumentException;
+	ServiceDescriptor getServiceDescriptor(@WebParam(name = "serviceEndpointId") Long serviceEndpointId) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "getServiceDescriptors")
 	@WebResult(name = "serviceDescriptors")
-	List<ServiceDescriptor> getServiceDescriptors(@WebParam(name = "serviceEndpointIds") List<String> serviceEndpointIds) throws RiceIllegalArgumentException;
+	List<ServiceDescriptor> getServiceDescriptors(@WebParam(name = "serviceEndpointIds") List<Long> serviceEndpointIds) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "publishService")
 	void publishService(@WebParam(name = "serviceEndpoint") ServiceEndpoint serviceEndpoint) throws RiceIllegalArgumentException;
@@ -59,9 +59,15 @@ public interface RemoteServiceRegistry {
 	void publishServices(@WebParam(name = "serviceEndpoints") List<ServiceEndpoint> serviceEndpoints) throws RiceIllegalArgumentException;
 		
 	@WebMethod(operationName = "removeServiceEndpoint")
-	void removeServiceEndpoint(@WebParam(name = "serviceEndpointId") String serviceEndpointId) throws RiceIllegalArgumentException;
+	void removeServiceEndpoint(@WebParam(name = "serviceEndpointId") Long serviceEndpointId) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "removeServiceEndpoints")
-	void removeServiceEndpoints(@WebParam(name = "serviceEndpointIds") List<String> serviceEndpointIds);
+	void removeServiceEndpoints(@WebParam(name = "serviceEndpointIds") List<Long> serviceEndpointIds) throws RiceIllegalArgumentException;
+	
+	@WebMethod(operationName = "updateStatus")
+	void updateStatus(@WebParam(name = "serviceEndpointId") Long serviceEndpointId, @WebParam(name = "status") ServiceEndpointStatus status) throws RiceIllegalArgumentException;
+	
+	@WebMethod(operationName = "updateStatuses")
+	void updateStatuses(@WebParam(name = "serviceEndpointIds") List<Long> serviceEndpointIds, @WebParam(name = "status") ServiceEndpointStatus status) throws RiceIllegalArgumentException;
 	
 }

@@ -30,6 +30,7 @@ import org.w3c.dom.Element;
     ServiceHeader.Elements.SERVER_IP_ADDRESS,
     ServiceHeader.Elements.TYPE,
     ServiceHeader.Elements.SERVICE_VERSION,
+    ServiceHeader.Elements.STATUS,
     ServiceHeader.Elements.CHECKSUM,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -55,6 +56,8 @@ public final class ServiceHeader implements ModelObjectComplete, ServiceHeaderCo
     private final String type;
     @XmlElement(name = Elements.SERVICE_VERSION, required = true)
     private final String serviceVersion;
+    @XmlElement(name = Elements.STATUS, required = true)
+    private final ServiceEndpointStatus status;
     @XmlElement(name = Elements.CHECKSUM, required = true)
     private final String checksum;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
@@ -76,6 +79,7 @@ public final class ServiceHeader implements ModelObjectComplete, ServiceHeaderCo
         this.serverIpAddress = null;
         this.type = null;
         this.serviceVersion = null;
+        this.status = null;
         this.checksum = null;
         this.versionNumber = null;
     }
@@ -89,6 +93,7 @@ public final class ServiceHeader implements ModelObjectComplete, ServiceHeaderCo
         this.serverIpAddress = builder.getServerIpAddress();
         this.type = builder.getType();
         this.serviceVersion = builder.getServiceVersion();
+        this.status = builder.getStatus();
         this.checksum = builder.getChecksum();
         this.versionNumber = builder.getVersionNumber();
     }
@@ -131,6 +136,11 @@ public final class ServiceHeader implements ModelObjectComplete, ServiceHeaderCo
     @Override
     public String getServiceVersion() {
     	return this.serviceVersion;
+    }
+    
+    @Override
+    public ServiceEndpointStatus getStatus() {
+    	return this.status;
     }
 
     @Override
@@ -177,6 +187,7 @@ public final class ServiceHeader implements ModelObjectComplete, ServiceHeaderCo
         private String serverIpAddress;
         private String type;
         private String serviceVersion;
+        private ServiceEndpointStatus status;
         private String checksum;
         private Long versionNumber;
 
@@ -203,6 +214,7 @@ public final class ServiceHeader implements ModelObjectComplete, ServiceHeaderCo
             builder.setServerIpAddress(contract.getServerIpAddress());
             builder.setType(contract.getType());
             builder.setServiceVersion(contract.getServiceVersion());
+            builder.setStatus(contract.getStatus());
             builder.setChecksum(contract.getChecksum());
             builder.setVersionNumber(contract.getVersionNumber());
             return builder;
@@ -253,6 +265,11 @@ public final class ServiceHeader implements ModelObjectComplete, ServiceHeaderCo
         }
 
         @Override
+        public ServiceEndpointStatus getStatus() {
+        	return this.status;
+        }
+        
+        @Override
         public String getChecksum() {
             return this.checksum;
         }
@@ -301,6 +318,11 @@ public final class ServiceHeader implements ModelObjectComplete, ServiceHeaderCo
         	// TODO add validation of input value if required and throw IllegalArgumentException if needed
         	this.serviceVersion = serviceVersion;
         }
+        
+        public void setStatus(ServiceEndpointStatus status) {
+        	// TODO add validation of input value if required and throw IllegalArgumentException if needed
+        	this.status = status;
+        }
 
         public void setChecksum(String checksum) {
             // TODO add validation of input value if required and throw IllegalArgumentException if needed
@@ -342,6 +364,7 @@ public final class ServiceHeader implements ModelObjectComplete, ServiceHeaderCo
         final static String SERVER_IP_ADDRESS = "serverIpAddress";
         final static String TYPE = "type";
         final static String SERVICE_VERSION = "serviceVersion";
+        final static String STATUS = "status";
         final static String CHECKSUM = "checksum";
 
     }

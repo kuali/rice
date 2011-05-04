@@ -16,8 +16,7 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali</groupId>
@@ -38,6 +37,8 @@
   <url>http://${kuali.site.hostname}/rice/${project.version}</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.build.timestamp.format>yyyy-MM-dd HH:mm z</maven.build.timestamp.format>
+    <kuali.build.timestamp>${maven.build.timestamp}</kuali.build.timestamp>
     <maven.skip.packaging>false</maven.skip.packaging>
     <maven.failsafe.forkmode>once</maven.failsafe.forkmode>
     <maven.failsafe.forkedProcessTimeoutInSeconds>7200</maven.failsafe.forkedProcessTimeoutInSeconds>
@@ -138,7 +139,18 @@
     <source.plugin.version>2.1.2</source.plugin.version>
     <assembly.plugin.version>2.2.1</assembly.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
-    <web.launch.spring.file />
+    <web.launch.spring.file/>
+    
+    <!-- Connect documentation generate to site generation -->
+    <rice.docbook.phase>pre-site</rice.docbook.phase>
+    <!-- Where the original documentation source is located -->
+    <rice.docbook.src>${basedir}/src/site/docbook</rice.docbook.src>
+    <!-- Where the filtered documentation source is located -->
+    <rice.docbook.filtered>${basedir}/target/docbook-filtered</rice.docbook.filtered>
+    <!-- The directory containing content that gets published to the website -->
+    <rice.site.dir>${basedir}/target/site</rice.site.dir>
+    <!-- Where the generated documentation (pdf, html) will be generated -->
+    <rice.docbook.dest>${rice.site.dir}/reference</rice.docbook.dest>
   </properties>
 
   <build>
@@ -168,6 +180,25 @@
     </testResources>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>com.agilejava.docbkx</groupId>
+          <artifactId>docbkx-maven-plugin</artifactId>
+          <version>2.0.11</version>
+          <configuration>
+            <sourceDirectory>${rice.docbook.filtered}</sourceDirectory>
+            <xincludeSupported>true</xincludeSupported>
+            <useExtensions>1</useExtensions>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.docbook</groupId>
+              <artifactId>docbook-xml</artifactId>
+              <version>4.4</version>
+              <scope>runtime</scope>
+            </dependency>
+          </dependencies>
+        </plugin>
+
                 <!--
                         This plugin helps enforce that excluded dependencies stay excluded
                         and don't sneak back in through another dependency (a global ban). Here are
@@ -210,7 +241,7 @@
                   <requireMavenVersion>
                     <version>[3.0,4.0)</version>
                   </requireMavenVersion>
-                  <DependencyConvergence />
+                  <DependencyConvergence/>
 
                                     <!-- Maven 3 Migration: This rule is not supported by Maven 3. See:
                                                  http://jira.codehaus.org/browse/MENFORCER-98 -->
@@ -505,16 +536,6 @@
           </configuration>
         </plugin>
         <plugin>
-          <groupId>com.agilejava.docbkx</groupId>
-          <artifactId>docbkx-maven-plugin</artifactId>
-          <!--
-              http://code.google.com/p/docbkx-tools/issues/detail?id=72#c1
-              build fails w/ newer plugin version
-              <version>2.0.12</version>
-          -->
-          <version>2.0.11</version>
-        </plugin>
-        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>versions-maven-plugin</artifactId>
           <version>1.2</version>
@@ -567,7 +588,7 @@
             <forkMode>${maven.failsafe.forkmode}</forkMode>
             <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}</forkedProcessTimeoutInSeconds>
             <reportFormat>plain</reportFormat>
-              <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
+            <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
             <systemPropertyVariables>
               <jaxws.endpoint.publish.test.address>http://localhost:25555/countryServce/</jaxws.endpoint.publish.test.address>
             </systemPropertyVariables>
@@ -655,7 +676,59 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>filter-documentation-source</id>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <phase>pre-site</phase>
+            <configuration>
+              <outputDirectory>${rice.docbook.filtered}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${rice.docbook.src}</directory>
+                  <filtering>true</filtering>
+                  <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.css</include>
+                    <include>**/*.xsl</include>
+                  </includes>
+                </resource>
+                <resource>
+                  <directory>${rice.docbook.src}</directory>
+                  <filtering>false</filtering>
+                  <excludes>
+                    <exclude>**/*.xml</exclude>
+                    <exclude>**/*.css</exclude>
+                    <exclude>**/*.xsl</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-documentation-resources</id>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <phase>pre-site</phase>
+            <configuration>
+              <outputDirectory>${rice.site.dir}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${rice.docbook.filtered}</directory>
+                  <filtering>false</filtering>
+                  <excludes>
+                    <exclude>**/*.xml</exclude>
+                    <exclude>**/*.xsl</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -664,18 +737,64 @@
       </plugin>
 
       <plugin>
-        <groupId>com.atlassian.maven.plugins</groupId>
-        <artifactId>maven-licenses-plugin</artifactId>
-      </plugin>
-
-      <plugin>
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
       </plugin>
 
       <plugin>
+        <groupId>com.agilejava.docbkx</groupId>
+        <artifactId>docbkx-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-html-docs</id>
+            <goals>
+              <goal>generate-html</goal>
+            </goals>
+            <phase>${rice.docbook.phase}</phase>
+            <configuration>
+              <htmlStylesheet>../../css/stylesheet.css</htmlStylesheet>
+              <targetDirectory>${rice.docbook.dest}/html</targetDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-pdf-docs</id>
+            <goals>
+              <goal>generate-pdf</goal>
+            </goals>
+            <phase>${rice.docbook.phase}</phase>
+            <configuration>
+              <foCustomization>${rice.docbook.filtered}/stylesheets/fo-stylesheet.xsl</foCustomization>
+              <targetDirectory>${rice.docbook.dest}/pdf</targetDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-multi-page-html-docs</id>
+            <goals>
+              <goal>generate-html</goal>
+            </goals>
+            <phase>${rice.docbook.phase}</phase>
+            <configuration>
+              <chunkedOutput>true</chunkedOutput>
+              <htmlStylesheet>../../css/stylesheet.css</htmlStylesheet>
+              <targetDirectory>${rice.docbook.dest}/html-multi</targetDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>com.atlassian.maven.plugins</groupId>
+        <artifactId>maven-licenses-plugin</artifactId>
       </plugin>
 
       <plugin>
@@ -702,10 +821,9 @@
     <module>krms</module>
     <module>client-contrib</module>
     <module>shareddata</module>
-    <module>doc</module>
     <module>dist</module>
     <module>kew</module>
-    <module>ksb</module> 
+    <module>ksb</module>
   </modules>
 
   <repositories>

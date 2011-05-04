@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<appendix xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <title>Running Multiple Instances of Rice Within a Single Tomcat Instance</title>
+    <sect1>
+        <title>Running a Staging and a Test Environment</title>
+    </sect1>
+    <sect1>
+        <title>Running Multiple Production Environments</title>
+    </sect1>
+    <sect1>
+        <title>Keystore Implementation Variations</title>
+    </sect1>
+</appendix>
+
+
+

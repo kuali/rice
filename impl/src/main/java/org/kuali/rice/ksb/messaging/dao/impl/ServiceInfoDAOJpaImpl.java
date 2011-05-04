@@ -55,13 +55,6 @@ public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
     	Query query = entityManager.createNamedQuery("ServiceInfo.FetchAllActive");
     	return (List<ServiceInfo>) query.getResultList();
     }
-
-    @SuppressWarnings("unchecked")
-    public List<ServiceInfo> fetchActiveByNameLocalPart(String localPart) {
-    	Query query = entityManager.createNamedQuery("ServiceInfo.FetchActiveByName");
-    	query.setParameter("serviceName", "{%}" + localPart);
-    	return (List<ServiceInfo>) query.getResultList();    	
-    }
     
     @SuppressWarnings("unchecked")
     public List<ServiceInfo> fetchActiveByName(QName serviceName) {

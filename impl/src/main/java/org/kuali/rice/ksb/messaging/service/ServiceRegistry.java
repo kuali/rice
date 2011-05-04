@@ -38,7 +38,6 @@ public interface ServiceRegistry {
 	public void removeEntries(List<ServiceInfo> serviceEntries);
 	public List<ServiceInfo> fetchAll();
 	public List<ServiceInfo> fetchAllActive();
-	public List<ServiceInfo> fetchActiveByNameLocalPart(String localPart);
 	public List<ServiceInfo> fetchActiveByName(QName serviceName);
 	public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace);
 	public void markServicesDead(List<ServiceInfo> serviceEntries);

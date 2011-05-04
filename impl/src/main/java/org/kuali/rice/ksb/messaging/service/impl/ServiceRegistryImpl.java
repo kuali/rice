@@ -75,10 +75,6 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	public List<ServiceInfo> fetchAllActive() {
 	    return dao.fetchAllActive();
 	}
-
-	public List<ServiceInfo> fetchActiveByNameLocalPart(String localPart) {
-		return getDao().fetchActiveByNameLocalPart(localPart);
-	}
 	
 	public List<ServiceInfo> fetchActiveByName(QName serviceName) {
 		return getDao().fetchActiveByName(serviceName);		

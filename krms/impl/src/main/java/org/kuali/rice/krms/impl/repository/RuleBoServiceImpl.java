@@ -39,12 +39,13 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		if (rule == null){
 			throw new IllegalArgumentException("rule is null");
 		}
-		final String ruleIdKey = rule.getId();
-		final RuleDefinition existing = getRuleByRuleId(ruleIdKey);
+		final String nameKey = rule.getName();
+		final String namespaceKey = rule.getNamespace();
+		final RuleDefinition existing = getRuleByNameAndNamespace(nameKey, namespaceKey);
 		if (existing != null){
 			throw new IllegalStateException("the rule to create already exists: " + rule);			
 		}	
-		businessObjectService.save(from(rule));
+		businessObjectService.save(RuleBo.from(rule));
 	}
 
 	/**
@@ -71,7 +72,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 			toUpdate = rule;
 		}
 
-		businessObjectService.save(from(toUpdate));
+		businessObjectService.save(RuleBo.from(toUpdate));
 
 	}
 
@@ -83,10 +84,32 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	@Override
 	public RuleDefinition getRuleByRuleId(String ruleId) {
 		if (StringUtils.isBlank(ruleId)){
-			return null;			
+			throw new IllegalArgumentException("rule id is null");
 		}
 		RuleBo bo = businessObjectService.findBySinglePrimaryKey(RuleBo.class, ruleId);
-		return to(bo);
+		return RuleBo.to(bo);
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#getRuleByRuleId(java.lang.String)
+	 */
+	@Override
+	public RuleDefinition getRuleByNameAndNamespace(String name, String namespace) {
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException("name is blank");
+        }
+        if (StringUtils.isBlank(namespace)) {
+            throw new IllegalArgumentException("namespace is blank");
+        }
+
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", name);
+        map.put("namespace", namespace);
+
+        RuleBo myRule = businessObjectService.findByPrimaryKey(RuleBo.class, Collections.unmodifiableMap(map));
+		return RuleBo.to(myRule);
 	}
 
 	/**
@@ -149,70 +172,6 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	}
 
 	/**
-	 * Converts a mutable bo to it's immutable counterpart
-	 * @param bo the mutable business object
-	 * @return the immutable object
-	 */
-	public RuleDefinition to(RuleBo bo) {
-		if (bo == null) { return null; }
-		RuleDefinition.Builder builder = RuleDefinition.Builder.create(
-				bo.getId(), bo.getName(), bo.getNamespace(),
-				bo.getTypeId(), bo.getPropId());
-		if (bo.getProposition() != null){
-			PropositionDefinition.Builder propBuilder = PropositionDefinition.Builder.create(bo.getProposition());
-			builder.setProposition(propBuilder);
-		}
-		List <ActionDefinition.Builder> actionList = new ArrayList<ActionDefinition.Builder>();
-		if (bo.getActions() != null){
-			for (ActionBo action : bo.getActions()) {
-				ActionDefinition.Builder actionBuilder = ActionDefinition.Builder.create(action);
-				actionList.add(actionBuilder);
-			}
-		}
-		builder.setActions(actionList);			
-		Set<RuleAttribute.Builder> attrBuilders = new HashSet <RuleAttribute.Builder>();
-		if (bo.getAttributes() != null){
-			for (RuleAttributeBo attrBo : bo.getAttributes() ){
-				RuleAttribute.Builder attrBuilder = 
-					RuleAttribute.Builder.create(attrBo);
-				attrBuilders.add(attrBuilder);
-			}
-		}
-		builder.setAttributes(attrBuilders);
-		return builder.build();
-	}
-
-	/**
-	 * Converts a immutable object to it's mutable bo counterpart
-	 * TODO: move to() and from() to impl service
-	 * @param im immutable object
-	 * @return the mutable bo
-	 */
-	public RuleBo from(RuleDefinition im) {
-		if (im == null) { return null; }
-
-		RuleBo bo = new RuleBo();
-		bo.setId( im.getId() );
-		bo.setNamespace( im.getNamespace() );
-		bo.setName( im.getName() );
-		bo.setTypeId( im.getTypeId() );
-		bo.setPropId( im.getPropId() );
-		bo.setProposition(PropositionBo.from(im.getProposition()));
-		List<ActionBo> actionList = new ArrayList<ActionBo>();
-		for (ActionDefinition action : im.getActions()){
-			actionList.add ( ActionBo.from(action) );
-		}
-		bo.setActions(actionList);		
-		Set<RuleAttributeBo> attributes = new HashSet<RuleAttributeBo>();
-		for (RuleAttribute attr : im.getAttributes()){
-			attributes.add ( RuleAttributeBo.from(attr) );
-		}
-		bo.setAttributes(attributes);
-		return bo;
-	}
-
-
-	/**
 	 * Sets the businessObjectService attribute value.
 	 *
 	 * @param businessObjectService The businessObjectService to set.
@@ -230,7 +189,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	public List<RuleDefinition> convertListOfBosToImmutables(final Collection<RuleBo> ruleBos) {
 		ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();
 		for (RuleBo bo : ruleBos) {
-			RuleDefinition rule = to(bo);
+			RuleDefinition rule = RuleBo.to(bo);
 			rules.add(rule);
 		}
 		return Collections.unmodifiableList(rules);

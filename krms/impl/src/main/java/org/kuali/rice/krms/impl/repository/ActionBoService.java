@@ -38,18 +38,4 @@ public interface ActionBoService {
 	public void createActionAttribute(ActionAttribute actionAttribute);
 	public void updateActionAttribute(ActionAttribute actionAttribute);
 	
-	
-//	/**
-//	* Converts a mutable bo to it's immutable counterpart
-//	* @param bo the mutable business object
-//	* @return the immutable object
-//	*/
-//	public ActionDefinition to( ActionBo bo);
-//
-//   /**
-//	* Converts a immutable object to it's mutable bo counterpart
-//	* @param im immutable object
-//	* @return the mutable bo
-//	*/
-//	public ActionBo from( ActionDefinition im );
 }

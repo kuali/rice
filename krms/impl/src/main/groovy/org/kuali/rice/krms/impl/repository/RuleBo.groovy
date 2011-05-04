@@ -44,6 +44,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	   bo.name = im.name
 	   bo.typeId = im.typeId
 	   bo.propId = im.propId
+	   bo.proposition = PropositionBo.from(im.proposition)
 	   bo.attributes = new HashSet<RuleAttributeBo>()
 	   for (attr in im.attributes){
 		   bo.attributes.add ( RuleAttributeBo.from(attr) )

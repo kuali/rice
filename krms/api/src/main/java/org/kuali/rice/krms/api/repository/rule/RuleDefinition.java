@@ -25,6 +25,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 
 /**
@@ -198,6 +199,15 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
+
+        	List <ActionDefinition.Builder> actionList = new ArrayList<ActionDefinition.Builder>();
+        	if (contract.getActions() != null){
+        		for (ActionDefinitionContract actionContract : contract.getActions()){
+        			ActionDefinition.Builder actBuilder = ActionDefinition.Builder.create(actionContract);
+        			actionList.add(actBuilder);
+        		}
+        	}
+        	
         	Set <RuleAttribute.Builder> attrBuilderList = new HashSet<RuleAttribute.Builder>();
         	if (contract.getAttributes() != null){
         		for (RuleAttributeContract attrContract : contract.getAttributes()){
@@ -205,9 +215,11 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         			attrBuilderList.add(myBuilder);
         		}
         	}
+        	
             Builder builder =  new Builder(contract.getId(), contract.getName(),
             		contract.getNamespace(), contract.getTypeId(), contract.getPropId());
             builder.setProposition(PropositionDefinition.Builder.create(contract.getProposition()));
+            builder.setActions(actionList);
             builder.setAttributes(attrBuilderList);
             return builder;
         }

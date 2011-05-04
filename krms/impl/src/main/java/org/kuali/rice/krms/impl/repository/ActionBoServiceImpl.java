@@ -208,54 +208,6 @@ public final class ActionBoServiceImpl implements ActionBoService {
 		return ActionAttributeBo.to(bo);
 	}
 
-//	/**
-//	 * Converts a mutable bo to it's immutable counterpart
-//	 * @param bo the mutable business object
-//	 * @return the immutable object
-//	 */
-//	public ActionDefinition to(ActionBo bo) {
-//		if (bo == null) { return null; }
-//		ActionDefinition.Builder builder = ActionDefinition.Builder.create( bo.getId(), bo.getName(), bo.getNamespace(),
-//				bo.getTypeId(), bo.getRuleId(), bo.getSequenceNumber());
-//		builder.setDescription(bo.getDescription());
-//		
-//		Set<ActionAttribute.Builder> attrBuilders = new HashSet<ActionAttribute.Builder>();
-//		if (bo.getAttributes() != null){
-//			for (ActionAttributeBo attrBo : bo.getAttributes() ){
-//				ActionAttribute.Builder attrBuilder = ActionAttribute.Builder.create(attrBo);
-//				attrBuilders.add(attrBuilder);
-//			}
-//		}
-//		builder.setAttributes(attrBuilders);
-//		return builder.build();
-//	}
-//
-//   /**
-//	* Converts a immutable object to it's mutable bo counterpart
-//	* TODO: move to() and from() to impl service
-//	* @param im immutable object
-//	* @return the mutable bo
-//	*/
-//   public ActionBo from(ActionDefinition im) {
-//	   if (im == null) { return null; }
-//
-//	   ActionBo bo = new ActionBo();
-//	   bo.setId( im.getId() );
-//	   bo.setNamespace( im.getNamespace() );
-//	   bo.setName( im.getName() );
-//	   bo.setTypeId( im.getTypeId() );
-//	   bo.setDescription( im.getDescription() );
-//	   bo.setRuleId( im.getRuleId() );
-//	   bo.setSequenceNumber( im.getSequenceNumber() );
-//	   Set<ActionAttributeBo> attributes = new HashSet<ActionAttributeBo>();
-//	   for (ActionAttribute attr : im.getAttributes()){
-//		   attributes.add ( ActionAttributeBo.from(attr) );
-//	   }
-//	   bo.setAttributes(attributes);
-//	   return bo;
-//   }
- 
-
     /**
      * Sets the businessObjectService attribute value.
      *

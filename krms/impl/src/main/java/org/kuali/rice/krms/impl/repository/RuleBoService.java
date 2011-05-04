@@ -33,25 +33,12 @@ public interface RuleBoService {
 	public void updateRule(RuleDefinition rule);
 	
 	public RuleDefinition getRuleByRuleId(String ruleId);
+	public RuleDefinition getRuleByNameAndNamespace(String name, String namespace);
 	
 	public void createRuleAttribute(RuleAttribute ruleAttribute);
 	public void updateRuleAttribute(RuleAttribute ruleAttribute);
 	
 	public RuleAttribute getRuleAttributeById(String attrId);
-
-	/**
-	* Converts a mutable bo to it's immutable counterpart
-	* @param bo the mutable business object
-	* @return the immutable object
-	*/
-	public RuleDefinition to( RuleBo bo);
-
-   /**
-	* Converts a immutable object to it's mutable bo counterpart
-	* @param im immutable object
-	* @return the mutable bo
-	*/
-	public RuleBo from( RuleDefinition im );
 
 	public void setBusinessObjectService(final BusinessObjectService businessObjectService);
 	public List<RuleDefinition> convertListOfBosToImmutables(final Collection<RuleBo> ruleBos);

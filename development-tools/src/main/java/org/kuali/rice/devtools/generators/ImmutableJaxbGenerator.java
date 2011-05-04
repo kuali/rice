@@ -65,18 +65,26 @@ public class ImmutableJaxbGenerator {
 
 	public static void main(String[] args) throws Exception {
 		
-		if (args.length != 2) {
+		if (args.length > 2 || args.length < 1) {
 			System.err.println("There should be two arguments defined as follows:\n" + 
 					"     1. Fully qualified class name of a 'contract' interface\n" + 
-					"     2. Fully qualified class name of the class to generate\n");
+					"     2. [Optional] Fully qualified class name of the class to generate.  If not specified, will use the name of the contract interface class and remove \"Contract\" from the end of it.\n");
 			System.exit(1);
 		}
 		
 		// argument one should be a fully qualified class name of a "contract" interface
 		String contractInterfaceName = args[0];
-				
+		
+		String className = null;
 		// argument two should be the fully qualified class name of the class to generate
-		String className = args[1];
+		if (args.length == 2) {
+			className = args[1];
+		} else {
+			if (!contractInterfaceName.endsWith("Contract")) {
+				throw new IllegalArgumentException("If not explicitly specifying target classname, then contract class name must end with 'Contract'");
+			}
+			className = contractInterfaceName.substring(0, contractInterfaceName.lastIndexOf("Contract"));
+		}
 		
 		Generator generator = new Generator(contractInterfaceName, className);
 		generator.generate();

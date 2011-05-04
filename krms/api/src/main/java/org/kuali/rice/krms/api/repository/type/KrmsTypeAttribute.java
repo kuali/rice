@@ -159,9 +159,12 @@ public final class KrmsTypeAttribute implements KrmsTypeAttributeContract, Model
         	Builder builder = new Builder(contract.getId(), 
         			contract.getTypeId(),
         			contract.getAttributeDefinitionId(),
-        			contract.getSequenceNumber())
-        			.attributeDefinition(KrmsAttributeDefinition.Builder
-        					.create(contract.getAttributeDefinition()));
+        			contract.getSequenceNumber());
+        	if (contract.getAttributeDefinition() != null){
+        		KrmsAttributeDefinition.Builder attrBuilder = 
+        			KrmsAttributeDefinition.Builder.create(contract.getAttributeDefinition());
+        		builder.setAttributeDefinition(attrBuilder);
+        	}
         	return builder;
         }
 

@@ -120,9 +120,12 @@ public final class ActionAttribute extends BaseAttribute implements ActionAttrib
         			contract.getActionId(),
         			contract.getAttributeDefinitionId(),
         			contract.getValue(),
-        			contract.getActionTypeId())
-        			.attributeDefinition(KrmsAttributeDefinition.Builder
-        					.create(contract.getAttributeDefinition()));
+        			contract.getActionTypeId());
+            if (contract.getAttributeDefinition() != null) {
+            	KrmsAttributeDefinition.Builder attrBuilder = 
+            		KrmsAttributeDefinition.Builder.create(contract.getAttributeDefinition());
+            	builder.setAttributeDefinition(attrBuilder);
+            }
         	return builder;
         }
 

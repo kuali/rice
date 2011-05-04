@@ -45,12 +45,13 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 		if (action == null){
 	        throw new IllegalArgumentException("action is null");
 		}
-		final String actionIdKey = action.getId();
-		final ActionDefinition existing = getActionByActionId(actionIdKey);
+		final String actionNameKey = action.getName();
+		final String actionNamespaceKey = action.getNamespace();
+		final ActionDefinition existing = getActionByNameAndNamespace(actionNameKey, actionNamespaceKey);
 		if (existing != null){
             throw new IllegalStateException("the action to create already exists: " + action);			
 		}	
-		businessObjectService.save(from(action));
+		businessObjectService.save(ActionBo.from(action));
 	}
 
 	/**
@@ -77,7 +78,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
         	toUpdate = action;
         }
         
-        businessObjectService.save(from(toUpdate));
+        businessObjectService.save(ActionBo.from(toUpdate));
 	}
 
 	/**
@@ -88,10 +89,27 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	@Override
 	public ActionDefinition getActionByActionId(String actionId) {
 		if (StringUtils.isBlank(actionId)){
-            return null;			
+            throw new IllegalArgumentException("action ID is null or blank");			
 		}
 		ActionBo bo = businessObjectService.findBySinglePrimaryKey(ActionBo.class, actionId);
-		return to(bo);
+		return ActionBo.to(bo);
+	}
+
+	@Override
+	public ActionDefinition getActionByNameAndNamespace(String name, String namespace) {
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException("name is blank");
+        }
+        if (StringUtils.isBlank(namespace)) {
+            throw new IllegalArgumentException("namespace is blank");
+        }
+
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", name);
+        map.put("namespace", namespace);
+
+        ActionBo myAction = businessObjectService.findByPrimaryKey(ActionBo.class, Collections.unmodifiableMap(map));
+        return ActionBo.to(myAction);
 	}
 
 	/**
@@ -127,7 +145,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
         map.put("ruleId", ruleId);
         map.put("sequenceNumber", sequenceNumber);
 		ActionBo bo = businessObjectService.findByPrimaryKey(ActionBo.class, map);
-		return to(bo);
+		return ActionBo.to(bo);
 	}
 
 	/**
@@ -190,52 +208,52 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 		return ActionAttributeBo.to(bo);
 	}
 
-	/**
-	 * Converts a mutable bo to it's immutable counterpart
-	 * @param bo the mutable business object
-	 * @return the immutable object
-	 */
-	public ActionDefinition to(ActionBo bo) {
-		if (bo == null) { return null; }
-		ActionDefinition.Builder builder = ActionDefinition.Builder.create( bo.getId(), bo.getName(), bo.getNamespace(),
-				bo.getTypeId(), bo.getRuleId(), bo.getSequenceNumber());
-		builder.setDescription(bo.getDescription());
-		
-		Set<ActionAttribute.Builder> attrBuilders = new HashSet<ActionAttribute.Builder>();
-		if (bo.getAttributes() != null){
-			for (ActionAttributeBo attrBo : bo.getAttributes() ){
-				ActionAttribute.Builder attrBuilder = ActionAttribute.Builder.create(attrBo);
-				attrBuilders.add(attrBuilder);
-			}
-		}
-		builder.setAttributes(attrBuilders);
-		return builder.build();
-	}
-
-   /**
-	* Converts a immutable object to it's mutable bo counterpart
-	* TODO: move to() and from() to impl service
-	* @param im immutable object
-	* @return the mutable bo
-	*/
-   public ActionBo from(ActionDefinition im) {
-	   if (im == null) { return null; }
-
-	   ActionBo bo = new ActionBo();
-	   bo.setId( im.getId() );
-	   bo.setNamespace( im.getNamespace() );
-	   bo.setName( im.getName() );
-	   bo.setTypeId( im.getTypeId() );
-	   bo.setDescription( im.getDescription() );
-	   bo.setRuleId( im.getRuleId() );
-	   bo.setSequenceNumber( im.getSequenceNumber() );
-	   Set<ActionAttributeBo> attributes = new HashSet<ActionAttributeBo>();
-	   for (ActionAttribute attr : im.getAttributes()){
-		   attributes.add ( ActionAttributeBo.from(attr) );
-	   }
-	   bo.setAttributes(attributes);
-	   return bo;
-   }
+//	/**
+//	 * Converts a mutable bo to it's immutable counterpart
+//	 * @param bo the mutable business object
+//	 * @return the immutable object
+//	 */
+//	public ActionDefinition to(ActionBo bo) {
+//		if (bo == null) { return null; }
+//		ActionDefinition.Builder builder = ActionDefinition.Builder.create( bo.getId(), bo.getName(), bo.getNamespace(),
+//				bo.getTypeId(), bo.getRuleId(), bo.getSequenceNumber());
+//		builder.setDescription(bo.getDescription());
+//		
+//		Set<ActionAttribute.Builder> attrBuilders = new HashSet<ActionAttribute.Builder>();
+//		if (bo.getAttributes() != null){
+//			for (ActionAttributeBo attrBo : bo.getAttributes() ){
+//				ActionAttribute.Builder attrBuilder = ActionAttribute.Builder.create(attrBo);
+//				attrBuilders.add(attrBuilder);
+//			}
+//		}
+//		builder.setAttributes(attrBuilders);
+//		return builder.build();
+//	}
+//
+//   /**
+//	* Converts a immutable object to it's mutable bo counterpart
+//	* TODO: move to() and from() to impl service
+//	* @param im immutable object
+//	* @return the mutable bo
+//	*/
+//   public ActionBo from(ActionDefinition im) {
+//	   if (im == null) { return null; }
+//
+//	   ActionBo bo = new ActionBo();
+//	   bo.setId( im.getId() );
+//	   bo.setNamespace( im.getNamespace() );
+//	   bo.setName( im.getName() );
+//	   bo.setTypeId( im.getTypeId() );
+//	   bo.setDescription( im.getDescription() );
+//	   bo.setRuleId( im.getRuleId() );
+//	   bo.setSequenceNumber( im.getSequenceNumber() );
+//	   Set<ActionAttributeBo> attributes = new HashSet<ActionAttributeBo>();
+//	   for (ActionAttribute attr : im.getAttributes()){
+//		   attributes.add ( ActionAttributeBo.from(attr) );
+//	   }
+//	   bo.setAttributes(attributes);
+//	   return bo;
+//   }
  
 
     /**
@@ -253,10 +271,11 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
      * @param ActionBos a mutable List<ActionBo> to made completely immutable.
      * @return An unmodifiable List<Action>
      */
-    List<ActionDefinition> convertListOfBosToImmutables(final Collection<ActionBo> ActionBos) {
+    List<ActionDefinition> convertListOfBosToImmutables(final Collection<ActionBo> actionBos) {
+    	if (actionBos == null) return Collections.emptyList();
         ArrayList<ActionDefinition> actions = new ArrayList<ActionDefinition>();
-        for (ActionBo bo : ActionBos) {
-            ActionDefinition action = to(bo);
+        for (ActionBo bo : actionBos) {
+            ActionDefinition action = ActionBo.to(bo);
             actions.add(action);
         }
         return Collections.unmodifiableList(actions);

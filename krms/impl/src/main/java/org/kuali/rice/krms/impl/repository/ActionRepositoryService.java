@@ -31,6 +31,7 @@ public interface ActionRepositoryService {
 	public void updateAction(ActionDefinition action);
 	
 	public ActionDefinition getActionByActionId(String actionId);
+	public ActionDefinition getActionByNameAndNamespace(String name, String namespace);
 	public List<ActionDefinition> getActionsByRuleId(String ruleId);
 	public ActionDefinition getActionByRuleIdAndSequenceNumber(String ruleId, Integer sequenceNumber);
 	
@@ -38,17 +39,17 @@ public interface ActionRepositoryService {
 	public void updateActionAttribute(ActionAttribute actionAttribute);
 	
 	
-	/**
-	* Converts a mutable bo to it's immutable counterpart
-	* @param bo the mutable business object
-	* @return the immutable object
-	*/
-	public ActionDefinition to( ActionBo bo);
-
-   /**
-	* Converts a immutable object to it's mutable bo counterpart
-	* @param im immutable object
-	* @return the mutable bo
-	*/
-	public ActionBo from( ActionDefinition im );
+//	/**
+//	* Converts a mutable bo to it's immutable counterpart
+//	* @param bo the mutable business object
+//	* @return the immutable object
+//	*/
+//	public ActionDefinition to( ActionBo bo);
+//
+//   /**
+//	* Converts a immutable object to it's mutable bo counterpart
+//	* @param im immutable object
+//	* @return the mutable bo
+//	*/
+//	public ActionBo from( ActionDefinition im );
 }

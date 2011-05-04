@@ -195,7 +195,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-        	Set <ActionAttribute.Builder> attrBuilderList = Collections.emptySet();
+        	Set <ActionAttribute.Builder> attrBuilderList = new HashSet<ActionAttribute.Builder>();
         	if (contract.getAttributes() != null){
         		for (ActionAttributeContract attrContract : contract.getAttributes()){
         			ActionAttribute.Builder myBuilder = ActionAttribute.Builder.create(attrContract);

@@ -42,7 +42,8 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 	   bo.typeId = im.typeId
 	   bo.description = im.description
 	   bo.ruleId = im.ruleId
-	   bo.attributes = new ArrayList<ActionAttributeBo>()
+	   bo.sequenceNumber = im.sequenceNumber
+	   bo.attributes = new HashSet<ActionAttributeBo>()
 	   for (attr in im.attributes){
 		   bo.attributes.add (ActionAttributeBo.from(attr))
 	   }

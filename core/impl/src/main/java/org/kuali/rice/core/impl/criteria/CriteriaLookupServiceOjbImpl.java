@@ -5,6 +5,7 @@ import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.api.criteria.AndPredicate;
 import org.kuali.rice.core.api.criteria.CompositePredicate;
+import org.kuali.rice.core.api.criteria.CountFlag;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.CriteriaValue;
 import org.kuali.rice.core.api.criteria.EqualPredicate;
@@ -47,7 +48,10 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
         }
 
         final Criteria parent = new Criteria();
-        addPredicate(parent, criteria.getPredicate());
+
+        if (criteria.getPredicate() != null) {
+            addPredicate(criteria.getPredicate(), parent);
+        }
 
         switch (criteria.getCountFlag()) {
             case ONLY:
@@ -56,32 +60,25 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
                 return forCountNone(queryClass, criteria, parent);
             case INCLUDE:
                 return forCountInclude(queryClass, criteria, parent);
+            default: throw new UnsupportedCountFlagException(criteria.getCountFlag());
         }
-
-        throw new UnsupportedOperationException("unsupported count flag.");
     }
 
-    /**
-     * gets results where the actual rows are requested & the count is not.
-     */
+    /** gets results where the actual rows are requested & the count is not. */
     private <T> GenericQueryResults<T> forCountNone(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria) {
         return requiresRows(queryClass, criteria, ojbCriteria).build();
     }
 
-    /**
-     * gets results where the actual rows and count are requested.
-     */
+    /** gets results where the actual rows and count are requested. */
     private <T> GenericQueryResults<T> forCountInclude(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria) {
         GenericQueryResults.Builder<T> results = requiresRows(queryClass, criteria, ojbCriteria);
         results.setTotalRowCount(results.getResults().size());
         return results.build();
     }
 
-    /**
-     * gets results where the actual rows are requested.  Will return a mutable builder.
-     */
+    /** gets results where the actual rows are requested.  Will return a mutable builder. */
     private <T> GenericQueryResults.Builder<T> requiresRows(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria) {
-        final Query ojbQuery = newQuery(queryClass, ojbCriteria);
+        final Query ojbQuery = QueryFactory.newQuery(queryClass, ojbCriteria);
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
 
         if (criteria.getMaxResults() != null) {
@@ -106,11 +103,9 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
         return results;
     }
 
-    /**
-     * gets results where only the count is requested.
-     */
+    /** gets results where only the count is requested. */
     private <T> GenericQueryResults<T> forCountOnly(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria) {
-        final Query ojbQuery = newQuery(queryClass, ojbCriteria);
+        final Query ojbQuery = QueryFactory.newQuery(queryClass, ojbCriteria);
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
         if (criteria.getMaxResults() != null) {
             ojbQuery.setFetchSize(criteria.getMaxResults());
@@ -125,7 +120,8 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
         return results.build();
     }
 
-    private void addPredicate(Criteria parent, Predicate p) {
+    /** adds a predicate to a Criteria.*/
+    private void addPredicate(Predicate p, Criteria parent) {
 
         if (p instanceof PropertyPathPredicate) {
             final String pp = ((PropertyPathPredicate) p).getPropertyPath();
@@ -137,12 +133,17 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
                 addSingleValuePredicate((SingleValuedPredicate) p, parent);
             } else if (p instanceof MultiValuedPredicate) {
                 addMultiValuePredicate((MultiValuedPredicate) p, parent);
+            } else {
+                throw new UnsupportedPredicateException(p);
             }
         } else if (p instanceof CompositePredicate) {
             addCompositePredicate((CompositePredicate) p, parent);
+        } else {
+            throw new UnsupportedPredicateException(p);
         }
     }
 
+    /** adds a single valued predicate to a Criteria. */
     private void addSingleValuePredicate(SingleValuedPredicate p, Criteria parent) {
         final Object value = p.getValue().getValue();
         final String pp = p.getPropertyPath();
@@ -163,9 +164,12 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
             parent.addNotEqualTo(pp, value);
         } else if (p instanceof NotLikePredicate) {
             parent.addNotLike(pp, value);
+        } else {
+            throw new UnsupportedPredicateException(p);
         }
     }
 
+    /** adds a multi valued predicate to a Criteria. */
     private void addMultiValuePredicate(MultiValuedPredicate p, Criteria parent) {
         final Set<Object> values = new HashSet<Object>();
         for (CriteriaValue<?> value : p.getValues()) {
@@ -176,26 +180,37 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
             parent.addIn(pp, values);
         } else if (p instanceof NotInPredicate) {
             parent.addNotIn(pp, values);
+        } else {
+            throw new UnsupportedPredicateException(p);
         }
     }
 
+    /** adds a composite predicate to a Criteria. */
     private void addCompositePredicate(final CompositePredicate p, final Criteria parent) {
         for (Predicate ip : p.getPredicates()) {
             final Criteria inner = new Criteria();
-            addPredicate(inner, ip);
+            addPredicate(ip, inner);
             if (p instanceof AndPredicate) {
                 parent.addAndCriteria(inner);
             } else if (p instanceof OrPredicate) {
                 parent.addOrCriteria(inner);
+            } else {
+                throw new UnsupportedPredicateException(p);
             }
         }
     }
 
-    protected Criteria newCriteria() {
-        return new Criteria();
+    /** this is a fatal error since this implementation should support all known predicates. */
+    private static class UnsupportedPredicateException extends RuntimeException {
+        private UnsupportedPredicateException(Predicate predicate) {
+            super("Unsupported predicate [" + String.valueOf(predicate) + "]");
+        }
     }
 
-    protected <T> Query newQuery(Class<T> queryClass, Criteria ojbCriteria) {
-        return QueryFactory.newQuery(queryClass, ojbCriteria);
+    /** this is a fatal error since this implementation should support all known count flags. */
+    private static class UnsupportedCountFlagException extends RuntimeException {
+        private UnsupportedCountFlagException(CountFlag flag) {
+            super("Unsupported predicate [" + String.valueOf(flag) + "]");
+        }
     }
 }

@@ -69,7 +69,7 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
 	
 	@OneToMany(targetEntity=PermissionAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
 	@Fetch(value = FetchMode.SELECT)
-	List<PermissionAttributeBo> permissionAttributes
+	List<PermissionAttributeBo> attributes
 	
 	@OneToMany(targetEntity=RolePermissionBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
@@ -105,6 +105,10 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         bo.description = im.description
         bo.active = im.active
         bo.templateId = im.templateId
+		bo.attributes = new ArrayList<PermissionAttributeBo>()
+        for (attr in im.attributes) {
+            bo.attributes.add (PermissionAttributeBo.from(attr))
+        }
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;
 

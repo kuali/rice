@@ -179,72 +179,7 @@ public class AttributeField extends FieldBase implements DataBinding {
          * Alternate display value (Masking)
          */
         if ( isReadOnly() || view.isReadOnly() ){ // Check for authorization???
-        	AttributeSecurity security = null;
-        	String bindingPath = null;
-        	/**
-        	 * If alternate display property is set, check for that fields security
-        	 */
-        	if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())){
-        		AttributeField alternateField = null;
-        		
-        		bindingPath = getAlternateDisplayAttributeBindingInfo().getBindingObjectPath() + "." + getAlternateDisplayAttributeBindingInfo().getBindingName();
-        		String strippedBindingPath = stripIndexesFromPropertyPath(bindingPath);
-        		
-        		/**
-        		 * Get the attribute field for the alterdate display property
-        		 */
-        		alternateField = view.getViewIndex().getAttributeFieldByPath(strippedBindingPath);
-        		
-        		if (alternateField == null){
-        			/**
-        			 * If the attribute field present in a collection, get the AttributeField object from the collection
-        			 */
-        			 CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(strippedBindingPath);
-        			 if (collectionGroup == null){
-        				 throw new RuntimeException("AttributeField doesnt exists for the alternate display attribute " + getAlternateDisplayAttributeName());
-        			 }
-        			 
-        			 for (Component item : ((CollectionGroup)collectionGroup).getItems()) {
-         				if (item instanceof AttributeField){
- 	        				if (StringUtils.equals(((AttributeField)item).getBindingInfo().getBindingPath(), strippedBindingPath)){
- 	        					alternateField = (AttributeField)item;
- 	        					break;
- 	        				}
-         				}
-         			}
-        		}
-        			 
-    			if (alternateField == null){
-    				throw new RuntimeException("AttributeField doesnt exists for the alternate display attribute " + getAlternateDisplayAttributeName());
-    			}
-    			
-    			if (alternateField != null && alternateField.getAttributeSecurity() != null){
-        			security = alternateField.getAttributeSecurity();
-        		}
-    		}else if (getAttributeSecurity() != null){ // else, if security present in this field
-        		security = getAttributeSecurity();
-        		bindingPath = getBindingInfo().getBindingPath();
-        	}
-        		
-        	/**
-        	 * If attribute security present either in this field or in alternate display field, get the masked value	
-        	 */
-    		if (security != null){
-        		Object fieldValue = null;
-        		if (view instanceof InquiryView){
-        			fieldValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
-        		}else if (model instanceof FormView){
-        			fieldValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
-        		}
-        		
-        		if(security.isMask()){
-        			alternateDisplayValue = security.getMaskFormatter().maskValue(fieldValue);
-        		}else if(getAttributeSecurity().isPartialMask()){
-        			alternateDisplayValue = security.getPartialMaskFormatter().maskValue(fieldValue);
-        		}
-        		
-        	}
-        		
+        	setAlternateDisplayValue(view,model);
         }
         	
         // if read only or the control is not set no need to set client side
@@ -266,21 +201,51 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * Strips indexes from the property path. 
-     * bo.fiscalOfficer.accounts[0].name returns bo.fiscalOfficer.accounts.name which can be used 
-     * to find the components from the viewindex
      * 
-     * TODO:Have to move this code to some util classes. Not sure whether we have this
-     * kind of method already. Have to check with Jerry
+     * This method sets the alternate display value to be displayed when the field 
+     * is readonly. If alternate display property is set and attributesecurity
+     * exists in that field, it displays the value based on that setting. Otherwise,
+     * set the display value based on this fields security setting.
+     * 
+     * @param view
+     * @param model
      */
-    private String stripIndexesFromPropertyPath(String propertyPath){
-    	String returnValue = propertyPath;
-    	String index = StringUtils.substringBetween(propertyPath, "[", "]");
-    	if (StringUtils.isNotBlank(index)){
-    		returnValue = StringUtils.remove(propertyPath, "[" + index + "]");
-    		return stripIndexesFromPropertyPath(returnValue);
-    	}else{
-    		return returnValue;
+    private void setAlternateDisplayValue(View view, Object model){
+    	
+    	AttributeSecurity attributeSecurity = null;
+    	String bindingPath = null;
+    	
+    	if (getAttributeSecurity() != null){ 
+    		attributeSecurity = getAttributeSecurity();
+    		bindingPath = getBindingInfo().getBindingPath();
+    	}
+    	
+    	/**
+    	 * If alternate display property is set, check for that fields security
+    	 */
+    	if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())){
+    		
+    		AttributeField alternateField = view.getViewIndex().getAttributeField(getAlternateDisplayAttributeBindingInfo());
+    		
+			if (alternateField != null && alternateField.getAttributeSecurity() != null){
+    			attributeSecurity = alternateField.getAttributeSecurity();
+    			bindingPath = getAlternateDisplayAttributeBindingInfo().getBindingPath();
+    		}
+			
+		}
+    		
+    	/**
+    	 * If attribute security present either in this field or in alternate display field, get the masked value	
+    	 */
+		if (attributeSecurity != null){
+    		Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
+    		
+    		if(attributeSecurity.isMask()){
+    			alternateDisplayValue = attributeSecurity.getMaskFormatter().maskValue(fieldValue);
+    		}else if(getAttributeSecurity().isPartialMask()){
+    			alternateDisplayValue = attributeSecurity.getPartialMaskFormatter().maskValue(fieldValue);
+    		}
+    		
     	}
     }
     

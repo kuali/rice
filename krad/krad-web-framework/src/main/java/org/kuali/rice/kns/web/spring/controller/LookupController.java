@@ -63,7 +63,22 @@ public class LookupController extends UifControllerBase {
         return new LookupForm();
 	}
 
-    /**
+	protected void supressActionsIfNeeded(LookupForm lookupForm) {
+        try {
+            Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
+        	Person user = GlobalVariables.getUserSession().getPerson();
+        	// check if creating documents is allowed
+            String documentTypeName = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService().getDocumentTypeName(dataObjectClass);
+            if ((documentTypeName != null) && !KNSServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(documentTypeName).canInitiate(documentTypeName, user)) {
+                ((LookupView)lookupForm.getView()).setSuppressActions( true );
+            }
+        }
+        catch (ClassNotFoundException e) {
+        	LOG.warn("Unable to load Data Object Class: " + lookupForm.getDataObjectClassName(), e);
+        }
+	}
+
+	/**
      * @see org.kuali.rice.kns.web.spring.controller.UifControllerBase#checkAuthorization(org.kuali.rice.kns.web.spring.form.UifFormBase, java.lang.String)
      */
     @Override
@@ -75,11 +90,6 @@ public class LookupController extends UifControllerBase {
             try {
                 Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
             	Person user = GlobalVariables.getUserSession().getPerson();
-            	// check if creating documents is allowed
-                String documentTypeName = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService().getDocumentTypeName(dataObjectClass);
-                if ((documentTypeName != null) && !KNSServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(documentTypeName).canInitiate(documentTypeName, user)) {
-                    lookupForm.setSuppressActions( true );
-                }
             	// check if user is allowed to lookup object
                 if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KNSUtils.getNamespaceAndComponentSimpleName(dataObjectClass), null)) {
                     throw new AuthorizationException(user.getPrincipalName(),
@@ -88,7 +98,7 @@ public class LookupController extends UifControllerBase {
                 }
             }
             catch (ClassNotFoundException e) {
-            	LOG.warn("Unable to load BusinessObject class: " + lookupForm.getDataObjectClassName(), e);
+            	LOG.warn("Unable to load Data Object Class class: " + lookupForm.getDataObjectClassName(), e);
                 super.checkAuthorization(lookupForm, methodToCall);
             }
         }
@@ -97,6 +107,7 @@ public class LookupController extends UifControllerBase {
 	@RequestMapping(params = "methodToCall=start")
 	public ModelAndView start(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
 //		checkAuthorization(lookupForm, request.getParameter("methodToCall"));
+	    supressActionsIfNeeded(lookupForm);
 		return getUIFModelAndView(lookupForm);
 	}
 
@@ -107,8 +118,9 @@ public class LookupController extends UifControllerBase {
     @RequestMapping(params = "methodToCall=cancel")
 	public ModelAndView cancel(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
 	    LookupForm lookupForm = (LookupForm)form;
-	    
-    	Properties props = new Properties();
+	    supressActionsIfNeeded(lookupForm);
+
+	    Properties props = new Properties();
     	props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
     	if (StringUtils.isNotBlank(lookupForm.getReturnFormKey())) {
             props.put(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
@@ -125,6 +137,7 @@ public class LookupController extends UifControllerBase {
     @RequestMapping(params = "methodToCall=clearValues")
 	public ModelAndView clearValues(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
 //        LookupViewHelperService lookupViewHelperService = lookupForm.getLookupViewHelperService();
+	    supressActionsIfNeeded(lookupForm);
         LookupViewHelperService lookupViewHelperService = (LookupViewHelperService) lookupForm.getView().getViewHelperService();
         lookupForm.setCriteriaFields(lookupViewHelperService.performClear(lookupForm.getCriteriaFieldsForLookup()));
 		return getUIFModelAndView(lookupForm);
@@ -135,6 +148,7 @@ public class LookupController extends UifControllerBase {
      */
 	@RequestMapping(params = "methodToCall=search")
 	public ModelAndView search(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+	    supressActionsIfNeeded(lookupForm);
 		GlobalVariables.getUserSession().removeObjectsByPrefix(KNSConstants.SEARCH_METHOD);
 
 //        LookupViewHelperService lookupViewHelperService = lookupForm.getLookupViewHelperService();

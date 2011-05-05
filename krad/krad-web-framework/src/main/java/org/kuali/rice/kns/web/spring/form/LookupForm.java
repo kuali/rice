@@ -24,9 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
-import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.UifParameters;
+import org.kuali.rice.kns.uif.container.LookupView;
 import org.kuali.rice.kns.uif.service.LookupViewHelperService;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -47,8 +47,6 @@ public class LookupForm extends UifFormBase {
 	private Map<String, String> criteriaFieldsForLookup;
 	private String conversionFields;
 	private Map<String, String> fieldConversions;
-	private boolean suppressActions = false;
-    private boolean hideReturnLink = false;
 	
 	private Collection<?> searchResults;
 
@@ -113,36 +111,8 @@ public class LookupForm extends UifFormBase {
     	this.searchResults = searchResults;
     }
 
-    /**
-     * @param suppressActions The suppressActions to set.
-     */
-    public void setSuppressActions(boolean suppressActions) {
-        this.suppressActions = suppressActions;
-    }
-
-    /**
-     * @return Returns the suppressActions.
-     */
-    public boolean isSuppressActions() {
-        return suppressActions;
-    }
-
-    /**
-     * @return Returns the hideReturnLink.
-     */
-    public boolean isHideReturnLink() {
-        return hideReturnLink;
-    }
-
-    /**
-     * @param hideReturnLink The hideReturnLink to set.
-     */
-    public void setHideReturnLink(boolean hideReturnLink) {
-        this.hideReturnLink = hideReturnLink;
-    }
-
-	protected LookupViewHelperService getLookupViewHelperServiceFromModel(View view) {
-        ViewHelperService viewHelperService = view.getViewHelperService();
+	protected LookupViewHelperService getLookupViewHelperServiceFromModel() {
+        ViewHelperService viewHelperService = getView().getViewHelperService();
         if (viewHelperService == null) {
             LOG.error("ViewHelperService is null.");
             throw new RuntimeException("ViewHelperService is null.");
@@ -163,51 +133,29 @@ public class LookupForm extends UifFormBase {
 		super.postBind(request);
 
 		try {
-			/*
-			 * TODO delyea - Investigate to make sure below retrieval takes into
-			 * account the following: 1) handle externalizable business objects
-			 * 2) allow for lookupableImpl bean id to be passed in via request
-			 * parameter KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME
-			 */
-//			ViewHelperService localLookupable = getView().getViewHelperService();
-			LookupViewHelperService localLookupViewHelperService = getLookupViewHelperServiceFromModel(getView());
+			LookupViewHelperService localLookupViewHelperService = getLookupViewHelperServiceFromModel();
 
 			if (localLookupViewHelperService == null) {
 				LOG.error("LookupViewHelperService not found for view id " + getView().getId());
 				throw new RuntimeException("LookupViewHelperService not found for view id " + getView().getId());
 			}
-			// set parameters on lookupable
-			/*
-			 * TODO: delyea - this setter used to get multipart form data
-			 * related to KNSConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY
-			 * request attribute (see PojoFormBase.populate() method for more
-			 * info)
-			 */
-//			localLookupable.setParameters(request.getParameterMap());
 
 			// check the doc form key is empty before setting so we don't
 			// override a restored lookup form
-			if (request.getAttribute(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
-				setFormKey((String) request.getAttribute(KNSConstants.DOC_FORM_KEY));
-			} else if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
-				setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
-			}
-
-//			if (request.getParameter(KNSConstants.DOC_NUM) != null) {
-//				setDocNum(request.getParameter(KNSConstants.DOC_NUM));
+//			if (request.getAttribute(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
+//				setFormKey((String) request.getAttribute(KNSConstants.DOC_FORM_KEY));
+//			} else if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
+//				setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
 //			}
 
-			// this used to be in the Form as a property but has been moved for KRAD
-			Boolean showMaintenanceLinks = Boolean.valueOf(request.getParameter("showMaintenanceLinks"));
             // if showMaintenanceLinks is not already true, only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
-            if (!showMaintenanceLinks.booleanValue()) {
+            if (!((LookupView)getView()).isShowMaintenanceLinks()) {
             	// TODO delyea - is this the best way to decide whether to display the maintenance actions?
             	if (StringUtils.contains(getReturnLocation(), "/"+KNSConstants.PORTAL_ACTION) 
             			|| StringUtils.contains(getReturnLocation(), "/index.html")) {
-            		showMaintenanceLinks = Boolean.TRUE;
+            		((LookupView)getView()).setShowMaintenanceLinks(true);
             	}
             }
-            localLookupViewHelperService.setShowMaintenanceLinks(showMaintenanceLinks.booleanValue());
             
 			// this used to be in the Form as a property but has been moved for KRAD
 //			String hideReturnLink = request.getParameter("hideReturnLink");
@@ -232,7 +180,7 @@ public class LookupForm extends UifFormBase {
 //			}
 
 			if (request.getParameter(KNSConstants.LOOKUP_READ_ONLY_FIELDS) != null) {
-				setReadOnlyFields(request.getParameter("readOnlyFields"));
+				setReadOnlyFields(request.getParameter(KNSConstants.LOOKUP_READ_ONLY_FIELDS));
 				setReadOnlyFieldsList(LookupUtils.translateReadOnlyFieldsToList(getReadOnlyFields()));
 				localLookupViewHelperService.setReadOnlyFieldsList(getReadOnlyFieldsList());
 			}
@@ -310,8 +258,6 @@ public class LookupForm extends UifFormBase {
 			setFieldConversions(LookupUtils.translateFieldConversions(getConversionFields()));
 			localLookupViewHelperService.setFieldConversions(getFieldConversions());
 			localLookupViewHelperService.setDocNum(getDocNum());
-			localLookupViewHelperService.setSuppressActions(isSuppressActions());
-			localLookupViewHelperService.setHideReturnLink(isHideReturnLink());
 //			setLookupViewHelperService(localLookupViewHelperService);
 			setCriteriaFieldsForLookup(fieldValues);
 

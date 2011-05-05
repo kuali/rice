@@ -102,14 +102,11 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	protected String docNum;
 	protected String referencesToRefresh;
 	protected boolean searchUsingOnlyPrimaryKeyValues = false;
-	protected boolean hideReturnLink = false;
 	protected Map<String, String> fieldConversions;
 	protected Map parameters;
 	protected List<String> readOnlyFieldsList;
 	protected boolean atLeastOneRowReturnable = false;
     protected boolean atLeastOneRowHasActions = false;
-    private boolean suppressActions = false;
-    private boolean showMaintenanceLinks = false;
 
 	protected List<String> defaultSortAttributeNames;
 	// TODO delyea: where to take into account the sort ascending value (old KNS appeared to ignore?)
@@ -129,6 +126,9 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
     @Override
     public void populateViewFromRequestParameters(View view, Map<String, String> parameters) {
 	    super.populateViewFromRequestParameters(view, parameters);
+	    /* On the old Lookupable and LookupableHelperService in KNS the parameters list used to have multipart form
+	     * data in it where it may not in the new KRAD. See PojoFormBase.populate() method for more information
+	     */
 	    setParameters(parameters);
     }
 
@@ -1153,36 +1153,6 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
     }
 
 	/**
-     * @return the suppressActions
-     */
-    public boolean isSuppressActions() {
-    	return this.suppressActions;
-    }
-
-	/**
-     * @param suppressActions the suppressActions to set
-     */
-    public void setSuppressActions(boolean suppressActions) {
-    	this.suppressActions = suppressActions;
-    }
-
-    /**
-     * Gets the showMaintenanceLinks attribute.
-     * @return Returns the showMaintenanceLinks.
-     */
-    public boolean isShowMaintenanceLinks() {
-        return showMaintenanceLinks;
-    }
-
-    /**
-     * Sets the showMaintenanceLinks attribute value.
-     * @param showMaintenanceLinks The showMaintenanceLinks to set.
-     */
-    public void setShowMaintenanceLinks(boolean showMaintenanceLinks) {
-        this.showMaintenanceLinks = showMaintenanceLinks;
-    }
-
-	/**
 	 * @return the dataObjectClass
 	 */
 	public Class<?> getDataObjectClass() {
@@ -1211,20 +1181,6 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	public void setReturnLocation(String returnLocation) {
 		this.returnLocation = returnLocation;
 	}
-
-	/**
-     * @return the hideReturnLink
-     */
-    public boolean isHideReturnLink() {
-    	return this.hideReturnLink;
-    }
-
-	/**
-     * @param hideReturnLink the hideReturnLink to set
-     */
-    public void setHideReturnLink(boolean hideReturnLink) {
-    	this.hideReturnLink = hideReturnLink;
-    }
 
 	/**
 	 * @return the docNum

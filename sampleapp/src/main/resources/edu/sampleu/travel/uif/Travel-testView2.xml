@@ -128,6 +128,12 @@ limitations under the License.
 	  	  	<property name="control">
                     <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
             </property>
+            <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+            <property name="fieldLookup.fieldConversions">
+              <map>
+                <entry key="number" value="field1"/>
+              </map>
+            </property>
 	  </bean>
       <bean parent="AttributeField_Form" p:label="Field 2" p:propertyName="hField2" p:labelPlacement="TOP" 
       p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">

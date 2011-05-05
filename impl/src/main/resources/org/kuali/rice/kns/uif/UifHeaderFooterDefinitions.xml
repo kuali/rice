@@ -131,6 +131,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <bean parent="ActionField" p:methodToCall="search" p:actionLabel="Search"/>
           <bean parent="ActionField" p:methodToCall="clearValues" p:actionLabel="Clear Values"/>
           <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="Cancel" p:conditionalRender="!#view.dialogMode"/>
+          <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="Return" p:conditionalRender="#view.dialogMode"/>
         </list>
       </property>  
   </bean>

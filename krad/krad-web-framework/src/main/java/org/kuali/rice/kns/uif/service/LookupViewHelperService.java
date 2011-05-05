@@ -74,18 +74,6 @@ public interface LookupViewHelperService extends ViewHelperService {
 
 	public void setDocNum(String docNum);
 
-    public boolean isHideReturnLink();
-
-    public void setHideReturnLink(boolean hideReturnLink);
-
-    public void setSuppressActions(boolean suppressActions);
-
-    public boolean isSuppressActions();
-
-    public void setShowMaintenanceLinks(boolean showMaintenanceLinks);
-
-   	public boolean isShowMaintenanceLinks();
-
     public String getReturnLocation();
 
 	public String getReturnFormKey();

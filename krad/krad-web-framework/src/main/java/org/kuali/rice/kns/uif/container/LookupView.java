@@ -24,6 +24,7 @@ import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
 import org.kuali.rice.kns.uif.control.HiddenControl;
 import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.core.RequestParameter;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.service.LookupViewHelperService;
@@ -48,6 +49,20 @@ public class LookupView extends FormView {
 	private List<Component> resultFields;
 	private List<String> defaultSortAttributeNames;
 	protected boolean sortAscending = true;
+
+	@RequestParameter
+    private boolean hideReturnLinks = false;
+	@RequestParameter
+    private boolean suppressActions = false;
+	@RequestParameter
+    private boolean showMaintenanceLinks = false;
+
+    private boolean multipleValues = false;
+    private boolean lookupCriteriaEnabled = true;
+    private boolean supplementalActionsEnabled = false;
+    private boolean ddExtraButton = false;
+    private boolean headerBarEnabled = true;
+    private boolean disableSearchButtons = false;
 
 	public LookupView() {
 		super();
@@ -161,8 +176,8 @@ public class LookupView extends FormView {
 		 */
 		LookupViewHelperService lookupHelperService = (LookupViewHelperService) getViewHelperService();
 		return ( (lookupHelperService.isAtLeastOneRowHasActions()) &&
-				 (!lookupHelperService.isSuppressActions()) &&
-				 (lookupHelperService.isShowMaintenanceLinks())
+				 (!isSuppressActions()) &&
+				 (isShowMaintenanceLinks())
 				);
     }
 	
@@ -179,7 +194,7 @@ public class LookupView extends FormView {
 		LookupViewHelperService lookupHelperService = (LookupViewHelperService) getViewHelperService();
 		return ( (StringUtils.isNotBlank(lookupHelperService.getReturnFormKey())) &&
 				 (StringUtils.isNotBlank(lookupHelperService.getReturnLocation())) &&
-				 (!lookupHelperService.isHideReturnLink())
+				 (!isHideReturnLinks())
 				);
 		/* if - 
 		 *   KualiForm.formKey != ''   ----   @see LookupViewHelperService#getDocFormKey()
@@ -191,6 +206,7 @@ public class LookupView extends FormView {
 		 *   row.rowReturnable   ----   @see LookupViewHelperService#getActionUrlsFromField
 		 */
 	}
+
 	/**
 	 * Class name for the object the lookup applies to
 	 * 
@@ -214,6 +230,48 @@ public class LookupView extends FormView {
 	 */
 	public void setDataObjectClassName(Class<?> dataObjectClassName) {
 		this.dataObjectClassName = dataObjectClassName;
+	}
+
+	/**
+	 * @return the hideReturnLinks
+	 */
+	public boolean isHideReturnLinks() {
+		return this.hideReturnLinks;
+	}
+
+	/**
+	 * @param hideReturnLinks the hideReturnLinks to set
+	 */
+	public void setHideReturnLinks(boolean hideReturnLinks) {
+		this.hideReturnLinks = hideReturnLinks;
+	}
+
+	/**
+	 * @return the suppressActions
+	 */
+	public boolean isSuppressActions() {
+		return this.suppressActions;
+	}
+
+	/**
+	 * @param suppressActions the suppressActions to set
+	 */
+	public void setSuppressActions(boolean suppressActions) {
+		this.suppressActions = suppressActions;
+	}
+
+	/**
+	 * @return the showMaintenanceLinks
+	 */
+	public boolean isShowMaintenanceLinks() {
+		return this.showMaintenanceLinks;
+	}
+
+	/**
+	 * @param showMaintenanceLinks the showMaintenanceLinks to set
+	 */
+	public void setShowMaintenanceLinks(boolean showMaintenanceLinks) {
+		this.showMaintenanceLinks = showMaintenanceLinks;
 	}
 
 	/**

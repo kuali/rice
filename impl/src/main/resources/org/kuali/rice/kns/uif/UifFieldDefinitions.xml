@@ -328,6 +328,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         
   <bean id="ActionLinkField_CreateNew" parent="GeneratedField" p:label="Create New" p:renderingMethodToCall="getCreateNewUrl" 
         p:styleClasses="action"
-        p:conditionalRender="!#view.viewHelperService.suppressActions" />
+        p:conditionalRender="!#view.suppressActions and #view.showMaintenanceLinks" />
         
-</beans>        
+</beans>

@@ -16,6 +16,9 @@
 
 package org.kuali.rice.kns.config;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.springframework.beans.factory.FactoryBean;
@@ -32,17 +35,26 @@ public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Objec
 	private String serviceName;
 	private boolean singleton;
 	private boolean mustExist;
+
+	// used to prevent a stack overflow when trying to get the service
+	private boolean isFetchingService = false;
 	
 	public GlobalResourceLoaderServiceFactoryBean() {
 		this.mustExist = true;
 	}
 	
 	public Object getObject() throws Exception {
-		Object service = GlobalResourceLoader.getService(this.getServiceName());
-		if (mustExist && service == null) {
-			throw new IllegalStateException("Service must exist and no service could be located with name: " + this.getServiceName());
+		if (isFetchingService) return null; // we already have been invoked, don't recurse, just return null.
+		isFetchingService = true;
+		try {
+			Object service = GlobalResourceLoader.getService(this.getServiceName());
+			if (mustExist && service == null) {
+				throw new IllegalStateException("Service must exist and no service could be located with name: " + this.getServiceName());
+			}
+			return service;
+		} finally {
+			isFetchingService = false;
 		}
-		return service;
 	}
 
 	public Class<?> getObjectType() {

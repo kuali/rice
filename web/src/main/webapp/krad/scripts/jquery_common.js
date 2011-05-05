@@ -358,7 +358,7 @@ function createLightBox(controlId, options) {
     			jq("#" + controlId).fancybox(options);    			
     		}else{
     			jq("#" + controlId).click(function (e) {
-			  	   e.preventDefault(); 	  
+			  	   e.preventDefault(); 	  			  	   
 			  	   options['href'] = jq("#" + controlId).attr('href');
 			  	   top.$.fancybox(options);
     			});
@@ -390,8 +390,9 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
     	// Check if this is not called within a lightbox
     	if (!jq("#fancybox-frame", parent.document).length) {
     		jq("#" + controlId).click(function (e) {
-        	// Prevent the default submit
-            e.preventDefault();
+        	// Prevent the default submit    		
+            e.preventDefault();   
+            jq("[name='jumpToId']").val(controlId);
             // Add the ajaxCall parameter so that the controller can avoid the redirect
 	        actionParameterMapString['actionParameters[dialogMode]'] = 'true';
             actionParameterMapString['actionParameters[ajaxCall]'] = 'true';

@@ -260,7 +260,7 @@ function performFocus(){
 function jumpToElementByName(name){
 	var theElement =  jq("[name='" + name + "']");
 	if(theElement.length != 0){
-		if(top == self){
+		if(top == self || jq("#fancybox-frame", parent.document).length){
 			jq.scrollTo(theElement, 0);
 		}
 		else{
@@ -274,7 +274,7 @@ function jumpToElementByName(name){
 function jumpToElementById(id){
 	var theElement =  jq("#" + id);
 	if(theElement.length != 0){
-		if(top == self){
+		if(top == self || jq("#fancybox-frame", parent.document).length){
 			jq.scrollTo(theElement, 0);
 		}
 		else{
@@ -286,7 +286,7 @@ function jumpToElementById(id){
 
 //Jump(scroll) to the top of the current screen
 function jumpToTop(){
-	if(top == self){
+	if(top == self || jq("#fancybox-frame", parent.document).length){
 		jq.scrollTo(jq("html"), 0);
 	}
 	else{
@@ -296,7 +296,7 @@ function jumpToTop(){
 
 //Jump(scroll) to the bottom of the current screen
 function jumpToBottom(){
-	if(top == self){
+	if(top == self || jq("#fancybox-frame", parent.document).length){
 		jq.scrollTo("max", 0);
 	}
 	else{

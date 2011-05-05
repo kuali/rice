@@ -4,6 +4,7 @@ import org.kuali.rice.core.api.criteria.PredicateFactory as pf
 
 import org.junit.Before
 import org.junit.Test
+import org.kuali.rice.core.api.criteria.CountFlag
 import org.kuali.rice.core.api.criteria.QueryByCriteria
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
 import org.kuali.rice.core.impl.parameter.ParameterBo
@@ -240,5 +241,96 @@ class CriteriaLookupServiceOjbImplIntTest extends CORETestCase {
         assertEquals 2, results.getResults().size()
         assertTrue results.toString(), results.getResults().find {it.name  == "TURN_FOO_ON"} != null
         assertTrue results.toString(), results.getResults().find {it.name  == "TURN_ANOTHER_FOO_ON"} != null
+    }
+
+    @Test
+    void test_count_only() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.countFlag = CountFlag.ONLY
+        builder.predicates = equal("name", "TURN_ANOTHER_FOO_ON")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 0, results.getResults().size()
+        assertEquals 1, results.totalRowCount
+    }
+
+    @Test
+    void test_count_none() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.countFlag = CountFlag.NONE
+        builder.predicates = equal("name", "TURN_ANOTHER_FOO_ON")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 1, results.getResults().size()
+        assertEquals null, results.totalRowCount
+    }
+
+    @Test
+    void test_count_include() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.countFlag = CountFlag.INCLUDE
+        builder.predicates = equal("name", "TURN_ANOTHER_FOO_ON")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 1, results.getResults().size()
+        assertEquals 1, results.totalRowCount
+    }
+
+    @Test
+    void test_max_results() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.maxResults = 5
+        builder.predicates = equal("namespaceCode", "FOO-NS")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 5, results.getResults().size()
+    }
+
+    @Test
+    void test_start_index() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.startAtIndex = 1
+        builder.predicates = equal("namespaceCode", "FOO-NS")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 5, results.getResults().size()
+    }
+
+    @Test
+    void test_start_index_max_results() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.startAtIndex = 3
+        builder.maxResults = 5
+        builder.predicates = equal("namespaceCode", "FOO-NS")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 3, results.getResults().size()
+    }
+
+    @Test
+    void test_count_max_results() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.countFlag = CountFlag.INCLUDE
+        builder.maxResults = 5
+        builder.predicates = equal("namespaceCode", "FOO-NS")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 5, results.getResults().size()
+        assertEquals 6, results.getTotalRowCount()
+        assertTrue results.isMoreResultsAvailable()
+    }
+
+    @Test
+    void test_start_index_count_max_results() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.countFlag = CountFlag.INCLUDE
+        builder.startAtIndex = 3
+        builder.maxResults = 2
+        builder.predicates = equal("namespaceCode", "FOO-NS")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 2, results.getResults().size()
+        assertEquals 6, results.getTotalRowCount()
+        assertTrue results.isMoreResultsAvailable()
     }
 }

@@ -39,7 +39,12 @@ public interface CountAwareQueryResults<T> extends QueryResults<T> {
 	 * client requested the total row count when invoking the query.  It's also
 	 * possible that the query is unable to produce a total row count depending
 	 * on the back-end implementation, in which cases this value will also not
-	 * be available. 
+	 * be available.
+     *
+     * <p>
+     * Will never be less than 0.
+     *
+     * <p>
 	 * 
 	 * @return the total number of rows, or null if the total row count was not
 	 * requested by the query or could not be determined 

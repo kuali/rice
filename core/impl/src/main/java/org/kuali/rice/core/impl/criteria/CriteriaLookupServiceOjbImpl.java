@@ -30,7 +30,6 @@ import org.kuali.rice.core.api.criteria.SingleValuedPredicate;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,64 +56,50 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
             case ONLY:
                 return forCountOnly(queryClass, criteria, parent);
             case NONE:
-                return forCountNone(queryClass, criteria, parent);
+                return forRowResults(queryClass, criteria, parent, criteria.getCountFlag());
             case INCLUDE:
-                return forCountInclude(queryClass, criteria, parent);
+                return forRowResults(queryClass, criteria, parent, criteria.getCountFlag());
             default: throw new UnsupportedCountFlagException(criteria.getCountFlag());
         }
     }
 
-    /** gets results where the actual rows are requested & the count is not. */
-    private <T> GenericQueryResults<T> forCountNone(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria) {
-        return requiresRows(queryClass, criteria, ojbCriteria).build();
-    }
-
-    /** gets results where the actual rows and count are requested. */
-    private <T> GenericQueryResults<T> forCountInclude(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria) {
-        GenericQueryResults.Builder<T> results = requiresRows(queryClass, criteria, ojbCriteria);
-        results.setTotalRowCount(results.getResults().size());
-        return results.build();
-    }
-
     /** gets results where the actual rows are requested.  Will return a mutable builder. */
-    private <T> GenericQueryResults.Builder<T> requiresRows(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria) {
+    private <T> GenericQueryResults<T> forRowResults(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria, CountFlag flag) {
         final Query ojbQuery = QueryFactory.newQuery(queryClass, ojbCriteria);
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
 
-        if (criteria.getMaxResults() != null) {
-            //add one so we can set the isMoreResultsAvailable
-            ojbQuery.setFetchSize(criteria.getMaxResults() + 1);
+        /*
+         * have to ALWAYS query for the count in order to set the setMoreResultsAvailable().
+         * This field could be set by querying of one extra row than the max requested but
+         * that would depend on the MaxResults actually being set.
+         */
+        final int count = getPersistenceBrokerTemplate().getCount(ojbQuery);
+
+        if (flag == CountFlag.INCLUDE) {
+            results.setTotalRowCount(count);
         }
 
-        if (criteria.getStartAtIndex() != null) {
-            ojbQuery.setStartAtIndex(criteria.getStartAtIndex());
+        //ojb's is 1 based, our query api is zero based
+        final int startAtIndex = criteria.getStartAtIndex() != null ? criteria.getStartAtIndex() + 1 : 1;
+        ojbQuery.setStartAtIndex(startAtIndex);
+
+        if (criteria.getMaxResults() != null) {
+            ojbQuery.setEndAtIndex(criteria.getMaxResults() + startAtIndex - 1);
         }
 
         @SuppressWarnings("unchecked")
-        final Collection<T> rows = getPersistenceBrokerTemplate().getCollectionByQuery(ojbQuery);
+        List<T> rows = new ArrayList<T>(getPersistenceBrokerTemplate().getCollectionByQuery(ojbQuery));
 
-        results.setMoreResultsAvailable(criteria.getMaxResults() != null && rows.size() == criteria.getMaxResults() + 1);
-        final List<T> rowsMinusOne = new ArrayList<T>(rows);
-        if (criteria.getMaxResults() != null && rows.size() >= 1) {
-            rowsMinusOne.remove(rows.size() - 1);
-        }
+        results.setMoreResultsAvailable(count > rows.size());
 
-        results.setResults(rowsMinusOne);
-        return results;
+        results.setResults(rows);
+        return results.build();
     }
 
     /** gets results where only the count is requested. */
     private <T> GenericQueryResults<T> forCountOnly(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria) {
         final Query ojbQuery = QueryFactory.newQuery(queryClass, ojbCriteria);
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
-        if (criteria.getMaxResults() != null) {
-            ojbQuery.setFetchSize(criteria.getMaxResults());
-        }
-
-        if (criteria.getStartAtIndex() != null) {
-            ojbQuery.setStartAtIndex(criteria.getStartAtIndex());
-        }
-
         results.setTotalRowCount(getPersistenceBrokerTemplate().getCount(ojbQuery));
 
         return results.build();

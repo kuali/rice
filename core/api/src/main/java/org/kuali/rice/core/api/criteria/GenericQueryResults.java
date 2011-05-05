@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -67,7 +68,7 @@ public final class GenericQueryResults<T> implements CountAwareQueryResults<T>, 
 		return ToStringBuilder.reflectionToString(this);
 	}
 
-	public static final class Builder<T> implements ModelBuilder {
+	public static final class Builder<T> implements ModelBuilder, CountAwareQueryResults<T>, Serializable {
 
 		private List<T> results;
 		private Integer totalRowCount;
@@ -92,7 +93,11 @@ public final class GenericQueryResults<T> implements CountAwareQueryResults<T>, 
 		}
 
 		public void setResults(List<T> results) {
-			this.results = results;
+			if (results == null) {
+                throw new IllegalArgumentException("results is null");
+            }
+
+            this.results = Collections.unmodifiableList(new ArrayList<T>(results));
 		}
 
 		public Integer getTotalRowCount() {
@@ -100,7 +105,11 @@ public final class GenericQueryResults<T> implements CountAwareQueryResults<T>, 
 		}
 
 		public void setTotalRowCount(Integer totalRowCount) {
-			this.totalRowCount = totalRowCount;
+			if (totalRowCount != null && totalRowCount < 0) {
+                throw new IllegalArgumentException("totalRowCount < 0");
+            }
+
+            this.totalRowCount = totalRowCount;
 		}
 
 		public boolean isMoreResultsAvailable() {

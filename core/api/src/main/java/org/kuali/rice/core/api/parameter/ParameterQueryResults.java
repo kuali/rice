@@ -15,8 +15,13 @@
  */
 package org.kuali.rice.core.api.parameter;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.CountAwareQueryResults;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -31,10 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO 
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 @XmlRootElement(name = ParameterQueryResults.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -43,7 +45,7 @@ import java.util.List;
 		ParameterQueryResults.Elements.TOTAL_ROW_COUNT,
 		ParameterQueryResults.Elements.MORE_RESULTS_AVAILALBE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public class ParameterQueryResults implements CountAwareQueryResults<Parameter> {
+public class ParameterQueryResults implements CountAwareQueryResults<Parameter>, ModelObjectComplete {
 
 	@XmlElementWrapper(name = Elements.RESULTS, required = false)
 	@XmlElement(name = Elements.PARAMETER, required = false)
@@ -86,7 +88,22 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter> 
 		return moreResultsAvailable;
 	}
 
-	public static class Builder {
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(obj, this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
+	public static class Builder implements ModelBuilder, CountAwareQueryResults<Parameter> {
 
 		private List<Parameter> results;
 		private Integer totalRowCount;

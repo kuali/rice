@@ -69,20 +69,20 @@ public final class QueryByCriteria implements ModelObjectComplete {
 	private static final long serialVersionUID = 2210627777648920180L;
 
     @XmlElements(value = {
-        @XmlElement(name = AndPredicate.Constants.ROOT_ELEMENT_NAME, type = AndPredicate.class, required = true),
-        @XmlElement(name = EqualPredicate.Constants.ROOT_ELEMENT_NAME, type = EqualPredicate.class, required = true),
-        @XmlElement(name = GreaterThanPredicate.Constants.ROOT_ELEMENT_NAME, type = GreaterThanPredicate.class, required = true),
-        @XmlElement(name = GreaterThanOrEqualPredicate.Constants.ROOT_ELEMENT_NAME, type = GreaterThanOrEqualPredicate.class, required = true),
-        @XmlElement(name = InPredicate.Constants.ROOT_ELEMENT_NAME, type = InPredicate.class, required = true),
-        @XmlElement(name = LessThanPredicate.Constants.ROOT_ELEMENT_NAME, type = LessThanPredicate.class, required = true),
-        @XmlElement(name = LessThanOrEqualPredicate.Constants.ROOT_ELEMENT_NAME, type = LessThanOrEqualPredicate.class, required = true),
-        @XmlElement(name = LikePredicate.Constants.ROOT_ELEMENT_NAME, type = LikePredicate.class, required = true),
-        @XmlElement(name = NotEqualPredicate.Constants.ROOT_ELEMENT_NAME, type = NotEqualPredicate.class, required = true),
-        @XmlElement(name = NotInPredicate.Constants.ROOT_ELEMENT_NAME, type = NotInPredicate.class, required = true),
-        @XmlElement(name = NotLikePredicate.Constants.ROOT_ELEMENT_NAME, type = NotLikePredicate.class, required = true),
-        @XmlElement(name = NotNullPredicate.Constants.ROOT_ELEMENT_NAME, type = NotNullPredicate.class, required = true),
-        @XmlElement(name = NullPredicate.Constants.ROOT_ELEMENT_NAME, type = NullPredicate.class, required = true),
-        @XmlElement(name = OrPredicate.Constants.ROOT_ELEMENT_NAME, type = OrPredicate.class, required = true)
+        @XmlElement(name = AndPredicate.Constants.ROOT_ELEMENT_NAME, type = AndPredicate.class, required = false),
+        @XmlElement(name = EqualPredicate.Constants.ROOT_ELEMENT_NAME, type = EqualPredicate.class, required = false),
+        @XmlElement(name = GreaterThanPredicate.Constants.ROOT_ELEMENT_NAME, type = GreaterThanPredicate.class, required = false),
+        @XmlElement(name = GreaterThanOrEqualPredicate.Constants.ROOT_ELEMENT_NAME, type = GreaterThanOrEqualPredicate.class, required = false),
+        @XmlElement(name = InPredicate.Constants.ROOT_ELEMENT_NAME, type = InPredicate.class, required = false),
+        @XmlElement(name = LessThanPredicate.Constants.ROOT_ELEMENT_NAME, type = LessThanPredicate.class, required = false),
+        @XmlElement(name = LessThanOrEqualPredicate.Constants.ROOT_ELEMENT_NAME, type = LessThanOrEqualPredicate.class, required = false),
+        @XmlElement(name = LikePredicate.Constants.ROOT_ELEMENT_NAME, type = LikePredicate.class, required = false),
+        @XmlElement(name = NotEqualPredicate.Constants.ROOT_ELEMENT_NAME, type = NotEqualPredicate.class, required = false),
+        @XmlElement(name = NotInPredicate.Constants.ROOT_ELEMENT_NAME, type = NotInPredicate.class, required = false),
+        @XmlElement(name = NotLikePredicate.Constants.ROOT_ELEMENT_NAME, type = NotLikePredicate.class, required = false),
+        @XmlElement(name = NotNullPredicate.Constants.ROOT_ELEMENT_NAME, type = NotNullPredicate.class, required = false),
+        @XmlElement(name = NullPredicate.Constants.ROOT_ELEMENT_NAME, type = NullPredicate.class, required = false),
+        @XmlElement(name = OrPredicate.Constants.ROOT_ELEMENT_NAME, type = OrPredicate.class, required = false)
     })
 	private final Predicate predicate;
 	
@@ -139,7 +139,10 @@ public final class QueryByCriteria implements ModelObjectComplete {
 	 * return no rows (as opposed to producing an index-based out of bounds
 	 * error).  If the value is null, then the results should start with the
 	 * first row returned from the query.
-	 * 
+	 *
+     * <p>
+     * Will never be less than 0
+     *
 	 * @return the starting row index requested by this query, or null if
 	 * the results should start at the beginning of the result set
 	 */
@@ -152,7 +155,10 @@ public final class QueryByCriteria implements ModelObjectComplete {
 	 * to receive.  If null, then the query should return all rows, or as
 	 * many as it can.  If the number request is larger than the number of
      * results then all results are returned.
-	 * 
+	 *
+     * <p>
+     * Will never be less than 0
+     *
 	 * @return the maximum number of results to return from the query
 	 */
 	public Integer getMaxResults() {
@@ -205,11 +211,15 @@ public final class QueryByCriteria implements ModelObjectComplete {
 		}
 
 		public Integer getStartAtIndex() {
-			return this.startAtIndex;
+            return this.startAtIndex;
 		}
 
 		public void setStartAtIndex(Integer startAtIndex) {
-                this.startAtIndex = startAtIndex;
+            if (startAtIndex != null && startAtIndex < 0) {
+                throw new IllegalArgumentException("startAtIndex < 0");
+            }
+
+            this.startAtIndex = startAtIndex;
 		}
 
 		public Integer getMaxResults() {
@@ -217,7 +227,11 @@ public final class QueryByCriteria implements ModelObjectComplete {
 		}
 
 		public void setMaxResults(Integer maxResults) {
-			this.maxResults = maxResults;
+			if (maxResults != null && maxResults < 0) {
+                throw new IllegalArgumentException("maxResults < 0");
+            }
+
+            this.maxResults = maxResults;
 		}
 
 		public CountFlag getCountFlag() {
@@ -232,6 +246,10 @@ public final class QueryByCriteria implements ModelObjectComplete {
             this.countFlag = countFlag;
 		}
 
+        /**
+         * will return an array of the predicates.  may return null if no predicates were set.
+         * @return the predicates
+         */
 		public Predicate[] getPredicates() {
 			if (this.predicates == null) {
                 return null;

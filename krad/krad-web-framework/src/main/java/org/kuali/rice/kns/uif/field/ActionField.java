@@ -25,6 +25,7 @@ import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.FormView;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.widget.LightBox;
 import org.kuali.rice.kns.uif.widget.LightBoxLookup;
 
 /**
@@ -51,6 +52,8 @@ public class ActionField extends FieldBase {
 	private Map<String, String> actionParameters;
 	
 	private LightBoxLookup lightBoxLookup;
+	
+	private LightBox lightBox;
 
 	public ActionField() {
 
@@ -471,6 +474,20 @@ public class ActionField extends FieldBase {
         }
         this.clientSideJs = clientSideJs;
     }
+
+	/**
+	 * @param lightBox the lightBox to set
+	 */
+	public void setLightBox(LightBox lightBox) {
+		this.lightBox = lightBox;
+	}
+
+	/**
+	 * @return the lightBox
+	 */
+	public LightBox getLightBox() {
+		return lightBox;
+	}
 
 	
 	

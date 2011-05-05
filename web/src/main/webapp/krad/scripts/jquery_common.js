@@ -432,6 +432,54 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
 }
 
 /**
+ * Opens the inquiry window 
+ * Is called from the onclick event on the direct inquiry
+ * The parameters is added by dynamically getting the values
+ * for the fields in the parameter maps and then added to the url string
+ * 
+ * @param url -
+ *          the base url to use to call the inquiry
+ * @param paramMap -
+ *          map of option settings (option name/value pairs) for the plugin
+ * @param showLightBox -
+ *          flag to indicate if it must be shown in a lightbox
+ * @param lightBoxOptions -
+ *          map of option settings (option name/value pairs) for the lightbox plugin                  
+ */
+function directInquiry(url, paramMap, showLightBox, lightBoxOptions) {
+	parameterPairs = paramMap.split(",");
+	queryString=""
+	  for (i in parameterPairs) {	  
+	    parameters = parameterPairs[i].split(":");
+	  	if (jq('[name="' + parameters[0] + '"]').val()=="") 
+	  	{
+	  		alert("Please enter a value in the appropriate field.");
+	  		// queryString=queryString+"&"+parameters[1]+"=directInquiryParameterNotSpecified";
+			return false;
+	  	} else {
+	    	queryString=queryString+"&"+parameters[1]+"="+jq('[name="' + parameters[0] + '"]').val();
+	  	}
+	  }
+	if (showLightBox) {
+    	if (!jq("#fancybox-frame", parent.document).length) {
+    		// If this is not the top frame, then create the lightbox
+    		// on the top frame to put overlay over whole window
+    		if (top == self) {
+    			lightBoxOptions['href'] = url+queryString;    			
+    			jq.fancybox(lightBoxOptions);    			
+    		}else{  
+    			lightBoxOptions['href'] = url+queryString;
+		  	    top.$.fancybox(lightBoxOptions);
+    		}
+    	}else{
+    		// If this is already in a lightbox just open in current lightbox
+    		window.open(url+queryString, "_self");    		
+    	}
+	}else{
+		window.open(url+queryString, "_blank", "width=640, height=600, scrollbars=yes");
+	}
+}
+/**
  * Sets up the script necessary to toggle a group as a accordion
  * 
  * @param groupId -

@@ -17,9 +17,20 @@
 
 <tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.Inquiry"/>
 <tiles:useAttribute name="componentId"/>
+<tiles:useAttribute name="readOnly"/>
 
 <%--
     Renders an inquiry link for a field value
+    Check if the field is read only
+    Render the direct inquiry for editable fields
  --%>
  
-<krad:template component="${widget.inquiryLinkField}"/> 
+<c:choose>
+	<c:when test="${readOnly}">
+		<krad:template component="${widget.inquiryLinkField}" />
+	</c:when>
+
+	<c:otherwise>
+		<krad:template component="${widget.directInquiryActionField}" />
+	</c:otherwise>
+</c:choose>

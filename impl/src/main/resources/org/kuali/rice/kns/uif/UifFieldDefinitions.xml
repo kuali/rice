@@ -321,7 +321,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>   
         
   <bean id="QuickFinderImageField" parent="ImageField" p:source="/kr-dev/krad/images/searchicon.gif"
-        p:altText="Search Field" p:title="Search Field"/>                                                                            
+        p:altText="Search Field" p:title="Search Field"/>
+        
+  <bean id="DirectInquiryImageField" parent="ImageField" p:source="/kr-dev/krad/images/book_open.png"
+        p:altText="Direct Inquiry" p:title="Direct Inquiry"/>                                                                                     
         
   <bean id="ActionLinkField_CreateNew" parent="GeneratedField" p:label="Create New" p:renderingMethodToCall="getCreateNewUrl" 
         p:styleClasses="action"

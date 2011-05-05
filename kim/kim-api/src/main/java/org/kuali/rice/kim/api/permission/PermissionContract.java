@@ -22,7 +22,7 @@ import org.kuali.rice.core.api.mo.Versioned;
 import org.kuali.rice.core.api.mo.active.Inactivatable;
 
 /**
- * This is the contract for a KimPermission. Represents a single permission within the system.
+ * This is the contract for a Permission. Represents a single permission within the system.
  * 
  * Permissions are attached to roles. All authorization checks should be done against permissions,
  * never against roles or groups.
@@ -70,7 +70,5 @@ public interface PermissionContract extends Versioned, GloballyUnique, Inactivat
 	 * 
 	 * @ return attributes
 	 */
-    // TODO does this need to extend something else?
-    // GroupContract has List<? extends GroupAttributeContract> getAttributes();
     List<? extends PermissionAttributeContract> getAttributes();
 }

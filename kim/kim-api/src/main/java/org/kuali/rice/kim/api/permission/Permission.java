@@ -277,7 +277,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         }
 
         public void setId(final String id) {
-        	if (StringUtils.isEmpty(id)) {
+        	if (StringUtils.isBlank(id)) {
                 throw new IllegalArgumentException("id is blank");
             }
         	this.id = id;
@@ -289,7 +289,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         }
 
         public void setNamespaceCode(final String namespaceCode) {
-        	if (StringUtils.isEmpty(namespaceCode)) {
+        	if (StringUtils.isBlank(namespaceCode)) {
                 throw new IllegalArgumentException("namespaceCode is blank");
             }
         	this.namespaceCode = namespaceCode;
@@ -301,7 +301,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         }
 
         public void setName(final String name) {
-        	if (StringUtils.isEmpty(name)) {
+        	if (StringUtils.isBlank(name)) {
                 throw new IllegalArgumentException("name is blank");
             }
         	this.name = name;
@@ -318,7 +318,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 
 		@Override
 		public String getTemplateId() {
-			if (StringUtils.isEmpty(templateId)) {
+			if (StringUtils.isBlank(templateId)) {
                 throw new IllegalArgumentException("templateId is blank");
             }
 			return templateId;

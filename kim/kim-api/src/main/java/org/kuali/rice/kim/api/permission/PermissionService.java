@@ -30,9 +30,7 @@ import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -73,8 +71,6 @@ public interface PermissionService {
     // Authorization Checks
     // --------------------
 	
-	// TODO Audit JavaDoc terminology (e.g. KimPermission -> Permmission)
-
     /**
      * Checks whether the principal has been granted a permission matching the given details
      * without taking role qualifiers into account.
@@ -94,6 +90,7 @@ public interface PermissionService {
     					   @WebParam(name="permissionName") String permissionName,
     					   @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails );
 
+    // TODO Deal with KimPermissionTypeService -> PermissionTypeService
     /**
      * Checks whether the given qualified permission is granted to the principal given
      * the passed roleQualification.  If no roleQualification is passed (null or empty)
@@ -104,11 +101,11 @@ public interface PermissionService {
      * the role's type service.  Once it is determined that the principal has the role
      * in the given context (qualification), the permissions are examined.
      * 
-     * Each permission is checked against the permissionDetails.  The KimPermissionTypeService
+     * Each permission is checked against the permissionDetails.  The PermissionTypeService
      * is called for each permission with the given permissionName to see if the 
      * permissionDetails matches its details.
      */
-    // TODO Figure out how to handle AttributeSet
+    // TODO Do AttributeSets still get passed in? Should PermissionAttributes be passed in instead?
     // AttributeSet permissionDetails -> PermissionAttribute permissionAttributes
     @WebMethod(operationName = "isAuthorized")
     @WebResult(name = "isAuthorized")
@@ -147,7 +144,7 @@ public interface PermissionService {
      * the role's type service.  Once it is determined that the principal has the role
      * in the given context (qualification), the permissions are examined.
      * 
-     * Each permission is checked against the permissionDetails.  The KimPermissionTypeService
+     * Each permission is checked against the permissionDetails.  The PermissionTypeService
      * is called for each permission with the given permissionName to see if the 
      * permissionDetails matches its details.
      */
@@ -225,7 +222,7 @@ public interface PermissionService {
      * then this method does not check any qualifications on the roles.
      * 
      * All permissions with the given name are checked against the permissionDetails.  
-     * The KimPermissionTypeService is called for each permission to see if the 
+     * The PermissionTypeService is called for each permission to see if the 
      * permissionDetails matches its details.
      * 
      * An asterisk (*) as a value in any permissionDetails key-value pair will match any value.
@@ -253,7 +250,7 @@ public interface PermissionService {
      * then this method does not check any qualifications on the roles.
      * 
      * All permissions with the given name are checked against the permissionDetails.  
-     * The KimPermissionTypeService is called for each permission to see if the 
+     * The PermissionTypeService is called for each permission to see if the 
      * permissionDetails matches its details.
      * 
      * An asterisk (*) as a value in any permissionDetails key-value pair will match any value.
@@ -372,6 +369,7 @@ public interface PermissionService {
 	@WebMethod(operationName = "getRoleIdsForPermissions")
     @WebResult(name = "roleIdsForPermissions")
     @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
+    // TODO Replace KimPermissionInfo with  List<Permission> as parameter?
     List<String> getRoleIdsForPermissions( @WebParam(name="permissions") List<KimPermissionInfo> permissions );
     
     /**

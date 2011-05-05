@@ -23,12 +23,10 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
+import sun.security.acl.GroupImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,47 +203,6 @@ public final class KimCommonUtilsInternal {
 		}
 		return identityManagementService;
 	}
-
-
-    public static GroupImpl copyInfoToGroup(GroupInfo info, GroupImpl group) {
-        group.setActive(info.isActive());
-        group.setGroupDescription(info.getGroupDescription());
-        group.setGroupId(info.getGroupId());
-        group.setGroupName(info.getGroupName());
-        group.setKimTypeId(info.getKimTypeId());
-        group.setNamespaceCode(info.getNamespaceCode());
-
-        return group;
-    }
-
-    /**
-     *
-     * @param infoMap Containing the Info Attribute objects.
-     * @param groupId for the group of attributes
-     * @param kimTypeId for the group of attributes
-     * @return a list of group attributes
-     */
-
-    public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String, String> infoMap, String groupId, String kimTypeId) {
-        List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
-        List<KimTypeAttribute> attributeInfoList = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId).getAttributeDefinitions();
-
-        for (String key : infoMap.keySet()) {
-            KimTypeAttribute typeAttributeInfo = getAttributeInfo(attributeInfoList, key);
-
-            if (typeAttributeInfo != null) {
-                GroupAttributeDataImpl groupAttribute = new GroupAttributeDataImpl();
-                groupAttribute.setKimAttributeId(typeAttributeInfo.getKimAttribute().getId());
-                groupAttribute.setAttributeValue(infoMap.get(typeAttributeInfo.getKimAttribute().getAttributeName()));
-                groupAttribute.setGroupId(groupId);
-                groupAttribute.setKimTypeId(kimTypeId);
-                attrList.add(groupAttribute);
-            } else {
-                throw new IllegalArgumentException("KimAttribute not found: " + key);
-            }
-        }
-        return attrList;
-    }
 
     private static KimTypeAttribute getAttributeInfo(List<KimTypeAttribute> attributeInfoList, String attributeName) {
         KimTypeAttribute kRet = null;

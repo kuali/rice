@@ -15,16 +15,15 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="groupAttributes" value="${DataDictionary.GroupImpl.attributes}" />
-<c:set var="groupTypeAttributes" value="${DataDictionary.KimTypeImpl.attributes}" />
+<c:set var="groupAttributes" value="${DataDictionary.GroupBo.attributes}" />
+<c:set var="groupTypeAttributes" value="${DataDictionary.KimTypeBo.attributes}" />
 
 <kul:tab tabTitle="Overview" defaultOpen="true" transparentBackground="${inquiry}" tabErrorKey="document.group*,document.active">
-
 <div class="tab-container" align="center">
 	<table cellpadding="0" cellspacing="0" summary=""> 
 	 	<tr>
-			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.groupId}"  /></div></th>
-	 		<td><kul:htmlControlAttribute property="document.groupId" attributeEntry="${groupAttributes.groupId}" readOnly="true" /></td>
+			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.id}"  /></div></th>
+	 		<td><kul:htmlControlAttribute property="document.groupId" attributeEntry="${groupAttributes.id}" readOnly="true" /></td>
     		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupTypeAttributes.name}"  /></div></th>
 	 		<td>
 	 		    <kul:htmlControlAttribute property="document.groupTypeName" attributeEntry="${groupTypeAttributes.name}" readOnly="true" />
@@ -46,15 +45,15 @@
 	 		        </noscript>
 	 		    </c:if>
 	 		</td>
-    		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.groupName}"  /></div></th>
-	 		<td><kul:htmlControlAttribute property="document.groupName" attributeEntry="${groupAttributes.groupName}" readOnly="${(readOnly || editingDocument)}" /></td>
+    		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.name}"  /></div></th>
+	 		<td><kul:htmlControlAttribute property="document.groupName" attributeEntry="${groupAttributes.name}" readOnly="${(readOnly || editingDocument)}" /></td>
 	 	</tr>
 	 	<tr>
 			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.active}"  /></div></th>
 	 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${groupAttributes.active}" readOnly="${readOnly}" /></td>
 	 		
-			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.groupDescription}"  /></div></th>
-		    <td><kul:htmlControlAttribute property="document.groupDescription" attributeEntry="${groupAttributes.groupDescription}" readOnly="${readOnly}" /></td>
+			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.description}"  /></div></th>
+		    <td><kul:htmlControlAttribute property="document.groupDescription" attributeEntry="${groupAttributes.description}" readOnly="${readOnly}" /></td>
 		    
 	 	</tr>
 	</table> 

@@ -183,7 +183,7 @@
             <c:set var="inquiryClass" value="org.kuali.rice.kim.bo.Person" />
             <c:set var="keyValue" value="principalId" />
             <c:if test='${member.memberTypeCode == "G"}'>
-            	<c:set var="inquiryClass" value="org.kuali.rice.kim.bo.Group" />
+            	<c:set var="inquiryClass" value="org.kuali.rice.kim.api.group.Group" />
             	<c:set var="keyValue" value="groupId" />
             </c:if>
             <c:if test='${member.memberTypeCode == "R"}'>

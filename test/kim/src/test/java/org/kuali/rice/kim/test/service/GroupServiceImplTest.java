@@ -18,10 +18,9 @@ package org.kuali.rice.kim.test.service;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
-import org.kuali.rice.kim.service.impl.GroupServiceImpl;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.impl.group.GroupServiceImpl;
 import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
@@ -89,9 +88,10 @@ public class GroupServiceImplTest extends KIMTestCase {
 		assertFalse( "p4 should not be reported as a member of g2 (g4 is inactive)", groupService.isMemberOfGroup("p4", "g2") );
 		
 		// re-activate group 4
-		GroupInfo g4Info = groupService.getGroupInfo("g4");
-		g4Info.setActive(true);
-		groupUpdateService.updateGroup("g4", g4Info);
+		Group g4Info = groupService.getGroup("g4");
+        Group.Builder builder = Group.Builder.create(g4Info);
+        builder.setActive(true);
+		groupUpdateService.updateGroup("g4", builder.build());
 
 		assertTrue( "p4 should be reported as a member of g2 (now that g4 is active)", groupService.isMemberOfGroup("p4", "g2") );
 		
@@ -126,13 +126,13 @@ public class GroupServiceImplTest extends KIMTestCase {
 		List<String> inList = new ArrayList<String>();
 		inList.add("g101");
 		inList.add("g102");
-		Collection<GroupMembershipInfo> gMembership = groupService.getGroupMembers(inList);
+		Collection<GroupMember> gMembership = groupService.getMembers(inList);
 		assertTrue( "Should return 4 members total.", gMembership.size() == 4);
 		
-		gMembership = groupService.getGroupMembersOfGroup("g102");
+		gMembership = groupService.getMembersOfGroup("g102");
 		assertTrue( "Group B should have 2 members.", gMembership.size() == 2);
 		
-		List<GroupInfo> gInfo = groupService.getGroupsForPrincipal("p1");
+		List<Group> gInfo = groupService.getGroupsForPrincipal("p1");
 		assertTrue( "p1 should be a member of at least 3 groups.", gInfo.size() >= 3);
 		
 		gInfo = groupService.getGroupsForPrincipalByNamespace("p1", "ADDL_GROUPS_TESTS");

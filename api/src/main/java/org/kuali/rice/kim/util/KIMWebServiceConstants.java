@@ -70,7 +70,7 @@ public class KIMWebServiceConstants {
 
 	public static final class GroupService {
 		public static final String WEB_SERVICE_NAME = "kimGroupServiceSOAP";
-		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.GroupService";
+		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.group.GroupService";
 		public static final String WEB_SERVICE_PORT = "GroupServicePort";
 		
 		private GroupService() {
@@ -80,7 +80,7 @@ public class KIMWebServiceConstants {
 
 	public static final class GroupUpdateService {
 		public static final String WEB_SERVICE_NAME = "kimGroupUpdateServiceSOAP";
-		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.GroupUpdateService";
+		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.group.GroupUpdateService";
 		public static final String WEB_SERVICE_PORT = "GroupUpdateServicePort";
 		
 		private GroupUpdateService() {

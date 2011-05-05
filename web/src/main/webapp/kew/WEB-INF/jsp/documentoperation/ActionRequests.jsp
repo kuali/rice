@@ -137,7 +137,7 @@
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Workgroup ID:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].groupId" />
-	  	      <kul:lookup boClassName="org.kuali.rice.kim.bo.Group" fieldConversions="groupId:routeHeader.docActionRequest[${ctr}].groupId" lookupParameters="routeHeader.docActionRequest[${ctr}].groupId:groupId" />
+	  	      <kul:lookup boClassName="org.kuali.rice.kim.api.group.Group" fieldConversions="groupId:routeHeader.docActionRequest[${ctr}].groupId" lookupParameters="routeHeader.docActionRequest[${ctr}].groupId:groupId" />
 	  	    </td>
 		  </tr>
 	  	  <tr>

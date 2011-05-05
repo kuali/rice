@@ -17,7 +17,7 @@ package org.kuali.rice.kim.test.bo.group.impl;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
+import org.kuali.rice.kim.impl.group.GroupAttributeBo;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 import static org.junit.Assert.assertEquals;
@@ -30,12 +30,12 @@ import static org.junit.Assert.assertEquals;
  */
 public class GroupAttributeDataImplTest extends KIMTestCase {
 
-	GroupAttributeDataImpl grpAttDataImpl;
+	GroupAttributeBo grpAttDataImpl;
 
     @Before
     public void setUp() throws Exception {
 		super.setUp();
-        grpAttDataImpl = new GroupAttributeDataImpl();
+        grpAttDataImpl = new GroupAttributeBo();
 	}
 
     public void tearDown() throws Exception {

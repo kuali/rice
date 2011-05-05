@@ -22,6 +22,7 @@ import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimEntity;
@@ -29,7 +30,6 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
@@ -46,7 +46,6 @@ import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.service.AuthenticationService;
-import org.kuali.rice.kim.service.GroupUpdateService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.PermissionService;
@@ -760,33 +759,33 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	 * @return
 	 * @see org.kuali.rice.kim.service.GroupUpdateService#createGroup(org.kuali.rice.kim.bo.group.dto.GroupInfo)
 	 */
-	public GroupInfo createGroup(GroupInfo groupInfo) {
-    	clearGroupCachesForPrincipalAndGroup(null,groupInfo.getGroupId());
-		return getGroupUpdateService().createGroup(groupInfo);
+	public Group createGroup(Group group) {
+    	clearGroupCachesForPrincipalAndGroup(null,group.getId());
+		return getGroupUpdateService().createGroup(group);
 	}
 
 	/**
 	 * This delegate method ...
 	 *
 	 * @param groupId
-	 * @see org.kuali.rice.kim.service.GroupUpdateService#removeAllGroupMembers(java.lang.String)
+	 * @see org.kuali.rice.kim.api.group.GroupUpdateService#removeAllMembers(java.lang.String)
 	 */
-	public void removeAllGroupMembers(String groupId) {
+	public void removeAllMembers(String groupId) {
     	clearGroupCachesForPrincipalAndGroup(null, groupId);
-		getGroupUpdateService().removeAllGroupMembers(groupId);
+		getGroupUpdateService().removeAllMembers(groupId);
 	}
 
 	/**
 	 * This delegate method ...
 	 *
 	 * @param groupId
-	 * @param groupInfo
+	 * @param group
 	 * @return
-	 * @see org.kuali.rice.kim.service.GroupUpdateService#updateGroup(java.lang.String, org.kuali.rice.kim.bo.group.dto.GroupInfo)
+	 * @see org.kuali.rice.kim.api.group.GroupUpdateService#updateGroup(java.lang.String, org.kuali.rice.kim.api.group.Group)
 	 */
-	public GroupInfo updateGroup(String groupId, GroupInfo groupInfo) {
+	public Group updateGroup(String groupId, Group group) {
     	clearGroupCachesForPrincipalAndGroup(null, groupId);
-		return getGroupUpdateService().updateGroup(groupId, groupInfo);
+		return getGroupUpdateService().updateGroup(groupId, group);
 	}
 
 

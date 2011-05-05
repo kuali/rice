@@ -57,7 +57,6 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -1694,7 +1693,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 	 		
 	 	 	}
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	roleMemberTypeClass = GroupImpl.class;
+        	roleMemberTypeClass = GroupBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
         	Group groupInfo = null;
 	 	 	groupInfo = getGroupService().getGroup(memberId);
@@ -1796,7 +1795,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberName = ((KimPrincipalImpl)member).getPrincipalName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	roleMemberName = ((GroupImpl)member).getGroupName();
+        	roleMemberName = ((GroupBo)member).getName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	roleMemberName = ((RoleImpl)member).getRoleName();
         }
@@ -1808,7 +1807,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberNamespaceCode = "";
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	roleMemberNamespaceCode = ((GroupImpl)member).getNamespaceCode();
+        	roleMemberNamespaceCode = ((GroupBo)member).getNamespaceCode();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	roleMemberNamespaceCode = ((RoleImpl)member).getNamespaceCode();
         }
@@ -2608,8 +2607,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List<GroupMemberBo> newGroupMembersList = getGroupMembers(identityManagementGroupDocument, origGroupMembers);
 		kimGroup.setMembers(newGroupMembersList);  // add the new, complete list to the group
 
-		//bos.add(kimGroup);
-
 		kimGroup = (GroupBo)getBusinessObjectService().save(kimGroup);
 
 		newIds = kimGroup.getMemberPrincipalIds();
@@ -2647,8 +2644,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(CollectionUtils.isNotEmpty(identityManagementGroupDocument.getMembers())){
 			for(GroupDocumentMember documentGroupMember: identityManagementGroupDocument.getMembers()){
 				newGroupMember = new GroupMemberBo();
-				KimCommonUtilsInternal.copyProperties(newGroupMember, documentGroupMember);
+				//KimCommonUtilsInternal.copyProperties(newGroupMember, documentGroupMember);
+                //copy properties manually for now until new BO created for DocumentGroupMember
+
 				newGroupMember.setGroupId(identityManagementGroupDocument.getGroupId());
+                newGroupMember.setActiveFromDate(documentGroupMember.getActiveFromDate());
+                newGroupMember.setActiveToDate(documentGroupMember.getActiveToDate());
+                newGroupMember.setMemberId(documentGroupMember.getMemberId());
+                newGroupMember.setTypeCode(documentGroupMember.getMemberTypeCode());
 				if(ObjectUtils.isNotNull(origGroupMembers)){
 					for(GroupMemberBo origGroupMemberImpl: origGroupMembers){
 						if(StringUtils.equals(origGroupMemberImpl.getGroupId(), newGroupMember.getGroupId()) &&

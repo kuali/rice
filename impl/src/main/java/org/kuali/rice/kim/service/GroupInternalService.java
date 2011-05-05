@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.service;
 
+import org.kuali.rice.kim.impl.group.GroupBo;
+
 import java.util.List;
 
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
 
 /**
  * Provides internal notification services for the GroupServiceImpl.  It
@@ -30,21 +30,13 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
  */
 public interface GroupInternalService {
 	/**
-	 * Save the GroupImpl, being careful to reset the action document
+	 * Save the GroupBo, being careful to reset the action document
 	 * assignments based on any membership changes.
 	 * 
 	 * @param group
 	 */
-    public GroupImpl saveWorkgroup(GroupImpl group);
+    public GroupBo saveWorkgroup(GroupBo group);
 
-    /**
-	 * Save the GroupImpl, being careful to reset the action document
-	 * assignments based on any membership changes.
-	 *
-	 * @param group
-	 */
-    public Group saveWorkgroup(Group group);
-	
     /**
      * Updates KEW for workgroup members according to membership differences between the
      * two workgroups.  Since the changeset of such an operation could potentially be quite large,
@@ -55,17 +47,17 @@ public interface GroupInternalService {
     		List<String> oldPrincipalIds, List<String> newPrincipalIds);
 
     /**
-     * Updates KEW for a the given document for a user who was added to a workgroup.  This method will generate
-     * new action items for the requests on the document which are for the workgroup.  This method will also verify that
-     * the user is, in fact, still a member of the workgroup at the time of the invocation of this method before
+     * Updates KEW for a the given document for a user who was added to a Group.  This method will generate
+     * new action items for the requests on the document which are for the Group.  This method will also verify that
+     * the user is, in fact, still a member of the Group at the time of the invocation of this method before
      * generating the action items.
      */
     public void updateForUserAddedToGroup(String principalId, String groupId);
 
     /**
-     * Updates KEW for a the given document for a user who was removed from a workgroup.  This will delete
+     * Updates KEW for a the given document for a user who was removed from a Group.  This will delete
      * any action items for the given user on the document which were sent to that user because they were a
-     * member of the workgroup.  This method will also verify that the user is still no longer a member of the workgroup
+     * member of the Group.  This method will also verify that the user is still no longer a member of the Group
      * at the time of the method invocation before removing the action items.
      */
     public void updateForUserRemovedFromGroup(String principalId, String groupId);

@@ -22,7 +22,6 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
@@ -190,12 +189,12 @@ public interface IdentityManagementService {
             @WebParam(name = "groupId") String groupId
     );
 
-    GroupInfo createGroup(@WebParam(name = "groupInfo") GroupInfo groupInfo);
-    void removeAllGroupMembers(@WebParam(name = "groupId") String groupId);
+    Group createGroup(@WebParam(name = "group") Group group);
+    void removeAllMembers(@WebParam(name = "groupId") String groupId);
 
-    GroupInfo updateGroup(
+    Group updateGroup(
             @WebParam(name = "groupId") String groupId,
-            @WebParam(name = "groupInfo") GroupInfo groupInfo
+            @WebParam(name = "group") Group group
     );
 
 	// *******************************

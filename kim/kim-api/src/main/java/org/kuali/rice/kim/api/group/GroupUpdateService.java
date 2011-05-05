@@ -16,7 +16,6 @@
 
 package org.kuali.rice.kim.api.group;
 
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;

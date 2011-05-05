@@ -46,6 +46,14 @@ public abstract class GroupServiceBase {
 		return GroupBo.to(groupBo);
     }
 
+    protected GroupBo getGroupBo(String groupId) {
+        if ( StringUtils.isEmpty(groupId) ) {
+			 throw new RiceIllegalArgumentException("groupId is blank");
+		}
+        return (GroupBo)businessObjectService.findBySinglePrimaryKey(GroupBo.class, groupId);
+
+    }
+
     //@Override
 	public boolean isGroupMemberOfGroup(String groupMemberId, String groupId) {
         if ( StringUtils.isEmpty(groupId) || StringUtils.isEmpty(groupMemberId) ) {

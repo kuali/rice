@@ -2,8 +2,8 @@ package org.kuali.rice.kim.api.services;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.service.GroupUpdateService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.PermissionService;

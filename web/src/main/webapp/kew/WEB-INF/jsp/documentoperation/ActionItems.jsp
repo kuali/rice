@@ -89,7 +89,7 @@
   	  <tr>
   	    <td width="33%" align="right" class="thnormal">Workgroup ID:</td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].groupId" />
-  	      <kul:lookup boClassName="org.kuali.rice.kim.bo.Group" fieldConversions="groupId:routeHeader.docActionItem[${ctr}].groupId" lookupParameters="routeHeader.docActionItem[${ctr}].groupId:groupId" />
+  	      <kul:lookup boClassName="org.kuali.rice.kim.api.group.Group" fieldConversions="groupId:routeHeader.docActionItem[${ctr}].groupId" lookupParameters="routeHeader.docActionItem[${ctr}].groupId:groupId" />
   	    </td>
   	  </tr>
   	  <tr>
@@ -107,7 +107,7 @@
   	  <tr>
   	    <td width="33%" align="right" class="thnormal">Delegator Workgroup ID:</td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].delegatorGroupId" />
-  	      <kul:lookup boClassName="org.kuali.rice.kim.bo.Group" fieldConversions="groupId:routeHeader.docActionItem[${ctr}].delegatorGroupId" lookupParameters="routeHeader.docActionItem[${ctr}].delegatorGroupId:groupId" />
+  	      <kul:lookup boClassName="org.kuali.rice.kim.api.group.Group" fieldConversions="groupId:routeHeader.docActionItem[${ctr}].delegatorGroupId" lookupParameters="routeHeader.docActionItem[${ctr}].delegatorGroupId:groupId" />
   	    </td>
   	  </tr>
   	  <tr>

@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.GroupMember;
-import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;

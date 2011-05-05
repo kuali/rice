@@ -114,7 +114,7 @@
 	<bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoJpa">
 		<property name="entityManager" ref="kimEntityManager"/>
 	</bean>
-	<bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoJpa">
+	<bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.GroupDaoJpa">
 		<property name="entityManager" ref="kimEntityManager"/>
 	</bean>
 	<bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoJpa">
@@ -168,7 +168,8 @@
   -->
   <bean id="kimGroupService" class="org.kuali.rice.kim.impl.group.GroupServiceImpl"
           p:groupDao-ref="kimGroupDao" p:businessObjectService-ref="businessObjectService" />
-  <bean id="kimGroupUpdateService" class="org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl"/>
+  <bean id="kimGroupUpdateService" class="org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl"
+            p:businessObjectService-ref="businessObjectService"/>
 
   <!--
         Permission Service

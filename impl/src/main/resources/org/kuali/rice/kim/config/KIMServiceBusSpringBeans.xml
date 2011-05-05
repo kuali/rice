@@ -161,7 +161,7 @@
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimGroupService"
         p:localServiceName="kimGroupServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.GroupService" />
+        p:serviceInterface="org.kuali.rice.kim.api.group.GroupService" />
     </property>
     <property name="exportIf" value="kimGroupServiceSOAP.expose"/>
   </bean>
@@ -181,7 +181,7 @@
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimGroupUpdateService"
         p:localServiceName="kimGroupUpdateServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.GroupUpdateService" />
+        p:serviceInterface="org.kuali.rice.kim.api.group.GroupUpdateService" />
     </property>
     <property name="exportIf" value="kimGroupUpdateServiceSOAP.expose"/>
   </bean>

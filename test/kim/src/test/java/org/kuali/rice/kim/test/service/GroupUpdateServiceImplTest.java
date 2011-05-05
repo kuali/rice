@@ -17,11 +17,10 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
-import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
-import org.kuali.rice.kim.service.impl.GroupServiceImpl;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.impl.group.GroupMemberBo;
+import org.kuali.rice.kim.impl.group.GroupServiceImpl;
 import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -31,7 +30,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springframework.util.CollectionUtils;
 
 import javax.xml.namespace.QName;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -73,19 +76,16 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 	@Test
 	public void testCreateGroup() {
 		// Silly test
-		GroupInfo groupInfo = new GroupInfo();
+		Group.Builder groupInfo = Group.Builder.create("KUALI", "gA", "1");
 		groupInfo.setActive(true);
-		groupInfo.setGroupName("gA");
-		groupInfo.setNamespaceCode("KUALI");
-		groupInfo.setKimTypeId("1");
 
-		groupUpdateService.createGroup(groupInfo);
+		groupUpdateService.createGroup(groupInfo.build());
 
-		GroupInfo result = groupService.getGroupInfoByName("KUALI", "gA");
+		Group result = groupService.getGroupByName("KUALI", "gA");
 
 		assertEquals(groupInfo.isActive(), result.isActive());
 		assertTrue(groupInfo.getNamespaceCode().equals(result.getNamespaceCode()));
-		assertTrue(groupInfo.getGroupName().equals(result.getGroupName()));
+		assertTrue(groupInfo.getName().equals(result.getName()));
 		assertTrue(groupInfo.getKimTypeId().equals(result.getKimTypeId()));
 	}
 
@@ -106,9 +106,9 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		assertTrue(postGroupIds.containsAll(preGroupIds) && preGroupIds.containsAll(postGroupIds));
 
 		// historical information should be preserved
-		List<GroupMemberImpl> members = getActiveAndInactiveGroupTypeMembers("g1");
-		GroupMemberImpl g2 = null;
-		for (GroupMemberImpl member : members) {
+		List<GroupMemberBo> members = getActiveAndInactiveGroupTypeMembers("g1");
+		GroupMemberBo g2 = null;
+		for (GroupMemberBo member : members) {
 			if (member.getMemberId().equals("g2")) {
 				g2 = member;
 			}
@@ -136,9 +136,9 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 				postDirectPrincipalMemberIds.containsAll(preDirectPrincipalMemberIds));
 
 		// historical information should be preserved
-		List<GroupMemberImpl> members = getActiveAndInactivePrincipalTypeMembers("g2");
-		GroupMemberImpl p1 = null;
-		for (GroupMemberImpl member : members) {
+		List<GroupMemberBo> members = getActiveAndInactivePrincipalTypeMembers("g2");
+		GroupMemberBo p1 = null;
+		for (GroupMemberBo member : members) {
 			if (member.getMemberId().equals("p1")) {
 				p1 = member;
 			}
@@ -159,18 +159,18 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		assertTrue( "p1 must be direct member of g1", groupService.isDirectMemberOfGroup("p1", "g1") );
 		assertTrue( "g2 must be direct member of g1", groupService.isGroupMemberOfGroup("g2", "g1") );
 
-		groupUpdateService.removeAllGroupMembers("g1");
+		groupUpdateService.removeAllMembers("g1");
 
-		Collection<GroupMembershipInfo> memberInfos = groupService.getGroupMembersOfGroup("g1");
+		List<GroupMember> memberInfos = groupService.getMembersOfGroup("g1");
 		assertTrue("should be no active members", CollectionUtils.isEmpty(memberInfos));
 
 		// historical information should be preserved
-		List<GroupMemberImpl> members = getActiveAndInactivePrincipalTypeMembers("g1");
+		List<GroupMemberBo> members = getActiveAndInactivePrincipalTypeMembers("g1");
 		members.addAll(getActiveAndInactiveGroupTypeMembers("g1"));
 
-		GroupMemberImpl p1 = null;
-		GroupMemberImpl g2 = null;
-		for (GroupMemberImpl member : members) {
+		GroupMemberBo p1 = null;
+		GroupMemberBo g2 = null;
+		for (GroupMemberBo member : members) {
 			if (member.getMemberId().equals("p1")) {
 				p1 = member;
 			}
@@ -198,22 +198,22 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 //	public void testAddPrincipalToGroup() {}
 
 
-	private List<GroupMemberImpl> getActiveAndInactiveGroupTypeMembers(String groupId) {
+	private List<GroupMemberBo> getActiveAndInactiveGroupTypeMembers(String groupId) {
 
 		Map<String,Object> criteria = new HashMap<String,Object>();
         criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
         criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.GROUP_MEMBER_TYPE);
 
-        return new ArrayList<GroupMemberImpl>(businessObjectService.findMatching(GroupMemberImpl.class, criteria));
+        return new ArrayList<GroupMemberBo>(businessObjectService.findMatching(GroupMemberBo.class, criteria));
 	}
 
-	private List<GroupMemberImpl> getActiveAndInactivePrincipalTypeMembers(String groupId) {
+	private List<GroupMemberBo> getActiveAndInactivePrincipalTypeMembers(String groupId) {
 
 		Map<String,Object> criteria = new HashMap<String,Object>();
         criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
         criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
 
-        return new ArrayList<GroupMemberImpl>(businessObjectService.findMatching(GroupMemberImpl.class, criteria));
+        return new ArrayList<GroupMemberBo>(businessObjectService.findMatching(GroupMemberBo.class, criteria));
 	}
 
 }

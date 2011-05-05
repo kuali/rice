@@ -27,7 +27,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
@@ -100,7 +99,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     	if(getGroupService().isMemberOfGroup(principalId, groupId))
     	{
             KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
-            .getServiceAsynchronously(new QName(KEWConstants.KEW_MODULE_NAMESPACE, MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
+            .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
             try {
                 workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
                         .getMemberAddedMessageContents(principalId, groupId));
@@ -115,7 +114,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     	if(!getGroupService().isMemberOfGroup(principalId, groupId))
     	{
             KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
-            .getServiceAsynchronously(new QName(KEWConstants.KEW_MODULE_NAMESPACE, MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
+            .getServiceAsynchronously(new QName(MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
             try {
                 workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
                         .getMemberRemovedMessageContents(principalId, groupId));

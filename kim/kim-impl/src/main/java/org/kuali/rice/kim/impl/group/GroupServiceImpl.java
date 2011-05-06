@@ -157,10 +157,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			throw new RiceIllegalArgumentException("groupId is blank");
 		}
 		Set<String> visitedGroupIds = new HashSet<String>();
-        Set<String> idsToRemove = new HashSet<String>();
-		List<String> ids = getMemberIdsInternalByType(groupId, visitedGroupIds, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
-        ids.removeAll(idsToRemove);
-        return ids;
+		return getMemberPrincipalIdsInternal(groupId, visitedGroupIds);
     }
 
     @Override
@@ -320,24 +317,24 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		return new ArrayList<Group>( groups );
 	}
 
-    protected List<String> getMemberIdsInternalByType(String groupId, Set<String> visitedGroupIds, String memberType) {
+    protected List<String> getMemberPrincipalIdsInternal(String groupId, Set<String> visitedGroupIds) {
 		if ( groupId == null ) {
 			return Collections.emptyList();
 		}
 		Set<String> ids = new HashSet<String>();
-		Group group = getGroup(groupId);
+		GroupBo group = getGroupBo(groupId);
 		if ( group == null || !group.isActive()) {
 			return Collections.emptyList();
 		}
 
         //List<String> memberIds = getMemberIdsByType(group, memberType);
-        List<GroupMember> members = new ArrayList<GroupMember>(getMembersOfGroup(group.getId()));
-		ids.addAll( getMemberIdsByType(members, memberType));
+        //List<GroupMember> members = new ArrayList<GroupMember>(getMembersOfGroup(group.getId()));
+		ids.addAll( group.getMemberPrincipalIds());
 		visitedGroupIds.add(group.getId());
 
-		for (String memberGroupId : getMemberIdsByType(members,  KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
+		for (String memberGroupId : group.getMemberGroupIds()) {
 			if (!visitedGroupIds.contains(memberGroupId)){
-				ids.addAll(getMemberIdsInternalByType(memberGroupId, visitedGroupIds, memberType));
+				ids.addAll(getMemberPrincipalIdsInternal(memberGroupId, visitedGroupIds));
 			}
 		}
 

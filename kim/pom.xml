@@ -15,6 +15,5 @@
         <module>kim-api</module>
         <module>kim-impl</module>
         <module>kim-framework</module>
-        <module>kim-web</module>
     </modules>
 </project>

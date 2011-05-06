@@ -39,11 +39,7 @@ public abstract class GroupServiceBase {
 
     //@Override
     public Group getGroup(String groupId) {
-        if ( StringUtils.isEmpty(groupId) ) {
-			 throw new RiceIllegalArgumentException("groupId is blank");
-		}
-        GroupBo groupBo =  (GroupBo)businessObjectService.findBySinglePrimaryKey(GroupBo.class, groupId);
-		return GroupBo.to(groupBo);
+		return GroupBo.to(getGroupBo(groupId));
     }
 
     protected GroupBo getGroupBo(String groupId) {

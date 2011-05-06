@@ -82,7 +82,7 @@ public class RoleServiceTest extends KIMTestCase {
 		roleIds.add("r101");
 		rolePrincipalIds = getRoleService().getRoleMemberPrincipalIds("ADDL_ROLES_TESTS", "Role A", null);
 		assertNotNull(rolePrincipalIds);
-		assertEquals("RoleTwo should have 6 principal ids", 6, rolePrincipalIds.size());
+		assertEquals("RoleTwo should have 6 principal ids", 5, rolePrincipalIds.size());
 	}
 	
 	public RoleService getRoleService() {

@@ -186,11 +186,11 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMember.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleResponsibilityAction.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleQualifier.xml</value>
-                <value>classpath:org/kuali/rice/kim/web/attribute/KimAttributeData.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/attribute/KimAttributeData.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentQualifier.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml</value>
-                <value>classpath:org/kuali/rice/kim/web/type/KimType.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/type/KimType.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityImpl.xml</value>
@@ -198,7 +198,7 @@
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/ResponsibilityImpl.xml</value>
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml</value>
-                <value>classpath:org/kuali/rice/kim/web/type/KimAttribute.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/type/KimAttribute.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml</value>

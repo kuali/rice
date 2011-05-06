@@ -67,7 +67,7 @@ public class ExtensionAttributeTest extends KNSTestCase {
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../kim/kim-web/src/main/resources/org/kuali/rice/kim/web/type/KimType.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../kim/kim-web/src/main/resources/org/kuali/rice/kim/impl/type/KimType.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/Campus.xml");
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/CampusType.xml");
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/country/Country.xml");

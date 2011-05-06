@@ -37,11 +37,6 @@
 		</dependency>
         <dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>rice-kim-web</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-        <dependency>
-			<groupId>${project.groupId}</groupId>
 			<artifactId>rice-core-framework</artifactId>
 			<version>${project.version}</version>
 		</dependency>

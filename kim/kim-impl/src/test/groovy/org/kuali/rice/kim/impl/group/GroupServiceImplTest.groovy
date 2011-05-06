@@ -378,17 +378,8 @@ class GroupServiceImplTest {
 
     @Test
     void test_getMemberPrincipalIds() {
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
+        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(0..3) {
             Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
-        }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return group1Members
-        }
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
-            Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
-        }
-        businessObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, Map map -> return Collections.emptyList()
         }
 
         injectBusinessObjectServiceIntoGroupService()

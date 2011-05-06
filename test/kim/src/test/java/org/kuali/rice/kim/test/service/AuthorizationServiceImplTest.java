@@ -204,7 +204,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		
 		Collection<String> memberPrincipalIds = roleService.getRoleMemberPrincipalIds(role2NamespaceCode, role2Name, null);
 		assertNotNull(memberPrincipalIds);
-		assertEquals("RoleTwo should have 6 principal ids", 6, memberPrincipalIds.size());
+		assertEquals("RoleTwo should have 6 principal ids", 5, memberPrincipalIds.size());
 		assertTrue( "p3 must belong to role", memberPrincipalIds.contains(principal3Id) );
 		assertTrue( "p2 must belong to role (assigned via group)", memberPrincipalIds.contains(principal2Id) );
 		assertTrue( "p1 must belong to r2 (via r1)", memberPrincipalIds.contains(principal1Id) );

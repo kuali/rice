@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration />
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../test/core/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../test/core/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../test/core">
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/test/resources/META-INF" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/target/generated-sources/test-annotations" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target/classes" />
@@ -17,10 +24,10 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: asm:asm:3.2" level="project" />
+    <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
@@ -28,11 +35,11 @@
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: commons-transaction:commons-transaction:1.1" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.5" level="project" />
-    <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: log4j:log4j:1.2.16" level="project" />
     <orderEntry type="library" name="Maven: hsqldb:hsqldb:1.8.0.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: xerces:xercesImpl:2.9.1" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
@@ -66,6 +73,7 @@
     <orderEntry type="library" name="Maven: org.reflections:reflections:0.9.5-RC2" level="project" />
     <orderEntry type="library" name="Maven: com.google.collections:google-collections:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:1.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
@@ -148,7 +156,7 @@
     <orderEntry type="library" name="Maven: bsf:bsf:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.14.0-GA" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-internal-test-tools" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-impl:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kim-framework" />
@@ -158,7 +166,10 @@
     <orderEntry type="module" module-name="rice-shareddata-impl" />
     <orderEntry type="module" module-name="rice-shareddata-web" />
     <orderEntry type="module" module-name="rice-ksb-api" />
-    <orderEntry type="module" module-name="rice-edl-framework" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-framework:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.15" level="project" />
+    <orderEntry type="library" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-internal-test-tools:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.4.0.v20110414" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:7.4.0.v20110414" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:7.3.1.v20110307" level="project" />

@@ -4,11 +4,11 @@
     <output url="file://$MODULE_DIR$/../../../kim/kim-api/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../kim/kim-api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../kim/kim-api">
+      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/generated-sources/groovy-stubs" />
@@ -39,7 +39,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
-    <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
   </component>

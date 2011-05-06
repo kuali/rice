@@ -18,7 +18,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -45,7 +44,7 @@
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kim-api" />
-    <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
@@ -163,7 +162,8 @@
     <orderEntry type="module" module-name="rice-shareddata-impl" />
     <orderEntry type="module" module-name="rice-shareddata-web" />
     <orderEntry type="module" module-name="rice-ksb-api" />
-    <orderEntry type="module" module-name="rice-edl-framework" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-framework:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.codemodel:codemodel:2.4" level="project" />
   </component>
 </module>
 

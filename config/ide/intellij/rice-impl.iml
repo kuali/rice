@@ -52,7 +52,7 @@
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kim-api" />
-    <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
@@ -170,7 +170,7 @@
     <orderEntry type="module" module-name="rice-shareddata-impl" />
     <orderEntry type="module" module-name="rice-shareddata-web" />
     <orderEntry type="module" module-name="rice-ksb-api" />
-    <orderEntry type="module" module-name="rice-edl-framework" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-framework:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet.jsp:jsp-api:2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />

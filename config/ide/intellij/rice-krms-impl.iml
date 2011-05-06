@@ -9,13 +9,13 @@
     <output url="file://$MODULE_DIR$/../../../krms/impl/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../krms/impl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../krms/impl">
+      <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/groovy-stubs" />
@@ -27,7 +27,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="rice-core-impl" />
-    <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />

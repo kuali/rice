@@ -9,10 +9,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../web/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/../../../web/src/main/resources" />
-          <root url="file://$MODULE_DIR$/../../../web/src/main/groovy" />
-        </sourceRoots>
       </configuration>
       <facet type="struts" name="Struts">
         <configuration>
@@ -41,7 +37,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="rice-krms-impl" />
     <orderEntry type="module" module-name="rice-core-impl" />
-    <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
@@ -183,8 +179,8 @@
     <orderEntry type="module" module-name="rice-shareddata-impl" />
     <orderEntry type="module" module-name="rice-shareddata-web" />
     <orderEntry type="module" module-name="rice-ksb-api" />
-    <orderEntry type="module" module-name="rice-edl-framework" />
-    <orderEntry type="module" module-name="rice-edl-impl" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-framework:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-impl:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.15" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />
   </component>

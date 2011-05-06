@@ -8,7 +8,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../test/shareddata/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/shareddata/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/shareddata/target/generated-sources/test-annotations" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/shareddata/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/shareddata/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/shareddata/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/shareddata/target/test-classes" />
@@ -38,7 +37,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
-    <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
@@ -89,7 +88,7 @@
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-template:2.2.2" level="project" />
     <orderEntry type="module" module-name="rice-shareddata-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-internal-test-tools" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-internal-test-tools:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" />
     <orderEntry type="module" module-name="rice-ksb-framework" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
@@ -157,7 +156,7 @@
     <orderEntry type="module" module-name="rice-shareddata-framework" />
     <orderEntry type="module" module-name="rice-shareddata-web" />
     <orderEntry type="module" module-name="rice-ksb-api" />
-    <orderEntry type="module" module-name="rice-edl-framework" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-framework:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.4.0.v20110414" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:7.4.0.v20110414" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:7.3.1.v20110307" level="project" />

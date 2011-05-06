@@ -41,7 +41,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-api" scope="TEST" />
-    <orderEntry type="module" module-name="rice-api" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-kim-framework" scope="TEST" />
     <orderEntry type="module" module-name="krad-app-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-api" scope="TEST" />
@@ -159,8 +159,8 @@
     <orderEntry type="module" module-name="rice-shareddata-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-api" scope="TEST" />
-    <orderEntry type="module" module-name="rice-edl-framework" scope="TEST" />
-    <orderEntry type="module" module-name="rice-internal-test-tools" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-edl-framework:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-internal-test-tools:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.4.0.v20110414" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-webapp:7.4.0.v20110414" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-xml:7.4.0.v20110414" level="project" />

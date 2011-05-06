@@ -15,7 +15,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kim/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kim/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kim/target/generated-sources/test-annotations" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/kim/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kim/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kim/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kim/target/test-classes" />
@@ -45,7 +44,7 @@
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-api" />
-    <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-kim-framework" scope="TEST" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
@@ -163,8 +162,8 @@
     <orderEntry type="module" module-name="rice-shareddata-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-api" scope="TEST" />
-    <orderEntry type="module" module-name="rice-edl-framework" />
-    <orderEntry type="module" module-name="rice-internal-test-tools" scope="TEST" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-framework:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-internal-test-tools:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.4.0.v20110414" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-webapp:7.4.0.v20110414" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-xml:7.4.0.v20110414" level="project" />
@@ -181,7 +180,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jsp-api-2.1-glassfish:2.1.v20100127" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: ant:ant:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
-    <orderEntry type="module" module-name="rice-edl-impl" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-impl:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.15" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />
   </component>

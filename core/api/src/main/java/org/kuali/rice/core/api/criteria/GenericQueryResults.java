@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class GenericQueryResults<T> implements CountAwareQueryResults<T>, ModelObjectComplete{
+public final class GenericQueryResults<T> implements QueryResults<T>, ModelObjectComplete{
 
 	private final List<T> results;
 	private final Integer totalRowCount;
@@ -68,7 +68,7 @@ public final class GenericQueryResults<T> implements CountAwareQueryResults<T>, 
 		return ToStringBuilder.reflectionToString(this);
 	}
 
-	public static final class Builder<T> implements ModelBuilder, CountAwareQueryResults<T>, Serializable {
+	public static final class Builder<T> implements ModelBuilder, QueryResults<T>, Serializable {
 
 		private List<T> results;
 		private Integer totalRowCount;

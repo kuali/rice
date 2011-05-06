@@ -19,7 +19,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.criteria.CountAwareQueryResults;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -45,7 +45,7 @@ import java.util.List;
 		ParameterQueryResults.Elements.TOTAL_ROW_COUNT,
 		ParameterQueryResults.Elements.MORE_RESULTS_AVAILALBE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public class ParameterQueryResults implements CountAwareQueryResults<Parameter>, ModelObjectComplete {
+public class ParameterQueryResults implements QueryResults<Parameter>, ModelObjectComplete {
 
 	@XmlElementWrapper(name = Elements.RESULTS, required = false)
 	@XmlElement(name = Elements.PARAMETER, required = false)
@@ -103,7 +103,7 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter>,
         return ToStringBuilder.reflectionToString(this);
     }
 
-	public static class Builder implements ModelBuilder, CountAwareQueryResults<Parameter> {
+	public static class Builder implements ModelBuilder, QueryResults<Parameter> {
 
 		private List<Parameter> results;
 		private Integer totalRowCount;
@@ -118,10 +118,12 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter>,
 			this.moreResultsAvailable = false;
 		}
 
+        @Override
 		public ParameterQueryResults build() {
 			return new ParameterQueryResults(this);
 		}
 
+        @Override
 		public List<Parameter> getResults() {
 			return this.results;
 		}
@@ -130,6 +132,7 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter>,
 			this.results = results;
 		}
 
+        @Override
 		public Integer getTotalRowCount() {
 			return this.totalRowCount;
 		}
@@ -138,6 +141,7 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter>,
 			this.totalRowCount = totalRowCount;
 		}
 
+        @Override
 		public boolean isMoreResultsAvailable() {
 			return this.moreResultsAvailable;
 		}

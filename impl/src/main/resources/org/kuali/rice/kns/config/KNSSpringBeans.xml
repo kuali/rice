@@ -848,6 +848,7 @@
 
     <bean id="parameterRepositoryService" class="org.kuali.rice.core.impl.parameter.ParameterRepositoryServiceImpl">
         <property name="businessObjectService" ref="businessObjectService" />
+        <property name="criteriaLookupService" ref="criteriaLookupService" />
     </bean>
 
 	<bean id="parameterService" class="org.kuali.rice.core.impl.parameter.ParameterServiceImpl">

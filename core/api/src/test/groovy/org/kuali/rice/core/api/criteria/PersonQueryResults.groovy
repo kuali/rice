@@ -41,7 +41,7 @@ import org.w3c.dom.Element
 		PersonQueryResults.Elements.TOTAL_ROW_COUNT,
 		PersonQueryResults.Elements.MORE_RESULTS_AVAILALBE,
 		"_futureElements" ])
-public class PersonQueryResults implements CountAwareQueryResults<Person> {
+public class PersonQueryResults implements QueryResults<Person> {
 
 	@XmlElementWrapper(name = Elements.RESULTS, required = false)
 	@XmlElement(name = Elements.PERSON, required = false)

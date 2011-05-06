@@ -12,8 +12,7 @@ import org.kuali.rice.core.test.CORETestCase
 import org.kuali.rice.test.data.PerSuiteUnitTestData
 import org.kuali.rice.test.data.UnitTestData
 import org.kuali.rice.test.data.UnitTestSql
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
+import static org.junit.Assert.*
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*
 
 @PerSuiteUnitTestData(value = [@UnitTestData(sqlStatements = [
@@ -284,6 +283,7 @@ class CriteriaLookupServiceOjbImplIntTest extends CORETestCase {
 
         def results = lookup.lookup(ParameterBo.class, builder.build());
         assertEquals 5, results.getResults().size()
+        assertTrue results.moreResultsAvailable
     }
 
     @Test
@@ -305,6 +305,7 @@ class CriteriaLookupServiceOjbImplIntTest extends CORETestCase {
 
         def results = lookup.lookup(ParameterBo.class, builder.build());
         assertEquals 3, results.getResults().size()
+        assertFalse results.moreResultsAvailable
     }
 
     @Test

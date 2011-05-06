@@ -68,15 +68,8 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
         final Query ojbQuery = QueryFactory.newQuery(queryClass, ojbCriteria);
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
 
-        /*
-         * have to ALWAYS query for the count in order to set the setMoreResultsAvailable().
-         * This field could be set by querying of one extra row than the max requested but
-         * that would depend on the MaxResults actually being set.
-         */
-        final int count = getPersistenceBrokerTemplate().getCount(ojbQuery);
-
         if (flag == CountFlag.INCLUDE) {
-            results.setTotalRowCount(count);
+            results.setTotalRowCount(getPersistenceBrokerTemplate().getCount(ojbQuery));
         }
 
         //ojb's is 1 based, our query api is zero based
@@ -84,13 +77,19 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
         ojbQuery.setStartAtIndex(startAtIndex);
 
         if (criteria.getMaxResults() != null) {
-            ojbQuery.setEndAtIndex(criteria.getMaxResults() + startAtIndex - 1);
+            //not subtracting one from MaxResults in order to retrieve
+            //one extra row so that the MoreResultsAvailable field can be set
+            ojbQuery.setEndAtIndex(criteria.getMaxResults() + startAtIndex);
         }
 
         @SuppressWarnings("unchecked")
         List<T> rows = new ArrayList<T>(getPersistenceBrokerTemplate().getCollectionByQuery(ojbQuery));
 
-        results.setMoreResultsAvailable(count > rows.size());
+        if (criteria.getMaxResults() != null && rows.size() > criteria.getMaxResults()) {
+            results.setMoreResultsAvailable(true);
+            //remove the extra row that was returned
+            rows.remove(criteria.getMaxResults().intValue());
+        }
 
         results.setResults(rows);
         return results.build();

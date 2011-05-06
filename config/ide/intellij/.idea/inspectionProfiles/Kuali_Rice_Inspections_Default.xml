@@ -978,19 +978,19 @@
       </option>
       <option name="INNER_CLASS_OPTIONS">
         <value>
-          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="package" />
           <option name="REQUIRED_TAGS" value="" />
         </value>
       </option>
       <option name="METHOD_OPTIONS">
         <value>
-          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="package" />
           <option name="REQUIRED_TAGS" value="@return@param@throws or @exception" />
         </value>
       </option>
       <option name="FIELD_OPTIONS">
         <value>
-          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="package" />
           <option name="REQUIRED_TAGS" value="" />
         </value>
       </option>

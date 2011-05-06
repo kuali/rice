@@ -17,6 +17,8 @@
 package org.kuali.rice.core.impl.parameter;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
@@ -31,12 +33,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class ParameterRepositoryServiceImpl implements ParameterRepositoryService {
     private static final String SUB_PARAM_SEPARATOR = "=";
 
     private BusinessObjectService businessObjectService;
+    private CriteriaLookupService criteriaLookupService;
 
     @Override 
     public void createParameter(Parameter parameter) {
@@ -169,17 +173,32 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
         return Collections.unmodifiableCollection(values);
     }
 
+    @Override
+	public ParameterQueryResults findParameters(QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+            throw new IllegalArgumentException("queryByCriteria is null");
+        }
+
+        GenericQueryResults<ParameterBo> results = criteriaLookupService.lookup(ParameterBo.class, queryByCriteria);
+
+        ParameterQueryResults.Builder builder = ParameterQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<Parameter> ims = new ArrayList<Parameter>();
+        for (ParameterBo bo : results.getResults()) {
+            ims.add(ParameterBo.to(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+	}
+
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }
 
-	@Override
-	public ParameterQueryResults findParameters(QueryByCriteria queryByCriteria) {
-		
-		// TODO - implement this operation
-		
-		throw new UnsupportedOperationException("implement me!");
-	}
-    
-    
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
+    }
 }

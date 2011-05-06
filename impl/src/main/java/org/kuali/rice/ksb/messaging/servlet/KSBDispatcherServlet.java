@@ -16,6 +16,14 @@
  */
 package org.kuali.rice.ksb.messaging.servlet;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+
 import org.apache.cxf.Bus;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.transport.servlet.ServletController;
@@ -32,6 +40,7 @@ import org.kuali.rice.ksb.security.SignatureVerifyingRequestWrapper;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.beans.BeansException;
 import org.springframework.web.HttpRequestHandler;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.HandlerExecutionChain;
@@ -39,13 +48,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-import java.io.IOException;
-import java.util.List;
 
 
 /**
@@ -62,7 +64,20 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 	private KSBHttpInvokerHandler httpInvokerHandler;
 	private ServletController cxfServletController;
 
-
+	/**
+	 * Instantiate the WebApplicationContext for this servlet, either a default
+	 * XmlWebApplicationContext or a custom context class if set. This implementation
+	 * expects custom contexts to implement ConfigurableWebApplicationContext.
+	 * Can be overridden in subclasses.
+	 * @param parent the parent ApplicationContext to use, or <code>null</code> if none
+	 * @return the WebApplicationContext for this servlet
+	 * @throws BeansException if the context couldn't be initialized
+	 * @see #setContextClass
+	 * @see org.springframework.web.context.support.XmlWebApplicationContext
+	 */
+	protected WebApplicationContext initWebApplicationContext() throws BeansException {
+		return null;//we want to start spring all by ourselves
+	}
 
 	protected void initFrameworkServlet() throws ServletException, BeansException {
 		this.httpInvokerHandler = new KSBHttpInvokerHandler();

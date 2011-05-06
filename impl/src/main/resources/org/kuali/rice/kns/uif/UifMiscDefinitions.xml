@@ -227,7 +227,24 @@
       <property name="expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}icon_collapse.png"/>
       <property name="animationSpeed" value="500"/>
       <property name="defaultOpen" value="true"/>
+  </bean>
+  <!-- Breadcrumbs and History -->
+  <bean id="Breadcrumbs" parent="Breadcrumbs-parentBean"/>
+  <bean id="Breadcrumbs-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.BreadCrumbs" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/breadcrumbs.jsp"/>
+      <property name="displayHomewardPath" value="true"/>
+      <property name="displayPassedHistory" value="true"/>
+      <property name="maxCrumbs" value="-1"/>
+      <property name="styleClasses" value="breadcrumbs"/>
+      <property name="homewardPathList">
+	      <list>
+	      	<bean parent="HistoryEntry" p:title="Home" p:url="/kr-dev/portal.do"/>
+	      </list>
+      </property>
   </bean>    
+  
+  <bean id="HistoryEntry" parent="HistoryEntry-parentBean"/>
+  <bean id="HistoryEntry-parentBean" abstract="true" class="org.kuali.rice.kns.uif.history.HistoryEntry" scope="prototype" />
   
   <!-- Modifiers -->
   

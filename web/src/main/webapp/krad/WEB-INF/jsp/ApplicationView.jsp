@@ -31,14 +31,17 @@
      <%-- render page only --%>
      <html>
        <s:nestedPath path="KualiForm">
+       	 <krad:template component="${KualiForm.view.breadcrumbs}"/>
          <div id="viewpage_div">
             <krad:template component="${KualiForm.view.currentPage}"/>
         
             <c:if test="${KualiForm.view.renderForm}">
               <form:hidden path="pageId"/>
+              <form:hidden id="currentPageTitle" path="view.currentPage.title"/>
               <form:hidden path="jumpToId"/>
           	  <form:hidden path="jumpToName"/>
           	  <form:hidden path="focusId"/>
+          	  <form:hidden path="history.historyParameterString"/>
             </c:if>
             <krad:script value="performJumpTo();"/>
             <c:if test="${KualiForm.view.currentPage.autoFocus}">

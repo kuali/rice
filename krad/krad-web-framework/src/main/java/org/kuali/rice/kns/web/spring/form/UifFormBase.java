@@ -23,9 +23,11 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.history.History;
 import org.kuali.rice.kns.uif.service.ViewService;
 
 /**
@@ -39,6 +41,8 @@ import org.kuali.rice.kns.uif.service.ViewService;
  */
 public class UifFormBase implements Serializable {
     private static final long serialVersionUID = 8432543267099454434L;
+    
+    private History history;
 
     // current view
     protected String viewId;
@@ -76,6 +80,7 @@ public class UifFormBase implements Serializable {
         viewRequestParameters = new HashMap<String, String>();
         newCollectionLines = new HashMap<String, Object>();
         actionParameters = new HashMap<String, String>();
+        history = new History();
     }
 
     /**
@@ -98,6 +103,8 @@ public class UifFormBase implements Serializable {
     public void postBind(HttpServletRequest request) {
         // default form post URL to request URL
         formPostUrl = request.getRequestURL().toString();
+
+        //history.pushToHistory(viewId, pageId, view.getTitle(), formPostUrl, formKey);
     }
 
     /**
@@ -485,6 +492,22 @@ public class UifFormBase implements Serializable {
 	public void setFocusId(String focusId) {
 		this.focusId = focusId;
 	}
+
+    /**
+     * History parameter representing the History of views that have come before the
+     * viewing of the current view.  Used for breadcrumb widget generation on the view.
+     * @param history the history to set
+     */
+    public void setHistory(History history) {
+        this.history = history;
+    }
+
+    /**
+     * @return the history
+     */
+    public History getHistory() {
+        return history;
+    }
     
     
 

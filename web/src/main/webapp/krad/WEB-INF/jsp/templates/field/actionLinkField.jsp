@@ -23,12 +23,13 @@
  --%>
  
  <krad:attributeBuilder component="${field}"/>
- 
+ <c:set var="pound" value="#"/>
  <c:if test="${!empty field.navigateToPageId}">
    <c:set var="name" value="name=\"${field.navigateToPageId}\""/>
+   <c:set var="href" value="href=\"${pound}${field.navigateToPageId}\""/>
  </c:if>
  
- <a id="${field.id}" href="#" ${name} ${style} ${styleClass}>
+ <a id="${field.id}" ${href} onclick="return false" ${name} ${style} ${styleClass}>
    <c:if test="${(field.actionImageField != null) && field.actionImageField.render}">
       <krad:template component="${field.actionImageField}"/>
    </c:if>

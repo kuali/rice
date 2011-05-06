@@ -99,7 +99,8 @@ public class ActionField extends FieldBase {
 	public void performFinalize(View view, Object model, Component parent) {
 		super.performFinalize(view, model, parent);
 		
-
+		actionParameters.put("showHome", "false");
+		actionParameters.put("showHistory", "false");
 
 		if (StringUtils.isNotBlank(navigateToPageId)) {
 			actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
@@ -153,6 +154,12 @@ public class ActionField extends FieldBase {
     			}
 			}
 			
+			//TODO possibly fix some other way - prevents showing history and showing home again on actions which submit the form
+			writeParamsScript = writeParamsScript + "writeHiddenToForm('showHistory' , '"
+                + "false" + "'); ";
+			writeParamsScript = writeParamsScript + "writeHiddenToForm('showHome' , '"
+                + "false" + "'); ";
+			
 			if(StringUtils.isBlank(focusOnAfterSubmit)){
 			    //if this is blank focus this actionField by default
 			    focusOnAfterSubmit = this.getId();
@@ -188,7 +195,7 @@ public class ActionField extends FieldBase {
 			    postScript = clientSideJs;
 			}
 			else{
-				postScript = "submitForm();";
+			    postScript = "jq('#kualiForm').submit();";
 			}
 
 			if (includeDirtyCheckScript){
@@ -441,8 +448,6 @@ public class ActionField extends FieldBase {
 	/**
 	 * The id of the field to place focus on in the new page after the new page is retrieved.
 	 * Passing in "FIRST" will focus on the first visible input element on the form.
-	 * Passing in "THIS" will result in this ActionField being focused, if present in the resulting
-	 * page.
 	 * Passing in the empty string will result in this ActionField being focused.
 	 * @return the focusOnAfterSubmit
 	 */

@@ -167,6 +167,7 @@ function submitForm() {
 			var page = jq("#viewpage_div", tempDiv);
 			jq("#viewpage_div").replaceWith(page);
 			jq("#formComplete").html("");
+			setPageBreadcrumb();
 			runHiddenScripts("viewpage_div");
 		}
 	});

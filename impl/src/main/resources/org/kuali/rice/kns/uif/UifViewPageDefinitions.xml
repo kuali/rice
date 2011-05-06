@@ -27,6 +27,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="styleClasses" value="workarea"/>
       <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.PresentationControllerBase"/>
       <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.AuthorizerBase"/>
+      <property name="breadcrumbs">
+        <bean parent="Breadcrumbs"/>
+      </property>
       <property name="header">
         <bean parent="HeaderView"/>
       </property> 

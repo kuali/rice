@@ -15,8 +15,13 @@
  */
 package org.kuali.rice.kns.uif.widget;
 
+import java.util.List;
+
+import org.kuali.rice.kns.uif.history.HistoryEntry;
+
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * The breadcrumb widget contains various settings for setting up Breadcrumb/History support
+ * on the view.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -24,4 +29,68 @@ package org.kuali.rice.kns.uif.widget;
 public class BreadCrumbs extends WidgetBase {
 	private static final long serialVersionUID = -2864287914665842251L;
 
+	private boolean displayHomewardPath;
+	private boolean displayPassedHistory;
+	private int maxCrumbs;
+	private List<HistoryEntry> homewardPathList;
+	
+	
+    /**
+     * Determines if the homewardPath is to be displayed.  Even when this is setting is on
+     * the code may determine to turn off homewardPath display based on user interation and
+     * ui elements being displayed (ie lightbox)
+     * @return the displayHomewardPath
+     */
+    public boolean isDisplayHomewardPath() {
+        return this.displayHomewardPath;
+    }
+    /**
+     * @param displayHomewardPath the displayHomewardPath to set
+     */
+    public void setDisplayHomewardPath(boolean displayHomewardPath) {
+        this.displayHomewardPath = displayHomewardPath;
+    }
+    /**
+     * The maximum number of breadcrumbs to display
+     * TODO this currently does nothing - may be removed
+     * @return the maxCrumbs
+     */
+    public int getMaxCrumbs() {
+        return this.maxCrumbs;
+    }
+    /**
+     * @param maxCrumbs the maxCrumbs to set
+     */
+    public void setMaxCrumbs(int maxCrumbs) {
+        this.maxCrumbs = maxCrumbs;
+    }
+    /**
+     * Determines if the passedHistory is to be displayed.  In most cases this should not
+     * be set through the xml as this is toggled off and on through code during different
+     * ui procedures.
+     * @return the displayPassedHistory
+     */
+    public boolean isDisplayPassedHistory() {
+        return this.displayPassedHistory;
+    }
+    /**
+     * @param displayPassedHistory the displayPassedHistory to set
+     */
+    public void setDisplayPassedHistory(boolean displayPassedHistory) {
+        this.displayPassedHistory = displayPassedHistory;
+    }
+    /**
+     * The homewardPath to be displayed on this representative of the logical "location" of
+     * the view within the site hierarchy, can be set to anything desired.
+     * @return the homewardPathList
+     */
+    public List<HistoryEntry> getHomewardPathList() {
+        return this.homewardPathList;
+    }
+    /**
+     * @param homewardPathList the homewardPathList to set
+     */
+    public void setHomewardPathList(List<HistoryEntry> homewardPathList) {
+        this.homewardPathList = homewardPathList;
+    }
 }

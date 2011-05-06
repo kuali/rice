@@ -163,8 +163,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <ref bean="testGroup4"/>
           <ref bean="testGroup6"/>
           <ref bean="testGroup5"/>
-          <ref bean="testGroup10"/>
-          <ref bean="testGroup11"/>           
+<!--           <ref bean="testGroup10"/>
+          <ref bean="testGroup11"/>   -->         
         </list>
       </property> 
    </bean>   

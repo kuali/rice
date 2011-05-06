@@ -20,7 +20,7 @@
 
 <!-- begin of view render -->
 <krad:html view="${view}">
-
+<krad:template component="${view.breadcrumbs}"/>
 <!----------------------------------- #VIEW HEADER --------------------------------------->
 <div id="viewheader_div">
 	<krad:template component="${view.header}" />
@@ -50,9 +50,11 @@
 
 		<c:if test="${view.renderForm}">
 			<form:hidden path="pageId" />
+			<form:hidden id="currentPageTitle" path="view.currentPage.title"/>
 			<form:hidden path="jumpToId" />
 			<form:hidden path="jumpToName" />
 			<form:hidden path="focusId" />
+			<form:hidden path="history.historyParameterString"/>
 		</c:if>
 		<krad:script value="performJumpTo();" />
 		<c:if test="${view.currentPage.autoFocus}">

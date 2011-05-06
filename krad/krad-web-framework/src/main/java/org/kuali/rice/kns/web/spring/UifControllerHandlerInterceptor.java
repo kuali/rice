@@ -18,12 +18,15 @@ package org.kuali.rice.kns.web.spring;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.history.History;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.WebUtils;
@@ -60,6 +63,22 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
             if(model instanceof UifFormBase) {
                 form = (UifFormBase)model;
+                //Main history/breadcrumb tracking support
+                History history = form.getHistory();
+                View view = form.getView();
+
+                history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
+                history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());
+                history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
+                //Passed settings ALWAYS override the defaults
+                if(StringUtils.isNotBlank(request.getParameter("showHome"))){
+                    history.setAppendHomewardPath(Boolean.parseBoolean(request.getParameter("showHome")));
+                }
+                if(StringUtils.isNotBlank(request.getParameter("showHistory"))){
+                    history.setAppendPassedHistory(Boolean.parseBoolean(request.getParameter("showHistory")));
+                }
+                history.setCurrent(form, request);
+                history.buildHistoryFromParameterString(request.getParameter("history"));
             }
             
             // store form in session

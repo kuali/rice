@@ -35,6 +35,7 @@ import org.kuali.rice.kns.uif.core.RequestParameter;
 import org.kuali.rice.kns.uif.field.LinkField;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
+import org.kuali.rice.kns.uif.widget.BreadCrumbs;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -64,6 +65,8 @@ public class View extends ContainerBase {
     private static final long serialVersionUID = -1220009725554576953L;
 
     private String viewName;
+    
+    private BreadCrumbs breadcrumbs;
 
     private String entryPageId;
 
@@ -901,5 +904,22 @@ public class View extends ContainerBase {
     public boolean getSupportsOnDocumentReady() {
         return true;
     }
+
+    /**
+     * Breadcrumb widget used for displaying homeward path and history
+     * @return the breadcrumbs
+     */
+    public BreadCrumbs getBreadcrumbs() {
+        return this.breadcrumbs;
+    }
+
+    /**
+     * @param breadcrumbs the breadcrumbs to set
+     */
+    public void setBreadcrumbs(BreadCrumbs breadcrumbs) {
+        this.breadcrumbs = breadcrumbs;
+    }
+    
+    
 
 }

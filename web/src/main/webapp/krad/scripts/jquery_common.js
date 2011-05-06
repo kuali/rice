@@ -72,7 +72,8 @@ function errorHandler(msg,url,lno)
 
 // common event registering done here through JQuery ready event
 jq(document).ready(function() {
-
+	createLoading(false);
+	setPageBreadcrumb();
 	// buttons
 	jq("input:submit").button();
 	jq("input:button").button();
@@ -143,6 +144,30 @@ function resizeDialog() {
 	
 	window.parent.$dialog.dialog('option', 'width', width);
 	window.parent.$dialog.dialog('option', 'height', height);
+}
+
+
+/**
+ * sets the breadcrumb to whatever the current page is, if this view has page navigation
+ * Pages are handled by js on the breadcrumb because the page retrieval happens through
+ * ajax
+ */
+function setPageBreadcrumb(){
+	//check to see if page has navigation element, if so show breadcrumb
+	if(jq("#viewnavigation_div").html()){
+		var pageTitle = jq("#currentPageTitle").val();
+		if(pageTitle){
+			jq("#breadcrumbs").find("#page_breadcrumb").remove();
+			jq("#breadcrumbs").append("<span id='page_breadcrumb'> » <span class='current'>" + pageTitle + "</span></span>");
+			jq("#current_breadcrumb_span").hide();
+			jq("#current_breadcrumb_anchor").show();
+		}
+		else{
+			jq("#breadcrumbs").remove("#page_breadcrumb");
+			jq("#current_breadcrumb_anchor").hide();
+			jq("#current_breadcrumb_span").show();
+		}
+	}
 }
 
 /**
@@ -350,6 +375,7 @@ function createDatePicker(controlId, options) {
  */
 function createLightBox(controlId, options) {		
     jq(function () {
+    	var showHistory = false;
     	// Check if this is called within a lightbox
     	if (!jq("#fancybox-frame", parent.document).length) {
     		// If this is not the top frame, then create the lightbox
@@ -364,11 +390,14 @@ function createLightBox(controlId, options) {
     			});
     		}
     	}else{
-    		jq("#" + controlId).attr('target', '_self');    		
+    		jq("#" + controlId).attr('target', '_self');
+    		showHistory = true;
     	}
     	// Set the dialogMode = true param
     	if (jq("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
-    		jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true');
+    		jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true'
+    				+ '&showHome=false' + '&showHistory=' + showHistory 
+    				+ '&history=' + jq('#history\\.historyParameterString').val());
     	}    	
     });			
 }
@@ -396,6 +425,8 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
             // Add the ajaxCall parameter so that the controller can avoid the redirect
 	        actionParameterMapString['actionParameters[dialogMode]'] = 'true';
             actionParameterMapString['actionParameters[ajaxCall]'] = 'true';
+            actionParameterMapString['actionParameters[showHistory]'] = 'false';
+            actionParameterMapString['actionParameters[showHome]'] = 'false';
             // If this is the top frame, the page is not displayed in the iframeprotlet
             // set the return target
             if (top == self) {
@@ -426,6 +457,8 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
 			jq("#" + controlId).click(function (e) {
 				actionParameterMapString['actionParameters[dialogMode]'] = 'true';
 				actionParameterMapString['actionParameters[returnTarget]'] = '_self';
+				actionParameterMapString['actionParameters[showHistory]'] = 'true';
+	            actionParameterMapString['actionParameters[showHome]'] = 'false';
 				for (var key in actionParameterMapString) {
 			 	 	writeHiddenToForm(key , actionParameterMapString[key]);
 			 	}

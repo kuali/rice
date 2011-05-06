@@ -3,6 +3,9 @@
     <title>Tuning Kuali Rice 1.0.3</title>
     <sect1>
         <title>JVM Tuning</title>
+        <para>To avoid OutOfMemoryError errors, tune the JVM by increasing the allocated
+            memory.</para>
+        <para>Add these lines to the catalina.sh file in the tomcat/bin directory:</para>
+        <para><programlisting>JAVA_OPTS=”-Xmx=512m –XX:MaxPermSize=256m”</programlisting></para>
     </sect1>
 </chapter>
-

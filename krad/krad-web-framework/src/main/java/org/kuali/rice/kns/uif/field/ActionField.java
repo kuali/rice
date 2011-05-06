@@ -54,6 +54,8 @@ public class ActionField extends FieldBase {
 	private LightBoxLookup lightBoxLookup;
 	
 	private LightBox lightBox;
+	
+	private boolean blockValidateDirty;
 
 	public ActionField() {
 
@@ -120,7 +122,7 @@ public class ActionField extends FieldBase {
 			}
 
 			boolean validateFormDirty = false;
-			if (view instanceof FormView){
+			if (view instanceof FormView && !isBlockValidateDirty()){
 				validateFormDirty = ((FormView)view).isValidateDirty();
 			}
 			
@@ -184,6 +186,9 @@ public class ActionField extends FieldBase {
 			String postScript = "";
 			if(StringUtils.isNotBlank(clientSideJs)){
 			    postScript = clientSideJs;
+			}
+			else{
+				postScript = "submitForm();";
 			}
 
 			if (includeDirtyCheckScript){
@@ -487,6 +492,20 @@ public class ActionField extends FieldBase {
 	 */
 	public LightBox getLightBox() {
 		return lightBox;
+	}
+
+	/**
+	 * @param blockValidateDirty the blockValidateDirty to set
+	 */
+	public void setBlockValidateDirty(boolean blockValidateDirty) {
+		this.blockValidateDirty = blockValidateDirty;
+	}
+
+	/**
+	 * @return the blockValidateDirty
+	 */
+	public boolean isBlockValidateDirty() {
+		return blockValidateDirty;
 	}
 
 	

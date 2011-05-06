@@ -75,7 +75,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="items">
         <list>
           <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="4" p:minLength="2"
-               p:summary="This title is used for identifying the proposal through the apporval process." p:readOnly="true"  p:conditionalReadOnly="" p:constraint="Must be 4 chars" p:alternateDisplayAttributeName="field2">
+               p:summary="This title is used for identifying the proposal through the apporval process." p:readOnly="false"  p:conditionalReadOnly="" p:constraint="Must be 4 chars" p:alternateDisplayAttributeName="field2">
             <property name="control">
               <bean parent="TextControl" p:size="5" p:watermarkText="Field1"/>
             </property>

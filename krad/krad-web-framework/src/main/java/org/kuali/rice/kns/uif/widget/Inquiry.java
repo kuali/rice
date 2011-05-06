@@ -251,7 +251,8 @@ public class Inquiry extends WidgetBase {
 			onClickScript.append(", ");			
 			onClickScript.append(lightBoxOptions);
 			onClickScript.append(");");
-			directInquiryActionField.setOnClickScript(onClickScript.toString());
+			directInquiryActionField.setBlockValidateDirty(true);
+			directInquiryActionField.setClientSideJs(onClickScript.toString());
 		}
 
         setRender(true);

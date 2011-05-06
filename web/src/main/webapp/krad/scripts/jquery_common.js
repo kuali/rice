@@ -403,10 +403,13 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
             }else{
             	actionParameterMapString['actionParameters[returnTarget]'] = 'iframeportlet';
             }
+			for (var key in actionParameterMapString) {
+		 	 	writeHiddenToForm(key , actionParameterMapString[key]);
+		 	}
             // Do the Ajax submit on the kualiForm form
             jq("#kualiForm").ajaxSubmit({  
             	// The additional data ie. baseLookupURL, bussObject
-            	data: actionParameterMapString,
+//            	data: actionParameterMapString,
         		success: function(data) {
             		// Add the returned URL to the FancyBox href setting
             		options['href'] = data;

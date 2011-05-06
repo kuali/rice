@@ -106,7 +106,9 @@ class GroupServiceImplTest {
         GroupBo otherGroup = new GroupBo(active: true, id: "2", namespaceCode: "ROCK",
                 name: "othergroup", description: "this is some other group", kimTypeId: "2", members: group2Members,
                 attributes: attributesForOtherGroup)
-        for (bo in [someGroup, otherGroup]) {
+        GroupBo thirdGroup = new GroupBo(active: true, id: "114", namespaceCode: "SOMETHING",
+                name: "HMMM", description: "this is some weird group", kimTypeId: "1")
+        for (bo in [someGroup, otherGroup, thirdGroup]) {
             sampleGroups.put(bo.id, bo)
             sampleGroupsByName.put(bo.namespaceCode + ";" + bo.name, bo)
         }
@@ -203,9 +205,9 @@ class GroupServiceImplTest {
         businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
             Class clazz, String groupId -> return sampleGroups.get(groupId)
         }
-        /*businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
-            Class clazz, String groupId -> return sampleGroups.get(groupId)
-        }*/
+        businessObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, Map map -> Collections.emptyList()
+        }
         injectBusinessObjectServiceIntoGroupService()
 
         // Should be member
@@ -385,6 +387,9 @@ class GroupServiceImplTest {
         businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
             Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
         }
+        businessObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, Map map -> return Collections.emptyList()
+        }
 
         injectBusinessObjectServiceIntoGroupService()
 
@@ -425,15 +430,18 @@ class GroupServiceImplTest {
 
     @Test
     void test_getMemberGroupIds() {
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
+        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(0..4) {
             Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
         }
-        businessObjectServiceMockFor.demand.findMatching(1) {
+        /*businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
+            Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
+        }
+        *//*businessObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, Map map -> return group1Members
-        }
+        }*//*
         businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
             Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
-        }
+        }*/
         injectBusinessObjectServiceIntoGroupService()
 
         List<String> expectedIds = new ArrayList<String>()
@@ -443,9 +451,9 @@ class GroupServiceImplTest {
             }
         }
         List<String> actualIds = groupService.getMemberGroupIds("1")
-        Assert.assertEquals("Should be " + expectedIds.size() + "Ids returned", expectedIds.size(), actualIds.size())
+        Assert.assertEquals("Should be " + expectedIds.size() + " Ids returned", expectedIds.size(), actualIds.size())
         for (String id : actualIds) {
-            Assert.assertTrue(id + "should be in List", expectedIds.contains(id) )
+            Assert.assertTrue(id + " should be in List", expectedIds.contains(id) )
         }
         businessObjectServiceMockFor.verify(bos)
     }

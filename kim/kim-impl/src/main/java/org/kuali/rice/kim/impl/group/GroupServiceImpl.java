@@ -174,13 +174,55 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     @Override
     public List<String> getMemberGroupIds(String groupId) throws RiceIllegalArgumentException {
-        if ( StringUtils.isEmpty(groupId) ) {
+        /*if ( StringUtils.isEmpty(groupId) ) {
 			throw new RiceIllegalArgumentException("groupId is blank");
 		}
 		Set<String> visitedGroupIds = new HashSet<String>();
 		return getMemberIdsInternalByType(groupId, visitedGroupIds, KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+*/
 
+        if ( StringUtils.isEmpty(groupId) ) {
+			throw new RiceIllegalArgumentException("groupId is blank");
+		}
+		List<GroupBo> groups = getMemberGroupBos( groupId );
+		ArrayList<String> groupIds = new ArrayList<String>( groups.size() );
+		for ( GroupBo group : groups ) {
+			if ( group.isActive() ) {
+				groupIds.add( group.getId() );
+			}
+		}
+		return groupIds;
     }
+
+
+	protected List<GroupBo> getMemberGroupBos(String groupId) {
+		if ( groupId == null ) {
+			return Collections.emptyList();
+		}
+		Set<GroupBo> groups = new HashSet<GroupBo>();
+
+		GroupBo group = getGroupBo(groupId);
+		getMemberGroupsInternal(group, groups);
+
+		return new ArrayList<GroupBo>(groups);
+	}
+
+    protected void getMemberGroupsInternal( GroupBo group, Set<GroupBo> groups ) {
+		if ( group == null ) {
+			return;
+		}
+		List<String> groupIds = group.getMemberGroupIds();
+
+		for (String id : groupIds) {
+			GroupBo memberGroup = getGroupBo(id);
+			// if we've already seen that group, don't recurse into it
+			if ( memberGroup.isActive() && !groups.contains( memberGroup ) ) {
+				groups.add(memberGroup);
+				getMemberGroupsInternal(memberGroup,groups);
+			}
+		}
+
+	}
 
     @Override
     public List<String> getDirectMemberGroupIds(String groupId) {
@@ -290,11 +332,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
         //List<String> memberIds = getMemberIdsByType(group, memberType);
         List<GroupMember> members = new ArrayList<GroupMember>(getMembersOfGroup(group.getId()));
-        if (memberType.equals(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-		    ids.addAll( getMemberIdsByType(members, memberType));
-        } else {
-            ids.add(group.getId());
-        }
+		ids.addAll( getMemberIdsByType(members, memberType));
 		visitedGroupIds.add(group.getId());
 
 		for (String memberGroupId : getMemberIdsByType(members,  KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {

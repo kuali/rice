@@ -130,7 +130,7 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
 	    return null;
 	}
 
-    private void spitMembersToTypes() {
+    private void splitMembersToTypes() {
         memberPersons = new ArrayList<Person>()
         memberGroups = new ArrayList<Group>()
         if (getMembers() != null) {
@@ -160,14 +160,31 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
     }
 
     public List<String> getMemberPrincipalIds() {
-        if (this.memberPersons == null) {
-            spitMembersToTypes()
-        }
         List<String> principalIds = new ArrayList<String>()
-        for (Person person : this.memberPersons) {
-            principalIds.add(person.getPrincipalId())
+        if (getMembers() != null) {
+            for ( GroupMemberBo groupMember : getMembers() ) {
+                if (groupMember.isActive()) {
+                    if ( groupMember.getTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )) {
+                        principalIds.add(groupMember.getMemberId());
+                    }
+                }
+            }
         }
-        return principalIds
+        return principalIds;
+    }
+
+    public List<String> getMemberGroupIds() {
+        List<String> principalIds = new ArrayList<String>()
+        if (getMembers() != null) {
+            for ( GroupMemberBo groupMember : getMembers() ) {
+                if (groupMember.isActive()) {
+                    if ( groupMember.getTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE )) {
+                        principalIds.add(groupMember.getMemberId());
+                    }
+                }
+            }
+        }
+        return principalIds;
     }
 
     public List<Group> getMemberGroups() {

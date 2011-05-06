@@ -715,7 +715,7 @@
             </goals>
             <phase>pre-site</phase>
             <configuration>
-              <outputDirectory>${rice.site.dir}</outputDirectory>
+              <outputDirectory>${rice.docbook.dest}</outputDirectory>
               <resources>
                 <resource>
                   <directory>${rice.docbook.filtered}</directory>
@@ -752,7 +752,7 @@
             </goals>
             <phase>${rice.docbook.phase}</phase>
             <configuration>
-              <htmlStylesheet>../../css/stylesheet.css</htmlStylesheet>
+              <htmlStylesheet>../css/stylesheet.css</htmlStylesheet>
               <targetDirectory>${rice.docbook.dest}/html</targetDirectory>
             </configuration>
           </execution>
@@ -775,7 +775,7 @@
             <phase>${rice.docbook.phase}</phase>
             <configuration>
               <chunkedOutput>true</chunkedOutput>
-              <htmlStylesheet>../../css/stylesheet.css</htmlStylesheet>
+              <htmlStylesheet>../css/stylesheet.css</htmlStylesheet>
               <targetDirectory>${rice.docbook.dest}/html-multi</targetDirectory>
             </configuration>
           </execution>

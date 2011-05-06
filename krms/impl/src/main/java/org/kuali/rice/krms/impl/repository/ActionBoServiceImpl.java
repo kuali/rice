@@ -162,8 +162,7 @@ public final class ActionBoServiceImpl implements ActionBoService {
 		final ActionAttribute existing = getActionAttributeById(attrIdKey);
 		if (existing != null){
             throw new IllegalStateException("the action attribute to create already exists: " + attribute);			
-		}
-		
+		}		
 		businessObjectService.save(ActionAttributeBo.from(attribute));		
 	}
 

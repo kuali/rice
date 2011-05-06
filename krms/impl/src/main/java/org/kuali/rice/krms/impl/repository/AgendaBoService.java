@@ -16,22 +16,27 @@
 
 package org.kuali.rice.krms.impl.repository;
 
+import java.util.Set;
+
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
 
 
 public interface AgendaBoService {
-	/**
-	* Converts a mutable bo to it's immutable counterpart
-	* @param bo the mutable business object
-	* @return the immutable object
-	*/
-	public AgendaDefinition to(AgendaDefinitionBo bo);
-
-   /**
-	* Converts a immutable object to it's mutable bo counterpart
-	* TODO: move to() and from() to impl service
-	* @param im immutable object
-	* @return the mutable bo
-	*/
- 	public AgendaDefinitionBo from(AgendaDefinition im);
+	
+	public void createAgenda(AgendaDefinition agenda);
+	public void updateAgenda(AgendaDefinition agenda);
+	
+	public AgendaDefinition getAgendaByAgendaId(String agendaId);
+	public AgendaDefinition getAgendaByNameAndNamespace(String name, String namespace);
+	
+	public Set<AgendaDefinition> getAgendasByContextId(String contextId);
+	
+	
+	public void createAgendaItem(AgendaItem agendaItem);
+	public void updateAgendaItem(AgendaItem agendaItem);
+	public void addAgendaItem(AgendaItem agendaItem, String parentId, Boolean position);
+	
+	public AgendaItem getAgendaItemById(String id);
+	
 }

@@ -70,7 +70,7 @@ public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements 
     		throw new IllegalArgumentException("agenda id is null or blank");
     	}
 		// Get agenda items from db, then build up agenda tree structure
-		AgendaDefinitionBo agendaBo = getBusinessObjectService().findBySinglePrimaryKey(AgendaDefinitionBo.class, agendaId);
+		AgendaBo agendaBo = getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
 		String agendaItemId = agendaBo.getFirstItemId();
 		
 		// walk thru the agenda items, building an agenda tree definition Builder along the way
@@ -137,18 +137,18 @@ public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements 
 					.create(agendaItemBo.getId(), agendaItemBo.getRuleId());
 			ruleEntryBuilder.setRuleId( agendaItemBo.getRuleId() );
 			ruleEntryBuilder.setAgendaItemId( agendaItemBo.getId() );
-			if (agendaItemBo.getNextTrueId() != null){
+			if (agendaItemBo.getWhenTrueId() != null){
 				// Go follow the true branch, creating AgendaTreeDefinintion Builder for the
 				// true branch level
 				AgendaTreeDefinition.Builder myBuilder = AgendaTreeDefinition.Builder.create();
 				myBuilder.setAgendaId( agendaItemBo.getAgendaId() );
-				ruleEntryBuilder.setIfTrue( walkAgendaItemTree(agendaItemBo.getNextTrueId(),myBuilder));
+				ruleEntryBuilder.setIfTrue( walkAgendaItemTree(agendaItemBo.getWhenTrueId(),myBuilder));
 			}
-			if (agendaItemBo.getNextFalseId() != null){
+			if (agendaItemBo.getWhenFalseId() != null){
 				// Go follow the false branch, creating AgendaTreeDefinintion Builder 
 				AgendaTreeDefinition.Builder myBuilder = AgendaTreeDefinition.Builder.create();
 				myBuilder.setAgendaId( agendaItemBo.getAgendaId() );
-				ruleEntryBuilder.setIfFalse( walkAgendaItemTree(agendaItemBo.getNextFalseId(), myBuilder));
+				ruleEntryBuilder.setIfFalse( walkAgendaItemTree(agendaItemBo.getWhenFalseId(), myBuilder));
 			}
 			// Build the Rule Entry and add it to the AgendaTreeDefinition builder
 			builder.addRuleEntry( ruleEntryBuilder.build() );
@@ -161,8 +161,8 @@ public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements 
 			}
 
 		// if this agenda item has an "After Id", follow that branch
-		if (!StringUtils.isBlank( agendaItemBo.getNextAfterId() )){
-			builder = walkAgendaItemTree( agendaItemBo.getNextAfterId(), builder);
+		if (!StringUtils.isBlank( agendaItemBo.getAlwaysId() )){
+			builder = walkAgendaItemTree( agendaItemBo.getAlwaysId(), builder);
 			
 		}
 		return builder;

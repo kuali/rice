@@ -12,7 +12,7 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 	def String namespace
 	def String typeId
 
-	def Set<AgendaDefinitionBo> agendas
+	def Set<AgendaBo> agendas
 		
 	def Set<ContextAttributeBo> attributes
 	def Set<ContextValidEventBo> validEvents
@@ -43,9 +43,9 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 	   bo.namespace = im.namespace
 	   bo.name = im.name
 	   bo.typeId = im.typeId
-	   bo.agendas = new HashSet<AgendaDefinitionBo>()
+	   bo.agendas = new HashSet<AgendaBo>()
 	   for (agenda in im.agendas){
-		   bo.agendas.add( AgendaDefinitionBo.from(agenda) )
+		   bo.agendas.add( AgendaBo.from(agenda) )
 	   }
 	   
 	   bo.versionNumber = im.versionNumber
@@ -54,7 +54,7 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
  
    
    @Override
-   public Set<AgendaDefinitionBo> getAgendas(){
+   public Set<AgendaBo> getAgendas(){
 	   return agendas
    }
    

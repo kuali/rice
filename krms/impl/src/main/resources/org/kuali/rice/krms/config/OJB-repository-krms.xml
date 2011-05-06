@@ -137,7 +137,7 @@
     def String firstItemId
     def Set<AgendaAttributeBo> attributes -->
     
-    <class-descriptor class="org.kuali.rice.krms.impl.repository.AgendaDefinitionBo" table="KRMS_AGENDA_T">
+    <class-descriptor class="org.kuali.rice.krms.impl.repository.AgendaBo" table="KRMS_AGENDA_T">
         <field-descriptor name="id" column="AGENDA_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_AGENDA_S"/>
         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
         <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
@@ -172,9 +172,9 @@
         <field-descriptor name="agendaId" column="AGENDA_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="ruleId" column="RULE_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="subAgendaId" column="SUB_AGENDA_ID" jdbc-type="VARCHAR" />
-        <field-descriptor name="nextTrueId" column="WHEN_TRUE" jdbc-type="VARCHAR" />
-        <field-descriptor name="nextFalseId" column="WHEN_FALSE" jdbc-type="VARCHAR" />
-        <field-descriptor name="nextAfterId" column="ALWAYS" jdbc-type="VARCHAR" />
+        <field-descriptor name="whenTrueId" column="WHEN_TRUE" jdbc-type="VARCHAR" />
+        <field-descriptor name="whenFalseId" column="WHEN_FALSE" jdbc-type="VARCHAR" />
+        <field-descriptor name="alwaysId" column="ALWAYS" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <reference-descriptor name="whenTrue" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="false" auto-update="none" auto-delete="none" proxy="true">
             <foreignkey field-ref="nextTrueId" />

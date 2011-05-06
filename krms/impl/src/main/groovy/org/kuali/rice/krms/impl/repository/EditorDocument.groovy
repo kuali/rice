@@ -24,6 +24,6 @@ package org.kuali.rice.krms.impl.repository;
 public class EditorDocument {
 
    def ContextBo context
-   def AgendaDefinitionBo agenda
+   def AgendaBo agenda
    
 }

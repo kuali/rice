@@ -73,7 +73,6 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		}
 
 		businessObjectService.save(RuleBo.from(toUpdate));
-
 	}
 
 	/**

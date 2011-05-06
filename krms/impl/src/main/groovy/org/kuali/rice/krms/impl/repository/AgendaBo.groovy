@@ -7,7 +7,7 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
 
-public class AgendaDefinitionBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract{
+public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract{
 
 	def String id
 	def String namespace
@@ -34,7 +34,7 @@ public class AgendaDefinitionBo extends PersistableBusinessObjectBase implements
 	 * @param bo the mutable business object
 	 * @return the immutable object
 	 */
-	static AgendaDefinition to(AgendaDefinitionBo bo) {
+	static AgendaDefinition to(AgendaBo bo) {
 		if (bo == null) { return null }
 		return org.kuali.rice.krms.api.repository.agenda.AgendaDefinition.Builder.create(bo).build()
 	}
@@ -46,10 +46,10 @@ public class AgendaDefinitionBo extends PersistableBusinessObjectBase implements
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   static public AgendaDefinitionBo from(AgendaDefinition im) {
+   static public AgendaBo from(AgendaDefinition im) {
 	   if (im == null) { return null }
 
-	   AgendaDefinitionBo bo = new AgendaDefinitionBo()
+	   AgendaBo bo = new AgendaBo()
 	   bo.setId( im.getId() )
 	   bo.setNamespace( im.getNamespaceCode() )
 	   bo.setName( im.getName() )

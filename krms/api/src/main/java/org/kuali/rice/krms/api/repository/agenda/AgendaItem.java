@@ -213,7 +213,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
         	setAgendaId(agendaId);
         }
         
-        public static Builder create(String id, String agendaId, String priorItemId, String entryCondition){
+        public static Builder create(String id, String agendaId){
         	return new Builder(id, agendaId);
         }
         /**
@@ -227,9 +227,12 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
                 throw new IllegalArgumentException("contract is null");
         	}
         	Builder builder =  new Builder(contract.getId(), contract.getAgendaId());
+        	builder.setRuleId(contract.getRuleId());
+        	builder.setSubAgendaId(contract.getSubAgendaId());
         	builder.setWhenTrueId(contract.getWhenTrueId());
         	builder.setWhenFalseId(contract.getWhenFalseId());
         	builder.setAlwaysId(contract.getAlwaysId());
+        	
         	if (contract.getRule() != null){
         		builder.setRule(RuleDefinition.Builder.create( contract.getRule() ));
         	}

@@ -1,7 +1,6 @@
 package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItem
 
 public class AgendaItemBo extends PersistableBusinessObjectBase {
@@ -97,10 +96,22 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-   static AgendaItem to(AgendaItemBo bo) {
-	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.agenda.AgendaItem.Builder.create(bo).build()
-   }
+	static AgendaItem to(AgendaItemBo bo) {
+		if (bo == null) { return null }
+		AgendaItem.Builder builder = AgendaItem.Builder.create(bo.getId(), bo.getAgendaId())
+		builder.setRuleId( bo.getRuleId() )
+		builder.setSubAgendaId( bo.getSubAgendaId() )
+		builder.setWhenTrueId( bo.getWhenTrueId() )
+		builder.setWhenFalseId( bo.getWhenFalseId() )
+		builder.setAlwaysId( bo.getAlwaysId() )
+		return builder.build()	
+		// NOTE: should we create tree nodes (whenTrue, whenFalse, always) ??
+		//   If so, we would end up creating the entire sub-tree.
+		//   If we do want to create the entire tree, having AgendaItem implement AgendaItemContract would be easier
+		//   so we could recursively build it out.
+		
+//		return org.kuali.rice.krms.api.repository.agenda.AgendaItem.Builder.create(bo).build()
+	}
 
    /**
 	* Converts a immutable object to it's mutable bo counterpart

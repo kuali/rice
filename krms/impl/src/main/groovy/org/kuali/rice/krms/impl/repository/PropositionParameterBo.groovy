@@ -2,23 +2,14 @@ package org.kuali.rice.krms.impl.repository
 
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.OneToOne
 import javax.persistence.Table
-
-import org.hibernate.annotations.Type
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Parameter
-
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
-import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract
 
 @Entity
 @Table(name="KRMS_PROP_PARM_T")
@@ -64,7 +55,7 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
    static List<PropositionParameter> to(List<PropositionParameterBo> bos) {
 	   if (bos == null) { return null }
 	   List<PropositionParameter> parms = new ArrayList<PropositionParameter>();
-	   for (PropositionParameter p : bos){
+	   for (PropositionParameterBo p : bos){
 		   parms.add(PropositionParameter.Builder.create(p).build())
 	   }
 	   return Collections.unmodifiableList(parms)

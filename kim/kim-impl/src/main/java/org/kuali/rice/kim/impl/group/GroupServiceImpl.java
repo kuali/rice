@@ -157,7 +157,10 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			throw new RiceIllegalArgumentException("groupId is blank");
 		}
 		Set<String> visitedGroupIds = new HashSet<String>();
-		return getMemberIdsInternalByType(groupId, visitedGroupIds, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+        Set<String> idsToRemove = new HashSet<String>();
+		List<String> ids = getMemberIdsInternalByType(groupId, visitedGroupIds, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+        ids.removeAll(idsToRemove);
+        return ids;
     }
 
     @Override
@@ -176,6 +179,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		}
 		Set<String> visitedGroupIds = new HashSet<String>();
 		return getMemberIdsInternalByType(groupId, visitedGroupIds, KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+
     }
 
     @Override
@@ -280,13 +284,17 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		}
 		Set<String> ids = new HashSet<String>();
 		Group group = getGroup(groupId);
-		if ( group == null ) {
+		if ( group == null || !group.isActive()) {
 			return Collections.emptyList();
 		}
 
         //List<String> memberIds = getMemberIdsByType(group, memberType);
         List<GroupMember> members = new ArrayList<GroupMember>(getMembersOfGroup(group.getId()));
-		ids.addAll( getMemberIdsByType(members, memberType));
+        if (memberType.equals(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+		    ids.addAll( getMemberIdsByType(members, memberType));
+        } else {
+            ids.add(group.getId());
+        }
 		visitedGroupIds.add(group.getId());
 
 		for (String memberGroupId : getMemberIdsByType(members,  KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {

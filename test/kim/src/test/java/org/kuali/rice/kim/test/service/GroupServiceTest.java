@@ -87,7 +87,7 @@ public class GroupServiceTest extends KIMTestCase {
 		builder.setActive(true);
 
         //todo: reenable this once update service updated
-		//getGroupUpdateService().updateGroup("g4", g4Info);
+		getGroupUpdateService().updateGroup("g4", builder.build());
 		g4Info = getGroupService().getGroup("g4");
 		
 		assertTrue( "p4 should be reported as a member of g2 (now that g4 is active)", getGroupService().isMemberOfGroup("p4", "g2") );

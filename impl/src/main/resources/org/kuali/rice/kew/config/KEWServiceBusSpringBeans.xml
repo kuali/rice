@@ -185,7 +185,7 @@
             <bean class="org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor" />
           </property>
           <property name="localServiceName" value="WorkgroupMembershipChangeService" />
-          <property name="serviceNameSpaceURI" value="" />
+          <property name="serviceNameSpaceURI" value="KEW" />
           <property name="priority" value="10" />
           <property name="retryAttempts" value="1" />
           <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />

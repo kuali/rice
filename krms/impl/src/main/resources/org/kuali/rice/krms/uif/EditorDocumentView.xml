@@ -22,8 +22,8 @@
 
 
   <bean id="EditorMaintenanceDocument" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.krms.impl.repository.EditorDocument"/>
-    <!-- property name="maintainableClass" value=""/ -->
+    <property name="businessObjectClass" value="org.kuali.rice.krms.impl.ui.EditorDocument"/>
+    <property name="maintainableClass" value="org.kuali.rice.krms.impl.ui.EditorDocumentMaintainable" />
     <property name="documentTypeName" value="EditorMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="lockingKeys">
@@ -33,27 +33,55 @@
     </property>
   </bean>
   
-    <bean id="Editor-MaintenanceView" parent="MaintenanceView">
+  <!-- 
+      <bean parent="AttributeField_Form" p:label="Field 1" p:propertyName="hField1" p:labelPlacement="TOP" 
+        p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
+            <property name="control">
+                    <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
+            </property>
+            <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+            <property name="fieldLookup.fieldConversions">
+              <map>
+                <entry key="number" value="field1"/>
+              </map>
+            </property>
+      </bean>
+   -->
+  
+  <bean id="Editor-MaintenanceView" parent="MaintenanceView">
     <property name="title" value="Business Rules" />
-    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.EditorDocument" />
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.EditorDocument" />
     <property name="items">
       <list merge="true">
         <bean parent="MaintenanceGroupSection">
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="context.name" />
-              <bean parent="AttributeField" p:propertyName="context.namespace" />
-            </list>
+              <bean parent="FieldGroup" p:label="Field Group 4" p:width="40%" p:labelField.width="10%">
+                <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
+                <property name="items">
+                  <list>
+	              <bean parent="AttributeField" p:propertyName="context.name">
+	                <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
+	                <property name="label" value="Name"/>
+	              </bean>
+	              <bean parent="AttributeField" p:propertyName="context.namespace" p:label="Namespace"/>
+	              </list>
+	            </property>
+	          </bean>
+	        </list>
           </property>
           <property name="title" value="Context" />
         </bean>
         <bean parent="MaintenanceGroupSectionGridLayout" p:layoutManager.numberOfColumns="4">
           <property name="items">
             <list>
-              <bean parent="FieldGroup" p:label="Name" p:colSpan="3" >
+              <!-- bean parent="FieldGroup" p:label="Name" p:colSpan="3"  -->
+              <bean parent="FieldGroup" p:colSpan="3" >
               <property name="items">
                 <list>
-                  <bean parent="AttributeField" p:labelField.render="false" p:propertyName="agenda.name" />
+                  <bean parent="AttributeField" p:labelField.render="true" p:propertyName="agenda.name" p:label="Name">
+                    <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
+                  </bean>
                   <bean parent="ActionField_Small" p:methodToCall="saveAgenda" p:actionLabel="save" />
                 </list>
               </property>

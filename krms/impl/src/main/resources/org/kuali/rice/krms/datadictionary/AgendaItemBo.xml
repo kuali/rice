@@ -27,9 +27,17 @@
     <property name="attributes">
       <list>
         <ref bean="AgendaItemBo-id"/>
+        <ref bean="AgendaItemBo-agendaId"/>
         <ref bean="AgendaItemBo-ruleId"/>
+        <ref bean="AgendaItemBo-always"/>
       </list>
     </property>
+    <!-- This sort of thing may be only for EBOs -->
+    <!-- property name="collections">
+        <list>
+            <bean parent="CollectionDefinition"/>
+        </list>
+    </property -->
     <property name="objectLabel" value="Agenda Item"/>
   </bean>
 
@@ -47,6 +55,17 @@
     <property name="label" value="Agenda Item Id"/>
   </bean>  
   
+  <bean id="AgendaItemBo-agendaId" parent="AgendaItemBo-agendaId-parentBean"/>
+  <bean id="AgendaItemBo-agendaId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Agenda Id"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="agendaId"/>
+    <property name="label" value="Agenda Id"/>
+  </bean>  
+  
   <bean id="AgendaItemBo-ruleId" parent="AgendaItemBo-ruleId-parentBean"/>
   <bean id="AgendaItemBo-ruleId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
@@ -57,6 +76,30 @@
     <property name="name" value="ruleId"/>
     <property name="label" value="Agenda Item ruleId"/>
   </bean>  
+  
+  <bean id="AgendaItemBo-always" parent="AgendaItemBo-always-parentBean"/>
+  <bean id="AgendaItemBo-always-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Always"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="alwaysId"/>
+    <property name="label" value="Always Agenda Item Id"/>
+  </bean>  
+  
+  <!-- bean id="AgendaItemBo-ruleId" parent="AgendaItemBo-ruleId-parentBean"/>
+  <bean id="AgendaItemBo-ruleId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="ruleId"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="ruleId"/>
+    <property name="label" value="Agenda Item ruleId"/>
+  </bean -->  
+  
+
   
   <!-- bean id="AgendaItemBo-always" parent="AgendaItemBo-always-parentBean"/>
   <bean id="AgendaItemBo-always-parentBean" abstract="true" parent="AttributeDefinition">
@@ -83,6 +126,49 @@
         <bean parent="AttributeField" p:propertyName="id" />
         <bean parent="AttributeField" p:propertyName="ruleId" />
       </list>
+    </property>
+  </bean>
+  
+  <bean id="AgendaItemBo-InquiryView" parent="InquiryView">
+    <property name="title" value="Agenda Item Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaItemBo"/>
+    <property name="singlePageView" value="true"/>
+    <property name="items">
+        <list>
+            <bean parent="Page" p:id="page1">
+                <property name="items">
+                    <list>
+                      <bean parent="GroupSectionGridLayout">
+                          <property name="layoutManager.numberOfColumns" value="2"/>
+                          <property name="items">
+                            <list>
+                              <bean parent="AttributeField" p:propertyName="id"/>
+                              <bean parent="AttributeField" p:propertyName="ruleId"/>
+                            </list>
+                          </property>
+                          <property name="title" value="Agenda Item Attributes"/>
+                      </bean>
+                                   <bean parent="CollectionGroupSection">
+						              <property name="title" value="Always"/>  
+						              <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaItemBo"/>
+						              <property name="propertyName" value="alwaysList"/>
+						              <property name="items">
+						                <list>
+						                  <bean parent="AttributeField" p:propertyName="id"/>
+						                  <bean parent="AttributeField" p:propertyName="ruleId"/>
+						                </list>
+						              </property>      
+						              <property name="layoutManager.summaryTitle" value="Agenda Item"/> 
+						              <property name="layoutManager.summaryFields">
+						                <list>
+						                  <value>id</value>
+						                </list>
+						              </property>
+						           </bean>
+                    </list>
+                </property>
+            </bean>
+        </list>
     </property>
   </bean>
   

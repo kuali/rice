@@ -22,18 +22,17 @@
     </bean>
 
     <!-- Heck, why doesn't this work? -->
-    <!-- 
-	<bean id="businessObjectService"
+
+    <bean id="businessObjectService"
         class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
         <property name="serviceName" value="businessObjectService" />
     </bean>
 	 
-	<bean id="termBoService" class="org.kuali.rice.krms.impl.repository.TermBoServiceImpl">
+	<!-- bean id="termBoService" class="org.kuali.rice.krms.impl.repository.TermBoServiceImpl">
 	   <property name="businessObjectService">
 	       <ref bean="businessObjectService"/>
 	   </property>
-	</bean>
- 	-->
+	</bean -->
  	
 	<bean id="krmsModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
         <property name="namespaceCode" value="krms"/>
@@ -41,7 +40,7 @@
         <property name="dataDictionaryPackages">
             <list>
                 <value>classpath:org/kuali/rice/krms/datadictionary/ContextBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/AgendaDefinitionBo.xml</value>
+                <value>classpath:org/kuali/rice/krms/datadictionary/AgendaBo.xml</value>
                 <value>classpath:org/kuali/rice/krms/datadictionary/AgendaItemBo.xml</value>
                 <value>classpath:org/kuali/rice/krms/uif/EditorDocumentView.xml</value>
             </list>

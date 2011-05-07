@@ -20,17 +20,17 @@
  limitations under the License.
 -->
 
-  <bean id="AgendaDefinitionBo" parent="AgendaDefinitionBo-parentBean"/>
-  <bean id="AgendaDefinitionBo-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.AgendaDefinitionBo"/>
+  <bean id="AgendaBo" parent="AgendaBo-parentBean"/>
+  <bean id="AgendaBo-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">
       <list>
-        <ref bean="AgendaDefinitionBo-id"/>
-        <ref bean="AgendaDefinitionBo-name"/>
-        <ref bean="AgendaDefinitionBo-namespace"/>
-        <ref bean="AgendaDefinitionBo-typeId"/>
-        <ref bean="AgendaDefinitionBo-contextId"/>
+        <ref bean="AgendaBo-id"/>
+        <ref bean="AgendaBo-name"/>
+        <ref bean="AgendaBo-namespace"/>
+        <ref bean="AgendaBo-typeId"/>
+        <ref bean="AgendaBo-contextId"/>
       </list>
     </property>
     <property name="objectLabel" value="Agenda Definition"/>
@@ -39,8 +39,8 @@
 <!-- Attribute Definitions -->
 
 
-  <bean id="AgendaDefinitionBo-id" parent="AgendaDefinitionBo-id-parentBean"/>
-  <bean id="AgendaDefinitionBo-id-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="AgendaBo-id" parent="AgendaBo-id-parentBean"/>
+  <bean id="AgendaBo-id-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Id"/>
     <property name="controlField">
@@ -50,8 +50,8 @@
     <property name="label" value="Agenda Id"/>
   </bean>  
   
-  <bean id="AgendaDefinitionBo-name" parent="AgendaDefinitionBo-name-parentBean"/>
-  <bean id="AgendaDefinitionBo-name-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="AgendaBo-name" parent="AgendaBo-name-parentBean"/>
+  <bean id="AgendaBo-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
@@ -61,8 +61,8 @@
     <property name="label" value="Agenda Name"/>
   </bean>  
   
-  <bean id="AgendaDefinitionBo-namespace" parent="AgendaDefinitionBo-namespace-parentBean"/>
-  <bean id="AgendaDefinitionBo-namespace-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="AgendaBo-namespace" parent="AgendaBo-namespace-parentBean"/>
+  <bean id="AgendaBo-namespace-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Namespace"/>
     <property name="controlField">
@@ -72,8 +72,8 @@
     <property name="label" value="Agenda Namespace"/>
   </bean>  
   
-  <bean id="AgendaDefinitionBo-typeId" parent="AgendaDefinitionBo-typeId-parentBean"/>
-  <bean id="AgendaDefinitionBo-typeId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="AgendaBo-typeId" parent="AgendaBo-typeId-parentBean"/>
+  <bean id="AgendaBo-typeId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="typeId"/>
     <property name="controlField">
@@ -83,8 +83,8 @@
     <property name="label" value="Agenda typeId"/>
   </bean>
   
-  <bean id="AgendaDefinitionBo-contextId" parent="AgendaDefinitionBo-contextId-parentBean"/>
-  <bean id="AgendaDefinitionBo-contextId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="AgendaBo-contextId" parent="AgendaBo-contextId-parentBean"/>
+  <bean id="AgendaBo-contextId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="contextId"/>
     <property name="controlField">
@@ -94,9 +94,9 @@
     <property name="label" value="Agenda contextId"/>
   </bean>
     
-  <bean id="AgendaDefinitionBo-LookupView" parent="LookupView">
+  <bean id="AgendaBo-LookupView" parent="LookupView">
     <property name="title" value="Agenda Lookup" />
-    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaDefinitionBo" />
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo" />
     <property name="criteriaFields">
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />

@@ -3,8 +3,13 @@ package org.kuali.rice.krms.impl.repository
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.agenda.AgendaItem
 
-public class AgendaItemBo extends PersistableBusinessObjectBase {
+// NOTE: this class is temporarily renamed to get it out of the way.  See AgendaItemBo.java
+public class AgendaItemBoFoo extends PersistableBusinessObjectBase {
 
+//	public MetaClass getMetaClass() {
+//		return super.getMetaClass();
+//	}
+	
 	def String id
 	def String agendaId
 	def String ruleId

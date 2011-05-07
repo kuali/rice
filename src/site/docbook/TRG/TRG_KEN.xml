@@ -4,4 +4,70 @@
     <sect1>
         <title>KEN Overview</title>
     </sect1>
+    <sect1>
+        <title>KEN Configuration Parameters</title>
+    </sect1>
+    <sect1>
+        <title>KEN Channels</title>
+        <sect2>
+            <title>Channel Subscription</title>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>KEN Producers</title>
+        <sect2>
+            <title>Adding Producers</title>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>KEN Content Types</title>
+        <sect2>
+            <title>Content Type Attributes</title>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>KEN Notifications</title>
+        <sect2>
+            <title>Common Notification Attributes</title>
+        </sect2>
+        <sect2>
+            <title>Message Content</title>
+            <sect3>
+                <title>Sample XML for a Simple Notification</title>
+            </sect3>
+            <sect3>
+                <title>Sample XML for an Event Notification</title>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Notification Response</title>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Enterprise Notification Priority</title>
+    </sect1>
+    <sect1>
+        <title>KEN Delivery Types</title>
+        <sect2>
+            <title>Implementing the Java Interface</title>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>KEN: Sending a Notification</title>
+        <sect2>
+            <title>Send a Notification Using the Web Service API</title>
+        </sect2>
+        <sect2>
+            <title>Web Service URL</title>
+        </sect2>
+        <sect2>
+            <title>Exposed Web Services</title>
+            <sect3>
+                <title>Calling the sendNotification Service from JAVA</title>
+            </sect3>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>KEN Authentication</title>
+    </sect1>
 </chapter>

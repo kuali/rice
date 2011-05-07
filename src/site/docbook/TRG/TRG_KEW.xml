@@ -3,5 +3,23 @@
     <title>KEW</title>
     <sect1>
         <title>What is Kuali Enterprise Workflow?</title>
+        <sect2>
+            <title>What is workflow, in general?</title>
+        </sect2>
+        <sect2>
+            <title>What is Kuali Enterprise Workflow, in particular?</title>
+        </sect2>
+        <sect2>
+            <title>What problems or functions does KEW solve? </title>
+        </sect2>
+        <sect2>
+            <title>What problems does KEW NOT solve?</title>
+        </sect2>
+        <sect2>
+            <title>With which applications can KEW integrate?</title>
+        </sect2>
+        <sect2>
+            <title> Can I use KEW without building an entire application?</title>
+        </sect2>
     </sect1>
 </chapter>

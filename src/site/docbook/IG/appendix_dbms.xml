@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<appendix xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+<appendix id="installing_dbms" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>Installing the Database Management Systems</title>
     <para>Kuali Rice was developed using two relational database management systems:<itemizedlist>
             <listitem>

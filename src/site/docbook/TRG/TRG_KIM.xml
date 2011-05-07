@@ -3,5 +3,101 @@
     <title>KIM</title>
     <sect1>
         <title>Terminology</title>
+        <sect2>
+            <title>Principal</title>
+        </sect2>
+        <sect2>
+            <title>Entity</title>
+        </sect2>
+        <sect2>
+            <title>Group</title>
+        </sect2>
+        <sect2>
+            <title>Permission</title>
+        </sect2>
+        <sect2>
+            <title>Responsibility</title>
+        </sect2>
+        <sect2>
+            <title>Role</title>
+        </sect2>
+        <sect2>
+            <title>Reference Information</title>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Services</title>
+        <sect2>
+            <title>Using the Services</title>
+        </sect2>
+        <sect2>
+            <title>IdentityManagementService</title>
+            <sect3>
+                <title>Retrieving Principal Information</title>
+            </sect3>
+            <sect3>
+                <title>Retrieving Entity Default Information</title>
+            </sect3>
+            <sect3>
+                <title>Retrieving Reference Information</title>
+            </sect3>
+            <sect3>
+                <title>Retrieving Group Membership Information</title>
+            </sect3>
+            <sect3>
+                <title>Retrieving Group Information</title>
+            </sect3>
+            <sect3>
+                <title>Checking Permission</title>
+            </sect3>
+            <sect3>
+                <title>Retrieving Permission Information</title>
+            </sect3>
+            <sect3>
+                <title>Checking Responsibility</title>
+            </sect3>
+            <sect3>
+                <title>Retrieving Responsibility Information</title>
+            </sect3>
+            <sect3>
+                <title>Checking Authentication</title>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>RoleManagementService</title>
+            <sect3>
+                <title>Checking Role Assignment</title>
+            </sect3>
+            <sect3>
+                <title>Retrieving Role Information</title>
+            </sect3>
+            <sect3>
+                <title>Updating Role Membership</title>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Person Service</title>
+            <sect3>
+                <title>Retrieving Personal Information</title>
+            </sect3>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>KIM Types</title>
+        <sect2>
+            <title>Implementing Custom KIM Types</title>
+        </sect2>
+        <sect2>
+            <title>KIM Group Type Service</title>
+        </sect2>
+        <sect2>
+            <title>KIM Permission Type Service</title>
+        </sect2>
+        <sect2>
+            <title>KIM Responsibility Type Service</title>
+        </sect2>
+        <sect2>
+            <title>KIM Role Type Service</title>
+        </sect2>
     </sect1>
 </chapter>

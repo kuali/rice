@@ -38,7 +38,7 @@
 				<executions>
 					<execution>
 						<id>ruleRepositoryService-wsdl</id>
-						<phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.krms.api.repository.RuleRepositoryService</className>
 							<outputFile>${project.build.directory}/generated-sources/wsdl/RuleRepositoryService.wsdl</outputFile>
@@ -50,7 +50,7 @@
 					</execution>
 					<execution>
 						<id>functionRepositoryService-wsdl</id>
-						<phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.krms.api.repository.function.FunctionRepositoryService</className>
 							<outputFile>${project.build.directory}/generated-sources/wsdl/FunctionRepositoryService.wsdl</outputFile>

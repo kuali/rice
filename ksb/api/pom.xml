@@ -25,7 +25,7 @@
 				<executions>
 					<execution>
 						<id>remoteServiceRegistry-wsdl</id>
-						<phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.ksb.api.registry.RemoteServiceRegistry</className>
 							<outputFile>${project.build.directory}/generated-sources/wsdl/RemoteServiceRegistry.wsdl</outputFile>

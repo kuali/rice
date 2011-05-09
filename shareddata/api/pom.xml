@@ -35,7 +35,7 @@
                 <executions>
                     <execution>
                         <id>countryService-wsdl</id>
-                        <phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.shareddata.api.country.CountryService</className>
                             <outputFile>${project.build.directory}/generated-sources/wsdl/CountryService.wsdl</outputFile>
@@ -47,7 +47,7 @@
                     </execution>
                     <execution>
                         <id>campusService-wsdl</id>
-                        <phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.shareddata.api.campus.CampusService</className>
                             <outputFile>${project.build.directory}/generated-sources/wsdl/CampusService.wsdl</outputFile>
@@ -59,7 +59,7 @@
                     </execution>
                     <execution>
                         <id>countyService-wsdl</id>
-                        <phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.shareddata.api.county.CountyService</className>
                             <outputFile>${project.build.directory}/generated-sources/wsdl/CountyService.wsdl</outputFile>
@@ -71,7 +71,7 @@
                     </execution>
                     <execution>
                         <id>postalCodeService-wsdl</id>
-                        <phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.shareddata.api.postalcode.PostalCodeService</className>
                             <outputFile>${project.build.directory}/generated-sources/wsdl/PostalCodeService.wsdl</outputFile>
@@ -83,7 +83,7 @@
                     </execution>
                     <execution>
                         <id>stateService-wsdl</id>
-                        <phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.shareddata.api.state.StateService</className>
                             <outputFile>${project.build.directory}/generated-sources/wsdl/StateService.wsdl</outputFile>

@@ -74,7 +74,7 @@
 				<executions>
 					<execution>
 						<id>parameterRepositoryService-wsdl</id>
-						<phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.core.api.parameter.ParameterRepositoryService</className>
 							<outputFile>${project.build.directory}/generated-sources/wsdl/ParameterRepositoryService.wsdl</outputFile>
@@ -86,7 +86,7 @@
 					</execution>
 					<execution>
 						<id>namespaceService-wsdl</id>
-						<phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.core.api.namespace.NamespaceService</className>
 							<outputFile>${project.build.directory}/generated-sources/wsdl/NamespaceService.wsdl</outputFile>
@@ -98,7 +98,7 @@
 					</execution>
 					<execution>
 						<id>styleRepositoryService-wsdl</id>
-						<phase>process-classes</phase>
+						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.core.api.style.StyleRepositoryService</className>
 							<outputFile>${project.build.directory}/generated-sources/wsdl/StyleRepositoryService.wsdl</outputFile>

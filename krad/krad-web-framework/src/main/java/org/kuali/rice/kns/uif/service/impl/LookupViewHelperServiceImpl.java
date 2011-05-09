@@ -280,7 +280,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		if (fieldsForLookup != null) {
 			for (Map.Entry<String, String> entry : fieldsForLookup.entrySet()) {
 				// check here to see if this field is a criteria element on the form
-				newFieldsForLookup.put(entry.getKey(), entry.getValue());
+				newFieldsForLookup.put(entry.getKey(), null);
 			}
 		}
 		return newFieldsForLookup;

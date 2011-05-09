@@ -173,20 +173,31 @@ public class ErrorsField extends FieldBase {
 			if(errorCount < messageMap.getErrorCount()){
 				List<String> diff = messageMap.getPropertiesWithErrors();
 				diff.removeAll(masterKeyList);
-				errors.add("Unknown Server Error(s): " + Arrays.toString(diff.toArray()));
-				errorCount++;
+				//errors.add("Unknown Server Error(s): " + Arrays.toString(diff.toArray()));
+				for (String key : diff) {
+    				errors.addAll(getMessages(view, key,
+                            messageMap.getErrorMessagesForProperty(key, true)));
+    				errorCount = errorCount+ tempCount;
+				}
+				
 			}
 			if(warningCount < messageMap.getWarningCount()){
 				List<String> diff = messageMap.getPropertiesWithWarnings();
 				diff.removeAll(masterKeyList);
-				warnings.add("Unknown Server Warning(s): " + Arrays.toString(diff.toArray()));
-				warningCount++;
+				for (String key : diff) {
+				    warnings.addAll(getMessages(view, key,
+                            messageMap.getWarningMessagesForProperty(key, true)));
+                    warningCount = warningCount + tempCount;
+                }
 			}
 			if(infoCount < messageMap.getInfoCount()){
 				List<String> diff = messageMap.getPropertiesWithInfo();
 				diff.removeAll(masterKeyList);
-				infos.add("Unknown Server Informational Message(s): " + Arrays.toString(diff.toArray()));
-				infoCount++;
+                for (String key : diff) {
+                    infos.addAll(getMessages(view, key,
+                            messageMap.getInfoMessagesForProperty(key, true)));
+                    infoCount = infoCount + tempCount;
+                }
 			}
 		}
 
@@ -236,6 +247,9 @@ public class ErrorsField extends FieldBase {
 								.getAttributeFieldByPath(key);
 						if (field != null && field.getLabel() != null) {
 							label = field.getLabel();
+						}
+						else{
+						    label = key;
 						}
 					}
 

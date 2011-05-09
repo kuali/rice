@@ -11,6 +11,9 @@
 		<config>src/main/resources/org/kuali/rice/krms/datadictionary/ContextBo.xml</config>
 		<config>src/main/resources/org/kuali/rice/krms/uif/EditorDocumentView.xml</config>
 		<config>src/main/resources/org/kuali/rice/krms/datadictionary/AgendaBo.xml</config>
+		<config>src/main/resources/org/kuali/rice/krms/datadictionary/AgendaMaintenance.xml</config>
+		<config>src/main/resources/org/kuali/rice/krms/uif/EditorView.xml</config>
+		<config>src/main/resources/org/kuali/rice/krms/config/KRMSSpringBeans.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -54,6 +57,9 @@
 				<config>/rice-impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/NoteType.xml</config>
 				<config>/rice-impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</config>
 				<config>src/main/resources/org/kuali/rice/krms/datadictionary/AgendaBo.xml</config>
+				<config>src/main/resources/org/kuali/rice/krms/config/KRMSSpringBeans.xml</config>
+				<config>src/main/resources/org/kuali/rice/krms/datadictionary/AgendaMaintenance.xml</config>
+				<config>src/main/resources/org/kuali/rice/krms/uif/EditorView.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

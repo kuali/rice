@@ -32,6 +32,9 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
 
 public final class AgendaBoServiceImpl implements AgendaBoService {
+	
+	// TODO: deal with active flag
+	
 	public final static String WHEN_TRUE = "WHEN TRUE";
 	public final static String WHEN_FALSE = "WHEN FALSE";
 	public final static String ALWAYS = "ALWAYS";

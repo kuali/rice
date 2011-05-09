@@ -14,11 +14,12 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 	def String name
 	def String typeId
 	def String contextId
+	def Boolean active
 
 	def String firstItemId
 	def Set<AgendaAttributeBo> attributes
 	
-	def Set<AgendaItemBo> items
+	def List<AgendaItemBo> items
 
 	public String getNamespaceCode(){
 		return namespace

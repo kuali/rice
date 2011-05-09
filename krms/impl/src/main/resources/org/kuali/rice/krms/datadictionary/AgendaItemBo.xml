@@ -29,6 +29,9 @@
         <ref bean="AgendaItemBo-id"/>
         <ref bean="AgendaItemBo-agendaId"/>
         <ref bean="AgendaItemBo-ruleId"/>
+        <ref bean="AgendaItemBo-subAgendaId"/>
+        <ref bean="AgendaItemBo-whenTrue"/>
+        <ref bean="AgendaItemBo-whenFalse"/>
         <ref bean="AgendaItemBo-always"/>
       </list>
     </property>
@@ -52,7 +55,7 @@
       <bean parent="TextControl" p:size="40"/>
     </property>
     <property name="name" value="id"/>
-    <property name="label" value="Agenda Item Id"/>
+    <property name="label" value="Id"/>
   </bean>  
   
   <bean id="AgendaItemBo-agendaId" parent="AgendaItemBo-agendaId-parentBean"/>
@@ -74,8 +77,41 @@
       <bean parent="TextControl" p:size="40"/>
     </property>
     <property name="name" value="ruleId"/>
-    <property name="label" value="Agenda Item ruleId"/>
+    <property name="label" value="Rule Id"/>
   </bean>  
+  
+  <bean id="AgendaItemBo-subAgendaId" parent="AgendaItemBo-subAgendaId-parentBean"/>
+  <bean id="AgendaItemBo-subAgendaId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Sub-Agenda Id"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="subAgendaId"/>
+    <property name="label" value="Sub-Agenda Id"/>
+  </bean>  
+  
+  <bean id="AgendaItemBo-whenTrue" parent="AgendaItemBo-whenTrue-parentBean"/>
+  <bean id="AgendaItemBo-whenTrue-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="whenTrue"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="whenTrueId"/>
+    <property name="label" value="whenTrue Id"/>
+  </bean>    
+  
+  <bean id="AgendaItemBo-whenFalse" parent="AgendaItemBo-whenFalse-parentBean"/>
+  <bean id="AgendaItemBo-whenFalse-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="whenFalse"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="whenFalseId"/>
+    <property name="label" value="whenFalse Id"/>
+  </bean>    
   
   <bean id="AgendaItemBo-always" parent="AgendaItemBo-always-parentBean"/>
   <bean id="AgendaItemBo-always-parentBean" abstract="true" parent="AttributeDefinition">
@@ -85,7 +121,7 @@
       <bean parent="TextControl" p:size="40"/>
     </property>
     <property name="name" value="alwaysId"/>
-    <property name="label" value="Always Agenda Item Id"/>
+    <property name="label" value="Always Id"/>
   </bean>  
   
   <!-- bean id="AgendaItemBo-ruleId" parent="AgendaItemBo-ruleId-parentBean"/>
@@ -119,12 +155,20 @@
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="ruleId" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="subAgendaId" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="whenTrueId" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="whenFalseId" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="alwaysId" />
       </list>
     </property>
     <property name="resultFields">
       <list>
         <bean parent="AttributeField" p:propertyName="id" />
         <bean parent="AttributeField" p:propertyName="ruleId" />
+        <bean parent="AttributeField" p:propertyName="subAgendaId" />
+        <bean parent="AttributeField" p:propertyName="whenTrueId" />
+        <bean parent="AttributeField" p:propertyName="whenFalseId" />
+        <bean parent="AttributeField" p:propertyName="alwaysId" />
       </list>
     </property>
   </bean>

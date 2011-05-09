@@ -143,14 +143,16 @@
         <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
         <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
         <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR"  />
+        <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR"
+            conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.krms.impl.repository.AgendaAttributeBo" 
           collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" 
           auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
             <inverse-foreignkey field-ref="agendaId" />
         </collection-descriptor>
-         <collection-descriptor name="items" element-class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" 
-          collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="false" auto-update="object" auto-delete="object">
+        <collection-descriptor name="items" element-class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" 
+          collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
             <inverse-foreignkey field-ref="agendaId" />
         </collection-descriptor>
         

@@ -17,6 +17,7 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
+import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 
 /**
@@ -31,8 +32,21 @@ public class EditorDocument extends PersistableBusinessObjectBase {
 	
 	private ContextBo context;
 	private AgendaBo agenda;
+	private AgendaItemBo agendaItemAddLine;
 	
 	/**
+     * @return the agendaItemAddLine
+     */
+    public AgendaItemBo getAgendaItemAddLine() {
+        return this.agendaItemAddLine;
+    }
+    /**
+     * @param agendaItemAddLine the agendaItemAddLine to set
+     */
+    public void setAgendaItemAddLine(AgendaItemBo agendaItemAddLine) {
+        this.agendaItemAddLine = agendaItemAddLine;
+    }
+    /**
 	 * @return the context
 	 */
 	public ContextBo getContext() {

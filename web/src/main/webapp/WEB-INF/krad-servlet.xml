@@ -10,6 +10,7 @@
 
   <context:component-scan base-package="org.kuali.rice.kns" />
   <context:component-scan base-package="edu.sampleu.travel.krad" />
+  <context:component-scan base-package="org.kuali.rice.krms" />
 
   <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"> 
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />

@@ -78,6 +78,7 @@ td {
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	background: #FFF url(../../images/button-bevel.png) 0px 0px;
+	cursor: pointer;
 }
 
 div.globalbuttons { text-align:center;	padding-top: 10px; padding-bottom: 10px;}

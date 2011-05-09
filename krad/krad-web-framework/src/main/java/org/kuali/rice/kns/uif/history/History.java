@@ -10,6 +10,7 @@
  */
 package org.kuali.rice.kns.uif.history;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -29,8 +30,11 @@ import org.kuali.rice.kns.web.spring.form.UifFormBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class History {
-    public History() {
+public class History implements Serializable{    
+	
+	private static final long serialVersionUID = -8279297694371557335L;
+
+	public History() {
         historyEntries = new ArrayList<HistoryEntry>();
     }
 

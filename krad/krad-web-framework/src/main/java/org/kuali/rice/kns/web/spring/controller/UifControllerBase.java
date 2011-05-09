@@ -32,9 +32,11 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
@@ -76,6 +78,7 @@ public abstract class UifControllerBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifControllerBase.class);
 
 	protected static final String REDIRECT_PREFIX = "redirect:";
+	private SessionDocumentService sessionDocumentService;
 
 	/**
 	 * This method will create/obtain the model(form) object before it is passed
@@ -90,11 +93,18 @@ public abstract class UifControllerBase {
 	 */
 	@ModelAttribute(value = "KualiForm")
 	public UifFormBase initForm(HttpServletRequest request) {
-		UifFormBase form;
+		UifFormBase form = null;
 		String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
+		String documentNumber = request.getParameter(KNSConstants.DOCUMENT_DOCUMENT_NUMBER);
 
 		if (StringUtils.isNotBlank(formKeyParam)) {
 			form = (UifFormBase) request.getSession().getAttribute(formKeyParam);
+
+			//retreive from db if form not in session
+			if (form == null){
+				UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
+				form = getSessionDocumentService().getUifDocumentForm(documentNumber, formKeyParam, userSession, request.getRemoteAddr());
+			}
 		}
 		else {
 			form = createInitialForm(request);
@@ -463,5 +473,12 @@ public abstract class UifControllerBase {
 	protected ViewService getViewService() {
 		return KNSServiceLocatorWeb.getViewService();
 	}
+
+	/**
+	 * @return the sessionDocumentService
+	 */
+	public SessionDocumentService getSessionDocumentService() {
+		return KNSServiceLocatorWeb.getSessionDocumentService();
+	}    
 
 }

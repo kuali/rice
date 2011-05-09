@@ -21,9 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.history.History;
@@ -31,6 +31,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.spring.controller.UifControllerBase;
+import org.kuali.rice.kns.web.spring.form.DocumentFormBase;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -81,9 +82,14 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
                 history.buildHistoryFromParameterString(request.getParameter("history"));
             }
             
-            // store form in session
             form.setPreviousView(null);
+
+            //Store form to session and persist document form to db as well
             request.getSession().setAttribute(form.getFormKey(), model);
+            if (form instanceof DocumentFormBase){
+            	UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);            
+            	getSessionDocumentService().setDocumentForm((DocumentFormBase)form, userSession, request.getRemoteAddr());
+            }
             
             // currently methodToCall must be a regularly parseable request parameter, so just get from request
             String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
@@ -134,5 +140,11 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
 
         return true;
     }
-
+    
+	/**
+	 * @return the sessionDocumentService
+	 */
+	public SessionDocumentService getSessionDocumentService() {
+		return KNSServiceLocatorWeb.getSessionDocumentService();
+	}    
 }

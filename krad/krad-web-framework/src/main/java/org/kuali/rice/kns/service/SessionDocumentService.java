@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service;
 import java.sql.Timestamp;
 
 import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.web.spring.form.DocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
@@ -82,5 +83,26 @@ public interface SessionDocumentService {
      */
 	public void purgeAllSessionDocuments(Timestamp expirationDate); 
 
+	/**
+	 * 
+	 * This method stores a UifFormBase into session and database
+	 * 
+	 * @param form
+	 * @param userSession
+	 * @param ipAddress
+	 */
+	public void setDocumentForm(DocumentFormBase form, UserSession userSession, String ipAddress);
+
+	/**
+	 * 
+     * Returns DocumentFormBase object from the db
+	 * 
+	 * @param documentNumber
+	 * @param docFormKey
+	 * @param userSession
+	 * @param ipAddress
+	 * @return
+	 */
+	public DocumentFormBase getUifDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress);
 
 }

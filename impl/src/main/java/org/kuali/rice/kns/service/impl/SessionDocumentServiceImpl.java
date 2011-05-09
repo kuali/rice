@@ -33,8 +33,12 @@ import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.SessionDocument;
 import org.kuali.rice.kns.dao.SessionDocumentDao;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.KualiLRUMap;
+import org.kuali.rice.kns.web.spring.form.DocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.springframework.beans.factory.InitializingBean;
@@ -100,28 +104,12 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     	
 		LOG.debug("getDocumentForm KualiDocumentFormBase from db");
 		try{
-			HashMap<String, String> primaryKeys = new HashMap<String, String>(4);
-			primaryKeys.put(SESSION_ID, userSession.getKualiSessionId());
-			primaryKeys.put(DOCUMENT_NUMBER, documentNumber);
-			primaryKeys.put(PRINCIPAL_ID, userSession.getPrincipalId());
-			primaryKeys.put(IP_ADDRESS, ipAddress);
-   
-			SessionDocument sessionDoc = getBusinessObjectService().findByPrimaryKey(SessionDocument.class, primaryKeys);
-			if(sessionDoc != null){
-				byte[] formAsBytes = sessionDoc.getSerializedDocumentForm();
-				if ( sessionDoc.isEncrypted() ) {
-					formAsBytes = getEncryptionService().decryptBytes(formAsBytes);
-				}
-				ByteArrayInputStream baip = new ByteArrayInputStream(formAsBytes);
-				ObjectInputStream ois = new ObjectInputStream(baip);
-    	        
-				// re-create the KualiDocumentFormBase object
-				documentForm = (KualiDocumentFormBase)ois.readObject();
-	         
-				//re-store workFlowDocument into session
-				KualiWorkflowDocument workflowDocument = documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
-				addDocumentToUserSession(userSession, workflowDocument);				
-			}
+			// re-create the KualiDocumentFormBase object
+			documentForm = (KualiDocumentFormBase)retrieveDocumentForm(userSession, userSession.getKualiSessionId(), documentNumber, ipAddress);
+         
+			//re-store workFlowDocument into session
+			KualiWorkflowDocument workflowDocument = documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
+			addDocumentToUserSession(userSession, workflowDocument);				
 		} catch(Exception e) {
 		    LOG.error("getDocumentForm failed for SessId/DocNum/PrinId/IP:"
    			 + userSession.getKualiSessionId()+"/"+documentNumber+"/"+userSession.getPrincipalId()+"/"+ipAddress, e);
@@ -130,6 +118,54 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
         return documentForm;
     }
     
+	/**
+	 * @see org.kuali.rice.kns.service.SessionDocumentService#getUifDocumentForm(org.kuali.rice.kns.web.spring.form.DocumentFormBase, org.kuali.rice.kns.UserSession, java.lang.String)
+	 */
+	@Override
+	public DocumentFormBase getUifDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress) {
+    	DocumentFormBase documentForm = null;
+    	
+		LOG.debug("getDocumentForm KualiDocumentFormBase from db");
+		try{
+			// re-create the DocumentFormBase object
+			documentForm = (DocumentFormBase)retrieveDocumentForm(userSession, docFormKey, documentNumber, ipAddress);
+         
+			//re-store workFlowDocument into session
+			KualiWorkflowDocument workflowDocument = documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
+			addDocumentToUserSession(userSession, workflowDocument);				
+		} catch(Exception e) {
+		    LOG.error("getDocumentForm failed for SessId/DocNum/PrinId/IP:"
+   			 + userSession.getKualiSessionId()+"/"+documentNumber+"/"+userSession.getPrincipalId()+"/"+ipAddress, e);
+		}
+
+        return documentForm;
+	}
+
+
+	protected Object retrieveDocumentForm(UserSession userSession, String sessionId, String documentNumber, String ipAddress) throws Exception{
+		HashMap<String, String> primaryKeys = new HashMap<String, String>(4);
+		primaryKeys.put(SESSION_ID, sessionId);
+		if (documentNumber != null){
+			primaryKeys.put(DOCUMENT_NUMBER, documentNumber);
+		}
+		primaryKeys.put(PRINCIPAL_ID, userSession.getPrincipalId());
+		primaryKeys.put(IP_ADDRESS, ipAddress);
+
+		SessionDocument sessionDoc = getBusinessObjectService().findByPrimaryKey(SessionDocument.class, primaryKeys);
+		if(sessionDoc != null){
+			byte[] formAsBytes = sessionDoc.getSerializedDocumentForm();
+			if ( sessionDoc.isEncrypted() ) {
+				formAsBytes = getEncryptionService().decryptBytes(formAsBytes);
+			}
+			ByteArrayInputStream baip = new ByteArrayInputStream(formAsBytes);
+			ObjectInputStream ois = new ObjectInputStream(baip);
+	        
+			return ois.readObject();
+		}
+		
+		return null;
+	}
+	
 	@Override
 	public KualiWorkflowDocument getDocumentFromSession(UserSession userSession, String docId) {
 		@SuppressWarnings("unchecked")
@@ -143,6 +179,10 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 		return workflowDocMap.get(docId);
 	}
 	
+	/**
+	 * @see org.kuali.rice.kns.service.SessionDocumentService#addDocumentToUserSession(org.kuali.rice.kns.UserSession, 
+	 * 		org.kuali.rice.kns.workflow.service.KualiWorkflowDocument)
+	 */
 	@Override
 	public void addDocumentToUserSession(UserSession userSession, KualiWorkflowDocument document) {
 		try {
@@ -199,64 +239,90 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 	        String documentNumber = form.getDocument().getDocumentNumber(); 
 	    	
 		    if( StringUtils.isNotBlank(documentNumber)) {
-		        try {
-		            LOG.debug("set Document Form into database");
-		            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-		            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		            ObjectOutputStream oos = new ObjectOutputStream(baos);
-		            oos.writeObject(form);
-		            // serialize the KualiDocumentFormBase object into a byte array
-		            byte[] formAsBytes = baos.toByteArray();
-					boolean encryptContent = false;
-					if ( form.getDocTypeName() != null ) {
-						DocumentEntry documentEntry = getDataDictionaryService().getDataDictionary().getDocumentEntry( form.getDocTypeName() );
-						if ( documentEntry != null ) {
-							encryptContent = documentEntry.isEncryptDocumentDataInPersistentSessionStorage();
-						}
-					}					 
-		            if ( encryptContent ) {
-		            	formAsBytes = getEncryptionService().encryptBytes(formAsBytes);
-		            }
-		
-		            // check if a record is already there in the database
-		            // this may only happen under jMeter testing, but there is no way to be sure
-					HashMap<String, String> primaryKeys = new HashMap<String, String>(4);
-					primaryKeys.put(SESSION_ID, userSession.getKualiSessionId());
-					primaryKeys.put(DOCUMENT_NUMBER, documentNumber);
-					primaryKeys.put(PRINCIPAL_ID, userSession.getPrincipalId());
-					primaryKeys.put(IP_ADDRESS, ipAddress);
-		
-					SessionDocument sessionDocument = getBusinessObjectService().findByPrimaryKey(SessionDocument.class, primaryKeys);
-					if ( sessionDocument == null ) {
-						sessionDocument = new SessionDocument();
-			            sessionDocument.setSessionId(userSession.getKualiSessionId());
-			    	    sessionDocument.setDocumentNumber(documentNumber);
-			    	    sessionDocument.setPrincipalId(userSession.getPrincipalId());
-			    	    sessionDocument.setIpAddress(ipAddress);
-					}
-					sessionDocument.setSerializedDocumentForm(formAsBytes);
-					sessionDocument.setEncrypted(encryptContent);
-		    	    sessionDocument.setLastUpdatedDate(currentTime);
-		    	    
-	    	    	businessObjectService.save(sessionDocument);
-		    	  
-		        } catch(Exception e) {
-		        	 final String className = form != null ? form.getClass().getName() : "null";
-		        	 LOG.error("setDocumentForm failed for SessId/DocNum/PrinId/IP/class:"
-		        			 + userSession.getKualiSessionId()+"/"+documentNumber+"/"+userSession.getPrincipalId()+"/"+ipAddress+"/"+className , e);
-		        }
+		    	persistDocumentForm(form, userSession, ipAddress, userSession.getKualiSessionId(), documentNumber);
 		    } else {
 		    	LOG.warn("documentNumber is null on form's document: " + form);
 		    }
     	}    	
     }
     
+    /**
+     * @see org.kuali.rice.kns.service.SessionDocumentService#setDocumentForm(org.kuali.rice.kns.web.spring.form.DocumentFormBase,
+     * 		org.kuali.rice.kns.UserSession, java.lang.String)
+     */
+    @Override
+	public void setDocumentForm(DocumentFormBase form, UserSession userSession, String ipAddress){
+    	synchronized ( userSession ) { 
+	    	//formKey was set in KualiDocumentActionBase execute method
+			String formKey = form.getFormKey();
+			String key = userSession.getKualiSessionId() + "-" + formKey;
+			  	    	
+			String documentNumber = form.getDocument().getDocumentNumber();
+			if( StringUtils.isNotBlank(formKey)) {
+				//FIXME: Currently using formKey for sessionId
+				persistDocumentForm(form, userSession, ipAddress, formKey, documentNumber);
+			} else {
+		    	LOG.warn("documentNumber is null on form's document: " + form);
+		    }
+    	}    	
+    }
+
+    protected void persistDocumentForm(Object form, UserSession userSession, String ipAddress, String sessionId, String documentNumber){
+        try {
+            LOG.debug("set Document Form into database");
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(form);
+            // serialize the KualiDocumentFormBase object into a byte array
+            byte[] formAsBytes = baos.toByteArray();
+			boolean encryptContent = false;
+			if ((form instanceof KualiDocumentFormBase) && ((KualiDocumentFormBase)form).getDocTypeName() != null ) {
+				DocumentEntry documentEntry = getDataDictionaryService().getDataDictionary().getDocumentEntry( ((KualiDocumentFormBase)form).getDocTypeName() );
+				if ( documentEntry != null ) {
+					encryptContent = documentEntry.isEncryptDocumentDataInPersistentSessionStorage();
+				}
+			}					 
+            if ( encryptContent ) {
+            	formAsBytes = getEncryptionService().encryptBytes(formAsBytes);
+            }
+
+            // check if a record is already there in the database
+            // this may only happen under jMeter testing, but there is no way to be sure
+			HashMap<String, String> primaryKeys = new HashMap<String, String>(4);
+			primaryKeys.put(SESSION_ID, sessionId);
+			primaryKeys.put(DOCUMENT_NUMBER, documentNumber);
+			primaryKeys.put(PRINCIPAL_ID, userSession.getPrincipalId());
+			primaryKeys.put(IP_ADDRESS, ipAddress);
+
+			SessionDocument sessionDocument = getBusinessObjectService().findByPrimaryKey(SessionDocument.class, primaryKeys);
+			if ( sessionDocument == null ) {
+				sessionDocument = new SessionDocument();
+	            sessionDocument.setSessionId(sessionId);
+	    	    sessionDocument.setDocumentNumber(documentNumber);
+	    	    sessionDocument.setPrincipalId(userSession.getPrincipalId());
+	    	    sessionDocument.setIpAddress(ipAddress);
+			}
+			sessionDocument.setSerializedDocumentForm(formAsBytes);
+			sessionDocument.setEncrypted(encryptContent);
+    	    sessionDocument.setLastUpdatedDate(currentTime);
+    	    
+	    	businessObjectService.save(sessionDocument);
+    	  
+        } catch(Exception e) {
+        	 final String className = form != null ? form.getClass().getName() : "null";
+        	 LOG.error("setDocumentForm failed for SessId/DocNum/PrinId/IP/class:"
+        			 + userSession.getKualiSessionId()+"/"+documentNumber+"/"+userSession.getPrincipalId()+"/"+ipAddress+"/"+className , e);
+        }    	
+    }
+
+    /**
+     * @see org.kuali.rice.kns.service.SessionDocumentService#purgeAllSessionDocuments(java.sql.Timestamp)
+     */
     @Override
 	public void purgeAllSessionDocuments(Timestamp expirationDate){
     	sessionDocumentDao.purgeAllSessionDocuments(expirationDate);
-    }
-    
-    
+    }        
 
     /**
 	 * @return the sessionDocumentDao

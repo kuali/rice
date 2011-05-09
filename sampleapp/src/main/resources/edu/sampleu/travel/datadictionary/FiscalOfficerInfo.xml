@@ -81,7 +81,26 @@
     <property name="title" value="Fiscal Officer Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
     <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoInquiryViewHelperServiceImpl" />
-	<property name="entryPageId" value="page1"/>
+    <property name="Items">
+      <list>
+        <ref bean="information" />
+        <ref bean="accounts" />    
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="FiscalOfficerInfo-InquiryView3" parent="FiscalOfficerInfo-InquiryView">
+   <property name="additionalCssFiles" ref="ka-css"/>
+   <property name="id" value="FiscalOfficerInfoInquiry3"/>
+   <property name="viewName" value="FiscalOfficerInfoInquiry3"/>
+    <property name="title" value="Fiscal Officer Inquiry 3"/>
+  </bean>
+  
+  <bean id="FiscalOfficerInfo-InquiryView2" parent="FiscalOfficerInfo-InquiryView">
+    <property name="id" value="FiscalOfficerInfoInquiry2"/>
+  	<property name="viewName" value="FiscalOfficerInfoInquiry2"/>
+    <property name="title" value="Fiscal Officer Inquiry 2"/>
+    <property name="entryPageId" value="page1"/>
 	<property name="navigation">
         <ref bean="tabMenu"/>
     </property>

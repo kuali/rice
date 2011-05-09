@@ -697,7 +697,7 @@ function setupValidator(){
 	
 	//Make sure form doesn't have any unsaved data if user clicks on any other portal links, closes browser or presses fwd/back browser button
 	jq(window).bind('beforeunload', function(evt){
-		var dirty = jq(".dirty");
+		var dirty = jq(".field_attribute").find("input.dirty")
 		//methodToCall check is needed to skip from normal way of unloading (cancel,save,close) 
 		var methodToCall = jq("[name='methodToCall']").val();
 		if (dirty.length > 0 && methodToCall == null)

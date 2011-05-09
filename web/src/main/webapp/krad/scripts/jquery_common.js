@@ -409,7 +409,7 @@ function createLightBox(controlId, options) {
     	if (jq("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
     		jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true'
     				+ '&showHome=false' + '&showHistory=' + showHistory 
-    				+ '&history=' + jq('#history\\.historyParameterString').val());
+    				+ '&history=' + jq('#formHistory\\.historyParameterString').val());
     	}    	
     });			
 }

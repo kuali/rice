@@ -42,7 +42,7 @@ import org.kuali.rice.kns.uif.service.ViewService;
 public class UifFormBase implements Serializable {
     private static final long serialVersionUID = 8432543267099454434L;
     
-    private History history;
+    private History formHistory;
 
     // current view
     protected String viewId;
@@ -80,7 +80,7 @@ public class UifFormBase implements Serializable {
         viewRequestParameters = new HashMap<String, String>();
         newCollectionLines = new HashMap<String, Object>();
         actionParameters = new HashMap<String, String>();
-        history = new History();
+        formHistory = new History();
     }
 
     /**
@@ -498,15 +498,15 @@ public class UifFormBase implements Serializable {
      * viewing of the current view.  Used for breadcrumb widget generation on the view.
      * @param history the history to set
      */
-    public void setHistory(History history) {
-        this.history = history;
+    public void setFormHistory(History history) {
+        this.formHistory = history;
     }
 
     /**
      * @return the history
      */
-    public History getHistory() {
-        return history;
+    public History getFormHistory() {
+        return formHistory;
     }
     
     

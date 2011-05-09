@@ -65,7 +65,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             if(model instanceof UifFormBase) {
                 form = (UifFormBase)model;
                 //Main history/breadcrumb tracking support
-                History history = form.getHistory();
+                History history = form.getFormHistory();
                 View view = form.getView();
 
                 history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());

@@ -394,7 +394,7 @@ public abstract class UifControllerBase {
 	 */
 	protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
 	    //On post redirects we need to make sure we are sending the history forward:
-	    urlParameters.setProperty("history", form.getHistory().getHistoryParameterString());
+	    urlParameters.setProperty("history", form.getFormHistory().getHistoryParameterString());
 	    // If this is an Ajax call only return the redirectURL view with the URL set
 		// This is to avoid automatic redirect when using light boxes
 		if (urlParameters.get("ajaxCall") != null && urlParameters.get("ajaxCall").equals("true")) {

@@ -156,14 +156,26 @@ function setPageBreadcrumb(){
 	//check to see if page has navigation element, if so show breadcrumb
 	if(jq("#viewnavigation_div").html()){
 		var pageTitle = jq("#currentPageTitle").val();
+		var pageId = jq("#pageId").val();
+		jq("#breadcrumbs").find("#page_breadcrumb").remove();
+		var bcSet = false;
 		if(pageTitle){
-			jq("#breadcrumbs").find("#page_breadcrumb").remove();
 			jq("#breadcrumbs").append("<span id='page_breadcrumb'> » <span class='current'>" + pageTitle + "</span></span>");
 			jq("#current_breadcrumb_span").hide();
 			jq("#current_breadcrumb_anchor").show();
+			bcSet = true;
 		}
-		else{
-			jq("#breadcrumbs").remove("#page_breadcrumb");
+		else if(pageId){
+			pageTitle = jq("a[name='"+ pageId + "']").text();
+			if(pageTitle){
+				jq("#breadcrumbs").append("<span id='page_breadcrumb'> » <span class='current'>" + pageTitle + "</span></span>");
+				jq("#current_breadcrumb_span").hide();
+				jq("#current_breadcrumb_anchor").show();
+				bcSet=true;
+			}
+		}
+		
+		if(!bcSet){
 			jq("#current_breadcrumb_anchor").hide();
 			jq("#current_breadcrumb_span").show();
 		}

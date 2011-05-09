@@ -81,6 +81,7 @@
     <property name="title" value="Fiscal Officer Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
     <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoInquiryViewHelperServiceImpl" />
+	<property name="entryPageId" value="page1"/>
 	<property name="navigation">
         <ref bean="tabMenu"/>
     </property>
@@ -108,8 +109,8 @@
   <bean id="tabMenu" parent="NavigationGroupTabMenu">
 	    <property name="items">
 	        <list>
-	            <bean parent="ActionLinkField" p:navigateToPageId="page1" p:actionLabel="Information"/>
-	            <bean parent="ActionLinkField" p:navigateToPageId="page2" p:actionLabel="Accounts"/>
+	            <bean parent="NavigationActionLinkField" p:navigateToPageId="page1" p:actionLabel="Information"/>
+	            <bean parent="NavigationActionLinkField" p:navigateToPageId="page2" p:actionLabel="Accounts"/>
 	        </list>
 	    </property>
   </bean>

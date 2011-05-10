@@ -17,7 +17,9 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupAttribute;
@@ -34,7 +36,6 @@ import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
-import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
@@ -99,19 +100,22 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         return true;
     }
 
-    public Group createGroup(Group groupInfo) {
-        GroupBo group = new GroupBo();
+    public Group createGroup(Group group) {
+        if (group == null) {
+            throw new RiceIllegalArgumentException(("group is null"));
+        }
+        GroupBo groupBo = new GroupBo();
 
-        group = GroupBo.from(groupInfo);
+        groupBo = GroupBo.from(group);
 
-        saveGroup(group);
+        saveGroup(groupBo);
 
-        Group newGroupInfo = getGroupByName(groupInfo.getNamespaceCode(), groupInfo.getName());
+        Group newGroupInfo = getGroupByName(group.getNamespaceCode(), group.getName());
 
-        if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
+        if(group.getAttributes() != null && group.getAttributes().size() > 0) {
 
             List<GroupAttributeBo> attributeBos = new ArrayList<GroupAttributeBo>();
-            for (GroupAttribute attr : groupInfo.getAttributes()) {
+            for (GroupAttribute attr : group.getAttributes()) {
                 attributeBos.add(GroupAttributeBo.from(attr));
             }
             saveGroupAttributes(attributeBos);
@@ -194,40 +198,45 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 	 *
 	 * @see org.kuali.rice.kim.api.group.GroupUpdateService#updateGroup(java.lang.String, org.kuali.rice.kim.api.group.Group)
 	 */
-	public Group updateGroup(String groupId, Group groupInfo) {
-        // Note:  this cannot be used to change id
-        GroupBo group = getGroupBo(groupId);
-
+	public Group updateGroup(String groupId, Group group) {
         if (group == null) {
+            throw new RiceIllegalArgumentException(("group is null"));
+        }
+        if (StringUtils.isEmpty(groupId)) {
+            throw new RiceIllegalArgumentException(("groupId is empty"));
+        }
+        // Note:  this cannot be used to change id
+        GroupBo groupBo = getGroupBo(groupId);
+
+        if (groupBo == null) {
             throw new IllegalArgumentException("Group not found for update.");
         }
 
-        group.setActive(groupInfo.isActive());
-        group.setName(groupInfo.getName());
-        group.setNamespaceCode(groupInfo.getNamespaceCode());
-        group.setDescription(groupInfo.getDescription());
-        group.setKimTypeId(groupInfo.getKimTypeId());
-
+        groupBo.setActive(group.isActive());
+        groupBo.setName(group.getName());
+        groupBo.setNamespaceCode(group.getNamespaceCode());
+        groupBo.setDescription(group.getDescription());
+        groupBo.setKimTypeId(group.getKimTypeId());
 
 
         //delete old group attributes
         Map<String,String> criteria = new HashMap<String,String>();
-        criteria.put(KIMPropertyConstants.Group.GROUP_ID, group.getId());
+        criteria.put(KIMPropertyConstants.Group.GROUP_ID, groupBo.getId());
         this.businessObjectService.deleteMatching(GroupAttributeBo.class, criteria);
 
 
-        group = saveGroup(group);
+        groupBo = saveGroup(groupBo);
 
         //create new group attributes
-        if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
+        if(group.getAttributes() != null && group.getAttributes().size() > 0) {
             List<GroupAttributeBo> attributeBos = new ArrayList<GroupAttributeBo>();
-            for (GroupAttribute attr : groupInfo.getAttributes()) {
+            for (GroupAttribute attr : group.getAttributes()) {
                 attributeBos.add(GroupAttributeBo.from(attr));
             }
             saveGroupAttributes(attributeBos);
         }
 
-        return getGroup(groupInfo.getId());
+        return getGroup(group.getId());
     }
 
 	protected GroupBo saveGroup(GroupBo group) {

@@ -124,7 +124,7 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleMemberImpl.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/group/Group.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml</value>

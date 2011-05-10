@@ -42,8 +42,8 @@ import java.util.*;
 public class GroupInquirableImpl extends KualiInquirableImpl {
 
 
-	protected final String GROUP_NAME = "groupName";
-	protected final String GROUP_ID = "groupId";
+	protected final String GROUP_NAME = "name";
+	protected final String GROUP_ID = "id";
 	protected final String NAMESPACE_CODE = "namespaceCode";
 	
 	@Override

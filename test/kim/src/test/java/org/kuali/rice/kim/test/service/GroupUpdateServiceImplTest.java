@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for {@link GroupUpdateServiceImpl}
@@ -50,22 +51,6 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 	private GroupUpdateServiceImpl groupUpdateService;
 	private BusinessObjectService businessObjectService;
 
-	/*
-		The following assertions (borrowed from GroupServiceImplTest) should hold at the start of a test:
-
- 		assertTrue( "g1 must contain group g2", groupIds.contains( "g2" ) );
-		assertTrue( "g1 must contain group g3", groupIds.contains( "g3" ) );
-		assertFalse( "g1 must not contain group g4 (inactive)", groupIds.contains( "g4" ) );
-		assertTrue( "g2 must contain group g3", groupIds.contains( "g3" ) );
-		assertFalse( "g2 must not contain group g4 (inactive)", groupIds.contains( "g4" ) );
-
-		assertTrue( "p1 must be in g2", groupService.isMemberOfGroup("p1", "g2") );
-		assertTrue( "p1 must be direct member of g2", groupService.isDirectMemberOfGroup("p1", "g2") );
-		assertTrue( "p3 must be in g2", groupService.isMemberOfGroup("p3", "g2") );
-		assertFalse( "p3 should not be a direct member of g2", groupService.isDirectMemberOfGroup("p3", "g2") );
-		assertFalse( "p4 should not be reported as a member of g2 (g4 is inactive)", groupService.isMemberOfGroup("p4", "g2") );
-	 */
-
 	public void setUp() throws Exception {
 		super.setUp();
 		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupService"));
@@ -75,11 +60,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 
 	@Test
 	public void testCreateGroup() {
-		// Silly test
-		Group.Builder groupInfo = Group.Builder.create("KUALI", "gA", "1");
-		groupInfo.setActive(true);
-
-		groupUpdateService.createGroup(groupInfo.build());
+		Group groupInfo = createGroup();
 
 		Group result = groupService.getGroupByName("KUALI", "gA");
 
@@ -188,14 +169,53 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 	}
 
 	/* Stubs to test other GroupUpdateService methods: */
-//	@Test
-//	public void testUpdateGroup() {}
-//
-//	@Test
-//	public void testAddGroupToGroup() {}
-//
-//	@Test
-//	public void testAddPrincipalToGroup() {}
+	@Test
+	public void testUpdateGroup() {
+
+        Group group = createGroup();
+        Group.Builder builder = Group.Builder.create(group);
+		builder.setDescription("This is a new description.  It is useful.");
+
+
+		groupUpdateService.updateGroup(group.getId(), builder.build());
+
+		Group result = groupService.getGroupByName("KUALI", "gA");
+
+		assertEquals(group.isActive(), result.isActive());
+		assertEquals(group.getNamespaceCode(), result.getNamespaceCode());
+		assertEquals(group.getName(), result.getName());
+		assertEquals(group.getKimTypeId(), result.getKimTypeId());
+        assertEquals(builder.getDescription(), result.getDescription());
+    }
+
+	@Test
+	public void testAddGroupToGroup() {
+        Group group = createGroup();
+
+        //make sure g1 is not a member of gA
+        assertFalse(groupService.isGroupMemberOfGroup("g1", group.getId()));
+
+        //add g1 to gA
+        groupUpdateService.addGroupToGroup("g1", group.getId());
+
+        //make sure g1 is now a member of gA
+        groupUpdateService.isGroupMemberOfGroup("g1", group.getId());
+
+    }
+
+	@Test
+	public void testAddPrincipalToGroup() {
+        Group group = createGroup();
+
+        //make sure g1 is not a member of gA
+        assertFalse(groupService.isMemberOfGroup("p1", group.getId()));
+
+        //add g1 to gA
+        groupUpdateService.addPrincipalToGroup("p1", group.getId());
+
+        //make sure g1 is now a member of gA
+        groupUpdateService.isMemberOfGroup("p1", group.getId());
+    }
 
 
 	private List<GroupMemberBo> getActiveAndInactiveGroupTypeMembers(String groupId) {
@@ -216,4 +236,10 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
         return new ArrayList<GroupMemberBo>(businessObjectService.findMatching(GroupMemberBo.class, criteria));
 	}
 
+    private Group createGroup() {
+        Group.Builder groupInfo = Group.Builder.create("KUALI", "gA", "1");
+		groupInfo.setActive(true);
+
+		return groupUpdateService.createGroup(groupInfo.build());
+    }
 }

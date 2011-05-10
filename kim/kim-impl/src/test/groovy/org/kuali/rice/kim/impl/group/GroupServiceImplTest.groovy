@@ -56,8 +56,6 @@ class GroupServiceImplTest {
     GroupServiceImpl groupServiceImpl
     GroupService groupService
 
-    GroupBo groupBo = new GroupBo()
-
     @BeforeClass
     static void createSampleGroupBOs() {
         Calendar calendarFrom = Calendar.getInstance();

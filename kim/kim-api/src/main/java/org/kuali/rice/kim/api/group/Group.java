@@ -147,6 +147,9 @@ public final class Group implements GroupContract, ModelObjectComplete {
          * creates a Group from an existing {@link org.kuali.rice.kim.api.group.GroupContract}.
          */
         public static Builder create(GroupContract contract) {
+            if (contract == null) {
+                throw new IllegalArgumentException("GroupContract is null");
+            }
             Builder builder = new Builder(contract.getNamespaceCode(), contract.getName(), contract.getKimTypeId());
             builder.setId(contract.getId());
             builder.setDescription(contract.getDescription());

@@ -70,7 +70,7 @@ public class BaseBOClassAndBaseDocumentClassTest extends KNSTestCase {
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
-		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml");
+		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/impl/group/Group.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/impl/type/KimType.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/test/document");

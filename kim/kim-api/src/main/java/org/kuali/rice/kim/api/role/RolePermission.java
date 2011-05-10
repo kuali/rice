@@ -52,7 +52,7 @@ public class RolePermission implements RolePermissionContract, ModelObjectComple
 
     @XmlElement(name = RolePermission.Elements.ROLE_ID, required = false)
     private final String roleId;
-    
+
     @XmlElement(name = RolePermission.Elements.PERMISSION_ID, required = false)
     private final String permissionId;
 
@@ -70,9 +70,8 @@ public class RolePermission implements RolePermissionContract, ModelObjectComple
     private final Collection<Element> _futureElements = null;
 
     /**
-	 *  A constructor to be used only by JAXB unmarshalling.
-	 *  
-	 */
+     * A constructor to be used only by JAXB unmarshalling.
+     */
     private RolePermission() {
         this.id = null;
         this.roleId = null;
@@ -81,12 +80,12 @@ public class RolePermission implements RolePermissionContract, ModelObjectComple
         this.versionNumber = null;
         this.objectId = null;
     }
- 
+
     /**
-	 * A constructor using the Builder.
-	 * 
-	 * @param builder
-	 */
+     * A constructor using the Builder.
+     *
+     * @param builder
+     */
     public RolePermission(Builder builder) {
         this.id = builder.getId();
         this.roleId = builder.getRoleId();
@@ -106,16 +105,16 @@ public class RolePermission implements RolePermissionContract, ModelObjectComple
         return permissionId;
     }
 
-	@Override
-	public String getRoleId() {
-		return roleId;
-	}
+    @Override
+    public String getRoleId() {
+        return roleId;
+    }
 
-	@Override
-	public boolean isActive() {
-		return active;
-	}
-	
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
     @Override
     public Long getVersionNumber() {
         return versionNumber;
@@ -151,7 +150,7 @@ public class RolePermission implements RolePermissionContract, ModelObjectComple
         private Long versionNumber = 1L;
         private String objectId;
         private boolean active;
-        
+
         private Builder(String id, String roleId, String permissionId) {
             setId(id);
             setRoleId(roleId);
@@ -213,9 +212,9 @@ public class RolePermission implements RolePermissionContract, ModelObjectComple
         }
 
         public void setVersionNumber(Long versionNumber) {
-        	 if (versionNumber == null || versionNumber <= 0) {
-                 throw new IllegalArgumentException("versionNumber is invalid");
-             }
+            if (versionNumber == null || versionNumber <= 0) {
+                throw new IllegalArgumentException("versionNumber is invalid");
+            }
             this.versionNumber = versionNumber;
         }
 
@@ -228,17 +227,23 @@ public class RolePermission implements RolePermissionContract, ModelObjectComple
             this.objectId = objectId;
         }
 
-		@Override
+        @Override
         public boolean isActive() {
-			return active;
-		}
-		
-		public void setActive(final boolean active) {
+            return active;
+        }
+
+        public void setActive(final boolean active) {
             this.active = active;
-        }		
-		
+        }
+
         @Override
         public RolePermission build() {
+            if (versionNumber == null || versionNumber <= 0) {
+                throw new IllegalStateException("versionNumber is invalid");
+            }
+            if (StringUtils.isWhitespace(id)) {
+                throw new IllegalStateException("id is blank");
+            }
             return new RolePermission(this);
         }
     }

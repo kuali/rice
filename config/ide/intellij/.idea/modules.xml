@@ -26,7 +26,6 @@
       <module fileurl="file://$PROJECT_DIR$/rice-kim-api.iml" filepath="$PROJECT_DIR$/rice-kim-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-kim-framework.iml" filepath="$PROJECT_DIR$/rice-kim-framework.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-kim-impl.iml" filepath="$PROJECT_DIR$/rice-kim-impl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rice-kim-web.iml" filepath="$PROJECT_DIR$/rice-kim-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms.iml" filepath="$PROJECT_DIR$/rice-krms.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms-api.iml" filepath="$PROJECT_DIR$/rice-krms-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms-framework.iml" filepath="$PROJECT_DIR$/rice-krms-framework.iml" />

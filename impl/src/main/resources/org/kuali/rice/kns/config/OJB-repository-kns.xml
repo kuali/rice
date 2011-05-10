@@ -54,10 +54,12 @@
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
 -->
-		<reference-descriptor name="attachment" class-ref="org.kuali.rice.kns.bo.DocumentAttachment" auto-retrieve="true" auto-update="object"
+        <!-- TODO: Needed only for 1.0.3.1 compatibility -->
+ 		<reference-descriptor name="attachment" class-ref="org.kuali.rice.kns.bo.DocumentAttachment" auto-retrieve="true" auto-update="object"
 			auto-delete="object" proxy="true">
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
+		<!-- TODO end -->
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.kns.bo.DocumentAttachment" table="KRNS_MAINT_DOC_ATT_T">

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.bo;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,6 +33,7 @@ import javax.persistence.Version;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -55,6 +58,8 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     private boolean newCollectionRecord;
     @Transient
     protected PersistableBusinessObjectExtension extension;
+    @Transient
+    private FormFile attachmentFile;
 
     // The following support notes on BusinessObjects (including DocumentHeader)
     @Transient
@@ -372,7 +377,35 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 		this.extension = extension;
 	}
 
-	public boolean isAutoIncrementSet() {
+	public FormFile getAttachmentFile() {
+        return this.attachmentFile;
+    }
+
+    public void setAttachmentFile(FormFile attachmentFile) {
+        this.attachmentFile = attachmentFile;
+    }
+    
+    public void populateAttachmentForBO() {
+        if((this.getAttachmentFile() != null) && (this instanceof PersistableAttachment)) {
+            PersistableAttachment boAttachment = (PersistableAttachment) this;
+            if (this.getAttachmentFile().getFileSize() > 0) {
+                try {
+                    boAttachment.setAttachmentContent(this.getAttachmentFile().getFileData());
+                }catch (FileNotFoundException e) {
+                    LOG.error("Error while populating the Document Attachment", e);
+                    throw new RuntimeException("Could not populate DocumentAttachment object", e);
+                }catch (IOException e) {
+                    LOG.error("Error while populating the Document Attachment", e);
+                    throw new RuntimeException("Could not populate DocumentAttachment object", e);
+                } 
+                boAttachment.setFileName(this.getAttachmentFile().getFileName());
+                boAttachment.setContentType(this.getAttachmentFile().getContentType());
+            }
+        }
+    }
+
+
+    public boolean isAutoIncrementSet() {
 		return autoIncrementSet;
 	}
 

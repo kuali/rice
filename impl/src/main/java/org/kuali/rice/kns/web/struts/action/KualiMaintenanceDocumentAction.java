@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import static org.kuali.rice.kns.util.KNSConstants.METHOD_TO_CALL_ATTRIBUTE;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
@@ -396,14 +398,50 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	public ActionForward downloadAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
 		MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
-		document.refreshReferenceObject("attachment");
-		DocumentAttachment attachment = document.getAttachment();
-		if(attachment != null) {
-			streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response); 
+		PersistableAttachment attachment;
+		String collectionBo = getSelectedCollectionBo(request);
+		if (StringUtils.isBlank(collectionBo)) {
+		    attachment = (PersistableAttachment) document.getNewMaintainableObject().getBusinessObject();
+		    
+		    if (attachment.getFileName() == null) {
+		        PersistableBusinessObject pBo = (PersistableBusinessObject) document.getNewMaintainableObject().getBusinessObject();
+		        pBo.populateAttachmentForBO();
+		    }
+
+		    // TODO: Needed only for 1.0.3.1 compatibility.  (Documents stored in workflow during upgrade still have attachments stored
+		    //       the old way.)
+		    if (attachment.getFileName() == null)  {
+		        DocumentAttachment documentAttachment = document.getAttachment();
+		        if(documentAttachment != null) {
+		            streamToResponse(documentAttachment.getAttachmentContent(), documentAttachment.getFileName(), documentAttachment.getContentType(), response); 
+		        }
+		        return null;
+		    }
+
+		} else {
+            attachment = (PersistableAttachment) PropertyUtils.getProperty(document.getNewMaintainableObject().getBusinessObject(), collectionBo);
+		}
+		if (StringUtils.isNotBlank(attachment.getFileName())) {
+		    streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response);
 		}
 		return null;
 	}
 
+    /**
+     * This method returns the BO of the collection in the maintenance document based on the request's method to call attribute.
+     * Null is returned when no collection is involved or the request attribute is not set.
+     * 
+     * @param request
+     * @return the selected BO of the collection or null
+     */
+	private String getSelectedCollectionBo(HttpServletRequest request) {
+        String parameterName = (String) request.getAttribute(METHOD_TO_CALL_ATTRIBUTE);
+	    if (StringUtils.isNotBlank(parameterName)) {
+	        return StringUtils.substringBetween(parameterName, "document.newMaintainableObject.", ".attachmentFile");
+	    } else {
+	        return null;
+	    }
+	}
 
 	/**
 	 * 
@@ -420,7 +458,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
 		MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
 		document.refreshReferenceObject("attachment");
-		getBusinessObjectService().delete(document.getAttachment());
+//		getBusinessObjectService().delete(document.getAttachment());
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
 

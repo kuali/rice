@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.document;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collections;
@@ -33,7 +32,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
-import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.Person;
@@ -43,6 +41,7 @@ import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.PersistableAttachment;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.datadictionary.WorkflowProperties;
@@ -76,7 +75,7 @@ import org.xml.sax.SAXException;
  */
 @Entity
 @Table(name="KRNS_MAINT_DOC_T")
-public class MaintenanceDocumentBase extends DocumentBase implements MaintenanceDocument , SessionDocument{
+public class MaintenanceDocumentBase extends DocumentBase implements MaintenanceDocument, SessionDocument {
     private static final long serialVersionUID = -505085142412593305L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentBase.class);
     public static final String MAINTAINABLE_IMPL_CLASS = "maintainableImplClass";
@@ -100,27 +99,64 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Transient
     protected boolean displayTopicFieldInNotes = false;
 
+    @Deprecated
     @Transient
+    // TODO: Unused - remove in 2.0 release
     protected transient FormFile fileAttachment;
+
+    @Deprecated
     @Transient
+    // TODO: Unused - remove in 2.0 release
     protected String attachmentPropertyName;
-
-    // TODO JPA Annotate the DocumentAttachment class and hook it up to this
-    @Transient
-    protected DocumentAttachment attachment;
     
+    /**
+     * @deprecated
+     */
+    @Deprecated
+    @Transient
+    // TODO: Needed only for 1.0.3.1 compatibility.
+    protected DocumentAttachment attachment;
+
+    /**
+     * This method is unused and will be removed in the Rice 2.0 release.
+     * 
+     * @deprecated
+     */
+    @Deprecated
+ // TODO: Unused - remove in 2.0 release
     public FormFile getFileAttachment() {
-        return this.fileAttachment;
+        return super.getAttachmentFile();
     }
 
+    /**
+     * This method is unused and will be removed in the Rice 2.0 release.
+     * 
+     * @deprecated
+     */
+    @Deprecated
+ // TODO: Unused - remove in 2.0 release
     public void setFileAttachment(FormFile fileAttachment) {
-        this.fileAttachment = fileAttachment;
+        super.setAttachmentFile(fileAttachment);
     }
 
+    /**
+     * This method is unused and will be removed in the Rice 2.0 release.
+     * 
+     * @deprecated
+     */
+    @Deprecated
+ // TODO: Unused - remove in 2.0 release
     public String getAttachmentPropertyName() {
         return this.attachmentPropertyName;
     }
 
+    /**
+     * This method is unused and will be removed in the Rice 2.0 release.
+     * 
+     * @deprecated
+     */
+    @Deprecated
+ // TODO: Unused - remove in 2.0 release
     public void setAttachmentPropertyName(String attachmentPropertyName) {
         this.attachmentPropertyName = attachmentPropertyName;
     }
@@ -415,15 +451,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             String documentNumber = getDocumentHeader().getDocumentNumber();
             newMaintainableObject.setDocumentNumber(documentNumber);
             
-            //Populate Attachment Property
-            if(newMaintainableObject.getBusinessObject() instanceof PersistableAttachment) {
-                populateAttachmentForBO();
-            }
-            
             newMaintainableObject.saveBusinessObject();
-            
-            //Attachment should be deleted from Maintenance Document attachment table
-            deleteDocumentAttachment();  
             
             getMaintenanceDocumentService().deleteLocks(documentNumber);
             
@@ -435,9 +463,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         // unlock the document when its canceled or disapproved
         if (workflowDocument.stateIsCanceled() || workflowDocument.stateIsDisapproved()) {
-            //Attachment should be deleted from Maintenance Document attachment table
-            deleteDocumentAttachment();  
-            
             String documentNumber = getDocumentHeader().getDocumentNumber();
             getMaintenanceDocumentService().deleteLocks(documentNumber);
         }
@@ -613,79 +638,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
         
-        populateDocumentAttachment();
         populateXmlDocumentContentsFromMaintainables();
-    }
-    
-    /**
-     * The attachment BO is proxied in OJB.  For some reason when an attachment does not yet
-     * exist, refreshReferenceObject is not returning null and the proxy cannot be materialized.
-     * So, this method exists to properly handle the proxied attachment BO.  This is a hack
-     * and should be removed post JPA migration.
-     */
-    protected void refreshAttachment() {
-    	if (ObjectUtils.isNull(attachment)) {
-            this.refreshReferenceObject("attachment");
-            final boolean isProxy = attachment != null && ProxyHelper.isProxy(attachment);
-            if (isProxy && ProxyHelper.getRealObject(attachment) == null) {
-            	attachment = null;
-            }
-        }
-    }
-    
-    protected void populateAttachmentForBO() {
-    	refreshAttachment();
-        
-        PersistableAttachment boAttachment = (PersistableAttachment) newMaintainableObject.getBusinessObject();
-        
-        if(attachment != null) {
-            byte[] fileContents;
-            fileContents = attachment.getAttachmentContent();
-            if (fileContents.length > 0) {
-                boAttachment.setAttachmentContent(fileContents);
-                boAttachment.setFileName(attachment.getFileName());
-                boAttachment.setContentType(attachment.getContentType());
-            }
-       }  
-       
-    }
-    
-    public void populateDocumentAttachment() {
-    	refreshAttachment();
-        
-        if(fileAttachment != null && StringUtils.isNotEmpty(fileAttachment.getFileName())) {
-            //Populate DocumentAttachment BO
-            if(attachment == null) {
-                attachment = new DocumentAttachment();
-            }
-            
-            byte[] fileContents;
-            try {
-                fileContents = fileAttachment.getFileData();
-                if (fileContents.length > 0) {
-                    attachment.setFileName(fileAttachment.getFileName());
-                    attachment.setContentType(fileAttachment.getContentType());
-                    attachment.setAttachmentContent(fileAttachment.getFileData());
-                    attachment.setDocumentNumber(getDocumentNumber());
-                }
-            }catch (FileNotFoundException e) {
-                LOG.error("Error while populating the Document Attachment", e);
-                throw new RuntimeException("Could not populate DocumentAttachment object", e);
-            }catch (IOException e) {
-                LOG.error("Error while populating the Document Attachment", e);
-                throw new RuntimeException("Could not populate DocumentAttachment object", e);
-            } 
-            
-        } 
-//        else if(attachment != null) {
-//            //Attachment has been deleted - Need to delete the Attachment Reference Object
-//            deleteAttachment();
-//        }
-    }
-    
-    public void deleteDocumentAttachment() { 
-        KNSServiceLocator.getBusinessObjectService().delete(attachment);
-        attachment = null;     
     }
     
     /**
@@ -815,11 +768,21 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     	LOG.error( "Returning null for the PropertySerializabilityEvaluator" );
         return null;
     }
-    
+
+    /**
+     * @deprecated
+     */
+    @Deprecated
+    // TODO: Needed only for 1.0.3.1 compatibility.
     public DocumentAttachment getAttachment() {
         return this.attachment;
     }
 
+    /**
+     * @deprecated
+     */
+    @Deprecated
+    // TODO: Needed only for 1.0.3.1 compatibility.
     public void setAttachment(DocumentAttachment attachment) {
         this.attachment = attachment;
     }

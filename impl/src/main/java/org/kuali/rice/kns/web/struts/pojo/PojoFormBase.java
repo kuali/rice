@@ -69,7 +69,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     static Map classCache = Collections.synchronizedMap(new HashMap());
 
     private Map unconvertedValues = new HashMap();
-    private List unknownKeys = new ArrayList();
+    private List unknownKeys = new ArrayList();  // TODO: Unused - remove in 2.0 release
     private Map formatterTypes = new HashMap();
     private List<String> maxUploadFileSizes = new ArrayList<String>();
     private Set<String> editableProperties = new HashSet<String>();
@@ -122,7 +122,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     public void populate(HttpServletRequest request) {
         Timer t0 = new Timer("PojoFormBase.populate");
         unconvertedValues.clear();
-        unknownKeys = new ArrayList();
+        unknownKeys = new ArrayList();  // TODO: Unused - remove in 2.0 release
         addRequiredNonEditableProperties();
         Map params = request.getParameterMap();
 
@@ -176,12 +176,12 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 		    type = getPropertyType(paramPath);
 		}
 		catch (Exception e) {
-		    // deleted redundant unknownKeys.add(keypath)
+		    // deleted redundant unknownKeys.add(keypath) 
 		}
 
 		// keypath does not match anything on form
 		if (type == null) {
-		    unknownKeys.add(paramPath);
+		    unknownKeys.add(paramPath);  // TODO: Unused - remove in 2.0 release
 		}
 		else {
 		    Formatter formatter = null;
@@ -411,7 +411,13 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     public void setUnconvertedValues(Map unconvertedValues) {
         this.unconvertedValues = unconvertedValues;
     }
-
+    /**
+     * This method is unused and will be removed in the Rice 2.0 release.
+     * 
+     * @deprecated
+     */
+    @Deprecated
+ // TODO: Unused - remove in 2.0 release
     protected List getUnknownKeys() {
         return unknownKeys;
     }

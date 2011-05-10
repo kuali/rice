@@ -445,7 +445,17 @@ public class SectionBridge {
                             }
 
                             String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject, collectionField.getName());
-                            collField.setPropertyValue(propertyValue);
+
+                            // For files the FormFile is not being persisted instead the file data is stored in
+                            // individual fields as defined by PersistableAttachment.  However, newly added rows contain all data
+                            // in the FormFile, so check if it's empty.
+                            if (StringUtils.isBlank(propertyValue) && Field.FILE.equals(collField.getFieldType())) {
+                                Object fileName = ObjectUtils.getNestedValue(lineBusinessObject, KNSConstants.BO_ATTACHMENT_FILE_NAME);
+                                collField.setPropertyValue(fileName);
+                            } else {
+                                collField.setPropertyValue(propertyValue);
+                            }
+
 
                             if (StringUtils.isNotBlank(collField.getAlternateDisplayPropertyName())) {
                                 String alternateDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject,

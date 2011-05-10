@@ -20,14 +20,11 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-
 import org.hibernate.annotations.Type
+import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.campus.CampusType
 import org.kuali.rice.shareddata.api.campus.CampusTypeContract
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.shareddata.api.campus.CampusContract;
 
 @Entity
 @Table(name="KRNS_CMP_TYP_T")

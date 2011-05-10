@@ -16,11 +16,13 @@
 
 package org.kuali.rice.core.framework.component
 
+import groovy.transform.ToString
 import org.kuali.rice.core.api.component.Component
 import org.kuali.rice.core.api.component.ComponentContract
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
 
+@ToString
 class ComponentEbo implements ComponentContract, Inactivateable, ExternalizableBusinessObject {
 
     private static final long serialVersionUID = 1L;

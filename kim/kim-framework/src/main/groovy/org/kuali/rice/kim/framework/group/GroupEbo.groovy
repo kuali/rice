@@ -16,20 +16,14 @@
 
 package org.kuali.rice.kim.framework.group
 
-import javax.persistence.OneToMany
+import groovy.transform.ToString
 import org.kuali.rice.kim.api.group.Group
-import org.kuali.rice.kim.api.group.GroupContract
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kim.api.group.GroupAttribute
+import org.kuali.rice.kim.api.group.GroupContract
 import org.kuali.rice.kim.api.group.GroupMember
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 
-/**
- * Created by IntelliJ IDEA.
- * User: jjhanso
- * Date: 4/14/11
- * Time: 12:18 PM
- * To change this template use File | Settings | File Templates.
- */
+@ToString
 class GroupEbo implements GroupContract, ExternalizableBusinessObject {
         private static final long serialVersionUID = 1L;
 

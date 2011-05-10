@@ -16,10 +16,12 @@
 
 package org.kuali.rice.core.framework.parameter
 
+import groovy.transform.ToString
 import org.kuali.rice.core.api.parameter.EvaluationOperator
 import org.kuali.rice.core.api.parameter.ParameterContract
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 
+@ToString
 class ParameterEbo implements ParameterContract, ExternalizableBusinessObject {
 
     private static final long serialVersionUID = 1L;

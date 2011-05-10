@@ -16,11 +16,13 @@
 
 package org.kuali.rice.shareddata.framework.campus
 
+import groovy.transform.ToString
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.shareddata.api.campus.CampusType
 import org.kuali.rice.shareddata.api.campus.CampusTypeContract
 
+@ToString
 public class CampusTypeEbo implements Inactivateable, CampusTypeContract, ExternalizableBusinessObject {
 
 	def String code;

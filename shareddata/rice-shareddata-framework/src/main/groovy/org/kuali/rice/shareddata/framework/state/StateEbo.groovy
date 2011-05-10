@@ -16,12 +16,14 @@
 
 package org.kuali.rice.shareddata.framework.state
 
+import groovy.transform.ToString
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.shareddata.api.state.State
 import org.kuali.rice.shareddata.api.state.StateContract
 import org.kuali.rice.shareddata.framework.country.CountryEbo
 
+@ToString
 class StateEbo implements Inactivateable, StateContract, ExternalizableBusinessObject {
     def String code;
     def String countryCode;

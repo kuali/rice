@@ -15,10 +15,11 @@
 
 package org.kuali.rice.core.org.kuali.rice.core.util;
 
+
+import org.apache.commons.lang.builder.HashCodeBuilder
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.util.EqualsAndHashCodeUtils
-import org.apache.commons.lang.builder.HashCodeBuilder
 
 public class EqualsAndHashCodeUtilsTest {
     private final shouldFail = new GroovyTestCase().&shouldFail

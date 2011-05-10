@@ -80,11 +80,11 @@
         <cxf.version>2.4.0</cxf.version>
     -->
     <cxf.version>2.3.4</cxf.version>
-    <db-ojb.version>1.0.4-patch6</db-ojb.version>
+    <db-ojb.version>1.0.4-patch7-SNAPSHOT</db-ojb.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.M1</dwr.version>
-    <groovy.version>1.7.10</groovy.version>
+    <groovy.version>1.8.0</groovy.version>
     <hibernate.version>3.6.3.Final</hibernate.version>
     <mail.version>1.4.4</mail.version>
     <javassist.version>3.14.0-GA</javassist.version>
@@ -139,9 +139,9 @@
     <source.plugin.version>2.1.2</source.plugin.version>
     <assembly.plugin.version>2.2.1</assembly.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
-    <web.launch.spring.file />
+    <web.launch.spring.file/>
     
-    <!-- Connect documentation generation to site generation -->
+    <!-- Connect documentation generate to site generation -->
     <rice.docbook.phase>pre-site</rice.docbook.phase>
     <!-- Where the original documentation source is located -->
     <rice.docbook.src>${basedir}/src/site/docbook</rice.docbook.src>
@@ -151,8 +151,6 @@
     <rice.site.dir>${basedir}/target/site</rice.site.dir>
     <!-- Where the generated documentation (pdf, html) will be generated -->
     <rice.docbook.dest>${rice.site.dir}/reference</rice.docbook.dest>
-
-    <rice.java2ws.phase>process-classes</rice.java2ws.phase>
   </properties>
 
   <build>
@@ -243,7 +241,8 @@
                   <requireMavenVersion>
                     <version>[3.0,4.0)</version>
                   </requireMavenVersion>
-                  <DependencyConvergence />
+                  <!-- has problems with snapshots
+                  <DependencyConvergence />-->
 
                                     <!-- Maven 3 Migration: This rule is not supported by Maven 3. See:
                                                  http://jira.codehaus.org/browse/MENFORCER-98 -->

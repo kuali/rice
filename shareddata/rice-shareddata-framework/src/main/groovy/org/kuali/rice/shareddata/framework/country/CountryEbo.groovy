@@ -22,11 +22,13 @@
 
 package org.kuali.rice.shareddata.framework.country
 
+import groovy.transform.ToString
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.shareddata.api.country.Country
 import org.kuali.rice.shareddata.api.country.CountryContract
 
+@ToString
 class CountryEbo implements Inactivateable, CountryContract, ExternalizableBusinessObject {
   def String code;
   def String alternateCode;

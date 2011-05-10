@@ -40,6 +40,7 @@ import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.kns.uif.widget.DirectInquiry;
 import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.uif.widget.QuickFinder;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -113,6 +114,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     // widgets
     private Inquiry fieldInquiry;
     private QuickFinder fieldLookup;
+    private DirectInquiry fieldDirectInquiry;
 
     public AttributeField() {
         super();
@@ -398,6 +400,7 @@ public class AttributeField extends FieldBase implements DataBinding {
         components.add(errorsField);
         components.add(fieldLookup);
         components.add(fieldInquiry);
+        components.add(fieldDirectInquiry);
 
         return components;
     }
@@ -1064,5 +1067,19 @@ public class AttributeField extends FieldBase implements DataBinding {
 	
 	public String getAlternateDisplayValue(){
 		return alternateDisplayValue;
+	}
+
+	/**
+	 * @param fieldDirectInquiry the fieldDirectInquiry to set
+	 */
+	public void setFieldDirectInquiry(DirectInquiry fieldDirectInquiry) {
+		this.fieldDirectInquiry = fieldDirectInquiry;
+	}
+
+	/**
+	 * @return the fieldDirectInquiry
+	 */
+	public DirectInquiry getFieldDirectInquiry() {
+		return fieldDirectInquiry;
 	}
 }

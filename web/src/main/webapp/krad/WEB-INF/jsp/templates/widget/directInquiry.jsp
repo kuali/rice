@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.Inquiry"/>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.DirectInquiry"/>
 <tiles:useAttribute name="componentId"/>
 
 <%--
@@ -23,4 +23,4 @@
     Check if the field is read only
     Render the direct inquiry for editable fields
  --%>
-<krad:template component="${widget.inquiryLinkField}" />
+<krad:template component="${widget.directInquiryActionField}" />

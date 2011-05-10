@@ -55,18 +55,12 @@ public class Inquiry extends WidgetBase {
 
     private boolean forceInquiry;
 
-    private LinkField inquiryLinkField;
-    
-    private ActionField directInquiryActionField;
+    private LinkField inquiryLinkField;    
     
     private String conditionalReadOnly;
     
     private boolean readOnly;
-    
-    // Binding Info fields used by direct inquiry to access html fields
-    private String bindingPrefix;
-    
-    private boolean bindToMap;
+
 
     public Inquiry() {
         super();
@@ -84,7 +78,7 @@ public class Inquiry extends WidgetBase {
         super.performFinalize(view, model, parent);
 
         // only set inquiry if enabled
-        if (!isRender()) {
+        if (!isRender() || !isReadOnly()) {
             return;
         }
 
@@ -92,27 +86,29 @@ public class Inquiry extends WidgetBase {
         setRender(false);
 
         AttributeField field = (AttributeField) parent;
-        
-        // If this is a direct inquiry (not read only) then set the binding prefix
-        // for mapping to the field names used in the script to get values from the form
-        if (!isReadOnly()) {
-        	BindingInfo bindingInfo = field.getBindingInfo();
-        	if (bindingInfo.isBindToForm()) {
-        		bindingPrefix = bindingInfo.getBindByNamePrefix();
-        	}else if (bindingInfo.isBindToMap()){
-        		bindToMap = true;
-        		bindingPrefix = bindingInfo.getBindingObjectPath();
-        	}else{
-        		bindingPrefix = bindingInfo.getBindingObjectPath() + (bindingInfo.getBindByNamePrefix()==null?"":("." + bindingInfo.getBindByNamePrefix()));
-        	}
-        }
 
         // check if field value is null, if so no inquiry
         Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, field.getBindingInfo().getBindingPath());
-        if (((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) && isReadOnly()) {
+        if ((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) {
             return;
         }
 
+        setupLink(view, model, field);
+    }
+    
+    /**
+     * Get parent object and field name and build the inquiry link
+     * This was moved from the performFinalize because overlapping and to be used
+     * by DirectInquiry
+     * 
+     * @param view
+     *            - Container View
+     * @param model
+     *            - model
+     * @param field
+     *            - The parent Attribute field
+     */
+    public void setupLink(View view, Object model, AttributeField field) {
         // get parent object for inquiry
         Object parentObject = ViewModelUtils.getParentObjectForMetadata(view, model, field);
         String propertyName = field.getBindingInfo().getBindingName();
@@ -133,7 +129,7 @@ public class Inquiry extends WidgetBase {
         // get inquiry class and parameters from view helper
         else {
             view.getViewHelperService().buildInquiryLink(parentObject, propertyName, this);
-        }
+        }    	
     }
 
     /**
@@ -156,104 +152,59 @@ public class Inquiry extends WidgetBase {
         urlParameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryObjectClass.getName());
         urlParameters.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
 
-        // Do normal inquiry if read only, otherwise do direct inquiry
-        if (isReadOnly()) { 
-	        for (Entry<String, String> inquiryParameter : inquiryParms.entrySet()) {
-	            String parameterName = inquiryParameter.getKey();
-	
-	            Object parameterValue = ObjectPropertyUtils.getPropertyValue(dataObject, parameterName);
-	
-	            // TODO: need general format util that uses spring
-	            if (parameterValue == null) {
-	                parameterValue = "";
-	            }
-	            else if (parameterValue instanceof java.sql.Date) {
-	                if (Formatter.findFormatter(parameterValue.getClass()) != null) {
-	                    Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
-	                    parameterValue = formatter.format(parameterValue);
-	                }
-	            }
-	            else {
-	                parameterValue = parameterValue.toString();
-	            }
-	
-	            // Encrypt value if it is a field that has restriction that prevents
-	            // a value from being shown to user, because we don't want the
-	            // browser history to store the restricted
-	            // attribute's value in the URL
-	            if (KNSServiceLocatorWeb.getBusinessObjectAuthorizationService()
-	                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(inquiryObjectClass, inquiryParameter.getValue())) {
-	                try {
-	                    parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue);
-	                }
-	                catch (GeneralSecurityException e) {
-	                    LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
-	                    throw new RuntimeException(e);
-	                }
-	            }
-	
-	            // add inquiry parameter to URL
-	            urlParameters.put(inquiryParameter.getValue(), parameterValue);
-	        }
-	        
-	        String inquiryUrl = UrlFactory.parameterizeUrl(baseInquiryUrl, urlParameters);
-	        inquiryLinkField.setHrefText(inquiryUrl);
-	        	        
-	        // get inquiry link text
-	        // TODO: should we really put the link label here or just wrap the
-	        // written value?
-	        Object fieldValue = ObjectPropertyUtils.getPropertyValue(dataObject, propertyName);
-	        if (fieldValue != null) {
-	            inquiryLinkField.setLinkLabel(fieldValue.toString());
-	        }
+        for (Entry<String, String> inquiryParameter : inquiryParms.entrySet()) {
+            String parameterName = inquiryParameter.getKey();
 
-	        // set inquiry title
-	        String linkTitle = createTitleText(inquiryObjectClass);
-	        linkTitle = LookupInquiryUtils.getTitleText(linkTitle, inquiryObjectClass, inquiryParameters);
-	        inquiryLinkField.setTitle(linkTitle);
-		} else {
-			// Direct inquiry
-			String inquiryUrl = UrlFactory.parameterizeUrl(baseInquiryUrl,
-					urlParameters);
-			StringBuilder paramMapString = new StringBuilder();
-			// Check if lightbox is in dd. Get lightbox options. 
-			String lightBoxOptions = "";
-			boolean lightBoxShow = directInquiryActionField.getLightBox()!= null;
-			if (lightBoxShow) {
-				lightBoxOptions = directInquiryActionField.getLightBox().getComponentOptionsJSString();
-			}
-			// Build parameter string using the actual names of the fields as on the html page
-			for (Entry<String, String> inquiryParameter : inquiryParms.entrySet()) {
-				if (bindToMap) {
-					paramMapString.append(bindingPrefix);
-					paramMapString.append("['");
-					paramMapString.append(inquiryParameter.getKey());
-					paramMapString.append("']");
-				}else{
-					paramMapString.append(bindingPrefix);
-					paramMapString.append(".");
-					paramMapString.append(inquiryParameter.getKey());
-				}
-				paramMapString.append(":");
-				paramMapString.append(inquiryParameter.getValue());
-				paramMapString.append(",");
-			}
-			paramMapString.deleteCharAt(paramMapString.length()-1);
-			// Create onlick script to open the inquiry window on the click event
-			// of the direct inquiry
-			StringBuilder onClickScript = new StringBuilder(
-					"directInquiry(\"");
-			onClickScript.append(inquiryUrl);
-			onClickScript.append("\", \"");			
-			onClickScript.append(paramMapString);
-			onClickScript.append("\", ");			
-			onClickScript.append(lightBoxShow);
-			onClickScript.append(", ");			
-			onClickScript.append(lightBoxOptions);
-			onClickScript.append(");");
-			directInquiryActionField.setBlockValidateDirty(true);
-			directInquiryActionField.setClientSideJs(onClickScript.toString());
-		}
+            Object parameterValue = ObjectPropertyUtils.getPropertyValue(dataObject, parameterName);
+
+            // TODO: need general format util that uses spring
+            if (parameterValue == null) {
+                parameterValue = "";
+            }
+            else if (parameterValue instanceof java.sql.Date) {
+                if (Formatter.findFormatter(parameterValue.getClass()) != null) {
+                    Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+                    parameterValue = formatter.format(parameterValue);
+                }
+            }
+            else {
+                parameterValue = parameterValue.toString();
+            }
+
+            // Encrypt value if it is a field that has restriction that prevents
+            // a value from being shown to user, because we don't want the
+            // browser history to store the restricted
+            // attribute's value in the URL
+            if (KNSServiceLocatorWeb.getBusinessObjectAuthorizationService()
+                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(inquiryObjectClass, inquiryParameter.getValue())) {
+                try {
+                    parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue);
+                }
+                catch (GeneralSecurityException e) {
+                    LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
+                    throw new RuntimeException(e);
+                }
+            }
+
+            // add inquiry parameter to URL
+            urlParameters.put(inquiryParameter.getValue(), parameterValue);
+        }
+        
+        String inquiryUrl = UrlFactory.parameterizeUrl(baseInquiryUrl, urlParameters);
+        inquiryLinkField.setHrefText(inquiryUrl);
+        	        
+        // get inquiry link text
+        // TODO: should we really put the link label here or just wrap the
+        // written value?
+        Object fieldValue = ObjectPropertyUtils.getPropertyValue(dataObject, propertyName);
+        if (fieldValue != null) {
+            inquiryLinkField.setLinkLabel(fieldValue.toString());
+        }
+
+        // set inquiry title
+        String linkTitle = createTitleText(inquiryObjectClass);
+        linkTitle = LookupInquiryUtils.getTitleText(linkTitle, inquiryObjectClass, inquiryParameters);
+        inquiryLinkField.setTitle(linkTitle);
 
         setRender(true);
     }
@@ -291,7 +242,6 @@ public class Inquiry extends WidgetBase {
         List<Component> components = super.getNestedComponents();
 
         components.add(inquiryLinkField);
-        components.add(directInquiryActionField);
 
         return components;
     }
@@ -357,20 +307,6 @@ public class Inquiry extends WidgetBase {
     }
 
 	/**
-	 * @return the directInquiryActionField
-	 */
-	public ActionField getDirectInquiryActionField() {
-		return this.directInquiryActionField;
-	}
-
-	/**
-	 * @param directInquiryActionField the directInquiryActionField to set
-	 */
-	public void setDirectInquiryActionField(ActionField directInquiryActionField) {
-		this.directInquiryActionField = directInquiryActionField;
-	}
-
-	/**
 	 * @return the conditionalReadOnly
 	 */
 	public String getConditionalReadOnly() {
@@ -396,34 +332,6 @@ public class Inquiry extends WidgetBase {
 	 */
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
-	}
-
-	/**
-	 * @return the bindingPrefix
-	 */
-	public String getBindingPrefix() {
-		return this.bindingPrefix;
-	}
-
-	/**
-	 * @param bindingPrefix the bindingPrefix to set
-	 */
-	public void setBindingPrefix(String bindingPrefix) {
-		this.bindingPrefix = bindingPrefix;
-	}
-
-	/**
-	 * @param bindToMap the bindToMap to set
-	 */
-	public void setBindToMap(boolean bindToMap) {
-		this.bindToMap = bindToMap;
-	}
-
-	/**
-	 * @return the bindToMap
-	 */
-	public boolean isBindToMap() {
-		return bindToMap;
 	}
 
 }

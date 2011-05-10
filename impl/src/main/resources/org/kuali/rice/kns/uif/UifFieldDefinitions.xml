@@ -45,6 +45,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
       <property name="fieldInquiry">
         <bean parent="Inquiry"/>
+      </property> 
+      <property name="fieldDirectInquiry">
+        <bean parent="DirectInquiry"/>
       </property>       
       <property name="summaryMessageField">
         <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>

@@ -31,7 +31,7 @@
   <c:choose>
     <c:when test="${field.readOnly}">
       <c:if test="${field.fieldInquiry.render}">
-        <krad:template component="${field.fieldInquiry}" componentId="${field.id}" readOnly="${field.readOnly}"/>
+        <krad:template component="${field.fieldInquiry}" componentId="${field.id}"/>
       </c:if>
       
       <c:if test="${!field.fieldInquiry.render}">
@@ -72,8 +72,8 @@
   <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
   
   <%-- render field direct inquiry if field is editable --%>
-  <c:if test="${field.fieldInquiry.render && !field.readOnly}">
-        <krad:template component="${field.fieldInquiry}" componentId="${field.id}"  readOnly="${field.readOnly}"/>
+  <c:if test="${field.fieldDirectInquiry.render && !field.readOnly}">
+        <krad:template component="${field.fieldDirectInquiry}" componentId="${field.id}"/>
   </c:if>
 
   <c:if test="${!field.readOnly}">

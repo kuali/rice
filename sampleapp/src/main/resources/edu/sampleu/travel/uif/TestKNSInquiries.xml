@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:p="http://www.springframework.org/schema/p" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<bean id="Group-InquiryView" parent="InquiryView">
+    <property name="title" value="Group Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.GroupInquirableImpl"/>
+    <property name="Items">
+        <list>
+          <bean parent="GroupSectionGridLayout">
+            <property name="layoutManager.numberOfColumns" value="4"/>
+            <property name="items">
+              <list>
+               <bean parent="AttributeField" p:propertyName="id"/>
+               <bean parent="AttributeField" p:propertyName="kimTypeInfo.name"/>
+               <bean parent="AttributeField" p:propertyName="namespaceCode"/>
+               <bean parent="AttributeField" p:propertyName="name"/>
+               <bean parent="AttributeField" p:propertyName="active"/>
+               <bean parent="AttributeField" p:propertyName="description"/>
+              </list>
+            </property>
+            <property name="title" value="Group Information"/>
+          </bean>
+          <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="6">
+             <property name="title" value="Assignees"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.impl.PersonImpl"/>
+             <property name="propertyName" value="memberPersons"/>
+             <property name="layoutManager.renderSequenceField" value="false"/>
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="principalName"/>
+                 <bean parent="AttributeField" p:propertyName="name"/>
+                 <bean parent="AttributeField" p:propertyName="firstName"/>
+                 <bean parent="AttributeField" p:propertyName="middleName"/>
+                 <bean parent="AttributeField" p:propertyName="lastName"/>
+                 <bean parent="AttributeField" p:propertyName="principalId"/>
+               </list>
+             </property>      
+          </bean>
+        </list>
+    </property>
+</bean>
+
+  <bean id="Permission-InquiryView" parent="InquiryView">
+	<property name="title" value="Permission Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.bo.impl.PermissionImpl"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.PermissionInquirableImpl"/>
+    <property name="Items">
+        <list>
+          <bean parent="GroupSectionGridLayout">
+            <property name="layoutManager.numberOfColumns" value="2"/>
+            <!-- <property name="layoutManager.summaryTitle" value="Permission Attributes"/> -->
+            <property name="items">
+              <list>
+               <bean parent="AttributeField" p:propertyName="template.namespaceCode"/>
+               <bean parent="AttributeField" p:propertyName="template.name"/>
+               <bean parent="AttributeField" p:propertyName="namespaceCode"/>
+               <bean parent="AttributeField" p:propertyName="name"/>
+               <bean parent="AttributeField" p:propertyName="description"/>
+              </list>
+            </property>
+            <property name="title" value="Permission Attributes"/>
+          </bean>
+          <bean parent="CollectionGroup">
+             <property name="title" value="Permission Detail Values"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl"/>
+             <property name="propertyName" value="detailObjects"/>
+             <property name="layoutManager.summaryTitle" value="Detail Values"/>
+             <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>kimAttribute.attributeName</value>
+          			<value>attributeValue</value>
+			      </list>
+             </property>
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="kimAttribute.attributeName"/>
+                 <bean parent="AttributeField" p:propertyName="attributeValue"/>
+               </list>
+             </property>      
+          </bean>
+          <bean parent="CollectionGroup">
+             <property name="title" value="Permission Assigned Roles"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.impl.RoleImpl"/>
+             <property name="propertyName" value="assignedToRoles"/>
+             <property name="layoutManager.summaryTitle" value="Assigned Roles"/>
+             <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>namespaceCode</value>
+          			<value>roleName</value>
+          			<value>kimRoleType.name</value>
+			      </list>
+             </property>
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="namespaceCode"/>
+                 <bean parent="AttributeField" p:propertyName="roleName"/>
+                 <bean parent="AttributeField" p:propertyName="kimRoleType.name"/>
+               </list>
+             </property>      
+          </bean>
+         </list>
+    </property>  
+
+  </bean>
+	
+  <bean id="Responsibility-InquiryView" parent="InquiryView">
+	<property name="title" value="Responsibility Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.bo.impl.ResponsibilityImpl"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.ResponsibilityInquirableImpl"/>
+    <property name="Items">
+        <list>
+          <bean parent="GroupSectionGridLayout">
+            <property name="layoutManager.numberOfColumns" value="2"/>
+            <!-- <property name="layoutManager.summaryTitle" value="Responsibility Attributes"/> -->
+            <property name="items">
+              <list>
+               <bean parent="AttributeField" p:propertyName="template.namespaceCode"/>
+               <bean parent="AttributeField" p:propertyName="template.name"/>
+               <bean parent="AttributeField" p:propertyName="namespaceCode"/>
+               <bean parent="AttributeField" p:propertyName="name"/>
+              </list>
+            </property>
+            <property name="title" value="Responsibility Attributes"/>
+          </bean>
+          <bean parent="CollectionGroup">
+             <property name="title" value="Responsibility Detail Values"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl"/>
+             <property name="propertyName" value="detailObjects"/>
+             <property name="layoutManager.summaryTitle" value="Detail Values"/>
+             <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>kimAttribute.attributeName</value>
+          			<value>attributeValue</value>
+			      </list>
+             </property>
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="kimAttribute.attributeName"/>
+                 <bean parent="AttributeField" p:propertyName="attributeValue"/>
+               </list>
+             </property>      
+          </bean>
+          <bean parent="CollectionGroup">
+             <property name="title" value="Permission Assigned Roles"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.impl.RoleImpl"/>
+             <property name="propertyName" value="assignedToRoles"/>
+             <property name="layoutManager.summaryTitle" value="Assigned Roles"/>
+             <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>namespaceCode</value>
+          			<value>roleName</value>
+          			<value>kimRoleType.name</value>
+			      </list>
+             </property>
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="namespaceCode"/>
+                 <bean parent="AttributeField" p:propertyName="roleName"/>
+                 <bean parent="AttributeField" p:propertyName="kimRoleType.name"/>
+               </list>
+             </property>      
+          </bean>
+         </list>
+    </property>  
+  </bean>
+  
+  <bean id="Component-InquiryView" parent="InquiryView">
+	<property name="title" value="Component Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.core.impl.component.ComponentBo"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.core.web.component.ComponentInquirableImpl"/>
+    <property name="Items">
+        <list>
+          <bean parent="GroupSectionGridLayout">
+            <property name="layoutManager.numberOfColumns" value="2"/>
+            <property name="items">
+              <list>
+               <bean parent="AttributeField" p:propertyName="code"/>
+               <bean parent="AttributeField" p:propertyName="name"/>
+               <bean parent="AttributeField" p:propertyName="active"/>
+              </list>
+            </property>
+          </bean>
+         </list>
+    </property>  
+  </bean>
+  
+  <bean id="RoleImpl-InquiryView" parent="InquiryView">
+	<property name="title" value="Role Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.bo.impl.RoleImpl"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.RoleInquirableImpl"/>
+    <property name="Items">
+        <list>
+          <bean parent="GroupSectionGridLayout">
+            <property name="layoutManager.numberOfColumns" value="2"/>
+            <property name="items">
+              <list>
+               <bean parent="AttributeField" p:propertyName="roleId"/>
+               <bean parent="AttributeField" p:propertyName="roleName"/>
+               <bean parent="AttributeField" p:propertyName="kimRoleType.name"/>
+               <bean parent="AttributeField" p:propertyName="namespaceCode"/>
+              </list>
+            </property>
+          </bean>
+         </list>
+    </property>  
+  </bean>
+  
+  <bean id="Namespace-InquiryView" parent="InquiryView">
+	<property name="title" value="Namespace Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.core.impl.namespace.NamespaceBo"/>
+    <property name="Items">
+        <list>
+          <bean parent="GroupSectionGridLayout">
+            <property name="layoutManager.numberOfColumns" value="2"/>
+            <property name="items">
+              <list>
+               <bean parent="AttributeField" p:propertyName="code"/>
+               <bean parent="AttributeField" p:propertyName="name"/>
+               <bean parent="AttributeField" p:propertyName="applicationCode"/>
+               <bean parent="AttributeField" p:propertyName="active"/>
+              </list>
+            </property>
+          </bean>
+         </list>
+    </property>  
+  </bean>
+  
+  <bean id="KimType-InquiryView" parent="InquiryView">
+	<property name="title" value="Kim Type"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.type.KimTypeBo"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.KimTypeInquirableImpl"/>
+    <property name="Items">
+        <list>
+          <bean parent="GroupSectionGridLayout">
+            <property name="layoutManager.numberOfColumns" value="2"/>
+            <property name="items">
+              <list>
+               <bean parent="AttributeField" p:propertyName="id"/>
+               <bean parent="AttributeField" p:propertyName="name"/>
+               <bean parent="AttributeField" p:propertyName="serviceName"/>
+               <bean parent="AttributeField" p:propertyName="active"/>
+               <bean parent="AttributeField" p:propertyName="namespaceCode"/>
+              </list>
+            </property>
+          </bean>
+         </list>
+    </property>  
+  </bean>
+  	
+  <!-- <bean id="RuleInquiryView" abstract="true" parent="InquiryView-parentBean"/> -->	
+  <!-- <bean id="RuleBaseValues-InquiryView" parent="InquiryView">
+	<property name="title" value="Rule"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kew.rule.bo.RuleBaseValuesInquirableImpl"/>
+    <property name="Items">
+        <list>
+          <bean parent="GroupSectionGridLayout">
+            <property name="layoutManager.numberOfColumns" value="2"/>
+            <property name="title" value="Rule"/>
+            <property name="items">
+              <list>
+               <bean parent="AttributeField" p:propertyName="ruleBaseValuesId"/>
+               <bean parent="AttributeField" p:propertyName="previousVersionId"/>
+               <bean parent="AttributeField" p:propertyName="documentId"/>
+               <bean parent="AttributeField" p:propertyName="documentType.name"/>
+               <bean parent="AttributeField" p:propertyName="ruleTemplate.name"/>
+               <bean parent="AttributeField" p:propertyName="description"/>
+               <bean parent="AttributeField" p:propertyName="fromDate"/>
+               <bean parent="AttributeField" p:propertyName="toDate"/>
+               <bean parent="AttributeField" p:propertyName="forceAction"/>
+               <bean parent="AttributeField" p:propertyName="activeInd"/>
+              </list>
+            </property>
+          </bean>
+          
+          <bean parent="CollectionGroup">
+             <property name="title" value="Rule Attributes"/>  
+             <property name="propertyName" value="fieldValues"/>
+          </bean>
+          
+          
+          <bean parent="CollectionGroup">
+             <property name="title" value="Person Responsibilities"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility"/>
+             <property name="propertyName" value="personResponsibilities"/>
+             <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>principalName</value>
+			      </list>
+             </property>
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="principalName"/>
+                 <bean parent="AttributeField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="AttributeField" p:propertyName="priority"/>
+               </list>
+             </property>      
+          </bean>
+          <bean parent="CollectionGroup">
+             <property name="title" value="Group Responsibilities"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility"/>
+             <property name="propertyName" value="groupResponsibilities"/>
+             <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>namespaceCode</value>
+          			<value>name</value>
+			      </list>
+             </property>
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="namespaceCode"/>
+                 <bean parent="AttributeField" p:propertyName="name"/>
+                 <bean parent="AttributeField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="AttributeField" p:propertyName="priority"/>
+               </list>
+             </property>      
+          </bean>
+          <bean parent="CollectionGroup">
+             <property name="title" value="Role Responsibilities"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility"/>
+             <property name="propertyName" value="roleResponsibilities"/>
+             <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>roleName</value>
+			      </list>
+             </property>
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="approvePolicy"/>
+                 <bean parent="AttributeField" p:propertyName="roleName"/>
+                 <bean parent="AttributeField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="AttributeField" p:propertyName="priority"/>
+               </list>
+             </property>      
+          </bean>
+         </list>
+    </property>  
+
+  </bean> -->
+  
+  <bean id="RuleDelegation-InquiryView" parent="InquiryView">
+    <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kew.rule.bo.RuleDelegationInquirableImpl"/>
+    <property name="Items">
+        <list>
+          <bean parent="GroupSectionGridLayout">
+            <property name="layoutManager.numberOfColumns" value="2"/>
+            <property name="title" value="Delegation Rule"/>
+            <!-- <property name="layoutManager.summaryTitle" value="Permission Attributes"/> -->
+            <property name="items">
+              <list>
+	              <bean parent="AttributeField" p:propertyName="ruleDelegationId"/>
+	              <bean parent="AttributeField" p:propertyName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId"/>
+	              <bean parent="AttributeField" p:propertyName="responsibilityId"/>
+	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.documentType.name"/>
+	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.ruleTemplate.name"/>
+	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.description"/>
+	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.fromDate"/>
+	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.toDate"/>
+	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.forceAction"/>
+	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.activeInd"/>
+	              <bean parent="AttributeField" p:propertyName="delegationType"/>
+              </list>
+            </property>
+          </bean>
+           <!-- <bean parent="CollectionGroup">
+             <property name="title" value="Rule Attributes"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl"/>
+             <property name="propertyName" value="detailObjects"/>
+             <property name="layoutManager.summaryTitle" value="Detail Values"/>
+             <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>kimAttribute.attributeName</value>
+          			<value>attributeValue</value>
+			      </list>
+             </property>
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="kimAttribute.attributeName"/>
+                 <bean parent="AttributeField" p:propertyName="attributeValue"/>
+               </list>
+             </property>      
+          </bean> -->
+          <bean parent="CollectionGroup">
+             <property name="title" value="Person Responsibilities"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility"/>
+             <property name="propertyName" value="delegationRuleBaseValues.personResponsibilities"/>
+             <!-- <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>principalName</value>
+			      </list>
+             </property> -->
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="principalName"/>
+                 <bean parent="AttributeField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="AttributeField" p:propertyName="priority"/>
+               </list>
+             </property>      
+          </bean>
+          
+          <bean parent="CollectionGroup">
+             <property name="title" value="Group Responsibilities"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility"/>
+             <property name="propertyName" value="delegationRuleBaseValues.groupResponsibilities"/>
+             <!-- <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>namespaceCode</value>
+          			<value>name</value>
+			      </list>
+             </property> -->
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="namespaceCode"/>
+                 <bean parent="AttributeField" p:propertyName="name"/>
+                 <bean parent="AttributeField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="AttributeField" p:propertyName="priority"/>
+               </list>
+             </property>      
+          </bean>
+          
+          <bean parent="CollectionGroup">
+             <property name="title" value="Role Responsibilities"/>  
+             <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility"/>
+             <property name="propertyName" value="delegationRuleBaseValues.roleResponsibilities"/>
+             <!-- <property name="layoutManager.summaryFields">
+                  <list>
+          			<value>roleName</value>
+			      </list>
+             </property> -->
+             <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="approvePolicy"/>
+                 <bean parent="AttributeField" p:propertyName="roleName"/>
+                 <bean parent="AttributeField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="AttributeField" p:propertyName="priority"/>
+               </list>
+             </property>      
+          </bean>
+         </list>
+    </property>  
+
+  </bean>
+  	
+</beans>

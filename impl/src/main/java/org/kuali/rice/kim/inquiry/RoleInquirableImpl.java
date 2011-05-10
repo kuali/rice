@@ -24,11 +24,14 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -41,6 +44,25 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 	protected final String ROLE_NAME = "roleName";
 	protected final String ROLE_ID = "roleId";
 	protected final String NAMESPACE_CODE = "namespaceCode";
+	
+	@Override
+	public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry){
+		if(ROLE_NAME.equals(propertyName)){
+			Map<String, String> primaryKeys = new HashMap<String, String>();
+			primaryKeys.put(ROLE_ID, ROLE_ID);
+			inquiry.buildInquiryLink(dataObject, propertyName, RoleImpl.class, primaryKeys);
+		}else if(NAMESPACE_CODE.equals(propertyName)){
+			Map<String, String> primaryKeys = new HashMap<String, String>();
+			primaryKeys.put(propertyName, "code");
+			inquiry.buildInquiryLink(dataObject, propertyName, NamespaceBo.class, primaryKeys);
+		} else if("kimRoleType.name".equals(propertyName)){
+			Map<String, String> primaryKeys = new HashMap<String, String>();
+			primaryKeys.put("kimRoleType.id", KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
+			inquiry.buildInquiryLink(dataObject, propertyName, KimTypeBo.class, primaryKeys);
+        }else{
+        	super.buildInquirableLink(dataObject, propertyName, inquiry);
+        }
+	}
 	
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {

@@ -43,6 +43,17 @@
     <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Maintenance (New)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
     <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Maintenance (Edit)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=maintenanceEdit&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo"/></li> 
   </ul>
+  <br/>
+  <strong>KNS Inquiries</strong>
+   <ul class="chan">
+	 <li><portal:portalLink displayTitle="true" title="Component" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&namespaceCode=KR-WKFLW&code=ActionList&dataObjectClassName=org.kuali.rice.core.impl.component.ComponentBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+     <li><portal:portalLink displayTitle="true" title="Group" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&id=1&dataObjectClassName=org.kuali.rice.kim.impl.group.GroupBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+	 <li><portal:portalLink displayTitle="true" title="Permission" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&permissionId=140&dataObjectClassName=org.kuali.rice.kim.bo.impl.PermissionImpl&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+     <li><portal:portalLink displayTitle="true" title="Responsibility" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&responsibilityId=1&dataObjectClassName=org.kuali.rice.kim.bo.impl.ResponsibilityImpl&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+     <!-- <li><portal:portalLink displayTitle="true" title="Role" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&roleId=1&dataObjectClassName=org.kuali.rice.kim.bo.impl.RoleImpl&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> -->
+     <li><portal:portalLink displayTitle="true" title="Rule" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&ruleBaseValuesId=1103&dataObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+     <li><portal:portalLink displayTitle="true" title="Rule Delegation" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&ruleDelegationId=1641&dataObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+  </ul>
   
 </div>
 <channel:portalChannelBottom />

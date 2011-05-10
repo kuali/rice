@@ -33,6 +33,7 @@ import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 import java.util.*;
@@ -49,6 +50,28 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 	protected final String RESPONSIBILITY_ID = "responsibilityId";
 	transient private static ResponsibilityService responsibilityService;
 
+	@Override
+	public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry){
+		
+		if(NAME.equals(propertyName) || NAME_TO_DISPLAY.equals(propertyName)){
+			Map<String, String> primaryKeys = new HashMap<String, String>();
+			primaryKeys.put(RESPONSIBILITY_ID, RESPONSIBILITY_ID);
+			inquiry.buildInquiryLink(dataObject, propertyName, ResponsibilityImpl.class, primaryKeys);
+    	} else if(NAMESPACE_CODE.equals(propertyName) || TEMPLATE_NAMESPACE_CODE.equals(propertyName)){
+    		Map<String, String> primaryKeys = new HashMap<String, String>();
+			primaryKeys.put(propertyName, "code");
+			inquiry.buildInquiryLink(dataObject, propertyName, NamespaceBo.class, primaryKeys);
+        } else if(DETAIL_OBJECTS.equals(propertyName)){
+        	//return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
+        	super.buildInquirableLink(dataObject, propertyName, inquiry);
+        } else if(ASSIGNED_TO_ROLES.equals(propertyName)){
+//        	return getAssignedRoleInquiryUrl(dataObject);
+        	super.buildInquirableLink(dataObject, propertyName, inquiry);
+        }else{
+        	super.buildInquirableLink(dataObject, propertyName, inquiry);	
+        }
+	}
+	
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
     	/*
@@ -110,6 +133,11 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     	return new MultipleAnchorHtmlData(htmlData);
     }
 
+    @Override
+	public Object getDataObject(Map fieldValues){
+    	return getBusinessObject(fieldValues);
+    }
+    
 	/**
 	 * This overridden method ...
 	 * 

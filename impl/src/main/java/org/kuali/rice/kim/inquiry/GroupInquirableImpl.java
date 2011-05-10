@@ -17,6 +17,7 @@ package org.kuali.rice.kim.inquiry;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
+import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
@@ -25,6 +26,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -43,6 +45,24 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 	protected final String GROUP_NAME = "groupName";
 	protected final String GROUP_ID = "groupId";
 	protected final String NAMESPACE_CODE = "namespaceCode";
+	
+	@Override
+	public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry){
+		
+		if(GROUP_NAME.equals(propertyName)){
+			Map<String, String> primaryKeys = new HashMap<String, String>();
+			primaryKeys.put(GROUP_ID, GROUP_ID);
+			inquiry.buildInquiryLink(dataObject, propertyName, GroupBo.class, primaryKeys);
+		} else if(NAMESPACE_CODE.equals(propertyName)){
+			Map<String, String> primaryKeys = new HashMap<String, String>();
+			primaryKeys.put(propertyName, "code");
+			inquiry.buildInquiryLink(dataObject, propertyName, NamespaceBo.class, primaryKeys);
+		} else if("kimTypeInfo.name".equals(propertyName)){
+			Map<String, String> primaryKeys = new HashMap<String, String>();
+			primaryKeys.put("kimTypeInfo.id", KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
+			inquiry.buildInquiryLink(dataObject, propertyName, KimTypeBo.class, primaryKeys);
+        }
+	}
 	
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {

@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
+import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
@@ -33,6 +34,7 @@ import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -50,6 +52,28 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 
 	transient private static PermissionService permissionService;
 
+	@Override
+	public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry){
+		
+		if(NAME.equals(propertyName) || NAME_TO_DISPLAY.equals(propertyName)){
+			Map<String, String> primaryKeys = new HashMap<String, String>();
+			primaryKeys.put(KimConstants.PrimaryKeyConstants.PERMISSION_ID, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
+			inquiry.buildInquiryLink(dataObject, propertyName, PermissionImpl.class, primaryKeys);
+		} else if(NAMESPACE_CODE.equals(propertyName) || TEMPLATE_NAMESPACE_CODE.equals(propertyName)){
+			Map<String, String> primaryKeys = new HashMap<String, String>();
+			primaryKeys.put(propertyName, "code");
+			inquiry.buildInquiryLink(dataObject, propertyName, NamespaceBo.class, primaryKeys);
+        } else if(DETAIL_OBJECTS.equals(propertyName)){
+        	//return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
+        	super.buildInquirableLink(dataObject, propertyName, inquiry);
+        } else if(ASSIGNED_TO_ROLES.equals(propertyName)){
+//        	return getAssignedRoleInquiryUrl(businessObject);
+        	super.buildInquirableLink(dataObject, propertyName, inquiry);
+        }else{
+        	super.buildInquirableLink(dataObject, propertyName, inquiry);
+        }
+	}
+	
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
     	/*
@@ -114,7 +138,11 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
     	return new MultipleAnchorHtmlData(htmlData);
     }
 
-
+	@Override
+	public Object getDataObject(Map fieldValues){
+    	return getBusinessObject(fieldValues);
+    }
+    
 	/**
 	 * This overridden method ...
 	 * 

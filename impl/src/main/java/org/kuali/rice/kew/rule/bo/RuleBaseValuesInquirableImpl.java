@@ -39,7 +39,13 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 
 	public static final String DOCUMENT_ID = "documentId";
 
-
+	@Override
+	public Object getDataObject(Map fieldValues){
+		RuleBaseValues rule = (RuleBaseValues)super.getDataObject(fieldValues);
+		WebRuleUtils.populateRuleMaintenanceFields(rule);
+		return rule;
+    }
+	
 	/**
 	 * This overridden method ...
 	 * 

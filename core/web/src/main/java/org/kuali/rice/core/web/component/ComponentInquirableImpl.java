@@ -37,6 +37,41 @@ public class ComponentInquirableImpl extends KualiInquirableImpl {
 	private static final String PARAMETER_DETAIL_TYPE_CODE = "componentCode";
 	private static final String PARAMETER_NAMESPACE_CODE = "namespaceCode";
 	
+	@Override
+	public Object getDataObject(Map fieldValues){
+		BusinessObject result = (BusinessObject)super.getDataObject(fieldValues);
+
+		if (result == null) {
+
+			String parameterDetailTypeCode = (String)fieldValues.get(PARAMETER_DETAIL_TYPE_CODE);
+	        String parameterNamespaceCode = (String)fieldValues.get(PARAMETER_NAMESPACE_CODE);
+			
+	        if (parameterDetailTypeCode == null) throw new RuntimeException(PARAMETER_DETAIL_TYPE_CODE + 
+	        		" is a required key for this inquiry");
+	        if (parameterNamespaceCode == null) throw new RuntimeException(PARAMETER_NAMESPACE_CODE + 
+	        		" is a required key for this inquiry");
+
+			List<Component> components;
+	        try {
+	        	components = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
+	        } catch (DataDictionaryException ex) {
+	            throw new RuntimeException(
+	            		"Problem parsing data dictionary during full load required for inquiry to function: " + 
+	            		ex.getMessage(), ex);
+	        }
+	        
+	        for (Component pdt : components) {
+	        	if (parameterDetailTypeCode.equals(pdt.getCode()) &&
+	        			parameterNamespaceCode.equals(pdt.getNamespaceCode())) {
+	        		result = ComponentBo.from(pdt);
+	        		break;
+	        	}
+	        }
+		}
+		
+		return result; 
+    }
+	
 	/**
 	 * This overridden method gets the BO for inquiries on {@link org.kuali.rice.core.impl.component.ComponentBo}
 	 * 

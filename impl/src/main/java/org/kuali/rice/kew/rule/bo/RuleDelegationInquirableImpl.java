@@ -32,6 +32,13 @@ import org.kuali.rice.kns.web.ui.Section;
  */
 public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 
+	@Override
+	public Object getDataObject(Map fieldValues){
+		RuleDelegation rule = (RuleDelegation)super.getDataObject(fieldValues);
+		WebRuleUtils.populateRuleMaintenanceFields(rule.getDelegationRuleBaseValues());
+		return rule;
+    }
+	
 	/**
 	 * This overridden method ...
 	 *

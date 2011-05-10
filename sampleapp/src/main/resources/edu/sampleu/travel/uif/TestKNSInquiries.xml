@@ -266,8 +266,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     </property>  
   </bean>
   	
-  <!-- <bean id="RuleInquiryView" abstract="true" parent="InquiryView-parentBean"/> -->	
-  <!-- <bean id="RuleBaseValues-InquiryView" parent="InquiryView">
+  <bean id="RuleInquiryView" abstract="true" parent="InquiryView-parentBean"/> 	
+  <bean id="RuleBaseValues-InquiryView" parent="InquiryView">
 	<property name="title" value="Rule"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kew.rule.bo.RuleBaseValuesInquirableImpl"/>
@@ -292,16 +292,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             </property>
           </bean>
           
-          <bean parent="CollectionGroup">
+          <!-- <bean parent="CollectionGroup">
              <property name="title" value="Rule Attributes"/>  
              <property name="propertyName" value="fieldValues"/>
-          </bean>
+          </bean> -->
           
           
           <bean parent="CollectionGroup">
              <property name="title" value="Person Responsibilities"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility"/>
              <property name="propertyName" value="personResponsibilities"/>
+             <property name="layoutManager.summaryTitle" value="Person"/>
              <property name="layoutManager.summaryFields">
                   <list>
           			<value>principalName</value>
@@ -319,6 +320,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              <property name="title" value="Group Responsibilities"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility"/>
              <property name="propertyName" value="groupResponsibilities"/>
+             <property name="layoutManager.summaryTitle" value="Group"/>
              <property name="layoutManager.summaryFields">
                   <list>
           			<value>namespaceCode</value>
@@ -338,6 +340,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              <property name="title" value="Role Responsibilities"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility"/>
              <property name="propertyName" value="roleResponsibilities"/>
+             <property name="layoutManager.summaryTitle" value="Role"/>
              <property name="layoutManager.summaryFields">
                   <list>
           			<value>roleName</value>
@@ -355,7 +358,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          </list>
     </property>  
 
-  </bean> -->
+  </bean>
   
   <bean id="RuleDelegation-InquiryView" parent="InquiryView">
     <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>

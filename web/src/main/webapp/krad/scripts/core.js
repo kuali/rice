@@ -663,8 +663,11 @@ function getAttributeId(elementId, elementType){
 }
 
 function checkDirty(event){
+
+	var validateDirty = jq("[name='validateDirty']").val()
 	var dirty = jq(".field_attribute").find("input.dirty")
-	if (dirty.length > 0)
+	
+	if (validateDirty == "true" && dirty.length > 0)
 	{
 		var answer = confirm ("Form has unsaved data. Do you want to leave anyway?")
 		if (answer == false){
@@ -697,12 +700,16 @@ function setupValidator(){
 	
 	//Make sure form doesn't have any unsaved data if user clicks on any other portal links, closes browser or presses fwd/back browser button
 	jq(window).bind('beforeunload', function(evt){
-		var dirty = jq(".field_attribute").find("input.dirty")
-		//methodToCall check is needed to skip from normal way of unloading (cancel,save,close) 
-		var methodToCall = jq("[name='methodToCall']").val();
-		if (dirty.length > 0 && methodToCall == null)
+		var validateDirty = jq("[name='validateDirty']").val();
+		if (validateDirty == "true")
 		{
-			return "Form has unsaved data. Do you want to leave anyway?";
+			var dirty = jq(".field_attribute").find("input.dirty")
+			//methodToCall check is needed to skip from normal way of unloading (cancel,save,close) 
+			var methodToCall = jq("[name='methodToCall']").val();
+			if (dirty.length > 0 && methodToCall == null)
+			{
+				return "Frm has unsaved data. Do you want to leave anyway?";
+			}
 		}
 	});
 	

@@ -27,7 +27,6 @@ public class FormView extends View {
 	private boolean renderForm;
 	private boolean validateServerSide;
 	private boolean validateClientSide;
-	private boolean validateDirty;
 
 	private String formPostUrl;
 
@@ -35,7 +34,7 @@ public class FormView extends View {
 		renderForm = true;
 		validateServerSide = true;
 		validateClientSide = true;
-		validateDirty = true;
+		setValidateDirty(true);
 	}
 
 	/**
@@ -101,17 +100,6 @@ public class FormView extends View {
 		this.validateClientSide = validateClientSide;
 	}
 
-	public boolean isValidateDirty() {
-		return this.validateDirty;
-	}
-
-	/**
-	 * Setter for dirty validation. 
-	 */
-	public void setValidateDirty(boolean validateDirty) {
-		this.validateDirty = validateDirty;
-	}
-	
 	/**
 	 * Specifies the URL the view's form should post to
 	 * 

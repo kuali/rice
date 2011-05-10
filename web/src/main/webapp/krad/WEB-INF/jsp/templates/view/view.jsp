@@ -42,6 +42,8 @@
 
 		<%-- all forms will be stored in session, this is the conversation key --%>
 		<form:hidden path="formKey" />
+		<%-- Based on its value, form elements will be checked for dirtyness --%>
+		<form:hidden path="validateDirty" />
 	</c:if>
 
 	<!----------------------------------- #VIEW PAGE --------------------------------------->

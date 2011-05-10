@@ -105,6 +105,8 @@ public class View extends ContainerBase {
     private LinkField viewMenuLink;
     private String viewMenuGrouping;
 
+    private boolean validateDirty;
+    
     @RequestParameter
     private boolean dialogMode;
 
@@ -920,6 +922,15 @@ public class View extends ContainerBase {
         this.breadcrumbs = breadcrumbs;
     }
     
-    
+    public boolean isValidateDirty() {
+		return this.validateDirty;
+	}
+
+	/**
+	 * Setter for dirty validation. 
+	 */
+	public void setValidateDirty(boolean validateDirty) {
+		this.validateDirty = validateDirty;
+	}    
 
 }

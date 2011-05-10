@@ -72,6 +72,7 @@ public class UifFormBase implements Serializable {
     protected String homeLocation;
     
     protected boolean renderFullView;
+    protected boolean validateDirty;
 
     public UifFormBase() {
         formKey = generateFormKey();
@@ -509,6 +510,15 @@ public class UifFormBase implements Serializable {
         return formHistory;
     }
     
-    
+    public boolean isValidateDirty() {
+		return this.validateDirty;
+	}
+
+	/**
+	 * Setter for dirty validation. 
+	 */
+	public void setValidateDirty(boolean validateDirty) {
+		this.validateDirty = validateDirty;
+	}    
 
 }

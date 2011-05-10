@@ -459,6 +459,7 @@ public abstract class UifControllerBase {
 		}
 
 		form.setViewId(viewId);
+		form.setValidateDirty(view.isValidateDirty());
 		form.setPageId(pageId);
 		form.setView(view);
 

@@ -34,6 +34,7 @@ import org.kuali.rice.kns.uif.core.ReferenceCopy;
 import org.kuali.rice.kns.uif.core.RequestParameter;
 import org.kuali.rice.kns.uif.field.LinkField;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
+import org.kuali.rice.kns.uif.util.BooleanMap;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
 import org.kuali.rice.kns.uif.widget.BreadCrumbs;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -92,8 +93,8 @@ public class View extends ContainerBase {
     private Class<? extends PresentationController> presentationControllerClass;
     private Class<? extends Authorizer> authorizerClass;
 
-    private Set<String> actionFlags;
-    private Set<String> editModes;
+    private BooleanMap actionFlags;
+    private BooleanMap editModes;
 
     private Map<String, String> expressionVariables;
 
@@ -653,48 +654,48 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set of strings that flag what actions can be taken in the UI
+     * Map of strings that flag what actions can be taken in the UI
      * 
      * <p>
      * These can be used in conditional expressions in the dictionary or by
      * other UI logic
      * </p>
      * 
-     * @return Set<String> action flags
+     * @return BooleanMap action flags
      */
-    public Set<String> getActionFlags() {
+    public BooleanMap getActionFlags() {
         return this.actionFlags;
     }
 
     /**
-     * Setter for the action flags set
+     * Setter for the action flags Map
      * 
      * @param actionFlags
      */
-    public void setActionFlags(Set<String> actionFlags) {
+    public void setActionFlags(BooleanMap actionFlags) {
         this.actionFlags = actionFlags;
     }
 
     /**
-     * Set of edit modes that enabled for the view
+     * Map of edit modes that enabled for the view
      * 
      * <p>
      * These can be used in conditional expressions in the dictionary or by
      * other UI logic
      * </p>
      * 
-     * @return Set<String> edit modes
+     * @return BooleanMap edit modes
      */
-    public Set<String> getEditModes() {
+    public BooleanMap getEditModes() {
         return this.editModes;
     }
 
     /**
-     * Setter for the edit modes set
+     * Setter for the edit modes Map
      * 
      * @param editModes
      */
-    public void setEditModes(Set<String> editModes) {
+    public void setEditModes(BooleanMap editModes) {
         this.editModes = editModes;
     }
 

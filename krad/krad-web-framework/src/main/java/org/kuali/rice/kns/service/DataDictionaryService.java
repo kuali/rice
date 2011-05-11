@@ -464,4 +464,15 @@ public interface DataDictionaryService {
 	 * @return View instance that matches the given index
 	 */
 	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey);
+	
+    /**
+     * Returns an Object configured in the dictionary with the given bean
+     * id/name. Standard Spring scoping rules apply in terms of prototypes or
+     * singletons
+     * 
+     * @param beanId
+     *            - id/name of the bean in the data dictionary
+     * @return Object found for id or null if no object was found
+     */
+    public Object getDictionaryObject(String beanId);
 }

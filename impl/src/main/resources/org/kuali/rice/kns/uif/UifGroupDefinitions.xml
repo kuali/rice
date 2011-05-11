@@ -289,26 +289,82 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          </list>
       </property>
       <property name="fieldBindingObjectPath" value="document.documentHeader"/>
-  </bean>  
-  
-  <bean id="Group_DocumentNotes" parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="3">
-      <property name="id" value="group_docnotes"/>
-      <property name="title" value="Notes and Attachments"/>
-      <property name="propertyName" value="notes"/>
-      <property name="styleClasses" value="tableborders wrap"/>
-      <property name="collectionObjectClass" value="org.kuali.rice.kns.bo.Note"/>
-      <property name="layoutManager.sequencePropertyName" value="notePostedTimestamp"/>
-      <property name="layoutManager.tableTools.render" value="false"/>
-      <property name="items">
-         <list> 
-           <!-- <bean parent="AttributeField_NotePostedTimestamp"/>-->
-           <bean parent="AttributeField_AuthorUniversalIdentifier"/>
-           <bean parent="AttributeField_NoteText"/>
-           <bean parent="AttributeField_Attachment"/>           
-         </list>
-      </property>
-      <property name="bindingInfo.bindingObjectPath" value="document"/>
-  </bean>    
+  </bean>
+
+	<bean id="Group_DocumentNotes" parent="CollectionGroupSectionTableLayout" p:layoutManager.suppressLineWrapping="true">
+		<property name="id" value="group_docnotes" />
+		<property name="title"
+			value="Notes @{#DocumentEntry.allowsNoteAttachments ? 'and Attachments' : ''} (@{document.notes.size()})" />
+		<property name="propertyName" value="notes" />
+		<property name="styleClasses" value="tableborders wrap" />
+		<property name="collectionObjectClass" value="org.kuali.rice.kns.bo.Note" />
+		<property name="layoutManager.generateAutoSequence" value="true" />
+		<property name="layoutManager.tableTools.render" value="false" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField" p:propertyName="notePostedTimestamp" p:conditionalReadOnly="true"/>
+				<bean parent="AttributeField" p:propertyName="authorUniversal.principalName" p:conditionalReadOnly="true"/>
+				<bean parent="AttributeField" p:propertyName="noteTopicText" p:conditionalRender="#DocumentEntry.displayTopicFieldInNotes" />
+				<bean parent="AttributeField" p:propertyName="noteText" />
+				<bean parent="FieldGroup" p:label="Attached File" p:conditionalRender="#DocumentEntry.allowsNoteAttachments">
+					<property name="items">
+						<list>
+							<bean parent="AttributeField_Form" p:propertyName="attachmentFile" 
+							      p:bindingInfo.bindingPath="attachmentFile" p:labelField.render="false">
+							  <property name="control">
+							    <bean parent="FileControl" p:size="15"/>
+							  </property>
+							</bean>
+							<bean parent="ActionField" p:methodToCall="cancelBOAttachment"
+								p:actionLabel="cancel" p:title="Cancel Attachment" />
+						</list>
+					</property>
+					<property name="propertyReplacers">
+						<list>
+							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and #line.attachment?.complete" >
+								<property name="replacement">
+								  <list>
+						            <bean parent="ActionField" p:methodToCall="downloadBOAttachment"
+								          p:actionLabel="download attachment" p:title="download attachment" />
+								    <bean parent="AttributeField" p:propertyName="attachment.attachmentFileName"/> 
+                                    <bean parent="MessageField" 
+                                          p:messageText="(@{#line.attachment.attachmentFileSizeWithUnits}, @{#line.attachment.attachmentMimeTypeCode})" />   
+						          </list>
+								</property>
+							</bean>	
+							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and !#line.attachment?.complete" >
+								<property name="replacement">
+								  <list>
+								    <bean parent="BlankField" />
+								  </list>
+								</property>
+							</bean>	  							
+						</list>
+					</property>
+				</bean>
+				<!-- TODO: field needs translation to options label when read-only -->
+				<bean parent="AttributeField" p:propertyName="attachment.attachmentTypeCode" p:conditionalRender="#DocumentEntry.allowsNoteAttachments" />
+				<bean parent="AttributeField" p:propertyName="adHocRouteRecipient.id"  p:conditionalReadOnly="!#isAddLine"
+				      p:conditionalRender="#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]" />
+			</list>
+		</property>
+		<property name="bindingInfo.bindingObjectPath" value="document" />
+		<property name="accordion.conditionalDefaultOpen"
+			value="!document.notes.empty or #component.defaultOpen" />
+		<property name="errorsField.additionalKeysToMatch" value="attachmentFile" />
+	    <property name="addLineActionFields">
+		   <list>
+			   <bean parent="ActionField_Small" p:methodToCall="insertBONote" p:actionLabel="add" p:title="Add a Note" />
+		   </list>
+	    </property>
+	    <property name="actionFields">
+	  	   <list>
+			  <bean parent="ActionField_Small" p:methodToCall="deleteBONote" p:actionLabel="delete" p:title="Delete a Note"/>
+			  <bean parent="ActionField_Small" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="send" p:title="Send FYI"
+			        p:conditionalRender="#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]"/>
+		   </list>
+	    </property>
+	</bean>    
   
   <bean id="Group_DocumentRouteLog" parent="GroupSection">
       <property name="id" value="group_docroutelog"/>

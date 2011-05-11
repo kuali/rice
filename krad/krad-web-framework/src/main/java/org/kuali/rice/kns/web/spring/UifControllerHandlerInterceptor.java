@@ -26,6 +26,7 @@ import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.uif.history.History;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -37,33 +38,44 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * This is a description of what this class does - swgibson don't forget to fill this in. 
+ * Spring controller intercepter for KRAD controllers
+ * 
+ * <p>
+ * Provides infrastructure for preparing the form and view before and after the
+ * controller is invoked. Included in this is form session management and
+ * preparation of the view for rendering
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class UifControllerHandlerInterceptor implements HandlerInterceptor {
-    
     private static final Logger LOG = Logger.getLogger(UifControllerHandlerInterceptor.class);
-    
-    private static Boolean OUTPUT_ENCRYPTION_WARNING = null;
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
-    // do nothing
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+            throws Exception {
+        // do nothing
     }
 
+    /**
+     * After the controller logic is executed, the form is placed into session
+     * and the corresponding view is prepared for rendering
+     * 
+     * @see org.springframework.web.servlet.HandlerInterceptor#postHandle(javax.servlet.http.HttpServletRequest,
+     *      javax.servlet.http.HttpServletResponse, java.lang.Object,
+     *      org.springframework.web.servlet.ModelAndView)
+     */
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        
-        if(handler instanceof UifControllerBase) {
-            UifControllerBase controller = (UifControllerBase)handler;
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+            ModelAndView modelAndView) throws Exception {
+        if (handler instanceof UifControllerBase) {
+            UifControllerBase controller = (UifControllerBase) handler;
             UifFormBase form = null;
-            
+
             Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
-            if(model instanceof UifFormBase) {
-                form = (UifFormBase)model;
+            if (model instanceof UifFormBase) {
+                form = (UifFormBase) model;
+                
                 //Main history/breadcrumb tracking support
                 History history = form.getFormHistory();
                 View view = form.getView();
@@ -71,6 +83,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
                 history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
                 history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());
                 history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
+                
                 //Passed settings ALWAYS override the defaults
                 if(StringUtils.isNotBlank(request.getParameter("showHome"))){
                     history.setAppendHomewardPath(Boolean.parseBoolean(request.getParameter("showHome")));
@@ -81,7 +94,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
                 history.setCurrent(form, request);
                 history.buildHistoryFromParameterString(request.getParameter("history"));
             }
-            
+
             form.setPreviousView(null);
 
             //Store form to session and persist document form to db as well
@@ -90,45 +103,115 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             	UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);            
             	getSessionDocumentService().setDocumentForm((DocumentFormBase)form, userSession, request.getRemoteAddr());
             }
-            
-            // currently methodToCall must be a regularly parseable request parameter, so just get from request
-            String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
-            
-            // make sure the user can do what they're trying to according to the module that owns the functionality
-            // this is done post handle to be able to access the form and whatever processing
-            // was done (this was the same pre-krad)
-            if (!controller.getMethodToCallsToNotCheckAuthorization().contains(methodToCall)) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("'" + methodToCall + "' not in set of excempt methods: " + controller.getMethodToCallsToNotCheckAuthorization());
-                }
-                
-                controller.checkAuthorization(form, methodToCall);
-            } else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("'" + methodToCall + "' is exempt from auth checks.");
-                }
-            }
-        }
 
-        // check if demonstration encryption is enabled
-        if (LOG.isEnabledFor(Level.WARN)) {
-        	// TODO: need someway to determine if demo encryption is running
-//            if (OUTPUT_ENCRYPTION_WARNING == null) {
-//                OUTPUT_ENCRYPTION_WARNING = Boolean.valueOf(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && CoreApiServiceLocator.getEncryptionService() instanceof Demonstration);
-//            }
-//            if (OUTPUT_ENCRYPTION_WARNING.booleanValue()) {
-//                LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");
-//            }
+            // perform authorization of controller method
+            checkMethodToCallAuthorization(request, controller, form);
+
+            // prepare view contained in form
+            prepareViewForRendering(form);
         }
     }
 
     /**
+     * Verify the user is authorized to invoke the controller method according
+     * to the module that owns the functionality. This is done post handle to be
+     * able to access the form and whatever processing was done
+     * 
+     * TODO: should this be throwing some exception?
+     * 
+     * @param request
+     *            - current HTTP request containing method to call parameter
+     * @param controller
+     *            - controller that was invoked
+     * @param form
+     *            - form instance containing the data
+     */
+    protected void checkMethodToCallAuthorization(HttpServletRequest request, UifControllerBase controller,
+            UifFormBase form) {
+        // currently methodToCall must be a regularly parseable request
+        // parameter, so just get from request
+        String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+
+        if (!controller.getMethodToCallsToNotCheckAuthorization().contains(methodToCall)) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("'" + methodToCall + "' not in set of excempt methods: "
+                        + controller.getMethodToCallsToNotCheckAuthorization());
+            }
+
+            controller.checkAuthorization(form, methodToCall);
+        } else {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("'" + methodToCall + "' is exempt from auth checks.");
+            }
+        }
+    }
+
+    /**
+     * Prepares the <code>View</code> instance contained on the form for
+     * rendering
+     * 
+     * <p>
+     * First a check is made to verify the view instance contained on the form
+     * has the same id as the view id on the form (id that was requested), if
+     * not a new view instance is retrieved for that view id. Then a check on
+     * the view status is made to determine if we need to run the full view
+     * life-cycle (in the case of a finalized view), or just the build steps
+     * (apply model and finalize). Finally the page is set on the view to
+     * reflect the page that was requested
+     * </p>
+     * 
+     * @param form
+     *            - form instance containing the data and view instance
+     */
+    protected void prepareViewForRendering(UifFormBase form) {
+        // if we don't have the view instance or a different view was
+        // requested get new instance from the view service
+        View view = form.getView();
+        String viewId = form.getViewId();
+        if ((view == null) || !StringUtils.equals(viewId, view.getId())) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Getting new view instance for view id: " + viewId);
+            }
+
+            view = getViewService().getView(viewId, form.getViewRequestParameters());
+
+            // view changed so force full render
+            form.setRenderFullView(true);
+        }
+
+        // if view status is final we need to rebuild (build fresh)
+        if (StringUtils.equals(UifConstants.ViewStatus.FINAL, view.getViewStatus())) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Rebuilding view due to final status, view id: " + viewId);
+            }
+
+            view = getViewService().rebuildView(viewId, form, form.getViewRequestParameters());
+        } else {
+            // update the view with the model data
+            getViewService().buildView(view, form);
+        }
+        
+        // set dirty flag
+        form.setValidateDirty(view.isValidateDirty());
+
+        // set view page to page requested on form
+        if (StringUtils.isNotBlank(form.getPageId())) {
+            view.setCurrentPageId(form.getPageId());
+        }
+    }
+
+    /**
+     * Before the controller executes the user session is set on GlobalVariables
+     * and messages are cleared
+     * 
+     * TODO: do we need to clear the messages before this so that formatting and
+     * validation errors done during the binding are not cleared out?
+     * 
      * @see org.springframework.web.servlet.HandlerInterceptor#preHandle(javax.servlet.http.HttpServletRequest,
      *      javax.servlet.http.HttpServletResponse, java.lang.Object)
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
         final UserSession session = WebUtils.getUserSessionFromRequest(request);
 
         if (session == null) {
@@ -141,10 +224,13 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         return true;
     }
     
-	/**
-	 * @return the sessionDocumentService
-	 */
+
 	public SessionDocumentService getSessionDocumentService() {
 		return KNSServiceLocatorWeb.getSessionDocumentService();
 	}    
+	
+    protected ViewService getViewService() {
+        return KNSServiceLocatorWeb.getViewService();
+    }
+
 }

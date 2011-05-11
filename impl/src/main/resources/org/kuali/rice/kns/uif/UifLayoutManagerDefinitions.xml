@@ -32,7 +32,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="template" value="/krad/WEB-INF/jsp/templates/layout/grid.jsp"/>
       <property name="numberOfColumns" value="2"/>
       <property name="styleClasses" value="datatable"/>
-      <property name="matchColumnsToFieldCount" value="false"/>
+      <property name="suppressLineWrapping" value="false"/>
       <property name="applyAlternatingRowStyles" value="false"/>
       <property name="applyDefaultCellWidths" value="true"/>
       <property name="renderAlternatingHeaderColumns" value="true"/>

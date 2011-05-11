@@ -134,7 +134,7 @@
 	
     <listener>
        <listener-class>org.apache.tiles.web.startup.simple.SimpleTilesListener</listener-class>
-    </listener> 	
+    </listener>
 
 	<servlet>
 		<servlet-name>action</servlet-name>

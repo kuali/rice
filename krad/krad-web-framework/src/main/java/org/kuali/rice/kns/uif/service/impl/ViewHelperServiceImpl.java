@@ -1,17 +1,12 @@
 /*
- * Copyright 2007 The Kuali Foundation
- * 
- * Licensed under the Educational Community License, Version 1.0 (the
- * "License"); you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Copyright 2007 The Kuali Foundation Licensed under the Educational Community
+ * License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.opensource.org/licenses/ecl1.php Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package org.kuali.rice.kns.uif.service.impl;
 
@@ -29,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
@@ -47,7 +43,9 @@ import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.kns.uif.service.ViewDictionaryService;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
+import org.kuali.rice.kns.uif.util.BooleanMap;
 import org.kuali.rice.kns.uif.util.CloneUtils;
+import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
 import org.kuali.rice.kns.uif.widget.Inquiry;
@@ -95,8 +93,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
                 // use specified parameter name if given, else use field name
                 if (StringUtils.isNotBlank(requestParameter.parameterName())) {
                     fieldNamesToPopulate.add(requestParameter.parameterName());
-                }
-                else {
+                } else {
                     fieldNamesToPopulate.add(field.getName());
                 }
             }
@@ -150,6 +147,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      */
     @Override
     public void performInitialization(View view) {
+        // process component ids for duplicates
+        ComponentUtils.processIds(view, new HashMap<String, Integer>());
+
         performComponentInitialization(view, view);
     }
 
@@ -232,7 +232,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      *            - field instance to initialize
      */
     protected void initializeAttributeFieldFromDataDictionary(View view, AttributeField field) {
-        // determine attribute name and entry within the dictionary to lookup
+        AttributeDefinition attributeDefinition = null;
+
         String dictionaryAttributeName = field.getDictionaryAttributeName();
         String dictionaryObjectEntry = field.getDictionaryObjectEntry();
 
@@ -242,31 +243,115 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             dictionaryAttributeName = field.getPropertyName();
         }
 
-        // if both dictionary names not given and the field is from a model,
-        // determine class based on the View and use field name as attribute
-        // name
-        if (StringUtils.isBlank(dictionaryAttributeName) && StringUtils.isBlank(dictionaryObjectEntry)
-                && !field.getBindingInfo().isBindToForm()) {
-            dictionaryAttributeName = field.getPropertyName();
-            Class<?> dictionaryModelClass = getDictionaryModelClass(view, field);
+        // if dictionary entry and attribute set, attempt to find definition
+        if (StringUtils.isNotBlank(dictionaryAttributeName) && StringUtils.isNotBlank(dictionaryObjectEntry)) {
+            attributeDefinition = getDataDictionaryService().getAttributeDefinition(dictionaryObjectEntry,
+                    dictionaryAttributeName);
+        }
+
+        // if definition not found, recurse through path
+        if (attributeDefinition == null) {
+            String propertyPath = field.getBindingInfo().getBindingPath();
+            if (StringUtils.isNotBlank(field.getBindingInfo().getCollectionPath())) {
+                propertyPath = field.getBindingInfo().getCollectionPath();
+                if (StringUtils.isNotBlank(field.getBindingInfo().getBindByNamePrefix())) {
+                    propertyPath += "." + field.getBindingInfo().getBindByNamePrefix();
+                }
+                propertyPath += "." + field.getBindingInfo().getBindingName();
+            }
+            
+            attributeDefinition = findNestedDictionaryAttribute(view, field, null, propertyPath);
+        }
+
+        // if a definition was found, initialize field from definition
+        if (attributeDefinition != null) {
+            field.copyFromAttributeDefinition(attributeDefinition);
+        }
+    }
+    
+    /**
+     * Recursively drills down the property path (if nested) to find an
+     * AttributeDefinition, the first attribute definition found will be
+     * returned
+     * 
+     * <p>
+     * e.g. suppose parentPath is 'document' and propertyPath is
+     * 'account.subAccount.name', first the property type for document will be
+     * retrieved using the view metadata and used as the dictionary entry, with
+     * the propertyPath as the dictionary attribute, if an attribute definition
+     * exists it will be returned. Else, the first part of the property path is
+     * added to the parent, making the parentPath 'document.account' and the
+     * propertyPath 'subAccount.name', the method is then called again to
+     * perform the process with those parameters. The recursion continues until
+     * an attribute field is found, or the propertyPath is no longer nested
+     * </p>
+     * 
+     * @param view
+     *            - view instance containing the field
+     * @param field
+     *            - field we are attempting to find a supporting attribute
+     *            definition for
+     * @param parentPath
+     *            - parent path to use for getting the dictionary entry
+     * @param propertyPath
+     *            - path of the property relative to the parent, to use as
+     *            dictionary attribute and to drill down on
+     * @return AttributeDefinition if found, or Null
+     */
+    protected AttributeDefinition findNestedDictionaryAttribute(View view, AttributeField field, String parentPath,
+            String propertyPath) {
+        AttributeDefinition attributeDefinition = null;
+
+        // attempt to find definition for parent and property
+        String dictionaryAttributeName = propertyPath;
+        String dictionaryObjectEntry = null;
+        
+        if (field.getBindingInfo().isBindToMap()) {
+            parentPath = "";
+            if (!field.getBindingInfo().isBindToForm() && StringUtils.isNotBlank(field.getBindingInfo().getBindingObjectPath())) {
+                parentPath = field.getBindingInfo().getBindingObjectPath();
+            }
+            if (StringUtils.isNotBlank(field.getBindingInfo().getBindByNamePrefix())) {
+                if (StringUtils.isNotBlank(parentPath)) {
+                    parentPath += "." + field.getBindingInfo().getBindByNamePrefix();
+                }
+                else {
+                    parentPath = field.getBindingInfo().getBindByNamePrefix();
+                }
+            }
+            
+            dictionaryAttributeName = field.getBindingInfo().getBindingName();
+        }
+
+        if (StringUtils.isNotBlank(parentPath)) {
+            Class<?> dictionaryModelClass = ViewModelUtils.getPropertyType(view, parentPath);
             if (dictionaryModelClass != null) {
                 dictionaryObjectEntry = dictionaryModelClass.getName();
+
+                attributeDefinition = getDataDictionaryService().getAttributeDefinition(dictionaryObjectEntry,
+                        dictionaryAttributeName);
             }
         }
 
-        // if we were able to find a dictionary attribute and object, call
-        // data dictionary service to get AttributeDefinition
-        if (StringUtils.isNotBlank(dictionaryAttributeName) && StringUtils.isNotBlank(dictionaryObjectEntry)) {
-            AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(
-                    dictionaryObjectEntry, dictionaryAttributeName);
-            if (attributeDefinition != null) {
-                field.copyFromAttributeDefinition(attributeDefinition);
+        // if definition not found and property is still nested, recurse down
+        // one level
+        if ((attributeDefinition == null) && StringUtils.contains(propertyPath, ".")) {
+            String nextParentPath = StringUtils.substringBefore(propertyPath, ".");
+            if (StringUtils.isNotBlank(parentPath)) {
+                nextParentPath = parentPath + "." + nextParentPath;
             }
+            String nextPropertyPath = StringUtils.substringAfter(propertyPath, ".");
 
-            // update field with attribute and entry name
+            return findNestedDictionaryAttribute(view, field, nextParentPath, nextPropertyPath);
+        }
+
+        // if a definition was found, update the fields dictionary properties
+        if (attributeDefinition != null) {
             field.setDictionaryAttributeName(dictionaryAttributeName);
             field.setDictionaryObjectEntry(dictionaryObjectEntry);
         }
+
+        return attributeDefinition;
     }
 
     /**
@@ -318,11 +403,13 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
         Set<String> actionFlags = presentationController.getActionFlags(model);
         actionFlags = authorizer.getActionFlags(model, user, actionFlags);
-        view.setActionFlags(actionFlags);
+        
+        view.setActionFlags(new BooleanMap(actionFlags));
 
         Set<String> editModes = presentationController.getEditModes(model);
         editModes = authorizer.getEditModes(model, user, editModes);
-        view.setEditModes(editModes);
+        
+        view.setEditModes(new BooleanMap(editModes));
     }
 
     /**
@@ -335,12 +422,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      *            - object containing the view data
      */
     protected void setViewContext(View view, Object model) {
-        view.pushObjectToContext(UifConstants.ContextVariableNames.VIEW, view);
-
-        Properties properties = KNSServiceLocator.getKualiConfigurationService().getAllProperties();
-        view.pushObjectToContext(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
-        
-        view.pushObjectToContext(UifConstants.ContextVariableNames.CONSTANTS, KNSConstants.class);
+        view.getContext().putAll(getPreModelContext(view));
 
         // evaluate view expressions for further context
         for (Entry<String, String> variableExpression : view.getExpressionVariables().entrySet()) {
@@ -349,6 +431,26 @@ public class ViewHelperServiceImpl implements ViewHelperService {
                     variableExpression.getValue());
             view.pushObjectToContext(variableName, value);
         }
+    }
+    
+    /**
+     * Returns the general context that is available before the apply model
+     * phase (during the initialize phase)
+     * 
+     * @param view
+     *            - view instance for context
+     * @return Map<String, Object> context map
+     */
+    protected Map<String, Object> getPreModelContext(View view) {
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        context.put(UifConstants.ContextVariableNames.VIEW, view);
+
+        Properties properties = KNSServiceLocator.getKualiConfigurationService().getAllProperties();
+        context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
+        context.put(UifConstants.ContextVariableNames.CONSTANTS, KNSConstants.class);
+
+        return context;
     }
 
     /**
@@ -600,8 +702,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             if (isValid) {
                 ((List<Object>) collection).remove(lineIndex);
             }
-        }
-        else {
+        } else {
             logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
         }
     }
@@ -636,14 +737,93 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      *      java.lang.String, org.kuali.rice.kns.uif.widget.Inquiry)
      */
     public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry) {
-        Inquirable inquirable = getViewDictionaryService().getInquirable(dataObject.getClass(),
-                inquiry.getViewName());
+        Inquirable inquirable = getViewDictionaryService().getInquirable(dataObject.getClass(), inquiry.getViewName());
         if (inquirable != null) {
             inquirable.buildInquirableLink(dataObject, propertyName, inquiry);
-        }
-        else {
+        } else {
             // inquirable not found, no inquiry link can be set
             inquiry.setRender(false);
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.kns.uif.service.ViewHelperService#applyDefaultValues(org.kuali.rice.kns.uif.container.View,
+     *      org.kuali.rice.kns.web.spring.form.UifFormBase)
+     */
+    public void applyDefaultValues(View view, UifFormBase model) {
+        // retrieve all attribute fields for the view and apply their configured
+        // default value to the model
+        Map<String, AttributeField> attributeFields = view.getViewIndex().getAttributeFieldIndex();
+        for (Entry<String, AttributeField> attributeFieldEntry : attributeFields.entrySet()) {
+            String bindingPath = attributeFieldEntry.getKey();
+            AttributeField attributeField = attributeFieldEntry.getValue();
+
+            populateDefaultValueForField(view, model, attributeField, bindingPath);
+        }
+        
+        // update form indicator
+        model.setDefaultsApplied(true);
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.uif.service.ViewHelperService#applyDefaultValuesForCollectionLine(org.kuali.rice.kns.uif.container.View,
+     *      java.lang.Object, org.kuali.rice.kns.uif.container.CollectionGroup,
+     *      java.lang.Object)
+     */
+    public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
+            Object line) {
+        // retrieve all attribute fields for the collection line
+        List<AttributeField> attributeFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineFields(),
+                AttributeField.class);
+        for (AttributeField attributeField : attributeFields) {
+            String bindingPath = "";
+            if (StringUtils.isNotBlank(attributeField.getBindingInfo().getBindByNamePrefix())) {
+                bindingPath = attributeField.getBindingInfo().getBindByNamePrefix() + ".";
+            }
+            bindingPath += attributeField.getBindingInfo().getBindingName();
+
+            populateDefaultValueForField(view, line, attributeField, bindingPath);
+        }
+    }
+
+    /**
+     * Applies the default value configured for the given field (if any) to the
+     * line given object property that is determined by the given binding path
+     * 
+     * <p>
+     * Checks for a configured default value or default value class for the
+     * field. If both are given, the configured static default value will win.
+     * In addition, if the default value contains an el expression it is
+     * evaluated against the initial context
+     * </p>
+     * 
+     * @param view
+     *            - view instance the field belongs to
+     * @param model
+     *            - object that should be populated
+     * @param attributeField
+     *            - field to check for configured default value
+     * @param bindingPath
+     *            - path to the property on the object that should be populated
+     */
+    protected void populateDefaultValueForField(View view, Object object, AttributeField attributeField,
+            String bindingPath) {
+        // check for configured default value
+        String defaultValue = attributeField.getDefaultValue();
+        if (StringUtils.isBlank(defaultValue) && (attributeField.getDefaultValueFinderClass() != null)) {
+            ValueFinder defaultValueFinder = ObjectUtils.newInstance(attributeField.getDefaultValueFinderClass());
+            defaultValue = defaultValueFinder.getValue();
+        }
+
+        // populate default value if given and path is valid
+        if (StringUtils.isNotBlank(defaultValue) && ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
+            if (getExpressionEvaluatorService().containsElPlaceholder(defaultValue)) {
+                Map<String, Object> context = getPreModelContext(view);
+                defaultValue = getExpressionEvaluatorService().evaluateExpressionTemplate(null, context, defaultValue);
+            }
+
+            // TODO: this should go through our formatters
+            ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
         }
     }
 

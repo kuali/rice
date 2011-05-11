@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.spring.controller.UifControllerBase;
+import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -49,9 +50,11 @@ public class UITestController extends UifControllerBase {
         return new UITestForm();
     }
 
+	@Override
 	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
+	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
+	    UITestForm uiTestForm = (UITestForm) form;
 		
 		// populate model for testing
 		TravelAccount travelAccount = new TravelAccount();
@@ -102,7 +105,7 @@ public class UITestController extends UifControllerBase {
 		uiTestForm.setField1("Field1");
 		uiTestForm.setField2("Field2");
 
-		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page1");
+		return super.start(uiTestForm, result, request, response);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")

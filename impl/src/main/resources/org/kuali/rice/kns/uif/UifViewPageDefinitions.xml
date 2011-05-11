@@ -42,7 +42,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <entry key="actionFlags" value="#view.actionFlags"/>
         </map>
       </property>
-      <property name="conditionalReadOnly" value="!#actionFlags.contains('canEdit')"/>
+      <property name="conditionalReadOnly" value="!#actionFlags['canEdit']"/>
   </bean>
   
   <bean id="FormView" abstract="true" parent="FormView-parentBean"/>
@@ -121,7 +121,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </bean>
     </property>
     <property name="resultsGroup">
-      <bean parent="CollectionGroupTableLayout" p:layoutManager.matchColumnsToFieldCount="true">
+      <bean parent="CollectionGroupTableLayout" p:layoutManager.suppressLineWrapping="true">
         <property name="propertyName" value="searchResults"/>
         <property name="layoutManager.renderSequenceField" value="false"/>
         <property name="renderAddLine" value="false"/>

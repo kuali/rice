@@ -185,6 +185,17 @@ public abstract class UifControllerBase {
 	protected Map<String, String> getRoleQualification(UifFormBase form, String methodToCall) {
 		return new HashMap<String, String>();
 	}
+	
+    /**
+     * Initial method called when requesting a new view instance which forwards
+     * the view for rendering
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=start")
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        return getUIFModelAndView(form);
+    }
 
 	/**
 	 * Called by the add line action for a new collection line. Method
@@ -420,56 +431,33 @@ public abstract class UifControllerBase {
 		return getUIFModelAndView(form, viewId, "");
 	}
 
-	/**
-	 * Prepares the <code>View</code> instance for the rendering (including
-	 * applying the model) and builds the return <code>ModelAndView</code>
-	 * object
-	 * 
-	 * @param form
-	 *            - Form instance containing the model data
-	 * @param viewId
-	 *            - Id of the View to return
-	 * @param pageId
-	 *            - Id of the page within the view that should be rendered, can
-	 *            be left blank in which the current or default page is rendered
-	 * @return ModelAndView object with the contained form
-	 */
-	protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {
-		// if we don't have the view instance or a different view was requested
-		// get new instance from the view service
-		View view = form.getView();
-		if ((view == null) || !StringUtils.equals(viewId, view.getId())) {
-			view = getViewService().getView(viewId, form.getViewRequestParameters());
-			
-			// view changed so force full render
-			form.setRenderFullView(true);
-		}
+    /**
+     * Configures the <code>ModelAndView</code> instance containing the form
+     * data and pointing to the UIF generic spring view
+     * 
+     * @param form
+     *            - Form instance containing the model data
+     * @param viewId
+     *            - Id of the View to return
+     * @param pageId
+     *            - Id of the page within the view that should be rendered, can
+     *            be left blank in which the current or default page is rendered
+     * @return ModelAndView object with the contained form
+     */
+    protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {
+        // update form with the requested view id and page
+        form.setViewId(viewId);
+        if (StringUtils.isNotBlank(pageId)) {
+            form.setPageId(pageId);
+        }
 
-		// if view status is final we need to rebuild (build fresh)
-		if (StringUtils.equals(UifConstants.ViewStatus.FINAL, view.getViewStatus())) {
-			view = getViewService().rebuildView(viewId, form, form.getViewRequestParameters());
-		}
-		else {
-			// update the view with the model data
-			getViewService().buildView(view, form);
-		}
+        // create the spring return object pointing to View.jsp
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject(UifConstants.DEFAULT_MODEL_NAME, form);
+        modelAndView.setViewName(UifConstants.SPRING_VIEW_ID);
 
-		if (StringUtils.isNotBlank(pageId)) {
-			view.setCurrentPageId(pageId);
-		}
-
-		form.setViewId(viewId);
-		form.setValidateDirty(view.isValidateDirty());
-		form.setPageId(pageId);
-		form.setView(view);
-
-		// create the spring return object pointing to View.jsp
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject(UifConstants.DEFAULT_MODEL_NAME, form);
-		modelAndView.setViewName(UifConstants.SPRING_VIEW_ID);
-
-		return modelAndView;
-	}
+        return modelAndView;
+    }
 
 	protected ViewService getViewService() {
 		return KNSServiceLocatorWeb.getViewService();

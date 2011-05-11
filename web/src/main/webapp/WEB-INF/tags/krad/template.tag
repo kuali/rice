@@ -23,7 +23,7 @@
               
 <%-- verify the component is not null and should be rendered --%>   
 <c:if test="${(!empty component) && component.render}">     
-   <%-- render component --%>    
+   <%-- render component through template --%>    
    <tiles:insertTemplate template="${component.template}">
        <tiles:putAttribute name="${component.componentTypeName}" value="${component}"/>
        <c:forEach items="${templateParameters}" var="parameter">

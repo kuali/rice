@@ -337,18 +337,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
     }
 
     /**
-     * Expression language string for conditionally setting the render property
-     * 
-     * @return String el that should evaluate to boolean
+     * @see org.kuali.rice.kns.uif.core.Component#getConditionalRender()
      */
     public String getConditionalRender() {
         return this.conditionalRender;
     }
 
     /**
-     * Setter for the conditional render string
-     * 
-     * @param conditionalRender
+     * @see org.kuali.rice.kns.uif.core.Component#setConditionalRender(java.lang.String)
      */
     public void setConditionalRender(String conditionalRender) {
         this.conditionalRender = conditionalRender;

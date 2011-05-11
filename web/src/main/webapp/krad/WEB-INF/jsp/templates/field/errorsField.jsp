@@ -41,8 +41,8 @@
 			     </c:if>
 		     </ul>
 	    </div>
+	    
 <!--  Warning messages  -->
-
 <c:if test="${field.warningCount > 0 && field.displayWarningMessages}">
 	<div id="${field.id}_warningMessages" class="warningMessages">
 
@@ -61,6 +61,7 @@
 	    </ul>
   	</div>
 </c:if>
+
 <!--  Info messages  -->
 <c:if test="${field.infoCount > 0 && field.displayInfoMessages}">
 	<div id="${field.id}_infoMessages" class="infoMessages">
@@ -80,6 +81,7 @@
    </div>
 </c:if>
 </krad:div>
+
 <c:if test="${(field.infoCount > 0 || field.warningCount > 0 || field.errorCount > 0)}">
 		<krad:script value="
 			applyErrorColors('${field.id}_div', ${field.errorCount}, ${field.warningCount}, ${field.infoCount}, false);

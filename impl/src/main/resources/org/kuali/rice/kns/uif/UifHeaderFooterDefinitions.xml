@@ -140,31 +140,31 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="items">
         <list> 
           <bean parent="ActionField" p:methodToCall="performRouteReport" p:actionLabel="route report"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT]"/>
           <bean parent="ActionField" p:methodToCall="sendAdHocRequests" p:actionLabel="send adhoc"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]"/>
           <bean parent="ActionField" p:methodToCall="route" p:actionLabel="submit"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_ROUTE)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]"/>
           <bean parent="ActionField" p:methodToCall="save" p:actionLabel="save"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_SAVE)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_SAVE]"/>
           <bean parent="ActionField" p:methodToCall="reload" p:actionLabel="reload"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_RELOAD)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_RELOAD]"/>
           <bean parent="ActionField" p:methodToCall="blanketApprove" p:actionLabel="blanket approve"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_BLANKET_APPROVE)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_BLANKET_APPROVE]"/>
           <bean parent="ActionField" p:methodToCall="approve" p:actionLabel="approve"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_APPROVE)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_APPROVE]"/>
           <bean parent="ActionField" p:methodToCall="disapprove" p:actionLabel="disapprove"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_DISAPPROVE)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_DISAPPROVE]"/>
           <bean parent="ActionField" p:methodToCall="fyi" p:actionLabel="fyi"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_FYI)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_FYI]"/>
           <bean parent="ActionField" p:methodToCall="acknowledge" p:actionLabel="acknowledge"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_ACKNOWLEDGE)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_ACKNOWLEDGE]"/>
           <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="close"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_CLOSE)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_CLOSE]"/>
           <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="cancel"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_CANCEL)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_CANCEL]"/>
           <bean parent="ActionLinkField" p:methodToCall="copy" p:actionLabel="copy"
-                p:conditionalRender="#actionFlags.contains(#Constants.KUALI_ACTION_CAN_COPY)"/>
+                p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]"/>
         </list>
       </property>  
   </bean>  

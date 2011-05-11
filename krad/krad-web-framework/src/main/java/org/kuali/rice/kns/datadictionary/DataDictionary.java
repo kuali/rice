@@ -683,4 +683,21 @@ public class DataDictionary  {
 			LOG.info("DataDictionary.performOverrides(): Performing override on bean: " + bean.toString());
 		}
     }
+    
+    /**
+     * Returns an Object configured in the dictionary with the given bean
+     * id/name. Standard Spring scoping rules apply in terms of prototypes
+     * or singletons
+     * 
+     * @param beanId
+     *            - id/name of the bean in the data dictionary
+     * @return Object found for id or null if no object was found
+     */
+    public Object getDictionaryObject(String beanId) {
+        if (ddBeans.containsBean(beanId)) {
+            return ddBeans.getBean(beanId);
+        }
+
+        return null;
+    }
 }

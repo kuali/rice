@@ -19,13 +19,15 @@
 	classname="org.kuali.rice.kns.uif.widget.BreadCrumbs" />
 	
 <c:set var="current" value="${KualiForm.formHistory.generatedCurrentBreadcrumb}"/> 
+
 <%--Create the breadcrumbs using the generatedBreadcrumbs from history, note that current
 is omitted by default, but the link to it is still present, it can be shown as a clickable
 link again through jquery as in setPageBreadcrumb when needed --%>
 <div id="breadcrumbs" class="${widget.styleClassesAsString}">
 	<c:forEach var="entry" items="${KualiForm.formHistory.generatedBreadcrumbs}" >
-        <a href="${entry.url}">${entry.title}</a><span> » </span>
+        <a href="${entry.url}">${entry.title}</a><span> &raquo; </span>
     </c:forEach>
+    
     <span id="current_breadcrumb_span" class="current">${current.title}</span>
     <a id="current_breadcrumb_anchor" style="display:none;" href="${current.url}"/>${current.title}</a>
     

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -41,8 +42,11 @@ import org.springframework.core.OrderComparator;
  */
 public class ComponentUtils {
 
-    public static <T extends Component> T copy(T component) {
-        return copyObject(component);
+    public static <T extends Component> T copy(T component, String idSuffix) {
+        T copy = copyObject(component);
+        updateIdsWithSuffix(copy, idSuffix);
+        
+        return copy;
     }
 
     protected static <T extends Object> T copyObject(T object) {
@@ -56,10 +60,6 @@ public class ComponentUtils {
         }
         catch (Exception e) {
             throw new RuntimeException(e);
-        }
-        
-        if (copy instanceof Component) {
-            setNewIds((Component) copy);
         }
 
         return copy;
@@ -103,8 +103,8 @@ public class ComponentUtils {
         return copy;
     }
 
-    public static <T extends Component> T copyField(T component, String addBindingPrefix) {
-        T copy = copy(component);
+    public static <T extends Component> T copyField(T component, String addBindingPrefix, String idSuffix) {
+        T copy = copy(component, idSuffix);
 
         if (copy instanceof DataBinding) {
             prefixBindingPath((DataBinding) copy, addBindingPrefix);
@@ -113,30 +113,30 @@ public class ComponentUtils {
         return copy;
     }
 
-    public static <T extends Field> List<T> copyFieldList(List<T> fields, String addBindingPrefix) {
-        List<T> copiedFieldList = copyFieldList(fields);
+    public static <T extends Field> List<T> copyFieldList(List<T> fields, String addBindingPrefix, String idSuffix) {
+        List<T> copiedFieldList = copyFieldList(fields, idSuffix);
 
         prefixBindingPath(copiedFieldList, addBindingPrefix);
 
         return copiedFieldList;
     }
 
-    public static <T extends Field> List<T> copyFieldList(List<T> fields) {
+    public static <T extends Field> List<T> copyFieldList(List<T> fields, String idSuffix) {
         List<T> copiedFieldList = new ArrayList<T>();
 
         for (T field : fields) {
-            T copiedField = copy(field);
+            T copiedField = copy(field, idSuffix);
             copiedFieldList.add(copiedField);
         }
 
         return copiedFieldList;
     }
 
-    public static <T extends Component> List<T> copyComponentList(List<T> components) {
+    public static <T extends Component> List<T> copyComponentList(List<T> components, String idSuffix) {
         List<T> copiedComponentList = new ArrayList<T>();
 
         for (T field : components) {
-            T copiedComponent = copy(field);
+            T copiedComponent = copy(field, idSuffix);
             copiedComponentList.add(copiedComponent);
         }
 
@@ -156,6 +156,36 @@ public class ComponentUtils {
 
         return typeComponents;
     }
+    
+    public static <T extends Component> List<T> getComponentsOfTypeDeep(List<? extends Component> items,
+            Class<T> componentType) {
+        List<T> typeComponents = new ArrayList<T>();
+
+        for (Component component : items) {
+            typeComponents.addAll(getComponentsOfTypeDeep(component, componentType));
+        }
+
+        return typeComponents;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T extends Component> List<T> getComponentsOfTypeDeep(Component component, Class<T> componentType) {
+        List<T> typeComponents = new ArrayList<T>();
+
+        if (component == null) {
+            return typeComponents;
+        }
+
+        if (componentType.isAssignableFrom(component.getClass())) {
+            typeComponents.add((T) component);
+        }
+
+        for (Component nested : component.getNestedComponents()) {
+            typeComponents.addAll(getComponentsOfTypeDeep(nested, componentType));
+        }
+
+        return typeComponents;
+    }   
 
     public static void prefixBindingPath(List<? extends Field> fields, String addBindingPrefix) {
         for (Field field : fields) {
@@ -204,21 +234,6 @@ public class ComponentUtils {
         for (Component nested : component.getNestedComponents()) {
             if (nested != null) {
                 updateIdsWithSuffix(nested, idSuffix);
-            }
-        }
-    }
-    
-    public static void setNewIds(Component component) {
-        component.setId(ComponentFactory.getNextId());
-
-        if (Container.class.isAssignableFrom(component.getClass())) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-            layoutManager.setId(ComponentFactory.getNextId());
-        }
-
-        for (Component nested : component.getNestedComponents()) {
-            if (nested != null) {
-                setNewIds(nested);
             }
         }
     }
@@ -294,6 +309,45 @@ public class ComponentUtils {
     public static void updateContextForLine(Component component, Object collectionLine, int lineIndex) {
         pushObjectToContext(component, UifConstants.ContextVariableNames.LINE, collectionLine);
         pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));
+        
+        boolean isAddLine = (lineIndex == -1);
+        pushObjectToContext(component, UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);
+    }
+
+    public static void processIds(Component component, Map<String, Integer> seenIds) {
+        String componentId = component.getId();
+        Integer seenCount = new Integer(0);
+        if (StringUtils.isNotBlank(componentId)) {
+            if (seenIds.containsKey(componentId)) {
+                seenCount = seenIds.get(componentId);
+                seenCount += 1;
+
+                component.setId(componentId + "_" + seenCount);
+            }
+
+            seenIds.put(componentId, seenCount);
+        }
+
+        if (Container.class.isAssignableFrom(component.getClass())) {
+            LayoutManager layoutManager = ((Container) component).getLayoutManager();
+            if ((layoutManager != null) && StringUtils.isNotBlank(layoutManager.getId())) {
+                seenCount = new Integer(0);
+                if (seenIds.containsKey(layoutManager.getId())) {
+                    seenCount = seenIds.get(layoutManager.getId());
+                    seenCount += 1;
+
+                    layoutManager.setId(layoutManager.getId() + "_" + seenCount);
+                }
+
+                seenIds.put(layoutManager.getId(), seenCount);
+            }
+        }
+
+        for (Component nested : component.getNestedComponents()) {
+            if (nested != null) {
+                processIds(nested, seenIds);
+            }
+        }
     }
 
     /**

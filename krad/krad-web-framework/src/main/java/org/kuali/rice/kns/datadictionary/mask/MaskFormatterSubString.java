@@ -18,11 +18,15 @@ package org.kuali.rice.kns.datadictionary.mask;
 import org.apache.commons.lang.StringUtils;
 
 /**
-  The maskTo element is to used hide the beginning part of the
-  value for unauthorized users.  The number of leading characters
-  to hide and the replacement character can be specified.
+ * The maskTo element is to used hide the beginning part of the value for
+ * unauthorized users. The number of leading characters to hide and the
+ * replacement character can be specified.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaskFormatterSubString implements MaskFormatter {
+    private static final long serialVersionUID = -876112522775686636L;
+    
     protected String maskCharacter = "*";
     protected int maskLength;
 

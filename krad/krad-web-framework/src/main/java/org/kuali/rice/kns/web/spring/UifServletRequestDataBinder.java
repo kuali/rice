@@ -35,14 +35,12 @@ import org.springframework.validation.AbstractPropertyBindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 
 /**
- * This is class is overridden in order to hook in the UifBeanPropertyBindingResult
+ * Override of ServletRequestDataBinder in order to hook in the UifBeanPropertyBindingResult
  * which instantiates a custom BeanWrapperImpl. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class UifServletRequestDataBinder extends ServletRequestDataBinder {
-
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifServletRequestDataBinder.class);
 
 	private UifBeanPropertyBindingResult bindingResult;
@@ -62,7 +60,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     }
 	
     /**
-     * This overridden method allows for a custom binding result class.
+     * Allows for a custom binding result class.
      * 
      * @see org.springframework.validation.DataBinder#initBeanPropertyAccess()
      */
@@ -77,7 +75,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 	}
 
     /**
-     * This overridden method allows for the setting attributes to use to find the data dictionary data from Kuali
+     * Allows for the setting attributes to use to find the data dictionary data from Kuali
      * 
      * @see org.springframework.validation.DataBinder#getInternalBindingResult()
      */
@@ -90,7 +88,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 	}
 
 	/**
-     * This overridden method disallows direct field access for Kuali.
+     * Disallows direct field access for Kuali
      * 
      * @see org.springframework.validation.DataBinder#initDirectFieldAccess()
      */
@@ -102,13 +100,13 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void bind(ServletRequest request) {
-		super.bind(request);
-		UifFormBase form = (UifFormBase) this.getTarget();
-		
-		// back up previous view instance
-		View previousView = form.getView();
-		form.setPreviousView(previousView);
+    public void bind(ServletRequest request) {
+        super.bind(request);
+        UifFormBase form = (UifFormBase) this.getTarget();
+
+        // back up previous view instance
+        View previousView = form.getView();
+        form.setPreviousView(previousView);
 
         Map<String, String> viewRequestParameters = new HashMap<String, String>();
         if (previousView != null) {
@@ -121,54 +119,59 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         // we are going to need this no matter how we get the view, so do it
         // once
         Map<String, String> parameterMap = WebUtils.translateRequestParameterMap(request.getParameterMap());
-        
+
         // determine whether full view should be rendered or just page
         // if not specified on the request and previous is not null, default to
         // just page
         // TODO: revisit and see if we can have a general pattern
-//        if ((previousView != null) && !parameterMap.containsKey(UifParameters.RENDER_FULL_VIEW)) {
-//            form.setRenderFullView(false);
-//        }
-        
+        // if ((previousView != null) &&
+        // !parameterMap.containsKey(UifParameters.RENDER_FULL_VIEW)) {
+        // form.setRenderFullView(false);
+        // }
+
         // add/override view request parameters
         parameterMap.putAll(viewRequestParameters);
-        
+
         String viewId = request.getParameter(UifParameters.VIEW_ID);
         if (viewId != null) {
             view = getViewService().getView(viewId, parameterMap);
-        }
-        else {
+        } else {
             String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
             if (viewTypeName == null) {
                 viewTypeName = form.getViewTypeName();
             }
 
             if (StringUtils.isBlank(viewTypeName)) {
-            	view = getViewFromPreviousModel(form, parameterMap);
-            	if (view == null) {
-            		throw new RuntimeException("Could not find enough information to fetch the required view. Checked the model retrieved from session for both viewTypeName and viewId");
-            	}
+                view = getViewFromPreviousModel(form, parameterMap);
+                if (view == null) {
+                    throw new RuntimeException(
+                            "Could not find enough information to fetch the required view. Checked the model retrieved from session for both viewTypeName and viewId");
+                }
             } else {
-	            try {
-	                view = getViewService().getViewByType(viewTypeName, parameterMap);
-	            }
-	            catch(DataDictionaryException ddex) {
-	            	view = getViewFromPreviousModel(form, parameterMap);
-	                // if we didn't find one, just re-throw
-	                if(view == null) {
-	                    throw ddex;
-	                }
-	                LOG.warn("Obtained viewId from cached form, this may not be safe!");
-	            }
+                try {
+                    view = getViewService().getViewByType(viewTypeName, parameterMap);
+                } catch (DataDictionaryException ddex) {
+                    view = getViewFromPreviousModel(form, parameterMap);
+                    // if we didn't find one, just re-throw
+                    if (view == null) {
+                        throw ddex;
+                    }
+                    LOG.warn("Obtained viewId from cached form, this may not be safe!");
+                }
             }
+        }
+
+        // apply default values to form if needed
+        if (!form.isDefaultsApplied()) {
+            view.getViewHelperService().applyDefaultValues(view, form);
         }
 
         form.setViewRequestParameters(view.getViewRequestParameters());
         form.setViewId(view.getId());
         form.setView(view);
 
-		form.postBind((HttpServletRequest) request);
-	}
+        form.postBind((HttpServletRequest) request);
+    }
 
 	protected View getViewFromPreviousModel(UifFormBase form, Map<String, String> parameterMap) {
         // maybe we have a view id from the session form

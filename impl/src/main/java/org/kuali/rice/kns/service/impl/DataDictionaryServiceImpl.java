@@ -865,15 +865,29 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return preRulesCheckClass;
     }
 
-	public View getViewById(String viewId) {
-		return dataDictionary.getViewById(viewId);
-	}
-    
-	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey) {
-		return dataDictionary.getViewByTypeIndex(viewTypeName, indexKey);
-	}
+    /**
+     * @see org.kuali.rice.kns.service.DataDictionaryService#getViewById(java.lang.String)
+     */
+    public View getViewById(String viewId) {
+        return dataDictionary.getViewById(viewId);
+    }
 
-	public void addDataDictionaryLocation(String location) throws IOException {
+    /**
+     * @see org.kuali.rice.kns.service.DataDictionaryService#getViewByTypeIndex(java.lang.String,
+     *      java.util.Map)
+     */
+    public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey) {
+        return dataDictionary.getViewByTypeIndex(viewTypeName, indexKey);
+    }
+
+    /**
+     * @see org.kuali.rice.kns.service.DataDictionaryService#getDictionaryObject(java.lang.String)
+     */
+    public Object getDictionaryObject(String beanId) {
+        return dataDictionary.getDictionaryObject(beanId);
+    }
+
+    public void addDataDictionaryLocation(String location) throws IOException {
         dataDictionary.addConfigFileLocation(location);
     }
 

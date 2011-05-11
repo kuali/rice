@@ -572,3 +572,12 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  */
 .ui-progressbar { height:2em; text-align: left; }
 .ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
+
+/*	
+*	Watermark plugin for jQuery
+*	Version: 3.0.6
+*	Dual licensed under the MIT or GPL Version 2 licenses.
+*/
+/* Water mark text color. If it's not set, textarea displays in black instead of default gray watermark color. 
+*/
+.watermark {color:#999}

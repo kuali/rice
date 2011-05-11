@@ -21,16 +21,19 @@ import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.LabelField;
+import org.kuali.rice.kns.uif.util.ComponentUtils;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
  * collection in the UI. Supports functionality such as add line, line actions,
  * and nested collections.
+ * 
  * <p>
  * Note the standard header/footer can be used to give a header to the
  * collection as a whole, or to provide actions that apply to the entire
  * collection
  * </p>
+ * 
  * <p>
  * For binding purposes the binding path of each row field is indexed. The name
  * property inherited from <code>ComponentBase</code> is used as the collection
@@ -52,6 +55,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private String addLinePropertyName;
     private BindingInfo addLineBindingInfo;
     private LabelField addLineLabelField;
+    private List<? extends Field> addLineFields;
     private List<ActionField> addLineActionFields;
 
     private boolean renderLineActions;
@@ -66,16 +70,19 @@ public class CollectionGroup extends Group implements DataBinding {
         renderLineActions = true;
 
         actionFields = new ArrayList<ActionField>();
+        addLineFields = new ArrayList<Field>();
         addLineActionFields = new ArrayList<ActionField>();
         subCollections = new ArrayList<CollectionGroup>();
     }
 
     /**
      * The following actions are performed:
+     * 
      * <ul>
      * <li>Set fieldBindModelPath to the collection model path (since the fields
      * have to belong to the same model as the collection)</li>
      * <li>Set defaults for binding</li>
+     * <li>Default add line field list to groups items list</li>
      * <li>Sets the dictionary entry (if blank) on each of the items to the
      * collection class</li>
      * </ul>
@@ -112,14 +119,40 @@ public class CollectionGroup extends Group implements DataBinding {
                 }
             }
         }
-
-        // initialize container items and sub-collections (since they are not in child list)
-        for (Component item : getItems()) {
-            view.getViewHelperService().performComponentInitialization(view, item);
+        
+        if ((addLineFields == null) || addLineFields.isEmpty()) {
+            addLineFields = getItems();
+        }
+        
+        // set static collection path on items
+        String collectionPath = "";
+        if (StringUtils.isNotBlank(getBindingInfo().getCollectionPath())) {
+            collectionPath += getBindingInfo().getCollectionPath() + ".";
+        }
+        if (StringUtils.isNotBlank(getBindingInfo().getBindByNamePrefix())) {
+            collectionPath += getBindingInfo().getBindByNamePrefix() + ".";
+        }
+        collectionPath += getBindingInfo().getBindingName();
+        
+        List<AttributeField> collectionFields = ComponentUtils.getComponentsOfTypeDeep(getItems(), AttributeField.class);
+        for (AttributeField collectionField : collectionFields) {
+            collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
         
         for (CollectionGroup collectionGroup : getSubCollections()) {
+            collectionGroup.getBindingInfo().setCollectionPath(collectionPath);
             view.getViewHelperService().performComponentInitialization(view, collectionGroup);
+        }
+        
+        // add collection entry to abstract classes
+        if (!view.getAbstractTypeClasses().containsKey(collectionPath)) {
+            view.getAbstractTypeClasses().put(collectionPath, getCollectionObjectClass());
+        }
+
+        // initialize container items and sub-collections (since they are not in
+        // child list)
+        for (Component item : getItems()) {
+            view.getViewHelperService().performComponentInitialization(view, item);
         }
     }
 
@@ -171,6 +204,7 @@ public class CollectionGroup extends Group implements DataBinding {
         // remove the containers items because we don't want them as children
         // (they will become children of the layout manager as the rows are
         // created)
+        // TODO: is this necessary?
         for (Component item : getItems()) {
             if (components.contains(item)) {
                 components.remove(item);
@@ -386,6 +420,26 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public void setAddLineBindingInfo(BindingInfo addLineBindingInfo) {
         this.addLineBindingInfo = addLineBindingInfo;
+    }
+
+    /**
+     * List of <code>Field</code> instances that should be rendered for the
+     * collection add line (if enabled). If not set, the default group's items
+     * list will be used
+     * 
+     * @return List<? extends Field> add line field list
+     */
+    public List<? extends Field> getAddLineFields() {
+        return this.addLineFields;
+    }
+
+    /**
+     * Setter for the add line field list
+     * 
+     * @param addLineFields
+     */
+    public void setAddLineFields(List<? extends Field> addLineFields) {
+        this.addLineFields = addLineFields;
     }
 
     /**

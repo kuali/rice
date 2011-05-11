@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -462,6 +461,18 @@ public class ErrorsField extends FieldBase {
 	public List<String> getAdditionalKeysToMatch() {
 		return this.additionalKeysToMatch;
 	}
+	
+    /**
+     * Convenience setter for additional keys to match that takes a string argument and
+     * splits on comma to build the list
+     * 
+     * @param additionalKeysToMatch String to parse
+     */
+    public void setAdditionalKeysToMatch(String additionalKeysToMatch) {
+        if (StringUtils.isNotBlank(additionalKeysToMatch)) {
+            this.additionalKeysToMatch = Arrays.asList(StringUtils.split(additionalKeysToMatch, ","));
+        }
+    }
 
 	/**
 	 * @param additionalKeysToMatch

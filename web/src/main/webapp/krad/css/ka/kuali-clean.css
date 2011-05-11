@@ -4,7 +4,7 @@
 /*RESET CSS BEGIN*/ 
 
 html {
-	background-color: #F6F6F6;
+	/*background-color: #F6F6F6;*/
 	font-family: Helvetica, Arial, sans-serif;
 	margin: 0px;
 }
@@ -407,4 +407,23 @@ div.green .value {
 	padding-right:0px;
 	font-weight:bold;
 	
+}
+
+.ui-state-default.ui-corner-all {
+	font-size:.8em;
+	padding:0em 1em .1em;
+	font-weight: bold;
+	text-transform: lowercase;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: #FFF url(../../images/button-bevel.png) 0px 0px;
+}
+
+div.globalbuttons { text-align:center;	padding-top: 10px; padding-bottom: 10px;}
+
+.ui-state-default.ui-corner-all.ui-state-hover {
+	background-color:#900;
+	color: #FFF;
+	border: 1px solid #500;
 }

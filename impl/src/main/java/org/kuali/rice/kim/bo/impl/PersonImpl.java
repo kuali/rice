@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -387,11 +388,11 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.bo.Person#getName()
 	 */
 	public String getName() {
-	    if (KimCommonUtilsInternal.isSuppressName(getEntityId())){
+        if (StringUtils.isNotBlank(getEntityId()) && KimCommonUtilsInternal.isSuppressName(getEntityId())) {
             return KimConstants.RESTRICTED_DATA_MASK;
         }
-	    return name;
-	}
+        return name;
+    }
 	
 	public String getNameUnmasked() {
 	    return this.name;

@@ -28,6 +28,8 @@ import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.GroupField;
 import org.kuali.rice.kns.uif.field.LabelField;
+import org.kuali.rice.kns.uif.field.MessageField;
+import org.kuali.rice.kns.uif.util.ComponentFactory;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.widget.TableTools;
 
@@ -55,7 +57,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 	private boolean renderSequenceField;
 	private String conditionalRenderSequenceField;
-	private AttributeField sequenceFieldPrototype;
+	private boolean generateAutoSequence;
+	private Field sequenceFieldPrototype;
 
 	private GroupField actionFieldPrototype;
 
@@ -74,6 +77,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		useShortLabels = true;
 		repeatHeader = false;
 		renderSequenceField = true;
+		generateAutoSequence = false;
 
 		headerFields = new ArrayList<LabelField>();
 		dataFields = new ArrayList<Field>();
@@ -83,6 +87,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * The following actions are performed:
 	 * 
 	 * <ul>
+	 * <li>Sets sequence field prototype if auto sequence is true</li>
 	 * <li>Initializes the prototypes</li>
 	 * </ul>
 	 * 
@@ -92,28 +97,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	@Override
 	public void performInitialization(View view, Container container) {
 		super.performInitialization(view, container);
+		
+        if (generateAutoSequence && !(sequenceFieldPrototype instanceof MessageField)) {
+            sequenceFieldPrototype = ComponentFactory.getMessageField();
+        }
 
 		view.getViewHelperService().performComponentInitialization(view, headerFieldPrototype);
 		view.getViewHelperService().performComponentInitialization(view, sequenceFieldPrototype);
 		view.getViewHelperService().performComponentInitialization(view, actionFieldPrototype);
 		view.getViewHelperService().performComponentInitialization(view, subCollectionGroupFieldPrototype);
-	}
-
-	/**
-	 * The following actions are performed:
-	 * 
-	 * <ul>
-	 * <li>Sets internal count of columns to configured number</li>
-	 * </ul>
-	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
-	 */
-	@Override
-	public void performApplyModel(View view, Object model, Container container) {
-		super.performApplyModel(view, model, container);
-
-		setNumberOfDataColumns(getNumberOfColumns());
 	}
 
 	/**
@@ -158,6 +150,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			List<GroupField> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
 			Object currentLine, int lineIndex) {
 		boolean isAddLine = lineIndex == -1;
+		
+        // if add line or first line set number of data columns
+        if (isAddLine || (!collectionGroup.isRenderAddLine() && (lineIndex == 0))) {
+            if (isSuppressLineWrapping()) {
+                setNumberOfDataColumns(lineFields.size());
+            } else {
+                setNumberOfDataColumns(getNumberOfColumns());
+            }
+        }
 
 		// if add line build table header first
 		// TODO: implement repeat header
@@ -165,7 +166,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			headerFields = new ArrayList<LabelField>();
 			dataFields = new ArrayList<Field>();
 
-			buildTableHeaderRows(collectionGroup);
+			buildTableHeaderRows(collectionGroup, lineFields);
 			ComponentUtils.pushObjectToContext(headerFields, UifConstants.ContextVariableNames.LINE, currentLine);
 			ComponentUtils.pushObjectToContext(headerFields, UifConstants.ContextVariableNames.INDEX, new Integer(
 					lineIndex));
@@ -187,11 +188,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		// sequence field is always first and should span all rows for the line
 		if (renderSequenceField) {
 			Field sequenceField = null;
-			if (!isAddLine) {
-				sequenceField = ComponentUtils.copy(sequenceFieldPrototype);
-			}
+            if (!isAddLine) {
+                sequenceField = ComponentUtils.copy(sequenceFieldPrototype, idSuffix);
+
+                if (generateAutoSequence && (sequenceField instanceof MessageField)) {
+                    ((MessageField) sequenceField).setMessageText(Integer.toString(lineIndex + 1));
+                }
+            }
 			else {
-				sequenceField = ComponentUtils.copy(collectionGroup.getAddLineLabelField());
+				sequenceField = ComponentUtils.copy(collectionGroup.getAddLineLabelField(), idSuffix);
 			}
 			sequenceField.setRowSpan(rowSpan);
 
@@ -215,7 +220,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			// action field should be in last column
 			if ((cellPosition == getNumberOfDataColumns()) && collectionGroup.isRenderLineActions()
 					&& !collectionGroup.isReadOnly()) {
-				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype);
+				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype, idSuffix);
 
 				ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex);
 				lineActionsField.setRowSpan(rowSpan);
@@ -252,8 +257,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * 
 	 * @param collectionGroup
 	 *            - CollectionGroup container the table applies to
+	 * @param lineFields - fields for the data columns from which the headers are pulled
 	 */
-	protected void buildTableHeaderRows(CollectionGroup collectionGroup) {
+	protected void buildTableHeaderRows(CollectionGroup collectionGroup, List<Field> lineFields) {
 		// row count needed to determine the row span for the sequence and
 		// action fields, since they should span all rows for the line
 		int rowCount = calculateNumberOfRows(collectionGroup.getItems());
@@ -267,9 +273,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 		// pull out label fields from the container's items
 		int cellPosition = 0;
-		for (Component component : collectionGroup.getItems()) {
-			Field field = (Field) component;
-
+		for (Field field : lineFields) {
+		    if (!field.isRender()) {
+		        continue;
+		    }
+		    
 			cellPosition += field.getColSpan();
 			addHeaderField(field, cellPosition);
 
@@ -295,7 +303,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 *            - column number for the header, used for setting the id
 	 */
 	protected void addHeaderField(Field field, int column) {
-		LabelField headerField = ComponentUtils.copy(headerFieldPrototype);
+		LabelField headerField = ComponentUtils.copy(headerFieldPrototype, "_c" + column);
 		if (useShortLabels) {
 			headerField.setLabelText(field.getLabel());
 		}
@@ -327,6 +335,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 */
 	protected int calculateNumberOfRows(List<? extends Field> items) {
 		int rowCount = 0;
+		
+		// check flag that indicates only one row should be created
+		if (isSuppressLineWrapping()) {
+		    return 1;
+		}
 
 		int cellCount = 0;
 		for (Field field : items) {
@@ -477,33 +490,59 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * 
 	 * @return String sequence property name
 	 */
-	public String getSequencePropertyName() {
-		if (sequenceFieldPrototype != null) {
-			return sequenceFieldPrototype.getPropertyName();
-		}
+    public String getSequencePropertyName() {
+        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof AttributeField)) {
+            return ((AttributeField) sequenceFieldPrototype).getPropertyName();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Setter for the sequence property name
-	 * 
-	 * @param sequencePropertyName
-	 */
-	public void setSequencePropertyName(String sequencePropertyName) {
-		if (sequenceFieldPrototype != null) {
-			sequenceFieldPrototype.setPropertyName(sequencePropertyName);
-		}
-	}
+    /**
+     * Setter for the sequence property name
+     * 
+     * @param sequencePropertyName
+     */
+    public void setSequencePropertyName(String sequencePropertyName) {
+        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof AttributeField)) {
+            ((AttributeField) sequenceFieldPrototype).setPropertyName(sequencePropertyName);
+        }
+    }
+	
+    /**
+     * Indicates whether the sequence field should be generated with the current
+     * line number
+     * 
+     * <p>
+     * If set to true the sequence field prototype will be changed to a message
+     * field (if not already a message field) and the text will be set to the
+     * current line number
+     * </p>
+     * 
+     * @return boolean true if the sequence field should be generated from the
+     *         line number, false if not
+     */
+    public boolean isGenerateAutoSequence() {
+        return this.generateAutoSequence;
+    }
 
-	/**
-	 * <code>AttributeField</code> instance to serve as a prototype for the
+    /**
+     * Setter for the generate auto sequence field
+     * 
+     * @param generateAutoSequence
+     */
+    public void setGenerateAutoSequence(boolean generateAutoSequence) {
+        this.generateAutoSequence = generateAutoSequence;
+    }
+
+    /**
+	 * <code>Field</code> instance to serve as a prototype for the
 	 * sequence field. For each collection line this instance is copied and
 	 * adjusted as necessary
 	 * 
 	 * @return Attribute field instance
 	 */
-	public AttributeField getSequenceFieldPrototype() {
+	public Field getSequenceFieldPrototype() {
 		return this.sequenceFieldPrototype;
 	}
 
@@ -512,7 +551,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * 
 	 * @param sequenceFieldPrototype
 	 */
-	public void setSequenceFieldPrototype(AttributeField sequenceFieldPrototype) {
+	public void setSequenceFieldPrototype(Field sequenceFieldPrototype) {
 		this.sequenceFieldPrototype = sequenceFieldPrototype;
 	}
 
@@ -590,9 +629,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @return the numberOfDataColumns
      */
     public int getNumberOfDataColumns() {
-		if (isMatchColumnsToFieldCount()) {
-			return getNumberOfColumns();
-		}
     	return this.numberOfDataColumns;
     }
 

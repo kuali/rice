@@ -25,7 +25,6 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.uif.control.CheckboxControl;
 import org.kuali.rice.kns.uif.control.Control;
@@ -113,7 +112,7 @@ public class LookupInquiryUtils {
 					attributeDefinition.getControlField());
 		}
 		else {
-			newControl = ComponentUtils.copy(attributeDefinition.getControlField());
+			newControl = ComponentUtils.copy(attributeDefinition.getControlField(), "");
 		}
 		return newControl;
 	}

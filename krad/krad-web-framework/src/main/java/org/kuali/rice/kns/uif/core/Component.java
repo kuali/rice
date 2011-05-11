@@ -240,6 +240,20 @@ public interface Component extends Serializable, Ordered {
     public void setRender(boolean render);
 
     /**
+     * Expression language string for conditionally setting the render property
+     * 
+     * @return String el that should evaluate to boolean
+     */
+    public String getConditionalRender();
+
+    /**
+     * Setter for the conditional render string
+     * 
+     * @param conditionalRender
+     */
+    public void setConditionalRender(String conditionalRender);
+
+    /**
      * Indicates whether the component should be hidden in the UI
      * 
      * <p>

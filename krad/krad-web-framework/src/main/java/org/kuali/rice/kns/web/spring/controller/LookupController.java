@@ -105,10 +105,13 @@ public class LookupController extends UifControllerBase {
     }
 
 	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+	@Override
+	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+	    LookupForm lookupForm = (LookupForm) form;
 //		checkAuthorization(lookupForm, request.getParameter("methodToCall"));
 	    supressActionsIfNeeded(lookupForm);
-		return getUIFModelAndView(lookupForm);
+	    
+		return super.start(lookupForm, result, request, response);
 	}
 
     /**

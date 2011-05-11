@@ -23,6 +23,7 @@ import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.spring.form.InquiryForm;
+import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -45,8 +46,11 @@ public class InquiryController extends UifControllerBase {
     }
 
     @RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") InquiryForm inquiryForm, BindingResult result,
+    @Override
+	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
+        InquiryForm inquiryForm = (InquiryForm) form;
+        
 		return continueWithInquiry(inquiryForm, result, request, response);
 	}
 

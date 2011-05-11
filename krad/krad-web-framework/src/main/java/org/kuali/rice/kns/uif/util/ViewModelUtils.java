@@ -10,16 +10,28 @@
  */
 package org.kuali.rice.kns.uif.util;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.mapping.Collection;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.AttributeField;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Provides methods for getting property values, types, and paths within the
+ * context of a <code>View</code>
+ * 
+ * <p>
+ * The view provides a special map named 'abstractTypeClasses' that indicates
+ * concrete classes that should be used in place of abstract property types that
+ * are encountered on the object graph. This classes takes into account that map
+ * while dealing with properties. e.g. suppose we have propertyPath
+ * 'document.name' on the form, with the type of the document property set to
+ * the interface Document. Using class introspection we would get back the
+ * interface type for document and this would not be able to get the property
+ * type for name. Using the view map, we can replace document with a concrete
+ * class and then use it to get the name property
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -32,19 +44,38 @@ public class ViewModelUtils {
             return propertyType;
         }
 
-        // TODO: make this do partial matching & collection matching
+        // in case of partial match, holds the class that matched and the
+        // property so we can get by reflection
+        Class<?> modelClass = view.getFormClass();
+        String modelProperty = propertyPath;
+
+        int bestMatchLength = 0;
+
+        // removed collection indexes from path for matching
+        String flattenedPropertyPath = propertyPath.replaceAll("\\[.+\\]", "");
 
         // check if property path matches one of the modelClass entries
         Map<String, Class<?>> modelClasses = view.getAbstractTypeClasses();
         for (String path : modelClasses.keySet()) {
-            if (StringUtils.equals(path, propertyPath)) {
+            // full match
+            if (StringUtils.equals(path, flattenedPropertyPath)) {
                 propertyType = modelClasses.get(path);
+                break;
+            }
+
+            // partial match
+            if (flattenedPropertyPath.startsWith(path) && (path.length() > bestMatchLength)) {
+                bestMatchLength = path.length();
+
+                modelClass = modelClasses.get(path);
+                modelProperty = StringUtils.removeStart(flattenedPropertyPath, path);
+                modelProperty = StringUtils.removeStart(modelProperty, ".");
             }
         }
 
-        // if not found in the view's map, get the type based on the form
+        // if full match not found, get type based on reflection
         if (propertyType == null) {
-            propertyType = ObjectPropertyUtils.getPropertyType(view.getFormClass(), propertyPath);
+            propertyType = ObjectPropertyUtils.getPropertyType(modelClass, modelProperty);
         }
 
         return propertyType;

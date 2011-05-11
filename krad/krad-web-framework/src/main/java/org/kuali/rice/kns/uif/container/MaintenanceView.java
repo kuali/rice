@@ -10,6 +10,11 @@
  */
 package org.kuali.rice.kns.uif.container;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
 
 /**
@@ -40,12 +45,11 @@ import org.kuali.rice.kns.uif.UifConstants.ViewType;
 public class MaintenanceView extends DocumentView {
     private static final long serialVersionUID = -3382802967703882341L;
 
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceView.class);
+
     private Class<?> dataObjectClassName;
 
     private String oldObjectBindingPath;
-
-    // TODO: figure out what this is used for
-    private boolean allowsRecordDeletion = false;
 
     public MaintenanceView() {
         super();
@@ -57,15 +61,31 @@ public class MaintenanceView extends DocumentView {
      * The following initialization is performed:
      * 
      * <ul>
+     * <li>Retrieve the maintenance document entry for defaults and context</li>
      * <li>Set the abstractTypeClasses map for the maintenance object path</li>
      * </ul>
-     * </p>
      * 
      * @see org.kuali.rice.kns.uif.container.ContainerBase#performInitialization(org.kuali.rice.kns.uif.container.View)
      */
     @Override
     public void performInitialization(View view) {
         super.performInitialization(view);
+
+        // get maintenance document entry
+        MaintenanceDocumentEntry documentEntry = null;
+        String docTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(getDataObjectClassName());
+        if (StringUtils.isNotBlank(docTypeName)) {
+            documentEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+        }
+
+        if (documentEntry != null) {
+            pushObjectToContext(UifConstants.ContextVariableNames.DOCUMENT_ENTRY, documentEntry);
+        } else {
+            LOG.error("Unable to find maintenance document entry for data object class: "
+                    + getDataObjectClassName().getName());
+            throw new RuntimeException("Unable to find maintenance document entry for data object class: "
+                    + getDataObjectClassName().getName());
+        }
 
         getAbstractTypeClasses().put(getDefaultBindingObjectPath(), dataObjectClassName);
         getAbstractTypeClasses().put(getOldObjectBindingPath(), dataObjectClassName);
@@ -96,20 +116,27 @@ public class MaintenanceView extends DocumentView {
         this.dataObjectClassName = dataObjectClassName;
     }
 
+    /**
+     * Gives the binding path to the old object (record being edited) to display
+     * for comparison
+     * 
+     * @return String old object binding path
+     */
     public String getOldObjectBindingPath() {
         return this.oldObjectBindingPath;
     }
 
+    /**
+     * Setter for the old object binding path
+     * 
+     * @param oldObjectBindingPath
+     */
     public void setOldObjectBindingPath(String oldObjectBindingPath) {
         this.oldObjectBindingPath = oldObjectBindingPath;
     }
 
-    public boolean isAllowsRecordDeletion() {
-        return this.allowsRecordDeletion;
-    }
-
-    public void setAllowsRecordDeletion(boolean allowsRecordDeletion) {
-        this.allowsRecordDeletion = allowsRecordDeletion;
+    protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+        return KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
     }
 
 }

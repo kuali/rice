@@ -101,33 +101,33 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 				defaultOrderSequence);
 
 		// generate compare header
-		if (isGenerateCompareHeaders()) {
-			for (ComparableInfo comparable : groupComparables) {
-				HeaderField compareHeaderField = ComponentUtils.copy(headerFieldPrototype);
-				compareHeaderField.setHeaderText(comparable.getHeaderText());
+        if (isGenerateCompareHeaders()) {
+            for (ComparableInfo comparable : groupComparables) {
+                HeaderField compareHeaderField = ComponentUtils.copy(headerFieldPrototype, comparable.getIdSuffix());
+                compareHeaderField.setHeaderText(comparable.getHeaderText());
 
-				comparisonItems.add(compareHeaderField);
-			}
-		}
+                comparisonItems.add(compareHeaderField);
+            }
+        }
 
-		// generate the compare items from the configured group
-		Group group = (Group) component;
-		for (Component item : group.getItems()) {
-			int defaultSuffix = 0;
-			for (ComparableInfo comparable : groupComparables) {
-				Component compareItem = ComponentUtils.copy(item);
+        // generate the compare items from the configured group
+        Group group = (Group) component;
+        for (Component item : group.getItems()) {
+            int defaultSuffix = 0;
+            for (ComparableInfo comparable : groupComparables) {
+                Component compareItem = ComponentUtils.copy(item, comparable.getIdSuffix());
 
-				ComponentUtils.setComponentPropertyDeep(compareItem, UifPropertyPaths.BIND_OBJECT_PATH,
-						comparable.getBindingObjectPath());
-				if (comparable.isReadOnly()) {
-					compareItem.setReadOnly(true);
-					compareItem.setConditionalReadOnly("");
-				}
+                ComponentUtils.setComponentPropertyDeep(compareItem, UifPropertyPaths.BIND_OBJECT_PATH,
+                        comparable.getBindingObjectPath());
+                if (comparable.isReadOnly()) {
+                    compareItem.setReadOnly(true);
+                    compareItem.setConditionalReadOnly("");
+                }
 
-				comparisonItems.add(compareItem);
-				defaultSuffix++;
-			}
-		}
+                comparisonItems.add(compareItem);
+                defaultSuffix++;
+            }
+        }
 
 		// update the group's list of components
 		group.setItems(comparisonItems);

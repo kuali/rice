@@ -15,12 +15,20 @@
  */
 package org.kuali.rice.kns.bo;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-
-import javax.persistence.*;
 import java.io.IOException;
 import java.io.InputStream;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -28,8 +36,9 @@ import java.io.InputStream;
 @Entity
 @Table(name="KRNS_ATT_T")
 public class Attachment extends PersistableBusinessObjectBase {
-
-	@Id
+	private static final long serialVersionUID = 402432724949441326L;
+	
+    @Id
 	@Column(name="NTE_ID")
 	private Long noteIdentifier;
 	@Column(name="MIME_TYP")
@@ -157,7 +166,19 @@ public class Attachment extends PersistableBusinessObjectBase {
 	public void setAttachmentFileSize(Long attachmentFileSize) {
 		this.attachmentFileSize = attachmentFileSize;
 	}
+	
+    /**
+     * Returns the size of the attachment with units (byte, kilobyte, ...)
+     * 
+     * @return String attachment file size
+     */
+    public String getAttachmentFileSizeWithUnits() {
+        if (attachmentFileSize != null) {
+            return RiceUtilities.getFileSizeUnits(attachmentFileSize);
+        }
 
+        return "";
+    }
 
 	/**
 	 * Gets the attachmentTypeCode attribute.

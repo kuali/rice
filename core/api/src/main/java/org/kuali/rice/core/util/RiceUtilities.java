@@ -214,4 +214,40 @@ public final class RiceUtilities {
         }
         return null;
     }
+    
+    /**
+     * Converts a given file size in bytes to a unit of bytes, kilobyte,
+     * megabyte, or gigabyte
+     * 
+     * @param fileSize
+     *            - size in bytes
+     * @return String with format 'size units'
+     */
+    public static String getFileSizeUnits(Long fileSize) {
+        Long newFileSize = fileSize;
+        String fileSizeUnits = "bytes";
+
+        if (fileSize > 1024) {
+            Long kiloSize = fileSize / 1024;
+
+            if (kiloSize < 1024) {
+                newFileSize = kiloSize;
+                fileSizeUnits = "KB";
+            } else {
+                Long megaSize = kiloSize / 1024;
+
+                if (megaSize < 1024) {
+                    newFileSize = megaSize;
+                    fileSizeUnits = "MB";
+                } else {
+                    Long gigaSize = megaSize / 1024;
+
+                    newFileSize = gigaSize;
+                    fileSizeUnits = "GB";
+                }
+            }
+        }
+
+        return newFileSize + fileSizeUnits;
+    }
 }

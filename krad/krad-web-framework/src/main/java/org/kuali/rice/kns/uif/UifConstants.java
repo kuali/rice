@@ -120,7 +120,9 @@ public class UifConstants {
 		public static final String CONFIG_PROPERTIES = "ConfigProperties";
 		public static final String COMPONENT = "component";
 		public static final String CONSTANTS = "Constants";
+		public static final String DOCUMENT_ENTRY = "DocumentEntry";
 		public static final String INDEX = "index";
+		public static final String IS_ADD_LINE = "isAddLine";
 		public static final String LINE = "line";
 		public static final String MANAGER = "manager";
 		public static final String PARENT = "parent";

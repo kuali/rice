@@ -18,6 +18,7 @@ import org.kuali.rice.kns.uif.container.View;
 /**
  * Provides binding configuration for an DataBinding component (attribute or
  * collection)
+ * 
  * <p>
  * From the binding configuration the binding path is determined (if not
  * manually set) and used to set the path in the UI or to get the value from the
@@ -36,6 +37,8 @@ public class BindingInfo implements Serializable {
     private String bindByNamePrefix;
     private String bindingObjectPath;
 
+    private String collectionPath;
+
     private String bindingPath;
 
     public BindingInfo() {
@@ -46,6 +49,7 @@ public class BindingInfo implements Serializable {
     /**
      * Sets up some default binding properties based on the view configuration
      * and the component's property name
+     * 
      * <p>
      * Sets the bindingName (if not set) to the given property name, and if the
      * binding object path has not been set uses the default binding object path
@@ -73,6 +77,7 @@ public class BindingInfo implements Serializable {
      * dot notation for nested properties. If the binding path was manually set
      * it will be returned as it is, otherwise the path will be formed by using
      * the binding object path and the bind prefix
+     * 
      * <p>
      * e.g. Property name 'foo' on a model would have binding path "foo", while
      * property name 'name' of the nested model property 'account' would have
@@ -101,8 +106,7 @@ public class BindingInfo implements Serializable {
 
         if (bindToMap) {
             formedBindingPath += "['" + bindingName + "']";
-        }
-        else {
+        } else {
             if (StringUtils.isNotBlank(formedBindingPath)) {
                 formedBindingPath += ".";
             }
@@ -149,6 +153,7 @@ public class BindingInfo implements Serializable {
      * Gives the name of the property that the component binds to. The name can
      * be nested but not the full path, just from the parent object or in the
      * case of binding directly to the form from the form object
+     * 
      * <p>
      * If blank this will be set from the name field of the component
      * </p>
@@ -188,9 +193,34 @@ public class BindingInfo implements Serializable {
     }
 
     /**
+     * If field is part of a collection field, gives path to collection
+     * 
+     * <p>
+     * This is used for metadata purposes when getting finding the attribute
+     * definition from the dictionary and is not used in building the final
+     * binding path
+     * </p>
+     * 
+     * @return String path to collection
+     */
+    public String getCollectionPath() {
+        return this.collectionPath;
+    }
+
+    /**
+     * Setter for the field's collection path (if part of a collection)
+     * 
+     * @param collectionPath
+     */
+    public void setCollectionPath(String collectionPath) {
+        this.collectionPath = collectionPath;
+    }
+
+    /**
      * For attribute fields that do not belong to the default form object (given
      * by the view), this field specifies the path to the object (on the form)
      * the attribute does belong to.
+     * 
      * <p>
      * e.g. Say we have an attribute field with property name 'number', that
      * belongs to the object given by the 'account' property on the form. The

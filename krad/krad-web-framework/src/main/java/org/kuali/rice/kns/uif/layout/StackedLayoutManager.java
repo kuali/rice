@@ -114,14 +114,14 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 			stackedGroups = new ArrayList<Group>();
 
 			if (addLineGroup == null) {
-				lineGroup = ComponentUtils.copy(lineGroupPrototype);
+				lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
 			}
 			else {
-				lineGroup = ComponentUtils.copy(getAddLineGroup());
+				lineGroup = ComponentUtils.copy(getAddLineGroup(), idSuffix);
 			}
 		}
 		else {
-			lineGroup = ComponentUtils.copy(lineGroupPrototype);
+			lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
 		}
 
 		ComponentUtils.updateContextForLine(lineGroup, currentLine, lineIndex);

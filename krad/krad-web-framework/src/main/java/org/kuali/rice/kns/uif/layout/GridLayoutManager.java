@@ -40,7 +40,7 @@ public class GridLayoutManager extends LayoutManagerBase {
     private int numberOfColumns;
     private String conditionalNumberOfColumns;
 
-    private boolean matchColumnsToFieldCount;
+    private boolean suppressLineWrapping;
     private boolean applyAlternatingRowStyles;
     private boolean applyDefaultCellWidths;
     private boolean renderAlternatingHeaderColumns;
@@ -50,30 +50,11 @@ public class GridLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * The following initialization is performed:
-     * 
-     * <ul>
-     * <li>If match field count is true, sets the number of columns to the
-     * container's items list size</li>
-     * </ul>
-     * 
-     * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performInitialization(org.kuali.rice.kns.uif.container.View,
-     *      org.kuali.rice.kns.uif.container.Container)
-     */
-    @Override
-    public void performInitialization(View view, Container container) {
-        super.performInitialization(view, container);
-
-        if (matchColumnsToFieldCount) {
-            numberOfColumns = container.getItems().size();
-        }
-    }
-
-    /**
      * The following finalization is performed:
      * 
      * <ul>
-     * <li>Build the list of fields for the grid</li>
+     * <li>If suppressLineWrapping is true, sets the number of columns to the
+     * container's items list size</li>
      * </ul>
      * 
      * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.kns.uif.container.View,
@@ -83,21 +64,7 @@ public class GridLayoutManager extends LayoutManagerBase {
     public void performFinalize(View view, Object model, Container container) {
         super.performFinalize(view, model, container);
 
-        // TODO: lookup into why we need this in each of the phases
-        if (matchColumnsToFieldCount) {
-            numberOfColumns = container.getItems().size();
-        }
-    }
-
-    /**
-     * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
-     *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
-     */
-    @Override
-    public void performApplyModel(View view, Object model, Container container) {
-        super.performApplyModel(view, model, container);
-
-        if (matchColumnsToFieldCount) {
+        if (suppressLineWrapping) {
             numberOfColumns = container.getItems().size();
         }
     }
@@ -161,7 +128,8 @@ public class GridLayoutManager extends LayoutManagerBase {
     /**
      * Indicates whether the number of columns for the table data should match
      * the number of fields given in the container's items list (so that each
-     * field takes up one column without wrapping)
+     * field takes up one column without wrapping), this overrides the configured
+     * numberOfColumns 
      * 
      * <p>
      * If set to true during the initialize phase the number of columns will be
@@ -172,17 +140,17 @@ public class GridLayoutManager extends LayoutManagerBase {
      * @return boolean true if the column count should match the container's
      *         field count, false to use the configured number of columns
      */
-    public boolean isMatchColumnsToFieldCount() {
-        return this.matchColumnsToFieldCount;
+    public boolean isSuppressLineWrapping() {
+        return this.suppressLineWrapping;
     }
 
     /**
-     * Setter for the match column count to field count indicator
+     * Setter for the suppressLineWrapping indicator
      * 
-     * @param matchColumnsToFieldCount
+     * @param suppressLineWrapping
      */
-    public void setMatchColumnsToFieldCount(boolean matchColumnsToFieldCount) {
-        this.matchColumnsToFieldCount = matchColumnsToFieldCount;
+    public void setSuppressLineWrapping(boolean suppressLineWrapping) {
+        this.suppressLineWrapping = suppressLineWrapping;
     }
 
     /**

@@ -21,7 +21,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
    <bean id="Travel-testView1" parent="FormView">
       <property name="id" value="Travel-testView1"/>
-      <property name="title" value="Test View 1"/>
+      <property name="title" value="ACH Setup"/>
       <property name="entryPageId" value="page1"/>
       <property name="items">
         <list>
@@ -51,7 +51,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>
    
    <bean id="testSection1" parent="GroupSection">
-      <property name="title" value="Test Section 1"/> 
+      <property name="title" value="Bank Setup"/> 
       <property name="items">
         <list>
           <ref bean="testGroup1"/>
@@ -71,13 +71,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>   
    
    <bean id="testGroup1" parent="GroupGridLayout">   
-      <property name="title" value="Test Group @{travelAccount1.name}"/> 
+      <property name="title" value="Bank Information"/> 
       <property name="items">
         <list>
-          <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="4" p:minLength="2"
-               p:summary="This title is used for identifying the proposal through the apporval process." p:readOnly="false"  p:conditionalReadOnly="" p:constraint="Must be 4 chars" p:alternateDisplayAttributeName="field2">
+          <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Bank Id" p:maxLength="4" p:minLength="2"
+               p:summary="Please provide the established federal Id" p:constraint="Must be 4 chars" p:readOnly="false"  p:conditionalReadOnly="" p:alternateDisplayAttributeName="field2">
             <property name="control">
-              <bean parent="TextControl" p:size="5" p:watermarkText="Field1"/>
+              <bean parent="TextControl" p:size="15" p:watermarkText="####"/>
             </property>
             <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
             <property name="fieldLookup.fieldConversions">
@@ -86,17 +86,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               </map>
             </property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Field 2" p:conditionalReadOnly="true" p:maxLength="25" p:readOnly="true" p:additionalDisplayAttributeName="field1">
+          <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Bank Name" p:required="true" p:maxLength="25" p:readOnly="true" p:additionalDisplayAttributeName="field1">
             <property name="control">
               <bean parent="TextControl" p:size="26"/>
             </property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Field 3" p:maxLength="9">
+          <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Account Open Date" p:maxLength="9">
             <property name="control">
               <bean parent="DateControl" p:size="10" p:watermarkText="mm/dd/yyyy"/>
             </property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field4" p:label="Field 4">
+          <bean parent="AttributeField_Form" p:propertyName="field4" p:label="Bank Type Code">
             <property name="control">
               <bean parent="SelectControl"/>
             </property>
@@ -106,7 +106,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>                        
         </list>
       </property> 
-      <property name="summary" value="Group with grid layout and 2 columns, @{#ConfigProperties['krad.externalizable.images.url']}"/>      
+      <property name="summary" value="Provide basic information for the ACH Bank"/>      
    </bean>
    
    <bean id="testGroup2" parent="GroupGridLayout" p:layoutManager.style="width: 50%">   
@@ -177,7 +177,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="items">
         <list>
           <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
-          <bean parent="AttributeField" p:propertyName="name"/>
+          <bean parent="AttributeField" p:propertyName="name" p:defaultValue="sub-name"/>
           <bean parent="FieldGroup" p:label="Sub Account">
             <property name="items">
               <list>         
@@ -236,7 +236,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <list>
           <bean parent="AttributeField" p:propertyName="number"/>
           <bean parent="AttributeField" p:propertyName="name" p:conditionalReadOnly="#index eq 1"/>
-          <bean parent="AttributeField" p:propertyName="foId"/>
+          <bean parent="AttributeField" p:propertyName="foId" p:defaultValue="1"/>
         </list>
       </property>  
       <property name="addLineLabel" value="New @{#component.title}"/>     
@@ -330,6 +330,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <property name="control">
               <bean parent="TextControl" p:size="26"/>
             </property>
+            <property name="defaultValue" value="Def VAL" />
           </bean>
           <bean parent="AttributeField_Form" p:propertyName="field14" p:label="Bank Route Number" p:colSpan="2" p:labelField.colSpan="2" p:maxLength="29">
             <property name="control">
@@ -411,6 +412,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                   <property name="control">
                     <bean parent="CheckboxControl"/>
                   </property>
+                  <property name="defaultValue" value="true" />
                 </bean>  
                 <bean parent="AttributeField_Form" p:propertyName="field23" p:label="Field 14" p:maxLength="9">
                   <property name="control">

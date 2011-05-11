@@ -405,7 +405,8 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable, S
      * if we're creating a new business object using on an existing business object.
      * For example, create a division Vendor based on an existing parent Vendor.
      * (Please see VendorMaintainableImpl.java)
+     * 
+     *  TODO: remove from interface once converted to KRAD
      */
-	@Deprecated
     public void setupNewFromExisting( MaintenanceDocument document, Map<String,String[]> parameters );
 }

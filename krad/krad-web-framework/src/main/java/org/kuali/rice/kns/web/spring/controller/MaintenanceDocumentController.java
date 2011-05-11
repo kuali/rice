@@ -126,12 +126,14 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 	 * <code>MaintenanceView</code> with the default new action
 	 */
 	@RequestMapping(params = "methodToCall=" + METHOD_TO_CALL_NEW)
-	public ModelAndView start(@ModelAttribute("KualiForm") MaintenanceForm form, BindingResult result,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@Override
+	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+	    MaintenanceForm maintenanceForm = (MaintenanceForm) form;
 
-		setupMaintenance(form, request, KNSConstants.MAINTENANCE_NEW_ACTION);
+		setupMaintenance(maintenanceForm, request, KNSConstants.MAINTENANCE_NEW_ACTION);
 
-		return getUIFModelAndView(form);
+		return getUIFModelAndView(maintenanceForm);
 	}
 
 	/**
@@ -191,8 +193,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 	 *            being request
 	 * @throws Exception
 	 */
-	protected void setupMaintenance(MaintenanceForm form, HttpServletRequest request, String maintenanceAction)
-			throws Exception {
+	protected void setupMaintenance(MaintenanceForm form, HttpServletRequest request, String maintenanceAction) {
 		MaintenanceDocument document = form.getDocument();
 
 		// create a new document object, if required

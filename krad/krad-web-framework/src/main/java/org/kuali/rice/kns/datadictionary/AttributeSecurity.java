@@ -19,11 +19,10 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 
 /**
- * This class defines a set of restrictions that are possible on an attribute in a 
+ * Defines a set of restrictions that are possible on an attribute in a 
  * {@link BusinessObjectEntry} or a maintainable field in a {@link MaintenanceDocumentEntry}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public class AttributeSecurity extends DataDictionaryDefinitionBase {
 	private static final long serialVersionUID = -7923499408946975318L;

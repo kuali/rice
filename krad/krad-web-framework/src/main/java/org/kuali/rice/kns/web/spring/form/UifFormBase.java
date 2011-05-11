@@ -29,9 +29,11 @@ import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.history.History;
 import org.kuali.rice.kns.uif.service.ViewService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Base form class for views within the KRAD User Interface Framework
+ * 
  * <p>
  * Holds properties necessary to determine the <code>View</code> instance that
  * will be used to render the UI
@@ -54,8 +56,9 @@ public class UifFormBase implements Serializable {
     protected String jumpToId;
     protected String jumpToName;
     protected String focusId;
-
     protected String formPostUrl;
+    
+    protected boolean defaultsApplied;
 
     protected View view;
     protected View previousView;
@@ -64,19 +67,22 @@ public class UifFormBase implements Serializable {
     protected Map<String, Object> newCollectionLines;
     protected Map<String, String> actionParameters;
 
+    protected MultipartFile attachmentFile;
+
     // navigation
     protected String returnLocation;
     protected String returnFormKey;
     protected String hubLocation;
     protected String hubFormKey;
     protected String homeLocation;
-    
+
     protected boolean renderFullView;
     protected boolean validateDirty;
 
     public UifFormBase() {
         formKey = generateFormKey();
         renderFullView = true;
+        defaultsApplied = false;
 
         viewRequestParameters = new HashMap<String, String>();
         newCollectionLines = new HashMap<String, Object>();
@@ -379,6 +385,43 @@ public class UifFormBase implements Serializable {
         this.formKey = formKey;
     }
     
+    /**
+     * Indicates whether the form has had default values from the configured
+     * <code>View</code> applied. This happens only once for each form instance
+     * 
+     * @return boolean true if default values have been applied, false if not
+     */
+    public boolean isDefaultsApplied() {
+        return this.defaultsApplied;
+    }
+
+    /**
+     * Setter for the defaults applied indicator
+     * 
+     * @param defaultsApplied
+     */
+    public void setDefaultsApplied(boolean defaultsApplied) {
+        this.defaultsApplied = defaultsApplied;
+    }
+
+    /**
+     * Holder for files that are attached through the view
+     * 
+     * @return MultipartFile representing the attachment
+     */
+    public MultipartFile getAttachmentFile() {
+        return this.attachmentFile;
+    }
+
+    /**
+     * Setter for the form's attachment file
+     * 
+     * @param attachmentFile
+     */
+    public void setAttachmentFile(MultipartFile attachmentFile) {
+        this.attachmentFile = attachmentFile;
+    }
+
     /**
      * @return the renderFullView
      */

@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
+import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.control.HiddenControl;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.RequestParameter;

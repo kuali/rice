@@ -74,6 +74,7 @@ function errorHandler(msg,url,lno)
 jq(document).ready(function() {
 	createLoading(false);
 	setPageBreadcrumb();
+	
 	// buttons
 	jq("input:submit").button();
 	jq("input:button").button();
@@ -85,6 +86,7 @@ jq(document).ready(function() {
 			 createLoading(false);
 		  }
 	});
+	
 	runHiddenScripts("");
 });
 
@@ -148,7 +150,7 @@ function resizeDialog() {
 
 
 /**
- * sets the breadcrumb to whatever the current page is, if this view has page navigation
+ * Sets the breadcrumb to whatever the current page is, if this view has page navigation
  * Pages are handled by js on the breadcrumb because the page retrieval happens through
  * ajax
  */
@@ -160,7 +162,7 @@ function setPageBreadcrumb(){
 		jq("#breadcrumbs").find("#page_breadcrumb").remove();
 		var bcSet = false;
 		if(pageTitle){
-			jq("#breadcrumbs").append("<span id='page_breadcrumb'> » <span class='current'>" + pageTitle + "</span></span>");
+			jq("#breadcrumbs").append("<span id='page_breadcrumb'> &raquo; <span class='current'>" + pageTitle + "</span></span>");
 			jq("#current_breadcrumb_span").hide();
 			jq("#current_breadcrumb_anchor").show();
 			bcSet = true;
@@ -661,6 +663,7 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 		var div = jq("#" + errorDivId);
 		var label = jq("#" + errorDivId.replace("errors_div", "label"));
 		var highlightLine = "";
+		
 		//check to see if the option to highlight fields is on
 		if(div.length > 0 && !div.hasClass("noHighlight")){
 			if (div.parent().is("td")) {
@@ -669,6 +672,7 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 			else{
 				highlightLine = div.closest(".fieldLine");
 			}
+			
 			if (highlightLine.length > 0) {
 				if(errorNum && !clientSide){
 					highlightLine.addClass("serverError");
@@ -716,8 +720,8 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 			var tabId = tabDiv.attr("id");
 			var tabAnchor = jq("a[href='#" + tabId + "']");
 			var errorIcon = jq("#" + tabId + "_errorIcon");
+			
 			if(tabAnchor.length > 0){
-				
 				var hasErrors = false;
 				if(errorNum){
 					hasErrors = true;
@@ -747,21 +751,24 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 }
 	
 /**
-*  Shows the field error icon if errorCount is greater than one and errorsField has the option turned on
-*/
+ * Shows the field error icon if errorCount is greater than one and errorsField
+ * has the option turned on
+ */
 function showFieldIcon(errorsDivId, errorCount){
 	if(errorsDivId){
 		var div = jq("#" + errorsDivId);
 		var inputId = errorsDivId.replace("_errors_div", "");
+		
 		if(inputId){
 			var input = jq("#" + inputId);
 			var errorIcon = jq("#" + inputId + "_errorIcon");
+			
 			if (div.length > 0 && div.hasClass("addFieldIcon") && errorCount && errorIcon.length == 0) {
 				if (input.length > 0) {
 					input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
 				}
 				else {
-					//try for radios and checkboxes
+					// try for radios and checkboxes
 					input = jq("#" + errorDivId.replace("errors_div", "attribute1"));
 					if (input.length > 0) {
 						input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
@@ -773,7 +780,7 @@ function showFieldIcon(errorsDivId, errorCount){
 					errorIcon.remove();
 				}
 			}
-	}
+	    }
 	}
 }
 

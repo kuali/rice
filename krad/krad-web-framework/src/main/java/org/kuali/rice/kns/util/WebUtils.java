@@ -970,23 +970,4 @@ public class WebUtils {
 
 		return map;
 	}
-	
-    /**
-     * Converts a set to a map by creating a new map entry for each set entry
-     * where the map key is the set entry value and the map value is the boolean
-     * true
-     * 
-     * @param setToConvert
-     *            - set instance to convert
-     * @return Map<String, Boolean> map converted from set
-     */
-    public static  Map<String, Boolean> convertSetToBoolenMap(Set<String> setToConvert) {
-        Map<String, Boolean> map = new HashMap<String, Boolean>();
-
-        for (String str : setToConvert) {
-            map.put(str, Boolean.TRUE);
-        }
-
-        return map;
-    }
 }

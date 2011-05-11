@@ -58,21 +58,19 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
         context.setVariables(evaluationParameters);
 
         ExpressionParser parser = new SpelExpressionParser();
-
-        Expression expression = null;
-        if (StringUtils.contains(expressionTemplate, UifConstants.EL_PLACEHOLDER_PREFIX)) {
-            expression = parser.parseExpression(expressionTemplate, new TemplateParserContext(
-                    UifConstants.EL_PLACEHOLDER_PREFIX, UifConstants.EL_PLACEHOLDER_SUFFIX));
-        }
-        else {
-            expression = parser.parseExpression(expressionTemplate);
-        }
-
+        
         String result = null;
         try {
+            Expression expression = null;
+            if (StringUtils.contains(expressionTemplate, UifConstants.EL_PLACEHOLDER_PREFIX)) {
+                expression = parser.parseExpression(expressionTemplate, new TemplateParserContext(
+                        UifConstants.EL_PLACEHOLDER_PREFIX, UifConstants.EL_PLACEHOLDER_SUFFIX));
+            } else {
+                expression = parser.parseExpression(expressionTemplate);
+            }
+
             result = expression.getValue(context, String.class);
-        }
-        catch (EvaluationException e) {
+        } catch (Exception e) {
             LOG.error("Exception evaluating expression: " + expressionTemplate);
             throw new RuntimeException("Exception evaluating expression: " + expressionTemplate, e);
         }
@@ -176,7 +174,10 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
         }
     }
 
-    protected boolean containsElPlaceholder(String value) {
+    /**
+     * @see org.kuali.rice.kns.uif.service.ExpressionEvaluatorService#containsElPlaceholder(java.lang.String)
+     */
+    public boolean containsElPlaceholder(String value) {
         boolean containsElPlaceholder = false;
 
         String elPlaceholder = StringUtils.substringBetween(value, UifConstants.EL_PLACEHOLDER_PREFIX,

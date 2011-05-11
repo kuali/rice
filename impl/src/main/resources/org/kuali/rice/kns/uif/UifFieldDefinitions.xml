@@ -58,7 +58,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="conditionalReadOnly" value="#parent.readOnly"/>         
   </bean>  
   
-  <bean id="AttributeField_Form" abstract="true" parent="AttributeField_Form-parentBean"/>
+  <bean id="AttributeField_Form" parent="AttributeField_Form-parentBean"/>
   <bean id="AttributeField_Form-parentBean" abstract="true" parent="AttributeField">
       <property name="bindingInfo.bindToForm" value="true"/>
       <property name="alternateDisplayAttributeBindingInfo.bindToForm" value="true"/>
@@ -76,7 +76,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="additionalDisplayAttributeBindingInfo.bindToMap" value="true"/>
   </bean>
   
-  <bean id="LabelField" abstract="true" parent="LabelField-parentBean"/>
+  <bean id="LabelField" parent="LabelField-parentBean"/>
   <bean id="LabelField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.LabelField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/labelField.jsp"/>
       <property name="styleClasses" value="desc"/>
@@ -85,7 +85,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>   
   </bean>  
   
-  <bean id="ErrorsField" abstract="true" parent="ErrorsField-parentBean"/>
+  <bean id="ErrorsField" parent="ErrorsField-parentBean"/>
   <bean id="ErrorsField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.ErrorsField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/errorsField.jsp"/>
       <property name="styleClasses" value="errorsField"/>
@@ -105,7 +105,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayCounts" value="false"/>
   </bean>
   
-  <bean id="ErrorsField_Group" abstract="true" parent="ErrorsField">
+  <bean id="ErrorsField_Group" parent="ErrorsField">
       <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
       <property name="displayErrorTitle" value="false"/>
 	  <property name="displayWarningTitle" value="false"/> 
@@ -121,7 +121,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayCounts" value="true"/>
   </bean>
   
-    <bean id="ErrorsField_Page" abstract="true" parent="ErrorsField">
+    <bean id="ErrorsField_Page" parent="ErrorsField">
       <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
 	  <property name="additionalKeysToMatch">
 	  	<list>
@@ -146,7 +146,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <!-- No longer used - views cannot update errors if page retrieval is through ajax -->
-  <bean id="ErrorsField_View" abstract="true" parent="ErrorsField">
+  <bean id="ErrorsField_View" parent="ErrorsField">
       <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
 	  <property name="additionalKeysToMatch">
 	  	<list>
@@ -170,27 +170,27 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayCounts" value="true"/>
   </bean>
   
-  <bean id="ActionField" abstract="true" parent="ActionField-parentBean"/>
+  <bean id="ActionField" parent="ActionField-parentBean"/>
   <bean id="ActionField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.ActionField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
   </bean>  
   
-  <bean id="ActionField_Secondary" abstract="true" parent="ActionField_Secondary-parentBean"/>
+  <bean id="ActionField_Secondary" parent="ActionField_Secondary-parentBean"/>
   <bean id="ActionField_Secondary-parentBean" abstract="true" parent="ActionField">
       <property name="styleClasses" value="ui-priority-secondary"/>
   </bean>  
   
-  <bean id="ActionField_Small" abstract="true" parent="ActionField_Small-parentBean"/>
+  <bean id="ActionField_Small" parent="ActionField_Small-parentBean"/>
   <bean id="ActionField_Small-parentBean" abstract="true" parent="ActionField">
       <property name="styleClasses" value="ui-priority-primary-sm"/>
   </bean>  
   
-  <bean id="ActionField_SmallSecondary" abstract="true" parent="ActionField_SmallSecondary-parentBean"/>
+  <bean id="ActionField_SmallSecondary" parent="ActionField_SmallSecondary-parentBean"/>
   <bean id="ActionField_SmallSecondary-parentBean" abstract="true" parent="ActionField">
       <property name="styleClasses" value="ui-priority-secondary-sm"/>
   </bean>  
   
-  <bean id="ActionLinkField" abstract="true" parent="ActionLinkField-parentBean"/>
+  <bean id="ActionLinkField" parent="ActionLinkField-parentBean"/>
   <bean id="ActionLinkField-parentBean" abstract="true" parent="ActionField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionLinkField.jsp"/>
       <property name="styleClasses" value="action"/>
@@ -220,36 +220,41 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="clientSideJs" value="submitForm();"/>
   </bean>
   
-  <bean id="LinkField" abstract="true" parent="LinkField-parentBean"/>
+  <bean id="LinkField" parent="LinkField-parentBean"/>
   <bean id="LinkField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.LinkField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/linkField.jsp"/>
       <property name="target" value="_blank"/>
   </bean>  
   
-  <bean id="MessageField" abstract="true" parent="MessageField-parentBean"/>
+  <bean id="MessageField" parent="MessageField-parentBean"/>
   <bean id="MessageField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.MessageField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>
   </bean> 
   
-  <bean id="IframeField" abstract="true" parent="IframeField-parentBean"/>
+  <bean id="IframeField" parent="IframeField-parentBean"/>
   <bean id="IframeField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.IframeField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/iframeField.jsp"/>
   </bean>  
   
-  <bean id="ImageField" abstract="true" parent="ImageField-parentBean"/>
+  <bean id="ImageField" parent="ImageField-parentBean"/>
   <bean id="ImageField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.ImageField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/image.jsp"/>
   </bean> 
   
-  <bean id="GeneratedField" abstract="true" parent="GeneratedField-parentBean"/>
+  <bean id="GeneratedField" parent="GeneratedField-parentBean"/>
   <bean id="GeneratedField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.GeneratedField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/generated.jsp"/>
       <property name="labelField">
         <bean parent="LabelField"/>
       </property>  
-  </bean>   
+  </bean> 
   
-  <bean id="GroupField" abstract="true" parent="GroupField-parentBean"/>
+  <bean id="BlankField" parent="BlankField-parentBean"/>
+  <bean id="BlankField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.BlankField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/blank.jsp"/>
+  </bean>     
+  
+  <bean id="GroupField" parent="GroupField-parentBean"/>
   <bean id="GroupField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.GroupField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/groupField.jsp"/>
       <property name="group">
@@ -260,7 +265,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>        
   </bean>    
   
-  <bean id="FieldGroup" abstract="true" parent="FieldGroup-parentBean"/>
+  <bean id="FieldGroup" parent="FieldGroup-parentBean"/>
   <bean id="FieldGroup-parentBean" abstract="true" parent="GroupField">
       <property name="group">
          <bean parent="GroupBodyOnly" p:fieldContainer="true" p:layoutManager.padding="3px"/>
@@ -307,21 +312,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         
   <bean id="AttributeField_OrganizationDocumentNumber" parent="AttributeField" p:propertyName="organizationDocumentNumber" 
         p:dictionaryObjectEntry="org.kuali.rice.kns.bo.DocumentHeader"/>  
-        
-  <bean id="AttributeField_NotePostedTimestamp" parent="AttributeField" p:propertyName="notePostedTimestamp" 
-        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/> 
-        
-  <bean id="AttributeField_AuthorUniversalIdentifier" parent="AttributeField" p:propertyName="authorUniversalIdentifier" 
-        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>    
-        
-  <bean id="AttributeField_NoteTopicText" parent="AttributeField" p:propertyName="noteTopicText" 
-        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>    
-        
-  <bean id="AttributeField_Attachment" parent="AttributeField" p:propertyName="attachmentIdentifier" 
-        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>    
-        
-  <bean id="AttributeField_NoteText" parent="AttributeField" p:propertyName="noteText" 
-        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>   
         
   <bean id="QuickFinderImageField" parent="ImageField" p:source="/kr-dev/krad/images/searchicon.gif"
         p:altText="Search Field" p:title="Search Field"/>

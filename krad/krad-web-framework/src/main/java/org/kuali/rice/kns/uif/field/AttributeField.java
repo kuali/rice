@@ -28,6 +28,7 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConst
 import org.kuali.rice.kns.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.FormView;
@@ -68,14 +69,15 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     // value props
     private String defaultValue;
+    private Class<? extends ValueFinder> defaultValueFinderClass;
 
     // Constraint variables
-    protected String customValidatorClass;
-    protected ValidCharactersConstraint validCharactersConstraint;
-    protected CaseConstraint caseConstraint;
-    protected List<PrerequisiteConstraint> dependencyConstraints;
-    protected List<MustOccurConstraint> mustOccurConstraints;
-    protected SimpleConstraint simpleConstraint;
+    private String customValidatorClass;
+    private ValidCharactersConstraint validCharactersConstraint;
+    private CaseConstraint caseConstraint;
+    private List<PrerequisiteConstraint> dependencyConstraints;
+    private List<MustOccurConstraint> mustOccurConstraints;
+    private SimpleConstraint simpleConstraint;
 
     private Formatter formatter;
     private KeyValuesFinder optionsFinder;
@@ -443,6 +445,25 @@ public class AttributeField extends FieldBase implements DataBinding {
      */
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    /**
+     * Gives Class that should be invoked to produce the default value for the
+     * field
+     * 
+     * @return Class<? extends ValueFinder> default value finder class
+     */
+    public Class<? extends ValueFinder> getDefaultValueFinderClass() {
+        return this.defaultValueFinderClass;
+    }
+
+    /**
+     * Setter for the default value finder class
+     * 
+     * @param defaultValueFinderClass
+     */
+    public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
+        this.defaultValueFinderClass = defaultValueFinderClass;
     }
 
     /**

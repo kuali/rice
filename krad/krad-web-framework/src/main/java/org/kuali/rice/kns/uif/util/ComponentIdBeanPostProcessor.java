@@ -56,12 +56,11 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
             Component component = (Component) bean;
 
             if (StringUtils.isBlank(component.getId())) {
-                if (!StringUtils.contains(beanName, "$")) {
-                    component.setId(beanName);
+                if (StringUtils.contains(beanName, "#")) {
+                    beanName = StringUtils.substringAfterLast(beanName, "#");
                 }
-                else {
-                    component.setId(ComponentFactory.getNextId());
-                }
+
+                component.setId(beanName);
             }
         }
 

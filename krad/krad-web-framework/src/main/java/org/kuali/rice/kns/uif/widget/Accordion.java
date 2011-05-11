@@ -1,17 +1,12 @@
 /*
- * Copyright 2011 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.opensource.org/licenses/ecl1.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2011 The Kuali Foundation Licensed under the Educational Community
+ * License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.opensource.org/licenses/ecl1.php Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package org.kuali.rice.kns.uif.widget;
 
@@ -21,50 +16,111 @@ package org.kuali.rice.kns.uif.widget;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Accordion extends WidgetBase {
-	private static final long serialVersionUID = 1238789480161901850L;
+    private static final long serialVersionUID = 1238789480161901850L;
 
-	private String collapseImageSrc;
-	private String expandImageSrc;
+    private String collapseImageSrc;
+    private String expandImageSrc;
 
-	private int animationSpeed;
-	private boolean defaultOpen;
+    private int animationSpeed;
+    private boolean defaultOpen;
+    private String conditionalDefaultOpen;
 
-	public Accordion() {
-		super();
+    public Accordion() {
+        super();
 
-		defaultOpen = true;
-	}
+        defaultOpen = true;
+    }
 
-	public String getCollapseImageSrc() {
-		return this.collapseImageSrc;
-	}
+    /**
+     * Path to the images that should be displayed to collapse the group
+     * 
+     * @return String image path
+     */
+    public String getCollapseImageSrc() {
+        return this.collapseImageSrc;
+    }
 
-	public void setCollapseImageSrc(String collapseImageSrc) {
-		this.collapseImageSrc = collapseImageSrc;
-	}
+    /**
+     * Setter for the collapse image path
+     * 
+     * @param collapseImageSrc
+     */
+    public void setCollapseImageSrc(String collapseImageSrc) {
+        this.collapseImageSrc = collapseImageSrc;
+    }
 
-	public String getExpandImageSrc() {
-		return this.expandImageSrc;
-	}
+    /**
+     * Path to the images that should be displayed to expand the group
+     * 
+     * @return String image path
+     */
+    public String getExpandImageSrc() {
+        return this.expandImageSrc;
+    }
 
-	public void setExpandImageSrc(String expandImageSrc) {
-		this.expandImageSrc = expandImageSrc;
-	}
+    /**
+     * Setter for the expand image path
+     * 
+     * @param collapseImageSrc
+     */
+    public void setExpandImageSrc(String expandImageSrc) {
+        this.expandImageSrc = expandImageSrc;
+    }
 
-	public int getAnimationSpeed() {
-		return this.animationSpeed;
-	}
+    /**
+     * Gives the speed for the open/close animation, a smaller int will result
+     * in a faster animation
+     * 
+     * @return int animation speed
+     */
+    public int getAnimationSpeed() {
+        return this.animationSpeed;
+    }
 
-	public void setAnimationSpeed(int animationSpeed) {
-		this.animationSpeed = animationSpeed;
-	}
+    /**
+     * Setter for the open/close animation speed
+     * 
+     * @param animationSpeed
+     */
+    public void setAnimationSpeed(int animationSpeed) {
+        this.animationSpeed = animationSpeed;
+    }
 
-	public boolean isDefaultOpen() {
-		return this.defaultOpen;
-	}
+    /**
+     * Indicates whether the group should be initially open
+     * 
+     * @return boolean true if group should be initially open, false if it
+     *         should be closed
+     */
+    public boolean isDefaultOpen() {
+        return this.defaultOpen;
+    }
 
-	public void setDefaultOpen(boolean defaultOpen) {
-		this.defaultOpen = defaultOpen;
-	}
+    /**
+     * Setter for the default open indicator
+     * 
+     * @param defaultOpen
+     */
+    public void setDefaultOpen(boolean defaultOpen) {
+        this.defaultOpen = defaultOpen;
+    }
+
+    /**
+     * Conditional expression for the default open indicator
+     * 
+     * @return String should evaluate to boolean
+     */
+    public String getConditionalDefaultOpen() {
+        return this.conditionalDefaultOpen;
+    }
+
+    /**
+     * Setter for the conditional default open expression
+     * 
+     * @param conditionalDefaultOpen
+     */
+    public void setConditionalDefaultOpen(String conditionalDefaultOpen) {
+        this.conditionalDefaultOpen = conditionalDefaultOpen;
+    }
 
 }

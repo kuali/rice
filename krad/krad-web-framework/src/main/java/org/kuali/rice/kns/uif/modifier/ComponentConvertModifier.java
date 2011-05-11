@@ -110,7 +110,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 	 */
 	protected void performConversion(Component component, String componentProperty, int idSuffix) {
 		// create new instance of replacement component
-		Component componentReplacement = ComponentUtils.copy(getComponentReplacementPrototype());
+		Component componentReplacement = ComponentUtils.copy(getComponentReplacementPrototype(), Integer.toString(idSuffix));
 
 		ObjectPropertyUtils.setPropertyValue(component, componentProperty, componentReplacement);
 	}

@@ -16,11 +16,15 @@
 package org.kuali.rice.kns.datadictionary.mask;
 
 /**
-      The maskLiteral element is used to completely hide the field
-      value for unauthorized users.  The specified literal will be
-      shown instead of the field value.
+ * The maskLiteral element is used to completely hide the field value for
+ * unauthorized users. The specified literal will be shown instead of the field
+ * value.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaskFormatterLiteral implements MaskFormatter {
+    private static final long serialVersionUID = 3368293409242411693L;
+    
     protected String literal;
 
     public String maskValue(Object value) {

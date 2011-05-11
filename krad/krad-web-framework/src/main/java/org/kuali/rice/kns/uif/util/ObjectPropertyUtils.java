@@ -83,11 +83,19 @@ public class ObjectPropertyUtils {
 			}
 		}
 	}
+	
+    public static boolean isReadableProperty(Object object, String propertyPath) {
+        return wrapObject(object).isReadableProperty(propertyPath);
+    }
+
+    public static boolean isWritableProperty(Object object, String propertyPath) {
+        return wrapObject(object).isWritableProperty(propertyPath);
+    }
 
 	public static BeanWrapper wrapObject(Object object) {
 		BeanWrapper beanWrapper = new BeanWrapperImpl(object);
 		beanWrapper.setAutoGrowNestedPaths(true);
-
+		
 		return beanWrapper;
 	}
 

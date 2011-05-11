@@ -360,6 +360,19 @@ function createVerticalMenu(listId, options) {
 }
 
 /**
+ * Sets ups a text popout button and window for this particular field that will be generated
+ * when that button is clicked
+ * @param id - id of the control
+ * @param label - label to be used in popout
+ * @param summary - summary to be used in popout
+ * @param constraint - constraint to be used in popout
+ */
+function setupTextPopout(id, label, summary, constraint){
+	var options = {label: label, summary: summary, constraint: constraint};
+	jq("#" + id).initPopoutText(options);
+}
+
+/**
  * Uses jQuery DatePicker to render a calendar that can be used to select date
  * values for the field with the given control id. The second argument is a Map
  * of options that are available for the DatePicker. See

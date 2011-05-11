@@ -30,4 +30,8 @@
                
 <c:if test="${(!empty control.watermarkText)}">
 	<krad:script value="createWatermark('${control.id}', '${control.watermarkText}');" />
-</c:if>               
+</c:if>
+
+<c:if test="${control.textExpand}">
+	<krad:script value="setupTextPopout('${control.id}', '${field.labelField.labelText}', '${field.summaryMessageField.messageText}', '${field.constraintMessageField.messageText}');" />
+</c:if>   

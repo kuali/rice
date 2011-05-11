@@ -99,8 +99,8 @@
               <entry key="transitionOut" value="fade"/>
               <entry key="speedIn" value="200"/>
               <entry key="speedOut" value="200"/> 
-              <entry key="width" value="70%"/>
-              <entry key="height" value="90%"/>              
+              <entry key="width" value="75%"/>
+              <entry key="height" value="95%"/>              
               <entry key="hideOnOverlayClick" value="false"/>
               <entry key="type" value="iframe"/>                               	
           </map>
@@ -119,8 +119,8 @@
               <entry key="transitionOut" value="fade"/>
               <entry key="speedIn" value="200"/>
               <entry key="speedOut" value="200"/>                 
-              <entry key="width" value="70%"/>
-              <entry key="height" value="90%"/>              
+              <entry key="width" value="75%"/>
+              <entry key="height" value="95%"/>              
               <entry key="hideOnOverlayClick" value="false"/>
               <entry key="type" value="iframe"/>
           </map>

@@ -28,6 +28,7 @@ public class TextAreaControl extends ControlBase {
 	
 	private int rows;
 	private int cols;
+	private boolean textExpand;
 	private String watermarkText = StringUtils.EMPTY;
 	
 	public TextAreaControl() {
@@ -78,5 +79,23 @@ public class TextAreaControl extends ControlBase {
 		}
 		this.watermarkText = watermarkText;
 	}
+
+    /**
+     * If set to true, this control will have a button which can be clicked to expand the text area through
+     * a popup window so the user has more space to type and see the data they are entering in this text field
+     * @return the textExpand
+     */
+    public boolean isTextExpand() {
+        return this.textExpand;
+    }
+
+    /**
+     * @param textExpand the textExpand to set
+     */
+    public void setTextExpand(boolean textExpand) {
+        this.textExpand = textExpand;
+    }
+	
+	
 
 }

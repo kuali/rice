@@ -138,13 +138,13 @@ limitations under the License.
       <bean parent="AttributeField_Form" p:label="Field 2" p:propertyName="hField2" p:labelPlacement="TOP" 
       p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
       	  	<property name="control">
-                    <bean parent="TextControl" p:size="30" p:watermarkText="Field2"/>
+              <bean parent="TextAreaControl" p:textExpand="true" p:rows="5" p:cols="40" p:watermarkText="Field 2"/>
             </property>
 	  </bean>
 	  <bean parent="AttributeField_Form" p:label="Field 3" p:propertyName="hField3" p:labelPlacement="TOP" 
-      p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
+      p:labelField.styleClasses="labelTop" p:summary="Stuff stuff stuff" p:constraint="Test out the text popout" p:labelField.renderColon="false" p:required="true">
            	<property name="control">
-                    <bean parent="TextControl" p:size="30" p:watermarkText="Field3"/>
+              <bean parent="TextAreaControl" p:textExpand="true" p:rows="5" p:cols="40" p:watermarkText="Field 3"/>
             </property>
 	  </bean>
     </list>

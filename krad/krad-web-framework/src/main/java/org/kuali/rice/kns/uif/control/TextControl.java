@@ -34,6 +34,7 @@ public class TextControl extends ControlBase {
 
 	private DatePicker datePicker;
 	private String watermarkText = StringUtils.EMPTY;
+	private boolean textExpand;
 	
 	public TextControl() {
 		super();
@@ -97,4 +98,22 @@ public class TextControl extends ControlBase {
 		}
 		this.watermarkText = watermarkText;
 	}
+
+    /**
+     * If set to true, this control will have a button which can be clicked to expand the text area through
+     * a popup window so the user has more space to type and see the data they are entering in this text field
+     * @return the textExpand
+     */
+    public boolean isTextExpand() {
+        return this.textExpand;
+    }
+
+    /**
+     * @param textExpand the textExpand to set
+     */
+    public void setTextExpand(boolean textExpand) {
+        this.textExpand = textExpand;
+    }
+	
+	
 }

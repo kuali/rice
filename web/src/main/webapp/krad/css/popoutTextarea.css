@@ -1,0 +1,36 @@
+ .textarea_popout{
+ 	font-family: Helvetica,Arial,sans-serif;
+ 	font-size: 1em !important;
+ }
+ 
+ .textarea_popout textarea{
+ 	width: 550px;
+	height: 600px;
+ 	display: block;
+ }
+ 
+ .textarea_popout label{
+    font-weight: bold;
+    display: block;
+ }
+ 
+ .textarea_popout .summary{
+ 	color: #535353;
+    display: block;
+    font-size: 0.9em;
+    padding-bottom: 5px;
+ }
+ 
+ .textarea_popout .constraint{
+ 	color: #848484;
+    display: block;
+    font-size: 0.75em;
+    margin-bottom: 5px;
+    margin-top: 2px;
+    max-width: 40em;
+ }
+ 
+ .textarea_popout .done{
+ 	display: block;
+ 	margin: 5px auto;
+ }

@@ -219,6 +219,9 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		}
 		
 		public void setContextId(String contextId) {
+			if (StringUtils.isBlank(contextId)) {
+                throw new IllegalArgumentException("context id is blank");
+		}
 			this.contextId = contextId;
 		}
 		

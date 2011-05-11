@@ -108,9 +108,12 @@ public final class AgendaAttribute extends BaseAttribute implements AgendaAttrib
         	Builder builder = new Builder(contract.getId(), 
         			contract.getAgendaId(),
         			contract.getAttributeDefinitionId(),
-        			contract.getValue())
-        			.attributeDefinition(KrmsAttributeDefinition.Builder
-        					.create(contract.getAttributeDefinition()));
+        			contract.getValue());
+        	if (contract.getAttributeDefinition() != null){
+            	KrmsAttributeDefinition.Builder attrBuilder = 
+            		KrmsAttributeDefinition.Builder.create(contract.getAttributeDefinition());
+            	builder.setAttributeDefinition(attrBuilder);
+            }
         	return builder;
         }
 

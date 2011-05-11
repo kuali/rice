@@ -38,5 +38,7 @@ public interface AgendaBoService {
 	public void addAgendaItem(AgendaItem agendaItem, String parentId, Boolean position);
 	
 	public AgendaItem getAgendaItemById(String id);
-	
+
+	public AgendaDefinition to(AgendaBo bo);
+	public AgendaBo from(AgendaDefinition im);
 }

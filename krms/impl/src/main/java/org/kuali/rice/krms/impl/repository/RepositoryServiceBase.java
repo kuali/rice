@@ -29,7 +29,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 
 public class RepositoryServiceBase {
 
-    private BusinessObjectService businessObjectService;
+    protected BusinessObjectService businessObjectService;
 
     private final static Map<String,String> krmsAttributeDefinitionIdCache = Collections.synchronizedMap( new HashMap<String,String>() );
 

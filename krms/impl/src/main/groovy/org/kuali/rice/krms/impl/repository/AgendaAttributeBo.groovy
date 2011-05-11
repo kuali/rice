@@ -12,7 +12,7 @@ public class AgendaAttributeBo extends PersistableBusinessObjectBase implements 
 	def String attributeDefinitionId
 	def String value
 	
-	def KrmsAttributeDefinition attributeDefinition
+	def KrmsAttributeDefinitionBo attributeDefinition
 	
 	
 	/**

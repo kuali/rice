@@ -116,9 +116,9 @@ public abstract class BaseAttribute implements BaseAttributeContract, ModelObjec
 		 * @throws IllegalArgumentException if the id is null or blank
 		 */
         public void setId(String id) {
-            if (StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("id is blank");
-            }
+//            if (StringUtils.isBlank(id)) {
+//                throw new IllegalArgumentException("id is blank");
+//            }
             this.id = id;
         }
 

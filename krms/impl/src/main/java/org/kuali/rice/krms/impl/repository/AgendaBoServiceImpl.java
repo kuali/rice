@@ -35,11 +35,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	
 	// TODO: deal with active flag
 	
-	public final static String WHEN_TRUE = "WHEN TRUE";
-	public final static String WHEN_FALSE = "WHEN FALSE";
-	public final static String ALWAYS = "ALWAYS";
-	
-	private BusinessObjectService businessObjectService;
+    private BusinessObjectService businessObjectService;
 	private SequenceAccessorService sequenceAccessorService;
 
 	/**
@@ -58,7 +54,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 		if (existing != null){
 			throw new IllegalStateException("the agenda to create already exists: " + agenda);			
 		}	
-		businessObjectService.save(AgendaBo.from(agenda));		
+		businessObjectService.save(from(agenda));		
 	}
 
 	/**
@@ -85,7 +81,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 			toUpdate = agenda;
 		}
 
-		businessObjectService.save(AgendaBo.from(toUpdate));
+		businessObjectService.save(from(toUpdate));
 	}
 
 	/**
@@ -99,7 +95,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 			throw new IllegalArgumentException("agenda id is null");
 		}
 		AgendaBo bo = businessObjectService.findBySinglePrimaryKey(AgendaBo.class, agendaId);
-		return AgendaBo.to(bo);
+		return to(bo);
 	}
 
 	/**
@@ -121,7 +117,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
         map.put("namespace", namespace);
 
         AgendaBo myAgenda = businessObjectService.findByPrimaryKey(AgendaBo.class, Collections.unmodifiableMap(map));
-		return AgendaBo.to(myAgenda);
+		return to(myAgenda);
 	}
 
 	/**
@@ -136,7 +132,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 		}
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("contextId", contextId);
-		Set<AgendaBo> bos = (Set<AgendaBo>) businessObjectService.findMatchingOrderBy(AgendaBo.class, map, "sequenceNumber", true);
+		Set<AgendaBo> bos = (Set<AgendaBo>) businessObjectService.findMatching(AgendaBo.class, map);
 		return convertListOfBosToImmutables(bos);
 	}
 
@@ -255,6 +251,13 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 		this.businessObjectService = businessObjectService;
 	}
 
+    protected BusinessObjectService getBusinessObjectService() {
+		if ( businessObjectService == null ) {
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+		}
+		return businessObjectService;
+	}
+    
 	protected SequenceAccessorService getSequenceAccessorService() {
 		if ( sequenceAccessorService == null ) {
 			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
@@ -270,12 +273,63 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	 */
 	public Set<AgendaDefinition> convertListOfBosToImmutables(final Collection<AgendaBo> agendaBos) {
 		Set<AgendaDefinition> agendas = new HashSet<AgendaDefinition>();
-		for (AgendaBo bo : agendaBos) {
-			AgendaDefinition agenda = AgendaBo.to(bo);
-			agendas.add(agenda);
+		if (agendaBos != null){
+			for (AgendaBo bo : agendaBos) {
+				AgendaDefinition agenda = to(bo);
+				agendas.add(agenda);
+			}
 		}
 		return Collections.unmodifiableSet(agendas);
 	}
 
+	/**
+	 * Converts a mutable bo to it's immutable counterpart
+	 * @param bo the mutable business object
+	 * @return the immutable object
+	 */
+	@Override
+	public AgendaDefinition to(AgendaBo bo) {
+		if (bo == null) { return null; }
+		return org.kuali.rice.krms.api.repository.agenda.AgendaDefinition.Builder.create(bo).build();
+	}
+
+
+	/**
+	* Converts a immutable object to it's mutable bo counterpart
+	* TODO: move to() and from() to impl service
+	* @param im immutable object
+	* @return the mutable bo
+	*/
+	@Override
+   public AgendaBo from(AgendaDefinition im) {
+	   if (im == null) { return null; }
+
+	   AgendaBo bo = new AgendaBo();
+	   bo.setId( im.getId() );
+	   bo.setNamespace( im.getNamespaceCode() );
+	   bo.setName( im.getName() );
+	   bo.setTypeId( im.getTypeId() );
+	   bo.setContextId( im.getContextId() );
+	   bo.setFirstItemId( im.getFirstItemId() );
+
+	   // build the set of agenda attribute BOs
+	   Set<AgendaAttributeBo> attributes = new HashSet<AgendaAttributeBo>();
+	   // convert the name/value pairs to attrDefinitionId/value pairs
+	   Map<String,String> attrList = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService()
+	   		.convertAttributeKeys(im.getAttributes(), im.getNamespaceCode());
+	   // for each converted pair, build an AgendaAttributeBo and add it to the set
+	   AgendaAttributeBo attributeBo;
+	   for (String key : attrList.keySet()){
+		   attributeBo = new AgendaAttributeBo();
+		   attributeBo.setAgendaId( im.getId() );
+		   attributeBo.setAttributeDefinitionId( key );
+		   attributeBo.setValue( attrList.get(key) );
+		   attributeBo.setAttributeDefinition(
+				   businessObjectService.findBySinglePrimaryKey(KrmsAttributeDefinitionBo.class, key));
+		   attributes.add( attributeBo );
+	   }
+	   bo.setAttributes(attributes);
+	   return bo;
+   }
 
 }

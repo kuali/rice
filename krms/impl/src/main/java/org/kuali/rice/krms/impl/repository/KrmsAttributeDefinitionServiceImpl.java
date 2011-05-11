@@ -17,8 +17,10 @@
 package org.kuali.rice.krms.impl.repository;
 
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
 import java.util.*;
@@ -26,6 +28,40 @@ import java.util.*;
 public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDefinitionService {
 
     private BusinessObjectService businessObjectService;
+    private final Map<String,String> krmsAttributeDefinitionIdCache = Collections.synchronizedMap( new HashMap<String,String>() );
+
+	@Override
+	public Map<String,String> convertAttributeKeys(Map<String,String> attributesByName, String namespace) {
+		Map<String,String> attributesById = new HashMap<String,String>();
+		if(attributesByName != null && CollectionUtils.isNotEmpty(attributesByName.keySet())) { 
+			for(String attributeName : attributesByName.keySet()) {
+				String newKey = getKrmsAttributeId(attributeName, namespace);
+				if(StringUtils.isNotEmpty(newKey)) {
+					attributesById.put(newKey, attributesByName.get(attributeName));
+				}
+			}
+		}
+		return attributesById;
+	}
+   
+	@Override
+	public String getKrmsAttributeId( String attributeName, String namespace) {
+		String key = namespace + ":" + attributeName;
+		if (krmsAttributeDefinitionIdCache.containsKey(key))
+			return krmsAttributeDefinitionIdCache.get(key);		
+
+		String result = null;
+		Map<String,String> criteria = new HashMap<String,String>( 2 );
+		criteria.put( "name", attributeName );
+		criteria.put( "namespace", namespace );
+		Collection<KrmsAttributeDefinitionBo> defs = getBusinessObjectService().findMatching( KrmsAttributeDefinitionBo.class, criteria );
+		if(CollectionUtils.isNotEmpty(defs)) {
+			result = defs.iterator().next().getId();
+			krmsAttributeDefinitionIdCache.put(key, result);
+		}
+		return result;
+	}
+    
 
 	@Override
 	public void createAttributeDefinition(KrmsAttributeDefinition attributeDefinition) {
@@ -119,13 +155,21 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
         this.businessObjectService = businessObjectService;
     }
 
+
+    protected BusinessObjectService getBusinessObjectService() {
+		if ( businessObjectService == null ) {
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+		}
+		return businessObjectService;
+	}
+
     /**
      * Converts a List<KrmsAttributeDefinitionBo> to an Unmodifiable List<KrmsAttributeDefinition>
      *
      * @param krmsAttributeDefinitionBos a mutable List<KrmsAttributeDefinitionBo> to made completely immutable.
      * @return An unmodifiable List<KrmsAttributeDefinition>
      */
-    List<KrmsAttributeDefinition> convertListOfBosToImmutables(final Collection<KrmsAttributeDefinitionBo> krmsAttributeDefinitionBos) {
+    public List<KrmsAttributeDefinition> convertListOfBosToImmutables(final Collection<KrmsAttributeDefinitionBo> krmsAttributeDefinitionBos) {
         ArrayList<KrmsAttributeDefinition> krmsAttributeDefinitions = new ArrayList<KrmsAttributeDefinition>();
         for (KrmsAttributeDefinitionBo bo : krmsAttributeDefinitionBos) {
             KrmsAttributeDefinition krmsAttributeDefinition = KrmsAttributeDefinitionBo.to(bo);
@@ -134,4 +178,7 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
         return Collections.unmodifiableList(krmsAttributeDefinitions);
     }
 
+    public void clearCache(){
+    	krmsAttributeDefinitionIdCache.clear();
+    }
 }

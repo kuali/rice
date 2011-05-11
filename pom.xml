@@ -151,6 +151,9 @@
     <rice.site.dir>${basedir}/target/site</rice.site.dir>
     <!-- Where the generated documentation (pdf, html) will be generated -->
     <rice.docbook.dest>${rice.site.dir}/reference</rice.docbook.dest>
+
+    <!-- phase for wsdl generation from jaxws annotated interfaces -->
+    <rice.java2ws.phase>process-classes</rice.java2ws.phase>
   </properties>
 
   <build>

@@ -281,7 +281,6 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getPermission")
     @WebResult(name = "permission")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     Permission getPermission( @WebParam(name="permissionId") String permissionId );
    
 	/** 
@@ -313,7 +312,6 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionTemplate")
     @WebResult(name = "permissionTemplate")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     PermissionTemplate getPermissionTemplate( @WebParam(name="permissionTemplateId") String permissionTemplateId );
 
 	/**
@@ -325,7 +323,6 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionTemplateByName")
     @WebResult(name = "permissionTemplate")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     PermissionTemplate getPermissionTemplateByName( @WebParam(name="namespaceCode") String namespaceCode,
 			  										@WebParam(name="permissionTemplateName") String permissionTemplateName );
 
@@ -336,8 +333,8 @@ public interface PermissionService {
 	 * @param namespaceCode, permissionTemplateName
 	 * @return PermissionTemplate
 	 */
-	@WebMethod(operationName = "getPermissionTemplateByName")
-    @WebResult(name = "permissionTemplate")
+	@WebMethod(operationName = "getAllTemplates")
+    @WebResult(name = "permissionTemplates")
     @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     public List<PermissionTemplate> getAllTemplates();
 	
@@ -377,7 +374,6 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getPermissionDetailLabel")
     @WebResult(name = "permissionDetailLabel")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     public String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName);
 
     /**

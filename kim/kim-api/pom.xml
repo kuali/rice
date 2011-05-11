@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>kim</artifactId>
@@ -21,13 +22,121 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-		</dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-java2ws-plugin</artifactId>
+                <executions>
+
+                    <execution>
+                        <id>groupService-wsdl</id>
+                        <phase>${rice.java2ws.phase}</phase>
+                        <configuration>
+                            <className>org.kuali.rice.kim.api.group.GroupService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/GroupService.wsdl</outputFile>
+                            <serviceName>GroupService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>groupUpdateService-wsdl</id>
+                        <phase>${rice.java2ws.phase}</phase>
+                        <configuration>
+                            <className>org.kuali.rice.kim.api.group.GroupUpdateService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/GroupUpdateService.wsdl
+                            </outputFile>
+                            <serviceName>GroupUpdateService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>permissionService-wsdl</id>
+                        <phase>${rice.java2ws.phase}</phase>
+                        <configuration>
+                            <className>org.kuali.rice.kim.api.permission.PermissionService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/PermissionService.wsdl
+                            </outputFile>
+                            <serviceName>PermissionService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>permissionUpdateService-wsdl</id>
+                        <phase>${rice.java2ws.phase}</phase>
+                        <configuration>
+                            <className>org.kuali.rice.kim.api.permission.PermissionUpdateService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/PermissionUpdateService.wsdl
+                            </outputFile>
+                            <serviceName>PermissionUpdateService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>roleService-wsdl</id>
+                        <phase>${rice.java2ws.phase}</phase>
+                        <configuration>
+                            <className>org.kuali.rice.kim.api.role.RoleService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/RoleService.wsdl
+                            </outputFile>
+                            <serviceName>RoleService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>roleUpdateService-wsdl</id>
+                        <phase>${rice.java2ws.phase}</phase>
+                        <configuration>
+                            <className>org.kuali.rice.kim.api.role.RoleUpdateService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/RoleUpdateService.wsdl
+                            </outputFile>
+                            <serviceName>RoleUpdateService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>identityManagementService-wsdl</id>
+                        <phase>${rice.java2ws.phase}</phase>
+                        <configuration>
+                            <className>org.kuali.rice.kim.api.services.IdentityManagementService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/IdentityManagementService.wsdl
+                            </outputFile>
+                            <serviceName>IdentityManagementService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -701,16 +701,7 @@
                                             <html:image property="methodToCall.downloadAttachment.${field.propertyName}" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
                                             <c:out value="${fieldValue}"/>
                                             &nbsp;&nbsp;
-                                                                                        <input type="hidden" name='methodToCall' />
-                                            <script type="text/javascript">
-                                                function replaceAttachment() {
-                                                    excludeSubmitRestriction=true;
-                                                    showHide('replaceFileDiv','replaceDiv');
-                                                    document.forms[0].methodToCall.value='replaceAttachment';
-                                                    submitForm();
-                                                }
-                                            </script>
-                                            <html:link linkName="replaceAttachment" onclick="javascript: replaceAttachment();" href="" anchor="" property="methodToCall.replaceAttachment">replace</html:link>
+                                            <html:image property="methodToCall.replaceAttachment.${field.propertyName}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-clear1.gif" alt="clear attachment" onclick="excludeSubmitRestriction=true"/>
                                         </div>
                                         <div id="replaceFileDiv" valign="middle" style="display:none;">
                                             ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}

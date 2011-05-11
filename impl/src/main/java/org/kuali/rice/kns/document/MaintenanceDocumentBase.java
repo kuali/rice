@@ -451,6 +451,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             String documentNumber = getDocumentHeader().getDocumentNumber();
             newMaintainableObject.setDocumentNumber(documentNumber);
             
+            //Populate Attachment Property
+            if(newMaintainableObject.getBusinessObject() instanceof PersistableAttachment) {
+                newMaintainableObject.getBusinessObject().populateAttachmentForBO();
+            }
+
             newMaintainableObject.saveBusinessObject();
             
             getMaintenanceDocumentService().deleteLocks(documentNumber);

@@ -51,11 +51,11 @@ public interface PersistableBusinessObject extends BusinessObject, PersistenceBr
 
     /**
      * 
-     * This method returns the attachment file of the persistable object.
+     * This method sets the attachment file of the persistable object.
      * 
-     * @return attachmentFile
+     * @param attachmentFile
      */
-    public FormFile getAttachmentFile();
+    public void setAttachmentFile(FormFile attachmentFile);
     
     /**
      * 

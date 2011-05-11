@@ -17,6 +17,7 @@ package org.kuali.rice.kns.bo;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
@@ -400,6 +402,32 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
                 } 
                 boAttachment.setFileName(this.getAttachmentFile().getFileName());
                 boAttachment.setContentType(this.getAttachmentFile().getContentType());
+            }
+        }
+
+        Map properties = null; 
+        try {
+            properties = PropertyUtils.describe(this);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+      
+        Iterator propIter = properties.entrySet().iterator();
+    
+        while (propIter.hasNext()) {
+            Map.Entry entry = (Map.Entry) propIter.next();
+            Object value = entry.getValue();
+            if(value instanceof List) {
+                List valueList = (List) value;
+                for (Object element : valueList) {
+                    if(element instanceof PersistableBusinessObjectBase && element instanceof PersistableAttachment) {
+                        ((PersistableBusinessObjectBase) element).populateAttachmentForBO();
+                    }
+                }
             }
         }
     }

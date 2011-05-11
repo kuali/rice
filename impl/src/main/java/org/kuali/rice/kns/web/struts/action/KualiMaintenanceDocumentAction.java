@@ -457,8 +457,28 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 			HttpServletResponse response) throws Exception {
 		KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
 		MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
-		document.refreshReferenceObject("attachment");
-//		getBusinessObjectService().delete(document.getAttachment());
+  
+        // TODO: Needed only for 1.0.3.1 compatibility.  (Documents stored in workflow during upgrade still have attachments stored
+        //       the old way.)
+        document.refreshReferenceObject("attachment");
+        getBusinessObjectService().delete(document.getAttachment());
+
+        PersistableAttachment attachment;
+        PersistableBusinessObject pBo;
+        String collectionBo = getSelectedCollectionBo(request);
+        if (StringUtils.isBlank(collectionBo)) {
+            attachment = (PersistableAttachment) document.getNewMaintainableObject().getBusinessObject();
+            pBo = document.getNewMaintainableObject().getBusinessObject();
+        } else {
+            attachment = (PersistableAttachment) PropertyUtils.getProperty(document.getNewMaintainableObject().getBusinessObject(), collectionBo);
+            pBo = (PersistableBusinessObject) PropertyUtils.getProperty(document.getNewMaintainableObject().getBusinessObject(), collectionBo);
+        }
+        
+        attachment.setAttachmentContent(null);
+        attachment.setContentType(null);
+        attachment.setFileName(null);
+        pBo.setAttachmentFile(null);
+
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
 
@@ -523,7 +543,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
 
-	/**
+    /**
 	 * Called on return from a lookup.
 	 */
 	@Override

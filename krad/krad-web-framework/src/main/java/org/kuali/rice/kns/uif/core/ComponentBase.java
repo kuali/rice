@@ -29,6 +29,7 @@ import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
+import org.springframework.util.MethodInvoker;
 
 /**
  * Base implementation of <code>Component</code> which other component
@@ -80,6 +81,11 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
     private List<String> styleClasses;
 
     private int order;
+    
+    private String finalizeMethodToCall;
+    private MethodInvoker finalizeMethodInvoker;
+    private boolean selfRendered;
+    private String renderOutput;
 
     private String onLoadScript;
     private String onUnloadScript;
@@ -115,6 +121,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
         rowSpan = 1;
 
         render = true;
+        selfRendered = false;
 
         styleClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
@@ -569,6 +576,66 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
             style = "";
         }
         style = style + styleRules;
+    }
+
+    /**
+     * @see org.kuali.rice.kns.uif.core.Component#getFinalizeMethodToCall()
+     */
+    public String getFinalizeMethodToCall() {
+        return this.finalizeMethodToCall;
+    }
+
+    /**
+     * Setter for the finalize method
+     * 
+     * @param finalizeMethodToCall
+     */
+    public void setFinalizeMethodToCall(String finalizeMethodToCall) {
+        this.finalizeMethodToCall = finalizeMethodToCall;
+    }
+
+    /**
+     * @see org.kuali.rice.kns.uif.core.Component#getFinalizeMethodInvoker()
+     */
+    public MethodInvoker getFinalizeMethodInvoker() {
+        return this.finalizeMethodInvoker;
+    }
+
+    /**
+     * Setter for the method invoker instance
+     * 
+     * @param renderingMethodInvoker
+     */
+    public void setFinalizeMethodInvoker(MethodInvoker finalizeMethodInvoker) {
+        this.finalizeMethodInvoker = finalizeMethodInvoker;
+    }
+
+    /**
+     * @see org.kuali.rice.kns.uif.core.Component#isSelfRendered()
+     */
+    public boolean isSelfRendered() {
+        return this.selfRendered;
+    }
+
+    /**
+     * @see org.kuali.rice.kns.uif.core.Component#setSelfRendered(boolean)
+     */
+    public void setSelfRendered(boolean selfRendered) {
+        this.selfRendered = selfRendered;
+    }
+
+    /**
+     * @see org.kuali.rice.kns.uif.core.Component#getRenderOutput()
+     */
+    public String getRenderOutput() {
+        return this.renderOutput;
+    }
+
+    /**
+     * @see org.kuali.rice.kns.uif.core.Component#setRenderOutput(java.lang.String)
+     */
+    public void setRenderOutput(String renderOutput) {
+        this.renderOutput = renderOutput;
     }
 
     /**

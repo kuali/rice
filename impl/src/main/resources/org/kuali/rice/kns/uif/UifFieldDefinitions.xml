@@ -252,7 +252,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="BlankField" parent="BlankField-parentBean"/>
   <bean id="BlankField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.BlankField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/blank.jsp"/>
-  </bean>     
+  </bean>
+  
+  <bean id="GenericField" parent="GenericField-parentBean"/>
+  <bean id="GenericField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.GenericField" scope="prototype"/>     
   
   <bean id="GroupField" parent="GroupField-parentBean"/>
   <bean id="GroupField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.GroupField" scope="prototype">

@@ -23,6 +23,7 @@ import java.util.Set;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
+import org.springframework.util.MethodInvoker;
 
 /**
  * All classes of the UIF that are used as a rendering element implement the
@@ -556,5 +557,83 @@ public interface Component extends Serializable, Ordered {
      * @param order
      */
     public void setOrder(int order);
+    
+    /**
+     * Name of the method that should be invoked for finalizing the component
+     * configuration (full method name, without parameters or return type)
+     * 
+     * <p>
+     * Note the method can also be set with the finalizeMethodInvoker
+     * targetMethod property. If the method is on the configured
+     * <code>ViewHelperService</code>, only this property needs to be configured
+     * </p>
+     * 
+     * <p>
+     * If the component is selfRendered, the finalize method can return a string which 
+     * will be set as the component's renderOutput. The selfRendered indicator will also
+     * be set to true on the component. 
+     * </p>
+     * 
+     * @return String method name
+     */
+    public String getFinalizeMethodToCall();
+
+    /**
+     * <code>MethodInvoker</code> instance for the method that should be invoked
+     * for finalizing the component configuration
+     * 
+     * <p>
+     * MethodInvoker can be configured to specify the class or object the method
+     * should be called on. For static method invocations, the targetClass
+     * property can be configured. For object invocations, that targetObject
+     * property can be configured
+     * </p>
+     * 
+     * <p>
+     * If the component is selfRendered, the finalize method can return a string which 
+     * will be set as the component's renderOutput. The selfRendered indicator will also
+     * be set to true on the component. 
+     * </p>
+     * 
+     * @return MethodInvoker instance
+     */
+    public MethodInvoker getFinalizeMethodInvoker();
+    
+    /**
+     * Indicates whether the component contains its own render output (through
+     * the renderOutput property)
+     * 
+     * <p>
+     * If self rendered is true, the corresponding template for the component
+     * will not be invoked and the renderOutput String will be written to the
+     * response as is.
+     * </p>
+     * 
+     * @return boolean true if component is self rendered, false if not (renders
+     *         through template)
+     */
+    public boolean isSelfRendered();
+
+    /**
+     * Setter for the self render indicator
+     * 
+     * @param selfRendered
+     */
+    public void setSelfRendered(boolean selfRendered);
+
+    /**
+     * Rendering output for the component that will be sent as part of the
+     * response (can contain static text and HTML)
+     * 
+     * @return String render output
+     */
+    public String getRenderOutput();
+
+    /**
+     * Setter for the component's render output
+     * 
+     * @param renderOutput
+     */
+    public void setRenderOutput(String renderOutput);
 
 }

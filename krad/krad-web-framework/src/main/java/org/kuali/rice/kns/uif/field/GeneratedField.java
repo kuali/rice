@@ -42,6 +42,7 @@ import org.springframework.util.MethodInvoker;
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated
  */
 public class GeneratedField extends FieldBase {
 	private static final long serialVersionUID = 1575182633700024203L;

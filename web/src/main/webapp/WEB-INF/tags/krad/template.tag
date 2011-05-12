@@ -23,13 +23,22 @@
               
 <%-- verify the component is not null and should be rendered --%>   
 <c:if test="${(!empty component) && component.render}">     
-   <%-- render component through template --%>    
-   <tiles:insertTemplate template="${component.template}">
-       <tiles:putAttribute name="${component.componentTypeName}" value="${component}"/>
-       <c:forEach items="${templateParameters}" var="parameter">
-         <tiles:putAttribute name="${parameter.key}" value="${parameter.value}"/>
-       </c:forEach>
-   </tiles:insertTemplate>
+   <c:choose>
+     <%-- for self rendered components, write out render output --%>
+     <c:when test="${component.selfRendered}">
+        ${component.renderOutput}
+     </c:when>
+     
+     <%-- render component through template --%>  
+     <c:otherwise>
+       <tiles:insertTemplate template="${component.template}">
+         <tiles:putAttribute name="${component.componentTypeName}" value="${component}"/>
+         <c:forEach items="${templateParameters}" var="parameter">
+           <tiles:putAttribute name="${parameter.key}" value="${parameter.value}"/>
+         </c:forEach>
+       </tiles:insertTemplate>
+     </c:otherwise>
+   </c:choose>
        
    <%-- generate event code for component --%>
    <krad:eventScript component="${component}"/>

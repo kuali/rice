@@ -46,9 +46,14 @@ public class ComparableInfo implements Serializable, Ordered  {
 
 	private int order;
 	private String idSuffix;
+	
+	private boolean compareToForValueChange;
+	private boolean highlightValueChange;
 
 	public ComparableInfo() {
 		readOnly = false;
+		compareToForValueChange = false;
+		highlightValueChange = true;
 	}
 
 	/**
@@ -173,5 +178,49 @@ public class ComparableInfo implements Serializable, Ordered  {
 	public void setIdSuffix(String idSuffix) {
 		this.idSuffix = idSuffix;
 	}
+
+    /**
+     * Indicates whether this comparable group's field values should be compared
+     * to when highlighting changes of values between comparables (versions)
+     * 
+     * @return boolean true if this comparable group should be used for
+     *         comparison, false if not
+     * @see #isHighlightValueChange
+     */
+    public boolean isCompareToForValueChange() {
+        return this.compareToForValueChange;
+    }
+
+    /**
+     * Setter for the use comparable group values for comparison indicator
+     * 
+     * @param compareToForValueChange
+     */
+    public void setCompareToForValueChange(boolean compareToForValueChange) {
+        this.compareToForValueChange = compareToForValueChange;
+    }
+
+    /**
+     * Indicates whether the fields in this comparable group should be
+     * highlighted if their values defer from the comparable group marked for
+     * comparison
+     * 
+     * @return boolean true if the comparable fields should be highlighted,
+     *         false if they should not be highlighted (no comparison will be
+     *         performed)
+     * @see #isCompareToForValueChange
+     */
+    public boolean isHighlightValueChange() {
+        return this.highlightValueChange;
+    }
+
+    /**
+     * Setter for the highlight comparable field value changed indicator
+     * 
+     * @param highlightValueChange
+     */
+    public void setHighlightValueChange(boolean highlightValueChange) {
+        this.highlightValueChange = highlightValueChange;
+    }
 
 }

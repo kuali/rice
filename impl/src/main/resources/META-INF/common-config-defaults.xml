@@ -217,6 +217,11 @@
     <param name="rice.kns.illegalBusinessObjectsForSave.applyCheck" override="false">true</param>
 
     <param name="kns.editable.properties.history.size" override="false">20</param>
+    
+    <!-- Reloading Dictionary Config -->
+    <param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
+    <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
+    <param name="reload.data.dictionary.interval" override="false">3000</param>
 
     <!-- KSB -->
 

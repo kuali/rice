@@ -60,6 +60,23 @@ public interface ComponentModifier extends Serializable, Ordered {
 	 */
 	public void performModification(View view, Component component);
 
+    /**
+     * Special version of the performModification method that takes in the model
+     * as an argument. This version will be invoked if the component modifier is
+     * configured to run in the applyModel or finalize phase.
+     * 
+     * @param view
+     *            - the view instance to which the component belongs
+     * @param model
+     *            - top level object containing the view data
+     * @param component
+     *            - the component instance to modify
+     * @see 
+     *      org.kuali.rice.kns.uif.modifier.ComponentModifier.performModification
+     *      (View, Component)
+     */
+    public void performModification(View view, Object model, Component component);
+
 	/**
 	 * <code>Set</code> of <code>Component</code> classes that may be sent to
 	 * the modifier

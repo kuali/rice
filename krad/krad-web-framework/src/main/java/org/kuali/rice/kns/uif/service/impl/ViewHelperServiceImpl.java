@@ -38,6 +38,7 @@ import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.PropertyReplacer;
 import org.kuali.rice.kns.uif.core.RequestParameter;
 import org.kuali.rice.kns.uif.field.AttributeField;
+import org.kuali.rice.kns.uif.field.GenericField;
 import org.kuali.rice.kns.uif.layout.LayoutManager;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
@@ -53,6 +54,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
+import org.springframework.util.MethodInvoker;
 
 /**
  * Default Implementation of <code>ViewHelperService</code>
@@ -542,7 +544,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
                 }
 
                 if (runModifier) {
-                    modifier.performModification(view, component);
+                    if (StringUtils.equals(runPhase, UifConstants.ViewPhases.APPLY_MODEL)
+                            || StringUtils.equals(runPhase, UifConstants.ViewPhases.FINALIZE)) {
+                        modifier.performModification(view, model, component);
+                    } else {
+                        modifier.performModification(view, component);
+                    }
                 }
             }
         }
@@ -592,7 +599,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         if (component == null) {
             return;
         }
-
+        
+        // invoke configured method finalizers
+        invokeMethodFinalizer(view, component);
+        
         // invoke component to update its state
         component.performFinalize(view, model, parent);
 
@@ -605,6 +615,64 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         // get components children and recursively update state
         for (Component nestedComponent : component.getNestedComponents()) {
             performComponentFinalize(view, nestedComponent, model, component);
+        }
+    }
+    
+    /**
+     * Invokes the finalize method for the component (if configured) and sets
+     * the render output for the component to the returned method string (if
+     * method is not a void type)
+     * 
+     * @param view
+     *            - view instance that contains the component
+     * @param component
+     *            - component to run finalize method for
+     */
+    protected void invokeMethodFinalizer(View view, Component component) {
+        String finalizeMethodToCall = component.getFinalizeMethodToCall();
+        MethodInvoker finalizeMethodInvoker = component.getFinalizeMethodInvoker();
+
+        if (StringUtils.isBlank(finalizeMethodToCall) && (finalizeMethodInvoker == null)) {
+            return;
+        }
+
+        if (finalizeMethodInvoker == null) {
+            finalizeMethodInvoker = new MethodInvoker();
+        }
+
+        // if method not set on invoker, use renderingMethodToCall
+        if (StringUtils.isBlank(finalizeMethodInvoker.getTargetMethod())) {
+            finalizeMethodInvoker.setTargetMethod(finalizeMethodToCall);
+        }
+
+        // if target class or object not set, use view helper service
+        if ((finalizeMethodInvoker.getTargetClass() == null) && (finalizeMethodInvoker.getTargetObject() == null)) {
+            finalizeMethodInvoker.setTargetObject(view.getViewHelperService());
+        }
+
+        // add the component instance as an argument
+        Object[] arguments = new Object[1];
+        arguments[0] = component;
+        finalizeMethodInvoker.setArguments(arguments);
+
+        // invoke method and get render output
+        try {
+            LOG.debug("Invoking render method: " + finalizeMethodInvoker.getTargetMethod() + " for component: "
+                    + component.getId());
+            finalizeMethodInvoker.prepare();
+
+            Class<?> methodReturnType = finalizeMethodInvoker.getPreparedMethod().getReturnType();
+            if (StringUtils.equals("void", methodReturnType.getName())) {
+                finalizeMethodInvoker.invoke();
+            } else {
+                String renderOutput = (String) finalizeMethodInvoker.invoke();
+
+                component.setSelfRendered(true);
+                component.setRenderOutput(renderOutput);
+            }
+        } catch (Exception e) {
+            LOG.error("Error invoking rendering method for component: " + component.getId(), e);
+            throw new RuntimeException("Error invoking rendering method for component: " + component.getId(), e);
         }
     }
 

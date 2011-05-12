@@ -236,6 +236,7 @@
       <property name="animationSpeed" value="500"/>
       <property name="defaultOpen" value="true"/>
   </bean>
+  
   <!-- Breadcrumbs and History -->
   <bean id="Breadcrumbs" parent="Breadcrumbs-parentBean"/>
   <bean id="Breadcrumbs-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.BreadCrumbs" scope="prototype">
@@ -288,7 +289,7 @@
       </property>
       <property name="comparables">
          <list>
-            <bean parent="ComparableInfo" p:readOnly="true" p:headerText="Old"
+            <bean parent="ComparableInfo" p:readOnly="true" p:headerText="Old" p:compareToForValueChange="true"
                   p:bindingObjectPath="document.oldMaintainableObject.dataObject"/>
             <bean parent="ComparableInfo" p:headerText="New"
                   p:bindingObjectPath="document.newMaintainableObject.dataObject"/>                            

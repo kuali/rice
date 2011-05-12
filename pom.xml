@@ -84,6 +84,7 @@
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.M1</dwr.version>
+    <filemonitor.version>1.0-kuali</filemonitor.version>
     <groovy.version>1.8.0</groovy.version>
     <hibernate.version>3.6.3.Final</hibernate.version>
     <mail.version>1.4.4</mail.version>
@@ -98,6 +99,8 @@
     <jsr311-api.version>1.1.1</jsr311-api.version>
     <jstl.version>1.2</jstl.version>
     <jta.version>1.1</jta.version>
+    <jtidy.version>r938</jtidy.version>
+    <jtidy-servlet.version>r8-m1</jtidy-servlet.version>
     <junit.version>4.8.2</junit.version>
     <log4j.version>1.2.16</log4j.version>
     <mysql-connector-java.version>5.1.15</mysql-connector-java.version>
@@ -1760,6 +1763,26 @@
           </exclusion>
         </exclusions>
       </dependency>
+      
+      <dependency>
+          <groupId>no.geosoft</groupId>
+          <artifactId>filemonitor</artifactId>
+          <version>${filemonitor.version}</version>
+      </dependency>
+      
+      <dependency>
+	      <groupId>net.sf.jtidy</groupId>
+	      <artifactId>jtidyservlet</artifactId>
+	      <version>${jtidy-servlet.version}</version>
+	      <scope>runtime</scope>
+      </dependency>
+      
+	  <dependency>
+		 <groupId>net.sf.jtidy</groupId>
+		 <artifactId>jtidy</artifactId>
+		 <version>${jtidy.version}</version>
+		 <scope>runtime</scope>
+	  </dependency>      
 
       <dependency>
         <groupId>xmlunit</groupId>

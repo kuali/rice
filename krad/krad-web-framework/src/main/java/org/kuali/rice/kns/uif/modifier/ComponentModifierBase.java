@@ -16,6 +16,8 @@
 package org.kuali.rice.kns.uif.modifier;
 
 import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 
 /**
  * Base class for <code>ComponentModifier</code> implementations
@@ -39,8 +41,30 @@ public abstract class ComponentModifierBase implements ComponentModifier {
 		runPhase = UifConstants.ViewPhases.INITIALIZE;
 		order = 0;
 	}
+	
+    /**
+     * Default implementation of the overloaded performModification method that
+     * calls the version that does not take the model (more commonly
+     * implemented)
+     * 
+     * @see org.kuali.rice.kns.uif.modifier.ComponentModifier#performModification(org.kuali.rice.kns.uif.container.View,
+     *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
+     */
+    @Override
+    public void performModification(View view, Object model, Component component) {
+        performModification(view, component);
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.uif.modifier.ComponentModifier#performModification(org.kuali.rice.kns.uif.container.View,
+     *      org.kuali.rice.kns.uif.core.Component)
+     */
+    @Override
+    public void performModification(View view, Component component) {
+        // do nothing
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kns.uif.modifier.ComponentModifier#getRunPhase()
 	 */
 	public String getRunPhase() {

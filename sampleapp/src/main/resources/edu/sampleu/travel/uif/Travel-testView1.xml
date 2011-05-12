@@ -103,7 +103,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <property name="optionsFinder">
               <bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues"/>
             </property>
-          </bean>                        
+          </bean>  
         </list>
       </property> 
       <property name="summary" value="Provide basic information for the ACH Bank"/>      

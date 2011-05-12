@@ -16,7 +16,6 @@
 
 package org.kuali.rice.shareddata.framework.county
 
-import groovy.transform.ToString
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.shareddata.api.county.County
@@ -24,7 +23,7 @@ import org.kuali.rice.shareddata.api.county.CountyContract
 import org.kuali.rice.shareddata.framework.country.CountryEbo
 import org.kuali.rice.shareddata.framework.state.StateEbo
 
-@ToString
+//@ToString
 class CountyEbo implements Inactivateable, CountyContract, ExternalizableBusinessObject {
     def String code
     def String countryCode

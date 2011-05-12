@@ -16,7 +16,6 @@
 
 package org.kuali.rice.shareddata.framework.postalcode
 
-import groovy.transform.ToString
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.shareddata.api.postalcode.PostalCode
@@ -25,7 +24,7 @@ import org.kuali.rice.shareddata.framework.country.CountryEbo
 import org.kuali.rice.shareddata.framework.county.CountyEbo
 import org.kuali.rice.shareddata.framework.state.StateEbo
 
-@ToString
+//@ToString
 class PostalCodeEbo implements Inactivateable, PostalCodeContract, ExternalizableBusinessObject {
     def String code;
     def String countryCode;

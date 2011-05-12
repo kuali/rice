@@ -16,14 +16,13 @@
 
 package org.kuali.rice.kim.framework.group
 
-import groovy.transform.ToString
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupAttribute
 import org.kuali.rice.kim.api.group.GroupContract
 import org.kuali.rice.kim.api.group.GroupMember
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 
-@ToString
+//@ToString
 class GroupEbo implements GroupContract, ExternalizableBusinessObject {
         private static final long serialVersionUID = 1L;
 

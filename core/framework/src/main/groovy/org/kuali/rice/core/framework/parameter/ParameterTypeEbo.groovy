@@ -16,13 +16,12 @@
 
 package org.kuali.rice.core.framework.parameter
 
-import groovy.transform.ToString
 import org.kuali.rice.core.api.parameter.ParameterType
 import org.kuali.rice.core.api.parameter.ParameterTypeContract
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
 
-@ToString
+//@ToString
 class ParameterTypeEbo implements ParameterTypeContract, Inactivateable, ExternalizableBusinessObject {
 
     private static final long serialVersionUID = 1L;

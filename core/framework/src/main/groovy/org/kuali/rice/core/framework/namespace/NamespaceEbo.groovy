@@ -16,13 +16,12 @@
 
 package org.kuali.rice.core.framework.namespace
 
-import groovy.transform.ToString
 import org.kuali.rice.core.api.namespace.Namespace
 import org.kuali.rice.core.api.namespace.NamespaceContract
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
 
-@ToString
+//@ToString
 class NamespaceEbo implements NamespaceContract, Inactivateable, ExternalizableBusinessObject {
 
     private static final long serialVersionUID = 1L;

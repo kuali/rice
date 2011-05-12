@@ -1,17 +1,10 @@
 package org.kuali.rice.krms.api.repository.action;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
+
 import java.util.Set;
 
-public interface ActionDefinitionContract {
-	/**
-	 * This is the ID for the Action
-	 *
-	 * <p>
-	 * It is a ID of a Action
-	 * </p>
-	 * @return ID for Action
-	 */
-	public String getId();
+public interface ActionDefinitionContract extends Identifiable {
 
 	/**
 	 * This is the name of the Action 

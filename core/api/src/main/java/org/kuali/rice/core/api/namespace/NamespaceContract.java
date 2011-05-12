@@ -2,6 +2,7 @@ package org.kuali.rice.core.api.namespace;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * Defines the contract for a Namespace.  A namespace is a mechanism for partitioning of data into
@@ -9,7 +10,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
  * applications, this notion of a namespace is a critical element in keeping related data elements
  * grouped together and isolated from those to which they should have no relation or access.
  */
-public interface NamespaceContract extends Versioned, GloballyUnique {
+public interface NamespaceContract extends Versioned, GloballyUnique, Inactivatable {
 
     /**
      * This is the code value for the namespace.  It cannot be null or a blank string.
@@ -35,12 +36,4 @@ public interface NamespaceContract extends Versioned, GloballyUnique {
      * @return name
      */
     String getName();
-
-    /**
-     * This the active flag for the Namespace.
-     *
-     * @return active
-     */
-    boolean isActive();
-
 }

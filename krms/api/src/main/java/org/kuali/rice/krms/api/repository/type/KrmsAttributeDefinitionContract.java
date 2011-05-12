@@ -1,15 +1,9 @@
 package org.kuali.rice.krms.api.repository.type;
 
-public interface KrmsAttributeDefinitionContract {
-	/**
-	 * This is the ID for the KrmsAttributeDefinition
-	 *
-	 * <p>
-	 * It is a ID of a KrmsAttributeDefinition.
-	 * </p>
-	 * @return ID for KrmsAttributeDefinition.
-	 */
-	public String getId();
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+
+public interface KrmsAttributeDefinitionContract extends Identifiable, Inactivatable {
 
 	/**
 	 * This is the name for the KrmsAttributeDefinition
@@ -44,10 +38,4 @@ public interface KrmsAttributeDefinitionContract {
 	 * @return the component name of the KrmsAttributeDefinition
 	 */
 	public String getComponentName();
-	
-	/**
-	 * @return the active
-	 */
-	public boolean isActive();
-
 }

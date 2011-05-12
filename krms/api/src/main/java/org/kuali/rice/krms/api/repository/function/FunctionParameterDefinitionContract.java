@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.api.repository.function;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
@@ -26,18 +27,8 @@ import org.kuali.rice.core.api.mo.common.Versioned;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface FunctionParameterDefinitionContract extends Versioned {
+public interface FunctionParameterDefinitionContract extends Versioned, Identifiable {
 
-	/**
-	 * Returns the identifier for this parameter.  Should only return null if
-	 * this parameter has not been persisted to the repository yet.  Each
-	 * individual function parameter definition should have a unique identifier.
-	 * 
-	 * @return the id of this function parameter definition, or null if it has
-	 * not yet been set
-	 */
-	String getId();
-		
 	/**
 	 * Returns the name of this parameters.  All parameters have a name and this
 	 * value can never be null or blank.  The parameter name must be unique

@@ -1,18 +1,10 @@
 package org.kuali.rice.krms.api.repository.type;
 
-import java.util.List;
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 
-public interface KrmsTypeAttributeContract {
-	/**
-	 * This is the ID for the KrmsTypeAttribute 
-	 *
-	 * <p>
-	 * It is a ID of a KrmsTypeAttribute
-	 * </p>
-	 * @return ID for KrmsTypeAttribute
-	 */
-	public String getId();
+public interface KrmsTypeAttributeContract extends Identifiable, Inactivatable {
 
 	/**
 	 * This is the KrmsType to which the attribute applies 
@@ -40,11 +32,6 @@ public interface KrmsTypeAttributeContract {
 	 * @return the service name of the KrmsTypeAttribute
 	 */
 	public Integer getSequenceNumber();
-
-	/**
-	 * @return the active
-	 */
-	public boolean isActive();
 
 	/**
 	 * This is the definition of the attribute

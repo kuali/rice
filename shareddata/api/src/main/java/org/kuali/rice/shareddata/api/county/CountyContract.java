@@ -16,10 +16,13 @@
 
 package org.kuali.rice.shareddata.api.county;
 
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+
 /**
  * This is the contract for a State.
  */
-public interface CountyContract {
+public interface CountyContract extends Inactivatable, Versioned {
 
     /**
      * This the county code for the County.  This cannot be null or a blank string.
@@ -48,18 +51,4 @@ public interface CountyContract {
      * @return name
      */
     String getName();
-
-    /**
-     * This the active flag for the County.
-     *
-     * @return the active flag of the County
-     */
-    boolean isActive();
-
-    /**
-     * This the object version number for County.
-     *
-     * @return the version number of the County
-     */
-    Long getVersionNumber();
 }

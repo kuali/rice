@@ -17,22 +17,13 @@
 package org.kuali.rice.kim.api.group;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 import java.util.List;
 
-public interface GroupContract extends Versioned, GloballyUnique, Inactivatable {
-    /**
-     * This is the unique id for the Group.  This cannot be null or a blank string.
-     *
-     * <p>
-     * This is a unique Id assigned to a Group.
-     * </p>
-     *
-     * @return id
-     */
-    String getId();
+public interface GroupContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
 
     /**
      * This is the namespace code for the Group.

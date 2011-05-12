@@ -15,11 +15,11 @@
 
 package org.kuali.rice.kim.api.role;
 
-import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 import java.util.List;
 
-public interface DelegateTypeContract {
+public interface DelegateTypeContract extends Inactivatable {
 
     String getRoleId();
 
@@ -34,6 +34,4 @@ public interface DelegateTypeContract {
     String getDelegationTypeCode();
 
     List<? extends DelegateContract> getMembers();
-
-    boolean isActive();
 }

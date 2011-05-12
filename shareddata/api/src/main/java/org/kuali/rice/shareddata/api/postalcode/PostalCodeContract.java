@@ -16,13 +16,16 @@
 
 package org.kuali.rice.shareddata.api.postalcode;
 
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+
 /**
  * This is the contract for a Postal Code.  A postal code is assigned to different geographic regions
  * in order to give each region an identifier.
  *
  * Examples of postal codes are Zip Codes in the United States and FSALDU in Canada.
  */
-public interface PostalCodeContract {
+public interface PostalCodeContract extends Versioned, Inactivatable {
     /**
      * This the county code for the PostalCode.  This cannot be null or a blank string.
      *
@@ -57,18 +60,4 @@ public interface PostalCodeContract {
      * @return postal state code
      */
     String getCountyCode();
-
-    /**
-     * This the active flag for the PostalCode.
-     *
-     * @return the active flag of the PostalCode
-     */
-    boolean isActive();
-
-    /**
-     * This the object version number for PostalCode.
-     *
-     * @return the version number of the PostalCode
-     */
-    Long getVersionNumber();
 }

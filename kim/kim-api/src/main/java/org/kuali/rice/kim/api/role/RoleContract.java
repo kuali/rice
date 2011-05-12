@@ -15,19 +15,14 @@
 
 package org.kuali.rice.kim.api.role;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * Contract for a Role. Role is a basic abstraction over a role assignable to a principal within KIM.
  */
-public interface RoleContract extends Versioned {
-
-    /**
-     * A unique identifier for this role.
-     *
-     * @return String identifier for the role.
-     */
-    String getId();
+public interface RoleContract extends Versioned, Identifiable, Inactivatable {
 
     /**
      * A namespace for this role.  A namespace for a role identifies the system/module to which this role applies.
@@ -58,20 +53,4 @@ public interface RoleContract extends Versioned {
      * @return KimType Id
      */
     String getKimTypeId();
-
-
-    /**
-     * Value representing whether or not a role is active or not.
-     *
-     * @return if a country is active
-     * @see org.kuali.rice.kns.bo.Inactivateable
-     */
-    boolean isActive();
-
-    /**
-     * This the object version number for Role.
-     *
-     * @return the version number of the Role
-     */
-    Long getVersionNumber();
 }

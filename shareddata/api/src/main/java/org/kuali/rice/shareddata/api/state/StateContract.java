@@ -16,10 +16,13 @@
 
 package org.kuali.rice.shareddata.api.state;
 
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+
 /**
  * This is the contract for a State.
  */
-public interface StateContract {
+public interface StateContract extends Versioned, Inactivatable {
 
 	/**
      * This the postal state code for the State.  This cannot be null or a blank string.
@@ -41,18 +44,4 @@ public interface StateContract {
      * @return postal country code
      */
     String getCountryCode();
-
-    /**
-     * This the active flag for the State.
-     *
-     * @return the active flag of the State
-     */
-    boolean isActive();
-
-    /**
-     * This the object version number for State.
-     *
-     * @return the version number of the State
-     */
-    Long getVersionNumber();
 }

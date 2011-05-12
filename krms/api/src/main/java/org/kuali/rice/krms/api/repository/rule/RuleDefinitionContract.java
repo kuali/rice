@@ -3,20 +3,11 @@ package org.kuali.rice.krms.api.repository.rule;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
 
-public interface RuleDefinitionContract {
-	/**
-	 * This is the ID for the Rule
-	 *
-	 * <p>
-	 * It is a ID of a Rule
-	 * </p>
-	 * @return ID for Rule
-	 */
-	public String getId();
-
+public interface RuleDefinitionContract extends Identifiable {
 	/**
 	 * This is the name of the Rule 
 	 *

@@ -1,16 +1,9 @@
 package org.kuali.rice.krms.api.repository.proposition;
 
 
-public interface PropositionParameterContract {
-	/**
-	 * This is the Id for the proposition parameter
-	 *
-	 * <p>
-	 * It is the Id of a proposition parameter.
-	 * </p>
-	 * @return Id for proposition parameter.
-	 */
-	public String getId();
+import org.kuali.rice.core.api.mo.common.Identifiable;
+
+public interface PropositionParameterContract extends Identifiable {
 
 	/**
 	 * This is the Id for the parent proposition.

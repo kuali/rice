@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.api.repository.context;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
@@ -26,17 +27,8 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public interface ContextDefinitionContract extends Versioned {
+public interface ContextDefinitionContract extends Versioned, Identifiable {
 
-	/**
-	 * Returns the id of the context definition.  This id should be unique amongst
-	 * the set of all context definitions.  If the id is null, that usually means
-	 * this context definition has not yet been assigned an id.
-	 * 
-	 * @return the id of the context definition
-	 */
-	String getId();
-	
 	/**
 	 * Returns the namespace of the context definition.  The combination of
 	 * namespace and name represent a unique business key for the context

@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.krms.api.repository.function;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
 import java.util.List;
@@ -34,18 +36,8 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface FunctionDefinitionContract extends Versioned {
+public interface FunctionDefinitionContract extends Versioned, Identifiable, Inactivatable {
 
-	/**
-	 * Returns the identifier for this function definition.  Should only return
-	 * null if this function definition has not been persisted to the
-	 * repository yet.  Each individual function definition should have a
-	 * unique identifier.
-	 * 
-	 * @return the id of this function definition, or null if it has not yet been set
-	 */
-	String getId();
-	
 	/**
 	 * Returns the namespace code of this function definition.  All functions
 	 * have a namespace and this value can never be null or blank.  The
@@ -93,14 +85,7 @@ public interface FunctionDefinitionContract extends Versioned {
 	 * @return the type id of this function definition
 	 */
 	String getTypeId();
-	
-	/**
-	 * Returns whether or not this function definition is active.
-	 * 
-	 * @return true if this function definition is active, false otherwise
-	 */
-	boolean isActive();
-	
+
 	/**
 	 * Returns an ordered, immutable list of the parameters which this function
 	 * definition requires.  This list can be empty (in the case of a function

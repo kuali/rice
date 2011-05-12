@@ -15,6 +15,7 @@
 
 package org.kuali.rice.kim.api.role;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
@@ -26,13 +27,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
  *
  * Data is an action request type (approve/acknowledge/fyi/etc...), and a priority number
  */
-public interface RoleResponsibilityActionContract extends Versioned {
-
-    /**
-     * Identifier for this RoleResponsibilityAction.
-     * @return String identifier.
-     */
-    String getId();
+public interface RoleResponsibilityActionContract extends Versioned, Identifiable {
 
     /**
      * Id of the contained RoleResponsibility object.

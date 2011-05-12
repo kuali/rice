@@ -18,12 +18,13 @@ package org.kuali.rice.core.api.component;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * This is the contract for a Component.  This represents functional/logical piece
  * within a rice application or rice ecosystem.
  */
-public interface ComponentContract extends Versioned, GloballyUnique {
+public interface ComponentContract extends Versioned, GloballyUnique, Inactivatable {
 
     /**
      * This is the code value for the component.  It cannot be null or a blank string.
@@ -52,13 +53,4 @@ public interface ComponentContract extends Versioned, GloballyUnique {
      * @return virtual
      */
     boolean isVirtual();
-
-    /**
-     * This the active flag for the Component.
-     *
-     * @return active
-     */
-    boolean isActive();
-
-
 }

@@ -1,5 +1,6 @@
 package org.kuali.rice.krms.api.repository;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
 
 /**
@@ -8,16 +9,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface BaseAttributeContract {
-	/**
-	 * This is the ID for the concrete BaseAttribute extender
-	 *
-	 * <p>
-	 * It is a ID of a concrete BaseAttribute extender
-	 * </p>
-	 * @return ID for concrete BaseAttribute extender
-	 */
-	public String getId();
+public interface BaseAttributeContract extends Identifiable {
 
 	/**
 	 * This is the id of the definition of the attribute. 

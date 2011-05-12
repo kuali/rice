@@ -16,20 +16,15 @@
 package org.kuali.rice.kim.api.role;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * This is the contract for a KimPermission.  
  *  
  */
-public interface RolePermissionContract extends Versioned, GloballyUnique{
-
-    /**
-     * The unique identifier for the Role Permission.
-     *
-     * @return id
-     */
-    String getId();
+public interface RolePermissionContract extends Versioned, GloballyUnique, Identifiable, Inactivatable{
     
     /**
      * The Role ID referenced by the Role Permission.
@@ -43,12 +38,5 @@ public interface RolePermissionContract extends Versioned, GloballyUnique{
      * 
      * @return permissionId
      */
-	String getPermissionId();  
-   
-    /**
-     * The flag indicating if the Role Permission is active.
-     *
-     * @return active
-     */
-    boolean isActive();   
+	String getPermissionId();
 }

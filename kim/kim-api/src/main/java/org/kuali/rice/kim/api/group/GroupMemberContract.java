@@ -18,20 +18,11 @@ package org.kuali.rice.kim.api.group;
 
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
 
-public interface GroupMemberContract extends Versioned, GloballyUnique, InactivatableFromTo {
-    /**
-     * This is the uniqe id for the Group Member.
-     *
-     * <p>
-     * This is a unique id for a Group Member object.
-     * </p>
-     *
-     * @return id
-     */
-    String getId();
+public interface GroupMemberContract extends Versioned, GloballyUnique, InactivatableFromTo, Identifiable {
 
     /**
      * This is the id for the Group.

@@ -18,8 +18,9 @@ package org.kuali.rice.shareddata.api.campus;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
-public interface CampusTypeContract extends Versioned, GloballyUnique {
+public interface CampusTypeContract extends Versioned, GloballyUnique, Inactivatable {
 	
 	/**
 	 * This is the campus type code for the CampusType.  This is cannot be a null or a blank string.
@@ -41,16 +42,4 @@ public interface CampusTypeContract extends Versioned, GloballyUnique {
 	 * @return name for CampusType.
 	 */
 	String getName();
-
-
-	/**
-	 * This is the active flag for the CampusType. 
-	 *
-	 * <p>
-	 * It is a flag that determines if a campus type is active or not.
-	 * </p>
-	 * @return active boolean for CampusType.
-	 */
-	boolean isActive();
-
 }

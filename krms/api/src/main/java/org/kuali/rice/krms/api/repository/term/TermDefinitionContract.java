@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krms.api.repository.term;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
+
 import java.util.Set;
 
 /**
@@ -23,12 +25,7 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface TermDefinitionContract {
-	
-	/**
-	 * @return the id value.  May be null if the object hasn't been persisted yet.
-	 */
-	String getId();
+public interface TermDefinitionContract extends Identifiable {
 	
 	/**
 	 * @return the associated {@link TermSpecificationDefinitionContract}

@@ -16,11 +16,14 @@
 
 package org.kuali.rice.shareddata.api.country;
 
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+
 /**
  * Contract for a Country. Country is a basic abstraction over a Country, encapsulating its name, country code,
  * postal code, and if its restricted or not
  */
-public interface CountryContract {
+public interface CountryContract extends Versioned, Inactivatable {
 
     /**
      * An abbreviated String representing the unique identifying code for a given country.  This code correlates
@@ -49,15 +52,6 @@ public interface CountryContract {
     String getName();
 
     /**
-     * Value representing whether or not a country is active or not.
-     *
-     * @return if a country is active
-     *
-     * @see org.kuali.rice.kns.bo.Inactivateable
-     */
-    boolean isActive();
-
-    /**
      * Value representing whether a country is restricted.
      * <p>The meaning of restricted for a country varies depending upon the implementer - for instance if a country
      * may not be used in the address of a Vendor.</p>
@@ -66,11 +60,4 @@ public interface CountryContract {
      * @return if a country is restricted.
      */
     boolean isRestricted();
-
-    /**
-     * This the object version number for Country.
-     *
-     * @return the version number of the Country
-     */
-    Long getVersionNumber();
 }

@@ -15,6 +15,7 @@
 package org.kuali.rice.kim.api.role;
 
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * An lightweight association of a Responsibility and a Role represented by references to the identifiers of a
@@ -22,7 +23,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface RoleResponsibilityContract extends Versioned {
+public interface RoleResponsibilityContract extends Versioned, Inactivatable {
 
     /**
      * Provides the String identifier for a given RoleResponsibility
@@ -44,21 +45,4 @@ public interface RoleResponsibilityContract extends Versioned {
      * @return Responsibility Id
      */
     String getResponsibilityId();
-
-    /**
-     * Value representing whether or not a role is active or not.
-     *
-     * @return if a country is active
-     * @see org.kuali.rice.kns.bo.Inactivateable
-     */
-    boolean isActive();
-
-    /**
-     * This the object version number for Role.
-     *
-     * @return the version number of the Role
-     */
-    Long getVersionNumber();
-
-
 }

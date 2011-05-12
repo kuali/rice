@@ -15,15 +15,16 @@
  */
 package org.kuali.rice.krms.api.repository.term;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
+
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface TermSpecificationDefinitionContract {
+public interface TermSpecificationDefinitionContract extends Identifiable {
 
-	String getId();
 	String getContextId();
 	String getName();
 	String getType();

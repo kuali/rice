@@ -66,7 +66,7 @@
 		<field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"></field-descriptor>
 		<field-descriptor column="SVC_DEF_CHKSM" name="checksum" jdbc-type="VARCHAR" />
 		<reference-descriptor name="serializedServiceNamespace" class-ref="org.kuali.rice.ksb.messaging.FlattenedServiceDefinition"
-				proxy="true" auto-retrieve="true" auto-update="true" auto-delete="true">
+				proxy="false" auto-retrieve="true" auto-update="true" auto-delete="true">
 			<foreignkey field-ref="flattenedServiceDefinitionId" />
 		</reference-descriptor>
 	</class-descriptor>

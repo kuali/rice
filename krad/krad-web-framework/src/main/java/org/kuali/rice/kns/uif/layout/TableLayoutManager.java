@@ -152,7 +152,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		boolean isAddLine = lineIndex == -1;
 		
         // if add line or first line set number of data columns
-        if (isAddLine || (!collectionGroup.isRenderAddLine() && (lineIndex == 0))) {
+        if (isAddLine || ((!collectionGroup.isRenderAddLine() || collectionGroup.isReadOnly()) && (lineIndex == 0))) {
             if (isSuppressLineWrapping()) {
                 setNumberOfDataColumns(lineFields.size());
             } else {

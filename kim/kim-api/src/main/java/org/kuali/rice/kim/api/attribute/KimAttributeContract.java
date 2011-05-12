@@ -16,22 +16,17 @@
 
 package org.kuali.rice.kim.api.attribute;
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * This is the contract for a KimAttribute.  A KimAttribute
  * associates categorizes an attribute and describes how to
  * find the attribute for the purpose of the kns.
  */
-public interface KimAttributeContract extends Versioned, GloballyUnique {
-
-    /**
-     * The unique identifier for the kim attribute. This can be null.
-     *
-     * @return the id
-     */
-    String getId();
+public interface KimAttributeContract extends Versioned, GloballyUnique, Identifiable, Inactivatable {
 
     /**
      * A fully-qualified class name which contains the {@link #getAttributeName()}.    This cannot be null or a blank string.
@@ -60,11 +55,4 @@ public interface KimAttributeContract extends Versioned, GloballyUnique {
      * @return the label
      */
     String getAttributeLabel();
-
-    /**
-     * The active flag.
-     *
-     * @return active
-     */
-    boolean isActive();
 }

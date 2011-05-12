@@ -14,28 +14,8 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.core.api.mo.active;
+@javax.xml.bind.annotation.XmlSchema(namespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0, elementFormDefault = XmlNsForm.QUALIFIED)
+package org.kuali.rice.core.api.mo.common;
+import org.kuali.rice.core.api.CoreConstants;
 
-import java.sql.Timestamp;
-
-
-public interface InactivatableFromTo extends Inactivatable {
-	/**
-	 * Gets the date for which the record become active
-	 *
-	 * @return Timestamp of active from date
-	 */
-	public Timestamp getActiveFromDate();
-
-	/**
-	 * Gets the date for which the record become inactive
-	 *
-	 * @return Timestamp of active to date
-	 */
-	public Timestamp getActiveToDate();
-
-    /**
-     *  Returns if the record is active for a given Time.
-     */
-    public boolean isActive(Timestamp activeAsOfDate);
-}
+import javax.xml.bind.annotation.XmlNsForm;

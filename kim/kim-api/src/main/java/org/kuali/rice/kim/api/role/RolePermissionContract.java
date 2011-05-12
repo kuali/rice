@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.api.role;
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * This is the contract for a KimPermission.  

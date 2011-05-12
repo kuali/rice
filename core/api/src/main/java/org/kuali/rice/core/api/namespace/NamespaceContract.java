@@ -1,7 +1,7 @@
 package org.kuali.rice.core.api.namespace;
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * Defines the contract for a Namespace.  A namespace is a mechanism for partitioning of data into

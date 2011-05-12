@@ -16,8 +16,10 @@
 
 package org.kuali.rice.kim.api.type;
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 import java.util.List;
 
@@ -25,14 +27,7 @@ import java.util.List;
  * This is the contract for a KimType.  A KimType is a metadata wrapper around a
  * kim type service which aides in attribute resolution.
  */
-public interface KimTypeContract extends Versioned, GloballyUnique {
-
-    /**
-     * The unique identifier for the kim type. This can be null.
-     *
-     * @return the id
-     */
-    String getId();
+public interface KimTypeContract extends Versioned, GloballyUnique, Identifiable, Inactivatable {
 
     /**
      * The service name used to resolve attribute values.
@@ -62,11 +57,4 @@ public interface KimTypeContract extends Versioned, GloballyUnique {
      * @return the list of attribute definitions
      */
     List<? extends KimTypeAttributeContract> getAttributeDefinitions();
-
-    /**
-     * The active flag.
-     *
-     * @return active
-     */
-    boolean isActive();
 }

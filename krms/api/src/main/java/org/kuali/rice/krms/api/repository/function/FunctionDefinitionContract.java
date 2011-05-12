@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krms.api.repository.function;
 
-import java.util.List;
-
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+
+import java.util.List;
 
 /**
  * Defines the contract for a function definition.  A function definition can be

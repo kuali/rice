@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.api.role;
 
 
-import org.kuali.rice.core.api.mo.active.InactivatableFromTo;
+import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
 import org.kuali.rice.core.util.AttributeSet;
 
 import java.util.List;

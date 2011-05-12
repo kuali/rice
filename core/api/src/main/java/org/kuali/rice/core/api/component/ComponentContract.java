@@ -16,8 +16,8 @@
 
 package org.kuali.rice.core.api.component;
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * This is the contract for a Component.  This represents functional/logical piece

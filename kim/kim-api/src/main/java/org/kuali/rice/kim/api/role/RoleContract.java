@@ -15,7 +15,7 @@
 
 package org.kuali.rice.kim.api.role;
 
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * Contract for a Role. Role is a basic abstraction over a role assignable to a principal within KIM.

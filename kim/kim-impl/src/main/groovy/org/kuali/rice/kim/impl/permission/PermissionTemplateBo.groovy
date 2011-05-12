@@ -16,20 +16,18 @@
 
 package org.kuali.rice.kim.impl.permission
 
-import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.FetchType
 import javax.persistence.Id
 import javax.persistence.Table
 import org.hibernate.annotations.Type
-import org.kuali.rice.kim.api.permission.PermissionTemplate
-import org.kuali.rice.kim.api.permission.PermissionTemplateContract
+import org.kuali.rice.kim.api.template.Template
+import org.kuali.rice.kim.api.template.TemplateContract
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_PERM_TMPL_T")
-public class PermissionTemplateBo extends PersistableBusinessObjectBase implements PermissionTemplateContract {
+public class PermissionTemplateBo extends PersistableBusinessObjectBase implements TemplateContract {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -57,12 +55,12 @@ public class PermissionTemplateBo extends PersistableBusinessObjectBase implemen
      * @param bo the mutable business object
      * @return the immutable object
      */
-    static PermissionTemplate to(PermissionTemplateBo bo) {
+    static Template to(PermissionTemplateBo bo) {
         if (bo == null) {
             return null
         }
 
-        return PermissionTemplate.Builder.create(bo).build();
+        return Template.Builder.create(bo).build();
     }
 
     /**
@@ -70,7 +68,7 @@ public class PermissionTemplateBo extends PersistableBusinessObjectBase implemen
      * @param im immutable object
      * @return the mutable bo
      */
-    static PermissionTemplateBo from(PermissionTemplate im) {
+    static PermissionTemplateBo from(Template im) {
         if (im == null) {
             return null
         }

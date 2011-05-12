@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.api.permission
+package org.kuali.rice.kim.api.template
 
 import javax.xml.bind.JAXBContext
 import org.junit.Assert
-import org.junit.Test;
+import org.junit.Test
+import org.kuali.rice.kim.api.permission.Permission
 
-class PermissionTemplateTest {
+class TemplateTest {
 
 	private static final String ID = "50"
 	private static final String NAMESPACE_CODE = "KUALI"
@@ -31,7 +32,7 @@ class PermissionTemplateTest {
 	private static final boolean ACTIVE = "true"
 	
 	private static final String XML = """
-		<permissionTemplate xmlns="http://rice.kuali.org/kim/v2_0">
+		<template xmlns="http://rice.kuali.org/kim/v2_0">
 			<id>${ID}</id>
 			<namespaceCode>${NAMESPACE_CODE}</namespaceCode>
 			<name>${NAME}</name>
@@ -40,7 +41,7 @@ class PermissionTemplateTest {
 			<active>${ACTIVE}</active>
 			<versionNumber>${VERSION_NUMBER}</versionNumber>
         	<objectId>${OBJECT_ID}</objectId>
-		</permissionTemplate>
+		</template>
 		"""
 	
     @Test
@@ -72,7 +73,7 @@ class PermissionTemplateTest {
 	
 	@Test
 	public void test_Xml_Marshal_Unmarshal() {
-	  def jc = JAXBContext.newInstance(PermissionTemplate.class)
+	  def jc = JAXBContext.newInstance(Template.class)
 	  def marshaller = jc.createMarshaller()
 	  def sw = new StringWriter()
 
@@ -87,15 +88,15 @@ class PermissionTemplateTest {
 	}
 	
 	private create() {
-		return PermissionTemplate.Builder.create(new PermissionTemplateContract() {
-			String id = PermissionTemplateTest.ID
-			String namespaceCode = PermissionTemplateTest.NAMESPACE_CODE
-			String name = PermissionTemplateTest.NAME
-			String description = PermissionTemplateTest.DESCRIPTION
-			String kimTypeId = PermissionTemplateTest.KIM_TYPE_ID
-			boolean active = PermissionTemplateTest.ACTIVE
-			Long versionNumber = PermissionTemplateTest.VERSION_NUMBER
-			String objectId = PermissionTemplateTest.OBJECT_ID
+		return Template.Builder.create(new TemplateContract() {
+			String id = TemplateTest.ID
+			String namespaceCode = TemplateTest.NAMESPACE_CODE
+			String name = TemplateTest.NAME
+			String description = TemplateTest.DESCRIPTION
+			String kimTypeId = TemplateTest.KIM_TYPE_ID
+			boolean active = TemplateTest.ACTIVE
+			Long versionNumber = TemplateTest.VERSION_NUMBER
+			String objectId = TemplateTest.OBJECT_ID
 		}).build()
 	}
 }

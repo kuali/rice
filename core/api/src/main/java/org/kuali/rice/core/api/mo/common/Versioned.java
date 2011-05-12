@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.api.mo;
+package org.kuali.rice.core.api.mo.common;
 
 /**
- * This interface can be used to identify a model object which has a globally unique identifier.
- * This globally unique identifier is referred as the "objectId" of the object.  The means by
- * which it is generated or general format of this value is not specified, however it is
- * intended that some sort of GUID algorithm is used to generate this value, such as the one
- * provided by {@link java.util.UUID}.
+ * This interface can be used to identify a model object which has a version number
+ * that is used for the purpose of optimistic locking purposes.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface GloballyUnique {
+public interface Versioned {
 
+	
 	/**
-	 * Return the globally unique object id of this object.  In general, this value should only
+	 * Returns the version number for this object.  In general, this value should only
 	 * be null if the object has not yet been stored to a persistent data store.
 	 * 
-	 * @return the objectId of this object, or null if it has not been set yet
+	 * @return the version number, or null if one has not been assigned yet
 	 */
-	String getObjectId();
+	Long getVersionNumber();
 	
 }

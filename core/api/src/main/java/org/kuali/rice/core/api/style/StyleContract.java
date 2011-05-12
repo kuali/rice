@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.core.api.style;
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * This is the contract for a Style.  A style represents a stylesheet that is used for transforming data from

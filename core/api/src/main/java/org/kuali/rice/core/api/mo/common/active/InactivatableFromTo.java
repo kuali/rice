@@ -14,20 +14,28 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.api.permission;
+package org.kuali.rice.core.api.mo.common.active;
+
+import java.sql.Timestamp;
 
 
-import org.kuali.rice.core.api.mo.common.GloballyUnique;
-import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.kim.api.attribute.KimAttributeDataContract;
+public interface InactivatableFromTo extends Inactivatable {
+	/**
+	 * Gets the date for which the record become active
+	 *
+	 * @return Timestamp of active from date
+	 */
+	public Timestamp getActiveFromDate();
 
-public interface PermissionAttributeContract extends KimAttributeDataContract, Versioned, GloballyUnique {
-	
+	/**
+	 * Gets the date for which the record become inactive
+	 *
+	 * @return Timestamp of active to date
+	 */
+	public Timestamp getActiveToDate();
+
     /**
-     * The Permission ID referenced by the Permission Attribute.
-     * 
-     * @return permissionId
+     *  Returns if the record is active for a given Time.
      */
-    String getPermissionId();
-    
+    public boolean isActive(Timestamp activeAsOfDate);
 }

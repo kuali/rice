@@ -37,6 +37,6 @@ abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implemen
 
     @Override
     KimTypeBo getKimType() {
-        return KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId)
+        return KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId));
     }
 }

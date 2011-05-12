@@ -17,8 +17,8 @@
 package org.kuali.rice.kim.api.group;
 
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.kim.api.attribute.KimAttributeDataContract;
 
 public interface GroupAttributeContract extends KimAttributeDataContract, Versioned, GloballyUnique {

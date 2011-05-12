@@ -13,38 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.api.permission;
+package org.kuali.rice.kim.api.template;
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
-/**
- * This is the contract for a KimPermissionTemplate.  
- *  
- */
-public interface PermissionTemplateContract extends Versioned, GloballyUnique{
-
-    /**
-     * The unique identifier for the KIM Permission Template.
-     *
-     * @return id
-     */
-    String getId();
-    
+public interface TemplateContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
     /**
      * The namespace code that this KIM Permission Template belongs too.
      *
      * @return namespaceCode
      */
     String getNamespaceCode();
-    
+
     /**
      * The name of the KIM Permission Template.
      *
      * @return name
      */
     String getName();
-    
+
     /**
      * The description of the KIM Permission Template.
      *
@@ -54,15 +44,8 @@ public interface PermissionTemplateContract extends Versioned, GloballyUnique{
 
     /**
      * The KIM Type ID referenced by the KIM Permission Template.
-     * 
+     *
      * @return typeId
      */
-	String getKimTypeId();    
-    
-    /**
-     * The flag indicating if the KIM Permission is active.
-     *
-     * @return active
-     */
-    boolean isActive();    
+	String getKimTypeId();
 }

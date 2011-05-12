@@ -15,9 +15,12 @@
  */
 package org.kuali.rice.core.util;
 
-import java.util.Map;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import java.util.Map;
 
 /**
  * A mutable, comparable key value pair of Strings.
@@ -66,43 +69,19 @@ public final class ConcreteKeyValue extends AbstractKeyValue implements Comparab
 			.append(this.getKey(), o.getKey(), String.CASE_INSENSITIVE_ORDER)
 			.toComparison();
 	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((this.getKey() == null) ? 0 : this.getKey().hashCode());
-		result = prime * result
-				+ ((this.getValue() == null) ? 0 : this.getValue().hashCode());
-		return result;
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		KeyValue other = (KeyValue) obj;
-		if (this.getKey() == null) {
-			if (other.getKey() != null)
-				return false;
-		} else if (!this.getKey().equals(other.getKey()))
-			return false;
-		if (this.getValue() == null) {
-			if (other.getValue() != null)
-				return false;
-		} else if (!this.getValue().equals(other.getValue()))
-			return false;
-		return true;
-	}
-	
-	@Override
-	public String toString() {
-		return "ConcreteKeyValue [getKey()=" + this.getKey() + ", getValue()="
-				+ this.getValue() + "]";
-	}
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(obj, this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 }

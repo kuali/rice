@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krms.api.repository.function;
 
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * Defines the contract for a function parameter definition.  A function

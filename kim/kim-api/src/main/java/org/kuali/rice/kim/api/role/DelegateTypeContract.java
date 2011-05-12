@@ -15,7 +15,7 @@
 
 package org.kuali.rice.kim.api.role;
 
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 import java.util.List;
 

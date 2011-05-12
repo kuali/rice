@@ -16,8 +16,8 @@
 
 package org.kuali.rice.shareddata.api.campus;
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 public interface CampusTypeContract extends Versioned, GloballyUnique {
 	

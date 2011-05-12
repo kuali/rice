@@ -1,8 +1,8 @@
 package org.kuali.rice.ksb.api.registry;
 
-import javax.xml.namespace.QName;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
-import org.kuali.rice.core.api.mo.Versioned;
+import javax.xml.namespace.QName;
 
 public interface ServiceHeaderContract extends Versioned {
 

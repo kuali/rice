@@ -15,8 +15,14 @@
  */
 package org.kuali.rice.kim.api.permission;
 
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
+import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.api.template.Template;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
+import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -24,14 +30,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
-import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.util.KimConstants;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This service provides operations for evaluating permissions and querying for permission data.
@@ -312,7 +312,7 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionTemplate")
     @WebResult(name = "permissionTemplate")
-    PermissionTemplate getPermissionTemplate( @WebParam(name="permissionTemplateId") String permissionTemplateId );
+    Template getPermissionTemplate( @WebParam(name="permissionTemplateId") String permissionTemplateId );
 
 	/**
 	 * 
@@ -323,7 +323,7 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionTemplateByName")
     @WebResult(name = "permissionTemplate")
-    PermissionTemplate getPermissionTemplateByName( @WebParam(name="namespaceCode") String namespaceCode,
+    Template getPermissionTemplateByName( @WebParam(name="namespaceCode") String namespaceCode,
 			  										@WebParam(name="permissionTemplateName") String permissionTemplateName );
 
 	/**
@@ -336,7 +336,7 @@ public interface PermissionService {
 	@WebMethod(operationName = "getAllTemplates")
     @WebResult(name = "permissionTemplates")
     @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
-    public List<PermissionTemplate> getAllTemplates();
+    public List<Template> getAllTemplates();
 	
     /**
      * Search for permissions using arbitrary search criteria.  JavaBeans property syntax 

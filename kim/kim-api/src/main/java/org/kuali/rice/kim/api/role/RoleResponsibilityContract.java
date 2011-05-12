@@ -14,7 +14,7 @@
  */
 package org.kuali.rice.kim.api.role;
 
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * An lightweight association of a Responsibility and a Role represented by references to the identifiers of a

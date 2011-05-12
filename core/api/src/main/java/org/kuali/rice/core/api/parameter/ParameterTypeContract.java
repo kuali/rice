@@ -1,7 +1,7 @@
 package org.kuali.rice.core.api.parameter;
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * Defines the contract for a parameter type.  The parameter type is largely indicative of the way in which the

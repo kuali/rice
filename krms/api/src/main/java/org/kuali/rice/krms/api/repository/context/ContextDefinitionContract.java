@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krms.api.repository.context;
 
-import java.util.Set;
-
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
+
+import java.util.Set;
 
 /**
  * An interface which defines the contract for context definition objects.

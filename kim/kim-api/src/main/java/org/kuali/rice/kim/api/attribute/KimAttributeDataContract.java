@@ -16,20 +16,14 @@
 
 package org.kuali.rice.kim.api.attribute;
 
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.kim.api.type.KimTypeContract;
 
 /**
  * This is the contract for a KimDataAttribute.  A KimDataAttribute
  * associates a value with a kim attribute.
  */
-public interface KimAttributeDataContract {
-
-    /**
-     * The unique identifier for the kim attribute data. This can be null.
-     *
-     * @return the id
-     */
-    String getId();
+public interface KimAttributeDataContract extends Identifiable {
 
     /**
      * The attribute value.  This can be null or blank.

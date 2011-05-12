@@ -15,10 +15,15 @@
  */
 package org.kuali.rice.kim.api.permission;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -27,16 +32,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.api.CoreConstants;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * An immutable representation of a {@link PermissionContract}.
@@ -174,7 +173,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 	}
 	
 	/**
-	 * @see org.kuali.rice.core.api.mo.active.Inactivatable#isActive(boolean)
+	 * @see org.kuali.rice.core.api.mo.common.active.Inactivatable#isActive()
 	 */
 	@Override
 	public boolean isActive() {
@@ -192,7 +191,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.mo.Versioned#getVersionNumber()
+	 * @see org.kuali.rice.core.api.mo.common.Versioned#getVersionNumber()
 	 */
 	@Override
 	public Long getVersionNumber() {
@@ -200,7 +199,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.mo.GloballyUnique#getObjectId()
+	 * @see org.kuali.rice.core.api.mo.common.GloballyUnique#getObjectId()
 	 */
 	@Override
 	public String getObjectId() {

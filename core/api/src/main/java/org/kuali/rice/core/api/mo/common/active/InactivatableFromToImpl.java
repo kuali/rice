@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.core.api.mo.active;
+package org.kuali.rice.core.api.mo.common.active;
 
 import java.sql.Timestamp;
 

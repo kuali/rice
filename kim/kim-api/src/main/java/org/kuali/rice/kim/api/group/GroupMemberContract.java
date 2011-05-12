@@ -17,9 +17,9 @@
 package org.kuali.rice.kim.api.group;
 
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
-import org.kuali.rice.core.api.mo.active.InactivatableFromTo;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
 
 public interface GroupMemberContract extends Versioned, GloballyUnique, InactivatableFromTo {
     /**

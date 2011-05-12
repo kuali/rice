@@ -13,17 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.api.permission;
-
-import java.io.Serializable;
-import java.util.Collection;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+package org.kuali.rice.kim.api.template;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -34,46 +24,55 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+import java.util.Collection;
+
 /**
- * An immutable representation of a {@link PermissionTemplateContract}.
+ * An immutable representation of a {@link TemplateContract} for Permission.
  *
- * <p>To construct an instance of a KimPermissionTemplate, use the {@link PermissionTemplate.Builder} class.<p/>
+ * <p>To construct an instance of a KimPermissionTemplate, use the {@link Template.Builder} class.<p/>
  *
- * @see PermissionContract
+ * @see org.kuali.rice.kim.api.permission.PermissionContract
  */
-@XmlRootElement(name = PermissionTemplate.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = Template.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = PermissionTemplate.Constants.TYPE_NAME, propOrder = {
-		PermissionTemplate.Elements.ID,
-		PermissionTemplate.Elements.NAMESPACE_CODE,
-		PermissionTemplate.Elements.NAME,
-		PermissionTemplate.Elements.DESCRIPTION,
-		PermissionTemplate.Elements.KIM_TYPE_ID,
-        PermissionTemplate.Elements.ACTIVE,
+@XmlType(name = Template.Constants.TYPE_NAME, propOrder = {
+		Template.Elements.ID,
+		Template.Elements.NAMESPACE_CODE,
+		Template.Elements.NAME,
+		Template.Elements.DESCRIPTION,
+		Template.Elements.KIM_TYPE_ID,
+        Template.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class PermissionTemplate implements PermissionTemplateContract, ModelObjectComplete{
+public final class Template implements TemplateContract, ModelObjectComplete{
 
 	private static final long serialVersionUID = 1L;
 	
-    @XmlElement(name = PermissionTemplate.Elements.ID, required = true)
+    @XmlElement(name = Template.Elements.ID, required = true)
     private final String id;
 
-    @XmlElement(name = PermissionTemplate.Elements.NAMESPACE_CODE, required = true)
+    @XmlElement(name = Template.Elements.NAMESPACE_CODE, required = true)
     private final String namespaceCode;
 
-    @XmlElement(name = PermissionTemplate.Elements.NAME, required = true)
+    @XmlElement(name = Template.Elements.NAME, required = true)
     private final String name;
 
-    @XmlElement(name = PermissionTemplate.Elements.DESCRIPTION, required = false)
+    @XmlElement(name = Template.Elements.DESCRIPTION, required = false)
     private final String description;
 
-    @XmlElement(name = PermissionTemplate.Elements.KIM_TYPE_ID, required = true)
+    @XmlElement(name = Template.Elements.KIM_TYPE_ID, required = true)
     private final String kimTypeId;
     
-    @XmlElement(name = PermissionTemplate.Elements.ACTIVE, required = false)
+    @XmlElement(name = Template.Elements.ACTIVE, required = false)
     private final boolean active;
 
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
@@ -90,7 +89,7 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
 	 *  A constructor to be used only by JAXB unmarshalling.
 	 * 
 	 */
-	private PermissionTemplate() {
+	private Template() {
 		this.id = null;
         this.namespaceCode = null;
         this.name = null;
@@ -106,7 +105,7 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
 	 * 
 	 * @param builder
 	 */
-	private PermissionTemplate(Builder builder) {
+	private Template(Builder builder) {
 		this.id = builder.getId();
         this.namespaceCode = builder.getNamespaceCode();
         this.name = builder.getName();
@@ -119,7 +118,7 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#getId()
+	 * @see TemplateContract#getId()
 	 */
 	@Override
 	public String getId() {
@@ -127,7 +126,7 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#getNamespaceCode()
+	 * @see TemplateContract#getNamespaceCode()
 	 */
 	@Override
 	public String getNamespaceCode() {
@@ -135,7 +134,7 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#getName()
+	 * @see TemplateContract#getName()
 	 */
 	@Override
 	public String getName() {
@@ -143,7 +142,7 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#getDescription()
+	 * @see TemplateContract#getDescription()
 	 */
 	@Override
 	public String getDescription() {
@@ -151,7 +150,7 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#getTemplateId()
+	 * @see TemplateContract#getKimTypeId()
 	 */
 	@Override
 	public String getKimTypeId() {
@@ -159,7 +158,7 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#isActive()
+	 * @see TemplateContract#isActive()
 	 */
 	@Override
 	public boolean isActive() {
@@ -167,7 +166,7 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
 	}
 	
 	/**
-	 * @see org.kuali.rice.core.api.mo.Versioned#getVersionNumber()
+	 * @see org.kuali.rice.core.api.mo.common.Versioned#getVersionNumber()
 	 */
 	@Override
 	public Long getVersionNumber() {
@@ -175,7 +174,7 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.mo.GloballyUnique#getObjectId()
+	 * @see org.kuali.rice.core.api.mo.common.GloballyUnique#getObjectId()
 	 */
 	@Override
 	public String getObjectId() {
@@ -198,9 +197,9 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
     }
 	
     /**
-     * This builder constructs a KimPermissionTemplate enforcing the constraints of the {@link PermissionTemplateContract}.
+     * This builder constructs a KimPermissionTemplate enforcing the constraints of the {@link TemplateContract}.
      */
-    public static final class Builder implements PermissionTemplateContract, ModelBuilder, Serializable {
+    public static final class Builder implements TemplateContract, ModelBuilder, Serializable {
         private String id;
         private String namespaceCode;
         private String name;
@@ -225,9 +224,9 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
         }
 
         /**
-         * creates a KimPermission from an existing {@link PermissionContract}.
+         * creates a KimPermission from an existing {@link org.kuali.rice.kim.api.permission.PermissionContract}.
          */
-        public static Builder create(PermissionTemplateContract contract) {
+        public static Builder create(TemplateContract contract) {
             Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), contract.getKimTypeId());
             builder.setDescription(contract.getDescription());
             
@@ -326,8 +325,8 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
         }
         
         @Override
-        public PermissionTemplate build() {
-            return new PermissionTemplate(this);
+        public Template build() {
+            return new Template(this);
         }
     }
     
@@ -335,8 +334,8 @@ public final class PermissionTemplate implements PermissionTemplateContract, Mod
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        static final String ROOT_ELEMENT_NAME = "permissionTemplate";
-        static final String TYPE_NAME = "PermissionTemplateType";
+        static final String ROOT_ELEMENT_NAME = "template";
+        static final String TYPE_NAME = "TemplateType";
         static final String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.core.api.mo.active;
+package org.kuali.rice.core.api.mo.common.active;
 
 /**
  * This interface is used to tag business objects as inactivateable, so that the framework will automatically handle special

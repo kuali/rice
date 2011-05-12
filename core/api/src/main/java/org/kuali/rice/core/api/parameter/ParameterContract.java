@@ -16,8 +16,8 @@
 
 package org.kuali.rice.core.api.parameter;
 
-import org.kuali.rice.core.api.mo.GloballyUnique;
-import org.kuali.rice.core.api.mo.Versioned;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * This is the contract for a Parameter.  The concept of a parameter is a key=value pair that is associated

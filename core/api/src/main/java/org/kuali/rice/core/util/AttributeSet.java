@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.core.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Specialization of HashMap to facilitate web services and simplify API definitions.

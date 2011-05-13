@@ -10,7 +10,18 @@
  */
 package org.kuali.rice.kns.uif.container;
 
+import java.text.MessageFormat;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.widget.GrowlsWidget;
+import org.kuali.rice.kns.util.ErrorMessage;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.MessageMap;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - Administrator don't forget to
@@ -33,12 +44,71 @@ public class PageGroup extends Group {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
-
+        
         String prefixScript = "";
         if (this.getOnDocumentReadyScript() != null) {
             prefixScript = this.getOnDocumentReadyScript();
         }
-        this.setOnDocumentReadyScript(prefixScript + "\nsetupValidator();");
+        //Growls are setup here because they are relavant to the current page, but their
+        //settings are global to the view
+        String growlScript = "";
+        if(view.isGrowlMessagingEnabled()){
+            GrowlsWidget gw = view.getGrowlsWidget();
+
+            //Setup defaults
+            if(!gw.getComponentOptions().isEmpty()){
+                growlScript = "setGrowlDefaults("+ gw.getComponentOptionsJSString() + ");";
+            }
+            
+            ConfigurationService configService = KNSServiceLocator.getKualiConfigurationService();
+            MessageMap messageMap = GlobalVariables.getMessageMap();
+            if(messageMap.hasErrors()){
+                String message = "An error has occured, see page for more details.";
+                if(StringUtils.isNotBlank(message)){
+                    growlScript = growlScript + "showGrowl('" + message + "', 'Error', 'errorGrowl');";
+                }
+            }
+            
+            if(messageMap.hasWarnings()){
+                String message = "The server returned a warning, see page for more details";
+                if(StringUtils.isNotBlank(message)){
+                    growlScript = growlScript + "showGrowl('" + message + "', 'Warning', 'warningGrowl');";
+                }
+            }
+            
+            if(messageMap.hasInfo()){
+                List<String> properties = messageMap.getPropertiesWithInfo();
+                String message = "";
+                for(String property: properties){
+                    List<AutoPopulatingList<ErrorMessage>> lists = messageMap.getInfoMessagesForProperty(property, true);
+                    for (List<ErrorMessage> errorList : lists) {
+                        if (errorList != null) {
+                            for (ErrorMessage e : errorList) {
+                                if(StringUtils.isBlank(message)){
+                                    message = configService.getPropertyString(e.getErrorKey());
+                                }
+                                else{
+                                    message = message + "<br/>" + configService.getPropertyString(e.getErrorKey());
+                                }
+                                if (e.getMessageParameters() != null) {
+                                    message = message.replace("'", "''");
+                                    message = MessageFormat.format(message,
+                                            (Object[]) e.getMessageParameters());
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if(StringUtils.isNotBlank(message)){
+                    growlScript = growlScript + "showGrowl('" + message + "', 'Information', 'infoGrowl');";
+                }
+            }
+            
+
+        }
+        
+        this.setOnDocumentReadyScript(prefixScript + "\nsetupValidator();" + growlScript);
     }
 
     /**

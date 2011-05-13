@@ -1163,11 +1163,31 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 
             sb.append(optionKey);
             sb.append(":");
-
+            
+            boolean isNumber = false;
+            if(StringUtils.isNotBlank(optionValue) && 
+                    (StringUtils.isNumeric(optionValue.trim().substring(0,1)) 
+                    || optionValue.trim().substring(0,1).equals("-"))){
+                try{
+                    Double.parseDouble(optionValue.trim());
+                    isNumber = true;
+                }
+                catch(NumberFormatException e){
+                    isNumber = false;
+                }
+            }
             // If an option value starts with { or [, it would be a nested value
             // and it should not use quotes around it
             if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[")) {
                 sb.append(optionValue);
+            }
+            //need to be the base boolean value "false" is true in js - a non empty string
+            else if(optionValue.equalsIgnoreCase("false") || optionValue.equalsIgnoreCase("true")){
+                sb.append(optionValue);
+            }
+            //for numerics
+            else if(isNumber){
+                sb.append(optionValue);   
             }
             else {
                 sb.append("\"" + optionValue + "\"");

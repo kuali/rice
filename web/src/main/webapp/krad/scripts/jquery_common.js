@@ -61,17 +61,18 @@ function errorHandler(msg,url,lno)
 {
   if (top == self) {
 	  jq.unblockUI();
-	  jq.growlUI('Error', 'A javascript error occured: <br/>'  + msg);
+	  jq.jGrowl('A javascript error occured: <br/>'  + msg);
   }
   else{
 	  top.$.unblockUI(); 
-	  top.$.growlUI('Error', 'A javascript error occured: <br/>'  + msg);
+	  top.$.jGrowl('A javascript error occured: <br/>'  + msg);
   }
   return false;
 }
 
 // common event registering done here through JQuery ready event
 jq(document).ready(function() {
+	window.globalReadyCalled = true;
 	createLoading(false);
 	setPageBreadcrumb();
 	
@@ -88,6 +89,7 @@ jq(document).ready(function() {
 	});
 	
 	runHiddenScripts("");
+	
 });
 
 jq(document).unload(function() {
@@ -370,6 +372,48 @@ function createVerticalMenu(listId, options) {
 function setupTextPopout(id, label, summary, constraint){
 	var options = {label: label, summary: summary, constraint: constraint};
 	jq("#" + id).initPopoutText(options);
+}
+
+
+/**
+ * Show growl with message, title and theme passed in
+ * @param message message of this jGrowl
+ * @param title title of this jGrowl, can be empty string for none
+ * @param theme class to append to jGrowl classes, can be empty string for none
+ */
+function showGrowl(message, title, theme){
+	var context = getContext();
+	if(theme){
+		context.jGrowl(message, { header: title, theme: theme});
+	}
+	else{
+		context.jGrowl(message, { header: title});
+	}
+}
+
+/**
+ * Set default growl options for this view
+ * @param options
+ */
+function setGrowlDefaults(options){
+	var context = getContext();
+	context.jGrowl.defaults = context.extend(context.jGrowl.defaults, options);
+}
+
+/**
+ * Get the current context
+ * @returns the jQuery context that can be used to perform actions that must be global to the entire page
+ * ie, showing lightBoxes and growls etc
+ */
+function getContext(){
+	var context;
+	if(top == self){
+		context = jq;
+	}
+	else{
+		context = parent.$;
+	}
+	return context;
 }
 
 /**
@@ -811,11 +855,13 @@ function runHiddenScripts(id){
 	if(id){
 		jq("#" + id).find("input[name='script']").each(function(){
 			eval(jq(this).val());
+			jq(this).removeAttr("name");
 		});
 	}
 	else{
 		jq("input[name='script']").each(function(){
 			eval(jq(this).val());
+			jq(this).removeAttr("name");
 		});
 	}
 	

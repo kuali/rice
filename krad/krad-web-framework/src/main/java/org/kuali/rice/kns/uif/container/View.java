@@ -37,6 +37,7 @@ import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.util.BooleanMap;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
 import org.kuali.rice.kns.uif.widget.BreadCrumbs;
+import org.kuali.rice.kns.uif.widget.GrowlsWidget;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -68,6 +69,10 @@ public class View extends ContainerBase {
     private String viewName;
     
     private BreadCrumbs breadcrumbs;
+    
+    //Growls support
+    private GrowlsWidget growlsWidget;
+    private boolean growlMessagingEnabled;
 
     private String entryPageId;
 
@@ -922,6 +927,41 @@ public class View extends ContainerBase {
     public void setBreadcrumbs(BreadCrumbs breadcrumbs) {
         this.breadcrumbs = breadcrumbs;
     }
+
+    /**
+     * Growls widget which sets up global settings for the growls used in this view and its pages
+     * @return the growlsWidget
+     */
+    public GrowlsWidget getGrowlsWidget() {
+        return this.growlsWidget;
+    }
+
+    /**
+     * @param growlsWidget the growlsWidget to set
+     */
+    public void setGrowlsWidget(GrowlsWidget growlsWidget) {
+        this.growlsWidget = growlsWidget;
+    }
+
+    /**
+     * Growls use the messages contained in the message map.
+     * If enabled, info messages in their entirety will be displayed in growls, for warning and error messages
+     * a growl message will notify the user that these messages exist on the page.
+     * If this setting is disabled, it is recommended that infoMessage display be enabled for
+     * the page ErrorsField bean in order to display relevant information to the user.
+     * Note: the growl scripts are built out in the PageGroup class.
+     * @return the growlMessagingEnabled
+     */
+    public boolean isGrowlMessagingEnabled() {
+        return this.growlMessagingEnabled;
+    }
+
+    /**
+     * @param growlMessagingEnabled the growlMessagingEnabled to set
+     */
+    public void setGrowlMessagingEnabled(boolean growlMessagingEnabled) {
+        this.growlMessagingEnabled = growlMessagingEnabled;
+    }
     
     public boolean isValidateDirty() {
 		return this.validateDirty;
@@ -933,5 +973,4 @@ public class View extends ContainerBase {
 	public void setValidateDirty(boolean validateDirty) {
 		this.validateDirty = validateDirty;
 	}    
-
 }

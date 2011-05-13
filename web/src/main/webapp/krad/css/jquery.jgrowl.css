@@ -40,31 +40,35 @@ div.ie6.center {
 }
 
 /** Normal Style Positions **/
+div.jGrowl {
+	position:			absolute;
+}
+
 body > div.jGrowl {
 	position:			fixed;
 }
 
-body > div.jGrowl.top-left {
+div.jGrowl.top-left {
 	left: 				0px;
 	top: 				0px;
 }
 
-body > div.jGrowl.top-right {
+div.jGrowl.top-right {
 	right: 				0px;
 	top: 				0px;
 }
 
-body > div.jGrowl.bottom-left {
+div.jGrowl.bottom-left {
 	left: 				0px;
 	bottom:				0px;
 }
 
-body > div.jGrowl.bottom-right {
+div.jGrowl.bottom-right {
 	right: 				0px;
 	bottom: 			0px;
 }
 
-body > div.jGrowl.center {
+div.jGrowl.center {
 	top: 				0px;
 	width: 				50%;
 	left: 				25%;
@@ -77,10 +81,10 @@ div.center div.jGrowl-notification, div.center div.jGrowl-closer {
 }
 
 div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
-	background:             #FFF url(../images/check48.png) no-repeat 10px 10px;
-	opacity: 				100;
-    -ms-filter: 			"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; 
-    filter: 				progid:DXImageTransform.Microsoft.Alpha(Opacity=100); 
+	background-color: 		#000;
+	opacity: 				.85;
+    -ms-filter: 			"progid:DXImageTransform.Microsoft.Alpha(Opacity=85)"; 
+    filter: 				progid:DXImageTransform.Microsoft.Alpha(Opacity=85); 
 	zoom: 					1;
 	width: 					235px;
 	padding: 				10px;
@@ -88,7 +92,7 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	margin-bottom: 			5px;
 	font-family: 			Tahoma, Arial, Helvetica, sans-serif;
 	font-size: 				1em;
-	text-align: 			center;
+	text-align: 			left;
 	display: 				none;
 	-moz-border-radius: 	5px;
 	-webkit-border-radius:	5px;
@@ -98,12 +102,13 @@ div.jGrowl div.jGrowl-notification {
 	min-height: 			40px;
 }
 
-div.jGrowl div.jGrowl-notification div.header {
+div.jGrowl div.jGrowl-notification div.jGrowl-header {
 	font-weight: 			bold;
 	font-size:				.85em;
+	margin-bottom:			2px;
 }
 
-div.jGrowl div.jGrowl-notification div.close {
+div.jGrowl div.jGrowl-notification div.jGrowl-close {
 	z-index:				99;
 	float: 					right;
 	font-weight: 			bold;
@@ -127,8 +132,29 @@ div.jGrowl div.jGrowl-closer {
 	}
 }
 
-			div.jGrowl div.manilla {
-			   background:              #FFF1C2;
-				background-color: 		#FFF1C2;
-				color: 					navy;
-			}
+.infoGrowl{
+	background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll 5px 5px transparent;
+	padding-left: 25px;
+}
+
+.infoGrowl div.jGrowl-header{
+    margin-left: 15px;
+}
+
+.warningGrowl{
+	background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll 5px 5px transparent;
+	padding-left: 25px;
+}
+
+.warningGrowl div.jGrowl-header{
+    margin-left: 15px;
+}
+
+.errorGrowl{
+	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll 5px 5px transparent;
+	padding-left: 25px;
+}
+
+.errorGrowl div.jGrowl-header{
+    margin-left: 15px;
+}

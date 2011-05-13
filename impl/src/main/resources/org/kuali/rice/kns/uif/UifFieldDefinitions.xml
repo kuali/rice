@@ -101,7 +101,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayMessages" value="true"/>
 	  <property name="displayErrorMessages" value="true"/>
 	  <property name="displayWarningMessages" value="true"/>
-	  <property name="displayInfoMessages" value="true"/>
+	  <!-- Note that we are not displaying Info messages because they are shown through growls by default
+	  if Growls are turned off, info messages needs to be turned back on 
+	  (optional for fields, but should be true at least on the page level) -->
+	  <property name="displayInfoMessages" value="false"/>
 	  <property name="displayCounts" value="false"/>
   </bean>
   
@@ -141,7 +144,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayMessages" value="true"/>
 	  <property name="displayErrorMessages" value="true"/>
 	  <property name="displayWarningMessages" value="true"/>
-	  <property name="displayInfoMessages" value="true"/>
+	  <!-- Note that we are not displaying Info messages because they are shown through growls by default
+	  if growls are turned off, view info message display needs to be turned back on (required at least at page level) -->
+	  <property name="displayInfoMessages" value="false"/>
 	  <property name="displayCounts" value="true"/>
   </bean>
   
@@ -166,7 +171,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayMessages" value="true"/>
 	  <property name="displayErrorMessages" value="true"/>
 	  <property name="displayWarningMessages" value="true"/>
-	  <property name="displayInfoMessages" value="true"/>
+	  <property name="displayInfoMessages" value="false"/>
 	  <property name="displayCounts" value="true"/>
   </bean>
   

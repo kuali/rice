@@ -160,6 +160,7 @@ function setFieldToFocusAndSubmit(triggerElement) {
 //runs all hidden scripts passed back (this is to get around a bug with pre mature
 //script evaluation)
 function submitForm() {
+	writeHiddenToForm("renderFullView", "false");
 	jq("#kualiForm").ajaxSubmit({
 		success: function(response){
 			var tempDiv = document.createElement('div');
@@ -209,6 +210,8 @@ function validateAndSubmit(){
 	}
 	else{
 		jq.watermark.showAll();
+		//validate failed remove intended methodToCall just incase
+		jq("input[name='methodToCall']").remove();
 		jumpToTop();
 		alert("The form contains errors.  Please correct these errors and try again.");
 		

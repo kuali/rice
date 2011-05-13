@@ -30,6 +30,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="breadcrumbs">
         <bean parent="Breadcrumbs"/>
       </property>
+      <property name="growlMessagingEnabled" value="true"/>
+      <property name="growlsWidget">
+        <bean parent="GrowlsWidget"/>
+      </property>
       <property name="header">
         <bean parent="HeaderView"/>
       </property> 

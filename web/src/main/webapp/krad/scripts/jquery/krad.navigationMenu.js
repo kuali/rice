@@ -40,7 +40,7 @@
 			$(this).parent().addClass("navigation-block");
 			$("#" + options.parent_div).addClass("navigation-parent-div");
 			$("#" + options.nav_div).addClass("navigation-div");
-			if (options.animate === "true") {
+			if (options.animate) {
 				//Animated menu
 				$("li", this).addClass("animated-element");
 				$(this).addClass("animated-navigation");
@@ -53,7 +53,7 @@
 			
 			
 			
-			if(options.slideout === "true"){
+			if(options.slideout){
 				$(this).before("<a id='collapseLink' class='collapseLink' alt='Close Navigation'>Collapse Navigation</a>");
 				$(".navigation-block").after("<a id='controlbtn' class='slideLink' alt='Close Navigation'><<</a>");
 			}
@@ -72,7 +72,7 @@
 			//Handlers and animation
 			$(document).ready(function()
 			{
-				if(options.animate === "true"){
+				if(options.animate){
 					
 					$(link_elements).each(function(i)
 					{
@@ -123,7 +123,7 @@
 					});
 				}
 				
-				if(options.slideout === "true"){
+				if(options.slideout){
 					//Slideout animation
 					$("a#controlbtn", this).click(function(e) {
 			            e.preventDefault();

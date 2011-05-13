@@ -127,6 +127,7 @@ public class UITestController extends UifControllerBase {
 			//GlobalVariables.getMessageMap().clearErrorMessages();
 			return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), uiTestForm.getPageId());
 		}
+		
 		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page2");
 	}
 	

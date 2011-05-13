@@ -199,7 +199,7 @@ public class ErrorsField extends FieldBase {
                 }
 			}
 		}
-
+		
 		// dont display anything if there are no messages
 		if (errorCount + warningCount + infoCount == 0 || !displayMessages) {
 			this.setStyle("display: none;");
@@ -209,7 +209,7 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * Gets all the messages for the from the list of lists passed in (which are
+	 * Gets all the messages from the list of lists passed in (which are
 	 * lists of ErrorMessages associated to the key) and uses the configuration
 	 * service to get the message String associated. This will also combine
 	 * error messages per a field if that option is turned on. If

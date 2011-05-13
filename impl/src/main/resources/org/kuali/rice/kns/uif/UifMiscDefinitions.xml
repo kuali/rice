@@ -127,10 +127,10 @@
       </property>
   </bean>
   
-  <bean id="LightBoxDirectInquiry" parent="LightBoxDirectInquiry-parentBean"/>
+<bean id="LightBoxDirectInquiry" parent="LightBoxDirectInquiry-parentBean"/>
   <bean id="LightBoxDirectInquiry-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.LightBox" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBox.jsp"/>
-      <!-- <property name="styleClasses" value="calendar"/>  -->
+      <property name="styleClasses" value="calendar"/> 
       <property name="componentOptions">
           <map>
               <entry key="autoScale" value="false"/>              
@@ -145,7 +145,7 @@
               <entry key="type" value="iframe"/>
           </map>
       </property>
-  </bean>       
+  </bean>
   
   <bean id="TableTools-Paging" parent="TableTools-Paging-parentBean"/>
   
@@ -213,7 +213,7 @@
       <property name="conditionalRender" value="#parent.readOnly"/>
   </bean>   
   
-  <bean id="DirectInquiry" parent="DirectInquiry-parentBean"/>
+<bean id="DirectInquiry" parent="DirectInquiry-parentBean"/>
   <bean id="DirectInquiry-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.DirectInquiry" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/directInquiry.jsp"/>
       <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/spring/inquiry"/>
@@ -226,7 +226,7 @@
       </property>      
       <property name="conditionalRender" value="!#parent.readOnly"/>
       <property name="conditionalReadOnly" value="#parent.readOnly"/>
-  </bean>   
+  </bean>
   
   <bean id="Accordion" parent="Accordion-parentBean"/>
   <bean id="Accordion-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.Accordion" scope="prototype">
@@ -254,6 +254,14 @@
   
   <bean id="HistoryEntry" parent="HistoryEntry-parentBean"/>
   <bean id="HistoryEntry-parentBean" abstract="true" class="org.kuali.rice.kns.uif.history.HistoryEntry" scope="prototype" />
+  
+  <!-- Growls default settings -->
+  <bean id="GrowlsWidget" parent="GrowlsWidget-parentBean"/>
+  <bean id="GrowlsWidget-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.GrowlsWidget" scope="prototype">
+      <property name="sticky" value="false"/>
+      <property name="timeShown" value="7000"/>
+      <property name="position" value="top-right"/>
+  </bean>
   
   <!-- Modifiers -->
   

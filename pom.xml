@@ -158,6 +158,8 @@
 
     <!-- phase for wsdl generation from jaxws annotated interfaces -->
     <rice.java2ws.phase>process-classes</rice.java2ws.phase>
+    <!-- Turn off Clover for now -->
+    <kuali.clover.generate.info.phase>none</kuali.clover.generate.info.phase>
   </properties>
 
   <build>

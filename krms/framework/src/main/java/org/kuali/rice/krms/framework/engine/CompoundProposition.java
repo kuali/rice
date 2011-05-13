@@ -1,6 +1,7 @@
 package org.kuali.rice.krms.framework.engine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
@@ -42,5 +43,16 @@ public final class CompoundProposition implements Proposition {
 		}
 		throw new IllegalStateException("Invalid logical operator: " + logicalOperator);
 	}
+	
+
+    @Override
+    public List<Proposition> getChildren() {
+        return Collections.unmodifiableList(propositions);
+    }
+    
+    @Override
+    public boolean isCompound() {
+        return true;
+    }
 
 }

@@ -1,5 +1,8 @@
 package org.kuali.rice.krms.framework.engine;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.api.engine.Term;
@@ -47,6 +50,17 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 	protected boolean compare(Comparable<T> termValue) {
 		boolean result = Boolean.valueOf(operator.compare(termValue, getExpectedValue()));
 		return result;
+	}
+	
+
+	@Override
+	public List<Proposition> getChildren() {
+	    return Collections.emptyList();
+	}
+	
+	@Override
+	public boolean isCompound() {
+	    return false;
 	}
 
 	/**

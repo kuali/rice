@@ -17,6 +17,9 @@ package org.kuali.rice.krms.impl.provider.repository;
 
 import static org.junit.Assert.*
 
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.Before
 import org.junit.Test
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment
@@ -52,15 +55,15 @@ class CompoundPropositionTypeServiceTest {
 			String value = subProp.getParameters().get(0).getValue();
 			if (value == "true") {
 				return new Proposition() {
-					public boolean evaluate(ExecutionEnvironment environment) {
-						return true;
-					}
+					public boolean evaluate(ExecutionEnvironment environment) { return true }
+                    public List<Proposition> getChildren() { return Collections.emptyList() }
+                    public boolean isCompound() { return false }
 				}
 			} else if (value== "false") {
 				return new Proposition() {
-					public boolean evaluate(ExecutionEnvironment environment) {
-						return false;
-					}
+                    public boolean evaluate(ExecutionEnvironment environment) { return false }
+                    public List<Proposition> getChildren() { return Collections.emptyList() }
+                    public boolean isCompound() { return false }
 				}
 			} else {
 				fail("Invalid subProp type: " + subProp.getType());

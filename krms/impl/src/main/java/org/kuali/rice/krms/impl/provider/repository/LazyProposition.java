@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
@@ -74,10 +77,28 @@ final class LazyProposition implements Proposition {
 				public boolean evaluate(ExecutionEnvironment environment) {
 					return true;
 				}
+
+			    @Override
+			    public List<Proposition> getChildren() {
+			        return Collections.emptyList();
+			    }
+			    
+			    @Override
+			    public boolean isCompound() {
+			        return false;
+			    }
 			};
 		}
 		return proposition;
 	}
 
+	@Override
+	public List<Proposition> getChildren() {
+	    return getProposition().getChildren();
+	}
 	
+	@Override
+	public boolean isCompound() {
+	    return getProposition().isCompound();
+	}
 }

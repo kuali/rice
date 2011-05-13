@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krms.framework.engine.expression;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.framework.engine.Proposition;
 
@@ -37,4 +40,14 @@ public class ExpressionBasedProposition implements Proposition {
 		return expression.invoke(environment).booleanValue();
 	}
 
+
+    @Override
+    public List<Proposition> getChildren() {
+        return Collections.emptyList();
+    }
+    
+    @Override
+    public boolean isCompound() {
+        return false;
+    }
 }

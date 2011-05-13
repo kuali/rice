@@ -16,12 +16,13 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali</groupId>
-    <artifactId>kuali</artifactId>
-    <version>98</version>
+    <artifactId>kuali-common</artifactId>
+    <version>12</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -142,7 +143,7 @@
     <source.plugin.version>2.1.2</source.plugin.version>
     <assembly.plugin.version>2.2.1</assembly.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
-    <web.launch.spring.file/>
+    <web.launch.spring.file />
     
     <!-- Connect documentation generate to site generation -->
     <rice.docbook.phase>pre-site</rice.docbook.phase>
@@ -613,62 +614,6 @@
                 <exclude>org/kuali/rice/**/test/**/*.class</exclude>
               </excludes>
             </instrumentation>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${site.plugin.version}</version>
-          <configuration>
-            <reportPlugins>
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${javadoc.plugin.version}</version>
-                <configuration>
-                  <aggregate>true</aggregate>
-                  <maxmemory>512m</maxmemory>
-                </configuration>
-              </plugin>
-
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>${project.info.reports.plugin.version}</version>
-                <configuration>
-                  <!-- this takes forever to complete, enable as needed -->
-                  <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-                </configuration>
-              </plugin>
-
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>${surefire.plugin.version}</version>
-                <configuration>
-                  <reportFormat>plain</reportFormat>
-                </configuration>
-                <reportSets>
-                  <reportSet>
-                    <reports>
-                      <report>report-only</report>
-                    </reports>
-                  </reportSet>
-                </reportSets>
-              </plugin>
-
-              <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>${cobertura.maven.plugin.version}</version>
-                <configuration>
-                  <formats>
-                    <format>html</format>
-                    <format>xml</format>
-                  </formats>
-                </configuration>
-              </plugin>
-            </reportPlugins>
           </configuration>
         </plugin>
 
@@ -1763,26 +1708,26 @@
           </exclusion>
         </exclusions>
       </dependency>
-      
+
       <dependency>
-          <groupId>no.geosoft</groupId>
-          <artifactId>filemonitor</artifactId>
-          <version>${filemonitor.version}</version>
+        <groupId>no.geosoft</groupId>
+        <artifactId>filemonitor</artifactId>
+        <version>${filemonitor.version}</version>
       </dependency>
-      
+
       <dependency>
-	      <groupId>net.sf.jtidy</groupId>
-	      <artifactId>jtidyservlet</artifactId>
-	      <version>${jtidy-servlet.version}</version>
-	      <scope>runtime</scope>
+        <groupId>net.sf.jtidy</groupId>
+        <artifactId>jtidyservlet</artifactId>
+        <version>${jtidy-servlet.version}</version>
+        <scope>runtime</scope>
       </dependency>
-      
-	  <dependency>
-		 <groupId>net.sf.jtidy</groupId>
-		 <artifactId>jtidy</artifactId>
-		 <version>${jtidy.version}</version>
-		 <scope>runtime</scope>
-	  </dependency>      
+
+      <dependency>
+        <groupId>net.sf.jtidy</groupId>
+        <artifactId>jtidy</artifactId>
+        <version>${jtidy.version}</version>
+        <scope>runtime</scope>
+      </dependency>
 
       <dependency>
         <groupId>xmlunit</groupId>

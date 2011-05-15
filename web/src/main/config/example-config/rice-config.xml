@@ -61,6 +61,9 @@
 	<param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
 	<param name="filtermapping.login.1">/*</param>
 
+    <!-- Allow for single sign-out for CAS 
+	<param name="listener.logout.class">org.jasig.cas.client.sessiocccn.SingleSignOutHttpSessionListener</param> -->
+	
     <!-- Sample Application Flag -->
     <param name="sample.enabled">false</param>
 

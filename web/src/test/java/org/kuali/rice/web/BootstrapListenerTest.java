@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
@@ -70,7 +71,7 @@ public class BootstrapListenerTest extends KNSTestCase {
             String testInitParam = ConfigContext.getCurrentContextConfig().getProperty(TEST_INIT_PARAM);
             assertEquals(TEST_INIT_PARAM_VAL, testInitParam);
             
-            Map listeners = bootstrapListener.getListeners();
+            Map<String, HttpSessionListener> listeners = bootstrapListener.getListeners();
             assertTrue("listeners map size should be 1 since SingleSignOutHttpSessionListener was added as param", listeners.size() == 1);
             assertTrue("listeners map should contain a listener with a key of logout", listeners.containsKey("logout"));
         
@@ -100,7 +101,7 @@ public class BootstrapListenerTest extends KNSTestCase {
             String testInitParam = ConfigContext.getCurrentContextConfig().getProperty(TEST_INIT_PARAM);
             assertEquals(TEST_INIT_PARAM_VAL_BAD, testInitParam);
             
-            Map listeners = bootstrapListener.getListeners();
+            Map<String, HttpSessionListener> listeners = bootstrapListener.getListeners();
             assertTrue("listeners map size should be 0 since the class passed in as the param value was a non-existent class", listeners.size() == 0);
         
             standaloneInitializeListener.contextDestroyed(sce);
@@ -129,7 +130,7 @@ public class BootstrapListenerTest extends KNSTestCase {
             String testInitParam = ConfigContext.getCurrentContextConfig().getProperty(TEST_INIT_PARAM);
             assertEquals(TEST_INIT_PARAM_VAL_BAD2, testInitParam);
             
-            Map listeners = bootstrapListener.getListeners();
+            Map<String, HttpSessionListener> listeners = bootstrapListener.getListeners();
             assertTrue("listeners map size should be 0 since the class passed in does not implement HttpSessionListener", listeners.size() == 0);
         
             standaloneInitializeListener.contextDestroyed(sce);
@@ -158,7 +159,7 @@ public class BootstrapListenerTest extends KNSTestCase {
             String testInitParam = ConfigContext.getCurrentContextConfig().getProperty(TEST_INIT_PARAM_OTHER_LISTENER);
             assertEquals(TEST_INIT_PARAM_VAL, testInitParam);
             
-            Map listeners = bootstrapListener.getListeners();
+            Map<String, HttpSessionListener> listeners = bootstrapListener.getListeners();
             assertTrue("listeners map size should be 1, but it is not a listener.logout.class param", listeners.size() == 1);
             assertTrue("listeners map should contain a listener with a key of donothing", listeners.containsKey("donothing"));
             

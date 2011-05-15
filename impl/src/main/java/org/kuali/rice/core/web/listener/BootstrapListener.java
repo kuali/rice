@@ -116,8 +116,7 @@ public class BootstrapListener implements HttpSessionListener {
         LOG.debug("...end BootstrapListener session destroyed.");
     }
     
-    public Map getListeners() {
+    public Map<String, HttpSessionListener> getListeners() {
     	return listeners;
     }
-
 }

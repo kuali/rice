@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.api.group;
+package org.kuali.rice.kim.api.common.attribute;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -23,7 +23,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.kim.api.attribute.KimAttribute;
 import org.kuali.rice.kim.api.type.KimType;
 import org.w3c.dom.Element;
 
@@ -37,24 +36,24 @@ import java.io.Serializable;
 import java.util.Collection;
 
 
-@XmlRootElement(name = GroupAttribute.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = KimAttributeData.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = GroupAttribute.Constants.TYPE_NAME, propOrder = {
-        GroupAttribute.Elements.ID,
-        GroupAttribute.Elements.GROUP_ID,
-        GroupAttribute.Elements.KIM_TYPE,
-        GroupAttribute.Elements.KIM_ATTRIBUTE,
-        GroupAttribute.Elements.ATTRIBUTE_VALUE,
+@XmlType(name = KimAttributeData.Constants.TYPE_NAME, propOrder = {
+        KimAttributeData.Elements.ID,
+        KimAttributeData.Elements.ASSIGNED_TO_ID,
+        KimAttributeData.Elements.KIM_TYPE,
+        KimAttributeData.Elements.KIM_ATTRIBUTE,
+        KimAttributeData.Elements.ATTRIBUTE_VALUE,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class GroupAttribute implements GroupAttributeContract, ModelObjectComplete {
+public class KimAttributeData implements KimAttributeDataContract, ModelObjectComplete {
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
 
-    @XmlElement(name = Elements.GROUP_ID, required = false)
-    private final String groupId;
+    @XmlElement(name = Elements.ASSIGNED_TO_ID, required = false)
+    private final String assignedToId;
 
     @XmlElement(name = Elements.KIM_TYPE, required = true)
     private final KimType kimType;
@@ -75,9 +74,9 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
-    private GroupAttribute() {
+    private KimAttributeData() {
         this.id = null;
-        this.groupId = null;
+        this.assignedToId = null;
         this.kimType = null;
         this.kimAttribute = null;
         this.attributeValue = null;
@@ -85,9 +84,9 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
         this.objectId = null;
     }
 
-    public GroupAttribute(Builder builder) {
+    public KimAttributeData(Builder builder) {
         this.id = builder.getId();
-        this.groupId = builder.getGroupId();
+        this.assignedToId = builder.getAssignedToId();
         this.kimType = builder.getKimType().build();
         this.kimAttribute =
                 builder.getKimAttribute() != null ? builder.getKimAttribute().build() : null;
@@ -102,8 +101,8 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
     }
 
     @Override
-    public String getGroupId() {
-        return groupId;
+    public String getAssignedToId() {
+        return assignedToId;
     }
 
     @Override
@@ -146,9 +145,9 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
         return ToStringBuilder.reflectionToString(this);
     }
 
-        public static class Builder implements GroupAttributeContract, ModelBuilder, Serializable {
+        public static class Builder implements KimAttributeDataContract, ModelBuilder, Serializable {
         private String id;
-        private String groupId;
+        private String assignedToId;
         private KimType.Builder kimType;
         private KimAttribute.Builder kimAttribute;
         private String attributeValue;
@@ -169,9 +168,9 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
         /**
          * creates a Parameter from an existing {@link org.kuali.rice.core.api.parameter.ParameterContract}.
          */
-        public static Builder create(GroupAttributeContract contract) {
+        public static Builder create(KimAttributeDataContract contract) {
             Builder builder = new Builder(KimType.Builder.create(contract.getKimType()));
-            builder.setGroupId(contract.getGroupId());
+            builder.setAssignedToId(contract.getAssignedToId());
 
             builder.setId(contract.getId());
             if (contract.getKimAttribute() != null) {
@@ -196,12 +195,12 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
         }
 
         @Override
-        public String getGroupId() {
-            return groupId;
+        public String getAssignedToId() {
+            return assignedToId;
         }
 
-        public void setGroupId(final String groupId) {
-            this.groupId = groupId;
+        public void setAssignedToId(final String assignedToId) {
+            this.assignedToId = assignedToId;
         }
 
         @Override
@@ -250,8 +249,8 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
         }
 
         @Override
-        public GroupAttribute build() {
-            return new GroupAttribute(this);
+        public KimAttributeData build() {
+            return new KimAttributeData(this);
         }
     }
 
@@ -259,8 +258,8 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "groupAttribute";
-        final static String TYPE_NAME = "GroupAttributeType";
+        final static String ROOT_ELEMENT_NAME = "kimAttributeData";
+        final static String TYPE_NAME = "KimAttributeDataType";
         final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
@@ -270,7 +269,7 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
      */
     static class Elements {
         final static String ID = "id";
-        final static String GROUP_ID = "groupId";
+        final static String ASSIGNED_TO_ID = "assignedToId";
         final static String KIM_TYPE = "kimType";
         final static String KIM_ATTRIBUTE = "kimAttribute";
         final static String ATTRIBUTE_VALUE = "attributeValue";

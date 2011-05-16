@@ -21,13 +21,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupAttribute;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
-
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.impl.group.GroupAttributeBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
@@ -115,7 +114,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         if(group.getAttributes() != null && group.getAttributes().size() > 0) {
 
             List<GroupAttributeBo> attributeBos = new ArrayList<GroupAttributeBo>();
-            for (GroupAttribute attr : group.getAttributes()) {
+            for (KimAttributeData attr : group.getAttributes()) {
                 attributeBos.add(GroupAttributeBo.from(attr));
             }
             saveGroupAttributes(attributeBos);
@@ -230,7 +229,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         //create new group attributes
         if(group.getAttributes() != null && group.getAttributes().size() > 0) {
             List<GroupAttributeBo> attributeBos = new ArrayList<GroupAttributeBo>();
-            for (GroupAttribute attr : group.getAttributes()) {
+            for (KimAttributeData attr : group.getAttributes()) {
                 attributeBos.add(GroupAttributeBo.from(attr));
             }
             saveGroupAttributes(attributeBos);

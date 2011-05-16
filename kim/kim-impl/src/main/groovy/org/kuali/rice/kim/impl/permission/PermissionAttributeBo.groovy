@@ -19,30 +19,30 @@ package org.kuali.rice.kim.impl.permission
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Table
-import org.kuali.rice.kim.api.permission.PermissionAttribute
-import org.kuali.rice.kim.api.permission.PermissionAttributeContract
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData
+import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.impl.attribute.AttributeData
 import org.kuali.rice.kim.impl.attribute.KimAttributeBo
 import org.kuali.rice.kim.impl.type.KimTypeBo
 
 @Entity
 @Table(name="KRIM_PERM_ATTR_DATA_T")
-public class PermissionAttributeBo extends AttributeData implements PermissionAttributeContract {
+public class PermissionAttributeBo extends AttributeData implements KimAttributeDataContract {
    
     @Column(name="PERM_ID")
-    String permissionId;
+    String assignedToId;
 
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
      * @return the immutable object
      */
-    static PermissionAttribute to(PermissionAttributeBo bo) {
+    static KimAttributeData to(PermissionAttributeBo bo) {
         if (bo == null) {
             return null
         }
 
-        return PermissionAttribute.Builder.create(bo).build();
+        return KimAttributeData.Builder.create(bo).build();
     }
 
     /**
@@ -50,14 +50,14 @@ public class PermissionAttributeBo extends AttributeData implements PermissionAt
      * @param im immutable object
      * @return the mutable bo
      */
-    static PermissionAttributeBo from(PermissionAttribute im) {
+    static PermissionAttributeBo from(KimAttributeData im) {
         if (im == null) {
             return null
         }
 
         PermissionAttributeBo bo = new PermissionAttributeBo()
         bo.id = im.id
-        bo.permissionId = im.permissionId
+        bo.assignedToId = im.assignedToId
         bo.kimAttribute = KimAttributeBo.from(im.kimAttribute)
         bo.kimAttributeId = im.kimAttribute?.id
         bo.attributeValue = bo.attributeValue

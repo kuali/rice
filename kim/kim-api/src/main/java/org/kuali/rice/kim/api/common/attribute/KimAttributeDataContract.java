@@ -14,16 +14,27 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.api.attribute;
+package org.kuali.rice.kim.api.common.attribute;
 
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.kim.api.type.KimTypeContract;
 
 /**
  * This is the contract for a KimDataAttribute.  A KimDataAttribute
  * associates a value with a kim attribute.
  */
-public interface KimAttributeDataContract extends Identifiable {
+public interface KimAttributeDataContract extends Identifiable, Versioned, GloballyUnique {
+
+    /**
+     * The id of the object this AttributeData is associated with.  For
+     * example:  this could be a permissionId, roleId, groupId, or
+     * responsibilityId.
+     *
+     * @return the id
+     */
+    String getAssignedToId();
 
     /**
      * The attribute value.  This can be null or blank.

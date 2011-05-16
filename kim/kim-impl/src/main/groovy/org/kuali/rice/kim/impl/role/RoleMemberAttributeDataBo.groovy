@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.kim.impl.role
 
-import org.kuali.rice.kim.impl.attribute.KimAttributeDataBo;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
+import org.kuali.rice.kim.impl.attribute.KimAttributeDataBo
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -28,13 +27,13 @@ import javax.persistence.Table;
 @Table(name="KRIM_ROLE_MBR_ATTR_DATA_T")
 public class RoleMemberAttributeDataBo extends KimAttributeDataBo {
     @Column(name="ROLE_MBR_ID")
-    protected String roleMemberId;
+    protected String assignedToId;
 
-    public String getRoleMemberId() {
-        return this.roleMemberId;
+    public String getAssignedToId() {
+        return this.assignedToId;
     }
 
-    public void setRoleMemberId(String roleMemberId) {
-        this.roleMemberId = roleMemberId;
+    public void setAssignedToId(String roleMemberId) {
+        this.assignedToId = roleMemberId;
     }
 }

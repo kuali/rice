@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import org.kuali.rice.kim.impl.attribute.KimAttributeDataBo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
+import org.kuali.rice.kim.impl.attribute.KimAttributeDataBo
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -28,13 +28,13 @@ import javax.persistence.Table;
 @Table(name="KRIM_RSP_ATTR_DATA_T")
 public class ResponsibilityAttributeDataBo extends KimAttributeDataBo {
     @Column(name="RSP_ID")
-    protected String responsibilityId;
+    protected String assignedToId;
 
-    public String getResponsibilityId() {
-        return this.responsibilityId;
+    public String getAssignedToId() {
+        return this.assignedToId;
     }
 
-    public void setResponsibilityId(String responsibilityId) {
-        this.responsibilityId = responsibilityId;
+    public void setAssignedToId(String assignedToId) {
+        this.assignedToId = assignedToId;
     }
 }

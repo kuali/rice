@@ -42,4 +42,16 @@ public interface CampusTypeContract extends Versioned, GloballyUnique, Inactivat
 	 * @return name for CampusType.
 	 */
 	String getName();
+
+
+	/**
+	 * This is the active flag for the CampusType. 
+	 *
+	 * <p>
+	 * It is a flag that determines if a campus type is active or not.
+	 * </p>
+	 * @return active boolean for CampusType.
+	 */
+	boolean isActive();
+
 }

@@ -19,7 +19,7 @@ package org.kuali.rice.kim.api.permission;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.kim.api.attribute.KimAttributeDataContract;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 
 public interface PermissionAttributeContract extends KimAttributeDataContract, Versioned, GloballyUnique {
 	

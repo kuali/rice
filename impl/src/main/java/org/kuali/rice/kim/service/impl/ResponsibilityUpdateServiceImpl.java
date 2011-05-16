@@ -79,7 +79,7 @@ public class ResponsibilityUpdateServiceImpl extends ResponsibilityServiceBase i
 	    			newDetail.setId(getNewAttributeDataId());
 	    			newDetail.setKimAttributeId(attr.getKimAttribute().getId());
 	    			newDetail.setKimTypeId(resp.getTemplate().getKimTypeId());
-	    			newDetail.setResponsibilityId(responsibilityId);
+	    			newDetail.setAssignedToId(responsibilityId);
 	    			newDetail.setAttributeValue(attrEntry.getValue());
 	    			details.add(newDetail);
 	    		}

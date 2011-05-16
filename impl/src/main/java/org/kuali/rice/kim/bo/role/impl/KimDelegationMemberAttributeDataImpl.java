@@ -29,13 +29,13 @@ import javax.persistence.Table;
 @Table(name="KRIM_DLGN_MBR_ATTR_DATA_T")
 public class KimDelegationMemberAttributeDataImpl extends KimAttributeDataBo {
     @Column(name="DLGN_MBR_ID")
-    protected String delegationMemberId;
+    protected String assignedToId;
 
-    public String getDelegationMemberId() {
-        return this.delegationMemberId;
+    public String getAssignedToId() {
+        return this.assignedToId;
     }
 
-    public void setDelegationMemberId(String delegationMemberId) {
-        this.delegationMemberId = delegationMemberId;
+    public void setAssignedToId(String delegationMemberId) {
+        this.assignedToId = delegationMemberId;
     }
 }

@@ -19,7 +19,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
-import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
@@ -101,13 +100,13 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
     }
 
     protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
-    	List<PermissionAttributeDataImpl> permissionAttributeData = 
+    	List<PermissionAttributeDataImpl> permissionAttributeData =
     		(List<PermissionAttributeDataImpl>)ObjectUtils.getPropertyValue(businessObject, attributeName);
     	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ATTRIBUTE_DATA_ID);
     	for(PermissionAttributeDataImpl permissionAttributeDataImpl: permissionAttributeData){
-    		htmlData.add(getInquiryUrlForPrimaryKeys(PermissionAttributeDataImpl.class, permissionAttributeDataImpl, primaryKeys, 
+    		htmlData.add(getInquiryUrlForPrimaryKeys(PermissionAttributeDataImpl.class, permissionAttributeDataImpl, primaryKeys,
     			getKimAttributeLabelFromDD(permissionAttributeDataImpl.getKimAttribute().getAttributeName())+
     			KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
     			permissionAttributeDataImpl.getAttributeValue()));

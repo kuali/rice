@@ -16,27 +16,22 @@
 
 package org.kuali.rice.kim.impl.permission
 
-import java.util.List;
-
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.Id
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn
+import javax.persistence.OneToMany
+import javax.persistence.OneToOne
 import javax.persistence.Table
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.permission.Permission
 import org.kuali.rice.kim.api.permission.PermissionContract
-import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.springframework.util.AutoPopulatingList;
 
 @Entity
 @Table(name="KRIM_PERM_T")

@@ -20,8 +20,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupAttribute;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -274,9 +274,9 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         AttributeSet groupAttrs = new AttributeSet();
         Group group = getGroup(groupId);
         if (group != null) {
-            List<GroupAttribute> attributes = group.getAttributes();
+            List<KimAttributeData> attributes = group.getAttributes();
 
-            for (GroupAttribute attr : attributes) {
+            for (KimAttributeData attr : attributes) {
                 groupAttrs.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
             }
         }

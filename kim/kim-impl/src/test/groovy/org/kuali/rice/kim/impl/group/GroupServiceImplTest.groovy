@@ -17,18 +17,17 @@
 package org.kuali.rice.kim.impl.group
 
 import groovy.mock.interceptor.MockFor
-import org.kuali.rice.kns.service.BusinessObjectService
-import org.kuali.rice.kim.api.group.GroupService
-import org.junit.BeforeClass
 import java.sql.Timestamp
-import org.junit.Before
-import org.junit.Test
-import org.kuali.rice.kim.util.KimConstants
 import org.junit.Assert
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Test
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupMember
+import org.kuali.rice.kim.api.group.GroupService
 import org.kuali.rice.kim.impl.type.KimTypeBo
-import org.kuali.rice.kim.bo.entity.KimPrincipal
+import org.kuali.rice.kim.util.KimConstants
+import org.kuali.rice.kns.service.BusinessObjectService
 
 /**
  * Created by IntelliJ IDEA.
@@ -89,7 +88,7 @@ class GroupServiceImplTest {
         KimTypeBo kimTypeBo = new KimTypeBo(id: "2", serviceName: "service", namespaceCode: "KUALI", name: "thisType",
                 active: true)
 
-        GroupAttributeBo attribute1 = new GroupAttributeBo(id: "1", groupId: "2", kimAttributeId: "1",
+        GroupAttributeBo attribute1 = new GroupAttributeBo(id: "1", assignedToId: "2", kimAttributeId: "1",
                          attributeValue: "Y", kimTypeId: "2", kimType: kimTypeBo)
 
 

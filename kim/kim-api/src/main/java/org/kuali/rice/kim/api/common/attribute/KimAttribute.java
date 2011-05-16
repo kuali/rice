@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.api.attribute;
+package org.kuali.rice.kim.api.common.attribute;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;

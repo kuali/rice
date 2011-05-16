@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.kim.api.permission
 
-import java.util.List;
-
 import javax.xml.bind.JAXBContext
-import org.junit.Assert
-import org.junit.Test;
-
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
-import org.kuali.rice.kim.api.attribute.KimAttribute;
-import org.kuali.rice.kim.api.type.KimType;
+import org.junit.Assert
+import org.junit.Test
+import org.kuali.rice.kim.api.common.attribute.KimAttribute
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData
+import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
+import org.kuali.rice.kim.api.type.KimType
 
 class PermissionTest {
 
@@ -78,7 +77,7 @@ class PermissionTest {
 			    <attribute>
 	                <id>${ATTRIBUTES_1_ID}</id>
 	                <attributeValue>${ATTRIBUTES_1_VALUE}</attributeValue>
-	                <permissionId>${ATTRIBUTES_1_PERMISSION_ID}</permissionId>
+	                <assignedToId>${ATTRIBUTES_1_PERMISSION_ID}</assignedToId>
 	                <versionNumber>${VERSION_NUMBER}</versionNumber>
 	                <objectId>${ATTRIBUTES_1_OBJ_ID}</objectId>
 	                <kimType>
@@ -153,11 +152,11 @@ class PermissionTest {
 			String getName() {PermissionTest.NAME}
 			String getDescription() {PermissionTest.DESCRIPTION}
 			String getTemplateId() {PermissionTest.TEMPLATE_ID}
-			List<PermissionAttribute> getAttributes() {[
-				PermissionAttribute.Builder.create(new PermissionAttributeContract() {
+			List<KimAttributeData> getAttributes() {[
+				KimAttributeData.Builder.create(new KimAttributeDataContract() {
 					 String getId() {PermissionTest.ATTRIBUTES_1_ID}
 					 String getAttributeValue() {PermissionTest.ATTRIBUTES_1_VALUE}
-                     String getPermissionId() {PermissionTest.ATTRIBUTES_1_PERMISSION_ID}
+                     String getAssignedToId() {PermissionTest.ATTRIBUTES_1_PERMISSION_ID}
 					 Long getVersionNumber() {PermissionTest.ATTRIBUTES_1_VER_NBR}
 					 KimType getKimType() {PermissionTest.KIM_TYPE_1}
                      KimAttribute getKimAttribute() {PermissionTest.KIM_ATTRIBUTE_1}

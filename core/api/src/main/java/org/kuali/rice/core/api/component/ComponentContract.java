@@ -53,4 +53,13 @@ public interface ComponentContract extends Versioned, GloballyUnique, Inactivata
      * @return virtual
      */
     boolean isVirtual();
+
+    /**
+     * This the active flag for the Component.
+     *
+     * @return active
+     */
+    boolean isActive();
+
+
 }

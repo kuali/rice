@@ -20,7 +20,7 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.kim.api.attribute.KimAttributeContract;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeContract;
 
 /**
  * This is the contract for a KimTypeAttribute.  A KimTypeAttribute

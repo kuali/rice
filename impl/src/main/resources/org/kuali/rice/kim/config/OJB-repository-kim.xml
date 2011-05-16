@@ -492,7 +492,7 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="kimAttributeId" />
+      <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
 
@@ -526,20 +526,20 @@
     <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="roleMemberId" />
+      <inverse-foreignkey field-ref="roleMemberId" target-field-ref="id"/>
     </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl" table="KRIM_ROLE_MBR_ATTR_DATA_T">
     <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="assignedToId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="kimAttributeId" />
+      <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
 
@@ -572,20 +572,20 @@
     <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="delegationMemberId" />
+      <inverse-foreignkey field-ref="id" target-field-ref="delegationMemberId"/>
     </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl" table="KRIM_DLGN_MBR_ATTR_DATA_T">
     <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="delegationMemberId" column="DLGN_MBR_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="assignedToId" column="DLGN_MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="kimAttributeId" />
+      <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
 
@@ -606,7 +606,7 @@
       <foreignkey field-ref="templateId" />
     </reference-descriptor>
     <collection-descriptor name="detailObjects" element-class-ref="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="permissionId" />
+      <inverse-foreignkey field-ref="id" target-field-ref="permissionId" />
     </collection-descriptor>
 	<collection-descriptor name="rolePermissions" element-class-ref="org.kuali.rice.kim.bo.role.impl.RolePermissionImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="permissionId" />
@@ -639,14 +639,14 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl" table="KRIM_PERM_ATTR_DATA_T">
     <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="permissionId" column="PERM_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="assignedToId" column="PERM_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="kimAttributeId" />
+      <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
 
@@ -668,7 +668,7 @@
       <foreignkey field-ref="templateId" />
     </reference-descriptor>
     <collection-descriptor name="detailObjects" element-class-ref="org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="responsibilityId" />
+      <inverse-foreignkey field-ref="responsibilityId" target-field-ref="id"/>
     </collection-descriptor>
 	<collection-descriptor name="roleResponsibilities" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="responsibilityId" />
@@ -700,14 +700,14 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl" table="KRIM_RSP_ATTR_DATA_T">
     <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="assignedToId" column="RSP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="kimAttributeId" />
+      <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
 
@@ -987,7 +987,7 @@
     </reference-descriptor>
     -->
     <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="kimAttrDefnId" />
+      <foreignkey field-ref="kimAttrDefnId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
 
@@ -1121,7 +1121,7 @@
       <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
       <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
       <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-        <foreignkey field-ref="kimAttrDefnId" />
+        <foreignkey field-ref="kimAttrDefnId" target-field-ref="id"/>
       </reference-descriptor>
     </class-descriptor>
 
@@ -1171,7 +1171,7 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="kimAttrDefnId" />
+      <foreignkey field-ref="kimAttrDefnId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
 

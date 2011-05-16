@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.api.attribute
+package org.kuali.rice.kim.api.common.attribute
 
 import javax.xml.bind.JAXBContext
 import org.junit.Assert

@@ -70,12 +70,12 @@ final class Util {
 		return constantVariable.toString();
 	}
 	
-	static String generateGetterName(String fieldName) {
-		return "get" + Util.toUpperCaseFirstLetter(fieldName);
+	static String generateGetterName(String fieldName, boolean is) {
+		return (is ? "is" : "get") + Util.toUpperCaseFirstLetter(fieldName);
 	}
 	
-	static String generateGetter(String fieldName) {
-		return generateGetterName(fieldName) + "()";
+	static String generateGetter(String fieldName, boolean is) {
+		return generateGetterName(fieldName, is) + "()";
 	}
 	
 	static String generateSetterName(String fieldName) {

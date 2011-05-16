@@ -18,13 +18,13 @@ package org.kuali.rice.kim.impl.permission
 
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.kim.api.permission.PermissionAttribute
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData
 import org.kuali.rice.kim.api.type.KimType
 
 class PermissionAttributeBoTest {
 	@Test
 	public void testNotEqualsWithPermission() {
-    PermissionAttribute immutable = PermissionAttribute.Builder.create(KimType.Builder.create()).build()
+    KimAttributeData immutable = KimAttributeData.Builder.create(KimType.Builder.create()).build()
     PermissionAttributeBo bo = PermissionAttributeBo.from(immutable)
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

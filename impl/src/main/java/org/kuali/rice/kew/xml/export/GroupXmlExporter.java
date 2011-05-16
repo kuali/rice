@@ -20,8 +20,8 @@ import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.util.xml.XmlRenderer;
 import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupAttribute;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 
@@ -102,7 +102,7 @@ public class GroupXmlExporter implements XmlExporter {
                 attributeElement.setAttribute(KEY, key);
                 attributeElement.setAttribute(VALUE, group.getAttributes().get(key));
             }*/
-            for (GroupAttribute attr : group.getAttributes()) {
+            for (KimAttributeData attr : group.getAttributes()) {
                 Element attributeElement = renderer.renderElement(attributesElement, ATTRIBUTE);
                 attributeElement.setAttribute(KEY, attr.getKimAttribute().getAttributeName());
                 attributeElement.setAttribute(VALUE, attr.getAttributeValue());

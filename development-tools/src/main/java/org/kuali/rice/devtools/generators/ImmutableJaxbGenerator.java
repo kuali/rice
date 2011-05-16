@@ -15,26 +15,6 @@
  */
 package org.kuali.rice.devtools.generators;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
-
 import com.sun.codemodel.ClassType;
 import com.sun.codemodel.JAnnotationArrayMember;
 import com.sun.codemodel.JAnnotationUse;
@@ -54,6 +34,24 @@ import com.sun.codemodel.JMod;
 import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 import com.sun.codemodel.writer.SingleStreamCodeWriter;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -263,28 +261,50 @@ public class ImmutableJaxbGenerator {
 			JMethod method = classModel.constructor(JMod.PRIVATE);
 			JBlock body = method.body();
 			for (FieldModel fieldModel : fields) {
-				body.directStatement("this." + fieldModel.fieldName + " = null;");
+				body.directStatement("this." + fieldModel.fieldName + " = " + getInitString(fieldModel.fieldType) + ";");
 			}
 			method.javadoc().add("Private constructor used only by JAXB.");
 		}
+
+        private String getInitString(Class<?> clazz) {
+            if (clazz == Boolean.TYPE) {
+                return "false";
+            } else if (clazz == Character.TYPE) {
+                return "'\\\\u0000'";
+            } else if (clazz == Long.TYPE) {
+                return "0L";
+            } else if (clazz == Float.TYPE) {
+                return "0.0F";
+            } else if (clazz == Double.TYPE) {
+                return "0.0D";
+            } else if (clazz == Byte.TYPE || clazz == Short.TYPE || clazz == Integer.TYPE) {
+                return "0";
+            } else {
+                return "null";
+            }
+        }
 		
 		private void renderBuilderConstructor(JDefinedClass classModel, List<FieldModel> fields) {
 			JMethod method = classModel.constructor(JMod.PRIVATE);
 			method.param(codeModel.ref("Builder"), "builder");
 			JBlock body = method.body();
 			for (FieldModel fieldModel : fields) {
-				body.directStatement("this." + fieldModel.fieldName + " = builder." + Util.generateGetter(fieldModel.fieldName) + ";");
+				body.directStatement("this." + fieldModel.fieldName + " = builder." + Util.generateGetter(fieldModel.fieldName, isBoolean(fieldModel.fieldType)) + ";");
 			}
 		}
 		
 		private void renderGetters(JDefinedClass classModel, List<FieldModel> fields) {
-			for (FieldModel fieldModel : fields) {
-				JMethod getterMethod = classModel.method(JMod.PUBLIC, fieldModel.fieldType, Util.generateGetterName(fieldModel.fieldName));
+            for (FieldModel fieldModel : fields) {
+                JMethod getterMethod = classModel.method(JMod.PUBLIC, fieldModel.fieldType, Util.generateGetterName(fieldModel.fieldName, isBoolean(fieldModel.fieldType)));
 				JBlock methodBody = getterMethod.body();
 				methodBody.directStatement("return this." + fieldModel.fieldName + ";");
 				getterMethod.annotate(Override.class);
 			}
 		}
+
+        private boolean isBoolean(Class<?> clazz) {
+            return clazz == Boolean.TYPE || clazz == Boolean.class;
+        }
 		
 		private void renderBuilderClass(JDefinedClass classModel, List<FieldModel> fields, Class<?> contractInterface) throws Exception {
 			
@@ -335,7 +355,7 @@ public class ImmutableJaxbGenerator {
 			body.directStatement("Builder builder = create();");
 			for (FieldModel fieldModel : fields) {
 				String fieldName = fieldModel.fieldName;
-				body.directStatement("builder." + Util.generateSetter(fieldName, "contract." + Util.generateGetter(fieldName)) + ";");
+				body.directStatement("builder." + Util.generateSetter(fieldName, "contract." + Util.generateGetter(fieldName, isBoolean(fieldModel.fieldType))) + ";");
 			}
 			body.directStatement("return builder;");
 		}

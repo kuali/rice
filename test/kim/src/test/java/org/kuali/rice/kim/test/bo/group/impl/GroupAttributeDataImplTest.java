@@ -45,8 +45,8 @@ public class GroupAttributeDataImplTest extends KIMTestCase {
 
     @Test
     public void testGroupId() {
-        grpAttDataImpl.setGroupId("Test");
-		assertEquals("Checking the getter and setter for groupID", grpAttDataImpl.getGroupId(), "Test");
+        grpAttDataImpl.setAssignedToId("Test");
+		assertEquals("Checking the getter and setter for groupID", grpAttDataImpl.getAssignedToId(), "Test");
 
     }
 }

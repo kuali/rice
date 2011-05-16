@@ -18,13 +18,13 @@ package org.kuali.rice.kim.impl.group
 
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.kim.api.group.GroupAttribute
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData
 import org.kuali.rice.kim.api.type.KimType
 
 class GroupAttributeBoTest {
     @Test
   public void testNotEqualsWithGroup() {
-    GroupAttribute immutable = GroupAttribute.Builder.create(KimType.Builder.create()).build()
+    KimAttributeData immutable = KimAttributeData.Builder.create(KimType.Builder.create()).build()
     GroupAttributeBo bo = GroupAttributeBo.from(immutable )
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 
 import java.util.List;
 
@@ -93,7 +94,7 @@ public interface GroupContract extends Versioned, GloballyUnique, Inactivatable,
      *
      * @return attributes
      */
-    List<? extends GroupAttributeContract> getAttributes();
+    List<? extends KimAttributeDataContract> getAttributes();
 
 
 

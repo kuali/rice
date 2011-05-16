@@ -83,7 +83,7 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
 		    		newDetail.setId(getNewAttributeDataId());
 		    		newDetail.setKimAttributeId(attr.getId());
 		    		newDetail.setKimTypeId(perm.getTemplate().getKimTypeId());
-		    		newDetail.setPermissionId(permissionId);
+		    		newDetail.setAssignedToId(permissionId);
 		    		newDetail.setAttributeValue(attributesToAdd.get(attrName));
 		    		details.add(newDetail);
 	    		} else {

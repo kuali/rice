@@ -361,7 +361,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
 			RoleMemberAttributeDataImpl a = new RoleMemberAttributeDataImpl();
 			a.setAttributeValue( qualifier.get( attributeName ) );
 			a.setKimTypeId( kimTypeId );
-			a.setRoleMemberId( roleMember.getRoleMemberId() );
+			a.setAssignedToId(roleMember.getRoleMemberId());
 			// look up the attribute ID
 			a.setKimAttributeId( getKimAttributeId( attributeName ) );
 			
@@ -390,7 +390,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
 			KimDelegationMemberAttributeDataImpl a = new KimDelegationMemberAttributeDataImpl();
 			a.setAttributeValue( qualifier.get( attributeName ) );
 			a.setKimTypeId( kimTypeId );
-			a.setDelegationMemberId( delegationMember.getDelegationMemberId() );
+			a.setAssignedToId(delegationMember.getDelegationMemberId());
 			// look up the attribute ID
 			a.setKimAttributeId( getKimAttributeId( attributeName ) );
 	    	Map<String, String> criteria = new HashMap<String, String>();

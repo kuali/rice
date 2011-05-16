@@ -28,13 +28,13 @@ import javax.persistence.Table;
 @Table(name="KRIM_ROLE_MBR_ATTR_DATA_T")
 public class RoleMemberAttributeDataImpl extends KimAttributeDataBo {
     @Column(name="ROLE_MBR_ID")
-    protected String roleMemberId;
+    protected String assignedToId;
 
-    public String getRoleMemberId() {
-        return this.roleMemberId;
+    public String getAssignedToId() {
+        return this.assignedToId;
     }
 
-    public void setRoleMemberId(String roleMemberId) {
-        this.roleMemberId = roleMemberId;
+    public void setAssignedToId(String roleMemberId) {
+        this.assignedToId = roleMemberId;
     }
 }

@@ -1,7 +1,7 @@
 @javax.xml.bind.annotation.XmlSchema(
                 namespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0,
                 elementFormDefault= XmlNsForm.QUALIFIED)
-package org.kuali.rice.kim.api.attribute;
+package org.kuali.rice.kim.api.common.attribute;
 
 import org.kuali.rice.kim.api.KimConstants;
 

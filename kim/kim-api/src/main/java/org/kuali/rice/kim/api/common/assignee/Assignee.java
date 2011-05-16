@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.api.permission;
+package org.kuali.rice.kim.api.common.assignee;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -24,7 +24,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
+import org.kuali.rice.kim.api.common.delegate.Delegate;
+import org.kuali.rice.kim.api.common.delegate.DelegateContract;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -37,18 +38,19 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
-@XmlRootElement(name = PermissionAssignee.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = Assignee.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = PermissionAssignee.Constants.TYPE_NAME, propOrder = {
-        PermissionAssignee.Elements.PRINCIPAL_ID,
-        PermissionAssignee.Elements.GROUP_ID,
-        PermissionAssignee.Elements.DELEGATES,
+@XmlType(name = Assignee.Constants.TYPE_NAME, propOrder = {
+        Assignee.Elements.PRINCIPAL_ID,
+        Assignee.Elements.GROUP_ID,
+        Assignee.Elements.DELEGATES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class PermissionAssignee implements PermissionAssigneeContract, ModelObjectComplete {
+public class Assignee implements AssigneeContract, ModelObjectComplete {
     @XmlElement(name = Elements.PRINCIPAL_ID, required = false)
     private final String principalId;
 
@@ -58,7 +60,7 @@ public class PermissionAssignee implements PermissionAssigneeContract, ModelObje
     @XmlElementWrapper(name = Elements.DELEGATES, required = false)
     @XmlElement(name = Elements.DELEGATE, required = false)
     // TODO Need modelized DelegateInfo
-    private final List<DelegateInfo> delegates;
+    private final List<Delegate> delegates;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -68,7 +70,7 @@ public class PermissionAssignee implements PermissionAssigneeContract, ModelObje
 	 *  A constructor to be used only by JAXB unmarshalling.
 	 *  
 	 */
-    private PermissionAssignee() {
+    private Assignee() {
         this.principalId = null;
         this.groupId = null;
         this.delegates = null;
@@ -79,19 +81,20 @@ public class PermissionAssignee implements PermissionAssigneeContract, ModelObje
 	 * 
 	 * @param builder
 	 */
-    public PermissionAssignee(Builder builder) {
+    public Assignee(Builder builder) {
         this.principalId = builder.getPrincipalId();
         this.groupId = builder.getGroupId();
-        this.delegates = new ArrayList<DelegateInfo>();
+        final List<Delegate> temp = new ArrayList<Delegate>();
         if (!CollectionUtils.isEmpty(builder.getDelegates())) {
-            for (DelegateInfo delegate: builder.getDelegates()) {
-                delegates.add(delegate);
+            for (Delegate.Builder delegate: builder.getDelegates()) {
+                temp.add(delegate.build());
             }
         }
+        this.delegates = Collections.unmodifiableList(temp);
     }
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionAssigneeContract#getPrincipalId()
+	 * @see AssigneeContract#getPrincipalId()
 	 */
 	@Override
 	public String getPrincipalId() {
@@ -99,7 +102,7 @@ public class PermissionAssignee implements PermissionAssigneeContract, ModelObje
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionAssigneeContract#getGroupId()
+	 * @see AssigneeContract#getGroupId()
 	 */
 	@Override
 	public String getGroupId() {
@@ -107,10 +110,10 @@ public class PermissionAssignee implements PermissionAssigneeContract, ModelObje
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionAssigneeContract#getDelegates()
+	 * @see AssigneeContract#getDelegates()
 	 */
 	@Override
-	public List<DelegateInfo> getDelegates() {
+	public List<Delegate> getDelegates() {
 		return this.delegates;
 	}
 	
@@ -130,31 +133,36 @@ public class PermissionAssignee implements PermissionAssigneeContract, ModelObje
     }
 
     /**
-     * This builder constructs a PermissionAssignee enforcing the constraints of the {@link PermissionAssigneeContract}.
+     * This builder constructs a PermissionAssignee enforcing the constraints of the {@link AssigneeContract}.
      */
-    public static final class Builder implements PermissionAssigneeContract, ModelBuilder, Serializable {
+    public static final class Builder implements AssigneeContract, ModelBuilder, Serializable {
         private String principalId;
         private String groupId;
-        private List<DelegateInfo> delegates;
+        private List<Delegate.Builder> delegates;
 
-        private Builder(String principalId, String groupId, List<DelegateInfo> delegates) {
+        private Builder(String principalId, String groupId, List<Delegate.Builder> delegates) {
             setPrincipalId(principalId);
             setGroupId(groupId);
             setDelegates(delegates);
         }
 
         /**
-         * Creates a PermissionAttribute with the required fields.
+         * Creates a KimAttributeData with the required fields.
          */
-        public static Builder create(String principalId, String groupId, List<DelegateInfo> delegates) {
+        public static Builder create(String principalId, String groupId, List<Delegate.Builder> delegates) {
             return new Builder(principalId, groupId, delegates);
         }
 
         /**
-         * creates a PermissionAttribute from an existing {@link PermissionAttributeContract}.
+         * creates a KimAttributeData from an existing {@link org.kuali.rice.kim.api.permission.KimAttributeDataContract}.
          */
-        public static Builder create(PermissionAssigneeContract contract) {
-            Builder builder = new Builder(contract.getPrincipalId(), contract.getGroupId(), contract.getDelegates());
+        public static Builder create(AssigneeContract contract) {
+            final List<Delegate.Builder> builders = new ArrayList<Delegate.Builder>();
+            for (DelegateContract d : contract.getDelegates()) {
+                builders.add(Delegate.Builder.create(d));
+            }
+
+            Builder builder = new Builder(contract.getPrincipalId(), contract.getGroupId(), builders);
             return builder;
         }
 
@@ -183,20 +191,20 @@ public class PermissionAssignee implements PermissionAssigneeContract, ModelObje
         }
 
 		@Override
-		public List<DelegateInfo> getDelegates() {
+		public List<Delegate.Builder> getDelegates() {
 			return delegates;
 		}
 		
-        public void setDelegates(final List<DelegateInfo> delegates) {
+        public void setDelegates(final List<Delegate.Builder> delegates) {
         	if (delegates == null || delegates.isEmpty()) {
                 throw new IllegalArgumentException("delegates is null or empty");
             }
-        	this.delegates = delegates;
+        	this.delegates = Collections.unmodifiableList(new ArrayList<Delegate.Builder>(delegates));
         }		
 		
 		@Override
-		public PermissionAssignee build() {
-			return new PermissionAssignee(this);
+		public Assignee build() {
+			return new Assignee(this);
 		}
        
     }
@@ -205,8 +213,8 @@ public class PermissionAssignee implements PermissionAssigneeContract, ModelObje
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "permissionAssignee";
-        final static String TYPE_NAME = "PermissionAssigneeType";
+        final static String ROOT_ELEMENT_NAME = "assignee";
+        final static String TYPE_NAME = "assigneeType";
         final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 

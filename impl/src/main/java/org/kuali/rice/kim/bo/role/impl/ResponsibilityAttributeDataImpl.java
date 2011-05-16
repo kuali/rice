@@ -28,13 +28,13 @@ import javax.persistence.Table;
 @Table(name="KRIM_RSP_ATTR_DATA_T")
 public class ResponsibilityAttributeDataImpl extends KimAttributeDataBo {
     @Column(name="RSP_ID")
-    protected String responsibilityId;
+    protected String assignedToId;
 
-    public String getResponsibilityId() {
-        return this.responsibilityId;
+    public String getAssignedToId() {
+        return this.assignedToId;
     }
 
-    public void setResponsibilityId(String responsibilityId) {
-        this.responsibilityId = responsibilityId;
+    public void setAssignedToId(String responsibilityId) {
+        this.assignedToId = responsibilityId;
     }
 }

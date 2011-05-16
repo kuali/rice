@@ -23,7 +23,9 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import junit.framework.Assert
 import org.junit.Test
-import org.kuali.rice.kim.api.attribute.KimAttribute
+import org.kuali.rice.kim.api.common.attribute.KimAttribute
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData
+import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.api.type.KimType
 
 class GroupTest {
@@ -114,7 +116,7 @@ class GroupTest {
           <attributes>
               <attribute>
                 <id>${ATTRIBUTES_1_ID}</id>
-                <groupId>${ATTRIBUTES_1_GROUP_ID}</groupId>
+                <assignedToId>${ATTRIBUTES_1_GROUP_ID}</assignedToId>
                 <kimType>
                     <id>${KIM_TYPE_1.id}</id>
                     <versionNumber>${VERSION_NUMBER}</versionNumber>
@@ -132,7 +134,7 @@ class GroupTest {
               </attribute>
               <attribute>
                 <id>${ATTRIBUTES_2_ID}</id>
-                <groupId>${ATTRIBUTES_2_GROUP_ID}</groupId>
+                <assignedToId>${ATTRIBUTES_2_GROUP_ID}</assignedToId>
                 <kimType>
                     <id>${KIM_TYPE_2.id}</id>
                     <versionNumber>${VERSION_NUMBER}</versionNumber>
@@ -158,7 +160,7 @@ class GroupTest {
 
     /*<members>
             <id>${MEMBER_1_ID}</id>
-            <groupId>${MEMBER_1_GROUP_ID}</groupId>
+            <assignedToId>${MEMBER_1_GROUP_ID}</assignedToId>
             <memberId>${MEMBER_1_MEMBER_ID}</memberId>
             <typeCode>${MEMBER_1_TYPE_CD}</typeCode>
             <activeFromDate>${MEMBER_1_ACTIVE_FROM.getTime()}</activeFromDate>
@@ -168,7 +170,7 @@ class GroupTest {
           </members>
           <members>
             <id>${MEMBER_2_ID}</id>
-            <groupId>${MEMBER_2_GROUP_ID}</groupId>
+            <assignedToId>${MEMBER_2_GROUP_ID}</assignedToId>
             <memberId>${MEMBER_2_MEMBER_ID}</memberId>
             <typeCode>${MEMBER_2_TYPE_CD}</typeCode>
             <versionNumber>${MEMBER_2_VER_NBR}</versionNumber>
@@ -184,7 +186,7 @@ class GroupTest {
 	  Group group = this.createGroupFromPassedInContract()
 	  marshaller.marshal(group,sw)
 	  String xml = sw.toString()
-
+      println(xml)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
 	  Object actual = unmarshaller.unmarshal(new StringReader(xml))
 	  Object expected = unmarshaller.unmarshal(new StringReader(XML))
@@ -217,18 +219,18 @@ class GroupTest {
                         Timestamp getActiveToDate() {null}
                         Long getVersionNumber() { GroupTest.MEMBER_2_VER_NBR }
                         String getObjectId() { GroupTest.MEMBER_2_OBJ_ID }}).build() ]}*/
-            List<GroupAttribute> getAttributes() {[
-                    GroupAttribute.Builder.create(new GroupAttributeContract() {
+            List<KimAttributeData> getAttributes() {[
+                    KimAttributeData.Builder.create(new KimAttributeDataContract() {
 				        String getId() {GroupTest.ATTRIBUTES_1_ID}
-                        String getGroupId() {GroupTest.ATTRIBUTES_1_GROUP_ID}
+                        String getAssignedToId() {GroupTest.ATTRIBUTES_1_GROUP_ID}
                         KimType getKimType() {GroupTest.KIM_TYPE_1}
                         KimAttribute getKimAttribute() {GroupTest.KIM_ATTRIBUTE_1}
                         String getAttributeValue() {GroupTest.ATTRIBUTES_1_VALUE}
                         Long getVersionNumber() { GroupTest.ATTRIBUTES_1_VER_NBR }
                         String getObjectId() { GroupTest.ATTRIBUTES_1_OBJ_ID }}).build(),
-                    GroupAttribute.Builder.create(new GroupAttributeContract() {
+                    KimAttributeData.Builder.create(new KimAttributeDataContract() {
 				        String getId() {GroupTest.ATTRIBUTES_2_ID}
-                        String getGroupId() {GroupTest.ATTRIBUTES_2_GROUP_ID}
+                        String getAssignedToId() {GroupTest.ATTRIBUTES_2_GROUP_ID}
                         KimType getKimType() {GroupTest.KIM_TYPE_2}
                         KimAttribute getKimAttribute() {GroupTest.KIM_ATTRIBUTE_2}
                         String getAttributeValue() {GroupTest.ATTRIBUTES_2_VALUE}
@@ -253,7 +255,7 @@ class GroupTest {
         Assert.assertEquals(new Boolean(ACTIVE).booleanValue(),group.active)
 	    /*Assert.assertEquals(2, group.members.size())
         Assert.assertEquals(MEMBER_1_ID, group.members[0].id)
-        Assert.assertEquals(MEMBER_1_GROUP_ID, group.members[0].groupId)
+        Assert.assertEquals(MEMBER_1_GROUP_ID, group.members[0].assignedToId)
         Assert.assertEquals(MEMBER_1_MEMBER_ID, group.members[0].memberId)
         Assert.assertEquals(MEMBER_1_TYPE_CD, group.members[0].typeCode)
         Assert.assertEquals(MEMBER_1_ACTIVE_FROM, group.members[0].activeFromDate)
@@ -262,7 +264,7 @@ class GroupTest {
         Assert.assertEquals(MEMBER_1_VER_NBR, group.members[0].versionNumber)
 
         Assert.assertEquals(MEMBER_2_ID, group.members[1].id)
-        Assert.assertEquals(MEMBER_2_GROUP_ID, group.members[1].groupId)
+        Assert.assertEquals(MEMBER_2_GROUP_ID, group.members[1].assignedToId)
         Assert.assertEquals(MEMBER_2_MEMBER_ID, group.members[1].memberId)
         Assert.assertEquals(MEMBER_2_TYPE_CD, group.members[1].typeCode)
         Assert.assertEquals(null, group.members[1].activeFromDate)
@@ -272,7 +274,7 @@ class GroupTest {
 
 	    Assert.assertEquals(2, group.attributes.size())
         Assert.assertEquals(ATTRIBUTES_1_ID, group.attributes[0].id)
-        Assert.assertEquals(ATTRIBUTES_1_GROUP_ID, group.attributes[0].groupId)
+        Assert.assertEquals(ATTRIBUTES_1_GROUP_ID, group.attributes[0].assignedToId)
         Assert.assertEquals(KIM_TYPE_1, group.attributes[0].kimType)
         Assert.assertEquals(KIM_ATTRIBUTE_1, group.attributes[0].kimAttribute)
         Assert.assertEquals(ATTRIBUTES_1_VALUE, group.attributes[0].attributeValue)
@@ -280,7 +282,7 @@ class GroupTest {
         Assert.assertEquals(ATTRIBUTES_1_VER_NBR, group.attributes[0].versionNumber)
 
         Assert.assertEquals(ATTRIBUTES_2_ID, group.attributes[1].id)
-        Assert.assertEquals(ATTRIBUTES_2_GROUP_ID, group.attributes[1].groupId)
+        Assert.assertEquals(ATTRIBUTES_2_GROUP_ID, group.attributes[1].assignedToId)
         Assert.assertEquals(KIM_TYPE_2, group.attributes[1].kimType)
         Assert.assertEquals(KIM_ATTRIBUTE_2, group.attributes[1].kimAttribute)
         Assert.assertEquals(ATTRIBUTES_2_VALUE, group.attributes[1].attributeValue)

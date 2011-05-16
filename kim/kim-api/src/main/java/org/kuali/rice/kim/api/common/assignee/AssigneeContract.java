@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.api.permission;
+package org.kuali.rice.kim.api.common.assignee;
+
+import org.kuali.rice.kim.api.common.delegate.DelegateContract;
 
 import java.util.List;
-
-import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 
 //TODO Get a better description
 /**
@@ -27,7 +27,7 @@ import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
  * never against roles or groups.
  *  
  */
-public interface PermissionAssigneeContract{
+public interface AssigneeContract {
 
     /**
      * The Principal ID referenced by the Permission Assignee.
@@ -46,8 +46,7 @@ public interface PermissionAssigneeContract{
    /** 
 	 * List of Delegates for a Permission Assignee 
 	 * 
-	 * @ return delegates
+	 * @return delegates
 	 */
-	// TODO Find modelized Delegate
-	List<DelegateInfo> getDelegates();
+	List<? extends DelegateContract> getDelegates();
 }

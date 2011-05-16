@@ -93,7 +93,7 @@
     <jaxen.version>1.1.1</jaxen.version>
     <!-- 1.1.1 is not in maven central repo -->
     <jdom.version>1.1</jdom.version>
-    <jetty.version>7.4.0.v20110414</jetty.version>
+    <jetty.version>7.4.1.v20110513</jetty.version>
     <jotm.version>2.1.9</jotm.version>
     <jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
     <jsp-api.version>2.1</jsp-api.version>

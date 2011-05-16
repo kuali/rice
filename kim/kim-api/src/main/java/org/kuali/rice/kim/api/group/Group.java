@@ -25,6 +25,8 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -71,7 +73,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
 
     @XmlElementWrapper(name = Elements.ATTRIBUTES, required = false)
     @XmlElement(name = Elements.ATTRIBUTE, required = false)
-    private final List<GroupAttribute> attributes;
+    private final List<KimAttributeData> attributes;
 
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
@@ -104,9 +106,9 @@ public final class Group implements GroupContract, ModelObjectComplete {
         name = builder.getName();
         description = builder.getDescription();
         kimTypeId = builder.getKimTypeId();
-        attributes = new ArrayList<GroupAttribute>();
+        attributes = new ArrayList<KimAttributeData>();
         if (!CollectionUtils.isEmpty(builder.getAttributes())) {
-            for (GroupAttribute.Builder attribute : builder.getAttributes()) {
+            for (KimAttributeData.Builder attribute : builder.getAttributes()) {
                 attributes.add(attribute.build());
             }
         }
@@ -125,7 +127,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
         private String name;
         private String description;
         private String kimTypeId;
-        private List<GroupAttribute.Builder> attributes;
+        private List<KimAttributeData.Builder> attributes;
         private boolean active;
         private Long versionNumber;
         private String objectId;
@@ -154,10 +156,10 @@ public final class Group implements GroupContract, ModelObjectComplete {
             builder.setId(contract.getId());
             builder.setDescription(contract.getDescription());
 
-            List<GroupAttribute.Builder> groupAttributeBuilders = new ArrayList<GroupAttribute.Builder>();
+            List<KimAttributeData.Builder> groupAttributeBuilders = new ArrayList<KimAttributeData.Builder>();
             if (!CollectionUtils.isEmpty(contract.getAttributes())) {
-                for (GroupAttributeContract attributeContract : contract.getAttributes()) {
-                    GroupAttribute.Builder attributeBuilder = GroupAttribute.Builder.create(attributeContract);
+                for (KimAttributeDataContract attributeContract : contract.getAttributes()) {
+                    KimAttributeData.Builder attributeBuilder = KimAttributeData.Builder.create(attributeContract);
                     groupAttributeBuilders.add(attributeBuilder);
                 }
             }
@@ -227,11 +229,11 @@ public final class Group implements GroupContract, ModelObjectComplete {
         }
 
         @Override
-        public List<GroupAttribute.Builder> getAttributes() {
+        public List<KimAttributeData.Builder> getAttributes() {
             return attributes;
         }
 
-        public void setAttributes(List<GroupAttribute.Builder> attributes) {
+        public void setAttributes(List<KimAttributeData.Builder> attributes) {
             this.attributes = attributes;
         }
 
@@ -309,13 +311,13 @@ public final class Group implements GroupContract, ModelObjectComplete {
     }
 
     @Override
-    public List<GroupAttribute> getAttributes() {
+    public List<KimAttributeData> getAttributes() {
         return attributes;
     }
 
     public AttributeSet getAttributeSet() {
         AttributeSet attributeSet = new AttributeSet( this.attributes.size() );
-        for ( GroupAttribute attr : attributes ) {
+        for ( KimAttributeData attr : attributes ) {
         	if ( attr.getKimAttribute() != null ) {
         		attributeSet.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
         	} else {

@@ -21,8 +21,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupAttribute;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
@@ -473,7 +473,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							pndMemberRoleQualifier = new RoleDocumentDelegationMemberQualifier();
 							pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getId());
 							pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
-							pndMemberRoleQualifier.setDelegationMemberId(memberRoleQualifier.getDelegationMemberId());
+							pndMemberRoleQualifier.setDelegationMemberId(memberRoleQualifier.getAssignedToId());
 							pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
 							pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
 							pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
@@ -749,7 +749,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				    		docRoleQualifier.setKimAttrDefnId(qualifier.getKimAttributeId());
 				    		docRoleQualifier.setKimAttribute(qualifier.getKimAttribute());
 				    		docRoleQualifier.setKimTypId(qualifier.getKimTypeId());
-				    		docRoleQualifier.setRoleMemberId(qualifier.getRoleMemberId());
+				    		docRoleQualifier.setRoleMemberId(qualifier.getAssignedToId());
 				    		docRoleQualifier.setEdit(true);
 				    		formatAttrValIfNecessary(docRoleQualifier);
 				    		docRoleQualifiers.add(docRoleQualifier);
@@ -1331,7 +1331,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 										attribute.setId(qualifier.getAttrDataId());
 										attribute.setAttributeValue(qualifier.getAttrVal());
 										attribute.setKimAttributeId(qualifier.getKimAttrDefnId());
-										attribute.setRoleMemberId(qualifier.getRoleMemberId());
+										attribute.setAssignedToId(qualifier.getRoleMemberId());
 										attribute.setKimTypeId(qualifier.getKimTypId());
 
 										updateAttrValIfNecessary(attribute);
@@ -1825,7 +1825,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				pndMemberRoleQualifier = new KimDocumentRoleQualifier();
 				pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getId());
 				pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
-				pndMemberRoleQualifier.setRoleMemberId(memberRoleQualifier.getRoleMemberId());
+				pndMemberRoleQualifier.setRoleMemberId(memberRoleQualifier.getAssignedToId());
 				pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
 				pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
 				pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
@@ -1947,7 +1947,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							pndMemberRoleQualifier = new RoleDocumentDelegationMemberQualifier();
 							pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getId());
 							pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
-							pndMemberRoleQualifier.setDelegationMemberId(memberRoleQualifier.getDelegationMemberId());
+							pndMemberRoleQualifier.setDelegationMemberId(memberRoleQualifier.getAssignedToId());
 							pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
 							pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
 							pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
@@ -2265,7 +2265,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					newRoleMemberAttributeData = new RoleMemberAttributeDataImpl();
 					newRoleMemberAttributeData.setId(memberRoleQualifier.getAttrDataId());
 					newRoleMemberAttributeData.setAttributeValue(memberRoleQualifier.getAttrVal());
-					newRoleMemberAttributeData.setRoleMemberId(memberRoleQualifier.getRoleMemberId());
+					newRoleMemberAttributeData.setAssignedToId(memberRoleQualifier.getRoleMemberId());
 					newRoleMemberAttributeData.setKimTypeId(memberRoleQualifier.getKimTypId());
 					newRoleMemberAttributeData.setKimAttributeId(memberRoleQualifier.getKimAttrDefnId());
 
@@ -2274,8 +2274,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					if(ObjectUtils.isNotNull(origAttributes)){
 						for(RoleMemberAttributeDataImpl origAttribute: origAttributes){
 							if(activatingInactive && StringUtils.equals(origAttribute.getKimAttributeId(), newRoleMemberAttributeData.getKimAttributeId()) &&
-									StringUtils.equals(newRoleMemberAttributeData.getRoleMemberId(), newRoleMemberIdAssigned)){
-								newRoleMemberAttributeData.setRoleMemberId(origAttribute.getRoleMemberId());
+									StringUtils.equals(newRoleMemberAttributeData.getAssignedToId(), newRoleMemberIdAssigned)){
+								newRoleMemberAttributeData.setAssignedToId(origAttribute.getAssignedToId());
 								newRoleMemberAttributeData.setId(origAttribute.getId());
 							}
 							if(origAttribute.getId()!=null && StringUtils.equals(origAttribute.getId(), newRoleMemberAttributeData.getId())){
@@ -2441,14 +2441,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					newDelegationMemberAttributeData = new KimDelegationMemberAttributeDataImpl();
 					newDelegationMemberAttributeData.setId(memberRoleQualifier.getAttrDataId());
 					newDelegationMemberAttributeData.setAttributeValue(memberRoleQualifier.getAttrVal());
-					newDelegationMemberAttributeData.setDelegationMemberId(memberRoleQualifier.getDelegationMemberId());
+					newDelegationMemberAttributeData.setAssignedToId(memberRoleQualifier.getDelegationMemberId());
 					newDelegationMemberAttributeData.setKimTypeId(memberRoleQualifier.getKimTypId());
 					newDelegationMemberAttributeData.setKimAttributeId(memberRoleQualifier.getKimAttrDefnId());
 					if(ObjectUtils.isNotNull(origAttributes)){
 						for(KimDelegationMemberAttributeDataImpl origAttribute: origAttributes){
 							if(activatingInactive && StringUtils.equals(origAttribute.getKimAttributeId(), newDelegationMemberAttributeData.getKimAttributeId()) &&
-									StringUtils.equals(newDelegationMemberAttributeData.getDelegationMemberId(), delegationMemberId)){
-								newDelegationMemberAttributeData.setDelegationMemberId(origAttribute.getDelegationMemberId());
+									StringUtils.equals(newDelegationMemberAttributeData.getAssignedToId(), delegationMemberId)){
+								newDelegationMemberAttributeData.setAssignedToId(origAttribute.getAssignedToId());
 								newDelegationMemberAttributeData.setId(origAttribute.getId());
 							}
 							if(StringUtils.equals(origAttribute.getId(), newDelegationMemberAttributeData.getId())){
@@ -2527,7 +2527,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected List<GroupDocumentQualifier> loadGroupQualifiers(IdentityManagementGroupDocument IdentityManagementGroupDocument,
-			List<GroupAttribute> attributeDataList){
+			List<KimAttributeData> attributeDataList){
 		List<GroupDocumentQualifier> pndGroupQualifiers = new ArrayList<GroupDocumentQualifier>();
 		GroupDocumentQualifier pndGroupQualifier = new GroupDocumentQualifier();
 		AttributeDefinitionMap origAttributes = IdentityManagementGroupDocument.getDefinitions();
@@ -2538,7 +2538,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for(String key: origAttributes.keySet()) {
 				origAttributeId = IdentityManagementGroupDocument.getKimAttributeDefnId(origAttributes.get(key));
 				if(CollectionUtils.isNotEmpty(attributeDataList)){
-					for(GroupAttribute groupQualifier: attributeDataList){
+					for(KimAttributeData groupQualifier: attributeDataList){
 						if(origAttributeId!=null && ObjectUtils.isNotNull(groupQualifier.getKimAttribute()) &&
 								StringUtils.equals(origAttributeId, groupQualifier.getKimAttribute().getId())){
 							pndGroupQualifier = new GroupDocumentQualifier();
@@ -2547,7 +2547,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							pndGroupQualifier.setAttrVal(groupQualifier.getAttributeValue());
 							pndGroupQualifier.setKimAttrDefnId(groupQualifier.getKimAttribute().getId());
 							pndGroupQualifier.setKimTypId(groupQualifier.getKimType().getId());
-							pndGroupQualifier.setGroupId(groupQualifier.getGroupId());
+							pndGroupQualifier.setGroupId(groupQualifier.getAssignedToId());
 							pndGroupQualifiers.add(pndGroupQualifier);
 							attributePresent = true;
 						}
@@ -2681,13 +2681,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					newGroupAttributeData = new GroupAttributeBo();
 					newGroupAttributeData.setId(groupQualifier.getAttrDataId());
 					newGroupAttributeData.setAttributeValue(groupQualifier.getAttrVal());
-					newGroupAttributeData.setGroupId(groupQualifier.getGroupId());
+					newGroupAttributeData.setAssignedToId(groupQualifier.getGroupId());
 					newGroupAttributeData.setKimTypeId(groupQualifier.getKimTypId());
 					newGroupAttributeData.setKimAttributeId(groupQualifier.getKimAttrDefnId());
 					if(ObjectUtils.isNotNull(origAttributes)){
 						for(GroupAttributeBo origAttribute: origAttributes){
 							if(StringUtils.equals(origAttribute.getKimAttributeId(), newGroupAttributeData.getKimAttributeId()) &&
-									StringUtils.equals(newGroupAttributeData.getGroupId(), origAttribute.getGroupId())){
+									StringUtils.equals(newGroupAttributeData.getAssignedToId(), origAttribute.getAssignedToId())){
 							    newGroupAttributeData.setId(origAttribute.getId());
 							}
 							if(origAttribute.getId()!=null && StringUtils.equals(origAttribute.getId(), newGroupAttributeData.getId())){
@@ -2806,7 +2806,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		    	qualifier = new KimDocumentRoleQualifier();
 				qualifier.setAttrDataId(attribute.getId());
 				qualifier.setAttrVal(attribute.getAttributeValue());
-				qualifier.setRoleMemberId(attribute.getRoleMemberId());
+				qualifier.setRoleMemberId(attribute.getAssignedToId());
 				qualifier.setKimTypId(attribute.getKimTypeId());
 				qualifier.setKimAttrDefnId(attribute.getKimAttributeId());
 				qualifier.setKimAttribute(attribute.getKimAttribute());

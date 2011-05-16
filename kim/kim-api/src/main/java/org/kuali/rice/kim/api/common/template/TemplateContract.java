@@ -13,57 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.api.permission;
+package org.kuali.rice.kim.api.common.template;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 
-import java.util.List;
-
-/**
- * This is the contract for a Permission. Represents a single permission within the system.
- * 
- * Permissions are attached to roles. All authorization checks should be done against permissions,
- * never against roles or groups.
- *  
- */
-public interface PermissionContract extends Versioned, GloballyUnique, Inactivatable, Identifiable{;
-    
+public interface TemplateContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
     /**
-     * The namespace code that this Permission belongs too.
+     * The namespace code that this KIM Permission Template belongs too.
      *
      * @return namespaceCode
      */
     String getNamespaceCode();
-    
+
     /**
-     * The name of the Permission.
+     * The name of the KIM Permission Template.
      *
      * @return name
      */
     String getName();
-    
+
     /**
-     * The description of the Permission.
+     * The description of the KIM Permission Template.
      *
      * @return description
      */
 	String getDescription();
 
     /**
-     * The Template ID referenced by the Permission.
-     * 
-     * @return templateId
+     * The KIM Type ID referenced by the KIM Permission Template.
+     *
+     * @return typeId
      */
-	String getTemplateId();   
-	
-   /** 
-	 * List of Attributes for a Permission. 
-	 * 
-	 * @ return attributes
-	 */
-    List<? extends KimAttributeDataContract> getAttributes();
+	String getKimTypeId();
 }

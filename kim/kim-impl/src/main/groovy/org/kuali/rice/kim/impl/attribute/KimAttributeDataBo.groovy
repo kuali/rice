@@ -16,7 +16,7 @@
 
 package org.kuali.rice.kim.impl.attribute
 
-import org.kuali.rice.kim.api.attribute.KimAttributeDataContract
+import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase

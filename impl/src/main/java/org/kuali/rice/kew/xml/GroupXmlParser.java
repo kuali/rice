@@ -23,25 +23,21 @@ import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.api.attribute.KimAttribute;
+import org.kuali.rice.kim.api.common.attribute.KimAttribute;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupAttribute;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.impl.group.GroupBo;
-import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -242,14 +238,14 @@ public class GroupXmlParser {
         if (element.getChild(ATTRIBUTES, GROUP_NAMESPACE) != null) {
             List<Element> attributes = element.getChild(ATTRIBUTES, GROUP_NAMESPACE).getChildren();
             AttributeSet attributeSet = new AttributeSet();
-            List<GroupAttribute.Builder> groupAttributes = new ArrayList<GroupAttribute.Builder>();
+            List<KimAttributeData.Builder> groupAttributes = new ArrayList<KimAttributeData.Builder>();
             for (Element attr : attributes ) {
-                GroupAttribute.Builder attrBuilder = GroupAttribute.Builder.create(KimType.Builder.create(kimTypeInfo));
+                KimAttributeData.Builder attrBuilder = KimAttributeData.Builder.create(KimType.Builder.create(kimTypeInfo));
                 String key = attr.getAttributeValue(KEY);
                 String value = attr.getAttributeValue(VALUE);
                 attrBuilder.setKimAttribute(KimAttribute.Builder.create("org.kuali.rice.kim.bo.impl.KimAttributes", key, kimTypeInfo.getNamespaceCode()));
                 attrBuilder.setValue(value);
-                attrBuilder.setGroupId(groupInfo.getId());
+                attrBuilder.setAssignedToId(groupInfo.getId());
 
                 //attributeSet.put(key, value);
                 groupAttributes.add(attrBuilder);

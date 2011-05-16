@@ -61,4 +61,10 @@ public interface CampusContract extends Versioned, GloballyUnique, Inactivatable
 	 * @return short name for Campus.
 	 */
 	CampusTypeContract getCampusType();
+
+	/**
+	 * @return the active
+	 */
+	boolean isActive();
+
 }

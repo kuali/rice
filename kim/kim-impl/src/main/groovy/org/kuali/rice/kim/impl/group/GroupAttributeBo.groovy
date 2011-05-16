@@ -19,29 +19,29 @@ package org.kuali.rice.kim.impl.group
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Table
-import org.kuali.rice.kim.api.group.GroupAttribute
-import org.kuali.rice.kim.api.group.GroupAttributeContract
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData
+import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.impl.attribute.AttributeData
 import org.kuali.rice.kim.impl.attribute.KimAttributeBo
 import org.kuali.rice.kim.impl.type.KimTypeBo
 
 @Entity
 @Table(name="KRIM_GRP_ATTR_DATA_T")
-public class GroupAttributeBo extends AttributeData implements GroupAttributeContract {
+public class GroupAttributeBo extends AttributeData implements KimAttributeDataContract {
    @Column(name="GRP_ID")
-   String groupId
+   String assignedToId
 
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
      * @return the immutable object
      */
-    static GroupAttribute to(GroupAttributeBo bo) {
+    static KimAttributeData to(GroupAttributeBo bo) {
         if (bo == null) {
             return null
         }
 
-        return GroupAttribute.Builder.create(bo).build();
+        return KimAttributeData.Builder.create(bo).build();
     }
 
     /**
@@ -49,14 +49,14 @@ public class GroupAttributeBo extends AttributeData implements GroupAttributeCon
      * @param im immutable object
      * @return the mutable bo
      */
-    static GroupAttributeBo from(GroupAttribute im) {
+    static GroupAttributeBo from(KimAttributeData im) {
         if (im == null) {
             return null
         }
 
         GroupAttributeBo bo = new GroupAttributeBo()
         bo.id = im.id
-        bo.groupId = im.groupId
+        bo.assignedToId = im.assignedToId
         bo.kimAttribute = KimAttributeBo.from(im.kimAttribute)
         bo.kimAttributeId = im.kimAttribute?.id
         bo.attributeValue = bo.attributeValue

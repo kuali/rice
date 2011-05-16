@@ -28,13 +28,13 @@ import javax.persistence.Table;
 @Table(name="KRIM_PERM_ATTR_DATA_T")
 public class PermissionAttributeDataImpl extends KimAttributeDataBo {
     @Column(name="PERM_ID")
-    protected String permissionId;
+    protected String assignedToId;
 
-    public String getPermissionId() {
-        return this.permissionId;
+    public String getAssignedToId() {
+        return this.assignedToId;
     }
 
-    public void setPermissionId(String permissionId) {
-        this.permissionId = permissionId;
+    public void setAssignedToId(String assignedToId) {
+        this.assignedToId = assignedToId;
     }
 }

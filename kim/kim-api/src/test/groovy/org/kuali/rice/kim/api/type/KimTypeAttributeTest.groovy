@@ -19,7 +19,7 @@ package org.kuali.rice.kim.api.type
 import javax.xml.bind.JAXBContext
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.kim.api.attribute.KimAttributeContract
+import org.kuali.rice.kim.api.common.attribute.KimAttributeContract
 
 class KimTypeAttributeTest {
 

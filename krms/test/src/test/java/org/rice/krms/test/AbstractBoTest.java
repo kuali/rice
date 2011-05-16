@@ -1,5 +1,7 @@
 package org.rice.krms.test;
 
+import javax.xml.namespace.QName;
+
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -9,8 +11,8 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 @BaselineMode(Mode.ROLLBACK)
 public abstract class AbstractBoTest extends KRMSTestCase {
 	
-	private final GenericTestDao dao = new GenericTestDao();
-	private final TestBoService boService = new TestBoService(dao);
+	private GenericTestDao dao;
+	private TestBoService boService;
 	
 	// TODO: get rid of this hack that is needed to set up the OJB properties location at the right time. 
 	// BEGIN hack
@@ -34,11 +36,12 @@ public abstract class AbstractBoTest extends KRMSTestCase {
 	}
 	
 	// END hack
-
+	
 	
 	@Before
 	public void setup() {
-		dao.setJcdAlias("krmsDataSource");
+	    dao = (GenericTestDao)getTestHarnessSpringResourceLoader().getService(new QName("genericTestDao"));
+		boService = new TestBoService(dao);
 	}
 	
 	protected TestBoService getBoService() {

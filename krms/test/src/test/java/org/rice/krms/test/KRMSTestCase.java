@@ -37,6 +37,8 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 
 	private static final String KRMS_MODULE_NAME = "krms";
 	
+	private SpringResourceLoader krmsTestResourceLoader;
+	
 	public KRMSTestCase() {
 		super(KRMS_MODULE_NAME);
 	}
@@ -56,11 +58,16 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 //		new SQLDataLoader("classpath:org/kuali/rice/kim/test/CircularGroupsTestData.sql", "/").runSql();
 	}
 	
+	
+	
 	@Override
 	protected Lifecycle getLoadApplicationLifecycle() {
-    	SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KRMSTestHarnessApplicationResourceLoader"), "classpath:KRMSTestHarnessSpringBeans.xml", null);
-    	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
-    	return springResourceLoader;
+	    if (krmsTestResourceLoader == null) {
+	        krmsTestResourceLoader = new SpringResourceLoader(new QName("KRMSTestHarnessApplicationResourceLoader"), "classpath:KRMSTestHarnessSpringBeans.xml", null);
+	        krmsTestResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
+	        getTestHarnessSpringResourceLoader().addResourceLoader(krmsTestResourceLoader);
+	    }
+    	return krmsTestResourceLoader;
 	}
 	
 //	/**

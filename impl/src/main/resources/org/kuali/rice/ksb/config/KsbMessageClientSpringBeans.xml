@@ -111,18 +111,6 @@
 		<property name="nonTransactionalDataSource" ref="rice.ksb.messageNonTransactionalDataSource"/>
 	</bean>
 
-	<bean id="rice.ksb.contextServiceLocator" class="org.kuali.rice.ksb.service.KSBContextServiceLocator">
-		<property name="services">
-			<map>
-				<entry key="rice.ksb.messageHelper"><ref bean="rice.ksb.messageHelper"/></entry>
-				<entry key="rice.ksb.threadPool"><ref bean="rice.ksb.threadPool"/></entry>
-				<entry key="rice.ksb.scheduledThreadPool"><ref bean="rice.ksb.scheduledThreadPool"/></entry>
-				<entry key="cxf"><ref bean="cxf"/></entry>
-				<entry key="org.apache.cxf.endpoint.ServerRegistry"><ref bean="org.apache.cxf.endpoint.ServerRegistry"/></entry>
-			</map>
-		</property>
-	</bean>
-
   	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
 		<property name="interceptorNames">
 			<list>

@@ -80,6 +80,9 @@ public class ServiceConnectorFactory {
 			}
 		}
 		
+		// TODO switch this to use serviceConfiguration.getType() at some point in the future and allow for
+		// this to be easily "pluggable" with new connector types
+		//
 		// if set in local mode then preempt any protocol connectors
 		if (ConfigContext.getCurrentContextConfig().getDevMode()) {
 			serviceConnector = new BusLocalConnector(serviceConfiguration);

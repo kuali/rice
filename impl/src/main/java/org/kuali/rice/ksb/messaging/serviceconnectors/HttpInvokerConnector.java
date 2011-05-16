@@ -112,7 +112,7 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
 		    this.httpClientParams = new HttpClientParams();
 			configureDefaultHttpClientParams(this.httpClientParams);
 			Properties configProps = ConfigContext.getCurrentContextConfig().getProperties();
-			for (Iterator iterator = configProps.keySet().iterator(); iterator.hasNext();) {
+			for (Iterator<Object> iterator = configProps.keySet().iterator(); iterator.hasNext();) {
 				String paramName = (String) iterator.next();
 				if (paramName.startsWith("http.")) {
 					HttpClientHelper.setParameter(this.httpClientParams, paramName, (String) configProps.get(paramName));

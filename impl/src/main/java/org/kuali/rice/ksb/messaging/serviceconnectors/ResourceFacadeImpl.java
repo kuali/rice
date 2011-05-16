@@ -17,6 +17,7 @@ package org.kuali.rice.ksb.messaging.serviceconnectors;
 
 import java.net.URL;
 import java.util.Map;
+import java.lang.SuppressWarnings;
 
 import org.apache.cxf.binding.BindingFactoryManager;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -101,7 +102,11 @@ public class ResourceFacadeImpl implements ResourceFacade {
 					" in service " + serviceConfiguration.getServiceName() + " is not loadable", e);
 		}
 
-        return (R)getServiceProxy(resourceClass);
+		
+		// allow this to class cast if the types don't match, up to the caller to ensure this is correct
+		@SuppressWarnings("unchecked")
+        R serviceProxy = (R)getServiceProxy(resourceClass);
+		return serviceProxy;
 	}
 
 	/**
@@ -138,7 +143,7 @@ public class ResourceFacadeImpl implements ResourceFacade {
         }
 
         Object service = clientFactory.create();
-        return (R)getServiceProxyWithFailureMode(service, serviceConfiguration);
+        return getServiceProxyWithFailureMode(resourceClass, service, serviceConfiguration);
 	}
 	
 	public boolean isSingleResourceService() {
@@ -153,9 +158,13 @@ public class ResourceFacadeImpl implements ResourceFacade {
 		return this.credentialsSource;
 	}
 
-	protected Object getServiceProxyWithFailureMode(final Object service, final RestServiceConfiguration serviceConfiguration) {
+	protected <R> R getServiceProxyWithFailureMode(final Class<R> resourceClass, final Object service, final RestServiceConfiguration serviceConfiguration) {
 		Object bamWrappedClientProxy = BAMClientProxy.wrap(service, serviceConfiguration);
-		return BusClientFailureProxy.wrap(bamWrappedClientProxy, serviceConfiguration);
+		Object proxy = BusClientFailureProxy.wrap(bamWrappedClientProxy, serviceConfiguration);
+		if (!resourceClass.isInstance(proxy)) {
+			throw new IllegalArgumentException("Wrapped proxy is of the wrong type " + proxy.getClass() + ", expected " + resourceClass);
+		}
+		return resourceClass.cast(proxy);
 	}
 
 }

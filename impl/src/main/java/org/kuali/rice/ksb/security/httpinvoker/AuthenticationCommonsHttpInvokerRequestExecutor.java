@@ -21,9 +21,9 @@ import java.io.IOException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.kuali.rice.core.security.credentials.CredentialsSource;
+import org.kuali.rice.core.api.security.credentials.CredentialsSource;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
 import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
 import org.springframework.util.Assert;
@@ -48,7 +48,7 @@ public final class AuthenticationCommonsHttpInvokerRequestExecutor extends
     /**
      * Details about the service that the CredentialsSource may need.
      */
-    private final ServiceInfo serviceInfo;
+    private final ServiceConfiguration serviceConfiguration;
 
     /**
      * Constructor that accepts the CredentialsSource and Service Info.
@@ -57,12 +57,12 @@ public final class AuthenticationCommonsHttpInvokerRequestExecutor extends
      * @param serviceInfo information about the service.
      */
     public AuthenticationCommonsHttpInvokerRequestExecutor(final HttpClient httpClient, 
-        final CredentialsSource credentialsSource, final ServiceInfo serviceInfo) {
+        final CredentialsSource credentialsSource, final ServiceConfiguration serviceConfiguration) {
         super(httpClient);
         Assert.notNull(credentialsSource, "credentialsSource cannot be null.");
-        Assert.notNull(serviceInfo, "serviceInfo cannot be null.");
+        Assert.notNull(serviceConfiguration, "serviceConfiguration cannot be null.");
         this.credentialsSource = credentialsSource;
-        this.serviceInfo = serviceInfo;
+        this.serviceConfiguration = serviceConfiguration;
     }
 
     /**
@@ -72,7 +72,7 @@ public final class AuthenticationCommonsHttpInvokerRequestExecutor extends
 
     protected void setRequestBody(final HttpInvokerClientConfiguration config,
         final PostMethod postMethod, final ByteArrayOutputStream baos) throws IOException {
-    	final UsernamePasswordCredentials credentials = (UsernamePasswordCredentials) this.credentialsSource.getCredentials(this.serviceInfo.getEndpointUrl());
+    	final UsernamePasswordCredentials credentials = (UsernamePasswordCredentials) this.credentialsSource.getCredentials(this.serviceConfiguration.getEndpointUrl().toExternalForm());
 
         final String base64 = credentials.getUsername() + ":"
         + credentials.getPassword();

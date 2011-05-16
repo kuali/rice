@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.registry.ServiceInfo;
 
 
 /**
@@ -30,13 +31,15 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
  */
 public class ServiceRegistryForm extends ActionForm {
 
-    private String methodToCall;
-    private List<ServiceInfo> publishedServices = new ArrayList<ServiceInfo>();
-    private List<ServiceInfo> publishedTempServices = new ArrayList<ServiceInfo>();
+    private static final long serialVersionUID = -6662210181549552182L;
+    
+	private String methodToCall;
+    private List<ServiceConfiguration> publishedServices = new ArrayList<ServiceConfiguration>();
     private List<ServiceInfo> globalRegistryServices = new ArrayList<ServiceInfo>();
 
     private String myIpAddress;
     private String myServiceNamespace;
+    private String myInstanceId;
     private Boolean devMode;
 
     public String getMethodToCall() {
@@ -51,17 +54,11 @@ public class ServiceRegistryForm extends ActionForm {
     public void setGlobalRegistryServices(List<ServiceInfo> globalRegistryServices) {
         this.globalRegistryServices = globalRegistryServices;
     }
-    public List<ServiceInfo> getPublishedServices() {
+    public List<ServiceConfiguration> getPublishedServices() {
         return this.publishedServices;
     }
-    public void setPublishedServices(List<ServiceInfo> publishedServices) {
+    public void setPublishedServices(List<ServiceConfiguration> publishedServices) {
         this.publishedServices = publishedServices;
-    }
-    public List<ServiceInfo> getPublishedTempServices() {
-        return this.publishedTempServices;
-    }
-    public void setPublishedTempServices(List<ServiceInfo> publishedTempServices) {
-        this.publishedTempServices = publishedTempServices;
     }
     public String getMyIpAddress() {
         return this.myIpAddress;
@@ -75,7 +72,13 @@ public class ServiceRegistryForm extends ActionForm {
     public void setMyServiceNamespace(String myServiceNamespace) {
         this.myServiceNamespace = myServiceNamespace;
     }
-    public Boolean getDevMode() {
+    public String getMyInstanceId() {
+		return this.myInstanceId;
+	}
+	public void setMyInstanceId(String myInstanceId) {
+		this.myInstanceId = myInstanceId;
+	}
+	public Boolean getDevMode() {
         return this.devMode;
     }
     public void setDevMode(Boolean devMode) {

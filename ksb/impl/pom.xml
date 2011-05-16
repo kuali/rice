@@ -9,4 +9,16 @@
   <artifactId>rice-ksb-impl</artifactId>
   <version>2.0.0-m5-SNAPSHOT</version>
   <name>rice-ksb-impl</name>
+  <dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-ksb-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 </project>

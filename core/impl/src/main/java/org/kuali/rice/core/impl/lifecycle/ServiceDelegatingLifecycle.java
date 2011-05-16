@@ -20,9 +20,6 @@ import javax.xml.namespace.QName;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-
-import com.mysql.jdbc.log.Log;
 
 /**
  * A lifecycle that wraps a service.  This fetches and calls a lifecycle available
@@ -54,7 +51,12 @@ public class ServiceDelegatingLifecycle extends BaseLifecycle {
 	public void stop() throws Exception {
 	    if (isStarted()) {
 	    	try {
-	    		loadService(this.serviceName).stop();
+	    		Lifecycle lifecycle = loadService(this.serviceName);
+	    		if (lifecycle == null) {
+	    			LOG.warn("Couldn't stop service, failed to locate service with name " + serviceName);
+	    		} else {
+	    			lifecycle.stop();
+	    		}
 	    	} catch (Exception e) {
 	    		LOG.warn("couldn't stop service " + this.serviceName);
 	    		throw e;
@@ -66,7 +68,7 @@ public class ServiceDelegatingLifecycle extends BaseLifecycle {
 	protected Lifecycle loadService(QName serviceName) {
 	    Object service = GlobalResourceLoader.getService(serviceName);
 	    if (service == null) {
-	        throw new RuntimeException("Failed to locate service with name " + serviceName);
+	        return null;
 	    }
 	    if (!(service instanceof Lifecycle)) {
 	        throw new RuntimeException("Service with name " + serviceName + " does not implement the Lifecycle interface!");

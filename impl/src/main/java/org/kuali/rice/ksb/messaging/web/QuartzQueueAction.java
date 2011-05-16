@@ -78,7 +78,7 @@ public class QuartzQueueAction extends KSBAction {
 	PersistedMessageBO message = (PersistedMessageBO)job.getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
 	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
 	
-	KSBServiceLocator.getRouteQueueService().save(message);
+	KSBServiceLocator.getMessageQueueService().save(message);
 	KSBServiceLocator.getScheduler().deleteJob(quartzForm.getJobName(), quartzForm.getJobGroup());
 	request.setAttribute(RENDER_LIST_OVERRIDE, new Object());
 	establishRequiredState(request, form);

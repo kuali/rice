@@ -17,8 +17,8 @@
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:beans="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -54,8 +54,7 @@
                            http://www.springframework.org/schema/tx
                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
                            http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
-http://www.springframework.org/schema/task ">
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <bean id="config" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
         <property name="configLocations">
@@ -155,7 +154,7 @@ http://www.springframework.org/schema/task ">
         <property name="nonTransactionalMessageDataSource" ref="nonTransactionalDataSource"/>
         <property name="services">
             <list>
-                <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+                <bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
                     <property name="service">
                         <ref bean="soapService"/>
                     </property>
@@ -165,7 +164,7 @@ http://www.springframework.org/schema/task ">
                     <property name="retryAttempts" value="1"/>
                     <property name="busSecurity" value="false"/>
                 </bean>
-                <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+                <bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
                     <property name="service">
                         <ref bean="soapService"/>
                     </property>
@@ -175,40 +174,40 @@ http://www.springframework.org/schema/task ">
                     <property name="queue" value="false"/>
                     <property name="retryAttempts" value="1"/>
                 </bean>
-                <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                     <property name="service">
                         <ref bean="testLocalServiceFavoriteCall"/>
                     </property>
                     <property name="localServiceName" value="testLocalServiceFavoriteCall"/>
                 </bean>
-                <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                     <property name="service">
                         <ref bean="testExplodingServiceWithDefaults"/>
                     </property>
                     <property name="localServiceName" value="testExplodingServiceWithDefaults"/>
                 </bean>
-                <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                     <property name="service">
                         <ref bean="testJavaSecurityManagementService"/>
                     </property>
                     <property name="localServiceName" value="testJavaSecurityManagementService"/>
                     <property name="serviceNameSpaceURI" value="KEW"/>
                 </bean>
-                <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                     <property name="service">
                         <ref bean="testExplodingRetryCount"/>
                     </property>
                     <property name="localServiceName" value="testExplodingRetryCount"/>
                     <property name="retryAttempts" value="2"/>
                 </bean>
-                <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                     <property name="service">
                         <ref bean="testExplodingQueueTimeLimit"/>
                     </property>
                     <property name="localServiceName" value="explodingQueueTimeLimit"/>
                     <property name="millisToLive" value="2000"/>
                 </bean>
-                <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                     <property name="service">
                         <ref bean="testHarnessSharedTopic"/>
                     </property>
@@ -217,7 +216,7 @@ http://www.springframework.org/schema/task ">
                     <property name="queue" value="false"/>
                     <property name="retryAttempts" value="1"/>
                 </bean>
-                <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                     <property name="service">
                         <ref bean="testHarnessSharedTopic"/>
                     </property>
@@ -227,7 +226,7 @@ http://www.springframework.org/schema/task ">
                     <property name="queue" value="false"/>
                     <property name="retryAttempts" value="1"/>
                 </bean>
-                <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+                <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                     <property name="service">
                         <ref bean="testRepeatMessageQueue"/>
                     </property>

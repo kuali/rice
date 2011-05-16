@@ -16,19 +16,24 @@
 
 package org.kuali.rice.ksb.messaging;
 
-import org.junit.Test;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue;
-import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.kuali.rice.ksb.test.KSBTestCase;
-import org.kuali.rice.ksb.util.KSBConstants;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
-import javax.xml.namespace.QName;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import javax.xml.namespace.QName;
+
+import org.junit.Test;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
+import org.kuali.rice.ksb.api.registry.ServiceInfo;
+import org.kuali.rice.ksb.api.registry.ServiceRegistry;
+import org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue;
+import org.kuali.rice.ksb.test.KSBTestCase;
 
 /**
  * This test ensures that ServiceInfo and ServiceDefinition instances are being modified and removed correctly. 
@@ -44,14 +49,34 @@ public class ServiceUpdateAndRemovalTest extends KSBTestCase {
 	 */
 	@Test
 	public void testRemovalOfAllLocalServices() throws Exception {
-		ServiceRegistry serviceRegistry = KSBServiceLocator.getServiceRegistry();
-		String ipNumber = RiceUtilities.getIpNumber();
-		String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
-		List<ServiceInfo> serviceInfos = serviceRegistry.findLocallyPublishedServices(ipNumber, serviceNamespace);
-		assertTrue("There should be at least one locally published service in the database.", serviceInfos.size() > 0);
-		serviceRegistry.removeLocallyPublishedServices(ipNumber, serviceNamespace);
-		serviceInfos = serviceRegistry.findLocallyPublishedServices(ipNumber, serviceNamespace);
+		ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+		ServiceRegistry serviceRegistry = KsbApiServiceLocator.getServiceRegistry();
+		List<ServiceInfo> serviceInfos = findLocallyPublishedServices(serviceBus.getInstanceId(), serviceRegistry);
+		assertFalse("There should be at least one locally published service in the database.", serviceInfos.isEmpty());
+		serviceRegistry.takeInstanceOffline(serviceBus.getInstanceId());
+		serviceInfos = findLocallyPublishedServices(serviceBus.getInstanceId(), serviceRegistry);
 		assertEquals("There should not be any locally published services in the database.", 0, serviceInfos.size());
+	}
+	
+	private List<ServiceInfo> findLocallyPublishedServices(String instanceId, ServiceRegistry serviceRegistry) {
+		List<ServiceInfo> locallyPublishedServices = new ArrayList<ServiceInfo>();
+		List<ServiceInfo> serviceInfos = serviceRegistry.getAllOnlineServices();
+		for (ServiceInfo serviceInfo : serviceInfos) {
+			if (serviceInfo.getInstanceId().equals(instanceId)) {
+				locallyPublishedServices.add(serviceInfo);
+			}
+		}
+		return locallyPublishedServices;
+	}
+	
+	private ServiceInfo findLocallyPublishedService(String instanceId, QName serviceName, ServiceRegistry serviceRegistry) {
+		List<ServiceInfo> locallyPublishedServices = findLocallyPublishedServices(instanceId, serviceRegistry);
+		for (ServiceInfo serviceInfo : locallyPublishedServices) {
+			if (serviceInfo.getServiceName().equals(serviceName)) {
+				return serviceInfo;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -61,29 +86,26 @@ public class ServiceUpdateAndRemovalTest extends KSBTestCase {
 	 */
 	@Test
 	public void testModificationOfLocalServices() throws Exception {
-		RemotedServiceRegistry remotedServiceRegistry = KSBServiceLocator.getServiceDeployer();
+		ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+		ServiceRegistry serviceRegistry = KsbApiServiceLocator.getServiceRegistry();
 		QName serviceName = new QName("KEW", "serviceForTestingModifications");
-		QName forwardServiceName = new QName("KEW", "serviceForTestingModifications" + KSBConstants.FORWARD_HANDLER_SUFFIX);
 		ServiceInfo regularInfo = null;
-		ServiceInfo forwardInfo = null;
 		// Create and deploy a simple test service.
-		ServiceDefinition serviceDefinition = new JavaServiceDefinition();
+		JavaServiceDefinition serviceDefinition = new JavaServiceDefinition();
 		serviceDefinition.setServiceName(serviceName);
 		serviceDefinition.setPriority(4);
 		serviceDefinition.setService(new TestRepeatMessageQueue());
 		serviceDefinition.validate();
-		remotedServiceRegistry.registerService(serviceDefinition, true);
+		serviceBus.publishService(serviceDefinition, true);
 		// Retrieve the ServiceInfo for the original service and the ServiceInfo for the related forward.
-		regularInfo = remotedServiceRegistry.getRemotedServiceHolder(serviceName).getServiceInfo();
-		forwardInfo = remotedServiceRegistry.getRemotedServiceHolder(forwardServiceName).getServiceInfo();
+		regularInfo = findLocallyPublishedService(serviceBus.getInstanceId(), serviceName, serviceRegistry);
 		// Ensure that refreshing the local registry without modifying the ServiceDefinition yields the expected results.
-		assertRegistryRefreshHasExpectedResults(remotedServiceRegistry, regularInfo, forwardInfo, serviceName, forwardServiceName, false);
+		assertRegistryRefreshHasExpectedResults(serviceBus, serviceRegistry, regularInfo, serviceName, false);
 		// Ensure that refreshing the local registry after modifying the ServiceDefinition yields the expected results.
-		regularInfo = remotedServiceRegistry.getRemotedServiceHolder(serviceName).getServiceInfo();
-		forwardInfo = remotedServiceRegistry.getRemotedServiceHolder(forwardServiceName).getServiceInfo();
+		regularInfo = findLocallyPublishedService(serviceBus.getInstanceId(), serviceName, serviceRegistry);
 		serviceDefinition.setPriority(3);
 		serviceDefinition.validate();
-		assertRegistryRefreshHasExpectedResults(remotedServiceRegistry, regularInfo, forwardInfo, serviceName, forwardServiceName, true);
+		assertRegistryRefreshHasExpectedResults(serviceBus, serviceRegistry, regularInfo, serviceName, true);
 	}
 	
 	/**
@@ -99,51 +121,23 @@ public class ServiceUpdateAndRemovalTest extends KSBTestCase {
 	 * @param serviceDefinitionsShouldDiffer A flag indicating if the service definitions should be tested for similarity or difference after the refresh.
 	 * @throws Exception
 	 */
-	private void assertRegistryRefreshHasExpectedResults(RemotedServiceRegistry remotedServiceRegistry, ServiceInfo regularInfo, ServiceInfo forwardInfo,
-			QName serviceName, QName forwardServiceName, boolean serviceDefinitionsShouldDiffer) throws Exception {
-		MessageHelper messageHelper = KSBServiceLocator.getMessageHelper();
-		// Refresh the registry.
-		remotedServiceRegistry.refresh();
-		ServiceInfo newRegularInfo = remotedServiceRegistry.getRemotedServiceHolder(serviceName).getServiceInfo();
-		ServiceInfo newForwardInfo = remotedServiceRegistry.getRemotedServiceHolder(forwardServiceName).getServiceInfo();
+	private void assertRegistryRefreshHasExpectedResults(ServiceBus serviceBus, ServiceRegistry serviceRegistry, ServiceInfo regularInfo,
+			QName serviceName, boolean serviceDefinitionsShouldDiffer) throws Exception {
+		// Sync the bus
+		serviceBus.synchronize();
+		ServiceInfo newRegularInfo = findLocallyPublishedService(regularInfo.getInstanceId(), serviceName, serviceRegistry);
 		// Perform the assertions that should have the same outcome regardless of whether or not a ServiceDefinition was modified.
 		assertTrue("The ServiceInfo instances for the service should satisy the non-ServiceDefinition part of an isSame() check",
-				regularInfo.getAlive().equals(newRegularInfo.getAlive()) && regularInfo.getQname().equals(newRegularInfo.getQname()) &&
-						regularInfo.getServerIp().equals(newRegularInfo.getServerIp()) &&
-								regularInfo.getServiceNamespace().equals(newRegularInfo.getServiceNamespace()));
-		assertTrue("The ServiceInfo instances for the ForwardedCallHandler should satisy the non-ServiceDefinition part of an isSame() check",
-				forwardInfo.getAlive().equals(newForwardInfo.getAlive()) && forwardInfo.getQname().equals(newForwardInfo.getQname()) &&
-						forwardInfo.getServerIp().equals(newForwardInfo.getServerIp()) &&
-								forwardInfo.getServiceNamespace().equals(newForwardInfo.getServiceNamespace()));
-		assertTrue("The service definition references should be pointing to the same instance",
-				regularInfo.getServiceDefinition(messageHelper) == newRegularInfo.getServiceDefinition(messageHelper));
+				regularInfo.getStatus().equals(newRegularInfo.getStatus()) && regularInfo.getServiceName().equals(newRegularInfo.getServiceName()) &&
+						regularInfo.getServerIpAddress().equals(newRegularInfo.getServerIpAddress()) &&
+								regularInfo.getApplicationNamespace().equals(newRegularInfo.getApplicationNamespace()));
 		// Perform the appropriate assertions based on whether or not any updates are expected.
 		if (serviceDefinitionsShouldDiffer) {
 			assertNotSame("The checksum for the configured service should have been modified after refreshing the registry.",
 					regularInfo.getChecksum(), newRegularInfo.getChecksum());
-			assertNotSame("The checksum for the ForwardedCallHandler service should have been modified after refreshing the registry.",
-					forwardInfo.getChecksum(), newForwardInfo.getChecksum());
-			assertTrue("The ForwardedCallHandler service definitions should not be the same",
-					!forwardInfo.getServiceDefinition(messageHelper).isSame(newForwardInfo.getServiceDefinition(messageHelper)));
-			assertNotSame("The serialized versions of the service definitions should not be the same",
-					regularInfo.getSerializedServiceNamespace().getFlattenedServiceDefinitionData(),
-							newRegularInfo.getSerializedServiceNamespace().getFlattenedServiceDefinitionData());
-			assertNotSame("The serialized versions of the ForwardedCallHandler service definitions should not be the same",
-					forwardInfo.getSerializedServiceNamespace().getFlattenedServiceDefinitionData(),
-							newForwardInfo.getSerializedServiceNamespace().getFlattenedServiceDefinitionData());
 		} else {
 			assertEquals("The checksum for the configured service should not have been modified after refreshing the registry.",
 					regularInfo.getChecksum(), newRegularInfo.getChecksum());
-			assertEquals("The checksum for the ForwardedCallHandler service should not have been modified after refreshing the registry.",
-					forwardInfo.getChecksum(), newForwardInfo.getChecksum());
-			assertTrue("The ForwardedCallHandler service definitions should be the same",
-					forwardInfo.getServiceDefinition(messageHelper).isSame(newForwardInfo.getServiceDefinition(messageHelper)));
-			assertEquals("The serialized versions of the service definitions should be the same",
-					regularInfo.getSerializedServiceNamespace().getFlattenedServiceDefinitionData(),
-							newRegularInfo.getSerializedServiceNamespace().getFlattenedServiceDefinitionData());
-			assertEquals("The serialized versions of the ForwardedCallHandler service definitions should be the same",
-					forwardInfo.getSerializedServiceNamespace().getFlattenedServiceDefinitionData(),
-							newForwardInfo.getSerializedServiceNamespace().getFlattenedServiceDefinitionData());
 		}
 	}
 }

@@ -35,7 +35,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-    <bean id="kimSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
+    <bean id="kimSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="KIM"/>
        <property name="jaxWsService" value="false"/>
        <property name="priority" value="3" />
@@ -43,7 +43,7 @@
        <property name="busSecurity" value="true"/>
     </bean>
 
-    <bean id="kimJaxWsSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
+    <bean id="kimJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kim"/>
        <property name="jaxWsService" value="true"/>
        <property name="priority" value="3" />
@@ -51,7 +51,7 @@
        <property name="busSecurity" value="${kim.soapExposedService.jaxws.security}"/>
     </bean>
 
-    <bean id="kimService" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" abstract="true">
+    <bean id="kimService" class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition" abstract="true">
       <property name="serviceNameSpaceURI" value="KIM" />
       <property name="retryAttempts" value="0" />
     </bean>
@@ -63,13 +63,13 @@
         Identity Service
   -->
 
-	<bean id="enServiceInvoker"
+	<bean id="rice.ksb.serviceBus"
 		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="enServiceInvoker" />
+		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker" />
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimIdentityService"
@@ -78,7 +78,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimIdentityService"
@@ -88,7 +88,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimRoleService"
@@ -97,7 +97,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimRoleService"
@@ -108,7 +108,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimRoleUpdateService"
@@ -117,7 +117,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimRoleUpdateService"
@@ -128,7 +128,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimGroupService"
@@ -137,7 +137,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimGroupService"
@@ -148,7 +148,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimGroupUpdateService"
@@ -157,7 +157,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-  	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+  	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimGroupUpdateService"
@@ -168,7 +168,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimPermissionService"
@@ -177,7 +177,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimPermissionService"
@@ -188,7 +188,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimPermissionUpdateService"
@@ -197,7 +197,7 @@
   </bean>
 
     <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimPermissionUpdateService"
@@ -208,7 +208,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimResponsibilityService"
@@ -217,7 +217,7 @@
   </bean>
 
     <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimResponsibilityService"
@@ -228,7 +228,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimResponsibilityUpdateService"
@@ -237,7 +237,7 @@
   </bean>
 
     <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimResponsibilityUpdateService"
@@ -248,7 +248,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimSoapService"
         p:service-ref="kimIdentityManagementService"
@@ -257,7 +257,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimIdentityManagementService"
@@ -268,7 +268,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker" />
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kimSoapService"
         p:service-ref="kimIdentityManagementNotificationService"
@@ -277,7 +277,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimIdentityManagementNotificationService"
@@ -289,7 +289,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="documentInitiatorRoleTypeService"
@@ -298,7 +298,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="documentEditorRoleTypeService"
@@ -307,7 +307,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="documentOpenerRoleTypeService"
@@ -316,7 +316,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="activePrincipalRoleTypeService"
@@ -325,7 +325,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="permissionPermissionTypeService"
@@ -334,7 +334,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="responsibilityPermissionTypeService"
@@ -343,7 +343,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="rolePermissionTypeService"
@@ -352,7 +352,7 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="groupPermissionTypeService"

@@ -33,11 +33,14 @@ public final class ServiceDescriptor
 	private static final long serialVersionUID = 4555599272613878634L;
 
 	@XmlElement(name = Elements.ID, required = false)
-    private final Long id;
+    private final String id;
+	
     @XmlElement(name = Elements.DESCRIPTOR, required = false)
     private final String descriptor;
+    
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
+    
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -59,7 +62,7 @@ public final class ServiceDescriptor
     }
 
     @Override
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -99,16 +102,14 @@ public final class ServiceDescriptor
 
 		private static final long serialVersionUID = 4439417051199359358L;
 
-		private Long id;
+		private String id;
         private String descriptor;
         private Long versionNumber;
 
         private Builder() {
-            // TODO modify this constructor as needed to pass any required values and invoke the appropriate 'setter' methods
         }
 
         public static Builder create() {
-            // TODO modify as needed to pass any required values and add them to the signature of the 'create' method
             return new Builder();
         }
 
@@ -116,7 +117,6 @@ public final class ServiceDescriptor
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            // TODO if create() is modified to accept required parameters, this will need to be modified
             Builder builder = create();
             builder.setId(contract.getId());
             builder.setDescriptor(contract.getDescriptor());
@@ -129,7 +129,7 @@ public final class ServiceDescriptor
         }
 
         @Override
-        public Long getId() {
+        public String getId() {
             return this.id;
         }
 
@@ -143,18 +143,15 @@ public final class ServiceDescriptor
             return this.versionNumber;
         }
 
-        public void setId(Long id) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+        public void setId(String id) {
             this.id = id;
         }
 
         public void setDescriptor(String descriptor) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
             this.descriptor = descriptor;
         }
 
         public void setVersionNumber(Long versionNumber) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
             this.versionNumber = versionNumber;
         }
 

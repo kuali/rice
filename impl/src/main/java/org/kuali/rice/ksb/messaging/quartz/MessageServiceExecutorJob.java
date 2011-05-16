@@ -44,7 +44,7 @@ public class MessageServiceExecutorJob implements Job, Serializable {
 	try {
 	    PersistedMessageBO message = (PersistedMessageBO) jec.getJobDetail().getJobDataMap().get(MESSAGE_KEY);
 	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
-	    KSBServiceLocator.getRouteQueueService().save(message);
+	    KSBServiceLocator.getMessageQueueService().save(message);
 	    KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
 	} catch (Throwable t) {
 	    LOG.error("Caught throwable attempting to process message in exception messaging queue.", t);

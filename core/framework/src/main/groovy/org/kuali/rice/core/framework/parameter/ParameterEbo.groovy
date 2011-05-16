@@ -39,7 +39,7 @@ class ParameterEbo implements ParameterContract, ExternalizableBusinessObject {
 
     @Override
 	EvaluationOperator getEvaluationOperator() {
-		return EvaluationOperator.fromOperatorCode(evaluationOperatorCode);
+		return EvaluationOperator.fromCode(evaluationOperatorCode);
 	}
 
     @Override
@@ -78,7 +78,7 @@ class ParameterEbo implements ParameterContract, ExternalizableBusinessObject {
         bo.value = im.value
         bo.description = im.description
         bo.parameterTypeCode = im.parameterType.code
-        bo.evaluationOperatorCode = im.evaluationOperator.operatorCode
+        bo.evaluationOperatorCode = im.evaluationOperator.code
 
         bo.parameterType = ParameterTypeEbo.from(im.parameterType)
         bo.versionNumber = im.versionNumber

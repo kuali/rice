@@ -16,17 +16,17 @@
 
 package org.kuali.rice.ksb.messaging.resourceloader;
 
+import javax.xml.namespace.QName;
+
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
-
-import javax.xml.namespace.QName;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 
 
@@ -64,7 +64,11 @@ public class KSBResourceLoaderFactory {
 	public static ResourceLoader createRootKSBRemoteResourceLoader() {
 		initialize();
 		ResourceLoader rootResourceLoader = new BaseResourceLoader(getRootResourceLoaderName());
-		rootResourceLoader.addResourceLoader(new RemoteResourceServiceLocatorImpl(getRemoteResourceLoaderName()));
+		ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+		if (serviceBus == null) {
+			throw new IllegalStateException("Failed to locate the ServiceBus");
+		}
+		rootResourceLoader.addResourceLoader(new ServiceBusResourceLoader(getRemoteResourceLoaderName(), serviceBus));
 		return rootResourceLoader;
 	}
 
@@ -76,10 +80,6 @@ public class KSBResourceLoaderFactory {
 
 	public static BaseResourceLoader getRootResourceLoader() {
 		return (BaseResourceLoader)GlobalResourceLoader.getResourceLoader(getRootResourceLoaderName());
-	}
-
-	public static RemoteResourceServiceLocator getRemoteResourceLocator() {
-		return (RemoteResourceServiceLocator)GlobalResourceLoader.getResourceLoader(getRemoteResourceLoaderName());
 	}
 
 	public static QName getRootResourceLoaderName() {

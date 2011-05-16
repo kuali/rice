@@ -16,20 +16,22 @@
 
 package org.kuali.rice.ksb.messaging.bam.service.impl;
 
+import java.lang.reflect.Method;
+import java.sql.Timestamp;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.bam.BAMParam;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 import org.kuali.rice.ksb.messaging.bam.dao.BAMDAO;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
-
-import javax.xml.namespace.QName;
-import java.lang.reflect.Method;
-import java.sql.Timestamp;
-import java.util.List;
 
 
 public class BAMServiceImpl implements BAMService {
@@ -38,11 +40,11 @@ public class BAMServiceImpl implements BAMService {
 
 	private BAMDAO dao;
 
-	public BAMTargetEntry recordClientInvocation(ServiceInfo serviceDefinition, Object target, Method method, Object[] params) {
+	public BAMTargetEntry recordClientInvocation(ServiceConfiguration serviceConfiguration, Object target, Method method, Object[] params) {
 		if (isEnabled()) {
 			try {
-				LOG.debug("A call was received... for service: " + serviceDefinition.getQname().toString() + " method: " + method.getName());
-				BAMTargetEntry bamTargetEntry = getBAMTargetEntry(Boolean.FALSE, serviceDefinition, target, method, params);
+				LOG.debug("A call was received... for service: " + serviceConfiguration.getServiceName().toString() + " method: " + method.getName());
+				BAMTargetEntry bamTargetEntry = getBAMTargetEntry(Boolean.FALSE, serviceConfiguration, target, method, params);
 				this.dao.save(bamTargetEntry);
 				return bamTargetEntry;
 			} catch (Throwable t) {
@@ -53,11 +55,11 @@ public class BAMServiceImpl implements BAMService {
 		return null;
 	}
 
-	public BAMTargetEntry recordServerInvocation(Object target, ServiceInfo entry, Method method, Object[] params) {
+	public BAMTargetEntry recordServerInvocation(Object target, ServiceDefinition serviceDefinition, Method method, Object[] params) {
 		if (isEnabled()) {
 			try {
 				LOG.debug("A call was received... for service: " + target.getClass().getName() + " method: " + method.getName());
-				BAMTargetEntry bamTargetEntry = getBAMTargetEntry(Boolean.TRUE, entry, target, method, params);
+				BAMTargetEntry bamTargetEntry = getBAMTargetEntry(Boolean.TRUE, serviceDefinition, target, method, params);
 				this.dao.save(bamTargetEntry);
 				return bamTargetEntry;
 			} catch (Throwable t) {
@@ -100,11 +102,24 @@ public class BAMServiceImpl implements BAMService {
 		}
 	}
 
-	private BAMTargetEntry getBAMTargetEntry(Boolean serverInd, ServiceInfo entry, Object target, Method method, Object[] params) {
+	private BAMTargetEntry getBAMTargetEntry(Boolean serverInd, ServiceConfiguration serviceConfiguration, Object target, Method method, Object[] params) {
 		BAMTargetEntry bamEntry = new BAMTargetEntry();
 		bamEntry.setServerInvocation(serverInd);
-		bamEntry.setServiceName(entry.getQname().toString());
-		bamEntry.setServiceURL(entry.getEndpointUrl());
+		bamEntry.setServiceName(serviceConfiguration.getServiceName().toString());
+		bamEntry.setServiceURL(serviceConfiguration.getEndpointUrl().toExternalForm());
+		bamEntry.setTargetToString(makeStringfit(target.toString()));
+		bamEntry.setMethodName(method.getName());
+		bamEntry.setThreadName(Thread.currentThread().getName());
+		bamEntry.setCallDate(new Timestamp(System.currentTimeMillis()));
+		setBamParams(params, bamEntry);
+		return bamEntry;
+	}
+	
+	private BAMTargetEntry getBAMTargetEntry(Boolean serverInd, ServiceDefinition serviceDefinition, Object target, Method method, Object[] params) {
+		BAMTargetEntry bamEntry = new BAMTargetEntry();
+		bamEntry.setServerInvocation(serverInd);
+		bamEntry.setServiceName(serviceDefinition.getServiceName().toString());
+		bamEntry.setServiceURL(serviceDefinition.getEndpointUrl().toExternalForm());
 		bamEntry.setTargetToString(makeStringfit(target.toString()));
 		bamEntry.setMethodName(method.getName());
 		bamEntry.setThreadName(Thread.currentThread().getName());

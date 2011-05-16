@@ -129,10 +129,8 @@ public interface Config {
 	public static final String ALT_OJB_FILE	= "config.obj.file";
 
 	//bus stuff
-	public static final String BUS_DEPLOYED_SERVICES = "bus.services";
 	public static final String SERVICE_SERVLET_URL = "serviceServletUrl";
 	public static final String MESSAGE_PERSISTENCE = "message.persistence";
-	public static final String STORE_AND_FORWARD = "bus.storeAndForward";
 	public static final String REFRESH_RATE = "bus.refresh.rate";
 	public static final String DEV_MODE = "dev.mode";
 	public static final String BATCH_MODE = "rice.ksb.batch.mode";
@@ -242,7 +240,6 @@ public interface Config {
 	
 	public Boolean getBatchMode();
 	
-	public Boolean getStoreAndForward();
 	public Boolean getOutBoxOn();
 	
 	/**

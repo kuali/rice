@@ -17,8 +17,8 @@ package org.kuali.rice.ksb.security.credentials;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.security.credentials.Credentials;
-import org.kuali.rice.core.security.credentials.CredentialsSource.CredentialsType;
+import org.kuali.rice.core.api.security.credentials.Credentials;
+import org.kuali.rice.core.api.security.credentials.CredentialsSource.CredentialsType;
 
 import static org.junit.Assert.*;
 

@@ -16,6 +16,12 @@
 
 package org.kuali.rice.ksb.messaging;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.httpclient.URI;
 import org.apache.cxf.aegis.databinding.AegisDatabinding;
 import org.apache.cxf.binding.soap.SoapFault;
@@ -27,16 +33,11 @@ import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.EchoService;
 import org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService;
 import org.kuali.rice.ksb.messaging.remotedservices.SOAPService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
-
-import javax.xml.namespace.QName;
-
-import static org.junit.Assert.*;
 
 
 /**

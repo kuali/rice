@@ -15,15 +15,16 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.junit.Test;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.ksb.messaging.remotedservices.EchoService;
-import org.kuali.rice.ksb.test.KSBTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import javax.xml.namespace.QName;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.messaging.remotedservices.EchoService;
+import org.kuali.rice.ksb.test.KSBTestCase;
 
 
 public class RemoteFailureTest extends KSBTestCase {

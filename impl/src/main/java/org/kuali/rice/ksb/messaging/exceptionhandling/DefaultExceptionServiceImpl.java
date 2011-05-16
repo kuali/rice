@@ -15,16 +15,26 @@
  */
 package org.kuali.rice.ksb.messaging.exceptionhandling;
 
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJob;
 import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJobListener;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.quartz.*;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SimpleTrigger;
+import org.quartz.Trigger;
 
 
 /**
@@ -42,7 +52,7 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO message, Object service) throws Exception {
 		LOG.error("Exception caught processing message " + message.getRouteQueueId() + " " + message.getServiceName() + ": " + throwable);
 		
-		RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
+		
 		AsynchronousCall methodCall = null;
 		if (message.getMethodCall() != null) {
 			methodCall = message.getMethodCall();
@@ -50,14 +60,13 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 			methodCall = message.getPayload().getMethodCall();
 		}
 		message.setMethodCall(methodCall);
-		MessageExceptionHandler exceptionHandler = remoteResourceServiceLocator.getMessageExceptionHandler(methodCall.getServiceInfo().getQname());
+		MessageExceptionHandler exceptionHandler = getMessageExceptionHandler(methodCall.getServiceConfiguration().getServiceName());
 		exceptionHandler.handleException(throwable, message, service);
 	}
 	
 	public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessageBO message, Object service) throws Exception {
 		LOG.error("Exception caught processing message " + message.getRouteQueueId() + " " + message.getServiceName() + ": " + throwable);
 		
-		RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
 		AsynchronousCall methodCall = null;
 		if (message.getMethodCall() != null) {
 			methodCall = message.getMethodCall();
@@ -65,14 +74,27 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 			methodCall = message.getPayload().getMethodCall();
 		}
 		message.setMethodCall(methodCall);
-		MessageExceptionHandler exceptionHandler = remoteResourceServiceLocator.getMessageExceptionHandler(methodCall.getServiceInfo().getQname());
+		MessageExceptionHandler exceptionHandler = getMessageExceptionHandler(methodCall.getServiceConfiguration().getServiceName());
 		exceptionHandler.handleExceptionLastDitchEffort(throwable, message, service);
+	}
+	
+	protected MessageExceptionHandler getMessageExceptionHandler(QName serviceName) {
+		ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+		Endpoint endpoint = serviceBus.getEndpoint(serviceName);
+		if (endpoint == null) {
+			throw new RiceRuntimeException("No services found for name " + serviceName);
+		}
+		String messageExceptionHandlerName = endpoint.getServiceConfiguration().getMessageExceptionHandler();
+		if (messageExceptionHandlerName == null) {
+			messageExceptionHandlerName = DefaultMessageExceptionHandler.class.getName();
+		}
+		return (MessageExceptionHandler) GlobalResourceLoader.getObject(new ObjectDefinition(messageExceptionHandlerName));
 	}
 	
 	
 
 	public void scheduleExecution(Throwable throwable, PersistedMessageBO message, String description) throws Exception {
-		KSBServiceLocator.getRouteQueueService().delete(message);
+		KSBServiceLocator.getMessageQueueService().delete(message);
 		Scheduler scheduler = KSBServiceLocator.getScheduler();
 		JobDataMap jobData = new JobDataMap();
 		jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, message);

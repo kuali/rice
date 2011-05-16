@@ -121,7 +121,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             	throw new RiceRuntimeException("Failed to generate exception requests for exception routing!");
             }
             activateExceptionRequests(routeContext, exceptionRequests, errorMessage, invokePostProcessor);
-            KSBServiceLocator.getRouteQueueService().delete(persistedMessage);
+            KSBServiceLocator.getMessageQueueService().delete(persistedMessage);
         } finally {
             performanceLogger.log("Time to generate exception request.");
             MDC.remove("docId");

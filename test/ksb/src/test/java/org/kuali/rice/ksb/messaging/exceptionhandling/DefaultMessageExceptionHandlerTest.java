@@ -16,17 +16,19 @@
 
 package org.kuali.rice.ksb.messaging.exceptionhandling;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceConfiguration;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
-
-import static org.junit.Assert.*;
 
 
 public class DefaultMessageExceptionHandlerTest extends KSBTestCase {
@@ -34,10 +36,12 @@ public class DefaultMessageExceptionHandlerTest extends KSBTestCase {
     private PersistedMessageBO setupMessage(Integer retriesAttempted, Integer serviceMaxRetries) throws Exception {
         PersistedMessageBO message = new PersistedMessageBO();
         message.setRetryCount(retriesAttempted);
-        ServiceInfo serviceInfo = new ServiceInfo();
-        serviceInfo.setServiceDefinition(new JavaServiceDefinition());
-        serviceInfo.getServiceDefinition().setRetryAttempts(serviceMaxRetries);
-        AsynchronousCall methodCall = new AsynchronousCall(new Class[0], new Object[0], serviceInfo, "", null, null);
+        //ServiceInfo serviceInfo = new ServiceInfo();
+        //serviceInfo.setServiceDefinition(new JavaServiceDefinition());
+        //serviceInfo.getServiceDefinition().setRetryAttempts(serviceMaxRetries);
+        JavaServiceConfiguration.Builder builder = JavaServiceConfiguration.Builder.create();
+        builder.setRetryAttempts(serviceMaxRetries);
+        AsynchronousCall methodCall = new AsynchronousCall(new Class[0], new Object[0], builder.build(), "", null, null);
         message.setPayload(new PersistedMessagePayload(methodCall, message));
         message.setMethodCall(methodCall);
         return message;

@@ -26,7 +26,7 @@ import org.kuali.rice.kns.document.Document;
 public class AlwaysFalsePropertySerializabilityEvaluator extends PropertySerializabilityEvaluatorBase {
 
 	@Override
-	public void initializeEvaluator(Document document) {
+	public void initializeEvaluatorForDocument(Document document) {
 		// do nothing, because we know that every property is not serializable
 	}
 

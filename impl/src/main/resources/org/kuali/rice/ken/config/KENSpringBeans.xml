@@ -251,20 +251,20 @@
 		<property name="validRunMode" value="LOCAL" />
 	</bean>
 	
-	<bean id="kenSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
+	<bean id="kenSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/ken"/>
     </bean>
     
-	<bean id="enServiceInvoker"
+	<bean id="rice.ksb.serviceBus"
 		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="enServiceInvoker" />
+		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 	
     <!-- export our sendNotificationKewXmlService -->
     <bean parent="kenLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
         <property name="serviceDefinition">
-            <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+            <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                 <property name="service">
                     <ref bean="sendNotificationKewXmlService" />
                 </property>
@@ -279,7 +279,7 @@
     </bean>
     
     <bean parent="kenLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
         <property name="serviceDefinition">
             <bean parent="kenSoapService">
                 <property name="service">
@@ -296,9 +296,9 @@
     
     <!-- Export the KEN api service -->
     <bean parent="kenLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
         <property name="serviceDefinition">
-            <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+            <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                 <property name="service">
                     <ref bean="kenApiService" />
                 </property>

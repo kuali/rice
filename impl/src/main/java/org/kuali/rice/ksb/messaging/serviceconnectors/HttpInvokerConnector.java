@@ -16,6 +16,15 @@
 
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
+import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
@@ -31,19 +40,11 @@ import org.apache.commons.httpclient.util.IdleConnectionTimeoutThread;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceConfiguration;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerProxyFactoryBean;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.security.httpinvoker.AuthenticationCommonsHttpInvokerRequestExecutor;
-
-import java.io.IOException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
 
 
 /**
@@ -65,31 +66,33 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
 	private static final String RETRY_SOCKET_EXCEPTION_PROPERTY = "ksb.thinClient.retrySocketException";
 	
 	private static IdleConnectionTimeoutThread ictt;
-
-
 	
-	public HttpInvokerConnector(final ServiceInfo serviceInfo) {
-		super(serviceInfo);
+	public HttpInvokerConnector(final JavaServiceConfiguration serviceConfiguration, final URL alternateEndpointUrl) {
+		super(serviceConfiguration, alternateEndpointUrl);
 		initializeHttpClientParams();
 	}
 	
-	public Object getService() throws Exception {
-	    LOG.debug("Getting connector for endpoint " + this.getServiceInfo().getActualEndpointUrl());
+	protected JavaServiceConfiguration getJavaServiceConfiguration() {
+		return (JavaServiceConfiguration)getServiceConfiguration();
+	}
+	
+	public Object getService() {
+	    LOG.debug("Getting connector for endpoint " + getActualEndpointUrl());
 		KSBHttpInvokerProxyFactoryBean client = new KSBHttpInvokerProxyFactoryBean();
-		client.setServiceUrl(this.getServiceInfo().getActualEndpointUrl());
-		client.setServiceInfo(this.getServiceInfo());
+		client.setServiceUrl(getActualEndpointUrl().toExternalForm());
+		client.setServiceConfiguration(getJavaServiceConfiguration());
 		
 		KSBHttpInvokerRequestExecutor executor;
 		
 		if (getCredentialsSource() != null) {
-		    executor = new AuthenticationCommonsHttpInvokerRequestExecutor(getHttpClient(), getCredentialsSource(), getServiceInfo());
+		    executor = new AuthenticationCommonsHttpInvokerRequestExecutor(getHttpClient(), getCredentialsSource(), getJavaServiceConfiguration());
 		} else {
 		    executor = new KSBHttpInvokerRequestExecutor(getHttpClient());
 		}
-		executor.setSecure(this.getServiceInfo().getServiceDefinition().getBusSecurity());
+		executor.setSecure(getJavaServiceConfiguration().getBusSecurity());
 		client.setHttpInvokerRequestExecutor(executor);	
 		client.afterPropertiesSet();
-		return getServiceProxyWithFailureMode(client.getObject(), this.getServiceInfo());
+		return getServiceProxyWithFailureMode(client.getObject(), getJavaServiceConfiguration());
 	}
 
 	/**

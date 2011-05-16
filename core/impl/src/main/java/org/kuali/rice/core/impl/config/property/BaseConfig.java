@@ -16,13 +16,6 @@
 
 package org.kuali.rice.core.impl.config.property;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.RiceUtilities;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,6 +28,13 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.util.RiceUtilities;
 
 /**
  * Abstract base hierarchical config implementation. Loads a hierarchy configs,
@@ -310,10 +310,6 @@ public abstract class BaseConfig implements Config {
  	 	return new Boolean(getProperty(BATCH_MODE));
  	}
     
-    public Boolean getStoreAndForward() {
-        return Boolean.valueOf(getProperty(Config.STORE_AND_FORWARD));
-    }
-
     public Boolean getOutBoxOn() {
         if (getProperty(Config.OUT_BOX_MODE) == null) {
             return true;

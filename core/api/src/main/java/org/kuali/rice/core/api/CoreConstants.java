@@ -36,6 +36,8 @@ public final class CoreConstants {
     
     public static final class Versions {
     	    	
+    	public static final String UNSPECIFIED = "unspecified";
+    	
     	/**
     	 * Name for major version 2.0 of Kuali Rice which should be used in XML namespaces for data elements compatible with Kuali Rice 2.0.x.
     	 * This constant value should never be changed!  If it is changed then it will break compatibility with legacy clients.

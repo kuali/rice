@@ -15,7 +15,12 @@
  */
 package org.kuali.rice.ksb.messaging.service;
 
-import org.kuali.rice.ksb.messaging.PersistedMessageBO;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
+import org.kuali.rice.ksb.api.KsbConstants;
 
 /**
  * A service for administrative functions for a node on the service bus.
@@ -23,19 +28,21 @@ import org.kuali.rice.ksb.messaging.PersistedMessageBO;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@WebService(name = "busAdminServiceSoap", targetNamespace = KsbConstants.Namespaces.KSB_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface BusAdminService {
 
-    /**
-     * Forward the given message to this service for processing.
-     */
-    public void forward(PersistedMessageBO message) throws Exception;
-
+	@WebMethod(operationName="ping")
     public void ping();
 
-    public void setCorePoolSize(int corePoolSize);
+	@WebMethod(operationName="setCorePoolSize")
+    public void setCorePoolSize(@WebParam(name = "corePoolSize") int corePoolSize);
 
-    public void setMaximumPoolSize(int maxPoolSize);
+	@WebMethod(operationName="setMaximumPoolSize")
+    public void setMaximumPoolSize(@WebParam(name = "maxPoolSize") int maxPoolSize);
 
-    public void setConfigProperty(String propertyName, String propertyValue);
+	@WebMethod(operationName="setConfigProperty")
+    public void setConfigProperty(@WebParam(name = "propertyName") String propertyName,
+    		@WebParam(name = "propertyValue") String propertyValue);
 
 }

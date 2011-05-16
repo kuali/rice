@@ -16,6 +16,8 @@
 
 package org.kuali.rice.ksb.security.soap;
 
+import java.util.Properties;
+
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.log4j.Logger;
@@ -27,9 +29,6 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.config.wss4j.CryptoPasswordCallbackHandler;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
-
-import java.util.Properties;
 
 //import javax.xml.ws.handler.MessageContext;
 
@@ -43,10 +42,11 @@ import java.util.Properties;
 public class CXFWSS4JInInterceptor extends WSS4JInInterceptor{
 
 	private static final Logger LOG = Logger.getLogger(CXFWSS4JInInterceptor.class);
-	private ServiceInfo serviceInfo;
 
-	public CXFWSS4JInInterceptor(ServiceInfo serviceInfo) {
-		this.serviceInfo = serviceInfo;
+	private final boolean busSecurity;
+	
+	public CXFWSS4JInInterceptor(boolean busSecurity) {
+		this.busSecurity = busSecurity;
 		this.setProperty(WSHandlerConstants.ACTION, WSHandlerConstants.SIGNATURE);
 		this.setProperty(WSHandlerConstants.PW_CALLBACK_CLASS, CryptoPasswordCallbackHandler.class.getName());
 		this.setProperty(WSHandlerConstants.SIG_KEY_ID, "IssuerSerial");
@@ -88,17 +88,9 @@ public class CXFWSS4JInInterceptor extends WSS4JInInterceptor{
 	 */
 	@Override
 	public void handleMessage(SoapMessage mc)  {
-		if (getServiceInfo().getServiceDefinition().getBusSecurity()) {
+		if (busSecurity) {
 			super.handleMessage(mc);
 		}
-	}
-
-	public ServiceInfo getServiceInfo() {
-		return serviceInfo;
-	}
-
-	public void setServiceInfo(ServiceInfo serviceInfo) {
-		this.serviceInfo = serviceInfo;
 	}
 
 }

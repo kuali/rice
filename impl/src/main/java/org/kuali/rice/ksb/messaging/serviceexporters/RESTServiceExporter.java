@@ -18,18 +18,18 @@ package org.kuali.rice.ksb.messaging.serviceexporters;
 
 import java.util.List;
 
+import org.apache.cxf.Bus;
 import org.apache.cxf.binding.BindingFactoryManager;
-import org.apache.cxf.endpoint.Server;
+import org.apache.cxf.endpoint.ServerRegistry;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxrs.JAXRSBindingFactory;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider;
 import org.apache.log4j.Logger;
-import org.kuali.rice.ksb.messaging.RESTServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.service.KSBContextServiceLocator;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
+import org.kuali.rice.ksb.api.bus.support.RestServiceDefinition;
 
 
 /**
@@ -40,15 +40,8 @@ public class RESTServiceExporter extends AbstractWebServiceExporter implements S
 
 	private static final Logger LOG = Logger.getLogger(RESTServiceExporter.class);
 
-	private ServiceInfo serviceInfo;
-	private KSBContextServiceLocator serviceLocator;
-
-	public RESTServiceExporter(ServiceInfo serviceInfo) {
-		this(serviceInfo, null);
-	}
-
-	public RESTServiceExporter(ServiceInfo serviceInfo, KSBContextServiceLocator serviceLocator) {
-	    super(serviceInfo, serviceLocator);
+	public RESTServiceExporter(RestServiceDefinition serviceDefinition, Bus cxfBus, ServerRegistry cxfServerRegistry) {
+		super(serviceDefinition, cxfBus, cxfServerRegistry);
 	}
 
 	/**
@@ -58,10 +51,10 @@ public class RESTServiceExporter extends AbstractWebServiceExporter implements S
 	 * @throws Exception
 	 */
 	@Override
-	public void publishService(ServiceDefinition serviceDef, Object serviceImpl, String address) throws Exception{
-		RESTServiceDefinition restServiceDef = (RESTServiceDefinition)serviceDef;
+	public void publishService(ServiceDefinition serviceDefinition, Object serviceImpl, String address) {
+		RestServiceDefinition restServiceDef = (RestServiceDefinition)serviceDefinition;
 
-		LOG.info("Creating JAXRSService " + (getServiceInfo().getQname()));
+		LOG.info("Creating JAXRSService " + restServiceDef.getServiceName());
 		JAXRSServerFactoryBean svrFactory = new JAXRSServerFactoryBean();
         svrFactory.setBus(getCXFBus());
 
@@ -69,19 +62,24 @@ public class RESTServiceExporter extends AbstractWebServiceExporter implements S
         if (resources != null && !resources.isEmpty()) {
         	svrFactory.setServiceBeans(resources);
         } else {
-        Class<?> resourceClass = this.getClass().getClassLoader().loadClass(restServiceDef.getResourceClass());
-		svrFactory.setResourceClasses(resourceClass);
-		svrFactory.setResourceProvider(resourceClass, new SingletonResourceProvider(serviceImpl));
+        	try {
+        		Class<?> resourceClass = this.getClass().getClassLoader().loadClass(restServiceDef.getResourceClass());
+        		svrFactory.setResourceClasses(resourceClass);
+        		svrFactory.setResourceProvider(resourceClass, new SingletonResourceProvider(serviceImpl));
+        	} catch (ClassNotFoundException e) {
+        		throw new RiceRuntimeException("Failed to publish the service because resource class could not be loaded: " + restServiceDef.getResourceClass(), e);
+        	}
         }
 
-        svrFactory.setServiceName(getServiceInfo().getQname());
+        svrFactory.setServiceName(restServiceDef.getServiceName());
         svrFactory.setAddress(address);
         svrFactory.setExtensionMappings(restServiceDef.getExtensionMappings());
         svrFactory.setLanguageMappings(restServiceDef.getLanguageMappings());
 
         List<Object> providers = restServiceDef.getProviders();
-        if (providers != null)
+        if (providers != null) {
         	svrFactory.setProviders(providers);
+        }
 
         BindingFactoryManager bindingFactoryManager = getCXFBus().getExtension(BindingFactoryManager.class);
         JAXRSBindingFactory bindingFactory = new JAXRSBindingFactory();
@@ -98,8 +96,8 @@ public class RESTServiceExporter extends AbstractWebServiceExporter implements S
         }
 //		svrFactory.getOutInterceptors().add(new RESTConnector.SigningOutInterceptor());
 
-		svrFactory.setPublishedEndpointUrl(getServiceInfo().getActualEndpointUrl());
-		Server server = svrFactory.create();
+        svrFactory.setPublishedEndpointUrl(restServiceDef.getEndpointUrl().toExternalForm());
+		svrFactory.create();
 	}
 
 }

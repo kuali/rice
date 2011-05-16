@@ -61,8 +61,9 @@
   				</td>
    			</tr>
 		  <tr>
-        <td class="datacell">IP Address: <c:out value="${ServiceRegistryForm.myIpAddress}"/><br>
-        	Service Namespace: <c:out value="${ServiceRegistryForm.myServiceNamespace}"/>
+        <td class="datacell">Service Namespace: <c:out value="${ServiceRegistryForm.myServiceNamespace}"/><br>
+        	IP Address: <c:out value="${ServiceRegistryForm.myIpAddress}"/><br>
+        	Instance ID: <c:out value="${ServiceRegistryForm.myInstanceId}"/>
         </td>
         </tr>
         <tr>
@@ -103,10 +104,10 @@
 		    </display:column>
 		    <display:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
 				<c:choose>
-				<c:when test='${result.serviceDefinition.class.name == "org.kuali.rice.ksb.messaging.SOAPServiceDefinition"}'>
+				<c:when test='${result.class.name == "org.kuali.rice.ksb.api.bus.support.SoapServiceConfiguration"}'>
 		    	<a href="${result.endpointUrl}?wsdl"><c:out value="${result.endpointUrl}"/></a>&nbsp;
 				</c:when>
-                <c:when test='${result.serviceDefinition.class.name == "org.kuali.rice.ksb.messaging.RESTServiceDefinition"}'>
+                <c:when test='${result.class.name == "org.kuali.rice.ksb.api.bus.support.RestServiceConfiguration"}'>
                 <a href="${result.endpointUrl}?_wadl&_type=xml"><c:out value="${result.endpointUrl}"/></a>&nbsp;
                 </c:when>
 				<c:otherwise>
@@ -114,58 +115,23 @@
 				</c:otherwise>
 				</c:choose>
 		    </display:column>
-		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
-		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Application Namespace</div>" >
+		    	<c:out value="${result.applicationNamespace}"/>&nbsp;
 		    </display:column>
-		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
-		    	<c:out value="${result.serverIp}"/>&nbsp;
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Version</div>" >
+		    	<c:out value="${result.serviceVersion}"/>&nbsp;
 		    </display:column>
-			<display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Alive</div>" >
-		    	<c:if test="${result.alive}">true</c:if>
-		    	<c:if test="${!result.alive}">false</c:if>
-		    	&nbsp;
+			<display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Type</div>" >
+				<c:out value="${result.type}"/>&nbsp;
 		    </display:column>
 		  </display:table>
 
     </td>
     <td width="20" height="20">&nbsp;</td>
    </tr>
-   <tr><td colspan="3">&nbsp;</td></tr>
-    <tr>
-    <td width="20" height="20">&nbsp;</td>
-    <td>
-		  <b>Published Temp Services:</b>
-		  <%-- Table layout of the search results --%>
-		  <display:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${ServiceRegistryForm.publishedTempServices}" id="result" requestURI="ServiceRegistry.do?methodToCall=start" defaultsort="1" defaultorder="ascending"
-				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
-		    <display:setProperty name="paging.banner.placement" value="both" />
-		    <display:setProperty name="paging.banner.all_items_found" value=""/>
-		    <display:setProperty name="export.banner" value="" />
-		    <display:setProperty name="basic.msg.empty_list">No Published Temp Services</display:setProperty>
-		    <display:column class="datacell" sortable="true" title="<div>Service Name</div>" >
-		    	<c:out value="${result.serviceName}"/>&nbsp;
-		    </display:column>
-		    <display:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
-		    	<c:out value="${result.endpointUrl}"/>&nbsp;
-		    </display:column>
-		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
-		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
-		    </display:column>
-		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
-		    	<c:out value="${result.serverIp}"/>&nbsp;
-		    </display:column>
-			<display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Alive</div>" >
-		    	<c:if test="${result.alive}">true</c:if>
-		    	<c:if test="${!result.alive}">false</c:if>
-		    	&nbsp;
-		    </display:column>
-		  </display:table>
-
-    </td>
-    <td width="20" height="20">&nbsp;</td>
-  </tr>
 
    <tr><td colspan="3">&nbsp;</td></tr>
+   
     <tr>
     <td width="20" height="20">&nbsp;</td>
     <td>
@@ -183,15 +149,26 @@
 		    <display:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
 		    </display:column>
-		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
-		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
+		    <display:column class="datacell" sortable="true" title="<div>Instance ID</div>" >
+		    	<c:out value="${result.instanceId}"/>&nbsp;
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Application Namespace</div>" >
+		    	<c:out value="${result.applicationNamespace}"/>&nbsp;
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Application Namespace</div>" >
+		    	<c:out value="${result.applicationNamespace}"/>&nbsp;
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Version</div>" >
+		    	<c:out value="${result.serviceVersion}"/>&nbsp;
+		    </display:column>
+			<display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Type</div>" >
+				<c:out value="${result.type}"/>&nbsp;
 		    </display:column>
 		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
-		    	<c:out value="${result.serverIp}"/>&nbsp;
+		    	<c:out value="${result.serverIpAddress}"/>&nbsp;
 		    </display:column>
-			<display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Alive</div>" >
-		    	<c:if test="${result.alive}">true</c:if>
-		    	<c:if test="${!result.alive}">false</c:if>
+			<display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Status</div>" >
+		    	<c:out value="${result.status.code}"/>&nbsp;
 		    	&nbsp;
 		    </display:column>
 		  </display:table>

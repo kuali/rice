@@ -109,7 +109,7 @@
 	<bean id="testServiceFailover" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
 	<bean id="soapService" class="org.kuali.rice.ksb.testclient2.Client2SOAPService" />
 
-	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.security.credentials.CredentialsSourceFactory" />
+	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory" />
 
     <bean id="coreConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
 		<property name="configLocations">
@@ -159,7 +159,7 @@
 		</property>
 		<property name="services">
 			<list>
-				<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
 					<property name="service">
 						<ref bean="soapService" />
 					</property>
@@ -169,24 +169,24 @@
 					<property name="retryAttempts" value="1" />
 					<property name="busSecurity" value="false"></property>
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service">
 						<ref bean="testServiceFailover" />
 					</property>
 					<property name="localServiceName" value="testServiceFailover" />
 					<property name="serviceNameSpaceURI" value="KEW" />
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service" ref="echoService" />
 					<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.EchoService" />
 					<property name="localServiceName" value="echoService" />
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service" ref="chainedRequestService" />
 					<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.ChainedRequestService" />
 					<property name="localServiceName" value="chainedRequestService2" />
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service" ref="sharedQueue" />
 					<property name="localServiceName" value="sharedQueue" />
 					<property name="serviceNameSpaceURI" value="testAppsSharedQueue" />

@@ -25,7 +25,7 @@ final class CacheProperties {
 
 	static final String FORCE_REGISTRY_REFRESH_KEY = "_FORCE_REGISTRY_REFRESH";
 	static final String SERVICE_NAME_KEY = "_SERVICE_NAME";
-	static final String REMOTED_SERVICE_REGISTRY = "remotedServiceRegistry";
+	static final String SERVICE_BUS = "serviceBus";
 	
 	private CacheProperties() {
 		throw new UnsupportedOperationException("do not call");

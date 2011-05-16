@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import org.kuali.rice.core.security.credentials.CredentialsSource;
+import java.net.URL;
+
+import org.kuali.rice.core.api.security.credentials.CredentialsSource;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.messaging.BusClientFailureProxy;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.bam.BAMClientProxy;
 import org.springframework.util.Assert;
 
@@ -35,24 +37,33 @@ public abstract class AbstractServiceConnector implements ServiceConnector {
 	/**
 	 * Maintains the information about the service.  This should never be null.
 	 */
-	private ServiceInfo serviceInfo;
+	private ServiceConfiguration serviceConfiguration;
+	private URL alternateEndpointUrl;
 
 	/**
 	 * Maintains the credentials needed by the service.  This may be null.
 	 */
 	private CredentialsSource credentialsSource;
 
-	public AbstractServiceConnector(final ServiceInfo serviceInfo) {
-		Assert.notNull(serviceInfo, "serviceInfo cannot be null");
-		this.serviceInfo = serviceInfo;
+	public AbstractServiceConnector(final ServiceConfiguration serviceConfiguration) {
+		this(serviceConfiguration, null);
+	}
+	
+	public AbstractServiceConnector(final ServiceConfiguration serviceConfiguration, URL alternateEndpointUrl) {
+		Assert.notNull(serviceConfiguration, "serviceConfiguration cannot be null");
+		this.serviceConfiguration = serviceConfiguration;
+		this.alternateEndpointUrl = alternateEndpointUrl;
+	}
+	
+	public URL getActualEndpointUrl() {
+		if (alternateEndpointUrl != null) {
+            return alternateEndpointUrl;
+        }
+        return getServiceConfiguration().getEndpointUrl();
 	}
 
-	public ServiceInfo getServiceInfo() {
-		return this.serviceInfo;
-	}
-
-	public void setServiceInfo(final ServiceInfo serviceInfo) {
-		this.serviceInfo = serviceInfo;
+	public ServiceConfiguration getServiceConfiguration() {
+		return this.serviceConfiguration;
 	}
 
 	public void setCredentialsSource(final CredentialsSource credentialsSource) {
@@ -64,9 +75,8 @@ public abstract class AbstractServiceConnector implements ServiceConnector {
 	}
 
 	protected Object getServiceProxyWithFailureMode(final Object service,
-			final ServiceInfo serviceInfo) {
-		Object bamWrappedClientProxy = BAMClientProxy
-				.wrap(service, serviceInfo);
-		return BusClientFailureProxy.wrap(bamWrappedClientProxy, serviceInfo);
+			final ServiceConfiguration serviceConfiguration) {
+		Object bamWrappedClientProxy = BAMClientProxy.wrap(service, serviceConfiguration);
+		return BusClientFailureProxy.wrap(bamWrappedClientProxy, serviceConfiguration);
 	}
 }

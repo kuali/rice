@@ -16,9 +16,12 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import javax.xml.namespace.QName;
+
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.bam.BAMClientProxy;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**
@@ -27,15 +30,21 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 public class BusLocalConnector extends AbstractServiceConnector {
 
-	public BusLocalConnector(final ServiceInfo serviceInfo) {
-		super(serviceInfo);
+	public BusLocalConnector(final ServiceConfiguration serviceConfiguration) {
+		super(serviceConfiguration);
 	}
 
 	private Object getServiceProxy(Object service) {
-		return BAMClientProxy.wrap(service, getServiceInfo());
+		return BAMClientProxy.wrap(service, getServiceConfiguration());
 	}
 	
 	public Object getService() {
-	    return getServiceProxy(KSBServiceLocator.getServiceDeployer().getLocalService(getServiceInfo().getQname()));
+		QName serviceName = getServiceConfiguration().getServiceName();
+		Endpoint localServiceEndpoint = KsbApiServiceLocator.getServiceBus().getLocalEndpoint(serviceName);
+		if (localServiceEndpoint == null) {
+			throw new IllegalStateException("Failed to locate a local service with the name: " + serviceName);
+		}
+	    return getServiceProxy(KsbApiServiceLocator.getServiceBus().getLocalEndpoint(serviceName));
 	}
+	
 }

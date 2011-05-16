@@ -30,17 +30,20 @@ public abstract class PropertySerializabilityEvaluatorBase implements PropertySe
 	
     protected PropertySerializerTrie serializableProperties;
     
-	public void initializeEvaluator(Document document){
+    @Override
+	public void initializeEvaluatorForDocument(Document document){
 		
 	}
 	
-	public void initializeEvaluator(Object businessObject){
+    @Override
+	public void initializeEvaluatorForDataObject(Object businessObject){
 		
 	}
 	
     /**
      * @see org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator#determinePropertyType(java.lang.Object)
      */
+    @Override
     public PropertyType determinePropertyType(Object propertyValue) {
         if (propertyValue == null) {
             return PropertyType.PRIMITIVE;
@@ -59,6 +62,7 @@ public abstract class PropertySerializabilityEvaluatorBase implements PropertySe
      * 
      * @see org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator#isPropertySerializable(org.kuali.rice.kns.util.documentserializer.DocumentSerializationState, java.lang.Object, java.lang.String, java.lang.Object)
      */
+    @Override
     public boolean isPropertySerializable(SerializationState state, Object containingObject, String childPropertyName, Object childPropertyValue) {
         boolean allPropertiesMatched = true;
         

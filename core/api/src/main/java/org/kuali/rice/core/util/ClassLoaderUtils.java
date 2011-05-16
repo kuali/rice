@@ -24,7 +24,7 @@ import java.util.List;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.reflect.TargetedInvocationHandler;
+import org.kuali.rice.core.util.reflect.TargetedInvocationHandler;
 
 /**
  * Provides common utility methods for dealing with Classloaders.
@@ -57,7 +57,7 @@ public final class ClassLoaderUtils {
 	 * Checks if the given object is an instance of the given class, unwrapping any proxies if
 	 * necessary to get to the underlying object.
 	 */
-	public static boolean isInstanceOf(Object object, Class instanceClass) {
+	public static boolean isInstanceOf(Object object, Class<?> instanceClass) {
 		if (object == null) {
 			return false;
 		}
@@ -92,9 +92,9 @@ public final class ClassLoaderUtils {
 	/**
 	 * Checks if the given Class is visible to the given ClassLoader.
 	 */
-	public static boolean isClassVisible(ClassLoader classLoader, Class classToCheck) {
+	public static boolean isClassVisible(ClassLoader classLoader, Class<?> classToCheck) {
 	    try {
-		Class classFound = classLoader.loadClass(classToCheck.getName());
+		Class<?> classFound = classLoader.loadClass(classToCheck.getName());
 		return classFound.equals(classToCheck);
 	    } catch (ClassNotFoundException e) {
 		return false;

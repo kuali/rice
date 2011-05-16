@@ -26,7 +26,8 @@ public class AlwaysTruePropertySerializibilityEvaluator extends PropertySerializ
     /**
      * Does nothing, since we know everything's serializable
      */
-    public void initializeEvaluator(Document document) {
+	@Override
+    public void initializeEvaluatorForDocument(Document document) {
     }
 
     /**
@@ -34,6 +35,7 @@ public class AlwaysTruePropertySerializibilityEvaluator extends PropertySerializ
      * 
      * @see org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator#isPropertySerializable(org.kuali.rice.kns.util.documentserializer.DocumentSerializationState, Object, java.lang.String, java.lang.Object)
      */
+	@Override
     public boolean isPropertySerializable(SerializationState state, Object containingObject, String childPropertyName, Object childPropertyValue) {
         return true;
     }

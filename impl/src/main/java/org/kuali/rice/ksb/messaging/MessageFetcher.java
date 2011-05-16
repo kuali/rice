@@ -101,7 +101,7 @@ public class MessageFetcher implements Runnable {
     }
 
     private MessageQueueService getRouteQueueService() {
-	return KSBServiceLocator.getRouteQueueService();
+	return KSBServiceLocator.getMessageQueueService();
     }
 
 }

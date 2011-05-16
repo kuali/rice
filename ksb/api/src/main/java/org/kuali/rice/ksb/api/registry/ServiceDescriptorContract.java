@@ -4,7 +4,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
 
 public interface ServiceDescriptorContract extends Versioned {
 
-	Long getId();
+	String getId();
 	
 	String getDescriptor();
 	

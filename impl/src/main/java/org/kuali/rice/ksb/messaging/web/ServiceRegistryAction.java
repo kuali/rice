@@ -16,30 +16,31 @@
 
 package org.kuali.rice.ksb.messaging.web;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
-import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
-import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
-import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.registry.ServiceRegistry;
+import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.util.KSBConstants;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -56,10 +57,9 @@ public class ServiceRegistryAction extends KSBAction {
 
     public ActionForward refreshServiceRegistry(ActionMapping mapping, ActionForm form, HttpServletRequest request,
     	HttpServletResponse response) throws IOException, ServletException {
-	// TODO is this what really constitutes a "refresh" of the service registry?
-	KSBServiceLocator.getServiceDeployer().refresh();
-	KSBResourceLoaderFactory.getRemoteResourceLocator().refresh();
-	return mapping.findForward("basic");
+    	// TODO is this what really constitutes a "refresh" of the service registry?
+    	KsbApiServiceLocator.getServiceBus().synchronize();
+    	return mapping.findForward("basic");
     }
     
 	/**
@@ -67,8 +67,16 @@ public class ServiceRegistryAction extends KSBAction {
      */
     public ActionForward deleteLocalhostEntries(ActionMapping mapping, ActionForm form, HttpServletRequest request,
         	HttpServletResponse response) throws IOException, ServletException {
-    	ServiceRegistry registry = KSBServiceLocator.getServiceRegistry();
-        registry.removeLocallyPublishedServices("localhost",null);//Namespace unspecified to match all localhost records
+    	ServiceRegistry serviceRegistry = KsbApiServiceLocator.getServiceRegistry();
+    	List<ServiceInfo> serviceInfos = serviceRegistry.getAllOnlineServices();
+    	Set<String> serviceEndpointsToDelete = new HashSet<String>();
+    	for (ServiceInfo serviceInfo : serviceInfos) {
+    		if (serviceInfo.getServerIpAddress().equals("localhost")) {
+    			serviceEndpointsToDelete.add(serviceInfo.getServiceId());
+    		}
+    	}
+    	serviceRegistry.removeServiceEndpoints(serviceEndpointsToDelete);
+    	KsbApiServiceLocator.getServiceBus().synchronize();
 		return mapping.findForward("basic");
     }
 
@@ -78,42 +86,26 @@ public class ServiceRegistryAction extends KSBAction {
 	form.setMyIpAddress(RiceUtilities.getIpNumber());
 	form.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.SERVICE_NAMESPACE));
 	form.setDevMode(ConfigContext.getCurrentContextConfig().getDevMode());
-	RemotedServiceRegistry registry = KSBServiceLocator.getServiceDeployer();
-	RemoteResourceServiceLocator remoteLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-	form.setPublishedServices(getPublishedServices(registry));
-	form.setPublishedTempServices(getPublishedTempServices(registry));
-	form.setGlobalRegistryServices(getGlobalRegistryServices(remoteLocator));
+	ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+	form.setMyInstanceId(serviceBus.getInstanceId());
+	form.setPublishedServices(getPublishedServices(serviceBus));
+	ServiceRegistry serviceRegistry = KsbApiServiceLocator.getServiceRegistry();
+	form.setGlobalRegistryServices(getGlobalRegistryServices(serviceRegistry));
 
 	return null;
     }
 
-    private List<ServiceInfo> getPublishedServices(RemotedServiceRegistry registry) {
-	Map<QName, ServerSideRemotedServiceHolder> publishedServiceHolders = registry.getPublishedServices();
-	List<ServiceInfo> publishedServices = new ArrayList<ServiceInfo>();
-	for (ServerSideRemotedServiceHolder holder : publishedServiceHolders.values()) {
-	    publishedServices.add(holder.getServiceInfo());
-	}
-	return publishedServices;
+    private List<ServiceConfiguration> getPublishedServices(ServiceBus serviceBus) {
+    	Map<QName, Endpoint> localEndpoints = serviceBus.getLocalEndpoints();
+    	List<ServiceConfiguration> publishedServices = new ArrayList<ServiceConfiguration>();
+    	for (Endpoint endpoint : localEndpoints.values()) {
+    		publishedServices.add(endpoint.getServiceConfiguration());
+    	}
+    	return publishedServices;
     }
 
-    private List<ServiceInfo> getPublishedTempServices(RemotedServiceRegistry registry) {
-	Map<QName, ServerSideRemotedServiceHolder> publishedTempServiceHolders = registry.getPublishedTempServices();
-	List<ServiceInfo> publishedTempServices = new ArrayList<ServiceInfo>();
-	for (ServerSideRemotedServiceHolder holder : publishedTempServiceHolders.values()) {
-	    publishedTempServices.add(holder.getServiceInfo());
-	}
-	return publishedTempServices;
-    }
-
-    private List<ServiceInfo> getGlobalRegistryServices(RemoteResourceServiceLocator remoteLocator) {
-	Map<QName, List<RemotedServiceHolder>> clients = remoteLocator.getClients();
-	List<ServiceInfo> globalRegistryServices = new ArrayList<ServiceInfo>();
-	for (List<RemotedServiceHolder> client : clients.values()) {
-	    for (RemotedServiceHolder holder : client) {
-		globalRegistryServices.add(holder.getServiceInfo());
-	    }
-	}
-	return globalRegistryServices;
+    private List<ServiceInfo> getGlobalRegistryServices(ServiceRegistry serviceRegistry) {
+    	return serviceRegistry.getAllServices();
     }
 
 }

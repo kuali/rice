@@ -16,6 +16,14 @@
 
 package org.kuali.rice.ksb.messaging.servlet;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+
 import org.apache.cxf.Bus;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Message;
@@ -25,9 +33,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.support.SoapServiceConfiguration;
 import org.kuali.rice.ksb.security.SignatureSigningResponseWrapper;
 import org.kuali.rice.ksb.security.SignatureVerifyingRequestWrapper;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -41,13 +50,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-import java.io.IOException;
-import java.util.List;
 
 
 /**
@@ -114,6 +116,7 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		} else if (handler instanceof Controller) {
 			Object unwrappedHandler = ClassLoaderUtils.unwrapFromProxy(handler);
 			if (unwrappedHandler instanceof CXFServletControllerAdapter) {
+				// TODO this just seems weird as this controller is initially null when it's created, does there need to be some synchronization here?
 				((CXFServletControllerAdapter)unwrappedHandler).setController(cxfServletController);
 			}			
 			return new SimpleControllerHandlerAdapter();
@@ -161,15 +164,15 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		if (LOG.isDebugEnabled()) {
 		    LOG.debug("Checking service " + serviceName + " for security enabled");
 		}
-		ServerSideRemotedServiceHolder serviceHolder = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(serviceName);
-		if (serviceHolder == null) {
+		Endpoint endpoint = KsbApiServiceLocator.getServiceBus().getEndpoint(serviceName);
+		if (endpoint == null) {
 			LOG.error("Attempting to acquire non-existent service " + request.getRequestURI());
 		    throw new RiceRuntimeException("Attempting to acquire non-existent service.");
 		}
-		ServiceInfo serviceInfo = serviceHolder.getServiceInfo();
-		if (serviceInfo.getServiceDefinition() instanceof SOAPServiceDefinition) {
+		ServiceConfiguration serviceConfiguration = endpoint.getServiceConfiguration();
+		if (serviceConfiguration instanceof SoapServiceConfiguration) {
 		    return false;
 		}
-		return serviceInfo.getServiceDefinition().getBusSecurity();
+		return serviceConfiguration.getBusSecurity();
 	}
 }

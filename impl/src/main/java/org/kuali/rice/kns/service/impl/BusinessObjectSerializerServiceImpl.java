@@ -68,7 +68,7 @@ public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase i
         }
         else {
             evaluator = new MaintenanceDocumentPropertySerializibilityEvaluator();
-            evaluator.initializeEvaluator(businessObject);
+            evaluator.initializeEvaluatorForDataObject(businessObject);
         }
         
         return evaluator;

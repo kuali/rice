@@ -83,21 +83,21 @@
         <property name="serverDataSource" value="true"/>
     </bean>
 
-	<bean id="ksbScheduler"
+	<bean id="rice.ksb.scheduler"
 		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="ksbScheduler" />
+		<property name="serviceName" value="rice.ksb.scheduler" />
 	</bean>
 	
-	<bean id="enServiceInvoker"
+	<bean id="rice.ksb.serviceBus"
 		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="enServiceInvoker" />
+		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 
     <!-- Eagerly-init KCB initializer; sets OJB platform dynamically for now -->
     <bean id="initializer" class="org.kuali.rice.kcb.config.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer">
         <property name="messageProcessingTrigger" ref="periodicMessageProcessingTrigger"/>
         <property name="messageProcessingJobDetail" ref="messageProcessingJobDetail"/>
-		<property name="scheduler" ref="ksbScheduler"></property>
+		<property name="scheduler" ref="rice.ksb.scheduler"></property>
     </bean>
 
     <!-- All of the beans listed in the beanNames/list section are considered transactional -->
@@ -234,9 +234,9 @@
     <!-- export our KCB service -->
 
     <bean parent="kcbLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
         <property name="serviceDefinition">
-            <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+            <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                 <property name="priority" value="1"/>
                 <property name="serviceInterface"><value>org.kuali.rice.kcb.service.MessagingService</value></property>
                 <property name="service"><ref bean="messagingService" /></property>
@@ -248,9 +248,9 @@
     </bean>
  
     <bean parent="kcbLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
         <property name="serviceDefinition">
-            <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+            <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                 <property name="priority" value="1"/>
                 <property name="serviceInterface"><value>org.kuali.rice.kcb.service.MessageDelivererRegistryAPI</value></property>
                 <property name="service"><ref bean="messageDelivererRegistryService" /></property>

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
@@ -38,7 +37,8 @@ public class MaintenanceDocumentPropertySerializibilityEvaluator
      * 
      * @see org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator#initializeEvaluator(org.kuali.rice.kns.document.Document)
      */
-    public void initializeEvaluator(BusinessObject businessObject){
+	@Override
+    public void initializeEvaluatorForDataObject(Object businessObject){
         DataDictionary dictionary = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary();
         MaintenanceDocumentEntry maintenanceDocumentEntry = 
         	dictionary.getMaintenanceDocumentEntryForBusinessObjectClass(businessObject.getClass());

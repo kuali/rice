@@ -59,20 +59,20 @@
 		<property name="serviceName" value="riceApplicationConfigurationService" />
 	</bean>
 
-    <bean id="knsService" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" abstract="true">
+    <bean id="knsService" class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition" abstract="true">
       <property name="serviceNameSpaceURI" value="KNS" />
       <property name="retryAttempts" value="0" />
     </bean>
 
-	<bean id="enServiceInvoker"
+	<bean id="rice.ksb.serviceBus"
 		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="enServiceInvoker" />
+		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<bean class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
+	  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
 	  <property name="serviceDefinition">
-	    <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition"
+	    <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition"
 	      p:service-ref="riceApplicationConfigurationService"
 	      p:localServiceName="riceApplicationConfigurationService" />
 	  </property>

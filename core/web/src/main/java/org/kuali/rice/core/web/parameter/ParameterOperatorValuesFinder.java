@@ -33,8 +33,8 @@ public class ParameterOperatorValuesFinder extends KeyValuesBase {
 	
 	static {
 		final List<KeyValue> keyValues = new ArrayList<KeyValue>();
-        keyValues.add(new ConcreteKeyValue(EvaluationOperator.ALLOW.getOperatorCode(), "Allowed"));
-        keyValues.add(new ConcreteKeyValue(EvaluationOperator.DISALLOW.getOperatorCode(), "Denied"));
+        keyValues.add(new ConcreteKeyValue(EvaluationOperator.ALLOW.getCode(), "Allowed"));
+        keyValues.add(new ConcreteKeyValue(EvaluationOperator.DISALLOW.getCode(), "Denied"));
 		KEY_VALUES = Collections.unmodifiableList(keyValues);
 	}
 	

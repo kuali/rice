@@ -19,10 +19,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.kuali.rice.core.impl.proxy.BaseTargetedInvocationHandler;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.core.util.reflect.BaseTargetedInvocationHandler;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.impl.registry.ServiceInfoBo;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -37,19 +40,26 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 public class BAMClientProxy extends BaseTargetedInvocationHandler {
 
-	private ServiceInfo serviceInfo;
+	private ServiceConfiguration serviceConfiguration;
 	
-	private BAMClientProxy(Object target, ServiceInfo serviceInfo) {
+	private BAMClientProxy(Object target, ServiceConfiguration serviceConfiguration) {
 		super(target);
-		this.serviceInfo = serviceInfo;
+		this.serviceConfiguration = serviceConfiguration;
 	}
 	
-	public static Object wrap(Object target, ServiceInfo serviceInfo) {
-		return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy.getInterfacesToProxy(target), new BAMClientProxy(target, serviceInfo));
+	public static boolean isBamSupported() {
+		return KSBServiceLocator.getBAMService() != null && Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(Config.BAM_ENABLED));
+	}
+	
+	public static Object wrap(Object target, ServiceConfiguration serviceConfiguration) {
+		if (!isBamSupported()) {
+			return target;
+		}
+		return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy.getInterfacesToProxy(target), new BAMClientProxy(target, serviceConfiguration));
 	}
 	
 	protected Object invokeInternal(Object proxyObject, Method method, Object[] arguments) throws Throwable {
-		BAMTargetEntry bamTargetEntry = KSBServiceLocator.getBAMService().recordClientInvocation(this.serviceInfo, getTarget(), method, arguments);
+		BAMTargetEntry bamTargetEntry = KSBServiceLocator.getBAMService().recordClientInvocation(this.serviceConfiguration, getTarget(), method, arguments);
 		try {
 			return method.invoke(getTarget(), arguments);	
 		} catch (Throwable throwable) {

@@ -16,7 +16,9 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import java.net.URL;
+
+import org.kuali.rice.ksb.api.bus.support.RestServiceConfiguration;
 
 
 /**
@@ -25,17 +27,22 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
  * @since 0.9
  */
 public class RESTConnector extends AbstractServiceConnector {
-    
-    public RESTConnector(final ServiceInfo serviceInfo) {
-        super(serviceInfo);
-    }
+        
+    public RESTConnector(final RestServiceConfiguration serviceConfiguration, final URL alternateEndpointUrl) {
+		super(serviceConfiguration, alternateEndpointUrl);
+	}
 
+    @Override
+    public RestServiceConfiguration getServiceConfiguration() {
+    	return (RestServiceConfiguration)super.getServiceConfiguration();
+    }
+    
     /**
      * @return a resource facade that wraps the CXF client proxies for these resources
      * @see org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector#getService()
      */
-    public Object getService() throws Exception {
-    	ResourceFacadeImpl resourceFacade = new ResourceFacadeImpl(getServiceInfo());
+    public Object getService() {
+    	ResourceFacadeImpl resourceFacade = new ResourceFacadeImpl(getServiceConfiguration(), getActualEndpointUrl());
     	resourceFacade.setCredentialsSource(getCredentialsSource());
 
     	if (resourceFacade.isSingleResourceService())

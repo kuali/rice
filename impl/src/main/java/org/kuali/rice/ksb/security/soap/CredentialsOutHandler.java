@@ -20,9 +20,9 @@ import org.apache.ws.security.WSPasswordCallback;
 import org.apache.ws.security.WSSecurityException;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
-import org.kuali.rice.core.security.credentials.Credentials;
-import org.kuali.rice.core.security.credentials.CredentialsSource;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.core.api.security.credentials.Credentials;
+import org.kuali.rice.core.api.security.credentials.CredentialsSource;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
 import org.springframework.util.Assert;
 
@@ -37,17 +37,17 @@ public class CredentialsOutHandler extends WSS4JOutInterceptor {
 
 	private final CredentialsSource credentialsSource;
 
-	private final ServiceInfo serviceInfo;
+	private final ServiceConfiguration serviceConfiguration;
 
 	public CredentialsOutHandler(final CredentialsSource credentialsSource,
-			final ServiceInfo serviceInfo) {
+			final ServiceConfiguration serviceConfiguration) {
 		Assert.notNull(credentialsSource, "credentialsSource cannot be null.");
-		Assert.notNull(serviceInfo, "serviceInfo cannot be null.");
+		Assert.notNull(serviceConfiguration, "serviceConfiguration cannot be null.");
 		this.credentialsSource = credentialsSource;
-		this.serviceInfo = serviceInfo;
+		this.serviceConfiguration = serviceConfiguration;
 
 		final Credentials credentials = this.credentialsSource
-				.getCredentials(this.serviceInfo.getEndpointUrl());
+				.getCredentials(this.serviceConfiguration.getEndpointUrl().toString());
 
 		Assert.isTrue(credentials instanceof UsernamePasswordCredentials,
 				"Credentials must be of type usernamepassword.");
@@ -60,7 +60,7 @@ public class CredentialsOutHandler extends WSS4JOutInterceptor {
 			final int doAction, final String clsProp, final String refProp,
 			final RequestData reqData) throws WSSecurityException {
 		final UsernamePasswordCredentials c = (UsernamePasswordCredentials) this.credentialsSource
-				.getCredentials(this.serviceInfo.getEndpointUrl());
+				.getCredentials(this.serviceConfiguration.getEndpointUrl().toString());
 
 		return new WSPasswordCallback(c.getUsername(), c.getPassword(), null,
 				WSPasswordCallback.USERNAME_TOKEN);

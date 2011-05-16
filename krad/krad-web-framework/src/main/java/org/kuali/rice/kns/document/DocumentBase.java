@@ -393,7 +393,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     		return new AlwaysTruePropertySerializibilityEvaluator();
     	}
     	PropertySerializabilityEvaluator evaluator = new BusinessObjectPropertySerializibilityEvaluator();
-    	evaluator.initializeEvaluator(this);
+    	evaluator.initializeEvaluatorForDocument(this);
     	return evaluator;
     }
     

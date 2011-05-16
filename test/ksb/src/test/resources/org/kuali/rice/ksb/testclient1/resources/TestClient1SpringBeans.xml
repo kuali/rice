@@ -126,7 +126,7 @@
     	<property name="storage" ref="kmsStorage"/>
     </bean>
 	
-	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.security.credentials.CredentialsSourceFactory" />
+	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory" />
     
     <bean id="coreConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
 		<property name="configLocations">
@@ -176,7 +176,7 @@
 		</property>
 		<property name="services">
 			<list>
-				<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
 					<property name="service">
 						<ref bean="soapService" />
 					</property>
@@ -186,7 +186,7 @@
 					<property name="retryAttempts" value="1" />
 					<property name="busSecurity" value="false"></property>
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
 					<property name="service">
 						<ref bean="soapService" />
 					</property>
@@ -196,7 +196,7 @@
 					<property name="retryAttempts" value="1" />
 					<property name="busSecurity" value="false"></property>
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
 					<property name="service">
 						<ref bean="soapService" />
 					</property>
@@ -207,13 +207,13 @@
 					<property name="retryAttempts" value="1" />
 					<property name="busSecurity" value="false"></property>
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
 					<property name="service" ref="echoService" />
 					<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.EchoService" />
 					<property name="localServiceName" value="soap-echoService" />
 					<property name="busSecurity" value="false"></property>
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
 					<property name="service" ref="echoService" />
 					<property name="servicePath" value="secure" />
 					<property name="serviceNameSpaceURI" value="urn:TestCl1" />
@@ -221,21 +221,21 @@
 					<property name="localServiceName" value="soap-echoServiceSecure" />
 					<property name="busSecurity" value="true"></property>
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
 					<property name="service" ref="jaxwsService" />
 					<property name="localServiceName" value="jaxwsEchoService" />
 					<property name="busSecurity" value="false"></property>
 					<property name="jaxWsService" value="true"></property>
 				</bean>
 
-                      <bean class="org.kuali.rice.ksb.messaging.RESTServiceDefinition">
+                      <bean class="org.kuali.rice.ksb.api.bus.support.RestServiceDefinition">
                           <property name="serviceNameSpaceURI" value="test" />
                           <property name="service" ref="baseballCardCollectionService" />
                           <property name="localServiceName" value="baseballCardCollectionService" />
                           <property name="resourceClass" value="org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService" />
                       </bean>
                       
-                      <bean class="org.kuali.rice.ksb.messaging.RESTServiceDefinition">
+                      <bean class="org.kuali.rice.ksb.api.bus.support.RestServiceDefinition">
                           <property name="serviceNameSpaceURI" value="test" />
                           <property name="localServiceName" value="kms" />
                           <property name="resources">
@@ -248,31 +248,31 @@
                       </bean>
                       
                       
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service">
 						<ref bean="testLocalServiceFavoriteCall" />
 					</property>
 					<property name="localServiceName" value="testLocalServiceFavoriteCall" />
 					<property name="serviceNameSpaceURI" value="KEW" />
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service">
 						<ref bean="testServiceFailover" />
 					</property>
 					<property name="localServiceName" value="testServiceFailover" />
 					<property name="serviceNameSpaceURI" value="KEW" />
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service" ref="echoService" />
 					<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.EchoService" />
 					<property name="localServiceName" value="echoService" />
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service" ref="chainedRequestService" />
 					<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.ChainedRequestService" />
 					<property name="localServiceName" value="chainedRequestService1" />
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service" ref="testJavaAsyncService"></property>
 					<property name="localServiceName" value="testJavaAsyncService" />
 					<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.service.KSBJavaService" />
@@ -282,7 +282,7 @@
 					<property name="messageExceptionHandler"
 						value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service" ref="testXmlAsyncService"></property>
 					<property name="localServiceName" value="testXmlAsyncService" />
 					<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.service.KSBXMLService" />
@@ -292,17 +292,17 @@
 						value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
 				</bean>
 				<!-- 
-					<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+					<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service" ref="distributedCachingTestHelperService" />
 					<property name="localServiceName" value="distributedCachingTestHelperService" />
 					</bean>
 				-->
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service" ref="sharedQueue" />
 					<property name="localServiceName" value="sharedQueue" />
 					<property name="serviceNameSpaceURI" value="testAppsSharedQueue" />
 				</bean>
-				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 					<property name="service" ref="sharedTopic" />
 					<property name="localServiceName" value="sharedTopic" />
 					<property name="serviceNameSpaceURI" value="testAppsSharedTopic" />

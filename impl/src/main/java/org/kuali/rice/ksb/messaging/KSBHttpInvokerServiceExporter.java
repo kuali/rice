@@ -19,8 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.bam.BAMServerProxy;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
@@ -29,16 +29,16 @@ import org.springframework.remoting.support.RemoteInvocationTraceInterceptor;
 
 public class KSBHttpInvokerServiceExporter extends HttpInvokerServiceExporter {
 	
-	private List<Class> serviceInterfaces;
-	private ServiceInfo serviceInfo;
+	private List<Class<?>> serviceInterfaces;
+	private ServiceDefinition serviceDefinition;
 	private boolean registerTraceInterceptor = true;
 	
-	public ServiceInfo getServiceInfo() {
-		return this.serviceInfo;
+	public ServiceDefinition getServiceDefinition() {
+		return this.serviceDefinition;
 	}
 
-	public void setServiceInfo(ServiceInfo serviceInfo) {
-		this.serviceInfo = serviceInfo;
+	public void setServiceDefinition(ServiceDefinition serviceDefinition) {
+		this.serviceDefinition = serviceDefinition;
 	}
 	
 	/**
@@ -55,18 +55,18 @@ public class KSBHttpInvokerServiceExporter extends HttpInvokerServiceExporter {
 		checkService();
 		checkServiceInterface();
 		ProxyFactory proxyFactory = new ProxyFactory();
-		for (Class serviceInterface : getServiceInterfaces()) {
+		for (Class<?> serviceInterface : getServiceInterfaces()) {
 			proxyFactory.addInterface(serviceInterface);
 		}
 		if (registerTraceInterceptor == true) {
 			proxyFactory.addAdvice(new RemoteInvocationTraceInterceptor(getExporterName()));
 		}
-		ClassLoader classLoader = serviceInfo.getServiceClassLoader();
+		ClassLoader classLoader = serviceDefinition.getServiceClassLoader();
 		if (classLoader == null) {
 		    classLoader = ClassLoaderUtils.getDefaultClassLoader();
 		}
 		Object service = ContextClassLoaderProxy.wrap(getService(), classLoader);
-		service = BAMServerProxy.wrap(service, this.serviceInfo);
+		service = BAMServerProxy.wrap(service, getServiceDefinition());
 		proxyFactory.setTarget(service);
 		return proxyFactory.getProxy(classLoader);
 	}
@@ -81,11 +81,11 @@ public class KSBHttpInvokerServiceExporter extends HttpInvokerServiceExporter {
 		}
 	}
 	
-	public List<Class> getServiceInterfaces() {
+	public List<Class<?>> getServiceInterfaces() {
 		return this.serviceInterfaces;
 	}
 
-	public void setServiceInterfaces(List<Class> serviceInterfaces) {
+	public void setServiceInterfaces(List<Class<?>> serviceInterfaces) {
 		this.serviceInterfaces = serviceInterfaces;
 	}
 	

@@ -16,8 +16,15 @@
  */
 package org.kuali.rice.kew.engine;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.io.Serializable;
+
+import javax.xml.namespace.QName;
+
+import org.junit.Test;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -32,14 +39,9 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
-
-import javax.xml.namespace.QName;
-import java.io.Serializable;
-
-import static org.junit.Assert.*;
 
 public class StandardWorkflowEngineTest extends KEWTestCase {
 
@@ -97,7 +99,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 
 		serviceDef.setMessageExceptionHandler(DocumentMessageExceptionHandler.class.getName());
 		serviceDef.validate();
-		KSBServiceLocator.getServiceDeployer().registerService(serviceDef, true);
+		KsbApiServiceLocator.getServiceBus().publishService(serviceDef, true);
 
 		KSBJavaService exploderAsService = (KSBJavaService) MessageServiceNames.getServiceAsynchronously(new QName("KEW", "exploader"), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId()));
 		exploderAsService.invoke("");

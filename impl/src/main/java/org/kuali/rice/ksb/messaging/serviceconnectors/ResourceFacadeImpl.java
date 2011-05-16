@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
+import java.net.URL;
 import java.util.Map;
 
 import org.apache.cxf.binding.BindingFactoryManager;
@@ -24,10 +25,9 @@ import org.apache.cxf.jaxrs.JAXRSBindingFactory;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.security.credentials.CredentialsSource;
+import org.kuali.rice.core.api.security.credentials.CredentialsSource;
+import org.kuali.rice.ksb.api.bus.support.RestServiceConfiguration;
 import org.kuali.rice.ksb.messaging.BusClientFailureProxy;
-import org.kuali.rice.ksb.messaging.RESTServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.bam.BAMClientProxy;
 import org.kuali.rice.ksb.security.soap.CredentialsOutHandler;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -42,13 +42,21 @@ public class ResourceFacadeImpl implements ResourceFacade {
 
 	private static final Logger LOG = Logger.getLogger(ResourceFacadeImpl.class);
 
-	private final ServiceInfo serviceInfo;
+	private final RestServiceConfiguration serviceConfiguration;
 	private CredentialsSource credentialsSource;
+	private URL actualEndpointUrl;
 
-	public ResourceFacadeImpl(final ServiceInfo serviceInfo) {
-		this.serviceInfo = serviceInfo;
+	public ResourceFacadeImpl(final RestServiceConfiguration serviceConfiguration, URL actualEndpointUrl) {
+		if (serviceConfiguration == null) {
+			throw new IllegalArgumentException("serviceConfiguration cannot be null");
+		}
+		if (actualEndpointUrl == null) {
+			throw new IllegalArgumentException("actual endpoint url cannot be null");
+		}
+		this.serviceConfiguration = serviceConfiguration;
+		this.actualEndpointUrl = actualEndpointUrl;
 	}
-
+	
 	/**
 	 * This overridden method ...
 	 *
@@ -57,10 +65,8 @@ public class ResourceFacadeImpl implements ResourceFacade {
 	public <R> R getResource(Class<R> resourceClass) {
 		if (resourceClass == null) throw new IllegalArgumentException("resourceClass argument must not be null");
 
-		RESTServiceDefinition restServiceDefinition = (RESTServiceDefinition) serviceInfo.getServiceDefinition();
-
-		if (!restServiceDefinition.hasClass(resourceClass.getName())) {
-			throw new IllegalArgumentException("Service " + serviceInfo.getServiceName() +
+		if (!serviceConfiguration.hasClass(resourceClass.getName())) {
+			throw new IllegalArgumentException("Service " + serviceConfiguration.getServiceName() +
 					" does not contain an implementation of type " + resourceClass.getName());
 		}
 
@@ -73,16 +79,15 @@ public class ResourceFacadeImpl implements ResourceFacade {
 	 * @see org.kuali.rice.ksb.messaging.serviceconnectors.ResourceFacade#getResource(java.lang.String)
 	 */
 	public <R> R getResource(String resourceName) {
-		RESTServiceDefinition restServiceDefinition = (RESTServiceDefinition) serviceInfo.getServiceDefinition();
 
 		String resourceClassName = null;
 
-		Map<String, String> resourceToClassNameMap = restServiceDefinition.getResourceToClassNameMap();
+		Map<String, String> resourceToClassNameMap = serviceConfiguration.getResourceToClassNameMap();
 
 		if (resourceName != null && resourceToClassNameMap != null)
 			resourceClassName = resourceToClassNameMap.get(resourceName);
 		else
-			resourceClassName = restServiceDefinition.getResourceClass();
+			resourceClassName = serviceConfiguration.getResourceClass();
 
 		if (resourceClassName == null)
 			throw new RiceRuntimeException("No resource class name was found for the specified resourceName: " + resourceName);
@@ -93,7 +98,7 @@ public class ResourceFacadeImpl implements ResourceFacade {
 			resourceClass = Class.forName(resourceClassName);
 		} catch (ClassNotFoundException e) {
 			throw new RiceRuntimeException("Configured resource class " + resourceClassName +
-					" in service " + serviceInfo.getServiceName() + " is not loadable", e);
+					" in service " + serviceConfiguration.getServiceName() + " is not loadable", e);
 		}
 
         return (R)getServiceProxy(resourceClass);
@@ -112,7 +117,7 @@ public class ResourceFacadeImpl implements ResourceFacade {
         clientFactory.setBus(KSBServiceLocator.getCXFBus());
 
         clientFactory.setResourceClass(resourceClass);
-        clientFactory.setAddress(serviceInfo.getActualEndpointUrl());
+        clientFactory.setAddress(actualEndpointUrl.toString());
         BindingFactoryManager bindingFactoryManager = KSBServiceLocator.getCXFBus().getExtension(BindingFactoryManager.class);
         JAXRSBindingFactory bindingFactory = new JAXRSBindingFactory();
         bindingFactory.setBus(KSBServiceLocator.getCXFBus());
@@ -125,7 +130,7 @@ public class ResourceFacadeImpl implements ResourceFacade {
         }
 
         if (getCredentialsSource() != null) {
-            clientFactory.getOutInterceptors().add(new CredentialsOutHandler(getCredentialsSource(), serviceInfo));
+            clientFactory.getOutInterceptors().add(new CredentialsOutHandler(getCredentialsSource(), serviceConfiguration));
         }
 
         if (LOG.isDebugEnabled()) {
@@ -133,12 +138,11 @@ public class ResourceFacadeImpl implements ResourceFacade {
         }
 
         Object service = clientFactory.create();
-        return (R)getServiceProxyWithFailureMode(service, serviceInfo);
+        return (R)getServiceProxyWithFailureMode(service, serviceConfiguration);
 	}
-
+	
 	public boolean isSingleResourceService() {
-		RESTServiceDefinition restServiceDefinition = (RESTServiceDefinition) serviceInfo.getServiceDefinition();
-		return restServiceDefinition.getResourceToClassNameMap() == null;
+		return serviceConfiguration.getResourceToClassNameMap() == null;
 	}
 
 	public void setCredentialsSource(final CredentialsSource credentialsSource) {
@@ -149,11 +153,9 @@ public class ResourceFacadeImpl implements ResourceFacade {
 		return this.credentialsSource;
 	}
 
-	protected Object getServiceProxyWithFailureMode(final Object service,
-			final ServiceInfo serviceInfo) {
-		Object bamWrappedClientProxy = BAMClientProxy
-				.wrap(service, serviceInfo);
-		return BusClientFailureProxy.wrap(bamWrappedClientProxy, serviceInfo);
+	protected Object getServiceProxyWithFailureMode(final Object service, final RestServiceConfiguration serviceConfiguration) {
+		Object bamWrappedClientProxy = BAMClientProxy.wrap(service, serviceConfiguration);
+		return BusClientFailureProxy.wrap(bamWrappedClientProxy, serviceConfiguration);
 	}
 
 }

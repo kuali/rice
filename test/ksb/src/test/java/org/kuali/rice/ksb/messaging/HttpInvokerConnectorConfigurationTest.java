@@ -16,6 +16,13 @@
 
 package org.kuali.rice.ksb.messaging;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnectionManager;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -25,10 +32,10 @@ import org.junit.Test;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceConfiguration;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
 import org.kuali.rice.test.config.SimpleConfig;
-
-import static org.junit.Assert.*;
 
 
 /**
@@ -61,9 +68,14 @@ public class HttpInvokerConnectorConfigurationTest {
 		testHttpClientConfigurationImpl(jaxbConfig);
 	}
 	protected void testHttpClientConfigurationImpl(String configType) throws Exception {
+		
+		JavaServiceDefinition javaServiceDefinition = new JavaServiceDefinition();
+		javaServiceDefinition.setServiceName(new QName("test", "test"));
+		JavaServiceConfiguration configuration = JavaServiceConfiguration.fromServiceDefinition(javaServiceDefinition);
+		
 		// test the default configuration
 		ConfigContext.init(getConfigObject(configType));
-		HttpInvokerConnector httpConnector = new HttpInvokerConnector(new ServiceInfo());
+		HttpInvokerConnector httpConnector = new HttpInvokerConnector(configuration, null);
 		HttpClient httpClient = httpConnector.getHttpClient();
 		
 		HttpConnectionManager connectionManager = httpClient.getHttpConnectionManager();
@@ -84,7 +96,7 @@ public class HttpInvokerConnectorConfigurationTest {
 		config.putProperty("http.authentication.preemptive", "false");
 		ConfigContext.init(config);
 		
-		httpConnector = new HttpInvokerConnector(new ServiceInfo());
+		httpConnector = new HttpInvokerConnector(configuration, null);
 		httpClient = httpConnector.getHttpClient();
 		
 		connectionManager = httpClient.getHttpConnectionManager();
@@ -102,7 +114,7 @@ public class HttpInvokerConnectorConfigurationTest {
 		config.putProperty("http.authentication.preemptive", "true");
 		ConfigContext.init(config);
 		
-		httpConnector = new HttpInvokerConnector(new ServiceInfo());
+		httpConnector = new HttpInvokerConnector(configuration, null);
 		httpClient = httpConnector.getHttpClient();
 		
 		assertTrue(httpClient.getParams().isAuthenticationPreemptive());
@@ -112,7 +124,7 @@ public class HttpInvokerConnectorConfigurationTest {
 		config.putProperty("http.connection-manager.class", MyHttpConnectionManager.class.getName());
 		ConfigContext.init(config);
 		
-		httpConnector = new HttpInvokerConnector(new ServiceInfo());
+		httpConnector = new HttpInvokerConnector(configuration, null);
 		httpClient = httpConnector.getHttpClient();
 		
 		connectionManager = httpClient.getHttpConnectionManager();
@@ -126,7 +138,7 @@ public class HttpInvokerConnectorConfigurationTest {
 		ConfigContext.init(config);
 		
 		try {
-			httpConnector = new HttpInvokerConnector(new ServiceInfo());
+			httpConnector = new HttpInvokerConnector(configuration, null);
 			fail("An exception should have been thrown because the retry handler is an illegal parameter.");
 		} catch (Exception e) {
 		    //nothing to do here

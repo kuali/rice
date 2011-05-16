@@ -15,17 +15,17 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.junit.Test;
-import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
-import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.messaging.service.KSBJavaService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.kuali.rice.ksb.test.KSBTestCase;
+import static org.junit.Assert.assertTrue;
 
 import javax.xml.namespace.QName;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
+import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
+import org.kuali.rice.ksb.messaging.service.KSBJavaService;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.test.KSBTestCase;
 
 
 /**
@@ -43,7 +43,7 @@ public class DistributedTopicTest extends KSBTestCase {
 	@Test
 	public void testSuccessfullyCallingSyncTopics() throws Exception {
 		
-		((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
+		KsbApiServiceLocator.getServiceBus().synchronize();
 		QName serviceName = new QName("testAppsSharedTopic", "sharedTopic");
 		
 		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);

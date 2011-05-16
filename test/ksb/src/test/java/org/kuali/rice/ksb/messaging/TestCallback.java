@@ -25,9 +25,6 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.AsynchronousCallback;
-
 public class TestCallback implements AsynchronousCallback {
 	/**
 	 * 
@@ -62,12 +59,12 @@ public class TestCallback implements AsynchronousCallback {
 		NUMBER_CALL_BACKS++;
 		setCallbackCalled(true);
 		this.numberCallbacks++;
-		QName serviceName = methodCall.getServiceInfo().getQname();
+		QName serviceName = methodCall.getServiceConfiguration().getServiceName();
 		Integer callCount = SERVICE_CALL_COUNT_TRACKED.get(serviceName);
 		if (callCount == null) {
-			SERVICE_CALL_COUNT_TRACKED.put(methodCall.getServiceInfo().getQname(), 1);
+			SERVICE_CALL_COUNT_TRACKED.put(methodCall.getServiceConfiguration().getServiceName(), 1);
 		} else {
-			SERVICE_CALL_COUNT_TRACKED.put(methodCall.getServiceInfo().getQname(), callCount + 1);
+			SERVICE_CALL_COUNT_TRACKED.put(methodCall.getServiceConfiguration().getServiceName(), callCount + 1);
 		}
 		
 		List<AsynchronousCall> serviceCallsTracked = SERVICES_CALLS_TRACKED.get(serviceName);

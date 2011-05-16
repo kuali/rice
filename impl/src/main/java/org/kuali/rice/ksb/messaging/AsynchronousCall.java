@@ -19,6 +19,7 @@ package org.kuali.rice.ksb.messaging;
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 
 /**
  * Encapsulates an asynchronous call to a service.
@@ -31,9 +32,9 @@ public class AsynchronousCall implements Serializable {
 
 	private Object[] arguments;
 
-	private Class[] paramTypes;
+	private Class<?>[] paramTypes;
 
-	private ServiceInfo serviceInfo;
+	private ServiceConfiguration serviceConfiguration;
 	
 	private Serializable context;
 	
@@ -43,10 +44,10 @@ public class AsynchronousCall implements Serializable {
 	
 	private boolean ignoreStoreAndForward;
 	
-	public AsynchronousCall(Class[] paramTypes, Object[] arguments, ServiceInfo serviceInfo, String methodName, AsynchronousCallback callback, Serializable context) {
+	public AsynchronousCall(Class<?>[] paramTypes, Object[] arguments, ServiceConfiguration serviceConfiguration, String methodName, AsynchronousCallback callback, Serializable context) {
 	    this.arguments = arguments;
 		this.paramTypes = paramTypes;
-		this.serviceInfo = serviceInfo;
+		this.serviceConfiguration = serviceConfiguration;
 		this.methodName = methodName;
 		this.callback = callback;
 		this.context = context;
@@ -56,12 +57,12 @@ public class AsynchronousCall implements Serializable {
 		return this.arguments;
 	}
 
-	public Class[] getParamTypes() {
+	public Class<?>[] getParamTypes() {
 		return this.paramTypes;
 	}
 
-	public ServiceInfo getServiceInfo() {
-		return this.serviceInfo;
+	public ServiceConfiguration getServiceConfiguration() {
+		return this.serviceConfiguration;
 	}
 
 	public String getMethodName() {
@@ -73,7 +74,7 @@ public class AsynchronousCall implements Serializable {
 	}
 
 	public String toString() {
-		return "[AsynchronousCall: " + "serviceInfo=" + this.serviceInfo + ", methodName=" + this.methodName + ", paramTypes=" + getStringifiedArray(this.paramTypes) + ", arguments=" + getStringifiedArray(this.arguments) + "]";
+		return "[AsynchronousCall: " + "serviceInfo=" + this.serviceConfiguration + ", methodName=" + this.methodName + ", paramTypes=" + getStringifiedArray(this.paramTypes) + ", arguments=" + getStringifiedArray(this.arguments) + "]";
 	}
 
 	/**

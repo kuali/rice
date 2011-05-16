@@ -19,9 +19,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.kuali.rice.core.impl.proxy.BaseTargetedInvocationHandler;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.core.util.reflect.BaseTargetedInvocationHandler;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -37,20 +39,26 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 public class BAMServerProxy extends BaseTargetedInvocationHandler {
 
-	private ServiceInfo entry;
+	private ServiceDefinition serviceDefinition;
 	
-	private BAMServerProxy(Object target, ServiceInfo entry) {
+	private BAMServerProxy(Object target, ServiceDefinition serviceDefinition) {
 		super(target);
-		this.entry = entry;
+		this.serviceDefinition = serviceDefinition;
 	}
 	
-	public static Object wrap(Object target, ServiceInfo entry) {
-		return Proxy.newProxyInstance(target.getClass().getClassLoader(), ContextClassLoaderProxy.getInterfacesToProxy(target), new BAMServerProxy(target, entry));
+	public static boolean isBamSupported() {
+		return KSBServiceLocator.getBAMService() != null && Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(Config.BAM_ENABLED));
 	}
 	
+	public static Object wrap(Object target, ServiceDefinition serviceDefinition) {
+		if (!isBamSupported()) {
+			return target;
+		}
+		return Proxy.newProxyInstance(target.getClass().getClassLoader(), ContextClassLoaderProxy.getInterfacesToProxy(target), new BAMServerProxy(target, serviceDefinition));
+	}
 	
 	protected Object invokeInternal(Object proxiedObject, Method method, Object[] arguments) throws Throwable {
-		BAMTargetEntry bamTargetEntry = KSBServiceLocator.getBAMService().recordServerInvocation(getTarget(), this.entry, method, arguments);
+		BAMTargetEntry bamTargetEntry = KSBServiceLocator.getBAMService().recordServerInvocation(getTarget(), this.serviceDefinition, method, arguments);
 		try {
 			return method.invoke(getTarget(), arguments);	
 		} catch (Throwable throwable) {

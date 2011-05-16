@@ -16,23 +16,24 @@
 
 package org.kuali.rice.ksb.messaging;
 
+import static org.junit.Assert.assertTrue;
+
+import javax.xml.namespace.QName;
+
 import junit.framework.Assert;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.remotedservices.GenericTestService;
 import org.kuali.rice.ksb.messaging.remotedservices.TestServiceInterface;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.serviceconnectors.BusLocalConnector;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
-
-import javax.xml.namespace.QName;
-
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -66,16 +67,16 @@ public class DevModeTest extends KSBTestCase {
 		service.invoke();
 		assertTrue("No calls to dev defined service", GenericTestService.NUM_CALLS > 0);
 
-		RemoteResourceServiceLocatorImpl rrsl = (RemoteResourceServiceLocatorImpl)KSBResourceLoaderFactory.getRemoteResourceLocator();
+		ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
 
-		ServiceConnector serviceConnector = ServiceConnectorFactory.getServiceConnector(rrsl.getAllServices(serviceName).get(0).getServiceInfo());
+		ServiceConnector serviceConnector = ServiceConnectorFactory.getServiceConnector(serviceBus.getLocalEndpoint(serviceName).getServiceConfiguration());
 		assertTrue("Not BusLocalConnector", serviceConnector instanceof BusLocalConnector);
-		assertNull("Service in service definition needs to be null for async communications serialization", ((BusLocalConnector)serviceConnector).getServiceInfo().getServiceDefinition().getService());
+		//assertNull("Service in service definition needs to be null for async communications serialization", ((BusLocalConnector)serviceConnector).getServiceConfiguration()().getServiceDefinition().getService());
 
 		service = (TestServiceInterface) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		service.invoke();
 		assertTrue("No calls to dev defined service", GenericTestService.NUM_CALLS > 1);
 
-		Assert.assertEquals("should be no registered services", KSBServiceLocator.getServiceRegistry().fetchAll().size(), 0);
+		Assert.assertEquals("should be no registered services", KsbApiServiceLocator.getServiceRegistry().getAllServices().size(), 0);
 	}
 }

@@ -16,8 +16,16 @@
 
 package org.kuali.rice.ksb.messaging;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.junit.Test;
-import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCard;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService;
@@ -27,11 +35,6 @@ import org.kuali.rice.ksb.messaging.remotedservices.Message;
 import org.kuali.rice.ksb.messaging.remotedservices.MessageResource;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ResourceFacade;
 import org.kuali.rice.ksb.test.KSBTestCase;
-
-import javax.xml.namespace.QName;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 
 /**
@@ -43,27 +46,11 @@ public class RESTServiceTest extends KSBTestCase {
 
     private static final String BBCARD_SERVICE = "baseballCardCollectionService";
     private static final String KMS_SERVICE = "kms";
-    private static final String KMS_MESSAGE_RESOURCE = "kms::message";
     private static final String NAMESPACE = "test";
 
 
     public boolean startClient1() {
         return true;
-    }
-
-    private String getBaseBusUrl() {
-        return "http://localhost:" + 
-        getClient1Port() +
-        "/TestClient1/remoting/";
-    }
-
-    private String getEndpointUrl() {
-        return getBaseBusUrl() + BBCARD_SERVICE;
-    }
-
-
-    private String getClient1Port() {
-        return ConfigContext.getCurrentContextConfig().getProperty("ksb.client1.port");
     }
 
     @Test

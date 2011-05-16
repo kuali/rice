@@ -57,7 +57,7 @@ public class ParameterTest {
             <versionNumber>${PARAMETER_TYPE_VERSION_NUMBER}</versionNumber>
             <objectId>${PARAMETER_TYPE_OBJECT_ID}</objectId>
         </parameterType>
-        <evaluationOperator>${EVALUATION_OP.operatorCode}</evaluationOperator>
+        <evaluationOperator>${EVALUATION_OP.code}</evaluationOperator>
         <versionNumber>${VERSION_NUMBER}</versionNumber>
         <objectId>${OBJECT_ID}</objectId>
     </parameter>

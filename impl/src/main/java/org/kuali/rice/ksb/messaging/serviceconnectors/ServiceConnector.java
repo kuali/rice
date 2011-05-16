@@ -16,15 +16,15 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import org.kuali.rice.core.security.credentials.CredentialsSource;
+import org.kuali.rice.core.api.security.credentials.CredentialsSource;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ServiceConnector {
 	
-	Object getService() throws Exception;
-
+	Object getService();
+	
 	/**
 	 * Method to set the optional CredentialsSource. A ServiceConnector is free
 	 * to use the CredentialsSource to provide credentials to a remote service.

@@ -39,17 +39,20 @@ public final class KSBConstants {
         public static final String IMMEDIATE_EXCEPTION_ROUTING = "Routing.ImmediateExceptionRouting";
         public static final String ALLOW_SYNC_EXCEPTION_ROUTING = "rice.ksb.allowSyncExceptionRouting";
         public static final String KSB_ALLOW_SELF_SIGNED_SSL = "rice.ksb.config.allowSelfSignedSSL";
-        public static final String KSB_MESSAGE_DATASOURCE = "ksbMessage.datasource";
-        public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE = "ksbMessage.nonTransactional.datasource";
-        public static final String KSB_REGISTRY_DATASOURCE = "ksbRegistry.datasource";
-        public static final String KSB_MESSAGE_DATASOURCE_JNDI = "ksbMessage.datasource.jndi.location";
-        public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI = "ksbMessage.nonTransactional.datasource.jndi.location";
-        public static final String KSB_REGISTRY_DATASOURCE_JNDI = "ksbRegistry.datasource.jndi.location";
+        public static final String KSB_MESSAGE_DATASOURCE = "rice.ksb.message.datasource";
+        public static final String KSB_MESSAGE_DATASOURCE_JNDI = "rice.ksb.message.datasource.jndi.location";
+        public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE = "rice.ksb.message.nonTransactional.datasource";
+        public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI = "rice.ksb.message.nonTransactional.datasource.jndi.location";
+        public static final String KSB_REGISTRY_DATASOURCE = "rice.ksb.registry.datasource";
+        public static final String KSB_REGISTRY_DATASOURCE_JNDI = "rice.ksb.registry.datasource.jndi.location";
+        public static final String KSB_BAM_DATASOURCE = "rice.ksb.bam.datasource";
+        public static final String KSB_BAM_DATASOURCE_JNDI = "rice.ksb.bam.datasource.jndi.location";
         public static final String USE_QUARTZ_DATABASE = "useQuartzDatabase";
         public static final String KSB_ALTERNATE_ENDPOINTS = "ksb.alternateEndpoints";
         public static final String KSB_ALTERNATE_ENDPOINT_LOCATIONS = "ksb.alternateEndpointLocations";
         public static final String LOAD_KNS_MODULE_CONFIGURATION = "rice.ksb.loadKNSModuleConfiguration";
         public static final String RESTFUL_SERVICE_PATH = "rice.ksb.restfulServicePath";
+        public static final String INSTANCE_ID = "rice.ksb.bus.instanceId";
         
     	private Config() {
     		throw new UnsupportedOperationException("do not call");
@@ -67,8 +70,6 @@ public final class KSBConstants {
     public static final String ROUTE_QUEUE_QUEUED_LABEL = "QUEUED";    
     public static final Integer ROUTE_QUEUE_DEFAULT_PRIORITY = new Integer(5);
     public static final String ROUTE_QUEUE_FILTER_SUFFIX = "Filter";
-
-    public static final String FORWARD_HANDLER_SUFFIX = "-forwardHandler";
     
     // custom http header keys
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";
@@ -76,34 +77,30 @@ public final class KSBConstants {
     public static final String KEYSTORE_CERTIFICATE_HEADER = "KEW_CERTIFICATE_ALIAS";
     
     public static final class ServiceNames {
-    	public static final String BAM_SERVICE = "bamService";
-    	public static final String BUS_ADMIN_SERVICE = "busAdminService";
+    	public static final String BAM_SERVICE = "rice.ksb.bamService";
+    	public static final String BUS_ADMIN_SERVICE = "rice.ksb.busAdminService";
     	public static final String BUS_IN_INTERCEPTORS = "ksbInInterceptors";
         public static final String BUS_OUT_INTERCEPTORS = "ksbOutInterceptors";
     	public static final String CACHE_ADMINISTRATOR_FACTORY = "enKEWCacheAdministratorFactoryService";
     	public static final String CXF_BUS = "cxf";
     	public static final String CXF_SERVER_REGISTRY = "org.apache.cxf.endpoint.ServerRegistry";
     	public static final String CXF_SERVLET_TRANSPORT_FACTORY = "org.apache.cxf.transport.servlet.ServletTransportFactory";
-    	public static final String DIGITAL_SIGNATURE_SERVICE = "digitalSignatureService";
+    	public static final String DIGITAL_SIGNATURE_SERVICE = "rice.ksb.digitalSignatureService";
     	public static final String ENCRYPTION_SERVICE = "enEncryptionService";
-        public static final String EXCEPTION_MESSAGING_SERVICE = "exceptionMessagingService";
-        public static final String JAVA_SECURITY_MANAGEMENT_SERVICE = "ksbJavaSecurityManagementService";
+        public static final String EXCEPTION_MESSAGING_SERVICE = "rice.ksb.exceptionMessagingService";
+        public static final String JAVA_SECURITY_MANAGEMENT_SERVICE = "rice.ksb.javaSecurityManagementService";
         public static final String JTA_TRANSACTION_MANAGER = "jtaTransactionManager";
-        public static final String MESSAGE_DATASOURCE = "ksbMessageDataSource";
-        public static final String MESSAGE_ENTITY_MANAGER_FACTORY = "ksbMessageEntityManagerFactory";
-        public static final String MESSAGE_HELPER = "enMessageHelper";
-        public static final String MESSAGE_NON_TRANSACTIONAL_DATASOURCE = "ksbMessageNonTransactionalDataSource";
-    	public static final String OBJECT_REMOTER = "ObjectRemoterService";
-    	public static final String REGISTRY_DATASOURCE = "ksbRegistryDataSource";
-    	public static final String REGISTRY_ENTITY_MANAGER_FACTORY = "ksbRegistryEntityManagerFactory";
-    	public static final String REMOTED_SERVICE_REGISTRY = "enServiceInvoker";
-        public static final String REPEAT_TOPIC_INVOKING_QUEUE = "enRepeatTopicInvokerQueue";
-        public static final String ROUTE_QUEUE_SERVICE = "enRouteQueueService";
-        public static final String SERVICE_REGISTRY = "serviceRegistry";
-        public static final String SCHEDULED_THREAD_POOL_SERVICE = "enScheduledThreadPool";
-        public static final String SCHEDULER = "ksbScheduler";
-        public static final String SERVICE_REMOVER_SERVICE = "RemoteClassRemoverService";
-        public static final String THREAD_POOL_SERVICE = "enThreadPool";
+        public static final String MESSAGE_DATASOURCE = "rice.ksb.messageDataSource";
+        public static final String MESSAGE_ENTITY_MANAGER_FACTORY = "rice.ksb.messageEntityManagerFactory";
+        public static final String MESSAGE_HELPER = "rice.ksb.messageHelper";
+        public static final String MESSAGE_QUEUE_SERVICE = "rice.ksb.messageQueueService";
+        public static final String MESSAGE_NON_TRANSACTIONAL_DATASOURCE = "rice.ksb.messageNonTransactionalDataSource";
+    	public static final String REGISTRY_DATASOURCE = "rice.ksb.registryDataSource";
+    	public static final String REGISTRY_ENTITY_MANAGER_FACTORY = "rice.ksb.registryEntityManagerFactory";
+    	public static final String SERVICE_EXPORT_MANAGER = "rice.ksb.serviceExportManager";
+        public static final String SCHEDULED_THREAD_POOL_SERVICE = "rice.ksb.scheduledThreadPool";
+        public static final String SCHEDULER = "rice.ksb.scheduler";
+        public static final String THREAD_POOL_SERVICE = "rice.ksb.threadPool";
         public static final String TRANSACTION_MANAGER = "transactionManager";
         public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
         

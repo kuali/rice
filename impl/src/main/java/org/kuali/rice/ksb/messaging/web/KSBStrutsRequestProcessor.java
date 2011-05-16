@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts.action.RequestProcessor;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.WebUtils;
 
 /**
  * A RequestProcessor implementation for Struts which handles determining whether or not access
@@ -37,6 +40,14 @@ public class KSBStrutsRequestProcessor extends RequestProcessor {
 	@Override
 	protected boolean processPreprocess(HttpServletRequest request,
 			HttpServletResponse response) {
+		final UserSession session = WebUtils.getUserSessionFromRequest(request);
+
+        if (session == null) {
+            throw new IllegalStateException("the user session has not been established");
+        }
+
+        GlobalVariables.setUserSession(session);
+        GlobalVariables.clear();
 		return super.processPreprocess(request, response);
 	}
 }

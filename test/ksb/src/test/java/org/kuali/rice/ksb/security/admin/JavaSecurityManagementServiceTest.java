@@ -36,6 +36,7 @@ public class JavaSecurityManagementServiceTest extends KSBTestCase {
     
     private static final String TEST_CLIENT_ALIAS = "test_alias";
     private static final String TEST_CLIENT_PASSWORD = "test_password";
+    private static final String MOCK_JAVA_SECURITY_MANAGEMENT_SERVICE_BEAN_ID = "testJavaSecurityManagementService";
 
     private MockJavaSecurityManagementService getMockJavaSecurityManagementService() {
         QName serviceName = new QName("KEW", MOCK_JAVA_SECURITY_MANAGEMENT_SERVICE_BEAN_ID);

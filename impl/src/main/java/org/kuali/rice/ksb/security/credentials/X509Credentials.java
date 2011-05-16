@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.security.credentials;
 
 import java.security.cert.X509Certificate;
 
-import org.kuali.rice.core.security.credentials.Credentials;
+import org.kuali.rice.core.api.security.credentials.Credentials;
 
 public class X509Credentials implements Credentials {
 

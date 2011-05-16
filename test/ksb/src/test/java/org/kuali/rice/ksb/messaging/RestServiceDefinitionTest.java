@@ -15,14 +15,16 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.junit.Test;
-import org.kuali.rice.ksb.test.KSBTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
+import org.kuali.rice.ksb.api.bus.support.RestServiceDefinition;
+import org.kuali.rice.ksb.test.KSBTestCase;
 
 /**
  * Tests equality between RESTServiceDefinition objects
@@ -33,13 +35,13 @@ import static org.junit.Assert.assertTrue;
  */
 public class RestServiceDefinitionTest extends KSBTestCase {
     
-    private RESTServiceDefinition restDefinition;
-    private RESTServiceDefinition sameExactRestDefinition;
-    private RESTServiceDefinition sameFunctionallyRestDefinition;
-    private RESTServiceDefinition otherRestDefinition;
-    private RESTServiceDefinition otherNameRestDefinition;
-    private RESTServiceDefinition otherServiceRestDefinition;
-    private RESTServiceDefinition singleResourceDefinition;
+    private RestServiceDefinition restDefinition;
+    private RestServiceDefinition sameExactRestDefinition;
+    private RestServiceDefinition sameFunctionallyRestDefinition;
+    private RestServiceDefinition otherRestDefinition;
+    private RestServiceDefinition otherNameRestDefinition;
+    private RestServiceDefinition otherServiceRestDefinition;
+    private RestServiceDefinition singleResourceDefinition;
     private JavaServiceDefinition javaServiceDefinition;
 
     public void setUp() throws Exception {
@@ -67,40 +69,40 @@ public class RestServiceDefinitionTest extends KSBTestCase {
     	otherRestResources.add(l);
     	otherRestResources.add(b);
     	
-    	Object service = new ArrayList();
+    	Object service = new ArrayList<Object>();
     	
-        this.restDefinition = new RESTServiceDefinition();
+        this.restDefinition = new RestServiceDefinition();
         this.restDefinition.setLocalServiceName("restServiceName");
         this.restDefinition.setResources(restResources);
         this.restDefinition.validate();
         
-        this.sameExactRestDefinition = new RESTServiceDefinition();
+        this.sameExactRestDefinition = new RestServiceDefinition();
         this.sameExactRestDefinition.setLocalServiceName("restServiceName");
         this.sameExactRestDefinition.setResources(sameExactRestResources);
         this.sameExactRestDefinition.validate();
         
-        this.sameFunctionallyRestDefinition = new RESTServiceDefinition();
+        this.sameFunctionallyRestDefinition = new RestServiceDefinition();
         this.sameFunctionallyRestDefinition.setLocalServiceName("restServiceName");
         this.sameFunctionallyRestDefinition.setResources(functionallySameResources);
         this.sameFunctionallyRestDefinition.validate();
         
-        this.otherRestDefinition = new RESTServiceDefinition();
+        this.otherRestDefinition = new RestServiceDefinition();
         this.otherRestDefinition.setLocalServiceName("restServiceName");
         this.otherRestDefinition.setResources(otherRestResources);
         this.otherRestDefinition.validate();
         
-        this.otherNameRestDefinition = new RESTServiceDefinition();
+        this.otherNameRestDefinition = new RestServiceDefinition();
         this.otherNameRestDefinition.setLocalServiceName("anotherRestServiceName");
         this.otherNameRestDefinition.setResources(sameExactRestResources);
         this.otherNameRestDefinition.validate();
         
-        this.otherServiceRestDefinition = new RESTServiceDefinition();
+        this.otherServiceRestDefinition = new RestServiceDefinition();
         this.otherServiceRestDefinition.setLocalServiceName("restServiceName");
         this.otherServiceRestDefinition.setService(service);
         this.otherServiceRestDefinition.setResources(restResources);
         this.otherServiceRestDefinition.validate();
         
-        this.singleResourceDefinition = new RESTServiceDefinition();
+        this.singleResourceDefinition = new RestServiceDefinition();
         this.singleResourceDefinition.setLocalServiceName("restServiceName");
         this.singleResourceDefinition.setService(service);
         this.singleResourceDefinition.validate();
@@ -114,42 +116,42 @@ public class RestServiceDefinitionTest extends KSBTestCase {
     
     @Test
     public void testIsSameSuccessWithSameDefinition() {
-        assertTrue(this.restDefinition.isSame(this.restDefinition));
+        assertTrue(this.restDefinition.equals(this.restDefinition));
     }
     
     @Test
     public void testIsSameSuccessWithDifferentDefinition() throws Exception {
-        assertTrue(this.restDefinition.isSame(sameExactRestDefinition));
+        assertTrue(this.restDefinition.equals(sameExactRestDefinition));
     }
     
     @Test
     public void testIsSameSuccessWithDifferentDefinitionThatIsFunctionallySame() throws Exception {
-        assertTrue(this.restDefinition.isSame(sameFunctionallyRestDefinition));
+        assertTrue(this.restDefinition.equals(sameFunctionallyRestDefinition));
     }
     
     @Test
     public void testIsSameFailureWithDifferentServiceClass() throws Exception {
-        assertFalse(this.restDefinition.isSame(otherRestDefinition));
+        assertFalse(this.restDefinition.equals(otherRestDefinition));
     }
     
     @Test
     public void testIsSameFailureWithDifferentDefinitionOfSameResources() throws Exception {
-    	assertFalse(this.restDefinition.isSame(otherNameRestDefinition));
+    	assertFalse(this.restDefinition.equals(otherNameRestDefinition));
     }
     
     @Test
     public void testIsSameFailureWithDifferentService() throws Exception {
-    	assertFalse(this.restDefinition.isSame(otherServiceRestDefinition));
+    	assertFalse(this.restDefinition.equals(otherServiceRestDefinition));
     }
     
     @Test
     public void testIsSameFailureWithSingleResourceService() throws Exception {
-    	assertFalse(this.restDefinition.isSame(singleResourceDefinition));
+    	assertFalse(this.restDefinition.equals(singleResourceDefinition));
     }
     
     @Test
     public void testIsSameFailureWithDifferentServiceDefinitionType() throws Exception {
-        assertFalse(this.otherServiceRestDefinition.isSame(javaServiceDefinition));
+        assertFalse(this.otherServiceRestDefinition.equals(javaServiceDefinition));
     }
 
 }

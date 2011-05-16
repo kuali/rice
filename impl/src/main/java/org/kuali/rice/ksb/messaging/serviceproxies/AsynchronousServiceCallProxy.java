@@ -15,20 +15,24 @@
  */
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.reflect.TargetedInvocationHandler;
-import org.kuali.rice.core.impl.proxy.BaseInvocationHandler;
-import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.ksb.messaging.*;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.kuali.rice.ksb.util.KSBConstants;
-
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.reflect.BaseInvocationHandler;
+import org.kuali.rice.core.util.reflect.TargetedInvocationHandler;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.messaging.AsynchronousCallback;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 
 /**
@@ -44,7 +48,7 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
 
     private AsynchronousCallback callback;
 
-    private List<RemotedServiceHolder> serviceDefs;
+    private List<Endpoint> endpoints;
 
     private Serializable context;
 
@@ -52,24 +56,24 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
 
     private String value2;
 
-    protected AsynchronousServiceCallProxy(List<RemotedServiceHolder> serviceDefs, AsynchronousCallback callback,
+    protected AsynchronousServiceCallProxy(List<Endpoint> endpoints, AsynchronousCallback callback,
 	    Serializable context, String value1, String value2) {
-	this.serviceDefs = serviceDefs;
+	this.endpoints = endpoints;
 	this.callback = callback;
 	this.context = context;
 	this.value1 = value1;
 	this.value2 = value2;
     }
 
-    public static Object createInstance(List<RemotedServiceHolder> serviceDefs, AsynchronousCallback callback,
+    public static Object createInstance(List<Endpoint> endpoints, AsynchronousCallback callback,
 	    Serializable context, String value1, String value2) {
-	if (serviceDefs == null || serviceDefs.isEmpty()) {
+	if (endpoints == null || endpoints.isEmpty()) {
 	    throw new RuntimeException("Cannot create service proxy, no service(s) passed in.");
 	}
 	try {
 	    return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy
-		    .getInterfacesToProxy(serviceDefs.get(0).getService()), new AsynchronousServiceCallProxy(
-		    serviceDefs, callback, context, value1, value2));
+		    .getInterfacesToProxy(endpoints.get(0).getService()), new AsynchronousServiceCallProxy(
+		    endpoints, callback, context, value1, value2));
 	} catch (Exception e) {
 	    throw new RiceRuntimeException(e);
 	}
@@ -87,11 +91,11 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
 	synchronized (this) {
 	    // consider moving all this topic invocation stuff to the service
 	    // invoker for speed reasons
-	    for (ServiceHolder remotedServiceHolder : this.serviceDefs) {
-		ServiceInfo serviceInfo = remotedServiceHolder.getServiceInfo();
-		methodCall = new AsynchronousCall(method.getParameterTypes(), arguments, serviceInfo, method.getName(),
+	    for (Endpoint endpoint : this.endpoints) {
+		ServiceConfiguration serviceConfiguration = endpoint.getServiceConfiguration();
+		methodCall = new AsynchronousCall(method.getParameterTypes(), arguments, serviceConfiguration, method.getName(),
 			this.callback, this.context);
-		message = KSBServiceLocator.getRouteQueueService().getMessage(serviceInfo, methodCall);
+		message = KSBServiceLocator.getMessageQueueService().getMessage(serviceConfiguration, methodCall);
 		message.setValue1(this.value1);
 		message.setValue2(this.value2);
 		saveMessage(message);
@@ -100,7 +104,7 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
 		// will be handled when the service is
 		// fetched by the MessageServiceInvoker through the GRL (and
 		// then through the RemoteResourceServiceLocatorImpl)
-		if (serviceInfo.getServiceDefinition().getQueue()) {
+		if (serviceConfiguration.isQueue()) {
 		    break;
 		}
 	    }
@@ -113,7 +117,7 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
 
     protected void saveMessage(PersistedMessageBO message) {
 	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
-	KSBServiceLocator.getRouteQueueService().save(message);
+	KSBServiceLocator.getMessageQueueService().save(message);
     }
 
     protected void executeMessage(PersistedMessageBO message) throws Exception {
@@ -125,7 +129,7 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
          * This is a List because, in the case of Topics, there can be more than one service invoked.
          */
     public Object getTarget() {
-	return this.serviceDefs;
+    	return this.endpoints;
     }
 
     public AsynchronousCallback getCallback() {
@@ -136,11 +140,4 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
 	this.callback = callback;
     }
 
-    public List<RemotedServiceHolder> getServiceDefs() {
-	return this.serviceDefs;
-    }
-
-    public void setServiceDefs(List<RemotedServiceHolder> serviceDefs) {
-	this.serviceDefs = serviceDefs;
-    }
 }

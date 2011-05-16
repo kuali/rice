@@ -29,12 +29,11 @@ import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.MessageHelper;
-import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingService;
 import org.kuali.rice.ksb.messaging.service.BusAdminService;
 import org.kuali.rice.ksb.messaging.service.MessageQueueService;
-import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
+import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExportManager;
 import org.kuali.rice.ksb.messaging.threadpool.KSBScheduledPool;
 import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
 import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
@@ -74,16 +73,16 @@ public class KSBServiceLocator {
         return (MessageHelper) getService(KSBConstants.ServiceNames.MESSAGE_HELPER);
     }
 
-    public static MessageQueueService getRouteQueueService() {
-        return (MessageQueueService) getService(KSBConstants.ServiceNames.ROUTE_QUEUE_SERVICE);
+    public static MessageQueueService getMessageQueueService() {
+        return (MessageQueueService) getService(KSBConstants.ServiceNames.MESSAGE_QUEUE_SERVICE);
     }
 
     public static ExceptionRoutingService getExceptionRoutingService() {
         return (ExceptionRoutingService) getService(KSBConstants.ServiceNames.EXCEPTION_MESSAGING_SERVICE);
     }
-
-    public static RemotedServiceRegistry getServiceDeployer() {
-        return (RemotedServiceRegistry) getService(KSBConstants.ServiceNames.REMOTED_SERVICE_REGISTRY);
+    
+    public static ServiceExportManager getServiceExportManager() {
+    	return (ServiceExportManager) getService(KSBConstants.ServiceNames.SERVICE_EXPORT_MANAGER);
     }
 
     public static DigitalSignatureService getDigitalSignatureService() {
@@ -100,10 +99,6 @@ public class KSBServiceLocator {
 
     public static KSBScheduledPool getScheduledPool() {
         return (KSBScheduledPool) getService(KSBConstants.ServiceNames.SCHEDULED_THREAD_POOL_SERVICE);
-    }
-
-    public static ServiceRegistry getServiceRegistry() {
-        return (ServiceRegistry) getService(KSBConstants.ServiceNames.SERVICE_REGISTRY);
     }
 
     public static Bus getCXFBus(){

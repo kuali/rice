@@ -41,7 +41,8 @@ public class BusinessObjectPropertySerializibilityEvaluator extends PropertySeri
      * 
      * @see org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator#initializeEvaluator(org.kuali.rice.kns.document.Document)
      */
-    public void initializeEvaluator(Document document) {
+	@Override
+    public void initializeEvaluatorForDocument(Document document) {
         DataDictionary dictionary = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary();
         DocumentEntry docEntry = dictionary.getDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
         WorkflowProperties workflowProperties = docEntry.getWorkflowProperties();

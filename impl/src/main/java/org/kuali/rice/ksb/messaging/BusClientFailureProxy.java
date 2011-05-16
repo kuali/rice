@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.apache.commons.httpclient.ConnectTimeoutException;
-import org.apache.commons.httpclient.ConnectionPoolTimeoutException;
-import org.apache.commons.httpclient.NoHttpResponseException;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.impl.proxy.BaseTargetedInvocationHandler;
-import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
-
 import java.io.InterruptedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -31,7 +22,20 @@ import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.httpclient.ConnectTimeoutException;
+import org.apache.commons.httpclient.ConnectionPoolTimeoutException;
+import org.apache.commons.httpclient.NoHttpResponseException;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.reflect.BaseTargetedInvocationHandler;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 
 
@@ -39,10 +43,12 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 
 	private static final Logger LOG = Logger.getLogger(BusClientFailureProxy.class);
 
-	private ServiceInfo serviceInfo;
+	private final Object failoverLock = new Object();
+	
+	private ServiceConfiguration serviceConfiguration;
 
 	// exceptions that will cause this Proxy to remove the service from the bus
-	private static List<Class> serviceRemovalExceptions = new ArrayList<Class>();
+	private static List<Class<?>> serviceRemovalExceptions = new ArrayList<Class<?>>();
 	private static List<Integer> serviceRemovalResponseCodes = new ArrayList<Integer>();
 
 	static {
@@ -59,17 +65,18 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 	    serviceRemovalResponseCodes.add(new Integer(404));
         serviceRemovalResponseCodes.add(new Integer(503));
 	}
-
-	private BusClientFailureProxy(Object target, ServiceInfo serviceInfo) {
+	
+	private BusClientFailureProxy(Object target, ServiceConfiguration serviceConfiguration) {
 		super(target);
-		this.serviceInfo = serviceInfo;
+		this.serviceConfiguration = serviceConfiguration;
 	}
 
-	public static Object wrap(Object target, ServiceInfo serviceInfo) {
-		return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy.getInterfacesToProxy(target), new BusClientFailureProxy(target, serviceInfo));
+	public static Object wrap(Object target, ServiceConfiguration serviceConfiguration) {
+		return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy.getInterfacesToProxy(target), new BusClientFailureProxy(target, serviceConfiguration));
 	}
 
 	protected Object invokeInternal(Object proxyObject, Method method, Object[] params) throws Throwable {
+		Set<ServiceConfiguration> servicesTried = null;
 		Object service = getTarget();
 		
 		do {
@@ -77,21 +84,28 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 				return method.invoke(service, params);
 			} catch (Throwable throwable) {			
 				if (isServiceRemovalException(throwable)) {
-					LOG.error("Exception caught accessing remote service " + this.serviceInfo.getQname(), throwable);
-					RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-					remoteResourceLocator.removeService(this.serviceInfo);
-	
-					service = remoteResourceLocator.getService(this.serviceInfo.getQname());
-									
-					if (service != null) {
-						LOG.info("Refetched replacement service for service " + this.serviceInfo.getQname());
-						
-						// as per KULRICE-4287, reassign target to the new service we just fetched, hopefully this one works better!
-						setTarget(service);
-						
-					} else {
-						LOG.error("Didn't find replacement service throwing exception");
-						throw throwable;					
+					synchronized (failoverLock) {
+						LOG.error("Exception caught accessing remote service " + this.serviceConfiguration.getServiceName(), throwable);
+						if (servicesTried == null) {
+							servicesTried = new HashSet<ServiceConfiguration>();
+							servicesTried.add(serviceConfiguration);
+						}
+						Object failoverService = null;
+						List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(serviceConfiguration.getServiceName());
+						for (Endpoint endpoint : endpoints) {
+							if (!servicesTried.contains(endpoint.getServiceConfiguration())) {
+								failoverService = endpoint.getService();
+								servicesTried.add(endpoint.getServiceConfiguration());
+							}
+						}									
+						if (failoverService != null) {
+							LOG.info("Refetched replacement service for service " + this.serviceConfiguration.getServiceName());
+							// as per KULRICE-4287, reassign target to the new service we just fetched, hopefully this one works better!
+							setTarget(failoverService);
+						} else {
+							LOG.error("Didn't find replacement service throwing exception");
+							throw throwable;					
+						}
 					}
 				} else {
 					throw throwable;

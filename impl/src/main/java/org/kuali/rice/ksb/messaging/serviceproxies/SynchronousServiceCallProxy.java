@@ -16,19 +16,19 @@
 
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
+import java.io.Serializable;
+import java.lang.reflect.Proxy;
+import java.util.List;
+
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.messaging.AsynchronousCallback;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
-import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
 import org.kuali.rice.ksb.util.KSBConstants;
-
-import java.io.Serializable;
-import java.lang.reflect.Proxy;
-import java.util.List;
 
 
 /**
@@ -40,20 +40,20 @@ import java.util.List;
  */
 public class SynchronousServiceCallProxy extends AsynchronousServiceCallProxy {
 
-    private SynchronousServiceCallProxy(List<RemotedServiceHolder> serviceDefs, AsynchronousCallback callback,
+    private SynchronousServiceCallProxy(List<Endpoint> endpoints, AsynchronousCallback callback,
 	    Serializable context, String value1, String value2) {
-	super(serviceDefs, callback, context, value1, value2);
+	super(endpoints, callback, context, value1, value2);
     }
 
-    public static Object createInstance(List<RemotedServiceHolder> serviceDefs, AsynchronousCallback callback,
+    public static Object createInstance(List<Endpoint> endpoints, AsynchronousCallback callback,
 	    Serializable context, String value1, String value2) {
-	if (serviceDefs == null || serviceDefs.isEmpty()) {
+	if (endpoints == null || endpoints.isEmpty()) {
 	    throw new RuntimeException("Cannot create service proxy, no service(s) passed in.");
 	}
 	try {
 	return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy
-		.getInterfacesToProxy(serviceDefs.get(0).getService()), new SynchronousServiceCallProxy(
-		serviceDefs, callback, context, value1, value2));
+		.getInterfacesToProxy(endpoints.get(0).getService()), new SynchronousServiceCallProxy(
+				endpoints, callback, context, value1, value2));
 	} catch (Exception e) {
 	    throw new RiceRuntimeException(e);
     }

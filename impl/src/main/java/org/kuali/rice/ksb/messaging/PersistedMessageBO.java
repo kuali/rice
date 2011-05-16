@@ -13,13 +13,22 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-
-import javax.persistence.*;
-import java.sql.Timestamp;
 
 /**
  * A message which has been persisted to the data store.
@@ -206,7 +215,7 @@ public class PersistedMessageBO implements PersistedMessage {
 	if (this.payload == null) {
 	    if (this.getRouteQueueId() == null) {
 		return null;
-}	    this.payload = KSBServiceLocator.getRouteQueueService().findByPersistedMessageByRouteQueueId(this.getRouteQueueId()); 
+}	    this.payload = KSBServiceLocator.getMessageQueueService().findByPersistedMessageByRouteQueueId(this.getRouteQueueId()); 
 	}
         return this.payload;
     }

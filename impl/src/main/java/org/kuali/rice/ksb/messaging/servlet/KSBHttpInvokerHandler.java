@@ -16,14 +16,10 @@ package org.kuali.rice.ksb.messaging.servlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
+import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExportManager;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.handler.AbstractHandlerMapping;
-import org.springframework.web.util.UrlPathHelper;
-
 
 /**
  * A {@link HandlerMapping} which handles incoming HTTP requests from the bus.
@@ -32,16 +28,14 @@ import org.springframework.web.util.UrlPathHelper;
  */
 public class KSBHttpInvokerHandler extends AbstractHandlerMapping {
 
-    private static final Logger LOG = Logger.getLogger(KSBHttpInvokerHandler.class);
-
-    private UrlPathHelper urlPathHelper = new UrlPathHelper();
-
     protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
         QName serviceName = getServiceNameFromRequest(request);
-        return ((RemotedServiceRegistry) GlobalResourceLoader.getService("enServiceInvoker")).getService(serviceName);
+        ServiceExportManager serviceExportManager = KSBServiceLocator.getServiceExportManager();
+        return serviceExportManager.getService(serviceName);
     }
 
     public QName getServiceNameFromRequest(HttpServletRequest request) {   	    	
-    	return KSBServiceLocator.getServiceDeployer().getServiceName(request.getRequestURL().toString()); 
+    	return KSBServiceLocator.getServiceExportManager().getServiceName(request.getRequestURL().toString()); 
     }
+    
 }

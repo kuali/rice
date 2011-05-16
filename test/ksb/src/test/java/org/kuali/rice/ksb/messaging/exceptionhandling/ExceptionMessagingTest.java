@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.ksb.messaging.exceptionhandling;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.junit.Test;
 import org.kuali.rice.ksb.messaging.GlobalCallbackRegistry;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
@@ -25,12 +32,6 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.test.TestUtilities;
-
-import javax.xml.namespace.QName;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -88,7 +89,7 @@ public class ExceptionMessagingTest extends KSBTestCase {
 		Thread.sleep(10000);
 
 		//verify the entry is in exception routing
-		List<PersistedMessageBO> messagesQueued = KSBServiceLocator.getRouteQueueService().findByServiceName(this.queueTimeToLiveServiceName, "invoke");
+		List<PersistedMessageBO> messagesQueued = KSBServiceLocator.getMessageQueueService().findByServiceName(this.queueTimeToLiveServiceName, "invoke");
 		PersistedMessageBO message = messagesQueued.get(0);
 		assertEquals("Message should be in exception status", KSBConstants.ROUTE_QUEUE_EXCEPTION, message.getQueueStatus());
 		assertTrue("Message expiration date should be equal to or earlier than last queue date", message.getExpirationDate().getTime() <= message.getQueueDate().getTime());

@@ -23,8 +23,9 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -49,7 +50,7 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 
 	private String serviceName;
 	
-	protected RemotedServiceRegistry remotedServiceRegistry;
+	protected ServiceBus serviceBus;
 	
 	@Override
 	public void initialize(Cache cache, Config config) throws InitializationException {
@@ -59,10 +60,13 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 		// the following property was put on the OSCache properties used for
 		// cache configuration
 		this.serviceName = config.getProperty(CacheProperties.SERVICE_NAME_KEY);
-		boolean forceRegistryRefresh = new Boolean((Boolean)config.getProperties().get(CacheProperties.FORCE_REGISTRY_REFRESH_KEY));
-		remotedServiceRegistry = (RemotedServiceRegistry)config.getProperties().get(CacheProperties.REMOTED_SERVICE_REGISTRY);
 		if (StringUtils.isBlank(this.serviceName)) {
 			throw new RiceRuntimeException("Cannot create DistributedCacheListener with empty serviceName");
+		}
+		boolean forceRegistryRefresh = new Boolean((Boolean)config.getProperties().get(CacheProperties.FORCE_REGISTRY_REFRESH_KEY));
+		serviceBus = (ServiceBus)config.getProperties().get(CacheProperties.SERVICE_BUS);
+		if (serviceBus == null) {
+			serviceBus = KsbApiServiceLocator.getServiceBus();
 		}
 		LOG.info("Publishing Cache Service on bus under service name " + this.serviceName);
 		JavaServiceDefinition serviceDef = new JavaServiceDefinition();
@@ -77,10 +81,8 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 		} catch (Exception e) {
 			throw new RiceRuntimeException(e);
 		}
-		if(remotedServiceRegistry!=null)
-			remotedServiceRegistry.registerService(serviceDef, forceRegistryRefresh);
-		else
-			KSBServiceLocator.getServiceDeployer().registerService(serviceDef, forceRegistryRefresh);
+
+		serviceBus.publishService(serviceDef, forceRegistryRefresh);
 	}
 
 	@Override
@@ -96,10 +98,12 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 		}
 	}
 
+	@Override
 	public void finialize() throws FinalizationException {
 	    //no processing needed
 	}
 
+	@Override
 	public void invoke(Serializable payLoad) {
 		super.handleClusterNotification((ClusterNotification) payLoad);
 	}

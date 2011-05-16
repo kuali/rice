@@ -16,13 +16,15 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
+import java.net.URL;
+
 import org.apache.cxf.aegis.databinding.AegisDatabinding;
 import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.ksb.api.bus.support.SoapServiceConfiguration;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
 import org.kuali.rice.ksb.security.soap.CredentialsOutHandler;
@@ -35,44 +37,51 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * @since 0.9
  */
 public class SOAPConnector extends AbstractServiceConnector {
-
-	public SOAPConnector(final ServiceInfo serviceInfo) {
-		super(serviceInfo);
+	
+	public SOAPConnector(final SoapServiceConfiguration serviceConfiguration, final URL alternateEndpointUrl) {
+		super(serviceConfiguration, alternateEndpointUrl);
 	}
 
+	protected SoapServiceConfiguration getSoapServiceConfiguration() {
+		return (SoapServiceConfiguration)getServiceConfiguration();
+	}
 	
 	/**
 	 * This overridden method returns a CXF client proxy for web service.
 	 * 
 	 * @see org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector#getService()
 	 */
-	public Object getService() throws Exception {
+	public Object getService() {
 		ClientProxyFactoryBean clientFactory;
 		
 		//Use the correct bean factory depending on pojo service or jaxws service
-		if (((SOAPServiceDefinition)getServiceInfo().getServiceDefinition()).isJaxWsService()){			
+		if (getSoapServiceConfiguration().isJaxWsService()){			
 			clientFactory = new JaxWsProxyFactoryBean();
 		} else {
 			clientFactory = new ClientProxyFactoryBean();
 			clientFactory.getServiceFactory().setDataBinding(new AegisDatabinding());
 		}		
 
+		try {
+			clientFactory.setServiceClass(Class.forName(getSoapServiceConfiguration().getServiceInterface()));
+		} catch (ClassNotFoundException e) {
+			throw new RiceRuntimeException("Failed to connect to soap service " + getServiceConfiguration().getServiceName() + " because failed to load interface class: " + getSoapServiceConfiguration().getServiceInterface(), e);
+		}
 		clientFactory.setBus(KSBServiceLocator.getCXFBus());
-		clientFactory.setServiceClass(Class.forName(((SOAPServiceDefinition) getServiceInfo().getServiceDefinition()).getServiceInterface()));
-		clientFactory.setServiceName(getServiceInfo().getQname());
-		clientFactory.setAddress(getServiceInfo().getActualEndpointUrl());
+		clientFactory.setServiceName(getSoapServiceConfiguration().getServiceName());
+		clientFactory.setAddress(getActualEndpointUrl().toExternalForm());
 		
 		//Set logging and security interceptors
 		clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
-		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(getServiceInfo()));
+		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(getSoapServiceConfiguration().getBusSecurity()));
 		if (getCredentialsSource() != null) {
-			clientFactory.getOutInterceptors().add(new CredentialsOutHandler(getCredentialsSource(), getServiceInfo()));
+			clientFactory.getOutInterceptors().add(new CredentialsOutHandler(getCredentialsSource(), getSoapServiceConfiguration()));
 		}
 		
 		clientFactory.getInInterceptors().add(new LoggingInInterceptor());
-		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(getServiceInfo()));
+		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(getSoapServiceConfiguration().getBusSecurity()));
 		
 		Object service = clientFactory.create();		
-		return getServiceProxyWithFailureMode(service, this.getServiceInfo());
+		return getServiceProxyWithFailureMode(service, getSoapServiceConfiguration());
 	}	
 }

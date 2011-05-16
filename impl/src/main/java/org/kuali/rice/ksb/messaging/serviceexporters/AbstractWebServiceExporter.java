@@ -21,13 +21,9 @@ import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.endpoint.ServerRegistry;
 import org.apache.log4j.Logger;
-import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
-import org.kuali.rice.ksb.messaging.ServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.bam.BAMServerProxy;
 import org.kuali.rice.ksb.messaging.servlet.CXFServletControllerAdapter;
-import org.kuali.rice.ksb.service.KSBContextServiceLocator;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * Abstract ServiceExporter for web services 
@@ -35,51 +31,52 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public abstract class AbstractWebServiceExporter {
+public abstract class AbstractWebServiceExporter implements ServiceExporter {
 
     static final Logger LOG = Logger.getLogger(AbstractWebServiceExporter.class);
     
-    protected ServiceInfo serviceInfo;
+    private final ServiceDefinition serviceDefinition;
+    private final Bus cxfBus;
+    private final ServerRegistry cxfServerRegistry;
 
-    public abstract void publishService(ServiceDefinition serviceDef, Object serviceImpl, String address) throws Exception;
+    protected abstract void publishService(ServiceDefinition serviceDefinition, Object serviceImpl, String address) throws Exception;
 
-    protected KSBContextServiceLocator serviceLocator;
-
-    public AbstractWebServiceExporter(ServiceInfo serviceInfo, KSBContextServiceLocator serviceLocator) {
-        this.serviceInfo = serviceInfo;
-        this.serviceLocator = serviceLocator;
+    public AbstractWebServiceExporter(ServiceDefinition serviceDefinition, Bus cxfBus, ServerRegistry cxfServerRegistry) {
+        this.serviceDefinition = serviceDefinition;
+        this.cxfBus = cxfBus;
+        this.cxfServerRegistry = cxfServerRegistry;
     }
     
-    public ServerSideRemotedServiceHolder getServiceExporter(Object serviceImpl) {
+    @Override
+    public Object exportService(ServiceDefinition serviceDefinition) {
     	try {			
-    		ServiceDefinition serviceDef = getServiceInfo().getServiceDefinition();
-    		
-    		String serviceAddress = getServiceAddress(serviceDef);
+    		String serviceAddress = getServiceAddress(serviceDefinition);
     		
     		//Publish the CXF service if it hasn't already been published
     		if (!(isServicePublished(serviceAddress))){
-    			publishService(serviceDef, serviceImpl, serviceAddress);
+    			publishService(serviceDefinition, serviceDefinition.getService(), serviceAddress);
     		}
     		
     		//Create a CXF mvc controller for this service
-    		CXFServletControllerAdapter cxfController = new CXFServletControllerAdapter(this.getServiceInfo());
+    		CXFServletControllerAdapter cxfController = new CXFServletControllerAdapter();
     		
-    		return new ServerSideRemotedServiceHolder(BAMServerProxy.wrap(cxfController, this.getServiceInfo()), this.serviceInfo.getServiceDefinition().getService(), getServiceInfo());
+    		return BAMServerProxy.wrap(cxfController, serviceDefinition);
     	} catch (Exception e) {
     		throw new RuntimeException(e);
     	}
+    	
     }
 
     /**
      * @return the address where the service is (or will be) published
      */
-    protected String getServiceAddress(ServiceDefinition serviceDef) {
+    protected String getServiceAddress(ServiceDefinition serviceDefinition) {
         //Determine endpoint address to publish service on
-        String serviceAddress = serviceDef.getServicePath();
+        String serviceAddress = serviceDefinition.getServicePath();
         if (("/").equals(serviceAddress)){
-        	serviceAddress = serviceAddress + getServiceInfo().getQname().getLocalPart();
+        	serviceAddress = serviceAddress + serviceDefinition.getServiceName().getLocalPart();
         } else {
-        	serviceAddress = serviceAddress + "/" + getServiceInfo().getQname().getLocalPart();
+        	serviceAddress = serviceAddress + "/" + serviceDefinition.getServiceName().getLocalPart();
         }
         return serviceAddress;
     }
@@ -106,22 +103,16 @@ public abstract class AbstractWebServiceExporter {
     	return false;
     }
 
-    public ServiceInfo getServiceInfo() {
-    	return this.serviceInfo;
+    protected ServiceDefinition getServiceDefinition() {
+    	return this.serviceDefinition;
     }
 
     protected Bus getCXFBus() {
-    	if (this.serviceLocator != null) {
-    		return serviceLocator.getCXFBus();
-    	}
-    	return KSBServiceLocator.getCXFBus();
+    	return this.cxfBus;
     }
 
     protected ServerRegistry getCXFServerRegistry() {
-    	if (this.serviceLocator != null) {
-    		return serviceLocator.getCXFServerRegistry();
-    	}
-    	return KSBServiceLocator.getCXFServerRegistry();
+    	return this.cxfServerRegistry;
     }
 
 }

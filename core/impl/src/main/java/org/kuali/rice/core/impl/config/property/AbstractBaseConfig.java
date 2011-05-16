@@ -186,10 +186,6 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
         return getProperty(org.kuali.rice.core.api.config.property.Config.SERVICE_NAMESPACE);
     }
 
-    public Boolean getStoreAndForward() {
-        return Boolean.valueOf(getProperty(Config.STORE_AND_FORWARD));
-    }
-
     public String getTransactionTimeout() {
         return getProperty(org.kuali.rice.core.api.config.property.Config.TRANSACTION_TIMEOUT);
     }

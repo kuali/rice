@@ -15,23 +15,23 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 import org.kuali.rice.ksb.messaging.remotedservices.GenericTestService;
 import org.kuali.rice.ksb.messaging.remotedservices.SOAPService;
 import org.kuali.rice.ksb.messaging.remotedservices.TestServiceInterface;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
-
-import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -57,7 +57,7 @@ public class ServiceCallClusterTest extends KSBTestCase {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		((Runnable)KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
+		KsbApiServiceLocator.getServiceBus().synchronize();
 	}
 
 	@Test public void testSOAPClustering() throws Exception {

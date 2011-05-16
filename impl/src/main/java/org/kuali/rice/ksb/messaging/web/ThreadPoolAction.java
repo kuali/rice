@@ -16,25 +16,26 @@
 
 package org.kuali.rice.ksb.messaging.web;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
-import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.BusAdminService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-import java.io.IOException;
-import java.util.List;
 
 
 /**
@@ -62,18 +63,18 @@ public class ThreadPoolAction extends KSBAction {
 	}
 	if (form.isAllServers()) {
 	    // if it's all servers, we need to find all of the BusAdmin services
-	    QName qName = new QName(form.getServiceNamespace(), "busAdminService");
-	    RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-	    List<RemotedServiceHolder> adminServices = remoteResourceLocator.getAllServices(qName);
-	    for (RemotedServiceHolder adminServiceHolder : adminServices) {
+	    QName serviceName = new QName(form.getServiceNamespace(), "busAdminService");
+	    ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+	    List<Endpoint> adminServices = serviceBus.getEndpoints(serviceName);
+	    for (Endpoint adminEndpoint : adminServices) {
 		try {
-		    BusAdminService adminService = (BusAdminService)adminServiceHolder.getService();
+		    BusAdminService adminService = (BusAdminService)adminEndpoint.getService();
 		    adminService.setCorePoolSize(form.getCorePoolSize());
 		    adminService.setMaximumPoolSize(form.getMaximumPoolSize());
 		    adminService.setConfigProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY, (form.getTimeIncrement() == null ? null : form.getTimeIncrement().toString()));
 		    adminService.setConfigProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, (form.getMaxRetryAttempts() == null ? null : form.getMaxRetryAttempts().toString()));
 		} catch (Exception e) {
-		    LOG.error("Failed to set thread pool sizes for busAdminService at " + adminServiceHolder.getServiceInfo().getEndpointUrl());
+		    LOG.error("Failed to set thread pool sizes for busAdminService at " + adminEndpoint.getServiceConfiguration().getEndpointUrl());
 		}
 	    }
 	} else {

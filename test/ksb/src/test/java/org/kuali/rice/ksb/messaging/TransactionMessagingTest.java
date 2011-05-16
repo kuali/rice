@@ -12,6 +12,11 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import javax.xml.namespace.QName;
+
 import org.junit.Test;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.messaging.serviceproxies.MessageSendingTransactionSynchronization;
@@ -20,11 +25,6 @@ import org.kuali.rice.ksb.test.KSBTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionSynchronization;
-
-import javax.xml.namespace.QName;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -52,7 +52,7 @@ public class TransactionMessagingTest extends KSBTestCase {
     public void testMessageSentOnCommittedTransaction() throws Exception {
 	KSBTestUtils.setMessagingToAsync();
 
-	KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback() {
+	KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback<Object>() {
 	    public Object doInTransaction(TransactionStatus status) {
 
 		QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
@@ -75,7 +75,7 @@ public class TransactionMessagingTest extends KSBTestCase {
     public void testMessageNotSentOnRolledBackTransaction() throws Exception {
 	KSBTestUtils.setMessagingToAsync();
 
-	KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback() {
+	KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback<Object>() {
 	    public Object doInTransaction(TransactionStatus status) {
 
 		QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");

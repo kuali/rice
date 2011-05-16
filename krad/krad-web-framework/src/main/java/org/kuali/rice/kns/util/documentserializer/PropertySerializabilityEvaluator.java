@@ -30,9 +30,9 @@ public interface PropertySerializabilityEvaluator {
      * 
      * @param document the document instance
      */
-    public void initializeEvaluator(Document document);
+    public void initializeEvaluatorForDocument(Document document);
     
-    public void initializeEvaluator(Object businessObject);
+    public void initializeEvaluatorForDataObject(Object businessObject);
     
     /**
      * Determines whether a child property of an object is serializable.

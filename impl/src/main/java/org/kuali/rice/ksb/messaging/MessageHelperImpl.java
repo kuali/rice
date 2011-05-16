@@ -16,17 +16,6 @@
 
 package org.kuali.rice.ksb.messaging;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.messaging.serviceproxies.AsynchronousServiceCallProxy;
-import org.kuali.rice.ksb.messaging.serviceproxies.DelayedAsynchronousServiceCallProxy;
-import org.kuali.rice.ksb.messaging.serviceproxies.SynchronousServiceCallProxy;
-import org.kuali.rice.ksb.util.KSBConstants;
-
-import javax.xml.namespace.QName;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -35,6 +24,19 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.messaging.serviceproxies.AsynchronousServiceCallProxy;
+import org.kuali.rice.ksb.messaging.serviceproxies.DelayedAsynchronousServiceCallProxy;
+import org.kuali.rice.ksb.messaging.serviceproxies.SynchronousServiceCallProxy;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 
 public class MessageHelperImpl implements MessageHelper {
@@ -105,22 +107,28 @@ public class MessageHelperImpl implements MessageHelper {
 
     public Object getAsynchronousServiceCallProxy(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2) {
 
-        List<RemotedServiceHolder> servicesToProxy = KSBResourceLoaderFactory.getRemoteResourceLocator().getAllServices(qname);
+    	List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(qname);
+    	if (endpoints.isEmpty()) {
+    		throw new RuntimeException("Cannot create service proxy, failed to locate any endpoints with the given service name: " + qname);
+    	}
         if (KSBConstants.MESSAGING_SYNCHRONOUS.equals(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_DELIVERY))) {
-            return SynchronousServiceCallProxy.createInstance(servicesToProxy, callback, context, value1, value2);
+            return SynchronousServiceCallProxy.createInstance(endpoints, callback, context, value1, value2);
         }
 
-        return AsynchronousServiceCallProxy.createInstance(servicesToProxy, callback, context, value1, value2);
+        return AsynchronousServiceCallProxy.createInstance(endpoints, callback, context, value1, value2);
 
     }
 
     public Object getDelayedAsynchronousServiceCallProxy(QName qname, Serializable context, String value1, String value2, long delayMilliseconds) {
-        List<RemotedServiceHolder> servicesToProxy = KSBResourceLoaderFactory.getRemoteResourceLocator().getAllServices(qname);
+    	List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(qname);
+    	if (endpoints.isEmpty()) {
+    		throw new RuntimeException("Cannot create service proxy, failed to locate any endpoints with the given service name: " + qname);
+    	}
         if (KSBConstants.MESSAGING_SYNCHRONOUS.equals(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_DELIVERY))) {
             LOG.warn("Executing a delayed service call for " + qname + " with delay of " + delayMilliseconds + " in synchronous mode.  Service will be invoked immediately.");
-            return SynchronousServiceCallProxy.createInstance(servicesToProxy, null, context, value1, value2);
+            return SynchronousServiceCallProxy.createInstance(endpoints, null, context, value1, value2);
         }
-        return DelayedAsynchronousServiceCallProxy.createInstance(servicesToProxy, context, value1, value2, delayMilliseconds);
+        return DelayedAsynchronousServiceCallProxy.createInstance(endpoints, context, value1, value2, delayMilliseconds);
     }
 
     public Object getServiceAsynchronously(QName qname, Serializable context, String value1, String value2, long delayMilliseconds) {

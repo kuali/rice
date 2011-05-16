@@ -16,23 +16,23 @@
 
 package org.kuali.rice.ksb.messaging;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.sql.Timestamp;
+
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-
-import javax.xml.namespace.QName;
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Handles invocation of a {@link PersistedMessageBO}.
@@ -61,7 +61,7 @@ public class MessageServiceInvoker implements Runnable {
                     Object result = null;
                     try {
                         result = invokeService(methodCall);
-                        KSBServiceLocator.getRouteQueueService().delete(getMessage());
+                        KSBServiceLocator.getMessageQueueService().delete(getMessage());
                     } catch (Throwable t) {
                         LOG.warn("Caught throwable making async service call " + methodCall, t);
                         throw new MessageProcessingException(t);
@@ -120,7 +120,7 @@ public class MessageServiceInvoker implements Runnable {
             message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
             message.setQueueDate(new Timestamp(System.currentTimeMillis()));
             try {
-                KSBServiceLocator.getRouteQueueService().save(message);
+                KSBServiceLocator.getMessageQueueService().save(message);
             } catch (Throwable t3) {
                 LOG.fatal("Failed to flip status of message to EXCEPTION!!!", t3);
             }
@@ -134,38 +134,26 @@ public class MessageServiceInvoker implements Runnable {
      */
     protected Object invokeService(AsynchronousCall methodCall) throws Exception {
         this.methodCall = methodCall;
-        ServiceInfo serviceInfo = methodCall.getServiceInfo();
+        ServiceConfiguration serviceConfiguration = methodCall.getServiceConfiguration();
+        QName serviceName = serviceConfiguration.getServiceName();
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Attempting to call service " + serviceInfo.getQname());
+            LOG.debug("Attempting to call service " + serviceName);
         }
 
-        if (ConfigContext.getCurrentContextConfig().getStoreAndForward() && !methodCall.isIgnoreStoreAndForward()) {
-            QName serviceName = serviceInfo.getQname();
-            RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-            QName storeAndForwardName = new QName(serviceName.getNamespaceURI(), serviceName.getLocalPart() + KSBConstants.FORWARD_HANDLER_SUFFIX);
-            List<RemotedServiceHolder> forwardServices = remoteResourceLocator.getAllServices(storeAndForwardName);
-            if (forwardServices.isEmpty()) {
-                LOG.warn("Could not find store and forward service " + storeAndForwardName + ".  Defaulting to regular messaging.");
-            } else {
-                serviceInfo = forwardServices.get(0).getServiceInfo();
-            }
-            ForwardedCallHandler service = (ForwardedCallHandler) getService(serviceInfo);
-            this.message.setMethodCall(methodCall);
-            service.handleCall(this.message);
-            return null;
+        Object service = getService(serviceConfiguration);
+        if (service == null) {
+        	throw new RiceRuntimeException("Failed to locate service endpoint for message: " + serviceConfiguration);
         }
-
-        Object service = getService(serviceInfo);
         Method method = service.getClass().getMethod(methodCall.getMethodName(), methodCall.getParamTypes());
         return method.invoke(service, methodCall.getArguments());
     }
 
-    protected Object getService(ServiceInfo serviceInfo) {
+    protected Object getService(ServiceConfiguration serviceConfiguration) {
         Object service;
-        if (serviceInfo.getServiceDefinition().getQueue()) {
-            service = getQueueService(serviceInfo);
+        if (serviceConfiguration.isQueue()) {
+            service = getQueueService(serviceConfiguration);
         } else {
-            service = getTopicService(serviceInfo);
+            service = getTopicService(serviceConfiguration);
         }
         return service;
     }
@@ -180,16 +168,15 @@ public class MessageServiceInvoker implements Runnable {
      * @param serviceInfo
      * @return
      */
-    protected Object getTopicService(ServiceInfo serviceInfo) {
+    protected Object getTopicService(ServiceConfiguration serviceConfiguration) {
         // get the service locally if we have it so we don't go through any
         // remoting
-        RemotedServiceRegistry remoteRegistry = KSBServiceLocator.getServiceDeployer();
-        Object service = remoteRegistry.getService(serviceInfo.getQname(), serviceInfo.getEndpointUrl());
-        if (service != null) {
-            return service;
+        ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+        Endpoint endpoint = serviceBus.getConfiguredEndpoint(serviceConfiguration);
+        if (endpoint == null) {
+        	return null;
         }
-        RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-        return remoteResourceLocator.getService(serviceInfo.getQname(), serviceInfo.getEndpointUrl());
+        return endpoint.getService();
     }
 
     /**
@@ -198,14 +185,9 @@ public class MessageServiceInvoker implements Runnable {
      * @param serviceInfo
      * @return
      */
-    protected Object getQueueService(ServiceInfo serviceInfo) {
-        RemotedServiceRegistry remoteRegistry = KSBServiceLocator.getServiceDeployer();
-        Object service = remoteRegistry.getLocalService(serviceInfo.getQname());
-        if (service != null) {
-            return service;
-        }
-        // get client to remote service if not in our local repository
-        return GlobalResourceLoader.getService(serviceInfo.getQname());
+    protected Object getQueueService(ServiceConfiguration serviceConfiguration) {
+    	ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+    	return serviceBus.getService(serviceConfiguration.getServiceName());
     }
 
     /**

@@ -16,6 +16,22 @@
 
 package org.kuali.rice.ksb.messaging.web;
 
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -28,33 +44,15 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.messaging.MessageFetcher;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.service.MessageQueueService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -118,32 +116,32 @@ public class MessageQueueAction extends KSBAction {
 	return mapping.findForward("report");
     }
 
-    public ActionForward saveAndForward(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-	    HttpServletResponse response) throws Exception {
-	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
-	PersistedMessageBO message = save(routeQueueForm);
-	ForwardedCallHandler adminService = getAdminServiceToForwardTo(message, routeQueueForm);
-	AsynchronousCall methodCall = message.getPayload().getMethodCall();
-	message.setMethodCall(methodCall);
-	adminService.handleCall(message);
-	KSBServiceLocator.getRouteQueueService().delete(message);
-
-	ActionMessages messages = new ActionMessages();
-	messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("routequeue.RouteQueueService.queued"));
-	saveMessages(request, messages);
-
-	routeQueueForm.setMessageId(null);
-	routeQueueForm.setMessageQueueFromDatabase(null);
-	routeQueueForm.setMessageQueueFromForm(null);
-	routeQueueForm.setShowEdit("yes");
-	routeQueueForm.setMethodToCall("");
-	establishRequiredState(request, form);
-	routeQueueForm.setMessageId(message.getRouteQueueId());
-	routeQueueForm.setMessageQueueFromForm(message);
-	routeQueueForm.setNewQueueDate(routeQueueForm.getExistingQueueDate());
-	routeQueueForm.getMessageQueueFromForm().setMethodCall(unwrapPayload(message));
-	return mapping.findForward("report");
-    }
+//    public ActionForward saveAndForward(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+//	    HttpServletResponse response) throws Exception {
+//	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
+//	PersistedMessageBO message = save(routeQueueForm);
+//	ForwardedCallHandler adminService = getAdminServiceToForwardTo(message, routeQueueForm);
+//	AsynchronousCall methodCall = message.getPayload().getMethodCall();
+//	message.setMethodCall(methodCall);
+//	adminService.handleCall(message);
+//	KSBServiceLocator.getRouteQueueService().delete(message);
+//
+//	ActionMessages messages = new ActionMessages();
+//	messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("routequeue.RouteQueueService.queued"));
+//	saveMessages(request, messages);
+//
+//	routeQueueForm.setMessageId(null);
+//	routeQueueForm.setMessageQueueFromDatabase(null);
+//	routeQueueForm.setMessageQueueFromForm(null);
+//	routeQueueForm.setShowEdit("yes");
+//	routeQueueForm.setMethodToCall("");
+//	establishRequiredState(request, form);
+//	routeQueueForm.setMessageId(message.getRouteQueueId());
+//	routeQueueForm.setMessageQueueFromForm(message);
+//	routeQueueForm.setNewQueueDate(routeQueueForm.getExistingQueueDate());
+//	routeQueueForm.getMessageQueueFromForm().setMethodCall(unwrapPayload(message));
+//	return mapping.findForward("report");
+//    }
 
     private PersistedMessageBO save(MessageQueueForm routeQueueForm) {
 	Long routeQueueId = routeQueueForm.getMessageQueueFromForm().getRouteQueueId();
@@ -151,7 +149,7 @@ public class MessageQueueAction extends KSBAction {
 	    throw new IllegalArgumentException("Invalid routeQueueId passed in.  Cannot save");
 	}
 	// save the message
-	PersistedMessageBO existingMessage = KSBServiceLocator.getRouteQueueService().findByRouteQueueId(routeQueueId);
+	PersistedMessageBO existingMessage = KSBServiceLocator.getMessageQueueService().findByRouteQueueId(routeQueueId);
 	PersistedMessageBO message = routeQueueForm.getMessageQueueFromForm();
 	// copy the new values over
 	if (existingMessage == null) {
@@ -168,30 +166,30 @@ public class MessageQueueAction extends KSBAction {
 	existingMessage.setServiceName(message.getServiceName());
 	existingMessage.setValue1(message.getValue1());
 	existingMessage.setValue2(message.getValue2());
-	KSBServiceLocator.getRouteQueueService().save(existingMessage);
+	KSBServiceLocator.getMessageQueueService().save(existingMessage);
 	return existingMessage;
     }
 
-    private ForwardedCallHandler getAdminServiceToForwardTo(PersistedMessageBO message, MessageQueueForm form) {
-	String ip = form.getIpAddress();
-	List<ServiceInfo> services = KSBServiceLocator.getServiceRegistry().fetchAll();
-	for (ServiceInfo service : services) {
-	    if (service.getQname().getLocalPart().equals(
-		    QName.valueOf(message.getServiceName()).getLocalPart() + "-forwardHandler")
-		    && service.getServerIp().equals(ip)) {
-		// retrieve a reference to the remote service
-		RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-		ForwardedCallHandler handler = (ForwardedCallHandler) remoteResourceLocator.getService(service.getQname(), service.getEndpointUrl());
-		if (handler != null) {
-		    return handler;
-		} else {
-		    LOG.warn("Failed to find forwarded call handler for service: " + service.getQname().toString() + " and endpoint URL: " + service.getEndpointUrl());
-		}
-	    }
-	}
-	throw new RuntimeException("Could not locate the BusAdminService for ip " + ip
-		+ " in order to forward the message.");
-    }
+//    private ForwardedCallHandler getAdminServiceToForwardTo(PersistedMessageBO message, MessageQueueForm form) {
+//	String ip = form.getIpAddress();
+//	List<ServiceInfo> services = KSBServiceLocator.getServiceRegistry().fetchAll();
+//	for (ServiceInfo service : services) {
+//	    if (service.getQname().getLocalPart().equals(
+//		    QName.valueOf(message.getServiceName()).getLocalPart() + "-forwardHandler")
+//		    && service.getServerIp().equals(ip)) {
+//		// retrieve a reference to the remote service
+//		RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
+//		ForwardedCallHandler handler = (ForwardedCallHandler) remoteResourceLocator.getService(service.getQname(), service.getEndpointUrl());
+//		if (handler != null) {
+//		    return handler;
+//		} else {
+//		    LOG.warn("Failed to find forwarded call handler for service: " + service.getQname().toString() + " and endpoint URL: " + service.getEndpointUrl());
+//		}
+//	    }
+//	}
+//	throw new RuntimeException("Could not locate the BusAdminService for ip " + ip
+//		+ " in order to forward the message.");
+//    }
 
     /**
          * Performs a quick ReQueue of the indicated persisted message.
@@ -329,7 +327,7 @@ public class MessageQueueAction extends KSBAction {
 	routeQueueForm.setMessagePersistence(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_PERSISTENCE));
 	routeQueueForm.setMessageDelivery(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_DELIVERY));
 	routeQueueForm.setMessageOff(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGING_OFF));
-	List<ServiceInfo> services = KSBServiceLocator.getServiceRegistry().fetchAll();
+	List<ServiceInfo> services = KsbApiServiceLocator.getServiceRegistry().getAllOnlineServices();
 	if (routeQueueForm.getMessageId() != null) {
 	    PersistedMessageBO rq = getRouteQueueService().findByRouteQueueId(routeQueueForm.getMessageId());
 	    if (rq != null) {
@@ -340,7 +338,7 @@ public class MessageQueueAction extends KSBAction {
 		for (ServiceInfo serviceInfo : services) {
 		    if (serviceInfo.getServiceName().equals(serviceName)) {
 			routeQueueForm.getIpAddresses().add(
-				new ConcreteKeyValue(serviceInfo.getServerIp(), serviceInfo.getServerIp()));
+				new ConcreteKeyValue(serviceInfo.getServerIpAddress(), serviceInfo.getServerIpAddress()));
 		    }
 		}
 	    } else {
@@ -418,7 +416,7 @@ public class MessageQueueAction extends KSBAction {
     }
 
     private MessageQueueService getRouteQueueService() {
-	return KSBServiceLocator.getRouteQueueService();
+	return KSBServiceLocator.getMessageQueueService();
     }
 
     /**

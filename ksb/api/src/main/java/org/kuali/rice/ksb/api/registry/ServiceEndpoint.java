@@ -2,12 +2,14 @@ package org.kuali.rice.ksb.api.registry;
 
 import java.io.Serializable;
 import java.util.Collection;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -19,18 +21,16 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = ServiceEndpoint.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ServiceEndpoint.Constants.TYPE_NAME, propOrder = {
-		ServiceEndpoint.Elements.ID,
-		ServiceEndpoint.Elements.HEADER,
+		ServiceEndpoint.Elements.INFO,
 		ServiceEndpoint.Elements.DESCRIPTOR,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class ServiceEndpoint implements ModelObjectComplete, ServiceEndpointContract {
 
-	@XmlElement(name = Elements.ID, required = false)
-    private final Long id;
+	private static final long serialVersionUID = -2295962329997871877L;
     
-	@XmlElement(name = Elements.HEADER, required = false)
-    private final ServiceHeader header;
+	@XmlElement(name = Elements.INFO, required = false)
+    private final ServiceInfo info;
 	
     @XmlElement(name = Elements.DESCRIPTOR, required = false)
     private final ServiceDescriptor descriptor;
@@ -43,25 +43,18 @@ public final class ServiceEndpoint implements ModelObjectComplete, ServiceEndpoi
      * Private constructor used only by JAXB.
      */
     private ServiceEndpoint() {
-    	this.id = null;
-        this.header = null;
+        this.info = null;
     	this.descriptor = null;
     }
     
     private ServiceEndpoint(Builder builder) {
-    	this.id = builder.getId();
-        this.header = builder.getHeader().build();
+        this.info = builder.getInfo().build();
         this.descriptor = builder.getDescriptor().build();
     }
     
     @Override
-    public Long getId() {
-        return this.id;
-    }
-
-    @Override
-    public ServiceHeader getHeader() {
-        return this.header;
+    public ServiceInfo getInfo() {
+        return this.info;
     }
     
     @Override
@@ -89,28 +82,25 @@ public final class ServiceEndpoint implements ModelObjectComplete, ServiceEndpoi
      */
     public final static class Builder implements Serializable, ModelBuilder, ServiceEndpointContract {
 
-    	private Long id;
-        private ServiceHeader.Builder header;
+		private static final long serialVersionUID = -1783718474634197837L;
+
+		private ServiceInfo.Builder info;
         private ServiceDescriptor.Builder descriptor;
 
-        private Builder() {
-            // TODO modify this constructor as needed to pass any required values and invoke the appropriate 'setter' methods
+        private Builder(ServiceInfo.Builder info, ServiceDescriptor.Builder descriptor) {
+            setInfo(info);
+            setDescriptor(descriptor);
         }
 
-        public static Builder create() {
-            // TODO modify as needed to pass any required values and add them to the signature of the 'create' method
-            return new Builder();
+        public static Builder create(ServiceInfo.Builder info, ServiceDescriptor.Builder descriptor) {
+            return new Builder(info, descriptor);
         }
 
         public static Builder create(ServiceEndpointContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            // TODO if create() is modified to accept required parameters, this will need to be modified
-            Builder builder = create();
-            builder.setId(contract.getId());
-            builder.setHeader(ServiceHeader.Builder.create(contract.getHeader()));
-            builder.setDescriptor(ServiceDescriptor.Builder.create(contract.getDescriptor()));
+            Builder builder = create(ServiceInfo.Builder.create(contract.getInfo()), ServiceDescriptor.Builder.create(contract.getDescriptor()));
             return builder;
         }
 
@@ -119,13 +109,8 @@ public final class ServiceEndpoint implements ModelObjectComplete, ServiceEndpoi
         }
 
         @Override
-        public Long getId() {
-            return this.id;
-        }
-
-        @Override
-        public ServiceHeader.Builder getHeader() {
-            return this.header;
+        public ServiceInfo.Builder getInfo() {
+            return this.info;
         }
         
         @Override
@@ -133,18 +118,17 @@ public final class ServiceEndpoint implements ModelObjectComplete, ServiceEndpoi
             return this.descriptor;
         }
         
-        public void setId(Long id) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
-            this.id = id;
-        }
-
-        public void setHeader(ServiceHeader.Builder header) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
-            this.header = header;
+        public void setInfo(ServiceInfo.Builder info) {
+            if (info == null) {
+            	throw new IllegalArgumentException("info was null");
+            }
+            this.info = info;
         }
 
         public void setDescriptor(ServiceDescriptor.Builder descriptor) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+        	if (descriptor == null) {
+            	throw new IllegalArgumentException("descriptor was null");
+            }
             this.descriptor = descriptor;
         }
         
@@ -168,8 +152,7 @@ public final class ServiceEndpoint implements ModelObjectComplete, ServiceEndpoi
      */
     static class Elements {
 
-        final static String ID = "id";
-        final static String HEADER = "header";
+        final static String INFO = "info";
         final static String DESCRIPTOR = "descriptor";
 
     }

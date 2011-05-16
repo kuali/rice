@@ -17,6 +17,7 @@
 package org.kuali.rice.ksb.api.registry;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.ksb.api.KsbConstants;
 
 public final class RegistryConstants {
 	public final static class Namespaces {
@@ -24,7 +25,7 @@ public final class RegistryConstants {
         /**
     	 * Namespace for the ksb registry module which is compatible with Kuali Rice 2.0.x.
     	 */
-    	public static final String REGISTRY_NAMESPACE_2_0 = KsbConstants.Namespaces.KSB_NAMESPACE_PREFIX + "/registry/" + CoreConstants.Versions.VERSION_2_0;
+    	public static final String REGISTRY_NAMESPACE_2_0 = KsbConstants.Namespaces.KSB_NAMESPACE_2_0 + "/registry/" + CoreConstants.Versions.VERSION_2_0;
     	
     }
 }

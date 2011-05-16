@@ -16,12 +16,13 @@
 
 package org.kuali.rice.ksb.messaging;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter;
 
 /**
  * A KSBExporter which will exports the service in the case where the specified
@@ -35,7 +36,7 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RunModeServiceExporter extends PropertyConditionalKSBExporter {
+public class RunModeServiceExporter extends PropertyConditionalServiceBusExporter {
 	
     private String runModePropertyName;
     private RunMode validRunMode;
@@ -48,7 +49,7 @@ public class RunModeServiceExporter extends PropertyConditionalKSBExporter {
     }
 
     @Override
-	protected boolean shouldRemoteThisService() throws Exception {
+	protected boolean shouldRemoteThisService() {
     	if (validRunMode == null) {
     		throw new ConfigurationException("The validRunMode property was not set.");
     	}

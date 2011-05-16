@@ -16,15 +16,16 @@
 
 package org.kuali.rice.ksb.cache;
 
-import com.opensymphony.oscache.base.AbstractCacheAdministrator;
-import com.opensymphony.oscache.base.NeedsRefreshException;
-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
+import java.util.Properties;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
 
-import java.util.Properties;
+import com.opensymphony.oscache.base.AbstractCacheAdministrator;
+import com.opensymphony.oscache.base.NeedsRefreshException;
+import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 /**
  * Default implementation of the {@link RiceCacheAdministrator}.
@@ -40,22 +41,21 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 	private boolean started;
 	private boolean forceRegistryRefresh;
 	private String serviceName;
-	protected RemotedServiceRegistry remotedServiceRegistry;
+	protected ServiceBus serviceBus;
 	private static final Logger LOG = Logger.getLogger(RiceCacheAdministratorImpl.class);
 	
 	/**
 	 * @return the remotedServiceRegistry
 	 */
-	public RemotedServiceRegistry getRemotedServiceRegistry() {
-		return this.remotedServiceRegistry;
+	public ServiceBus getServiceBus() {
+		return this.serviceBus;
 	}
 
 	/**
 	 * @param remotedServiceRegistry the remotedServiceRegistry to set
 	 */
-	public void setRemotedServiceRegistry(
-			RemotedServiceRegistry remotedServiceRegistry) {
-		this.remotedServiceRegistry = remotedServiceRegistry;
+	public void setServiceBus(ServiceBus serviceBus) {
+		this.serviceBus = serviceBus;
 	}
 
 	public boolean isStarted() {
@@ -138,7 +138,7 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 			properties.put(AbstractCacheAdministrator.CACHE_BLOCKING_KEY, "false");
 		}
 		properties.put(CacheProperties.FORCE_REGISTRY_REFRESH_KEY, new Boolean(this.forceRegistryRefresh));
-		properties.put(CacheProperties.REMOTED_SERVICE_REGISTRY, remotedServiceRegistry);
+		properties.put(CacheProperties.SERVICE_BUS, serviceBus);
 		if (StringUtils.isBlank(this.serviceName)) {
 		    this.serviceName = DEFAULT_SERVICE_NAME;
 		}

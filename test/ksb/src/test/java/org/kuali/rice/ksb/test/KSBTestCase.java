@@ -23,6 +23,7 @@ import org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.server.TestClient1;
 import org.kuali.rice.ksb.server.TestClient2;
@@ -36,8 +37,6 @@ public abstract class KSBTestCase extends BaselineTestCase {
 
     private static final String KSB_MODULE_NAME = "ksb";
 
-    protected static final String MOCK_JAVA_SECURITY_MANAGEMENT_SERVICE_BEAN_ID = "testJavaSecurityManagementService";
-
     private TestClient1 testClient1;
     private TestClient2 testClient2;
     private ResourceLoader springContextResourceLoader;
@@ -48,7 +47,8 @@ public abstract class KSBTestCase extends BaselineTestCase {
 
     @Override
     public void setUp() throws Exception {
-        // because we're stopping and starting so many times we need to clear
+
+    	// because we're stopping and starting so many times we need to clear
         // the core before another set of RLs get put in the core. This is 
         // because we are sometimes using the GRL to fetch a specific servers
         // spring file out for testing purposes.
@@ -61,7 +61,7 @@ public abstract class KSBTestCase extends BaselineTestCase {
 
         super.setUp();
         if (startClient1() || startClient2()) {
-            ((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
+            KsbApiServiceLocator.getServiceBus().synchronize();
         }
     }
     

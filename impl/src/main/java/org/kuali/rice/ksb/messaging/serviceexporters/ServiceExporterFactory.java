@@ -17,11 +17,12 @@
 package org.kuali.rice.ksb.messaging.serviceexporters;
 
 
-import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.RESTServiceDefinition;
-import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.service.KSBContextServiceLocator;
+import org.apache.cxf.Bus;
+import org.apache.cxf.endpoint.ServerRegistry;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
+import org.kuali.rice.ksb.api.bus.support.RestServiceDefinition;
+import org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition;
 
 /**
  *
@@ -29,17 +30,17 @@ import org.kuali.rice.ksb.service.KSBContextServiceLocator;
  */
 public class ServiceExporterFactory {
 
-	public static ServiceExporter getServiceExporter(ServiceInfo serviceInfo, KSBContextServiceLocator serviceLocator) {
+	public static ServiceExporter getServiceExporter(ServiceDefinition serviceDefinition, Bus cxfBus, ServerRegistry cxfServerRegistry) {
 		
-		if (serviceInfo.getServiceDefinition() instanceof JavaServiceDefinition) {
-			return new HttpInvokerServiceExporter(serviceInfo);
-		} else if (serviceInfo.getServiceDefinition() instanceof SOAPServiceDefinition) {
-			return new SOAPServiceExporter(serviceInfo, serviceLocator);
-		} else if (serviceInfo.getServiceDefinition() instanceof RESTServiceDefinition) {
-			return new RESTServiceExporter(serviceInfo, serviceLocator);
+		if (serviceDefinition instanceof JavaServiceDefinition) {
+			return new HttpInvokerServiceExporter();
+		} else if (serviceDefinition instanceof SoapServiceDefinition) {
+			return new SOAPServiceExporter((SoapServiceDefinition)serviceDefinition, cxfBus, cxfServerRegistry);
+		} else if (serviceDefinition instanceof RestServiceDefinition) {
+			return new RESTServiceExporter((RestServiceDefinition)serviceDefinition, cxfBus, cxfServerRegistry);
 		}
 		
-		throw new RuntimeException("ServiceDefinition type not supported " + serviceInfo.getServiceDefinition());
+		throw new IllegalArgumentException("ServiceDefinition type not supported " + serviceDefinition);
 	}
 	
 	

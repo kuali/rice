@@ -21,8 +21,8 @@ import java.io.IOException;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.cas.CasAuthenticationToken;
 import org.acegisecurity.ui.cas.CasProcessingFilter;
-import org.kuali.rice.core.security.credentials.Credentials;
-import org.kuali.rice.core.security.credentials.CredentialsSource;
+import org.kuali.rice.core.api.security.credentials.Credentials;
+import org.kuali.rice.core.api.security.credentials.CredentialsSource;
 
 import edu.yale.its.tp.cas.proxy.ProxyTicketReceptor;
 

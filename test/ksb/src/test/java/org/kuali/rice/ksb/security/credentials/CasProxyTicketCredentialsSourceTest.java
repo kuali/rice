@@ -26,8 +26,8 @@ import org.acegisecurity.ui.cas.CasProcessingFilter;
 import org.acegisecurity.userdetails.User;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.security.credentials.Credentials;
-import org.kuali.rice.core.security.credentials.CredentialsSource.CredentialsType;
+import org.kuali.rice.core.api.security.credentials.Credentials;
+import org.kuali.rice.core.api.security.credentials.CredentialsSource.CredentialsType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockServletConfig;
 

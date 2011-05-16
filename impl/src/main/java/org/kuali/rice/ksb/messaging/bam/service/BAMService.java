@@ -22,7 +22,8 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 
 
@@ -35,9 +36,9 @@ public interface BAMService {
 
 	public List<BAMTargetEntry> getCallsForService(QName serviceName);
 	public List<BAMTargetEntry> getCallsForRemotedClasses(ObjectDefinition objDef);
-	public BAMTargetEntry recordClientInvocation(ServiceInfo serviceInfo, Object target, Method method, Object[] params);
+	public BAMTargetEntry recordClientInvocation(ServiceConfiguration serviceConfiguration, Object target, Method method, Object[] params);
 	public BAMTargetEntry recordClientInvocationError(Throwable throwable, BAMTargetEntry bamTargetEntry);
-	public BAMTargetEntry recordServerInvocation(Object target, ServiceInfo entry, Method method, Object[] params);
+	public BAMTargetEntry recordServerInvocation(Object target, ServiceDefinition serviceDefinition, Method method, Object[] params);
 	public BAMTargetEntry recordServerInvocationError(Throwable throwable, BAMTargetEntry bamTargetEntry);
 	public void clearBAMTables();
 	public List<BAMTargetEntry> getCallsForService(QName serviceName, String methodName);

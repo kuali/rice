@@ -54,9 +54,9 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="enServiceInvoker"
+	<bean id="rice.ksb.serviceBus"
 		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="enServiceInvoker" />
+		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 
 	<bean id="kewLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
@@ -69,7 +69,7 @@
 		<property name="validRunMode" value="EMBEDDED" />
 	</bean>
 	
-	<bean id="kewSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
+	<bean id="kewSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kew"/>
        <property name="jaxWsService" value="true"/>
        <property name="priority" value="3" />
@@ -77,9 +77,9 @@
     </bean>
 	
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <ref bean="enWorkflowDocumentActionsService" />
           </property>
@@ -92,7 +92,7 @@
 	</bean>
 	
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
 			<bean parent="kewSoapService">
           <property name="service">
@@ -106,9 +106,9 @@
 	</bean>
 
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-			<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+			<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 				<property name="service">
 					<ref bean="enWorkflowDocumentActionsService" />
 				</property>
@@ -122,9 +122,9 @@
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <ref bean="enWorkflowUtilityService" />
           </property>
@@ -137,7 +137,7 @@
     </bean>
     
     <bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
 			<bean parent="kewSoapService">
           <property name="service" ref="enWorkflowUtilityService" />
@@ -150,9 +150,9 @@
     </bean>
 
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-			<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+			<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 				<property name="service">
 					<ref bean="enWorkflowUtilityService" />
 				</property>
@@ -166,7 +166,7 @@
 	</bean>
 
 	<bean parent="kewLocalServiceExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
       <property name="serviceDefinition">
 			<bean parent="kewSoapService">
           <property name="service" ref="simpleDocumentActionsService" />
@@ -178,9 +178,9 @@
     </bean>
 
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <bean class="org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor" />
           </property>
@@ -194,9 +194,9 @@
 	</bean>
 
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <bean class="org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor" />
           </property>
@@ -210,9 +210,9 @@
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <ref bean="enDocumentRoutingService" />
           </property>
@@ -224,9 +224,9 @@
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <ref bean="enBlanketApproveProcessor" />
           </property>
@@ -238,9 +238,9 @@
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <ref bean="enSearchableAttributeProcessor" />
           </property>
@@ -253,9 +253,9 @@
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <ref bean="enDocumentRequeuerService" />
           </property>
@@ -269,9 +269,9 @@
 
 
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <bean class="org.kuali.rice.kew.rule.service.impl.RuleCacheProcessorImpl" />
           </property>
@@ -286,9 +286,9 @@
 	</bean>
 	
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+			<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 				<property name="service">
 					<bean class="org.kuali.rice.kew.rule.service.impl.RuleDelegationCacheProcessorImpl" />
 				</property>
@@ -303,9 +303,9 @@
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <bean class="org.kuali.rice.kew.rule.RolePokerProcessor" />
           </property>
@@ -318,9 +318,9 @@
 	</bean>
 
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <ref bean="enImmediateEmailReminderService" />
           </property>
@@ -335,9 +335,9 @@
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <ref bean="enActionInvocationService" />
           </property>
@@ -350,9 +350,9 @@
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
             <ref bean="enMoveDocumentService" />
           </property>
@@ -365,13 +365,13 @@
   </bean>
 
   <bean id="enCacheAdministrator" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" >
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
   </bean>
 
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 	         <property name="service">
 	           <ref bean="routeLogDerivedRoleTypeService" />
 	         </property>
@@ -385,9 +385,9 @@
   </bean>
 
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 	         <property name="service">
 	           <ref bean="actionRequestDerivedRoleTypeService" />
 	         </property>
@@ -401,9 +401,9 @@
   </bean>
 
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 	         <property name="service">
 	           <ref bean="adhocReviewPermissionTypeService" />
 	         </property>
@@ -418,9 +418,9 @@
 
   <bean id="reviewResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl" />
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 	         <property name="service">
 	           <ref bean="reviewResponsibilityTypeService" />
 	         </property>
@@ -434,9 +434,9 @@
   </bean>
 
 	<bean parent="kewLocalServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
 	         <property name="service">
 	           <ref bean="documentTypeResponsibilityTypeService" />
 	         </property>

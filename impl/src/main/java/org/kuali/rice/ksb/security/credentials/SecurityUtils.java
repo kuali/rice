@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.security.credentials;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.x509.X509AuthenticationToken;
-import org.kuali.rice.core.security.credentials.Credentials;
+import org.kuali.rice.core.api.security.credentials.Credentials;
 
 /**
  * 

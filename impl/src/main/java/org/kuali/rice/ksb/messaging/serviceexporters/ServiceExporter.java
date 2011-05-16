@@ -16,7 +16,8 @@
  */
 package org.kuali.rice.ksb.messaging.serviceexporters;
 
-import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
+
 
 /**
  *
@@ -24,6 +25,6 @@ import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
  */
 public interface ServiceExporter {
 
-	public ServerSideRemotedServiceHolder getServiceExporter(Object serviceImpl);
+	public Object exportService(ServiceDefinition serviceDefinition);
 	
 }

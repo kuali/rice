@@ -16,8 +16,8 @@
 
 package org.kuali.rice.core.impl.resourceloader;
 
-import org.kuali.rice.core.impl.proxy.BaseTargetedInvocationHandler;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.reflect.BaseTargetedInvocationHandler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -42,7 +42,7 @@ public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler {
      * @param objectClassLoader the classloader to set as the context classloader prior to any invocations on the proxiedObject
      * @return a ContextClassLoaderProxy Proxy for the proxiedObject
      */
-    public static Object wrap(Object proxiedObject, Class[] classesToProxy, ClassLoader proxyClassLoader, ClassLoader objectClassLoader) {
+    public static Object wrap(Object proxiedObject, Class<?>[] classesToProxy, ClassLoader proxyClassLoader, ClassLoader objectClassLoader) {
         if (proxiedObject == null) {
         	return null;
         }
@@ -80,11 +80,11 @@ public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler {
     	return wrap(proxiedObject, classLoader, classLoader);
     }
 
-    public static Object wrap(Object proxiedObject, Class[] classesToProxy) {
+    public static Object wrap(Object proxiedObject, Class<?>[] classesToProxy) {
     	return wrap(proxiedObject, classesToProxy, null, null);
     }
 
-    public static Object wrap(Object proxiedObject, Class[] classesToProxy, ClassLoader classLoader) {
+    public static Object wrap(Object proxiedObject, Class<?>[] classesToProxy, ClassLoader classLoader) {
     	return wrap(proxiedObject, classesToProxy, classLoader, classLoader);
     }
 
@@ -92,14 +92,14 @@ public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler {
     	return wrap(proxiedObject, null, null, null);
     }
 
-    public static Class[] getInterfacesToProxy(Object proxiedObject) {
+    public static Class<?>[] getInterfacesToProxy(Object proxiedObject) {
 	return getInterfacesToProxy(null, proxiedObject);
     }
 
     /**
      * Determines the interfaces which need to be proxied and are visable to the given proxy ClassLoader.
      */
-    public static Class[] getInterfacesToProxy(ClassLoader proxyClassLoader, Object proxiedObject) {
+    public static Class<?>[] getInterfacesToProxy(ClassLoader proxyClassLoader, Object proxiedObject) {
     	return ClassLoaderUtils.getInterfacesToProxy(proxiedObject, proxyClassLoader, null);
     }
 

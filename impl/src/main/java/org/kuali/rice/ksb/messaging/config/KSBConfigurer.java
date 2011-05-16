@@ -16,38 +16,40 @@
 
 package org.kuali.rice.ksb.messaging.config;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
-import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.impl.lifecycle.ServiceDelegatingLifecycle;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.AlternateEndpoint;
 import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
 import org.kuali.rice.ksb.messaging.MessageFetcher;
-import org.kuali.rice.ksb.messaging.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /**
@@ -59,6 +61,16 @@ import java.util.List;
  * 
  */
 public class KSBConfigurer extends ModuleConfigurer {
+	
+	private static final String SERVICE_BUS_CLIENT_SPRING = "classpath:org/kuali/rice/ksb/config/KsbServiceBusClientSpringBeans.xml";
+	private static final String MESSAGE_CLIENT_SPRING = "classpath:org/kuali/rice/ksb/config/KsbMessageClientSpringBeans.xml";
+	private static final String OJB_MESSAGE_CLIENT_SPRING = "classpath:org/kuali/rice/ksb/config/KsbOjbMessageClientSpringBeans.xml";
+	private static final String BAM_SPRING = "classpath:org/kuali/rice/ksb/config/KsbBamSpringBeans.xml";
+	private static final String OJB_BAM_SPRING = "classpath:org/kuali/rice/ksb/config/KsbOjbBamSpringBeans.xml";
+	private static final String MODULE_SPRING = "classpath:org/kuali/rice/ksb/config/KsbModuleConfigurationSpringBeans.xml";
+	private static final String REGISTRY_SERVER_SPRING = "classpath:org/kuali/rice/ksb/config/KsbRegistryServerSpringBeans.xml";
+	private static final String OJB_REGISTRY_SPRING = "classpath:org/kuali/rice/ksb/config/KsbOjbRegistrySpringBeans.xml";
+	private static final String WEB_SPRING = "classpath:org/kuali/rice/ksb/config/KsbWebSpringBeans.xml";
 
 	private List<ServiceDefinition> services = new ArrayList<ServiceDefinition>();
 	
@@ -71,6 +83,8 @@ public class KSBConfigurer extends ModuleConfigurer {
 	private DataSource messageDataSource;
 	
 	private DataSource nonTransactionalMessageDataSource;
+	
+	private DataSource bamDataSource;
 
 	private Scheduler exceptionMessagingScheduler;
 
@@ -79,7 +93,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 	@Override
 	public void addAdditonalToConfig() {
 		configureDataSource();
-		configureBus();
 		configureScheduler();
 		configurePlatformTransactionManager();
 		configureAlternateEndpoints();
@@ -89,20 +102,33 @@ public class KSBConfigurer extends ModuleConfigurer {
 	public List<String> getPrimarySpringFiles(){
 		final List<String> springFileLocations = new ArrayList<String>();
 		
-		//hack 'cause KSB used KNS
+		// TODO hack 'cause KSB used KNS - this needs to be fixed!!!
 		springFileLocations.add("classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml");
 		
-		springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBSpringBeans.xml");
+		boolean isJpa = OrmUtils.isJpaEnabled("rice.ksb");
+		if (isJpa) {
+			// TODO redo this once we're back to JPA
+        	// springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBJPASpringBeans.xml");
+        	throw new UnsupportedOperationException("JPA not currently supported for KSB");
+		}
+		
+		springFileLocations.add(SERVICE_BUS_CLIENT_SPRING);
+		springFileLocations.add(MESSAGE_CLIENT_SPRING);
+        springFileLocations.add(OJB_MESSAGE_CLIENT_SPRING);
         
-        if (OrmUtils.isJpaEnabled("rice.ksb")) {
-        	springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBJPASpringBeans.xml");
-        }
-        else {
-        	springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBOJBSpringBeans.xml");
+        boolean bamEnabled = ConfigContext.getCurrentContextConfig().getBooleanProperty(Config.BAM_ENABLED, false);
+        if (bamEnabled) {
+        	springFileLocations.add(BAM_SPRING);
+        	springFileLocations.add(OJB_BAM_SPRING);
         }
         
-        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.LOAD_KNS_MODULE_CONFIGURATION)).booleanValue()) {
-        	springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBModuleConfigurationSpringBeans.xml");
+        if (getRunMode().equals( RunMode.LOCAL )) {
+        	springFileLocations.add(REGISTRY_SERVER_SPRING);
+        	springFileLocations.add(OJB_REGISTRY_SPRING);
+        	if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.LOAD_KNS_MODULE_CONFIGURATION, false)) {
+            	springFileLocations.add(MODULE_SPRING);
+            	springFileLocations.add(WEB_SPRING);
+            }
         }
         
         return springFileLocations;
@@ -145,10 +171,9 @@ public class KSBConfigurer extends ModuleConfigurer {
 		});
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.THREAD_POOL_SERVICE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.SCHEDULED_THREAD_POOL_SERVICE));
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.REPEAT_TOPIC_INVOKING_QUEUE));
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.OBJECT_REMOTER));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.BUS_ADMIN_SERVICE));
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.REMOTED_SERVICE_REGISTRY));
+		lifecycles.add(new ServiceDelegatingLifecycle(KsbApiServiceLocator.SERVICE_BUS));
+		lifecycles.add(new ServicePublisher(getServices()));
 		return lifecycles;
 	}
 
@@ -170,29 +195,12 @@ public class KSBConfigurer extends ModuleConfigurer {
      */
     private void requeueMessages() {
         LOG.info("Refreshing Service Registry to export services to the bus.");
-        KSBServiceLocator.getServiceDeployer().refresh();
+        KsbApiServiceLocator.getServiceBus().synchronize();
         
 		//automatically requeue documents sitting with status of 'R'
 		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
 		KSBServiceLocator.getThreadPool().execute(messageFetcher);
     }
-
-	protected void configureBus() {
-		LOG.debug("Configuring services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
-		configureServiceList(Config.BUS_DEPLOYED_SERVICES, getServices());
-	}
-
-	protected void configureServiceList(String key, List<ServiceDefinition> theServices) {
-		LOG.debug("Configuring services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
-		@SuppressWarnings("unchecked")
-		List<ServiceDefinition> serviceDefinitions = (List<ServiceDefinition>) ConfigContext.getCurrentContextConfig().getObject(key);
-		if (serviceDefinitions == null) {
-			ConfigContext.getCurrentContextConfig().putObject(key, theServices);
-		} else if (theServices != null) {
-			LOG.debug("Services already exist.  Adding additional services");
-			serviceDefinitions.addAll(theServices);
-		}
-	}
 
 	protected void configureScheduler() {
 		if (this.getExceptionMessagingScheduler() != null) {
@@ -217,6 +225,9 @@ public class KSBConfigurer extends ModuleConfigurer {
         }
         if (getRegistryDataSource() != null) {
             ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
+        }
+        if (getBamDataSource() != null) {
+        	ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_BAM_DATASOURCE, getBamDataSource());
         }
     }
 
@@ -250,7 +261,6 @@ public class KSBConfigurer extends ModuleConfigurer {
      *
      */
     protected void cleanUpConfiguration() {
-        ConfigContext.getCurrentContextConfig().removeObject(Config.BUS_DEPLOYED_SERVICES);
         ConfigContext.getCurrentContextConfig().removeObject(KSBConstants.Config.KSB_ALTERNATE_ENDPOINTS);
     }
 
@@ -285,6 +295,14 @@ public class KSBConfigurer extends ModuleConfigurer {
 	public void setRegistryDataSource(DataSource registryDataSource) {
 		this.registryDataSource = registryDataSource;
 	}
+	
+	public DataSource getBamDataSource() {
+		return this.bamDataSource;
+	}
+
+	public void setBamDataSource(DataSource bamDataSource) {
+		this.bamDataSource = bamDataSource;
+	}
 
 	public Scheduler getExceptionMessagingScheduler() {
 		return this.exceptionMessagingScheduler;
@@ -316,6 +334,25 @@ public class KSBConfigurer extends ModuleConfigurer {
 
     public void setAlternateEndpoints(List<AlternateEndpoint> alternateEndpoints) {
         this.alternateEndpoints = alternateEndpoints;
+    }
+    
+    private final class ServicePublisher extends BaseLifecycle {
+
+    	private final List<ServiceDefinition> serviceDefinitions;
+    	
+    	ServicePublisher(List<ServiceDefinition> serviceDefinitions) {
+    		this.serviceDefinitions = serviceDefinitions;
+    	}
+    	
+		@Override
+		public void start() throws Exception {
+			if (serviceDefinitions != null && !serviceDefinitions.isEmpty()) {
+				LOG.debug("Configuring " + serviceDefinitions.size() + " services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
+				KsbApiServiceLocator.getServiceBus().publishServices(serviceDefinitions, true);
+				super.start();
+			}
+		}
+    	
     }
     
 }

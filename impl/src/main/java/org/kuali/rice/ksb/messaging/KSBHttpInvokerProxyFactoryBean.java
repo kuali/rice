@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceConfiguration;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
@@ -29,21 +30,21 @@ public class KSBHttpInvokerProxyFactoryBean extends HttpInvokerProxyFactoryBean 
 
 	private Object serviceProxy;
 
-	private ServiceInfo serviceInfo;
+	private JavaServiceConfiguration serviceConfiguration;
 
-	public ServiceInfo getServiceInfo() {
-		return this.serviceInfo;
+	public JavaServiceConfiguration getServiceConfiguration() {
+		return this.serviceConfiguration;
 	}
 
-	public void setServiceInfo(ServiceInfo serviceInfo) {
-		this.serviceInfo = serviceInfo;
+	public void setServiceConfiguration(JavaServiceConfiguration serviceConfiguration) {
+		this.serviceConfiguration = serviceConfiguration;
 	}
 
 	@Override
 	public void afterPropertiesSet() {
 		ProxyFactory proxyFactory = new ProxyFactory(getServiceInterfaces());
 		proxyFactory.addAdvice(this);
-		LOG.debug("Http proxying service " + this.serviceInfo);
+		LOG.debug("Http proxying service " + getServiceConfiguration());
 		this.serviceProxy = proxyFactory.getProxy();
 	}
 
@@ -53,7 +54,7 @@ public class KSBHttpInvokerProxyFactoryBean extends HttpInvokerProxyFactoryBean 
 	}
 
 	@Override
-	public Class getObjectType() {
+	public Class<?> getObjectType() {
 		return getObject().getClass();
 	}
 
@@ -62,13 +63,12 @@ public class KSBHttpInvokerProxyFactoryBean extends HttpInvokerProxyFactoryBean 
 		return false;
 	}
 
-	public Class[] getServiceInterfaces() {
+	public Class<?>[] getServiceInterfaces() {
 		List<Class<?>> serviceInterfaces = new ArrayList<Class<?>>();
-		JavaServiceDefinition javaServiceDefinition = (JavaServiceDefinition) this.serviceInfo.getServiceDefinition();
 		try {
-			for (String interfaceName : javaServiceDefinition.getServiceInterfaces()) {
+			for (String interfaceName : getServiceConfiguration().getServiceInterfaces()) {
 				Class<?> clazz = Class.forName(interfaceName, true, ClassLoaderUtils.getDefaultClassLoader());
-				LOG.debug("Adding service interface '" + clazz + "' to proxy object for service " + this.serviceInfo);
+				LOG.debug("Adding service interface '" + clazz + "' to proxy object for service " + getServiceConfiguration());
 				serviceInterfaces.add(clazz);
 			}
 		} catch (ClassNotFoundException e) {

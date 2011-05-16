@@ -127,7 +127,8 @@
     <xercesImpl.version>2.9.1</xercesImpl.version>
     <xmlunit.version>1.3</xmlunit.version>
     <xstream.version>1.3.1</xstream.version>
-    <wss4j.version>1.6.0</wss4j.version>
+    <!-- Version 2.3.4 of cxf requires wss4j 1.5.11 and does not work with 1.6.0 -->
+    <wss4j.version>1.5.11</wss4j.version>
 
     <!-- database drivers location -->
     <jdbc.drivers.location>/opt/java/drivers</jdbc.drivers.location>

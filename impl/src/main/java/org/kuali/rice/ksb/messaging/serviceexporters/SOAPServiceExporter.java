@@ -17,18 +17,19 @@
 package org.kuali.rice.ksb.messaging.serviceexporters;
 
 
+import org.apache.cxf.Bus;
 import org.apache.cxf.aegis.databinding.AegisDatabinding;
+import org.apache.cxf.endpoint.ServerRegistry;
 import org.apache.cxf.frontend.ServerFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
 import org.apache.log4j.Logger;
-import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
+import org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
-import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 
 
 /**
@@ -38,13 +39,9 @@ import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 public class SOAPServiceExporter extends AbstractWebServiceExporter implements ServiceExporter {
 
 	static final Logger LOG = Logger.getLogger(SOAPServiceExporter.class);
-	
-	public SOAPServiceExporter(ServiceInfo serviceInfo) {
-		this(serviceInfo, null);
-	}
-	
-	public SOAPServiceExporter(ServiceInfo serviceInfo, KSBContextServiceLocator serviceLocator) {
-	    super(serviceInfo, serviceLocator);
+		
+	public SOAPServiceExporter(SoapServiceDefinition serviceDefinition, Bus cxfBus, ServerRegistry cxfServerRegistry) {
+	    super(serviceDefinition, cxfBus, cxfServerRegistry);
 	}
 
 	/**
@@ -54,12 +51,14 @@ public class SOAPServiceExporter extends AbstractWebServiceExporter implements S
 	 * @throws Exception
 	 */
 	@Override
-    public void publishService(ServiceDefinition serviceDef, Object serviceImpl, String address) throws Exception{
+    public void publishService(ServiceDefinition serviceDefinition, Object serviceImpl, String address) {
 		ServerFactoryBean svrFactory;
 		
+		SoapServiceDefinition soapServiceDefinition = (SoapServiceDefinition)serviceDefinition;
+		
 		//Use the correct bean factory depending on pojo service or jaxws service
-		if (((SOAPServiceDefinition)getServiceInfo().getServiceDefinition()).isJaxWsService()){
-			LOG.info("Creating JaxWsService " + (getServiceInfo().getQname()));
+		if (soapServiceDefinition.isJaxWsService()){
+			LOG.info("Creating JaxWsService " + soapServiceDefinition.getServiceName());
 			svrFactory = new JaxWsServerFactoryBean();
 		} else {
 			svrFactory = new ServerFactoryBean();
@@ -69,21 +68,26 @@ public class SOAPServiceExporter extends AbstractWebServiceExporter implements S
 		}
 	
 		svrFactory.setBus(getCXFBus());
-		svrFactory.setServiceName(getServiceInfo().getQname());
+		svrFactory.setServiceName(soapServiceDefinition.getServiceName());
 		svrFactory.setAddress(address);
-		svrFactory.setPublishedEndpointUrl(getServiceInfo().getActualEndpointUrl());
+		svrFactory.setPublishedEndpointUrl(soapServiceDefinition.getEndpointUrl().toExternalForm());
 		svrFactory.setServiceBean(serviceImpl);
-		svrFactory.setServiceClass(Class.forName(((SOAPServiceDefinition)serviceDef).getServiceInterface()));
+		
+		try {
+			svrFactory.setServiceClass(Class.forName(soapServiceDefinition.getServiceInterface()));
+		} catch (ClassNotFoundException e) {
+			throw new RiceRuntimeException("Failed to publish service " + soapServiceDefinition.getServiceName() + " because service interface could not be loaded: " + soapServiceDefinition.getServiceInterface(), e);
+		}
 		
 		//Set logging and security interceptors
 		svrFactory.getInInterceptors().add(new LoggingInInterceptor());
-		svrFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(serviceInfo));
+		svrFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(soapServiceDefinition.getBusSecurity()));
 		
 		svrFactory.getOutInterceptors().add(new LoggingOutInterceptor());
-		svrFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(serviceInfo));
+		svrFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(soapServiceDefinition.getBusSecurity()));
 		
-		svrFactory.getInFaultInterceptors().add(new CXFWSS4JInInterceptor(serviceInfo));
-		svrFactory.getOutFaultInterceptors().add(new CXFWSS4JOutInterceptor(serviceInfo));
+		svrFactory.getInFaultInterceptors().add(new CXFWSS4JInInterceptor(soapServiceDefinition.getBusSecurity()));
+		svrFactory.getOutFaultInterceptors().add(new CXFWSS4JOutInterceptor(soapServiceDefinition.getBusSecurity()));
 		
 		svrFactory.create();
 	}

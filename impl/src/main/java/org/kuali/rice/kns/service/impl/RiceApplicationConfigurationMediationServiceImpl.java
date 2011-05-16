@@ -12,23 +12,25 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.namespace.NamespaceService;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
-
-import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 //@Transactional
 public class RiceApplicationConfigurationMediationServiceImpl implements RiceApplicationConfigurationMediationService {
@@ -103,8 +105,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 		// KSB proxies that handle a lot of this stuff for us
     	
 
-    	RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-    	List<QName> serviceNames = remoteResourceServiceLocator.getServiceNamesForUnqualifiedName(KNSServiceLocatorInternal.RICE_APPLICATION_CONFIGURATION_SERVICE);
+    	Set<QName> serviceNames = findApplicationConfigurationServices();
 		
 		List<Component> nonDatabaseComponents = new ArrayList<Component>();
 		//add cache per serviceName
@@ -130,6 +131,18 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 		}
 		
 		return nonDatabaseComponents;
+    }
+    
+    protected Set<QName> findApplicationConfigurationServices() {
+    	Set<QName> names = new HashSet<QName>();
+    	List<Endpoint> allEndpoints = KsbApiServiceLocator.getServiceBus().getAllEndpoints();
+    	for (Endpoint endpoint : allEndpoints) {
+    		QName serviceName = endpoint.getServiceConfiguration().getServiceName();
+    		if (serviceName.getLocalPart().equals(KNSServiceLocatorInternal.RICE_APPLICATION_CONFIGURATION_SERVICE)) {
+    			names.add(serviceName);
+    		}
+    	}
+    	return names;
     }
     
     protected RiceApplicationConfigurationService findRiceApplicationConfigurationService(QName serviceName) {
@@ -195,8 +208,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     		}
     	}
     	if ( racService == null ) {
-	    	RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-	    	List<QName> serviceNames = remoteResourceServiceLocator.getServiceNamesForUnqualifiedName(KNSServiceLocatorInternal.RICE_APPLICATION_CONFIGURATION_SERVICE);
+        	Set<QName> serviceNames = findApplicationConfigurationServices();
 			for ( QName serviceName : serviceNames ) {
 				racService = findRiceApplicationConfigurationService(serviceName);
 				if ( racService != null ) {

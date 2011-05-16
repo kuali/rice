@@ -15,28 +15,32 @@
  */
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.reflect.TargetedInvocationHandler;
-import org.kuali.rice.core.impl.proxy.BaseInvocationHandler;
-import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.PersistedMessageBO;
-import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJob;
-import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJobListener;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.quartz.*;
-
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.reflect.BaseInvocationHandler;
+import org.kuali.rice.core.util.reflect.TargetedInvocationHandler;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
+import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJob;
+import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJobListener;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SimpleTrigger;
+import org.quartz.Trigger;
 
 
 /**
@@ -48,30 +52,30 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
 
     private static final Logger LOG = Logger.getLogger(DelayedAsynchronousServiceCallProxy.class);
 
-    List<RemotedServiceHolder> serviceDefs;
+    List<Endpoint> endpoints;
     private Serializable context;
     private String value1;
     private String value2;
     private long delayMilliseconds;
 
-    protected DelayedAsynchronousServiceCallProxy(List<RemotedServiceHolder> serviceDefs, Serializable context,
+    protected DelayedAsynchronousServiceCallProxy(List<Endpoint> endpoints, Serializable context,
 	    String value1, String value2, long delayMilliseconds) {
-	this.serviceDefs = serviceDefs;
+	this.endpoints = endpoints;
 	this.context = context;
 	this.value1 = value1;
 	this.value2 = value2;
 	this.delayMilliseconds = delayMilliseconds;
     }
 
-    public static Object createInstance(List<RemotedServiceHolder> serviceDefs, Serializable context, String value1,
+    public static Object createInstance(List<Endpoint> endpoints, Serializable context, String value1,
 	    String value2, long delayMilliseconds) {
-	if (serviceDefs == null || serviceDefs.isEmpty()) {
+	if (endpoints == null || endpoints.isEmpty()) {
 	    throw new RuntimeException("Cannot create service proxy, no service(s) passed in.");
 	}
 	try {
 	    return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy
-		    .getInterfacesToProxy(serviceDefs.get(0).getService()),
-		    new DelayedAsynchronousServiceCallProxy(serviceDefs, context, value1, value2, delayMilliseconds));
+		    .getInterfacesToProxy(endpoints.get(0).getService()),
+		    new DelayedAsynchronousServiceCallProxy(endpoints, context, value1, value2, delayMilliseconds));
 	} catch (Exception e) {
 	    throw new RiceRuntimeException(e);
 	}
@@ -85,11 +89,11 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
 	synchronized (this) {
 	    // consider moving all this topic invocation stuff to the service
 	    // invoker for speed reasons
-	    for (RemotedServiceHolder remotedServiceHolder : this.serviceDefs) {
-		ServiceInfo serviceInfo = remotedServiceHolder.getServiceInfo();
-		methodCall = new AsynchronousCall(method.getParameterTypes(), arguments, serviceInfo, method.getName(),
+	    for (Endpoint endpoint : this.endpoints) {
+		ServiceConfiguration serviceConfiguration = endpoint.getServiceConfiguration();
+		methodCall = new AsynchronousCall(method.getParameterTypes(), arguments, serviceConfiguration, method.getName(),
 			null, this.context);
-		message = KSBServiceLocator.getRouteQueueService().getMessage(serviceInfo, methodCall);
+		message = KSBServiceLocator.getMessageQueueService().getMessage(serviceConfiguration, methodCall);
 		message.setValue1(this.value1);
 		message.setValue2(this.value2);
 		Calendar now = Calendar.getInstance();
@@ -100,7 +104,7 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
 		// will be handled when the service is
 		// fetched by the MessageServiceInvoker through the GRL (and
 		// then through the RemoteResourceServiceLocatorImpl)
-		if (serviceInfo.getServiceDefinition().getQueue()) {
+		if (serviceConfiguration.isQueue()) {
 		    break;
 		}
 	    }
@@ -128,15 +132,7 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
          * This is a List because, in the case of Topics, there can be more than one service invoked.
          */
     public Object getTarget() {
-	return this.serviceDefs;
+	return this.endpoints;
     }
-
-    public List<RemotedServiceHolder> getServiceDefs() {
-	return this.serviceDefs;
-    }
-
-    public void setServiceDefs(List<RemotedServiceHolder> serviceDefs) {
-	this.serviceDefs = serviceDefs;
-    }
-
+    
 }

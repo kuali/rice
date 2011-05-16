@@ -15,14 +15,16 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.junit.Test;
-import org.kuali.rice.ksb.test.KSBTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URL;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
+import org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition;
+import org.kuali.rice.ksb.test.KSBTestCase;
 
 /**
  * 
@@ -32,31 +34,31 @@ import static org.junit.Assert.assertTrue;
  */
 public class SoapServiceDefinitionTest extends KSBTestCase {
     
-    private SOAPServiceDefinition soapDefinition;
+    private SoapServiceDefinition soapDefinition;
 
     public void setUp() throws Exception {
     	super.setUp();
-        this.soapDefinition = new SOAPServiceDefinition();
+        this.soapDefinition = new SoapServiceDefinition();
         this.soapDefinition.setLocalServiceName("testServiceName");
-        this.soapDefinition.setServiceEndPoint(new URL("http://www.rutgers.edu"));
+        this.soapDefinition.setEndpointUrl(new URL("http://www.rutgers.edu"));
         this.soapDefinition.setService(new ArrayList<String>());
         this.soapDefinition.validate();
     }
     
     @Test
     public void testIsSameSuccessWithSameDefinition() {
-        assertTrue(this.soapDefinition.isSame(this.soapDefinition));
+        assertTrue(this.soapDefinition.equals(this.soapDefinition));
     }
     
     @Test
     public void testIsSameSuccessWithDifferentDefinition() throws Exception {
-        final SOAPServiceDefinition soapServiceDefinition = new SOAPServiceDefinition();
+        final SoapServiceDefinition soapServiceDefinition = new SoapServiceDefinition();
         soapServiceDefinition.setLocalServiceName("testServiceName");
-        soapServiceDefinition.setServiceEndPoint(new URL("http://www.rutgers.edu"));
+        soapServiceDefinition.setEndpointUrl(new URL("http://www.rutgers.edu"));
         soapServiceDefinition.setService(new ArrayList<String>());
         soapServiceDefinition.validate();
     	
-        assertTrue(this.soapDefinition.isSame(soapServiceDefinition));
+        assertTrue(this.soapDefinition.equals(soapServiceDefinition));
     }
     
     @Test
@@ -64,9 +66,9 @@ public class SoapServiceDefinitionTest extends KSBTestCase {
         final JavaServiceDefinition javaServiceDefinition = new JavaServiceDefinition();
         javaServiceDefinition.setBusSecurity(Boolean.FALSE);
         javaServiceDefinition.setLocalServiceName("testServiceName");
-        javaServiceDefinition.setServiceEndPoint(new URL("http://www.rutgers.edu"));
+        javaServiceDefinition.setEndpointUrl(new URL("http://www.rutgers.edu"));
         javaServiceDefinition.setService(new ArrayList<String>());
         javaServiceDefinition.validate();
-        assertFalse(this.soapDefinition.isSame(javaServiceDefinition));
+        assertFalse(this.soapDefinition.equals(javaServiceDefinition));
     }
 }

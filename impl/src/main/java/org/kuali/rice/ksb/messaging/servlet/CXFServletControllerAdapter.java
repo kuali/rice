@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.transport.servlet.ServletController;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -32,23 +31,16 @@ import org.springframework.web.servlet.mvc.Controller;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class CXFServletControllerAdapter 
-	implements Controller{
+public class CXFServletControllerAdapter implements Controller{
 
-	private ServiceInfo serviceInfo;
 	private ServletController controller;
-	
-	public CXFServletControllerAdapter(ServiceInfo serviceInfo){
-		this.serviceInfo = serviceInfo;
-	}
-	
+		
 	/**
 	 * This method invokes the cxf servlet controller
 	 * 
 	 * @see org.springframework.web.servlet.mvc.Controller#handleRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
-	public ModelAndView handleRequest(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 						
         try {
     		BusFactory.setThreadDefaultBus(KSBServiceLocator.getCXFBus());

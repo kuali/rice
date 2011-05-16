@@ -16,14 +16,15 @@
  */
 package org.kuali.rice.ksb.messaging.service;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
-
-import javax.xml.namespace.QName;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Service for interfacing with the queue of asynchronous messages.
@@ -85,5 +86,5 @@ public interface MessageQueueService {
      */
     public Integer getMaxRetryAttempts();
 
-    public PersistedMessageBO getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall);
+    public PersistedMessageBO getMessage(ServiceConfiguration serviceConfiguration, AsynchronousCall methodCall);
 }

@@ -18,14 +18,8 @@ package org.kuali.rice.ksb.messaging.service.impl;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
-import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.PersistedMessageBO;
-import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandlerImpl;
-import org.kuali.rice.ksb.messaging.config.ServiceBasedServiceDefinitionRegisterer;
 import org.kuali.rice.ksb.messaging.service.BusAdminService;
 import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**
@@ -37,52 +31,51 @@ public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminServic
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusAdminServiceImpl.class);
 
-    private ServiceBasedServiceDefinitionRegisterer defRegisterer;
+    private KSBThreadPool threadPool;
 
-    public void forward(PersistedMessageBO message) throws Exception {
-	// this is just weird...
-	AsynchronousCall methodCall = message.getPayload().getMethodCall();
-	message.setMethodCall(methodCall);
-	// TODO there's probably a better way to servisize or refactor this
-	new ForwardedCallHandlerImpl().handleCall(message);
+    public void setThreadPool(KSBThreadPool threadPool) {
+    	this.threadPool = threadPool;
     }
-
+    
+    protected KSBThreadPool getThreadPool() {
+    	return this.threadPool;
+    }
+    
     public void ping() {
     }
 
     public void setCorePoolSize(int corePoolSize) {
-	LOG.info("Setting core pool size to " + corePoolSize);
-	KSBServiceLocator.getThreadPool().setCorePoolSize(corePoolSize);
+    	LOG.info("Setting core pool size to " + corePoolSize);
+    	getThreadPool().setCorePoolSize(corePoolSize);
     }
 
     public void setMaximumPoolSize(int maxPoolSize) {
-	LOG.info("Setting max pool size to " + maxPoolSize);
-	KSBThreadPool threadPool = KSBServiceLocator.getThreadPool();
-	if (maxPoolSize < threadPool.getCorePoolSize()) {
-	    maxPoolSize = threadPool.getCorePoolSize();
-	}
-	threadPool.setMaximumPoolSize(maxPoolSize);
+    	LOG.info("Setting max pool size to " + maxPoolSize);
+    	if (maxPoolSize < getThreadPool().getCorePoolSize()) {
+    		maxPoolSize = getThreadPool().getCorePoolSize();
+    	}
+    	getThreadPool().setMaximumPoolSize(maxPoolSize);
     }
 
     public void setConfigProperty(String propertyName, String propertyValue) {
-	String originalValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
-	LOG.info("Changing config property '" + propertyName + "' from " + originalValue + " to " + propertyValue);
-	if (propertyValue == null) {
-	    ConfigContext.getCurrentContextConfig().removeProperty(propertyName);
-	} else {
-	    ConfigContext.getCurrentContextConfig().putProperty(propertyName, propertyValue);
-	}
+    	String originalValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
+    	LOG.info("Changing config property '" + propertyName + "' from " + originalValue + " to " + propertyValue);
+    	if (propertyValue == null) {
+    		ConfigContext.getCurrentContextConfig().removeProperty(propertyName);
+    	} else {
+    		ConfigContext.getCurrentContextConfig().putProperty(propertyName, propertyValue);
+    	}
     }
 
     public void start() throws Exception {
-	this.defRegisterer = new ServiceBasedServiceDefinitionRegisterer("ksb.busAdminServiceDefinition");
-	this.defRegisterer.registerServiceDefinition(false);
-	setStarted(true);
+    	if (getThreadPool() == null) {
+    		throw new IllegalStateException("The threadPool has not been set on the busAdminService");
+    	}
+    	setStarted(true);
     }
 
     public void stop() throws Exception {
-	this.defRegisterer.unregisterServiceDefinition();
-	setStarted(false);
+    	setStarted(false);
     }
 
 }

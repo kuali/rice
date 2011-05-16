@@ -16,6 +16,14 @@
 
 package org.kuali.rice.ksb.messaging;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +33,6 @@ import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
-
-import javax.xml.namespace.QName;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests {@link MessageFetcher}. Turn messaging off but leave persistence on.
@@ -59,7 +62,7 @@ public class MessageFetcherTest extends KSBTestCase {
 	@Test
 	public void testRequeueMessages() throws Exception {
 
-		List<PersistedMessageBO> messages = KSBServiceLocator.getRouteQueueService().getNextDocuments(null);
+		List<PersistedMessageBO> messages = KSBServiceLocator.getMessageQueueService().getNextDocuments(null);
 		assertEquals("Should have no messages in the queue.", 0, messages.size());
 		
 		// this number is way over the top but we're going to see if it works in
@@ -70,7 +73,7 @@ public class MessageFetcherTest extends KSBTestCase {
 			sendMessage();
 		}
 
-		messages = KSBServiceLocator.getRouteQueueService().getNextDocuments(null);
+		messages = KSBServiceLocator.getMessageQueueService().getNextDocuments(null);
 		assertEquals("Should have 500 messages in the queue.", 500, messages.size());
 		
 		turnOnMessaging();
@@ -86,7 +89,7 @@ public class MessageFetcherTest extends KSBTestCase {
 				"Service not called by message fetcher",
 				TestHarnessSharedTopic.CALL_COUNT == TestHarnessSharedTopic.CALL_COUNT_NOTIFICATION_THRESHOLD);
 		
-		messages = KSBServiceLocator.getRouteQueueService().getNextDocuments(null);
+		messages = KSBServiceLocator.getMessageQueueService().getNextDocuments(null);
 		assertEquals("Should still have no messages in the queue.", 0, messages.size());
 	}
 
@@ -107,7 +110,7 @@ public class MessageFetcherTest extends KSBTestCase {
 	public void testRequeueSingleMessage() throws Exception {
 		sendMessage();
 		sendMessage();
-		PersistedMessageBO message = KSBServiceLocator.getRouteQueueService()
+		PersistedMessageBO message = KSBServiceLocator.getMessageQueueService()
 				.getNextDocuments(null).get(0);
 		assertNotNull("message should have been persisted", message);
 		turnOnMessaging();
@@ -123,7 +126,7 @@ public class MessageFetcherTest extends KSBTestCase {
 				"Service not called by message fetcher corrent number of times",
 				1 == TestHarnessSharedTopic.CALL_COUNT);
 		for (int i = 0; i < 10; i++) {
-			if (KSBServiceLocator.getRouteQueueService().getNextDocuments(null)
+			if (KSBServiceLocator.getMessageQueueService().getNextDocuments(null)
 					.size() == 1) {
 				break;
 			}
@@ -131,7 +134,7 @@ public class MessageFetcherTest extends KSBTestCase {
 		}
 		assertEquals(
 				"Message Queue should have a single remaining message because only single message was resent",
-				1, KSBServiceLocator.getRouteQueueService().getNextDocuments(
+				1, KSBServiceLocator.getMessageQueueService().getNextDocuments(
 						null).size());
 	}
 

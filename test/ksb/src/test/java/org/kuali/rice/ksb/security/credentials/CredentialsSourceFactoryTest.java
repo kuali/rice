@@ -17,9 +17,9 @@ package org.kuali.rice.ksb.security.credentials;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.security.credentials.CredentialsSource;
-import org.kuali.rice.core.security.credentials.CredentialsSource.CredentialsType;
-import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
+import org.kuali.rice.core.api.security.credentials.CredentialsSource;
+import org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory;
+import org.kuali.rice.core.api.security.credentials.CredentialsSource.CredentialsType;
 
 import java.util.Arrays;
 import java.util.List;

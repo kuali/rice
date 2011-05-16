@@ -22,8 +22,8 @@ import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.core.util.RiceConstants;
 
 import javax.sql.DataSource;

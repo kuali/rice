@@ -16,9 +16,10 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.kuali.rice.ksb.api.bus.ServiceBus;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.cache.RiceCacheAdministratorImpl;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -29,17 +30,17 @@ import org.springframework.beans.factory.InitializingBean;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBean {
+public class RiceCacheExporterFactoryBean implements FactoryBean<RiceCacheAdministrator>, InitializingBean {
 	
 	private String serviceName;
 	private RiceCacheAdministratorImpl cache;
-	protected RemotedServiceRegistry remotedServiceRegistry;
+	protected ServiceBus serviceBus;
 
-	public Object getObject() throws Exception {
+	public RiceCacheAdministrator getObject() {
 		return cache;
 	}
 
-	public Class getObjectType() {
+	public Class<RiceCacheAdministrator> getObjectType() {
 		return RiceCacheAdministrator.class;
 	}
 
@@ -60,28 +61,16 @@ public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBe
 			cache = new RiceCacheAdministratorImpl();
 			cache.setServiceName(this.getServiceName());
 			cache.setForceRegistryRefresh(false);
-			if (remotedServiceRegistry == null) {
-				remotedServiceRegistry = KSBServiceLocator.getServiceDeployer();
+			if (serviceBus == null) {
+				serviceBus = KsbApiServiceLocator.getServiceBus();
 			}
-			cache.setRemotedServiceRegistry(remotedServiceRegistry);
+			cache.setServiceBus(serviceBus);
 			cache.start();
 		}
 	}
 	
-
-	/**
-	 * @return the remotedServiceRegistry
-	 */
-	public RemotedServiceRegistry getRemotedServiceRegistry() {
-		return this.remotedServiceRegistry;
-	}
-
-	/**
-	 * @param remotedServiceRegistry the remotedServiceRegistry to set
-	 */
-	public void setRemotedServiceRegistry(
-			RemotedServiceRegistry remotedServiceRegistry) {
-		this.remotedServiceRegistry = remotedServiceRegistry;
+	public void setServiceBus(ServiceBus serviceBus) {
+		this.serviceBus = serviceBus;
 	}
 
 }

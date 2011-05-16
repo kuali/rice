@@ -67,7 +67,7 @@ public class MessageServiceExecutorJobListener implements JobListener {
 	if (context.getJobInstance() instanceof MessageServiceExecutorJob && exception != null) {
 	    PersistedMessageBO message = (PersistedMessageBO)context.getJobDetail().getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
 	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
-	    KSBServiceLocator.getRouteQueueService().save(message);
+	    KSBServiceLocator.getMessageQueueService().save(message);
 	}
 
     }

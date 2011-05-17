@@ -456,7 +456,7 @@ class PropositionBoServiceImplTest {
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
-			def String compoundOpCode = LogicalOperator.OR.opCode()
+			def String compoundOpCode = LogicalOperator.OR.getCode()
 			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionBoServiceImplTest.propositionABuilder, PropositionBoServiceImplTest.propositionBBuilder)
 		}).build()
 	}

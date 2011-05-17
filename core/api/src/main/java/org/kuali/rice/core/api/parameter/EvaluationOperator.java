@@ -1,16 +1,11 @@
 package org.kuali.rice.core.api.parameter;
 
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
 
 /**
  * Defines the possible evaluation operators that can be supported on system parameters.
  */
-@XmlType(name = "EvaluationOperatorType")
-@XmlJavaTypeAdapter(EvaluationOperator.Adapter.class)
 public enum EvaluationOperator implements Coded {
 
 	/**

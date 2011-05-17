@@ -18,9 +18,8 @@ package org.kuali.rice.krms.api.repository.proposition;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlType;
+import org.kuali.rice.core.api.mo.common.Coded;
+import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
 
 /**
  * TODO... 
@@ -28,12 +27,10 @@ import javax.xml.bind.annotation.XmlType;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@XmlType(name = "PropositionType")
-@XmlEnum(String.class)
-public enum PropositionType {
+public enum PropositionType implements Coded {
 
-	@XmlEnumValue(value="C") COMPOUND("C"),
-	@XmlEnumValue(value="S") SIMPLE("S");
+	COMPOUND("C"),
+	SIMPLE("S");
 	
 	private final String code;
 	
@@ -46,6 +43,7 @@ public enum PropositionType {
 	 * 
 	 * @return the operatorCode
 	 */
+	@Override
 	public String getCode() {
 		return code;
 	}
@@ -67,6 +65,14 @@ public enum PropositionType {
 			}
 		}
 		throw new IllegalArgumentException("Failed to locate the PropositionType with the given code: " + code);
+	}
+	
+	static final class Adapter extends EnumStringAdapter<PropositionType> {
+		
+		protected Class<PropositionType> getEnumClass() {
+			return PropositionType.class;
+		}
+		
 	}
 	
 }

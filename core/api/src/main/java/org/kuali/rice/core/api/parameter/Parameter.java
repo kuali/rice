@@ -16,6 +16,17 @@
 
 package org.kuali.rice.core.api.parameter;
 
+import java.io.Serializable;
+import java.util.Collection;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -24,15 +35,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * An immutable representation of a {@link ParameterContract}.
@@ -81,8 +83,9 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
     @XmlElement(name = Elements.PARAMETER_TYPE, required = true)
     private final ParameterType parameterType;
 
+    @XmlJavaTypeAdapter(EvaluationOperator.Adapter.class)
     @XmlElement(name = Elements.EVALUATION_OPERATOR, required = false)
-    private final EvaluationOperator evaluationOperator;
+    private final String evaluationOperator;
 
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
@@ -118,7 +121,8 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         value = builder.getValue();
         description = builder.getDescription();
         parameterType = builder.parameterType.build();
-        evaluationOperator = builder.getEvaluationOperator();
+        EvaluationOperator evaluationOperatorEnum = builder.getEvaluationOperator();
+        evaluationOperator = evaluationOperatorEnum == null ? null : evaluationOperatorEnum.getCode(); 
         versionNumber = builder.getVersionNumber();
         objectId = builder.getObjectId();
     }
@@ -160,7 +164,7 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
 
     @Override
     public EvaluationOperator getEvaluationOperator() {
-        return evaluationOperator;
+        return EvaluationOperator.fromCode(evaluationOperator);
     }
 
     @Override

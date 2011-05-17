@@ -17,6 +17,7 @@ package org.kuali.rice.core.util.jaxb;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.mo.common.Coded;
 
 /**
@@ -42,47 +43,48 @@ import org.kuali.rice.core.api.mo.common.Coded;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public abstract class EnumStringAdapter<T extends Enum<T>> extends XmlAdapter<String, Enum<?>> {	
+public abstract class EnumStringAdapter<T extends Enum<T>> extends XmlAdapter<String, String> {	
 		
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(EnumStringAdapter.class);
 	
 	@Override
-	public String marshal(Enum<?> enumeration) throws Exception {
-		if (enumeration == null) {
-			return null;
-		}
-		if (enumeration instanceof Coded) {
-			return ((Coded)enumeration).getCode();
-		}
-		return enumeration.toString();
+	public String marshal(String value) throws Exception {
+		return processValue(value, false);
 	}
 
 	@Override
-	public Enum<?> unmarshal(String value) throws Exception {
+	public String unmarshal(String value) throws Exception {
+		return processValue(value, true);
+	}
+	
+	private String processValue(String value, boolean unmarshal) throws Exception {
 		if (value == null) {
 			return null;
 		}
 		Class<T> enumClass = getEnumClass();
-		if (!enumClass.isEnum()) {
-			throw new IllegalStateException("The enumClass configured on this adapter is not an Enum: " + enumClass);
-		}
 		if (Coded.class.isAssignableFrom(enumClass)) {
-			Enum<T>[] enumConstants = enumClass.getEnumConstants();
-			for (Enum<T> enumConstant : enumConstants) {
+			T[] enumConstants = enumClass.getEnumConstants();
+			for (T enumConstant : enumConstants) {
 				Coded codedEnumConstant = (Coded)enumConstant;
 				if (codedEnumConstant.getCode().equals(value)) {
-					return enumConstant;
+					// value is good, return value
+					return value;
 				}
 			}
 		} else {
 			try {
-				return Enum.valueOf(enumClass, value);
+				Enum.valueOf(enumClass, value);
+				return value;
 			} catch (IllegalArgumentException e) {
 				// failed to unmarshal, will fall through to null return below...
 			}
 		}
-		LOG.warn("Failed to unmarshal enumeration value '" + value + "' for enum type: " + enumClass);
-		return null;
+		if (unmarshal) {
+			LOG.warn("Failed to unmarshal enumeration value '" + value + "' for enum type: " + enumClass.getName());
+			return null;
+		} else {
+			throw new RiceIllegalArgumentException("Failed to marshal enumeration value '" + value + "' for enum type: " + getEnumClass().getName());
+		}
 	}
 	
 	protected abstract Class<T> getEnumClass();

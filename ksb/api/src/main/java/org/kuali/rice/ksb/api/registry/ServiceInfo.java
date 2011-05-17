@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
@@ -66,8 +67,9 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
     @XmlElement(name = Elements.SERVICE_VERSION, required = true)
     private final String serviceVersion;
     
+    @XmlJavaTypeAdapter(ServiceEndpointStatus.Adapter.class)
     @XmlElement(name = Elements.STATUS, required = true)
-    private final ServiceEndpointStatus status;
+    private final String status;
     
     @XmlElement(name = Elements.SERVICE_DESCRIPTOR_ID, required = false)
     private final String serviceDescriptorId;
@@ -110,7 +112,8 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
         this.serverIpAddress = builder.getServerIpAddress();
         this.type = builder.getType();
         this.serviceVersion = builder.getServiceVersion();
-        this.status = builder.getStatus();
+        ServiceEndpointStatus builderStatus = builder.getStatus();
+        this.status = builderStatus == null ? null : builderStatus.getCode();
         this.serviceDescriptorId = builder.getServiceDescriptorId();
         this.checksum = builder.getChecksum();
         this.versionNumber = builder.getVersionNumber();
@@ -158,7 +161,7 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
     
     @Override
     public ServiceEndpointStatus getStatus() {
-    	return this.status;
+    	return ServiceEndpointStatus.fromCode(this.status);
     }
 
     @Override

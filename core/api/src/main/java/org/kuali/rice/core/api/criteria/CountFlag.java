@@ -1,8 +1,6 @@
 package org.kuali.rice.core.api.criteria;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlType;
+import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
 
 /**
  * Defines possible directives for how a query is requested to produce count values in it's results.
@@ -10,25 +8,23 @@ import javax.xml.bind.annotation.XmlType;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-@XmlType(name = "CountFlagType")
-@XmlEnum(String.class)
 public enum CountFlag {
 
 	/**
 	 * Indicates that no row count should be returned with the query results.
 	 */
-	@XmlEnumValue(value="NONE") NONE,
+	NONE,
 	
 	/**
 	 * Indicates that the row count of the query should be returned with the query results.
 	 */
-	@XmlEnumValue(value="INCLUDE") INCLUDE,
+	INCLUDE,
 	
 	/**
 	 * Indicates that *only* the row count should be returned with the query results.  The
 	 * result should not include the actual rows returned from the query.
 	 */
-	@XmlEnumValue(value="ONLY") ONLY;
+	ONLY;
 
 	/**
 	 * Returns the value of the count flag.
@@ -37,6 +33,14 @@ public enum CountFlag {
 	 */
 	public String getFlag() {
 		return toString();
+	}
+	
+	static final class Adapter extends EnumStringAdapter<CountFlag> {
+		
+		protected Class<CountFlag> getEnumClass() {
+			return CountFlag.class;
+		}
+		
 	}
 	
 }

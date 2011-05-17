@@ -4,36 +4,34 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlType;
+import org.kuali.rice.core.api.mo.common.Coded;
+import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
 
-@XmlType(name = "LogicalOperatorType")
-@XmlEnum(String.class)
-public enum LogicalOperator {
+public enum LogicalOperator implements Coded {
 	
-	@XmlEnumValue(value="&") AND("&"),
-	@XmlEnumValue(value="|") OR("|");
+	AND("&"),
+	OR("|");
 
-	private final String opCode;
+	private final String code;
 	
-	private LogicalOperator(String op){
-		this.opCode = op;
+	private LogicalOperator(String code){
+		this.code = code;
 	}
 	
-	public String opCode(){
-		return opCode;
+	@Override
+	public String getCode(){
+		return code;
 	}
 	
 	public static final Collection<String> OP_CODES =
-		Collections.unmodifiableCollection(Arrays.asList(AND.opCode, OR.opCode));
+		Collections.unmodifiableCollection(Arrays.asList(AND.code, OR.code));
 		
 	public static LogicalOperator fromCode(String code) {
 		if (code == null) {
 			return null;
 		}
 		for (LogicalOperator logicalOperator : values()) {
-			if (logicalOperator.opCode.equals(code)) {
+			if (logicalOperator.code.equals(code)) {
 				return logicalOperator;
 			}
 		}
@@ -42,6 +40,15 @@ public enum LogicalOperator {
 	
 	@Override
 	public String toString(){
-		return opCode;
+		return code;
 	}
+	
+	static final class Adapter extends EnumStringAdapter<LogicalOperator> {
+		
+		protected Class<LogicalOperator> getEnumClass() {
+			return LogicalOperator.class;
+		}
+		
+	}
+
 }

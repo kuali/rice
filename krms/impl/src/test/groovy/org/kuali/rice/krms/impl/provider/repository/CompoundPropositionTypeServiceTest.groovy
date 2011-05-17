@@ -110,7 +110,7 @@ class CompoundPropositionTypeServiceTest {
 			String description = CompoundPropositionTypeServiceTest.DESCRIPTION;
 			String typeId = CompoundPropositionTypeServiceTest.TYPE_ID;
 			String propositionTypeCode = PropositionType.COMPOUND.getCode();
-			String compoundOpCode = logicalOperator.opCode();
+			String compoundOpCode = logicalOperator.getCode();
 			List parameters = [];
 			List compoundComponents = [
 				CompoundPropositionTypeServiceTest.createTrueProp(),

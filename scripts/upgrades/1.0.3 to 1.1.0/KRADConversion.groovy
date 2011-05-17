@@ -33,7 +33,7 @@ if(objectName == null) {
 }
     
 Map<String, String> dDPropertyMapping = ["businessObjectClass":"objectClass", "BusinessObjectEntry":"DataObjectEntry"]
-List<String> removePropertyList = ["inquiryDefinition","lookupDefinition","control"]
+List<String> removePropertyList = ["inquiryDefinition","lookupDefinition"]
 
 def beanSchema = "http://www.springframework.org/schema/p"
 def dDRoot
@@ -103,6 +103,20 @@ if(dDRoot != null) {
                     propertyNode.replaceNode({})                        
                 }
             }
+            
+            //Additional logic for Control field 
+            def controlProperty = beanNode.property.find{ it.@name == "control" }
+            def controlFieldProperty = beanNode.property.find{ it.@name == "controlField" }
+            if(controlProperty != null && controlFieldProperty != null) {
+                controlProperty.replaceNode({})
+            } else if(controlProperty != null) {
+                controlProperty.@name = controlProperty.@name + "Field"
+                (0..<controlProperty.bean.size()).each {
+                    def beanProperty = controlProperty.bean[it]
+                    beanProperty.@parent = beanProperty.@parent.replace("Definition","")
+                }                
+            }                       
+            
             if (isBusinesObjectEntry) {
                 def titleAttributeBeanNode = beanNode.property.find{ it.@name == "titleAttribute" }
                 if(titleAttributeBeanNode != null) {
@@ -490,7 +504,8 @@ if(dDRoot != null) {
     def fileOut 
     try {
         fileOut= new File(outputFilePath+objectName+".xml")
-        fileOut.write(writer.toString()) 
+        def result = writer.toString()                
+        fileOut.write(result) 
     } catch(java.io.FileNotFoundException ex) {
         errorText()
     }               

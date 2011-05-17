@@ -34,6 +34,8 @@ import java.util.Set;
 })
 public final class Attributes implements Serializable {
 
+    private static final Attributes EMPTY = new Attributes(Collections.<String, String>emptyMap());
+
     @XmlElement(name = Elements.KEY_VALUES, required = true)
     @XmlJavaTypeAdapter(value = ImmutableKeyValue.ImmutableKeyValueMapAdapter.class)
     private final Map<String, String> keyValues;
@@ -61,7 +63,7 @@ public final class Attributes implements Serializable {
      * @return Attributes
      */
     public static Attributes empty() {
-        return new Attributes(Collections.<String, String>emptyMap());
+        return EMPTY;
     }
 
      /**

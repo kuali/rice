@@ -4,11 +4,11 @@
     <output url="file://$MODULE_DIR$/../../../edl/framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../edl/framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../edl/framework">
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../edl/framework/target/classes" />
@@ -20,8 +20,11 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
+    <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="module" module-name="rice-core-api" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -39,7 +42,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" level="project" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
@@ -91,6 +94,8 @@
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-servlet:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-template:2.2.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.jtidy:jtidyservlet:r8-m1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.jtidy:jtidy:r938" level="project" />
   </component>
 </module>
 

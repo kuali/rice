@@ -12,12 +12,13 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../api/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../api/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../api/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
+    <orderEntry type="module" module-name="rice-core-api" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -35,7 +36,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
   </component>
 </module>

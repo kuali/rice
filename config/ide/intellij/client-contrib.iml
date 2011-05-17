@@ -5,8 +5,8 @@
     <output-test url="file://$MODULE_DIR$/../../../client-contrib/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../client-contrib">
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/target/generated-sources/annotations" isTestSource="false" />
@@ -14,11 +14,15 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-core-api" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -36,9 +40,9 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" level="project" />
     <orderEntry type="module" module-name="rice-core-framework" />
-    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" level="project" />
@@ -89,6 +93,8 @@
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-servlet:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-template:2.2.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.jtidy:jtidyservlet:r8-m1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.jtidy:jtidy:r938" level="project" />
   </component>
 </module>
 

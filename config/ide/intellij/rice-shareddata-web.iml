@@ -10,14 +10,15 @@
     <output-test url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web">
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -25,7 +26,7 @@
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
-    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />

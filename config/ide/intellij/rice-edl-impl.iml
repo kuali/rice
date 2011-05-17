@@ -17,11 +17,11 @@
     <output url="file://$MODULE_DIR$/../../../edl/impl/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../edl/impl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../edl/impl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/classes" />
@@ -32,8 +32,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-framework:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-core-api" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -51,11 +55,11 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" level="project" />
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kim-api" />
-    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
@@ -107,7 +111,8 @@
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-servlet:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-template:2.2.2" level="project" />
-    <orderEntry type="module" module-name="rice-kim-web" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.jtidy:jtidyservlet:r8-m1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.jtidy:jtidy:r938" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" />
     <orderEntry type="module" module-name="rice-ksb-framework" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
@@ -136,12 +141,8 @@
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-common:2.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jettison:jettison:1.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-security:2.3.4" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.ws.security:wss4j:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.ws.security:wss4j:1.5.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.santuario:xmlsec:1.4.4" level="project" />
-    <orderEntry type="library" name="Maven: org.opensaml:opensaml:2.4.1" level="project" />
-    <orderEntry type="library" name="Maven: org.opensaml:openws:1.4.1" level="project" />
-    <orderEntry type="library" name="Maven: org.opensaml:xmltooling:1.3.1" level="project" />
-    <orderEntry type="library" name="Maven: joda-time:joda-time:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: xalan:xalan:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: xalan:serializer:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-databinding-aegis:2.3.4" level="project" />
@@ -173,7 +174,7 @@
     <orderEntry type="module" module-name="rice-shareddata-impl" />
     <orderEntry type="module" module-name="rice-shareddata-web" />
     <orderEntry type="module" module-name="rice-ksb-api" />
-    <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-framework:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-edl-framework" />
   </component>
 </module>
 

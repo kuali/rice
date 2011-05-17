@@ -4,10 +4,10 @@
     <output url="file://$MODULE_DIR$/../../../krms/framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../krms/framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../krms/framework">
+      <sourceFolder url="file://$MODULE_DIR$/../../../krms/framework/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/framework/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/framework/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../krms/framework/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/framework/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/framework/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/framework/target/generated-sources/annotations" isTestSource="false" />
@@ -20,9 +20,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-krms-api" />
     <orderEntry type="module" module-name="rice-core-api" />
-    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -40,8 +43,8 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
-    <orderEntry type="library" name="Maven: org.kuali.rice:rice-api:2.0.0-m4-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" level="project" />
+    <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-shareddata-api" />

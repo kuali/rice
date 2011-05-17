@@ -66,7 +66,7 @@
                         </goals>
                     </execution>
 
-                    <!--<execution>
+                    <execution>
                         <id>permissionService-wsdl</id>
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>
@@ -120,7 +120,7 @@
                         <goals>
                             <goal>java2ws</goal>
                         </goals>
-                    </execution> -->
+                    </execution>
 
                     <execution>
                         <id>identityManagementService-wsdl</id>

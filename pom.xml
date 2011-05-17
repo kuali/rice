@@ -32,8 +32,10 @@
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
     both Kuali and non-Kuali applications to be built in an agile fashion, such that developers will be able to
-    react to end-user business requirements in an efficient and productive manner, so that they can produce high
-    quality business applications.
+    react to
+    end-user business requirements in an efficient and productive manner, so that they can produce high
+    quality business
+    applications.
   </description>
   <url>http://${kuali.site.hostname}/rice/${project.version}</url>
 
@@ -1850,36 +1852,27 @@
     <profile>
       <id>kuali-release</id>
       <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-assembly-plugin</artifactId>
-              <version>${assembly.plugin.version}</version>
-            </plugin>
-          </plugins>
-        </pluginManagement>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
             <configuration>
-              <descriptors>
-                <!-- pack all source so it can be referrred to in child modules -->
-                <descriptor>project.xml</descriptor>
-              </descriptors>
+              <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
             </configuration>
             <executions>
               <execution>
-                <id>make-project-source-assembly</id>
+                <id>create-src-distribution</id>
                 <phase>package</phase>
                 <goals>
                   <goal>single</goal>
                 </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assemble/src.xml</descriptor>
+                  </descriptors>
+                </configuration>
               </execution>
             </executions>
-            <!-- do NOT do this custom packaging for sub modules.  This is a one time thing -->
-            <inherited>false</inherited>
           </plugin>
         </plugins>
       </build>

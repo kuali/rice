@@ -17,7 +17,7 @@ package org.kuali.rice.core.util.jaxb;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.kuali.rice.core.api.mo.Coded;
+import org.kuali.rice.core.api.mo.common.Coded;
 
 /**
  * An abstract base class for use when marshaling enumeration values to and from XML.

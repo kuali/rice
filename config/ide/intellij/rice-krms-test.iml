@@ -12,9 +12,11 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/test/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/test/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/test/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../krms/test/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/test/src/test/resources/META-INF" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krms/test/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krms/test/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/test/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/test/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/test/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/test/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/test/target/test-classes" />

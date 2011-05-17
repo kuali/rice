@@ -21,9 +21,11 @@
     <content url="file://$MODULE_DIR$/../../../test/kns">
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/src/test/resources/META-INF" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/kns/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kns/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kns/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kns/target/test-classes" />

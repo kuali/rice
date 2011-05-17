@@ -11,9 +11,11 @@
     <content url="file://$MODULE_DIR$/../../../test/kim">
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kim/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kim/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/kim/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kim/src/test/resources/META-INF" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/kim/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/kim/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kim/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/kim/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kim/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kim/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kim/target/test-classes" />

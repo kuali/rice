@@ -17,8 +17,8 @@
     <output-test url="file://$MODULE_DIR$/../../../standalone/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../standalone">
       <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../standalone/target" />
     </content>

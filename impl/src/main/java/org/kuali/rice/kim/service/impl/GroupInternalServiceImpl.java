@@ -67,23 +67,6 @@ public class GroupInternalServiceImpl implements GroupInternalService {
         return group;
     }
 
-    public Group saveWorkgroup(Group group) {
-    	GroupService ims = getGroupService();
-    	List<String> oldIds = ims.getMemberPrincipalIds(group.getId());
-        GroupBo groupBo = GroupBo.from(group);
-        //add members
-        Collection<GroupMember> members = KimApiServiceLocator.getGroupService().getMembersOfGroup(group.getId());
-        if (!CollectionUtils.isEmpty(members)) {
-            for (GroupMember member : members) {
-                groupBo.getMembers().add(GroupMemberBo.from(member));
-            }
-        }
-        getBusinessObjectService().save(groupBo);
-        List<String> newIds = ims.getMemberPrincipalIds(group.getId());
-        updateForWorkgroupChange(group.getId(), oldIds, newIds);
-        return group;
-    }
-
     public void updateForWorkgroupChange(String groupId,
     		List<String> oldPrincipalIds, List<String> newPrincipalIds) {
         MembersDiff membersDiff = getMembersDiff(oldPrincipalIds, newPrincipalIds);

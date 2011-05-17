@@ -11,9 +11,11 @@
     <content url="file://$MODULE_DIR$/../../../test/kcb">
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/src/test/resources/META-INF" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/test-classes" />

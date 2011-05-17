@@ -4,11 +4,11 @@
     <output url="file://$MODULE_DIR$/../../../test/edl/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../test/edl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../test/edl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/edl/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/edl/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/edl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/edl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/edl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/edl/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/edl/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/edl/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/edl/target" />
     </content>

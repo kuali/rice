@@ -83,7 +83,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
 			return "roleId:member.memberId,roleName:member.memberName";
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
-			return "groupId:member.memberId,groupName:member.memberName,namespaceCode:member.memberNamespaceCode";
+			return "id:member.memberId,name:member.memberName,namespaceCode:member.memberNamespaceCode";
 		return "";
 	}
 

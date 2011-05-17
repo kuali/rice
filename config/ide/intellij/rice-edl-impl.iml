@@ -5,7 +5,9 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="" />
-        <datasource-mapping />
+        <datasource-mapping>
+          <factory-entry name="edl-unit" />
+        </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/../../../edl/impl/src/main/resources/META-INF/edl-persistence.xml" />
       </configuration>
     </facet>
@@ -17,11 +19,11 @@
     <output url="file://$MODULE_DIR$/../../../edl/impl/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../edl/impl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../edl/impl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/classes" />

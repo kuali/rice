@@ -11,8 +11,9 @@
     <content url="file://$MODULE_DIR$/../../../test/impl">
       <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/test/resources/META-INF" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/impl/target" />
     </content>
     <orderEntry type="inheritedJdk" />

@@ -2572,7 +2572,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		GroupBo kimGroup = new GroupBo();
 		Map<String, String> criteria = new HashMap<String, String>();
 		String groupId = identityManagementGroupDocument.getGroupId();
-		//criteria.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupId);
+		criteria.put("groupId", groupId);
 		GroupBo origGroup = (GroupBo)getBusinessObjectService().findBySinglePrimaryKey(GroupBo.class, groupId);
 		List<GroupMemberBo> origGroupMembers = new ArrayList<GroupMemberBo>();
 		if (ObjectUtils.isNull(origGroup)) {
@@ -2660,8 +2660,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							//TODO: verify if you want to add  && newGroupMember.isActive() condition to if...
 							newGroupMember.setMemberId(origGroupMemberImpl.getMemberId());
 						}
-						if(origGroupMemberImpl.getMemberId()!=null && StringUtils.equals(origGroupMemberImpl.getMemberId(), newGroupMember.getMemberId())){
-							newGroupMember.setVersionNumber(origGroupMemberImpl.getVersionNumber());
+                        if(StringUtils.equals(origGroupMemberImpl.getGroupId(), newGroupMember.getGroupId()) &&
+								StringUtils.equals(origGroupMemberImpl.getMemberId(), newGroupMember.getMemberId()) &&
+								origGroupMemberImpl.isActive()){
+							newGroupMember.setId(origGroupMemberImpl.getId());
+                            newGroupMember.setVersionNumber(origGroupMemberImpl.getVersionNumber());
 						}
 					}
 				}

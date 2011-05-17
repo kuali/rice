@@ -526,7 +526,7 @@
     <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="id" target-field-ref="roleMemberId"/>
+      <inverse-foreignkey field-ref="assignedToId" target-field-ref="roleMemberId"/>
     </collection-descriptor>
   </class-descriptor>
 
@@ -572,7 +572,7 @@
     <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="id" target-field-ref="delegationMemberId"/>
+      <inverse-foreignkey field-ref="assignedToId" target-field-ref="delegationMemberId"/>
     </collection-descriptor>
   </class-descriptor>
 
@@ -606,7 +606,7 @@
       <foreignkey field-ref="templateId" />
     </reference-descriptor>
     <collection-descriptor name="detailObjects" element-class-ref="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="id" target-field-ref="permissionId" />
+      <inverse-foreignkey field-ref="assignedToId" target-field-ref="permissionId" />
     </collection-descriptor>
 	<collection-descriptor name="rolePermissions" element-class-ref="org.kuali.rice.kim.bo.role.impl.RolePermissionImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="permissionId" />

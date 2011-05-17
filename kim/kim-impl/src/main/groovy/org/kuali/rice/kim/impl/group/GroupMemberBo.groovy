@@ -26,9 +26,13 @@ import org.kuali.rice.kim.api.group.GroupMemberContract
 import org.kuali.rice.kim.impl.membership.AbstractMember
 import org.kuali.rice.kim.api.group.GroupMember
 import javax.persistence.GeneratedValue
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
 @Entity
 @Table(name="KRIM_GRP_MBR_T")
+@EqualsAndHashCode
+@ToString
 public class GroupMemberBo extends AbstractMember implements GroupMemberContract {
     private static final long serialVersionUID = 1L;
 
@@ -95,6 +99,5 @@ public class GroupMemberBo extends AbstractMember implements GroupMemberContract
 
         }
     }*/
-
 
 }

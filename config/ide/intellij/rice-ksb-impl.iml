@@ -4,11 +4,11 @@
     <output url="file://$MODULE_DIR$/../../../ksb/impl/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../ksb/impl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../ksb/impl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/impl/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/impl/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/impl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/impl/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/impl/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/impl/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ksb/impl/target" />
     </content>

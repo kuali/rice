@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
 
-// TODO review statuses and annotate for JAXB
 @XmlType(name = "EvaluationOperatorType")
 @XmlJavaTypeAdapter(ServiceEndpointStatus.Adapter.class)
 public enum ServiceEndpointStatus implements Coded {

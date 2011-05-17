@@ -1,85 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
-  <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-    <listEntry value="/rice-internal-test-tools/src/main/java/org/kuali/rice/test/launch/JettyLauncher.java"/>
-  </listAttribute>
-  <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-    <listEntry value="1"/>
-  </listAttribute>
-  <booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
-  <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
-    <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
-    <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
-  </listAttribute>
-  <listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6&quot; path=&quot;1&quot; type=&quot;4&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-internal-test-tools&quot; type=&quot;1&quot;/&gt;&#10;"/>
-
-    <!-- New Entries -->
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/edl/framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/edl/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/kim/kim-api/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/api/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/core/api/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/core/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/krad/krad-app-framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/krad/krad-web-framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/development-tools/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/sampleapp/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/web/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/kim/kim-impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/standalone/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/core/framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/core/web/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/krms/api/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/krms/framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/krms/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/shareddata/rice-shareddata-framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/shareddata/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/shareddata/rice-shareddata-web/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
-
-    
-    <!-- Converted -->
-    <!-- 
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-internal-test-tools&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-edl-framework&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-edl-impl&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-kim-api&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-api&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-core-api&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-core-impl&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-development-tools&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-sampleapp&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-kim-impl&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-standalone&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-core-framework&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-core-web&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-krms-api&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-krms-framework&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-krms-impl&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-shareddata-framework&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-shareddata-impl&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-shareddata-web&quot; type=&quot;1&quot;/&gt;&#10;"/>
- -->
-    <!-- ???? -->
-    <!-- 
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-edl&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-edl-api&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-edl-remote&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-edl-web&quot; type=&quot;1&quot;/&gt;&#10;"/>
- -->
-
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;M2_REPO/mysql/mysql-connector-java/5.1.15/mysql-connector-java-5.1.15.jar&quot; path=&quot;3&quot; type=&quot;3&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;M2_REPO/com/oracle/ojdbc14/10.2.0.3.0/ojdbc14-10.2.0.3.0.jar&quot; path=&quot;3&quot; type=&quot;3&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER&quot; path=&quot;3&quot; type=&quot;4&quot;/&gt;&#10;"/>
-  </listAttribute>
-  <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.classpathProvider"/>
-  <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
-  <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.kuali.rice.test.launch.JettyLauncher"/>
-  <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="8080 &quot;/kr-dev&quot; &quot;/web/src/main/webapp&quot;"/>
-  <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="rice-internal-test-tools"/>
-  <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.sourcepathProvider"/>
-  <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx256m -XX:MaxPermSize=128m -Dweb.bootstrap.spring.file=classpath:SampleAppBeans.xml"/>
-  <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc}"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/rice-internal-test-tools/src/main/java/org/kuali/rice/test/launch/JettyLauncher.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+</listAttribute>
+<listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6&quot; path=&quot;1&quot; type=&quot;4&quot;/&gt;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-internal-test-tools&quot; type=&quot;1&quot;/&gt;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/edl/framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/edl/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/kim/kim-api/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/api/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/core/api/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/core/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/krad/krad-app-framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/krad/krad-web-framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/development-tools/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/sampleapp/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/web/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/kim/kim-impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/standalone/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/core/framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/core/web/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/krms/api/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/krms/framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/krms/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/shareddata/rice-shareddata-framework/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/shareddata/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/shareddata/rice-shareddata-web/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;M2_REPO/mysql/mysql-connector-java/5.1.15/mysql-connector-java-5.1.15.jar&quot; path=&quot;3&quot; type=&quot;3&quot;/&gt;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;M2_REPO/com/oracle/ojdbc14/10.2.0.3.0/ojdbc14-10.2.0.3.0.jar&quot; path=&quot;3&quot; type=&quot;3&quot;/&gt;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER&quot; path=&quot;3&quot; type=&quot;4&quot;/&gt;&#10;"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.classpathProvider"/>
+<booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.kuali.rice.test.launch.JettyLauncher"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="8080 &quot;/kr-dev&quot; &quot;/web/src/main/webapp&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="rice-internal-test-tools"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.sourcepathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx256m -XX:MaxPermSize=128m -Dweb.bootstrap.spring.file=classpath:SampleAppBeans.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc}"/>
 </launchConfiguration>

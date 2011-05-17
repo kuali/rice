@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.api.mo;
+package org.kuali.rice.core.api.mo.common;
 
 /**
  * Represents an object which has a code value.

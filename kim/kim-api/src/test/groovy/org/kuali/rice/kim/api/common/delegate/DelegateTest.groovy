@@ -15,7 +15,7 @@
 
 
 
-package org.kuali.rice.kim.api.role
+package org.kuali.rice.kim.api.common.delegate
 
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller

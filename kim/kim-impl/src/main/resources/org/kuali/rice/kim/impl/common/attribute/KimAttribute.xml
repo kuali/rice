@@ -17,7 +17,7 @@
 
   <bean id="KimAttribute" parent="KimAttribute-parentBean"/>
 
-  <bean id="KimAttribute-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.attribute.KimAttributeBo" p:titleAttribute="kimAttributeId" p:objectLabel="Kim Attribute Definition">
+  <bean id="KimAttribute-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" p:titleAttribute="kimAttributeId" p:objectLabel="Kim Attribute Definition">
     <property name="attributes">
       <list>
         <ref bean="KimAttribute-kimAttributeId"/>

@@ -154,7 +154,7 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
         }
 
         /**
-         * creates a KimAttributeData from an existing {@link org.kuali.rice.kim.api.permission.KimAttributeDataContract}.
+         * creates a KimAttributeData from an existing {@link org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract}.
          */
         public static Builder create(AssigneeContract contract) {
             final List<Delegate.Builder> builders = new ArrayList<Delegate.Builder>();

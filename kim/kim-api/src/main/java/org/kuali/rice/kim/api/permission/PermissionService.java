@@ -19,7 +19,7 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kim.api.template.Template;
+import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.util.KimConstants;

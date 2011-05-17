@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.impl.attribute
+package org.kuali.rice.kim.impl.common.attribute
 
 import javax.persistence.Column
 import javax.persistence.Id

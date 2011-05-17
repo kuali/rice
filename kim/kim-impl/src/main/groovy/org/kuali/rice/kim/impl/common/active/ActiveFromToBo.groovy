@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.impl.active
+package org.kuali.rice.kim.impl.common.active
 
 import java.sql.Timestamp
 import javax.persistence.Column
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-public abstract class ActiveFromTo extends PersistableBusinessObjectBase {
+public abstract class ActiveFromToBo extends PersistableBusinessObjectBase {
     @Column(name = "ACTV_FRM_DT")
 	Timestamp activeFromDate
 

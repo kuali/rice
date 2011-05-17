@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.impl.attribute
+package org.kuali.rice.kim.impl.common.attribute
 
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.api.services.KimApiServiceLocator

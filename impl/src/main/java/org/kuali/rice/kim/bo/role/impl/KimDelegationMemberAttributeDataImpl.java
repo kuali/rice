@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.bo.role.impl;
 
 
-import org.kuali.rice.kim.impl.attribute.KimAttributeDataBo;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

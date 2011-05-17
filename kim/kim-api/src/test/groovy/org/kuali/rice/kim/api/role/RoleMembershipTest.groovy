@@ -17,12 +17,14 @@
 
 package org.kuali.rice.kim.api.role
 
-import org.junit.Assert
-import org.junit.Test
-import org.kuali.rice.core.util.AttributeSet
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
+import org.junit.Assert
+import org.junit.Test
+import org.kuali.rice.core.util.AttributeSet
+import org.kuali.rice.kim.api.common.delegate.Delegate
+import org.kuali.rice.kim.api.common.delegate.DelegateTest
 
 public class RoleMembershipTest {
 

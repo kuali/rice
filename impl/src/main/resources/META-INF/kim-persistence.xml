@@ -33,7 +33,7 @@
     <class>org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl</class>
     <class>org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl</class>
     <class>org.kuali.rice.kim.impl.type.KimTypeBo</class>
-    <class>org.kuali.rice.kim.impl.attribute.KimAttributeBo</class>
+    <class>org.kuali.rice.kim.impl.common.attribute.KimAttributeBo</class>
     <class>org.kuali.rice.kim.impl.type.KimTypeAttributeBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityImpl</class>
@@ -104,7 +104,7 @@
     <class>org.kuali.rice.kim.bo.impl.InactivatableFromToImpl</class>
     <class>org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl</class>
     <class>org.kuali.rice.kim.bo.reference.impl.KimCodeBase</class>
-    <class>org.kuali.rice.kim.impl.attribute.KimAttributeDataBo</class>
+    <class>org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentBoBase</class>
     <class>org.kuali.rice.kim.bo.ui.PersonDocumentBoDefaultBase</class>

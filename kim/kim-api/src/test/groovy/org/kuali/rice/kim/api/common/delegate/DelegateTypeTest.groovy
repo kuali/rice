@@ -15,13 +15,13 @@
 
 
 
-package org.kuali.rice.kim.api.role
+package org.kuali.rice.kim.api.common.delegate
 
 import javax.xml.bind.JAXBContext
+import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
-import javax.xml.bind.Marshaller
 
 class DelegateTypeTest {
 

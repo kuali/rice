@@ -52,5 +52,9 @@ public class SimpleConfig extends BaseConfig {
 		}
 		return this.baseProperties;
 	}
+
+    public String getProperty(String key) {
+        return getProperties().getProperty(key);
+    }
 	
 }

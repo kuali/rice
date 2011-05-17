@@ -92,7 +92,7 @@
                         <goals>
                             <goal>java2ws</goal>
                         </goals>
-                    </execution>-->
+                    </execution>
 
                     <execution>
                         <id>roleService-wsdl</id>
@@ -120,7 +120,7 @@
                         <goals>
                             <goal>java2ws</goal>
                         </goals>
-                    </execution>
+                    </execution> -->
 
                     <execution>
                         <id>identityManagementService-wsdl</id>

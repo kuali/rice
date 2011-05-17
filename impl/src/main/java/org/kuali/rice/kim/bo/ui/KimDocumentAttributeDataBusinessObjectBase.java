@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.impl.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;

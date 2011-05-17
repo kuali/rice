@@ -17,9 +17,10 @@
 package org.kuali.rice.kim.impl.membership
 
 import javax.persistence.Column
-import org.kuali.rice.kim.impl.active.ActiveFromTo
 
-public abstract class AbstractMember extends ActiveFromTo {
+import org.kuali.rice.kim.impl.common.active.ActiveFromToBo
+
+public abstract class AbstractMember extends ActiveFromToBo {
     @Column(name="MBR_ID")
 	String memberId;
 

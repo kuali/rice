@@ -18,7 +18,7 @@ package org.kuali.rice.kim.impl.type
 
 import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.api.type.KimTypeAttributeContract
-import org.kuali.rice.kim.impl.attribute.KimAttributeBo
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 class KimTypeAttributeBo extends PersistableBusinessObjectBase implements KimTypeAttributeContract {

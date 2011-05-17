@@ -143,7 +143,7 @@
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.impl.attribute.KimAttributeBo" table="KRIM_ATTR_DEFN_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" table="KRIM_ATTR_DEFN_T">
     <field-descriptor name="id" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="attributeName" column="NM" jdbc-type="VARCHAR" />
     <field-descriptor name="attributeLabel" column="LBL" jdbc-type="VARCHAR" />
@@ -162,7 +162,7 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none">
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none">
       <foreignkey field-ref="kimAttributeId" target-field-ref="id" />
     </reference-descriptor>
   </class-descriptor>
@@ -491,7 +491,7 @@
     <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
@@ -538,7 +538,7 @@
     <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
@@ -584,7 +584,7 @@
     <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
@@ -645,7 +645,7 @@
     <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
@@ -706,7 +706,7 @@
     <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
@@ -986,7 +986,7 @@
       <foreignkey field-ref="documentNumber" />
     </reference-descriptor>
     -->
-    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="kimAttrDefnId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
@@ -1120,7 +1120,7 @@
       <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
       <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
       <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
-      <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
         <foreignkey field-ref="kimAttrDefnId" target-field-ref="id"/>
       </reference-descriptor>
     </class-descriptor>
@@ -1170,7 +1170,7 @@
     <field-descriptor name="attrVal" column="ATTR_VAL" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="kimAttrDefnId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>

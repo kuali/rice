@@ -21,8 +21,8 @@ import javax.persistence.Entity
 import javax.persistence.Table
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
-import org.kuali.rice.kim.impl.attribute.AttributeData
-import org.kuali.rice.kim.impl.attribute.KimAttributeBo
+import org.kuali.rice.kim.impl.common.attribute.AttributeData
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo
 import org.kuali.rice.kim.impl.type.KimTypeBo
 
 @Entity

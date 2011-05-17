@@ -15,10 +15,12 @@
 
 package org.kuali.rice.kim.api.role;
 
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.common.delegate.Delegate;
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

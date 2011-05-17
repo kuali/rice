@@ -18,7 +18,7 @@ package org.kuali.rice.kim.impl.permission
 
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.kim.api.template.Template
+import org.kuali.rice.kim.api.common.template.Template
 
 class PermissionTemplateBoTest {
 	

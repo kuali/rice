@@ -19,7 +19,7 @@ package org.kuali.rice.kim.impl.responsibility;
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Table
-import org.kuali.rice.kim.impl.attribute.KimAttributeDataBo
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -24,6 +24,8 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.common.delegate.Delegate;
+import org.kuali.rice.kim.api.common.delegate.DelegateContract;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;

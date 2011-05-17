@@ -1,6 +1,22 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.kuali.rice.kim.api.common.delegate;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -15,75 +31,86 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+
 @XmlRootElement(name = DelegateType.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DelegateType.Constants.TYPE_NAME, propOrder = {
-    DelegateType.Elements.KIM_TYPE_ID,
-    DelegateType.Elements.DELEGATION_TYPE_CODE,
-    DelegateType.Elements.DELEGATION_ID,
-    DelegateType.Elements.ROLE_ID,
-    DelegateType.Elements.MEMBERS,
-    DelegateType.Elements.ACTIVE,
-    CoreConstants.CommonElements.FUTURE_ELEMENTS
+        DelegateType.Elements.ROLE_ID,
+        DelegateType.Elements.DELEGATION_ID,
+        DelegateType.Elements.DELEGATION_TYPE_CODE,
+        DelegateType.Elements.KIM_TYPE_ID,
+        DelegateType.Elements.MEMBERS,
+        DelegateType.Elements.ACTIVE,
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DelegateType
-    implements ModelObjectComplete, DelegateTypeContract
-{
+public class DelegateType implements DelegateTypeContract, ModelObjectComplete {
 
-    @XmlElement(name = Elements.KIM_TYPE_ID, required = false)
-    private final String kimTypeId;
-    @XmlElement(name = Elements.DELEGATION_TYPE_CODE, required = false)
-    private final String delegationTypeCode;
-    @XmlElement(name = Elements.DELEGATION_ID, required = false)
-    private final String delegationId;
-    @XmlElement(name = Elements.ROLE_ID, required = false)
+    private static final long serialVersionUID = 1L;
+
+    @XmlElement(name = Elements.ROLE_ID)
     private final String roleId;
-    @XmlElement(name = Elements.MEMBERS, required = false)
-    private final List<DelegateMember> members;
-    @XmlElement(name = Elements.ACTIVE, required = false)
+
+    @XmlElement(name = Elements.DELEGATION_ID)
+    private final String delegationId;
+
+    @XmlElement(name = Elements.DELEGATION_TYPE_CODE)
+    private final String delegationTypeCode;
+
+    @XmlElement(name = Elements.KIM_TYPE_ID)
+    private final String kimTypeId;
+
+    @XmlElement(name = Elements.MEMBERS)
+    private final List<Delegate> members;
+
+    @XmlElement(name = Elements.ACTIVE)
     private final boolean active;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
     /**
-     * Private constructor used only by JAXB.
-     * 
+     * Default constructor invoked by JAXB only
      */
+    @SuppressWarnings("unused")
     private DelegateType() {
-        this.kimTypeId = null;
-        this.delegationTypeCode = null;
-        this.delegationId = null;
-        this.roleId = null;
-        this.members = null;
-        this.active = false;
+        roleId = null;
+        delegationId = null;
+        delegationTypeCode = null;
+        kimTypeId = null;
+        members = null;
+        active = false;
     }
 
-    private DelegateType(Builder builder) {
-        this.kimTypeId = builder.getKimTypeId();
-        this.delegationTypeCode = builder.getDelegationTypeCode();
-        this.delegationId = builder.getDelegationId();
-        this.roleId = builder.getRoleId();
+    private DelegateType(Builder b) {
+        roleId = b.getRoleId();
+        delegationId = b.getDelegationId();
+        delegationTypeCode = b.getDelegationTypeCode();
+        kimTypeId = b.getKimTypeId();
+        active = b.isActive();
 
-        final List<DelegateMember> temp = new ArrayList<DelegateMember>();
-        if (!CollectionUtils.isEmpty(builder.getMembers())) {
-            for (DelegateMember.Builder delegate: builder.getMembers()) {
-                temp.add(delegate.build());
+        List<Delegate> delegateMembers = new ArrayList<Delegate>();
+        if (!CollectionUtils.isEmpty(b.getMembers())) {
+            for (Delegate.Builder delgateBuilder : b.getMembers()) {
+                delegateMembers.add(delgateBuilder.build());
             }
         }
-        this.members = Collections.unmodifiableList(temp);
-        this.active = builder.isActive();
+        members = delegateMembers;
     }
 
     @Override
     public String getKimTypeId() {
         return this.kimTypeId;
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.active;
     }
 
     @Override
@@ -102,13 +129,8 @@ public final class DelegateType
     }
 
     @Override
-    public List<DelegateMember> getMembers() {
-        return this.members;
-    }
-
-    @Override
-    public boolean isActive() {
-        return this.active;
+    public List<Delegate> getMembers() {
+        return Collections.unmodifiableList(this.members);
     }
 
     @Override
@@ -117,8 +139,8 @@ public final class DelegateType
     }
 
     @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
     }
 
     @Override
@@ -127,143 +149,146 @@ public final class DelegateType
     }
 
 
-    /**
-     * A builder which can be used to construct {@link DelegateType} instances.  Enforces the constraints of the {@link DelegateTypeContract}.
-     * 
-     */
-    public static final class Builder
-        implements Serializable, ModelBuilder, DelegateTypeContract
-    {
-
-        private String kimTypeId;
-        private String delegationTypeCode;
-        private String delegationId;
+    public static final class Builder implements DelegateTypeContract, ModelBuilder, ModelObjectComplete {
         private String roleId;
-        private List<DelegateMember.Builder> members;
+        private String delegationId;
+        private String delegationTypeCode;
+        private String kimTypeId;
+        private List<Delegate.Builder> members;
         private boolean active;
 
-        private Builder() {
-            // TODO modify this constructor as needed to pass any required values and invoke the appropriate 'setter' methods
-        }
+        public static Builder create(DelegateTypeContract dtc) {
+            Builder b = new Builder();
+            b.setRoleId(dtc.getRoleId());
+            b.setDelegationId(dtc.getDelegationId());
+            b.setDelegationTypeCode(dtc.getDelegationTypeCode());
+            b.setActive(dtc.isActive());
 
-        public static Builder create() {
-            // TODO modify as needed to pass any required values and add them to the signature of the 'create' method
-            return new Builder();
-        }
-
-        public static Builder create(DelegateTypeContract contract) {
-            if (contract == null) {
-                throw new IllegalArgumentException("contract was null");
+            ArrayList<Delegate.Builder> delegateBuilders = new ArrayList<Delegate.Builder>();
+            for (DelegateContract delegate : dtc.getMembers()) {
+                delegateBuilders.add(Delegate.Builder.create(delegate));
             }
-            // TODO if create() is modified to accept required parameters, this will need to be modified
-            Builder builder = create();
-            builder.setKimTypeId(contract.getKimTypeId());
-            builder.setDelegationTypeCode(contract.getDelegationTypeCode());
-            builder.setDelegationId(contract.getDelegationId());
-            builder.setRoleId(contract.getRoleId());
-            final List<DelegateMember.Builder> builders = new ArrayList<DelegateMember.Builder>();
-            for (DelegateMemberContract c : contract.getMembers()) {
-                builders.add(DelegateMember.Builder.create(c));
-            }
+            b.setMembers(delegateBuilders);
 
-            builder.setMembers(builders);
-            builder.setActive(contract.isActive());
-            return builder;
+            return b;
         }
 
+        public static Builder create(String roleId, String delegationId, String delegationTypeCode, List<Delegate.Builder> members) {
+            Builder b = new Builder();
+            b.setRoleId(roleId);
+            b.setDelegationId(delegationId);
+            b.setDelegationTypeCode(delegationTypeCode);
+            b.setMembers(members);
+            b.setActive(true);
+
+            return b;
+        }
+
+        @Override
         public DelegateType build() {
             return new DelegateType(this);
         }
 
         @Override
-        public String getKimTypeId() {
-            return this.kimTypeId;
+        public String getRoleId() {
+            return roleId;
         }
 
-        @Override
-        public String getDelegationTypeCode() {
-            return this.delegationTypeCode;
+        public void setRoleId(String roleId) {
+            if (StringUtils.isBlank(roleId)) {
+                throw new IllegalArgumentException("roleId cannot be null or blank");
+            }
+            this.roleId = roleId;
         }
 
         @Override
         public String getDelegationId() {
-            return this.delegationId;
+            return delegationId;
+        }
+
+        public void setDelegationId(String delegationId) {
+            if (StringUtils.isBlank(delegationId)) {
+                throw new IllegalArgumentException("delegationId cannot be null or blank");
+            }
+
+            this.delegationId = delegationId;
         }
 
         @Override
-        public String getRoleId() {
-            return this.roleId;
+        public String getDelegationTypeCode() {
+            return delegationTypeCode;
+        }
+
+        public void setDelegationTypeCode(String delegationTypeCode) {
+            if (StringUtils.isBlank(delegationTypeCode)) {
+                throw new IllegalArgumentException("delegationTypeCode cannot be null or blank");
+            }
+            this.delegationTypeCode = delegationTypeCode;
         }
 
         @Override
-        public List<DelegateMember.Builder> getMembers() {
-            return this.members;
+        public String getKimTypeId() {
+            return kimTypeId;
+        }
+
+        public void setKimTypeId(String kimTypeId) {
+            this.kimTypeId = kimTypeId;
+        }
+
+        @Override
+        public List<Delegate.Builder> getMembers() {
+            return members;
+        }
+
+        public void setMembers(List<Delegate.Builder> members) {
+            this.members = members;
         }
 
         @Override
         public boolean isActive() {
-            return this.active;
+            return active;
         }
 
-        public void setKimTypeId(String kimTypeId) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
-            this.kimTypeId = kimTypeId;
-        }
-
-        public void setDelegationTypeCode(String delegationTypeCode) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
-            this.delegationTypeCode = delegationTypeCode;
-        }
-
-        public void setDelegationId(String delegationId) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
-            this.delegationId = delegationId;
-        }
-
-        public void setRoleId(String roleId) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
-            this.roleId = roleId;
-        }
-
-        public void setMembers(List<DelegateMember.Builder> members) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
-            this.members = Collections.unmodifiableList(new ArrayList<DelegateMember.Builder>(members));
-        }
-
-        public void setActive(boolean active) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+        public void setActive(Boolean active) {
             this.active = active;
         }
 
+        @Override
+        public int hashCode() {
+            return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+        }
+
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this);
+        }
     }
 
+
+    /**
+     * A private class which exposes constants which define the XML element names to use
+     * when this object is marshalled to XML.
+     */
+    static class Elements {
+        static final String ROLE_ID = "roleId";
+        static final String DELEGATION_ID = "delegationId";
+        static final String DELEGATION_TYPE_CODE = "delegationTypeCode";
+        static final String KIM_TYPE_ID = "kimTypeId";
+        static final String MEMBERS = "members";
+        static final String ACTIVE = "active";
+    }
 
     /**
      * Defines some internal constants used on this class.
-     * 
      */
     static class Constants {
-
         final static String ROOT_ELEMENT_NAME = "delegateType";
         final static String TYPE_NAME = "DelegateTypeType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
-
-
-    /**
-     * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
-     * 
-     */
-    static class Elements {
-
-        final static String KIM_TYPE_ID = "kimTypeId";
-        final static String DELEGATION_TYPE_CODE = "delegationTypeCode";
-        final static String DELEGATION_ID = "delegationId";
-        final static String ROLE_ID = "roleId";
-        final static String MEMBERS = "members";
-        final static String ACTIVE = "active";
-
-    }
-
 }

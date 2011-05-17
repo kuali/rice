@@ -20,35 +20,18 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import org.hibernate.annotations.Type
-import org.kuali.rice.kim.api.template.Template
-import org.kuali.rice.kim.api.template.TemplateContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kim.api.common.template.Template
+import org.kuali.rice.kim.api.common.template.TemplateContract
+import org.kuali.rice.kim.impl.common.template.TemplateBo
 
 @Entity
 @Table(name="KRIM_PERM_TMPL_T")
-public class PermissionTemplateBo extends PersistableBusinessObjectBase implements TemplateContract {
+public class PermissionTemplateBo extends TemplateBo implements TemplateContract {
     private static final long serialVersionUID = 1L;
 
     @Id
 	@Column(name="PERM_TMPL_ID")
 	String id
-
-	@Column(name="NMSPC_CD")
-	String namespaceCode
-	
-    @Column(name="NM")
-	String name
-
-	@Column(name="DESC_TXT", length=400)
-	String description;
-
-	@Column(name="KIM_TYP_ID")
-	String kimTypeId
-	
-	@Column(name="ACTV_IND")
-	@Type(type="yes_no")
-	boolean active
 
     /**
      * Converts a mutable bo to its immutable counterpart

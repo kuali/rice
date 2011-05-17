@@ -17,6 +17,7 @@ package org.kuali.rice.kim.api.role;
 
 
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.common.delegate.DelegateContract;
 
 import java.util.List;
 

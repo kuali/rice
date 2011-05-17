@@ -16,13 +16,12 @@
 
 package org.kuali.rice.kim.impl.group
 
-import groovy.transform.EqualsAndHashCode
-import groovy.transform.ToString
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.Table
+
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Parameter
 import org.kuali.rice.kim.api.group.GroupMember
@@ -31,8 +30,6 @@ import org.kuali.rice.kim.impl.membership.AbstractMemberBo
 
 @Entity
 @Table(name="KRIM_GRP_MBR_T")
-@EqualsAndHashCode
-@ToString
 public class GroupMemberBo extends AbstractMemberBo implements GroupMemberContract {
     private static final long serialVersionUID = 1L;
 

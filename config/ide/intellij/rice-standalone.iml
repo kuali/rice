@@ -6,11 +6,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../standalone/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/../../../standalone/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../standalone/src/main/groovy" />
-          <root url="file://$MODULE_DIR$/../../../standalone/src/main/resources" />
-        </sourceRoots>
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
@@ -34,7 +29,7 @@
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
     <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-framework:2.0.0-m4-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.kuali.rice:rice-edl-impl:2.0.0-m4-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="rice-web (1)" />
+    <orderEntry type="module" module-name="rice-web (2)" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />

@@ -36,6 +36,11 @@
     quality business applications.
   </description>
   <url>http://${kuali.site.hostname}/rice/${project.version}</url>
+
+  <ciManagement>
+    <url>http://ci.rice.kuali.org</url>
+  </ciManagement>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm z</maven.build.timestamp.format>

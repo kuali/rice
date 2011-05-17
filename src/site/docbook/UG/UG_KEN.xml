@@ -2,6 +2,195 @@
 <chapter xml:id="UG_KEN" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KEN</title>
     <sect1>
-        <title>Introductory Topics</title>
+        <title>Channels</title>
+        <sect2>
+            <title>Notification Channel</title>
+            <para>A notification channel is a communication stream used as a means to organize
+                notifications by topic or audience. Users and groups can subscribe to a channel to
+                receive the notifications that interest them.</para>
+            <para>You can think of a notification channel as being like a television channel.
+                Producers put messages on a channel, like producers at television stations air
+                programs. Subscribers receive the messages, like television viewers watch the
+                programs. Unlike a television program, a message sent on a channel will wait for you
+                to read it; you do not need to be actively reading the channel to avoid missing a
+                message.</para>
+            <para>Each channel has the following attributes:<itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">ID</emphasis> – This numeric value is used in
+                            various tables to identify the channel. Each channel must have a unique
+                            ID, but there is no requirement for the IDs to be consecutive or to
+                            start with a particular value. </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Name</emphasis> – This is the text displayed to
+                            the user in the user interface. Each channel must have a unique name.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Description</emphasis> – This is text which
+                            further describes the channel. </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Subscription Flag</emphasis> – This flag
+                            identifies whether users can adjust their subscription status on the
+                            channel. If “Yes”, users can see the channel in the “Channel
+                            Subscriptions” form and change their subscription status. If “No”, a
+                            user’s subscription to the channel is managed by other means (for
+                            example, group membership). </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Producers</emphasis> – This is a list of users
+                            who are authorized to send notifications on the channel. </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Default Recipient List</emphasis> – This is a
+                            list of users and groups who will receive notifications sent to the
+                            channel, regardless of channel subscriptions or notification-specific
+                            recipients. </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Reviewers</emphasis> – This is a list of users
+                            who are responsible for approving notifications sent to the channel.
+                        </para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+        <sect2>
+            <title>Managing Channels</title>
+            <para>There is no user interface page to manage channels at this time.</para>
+        </sect2>
+        <sect2>
+            <title>Notification Channel Subscriptions</title>
+            <para>Subscribing to a notification channel causes all notifications sent on the channel
+                to be delivered to the subscriber, regardless of the list of users or groups
+                specified as recipients of the notification.</para>
+            <para>Subscriptions are divided into two categories:<itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">Subscribers</emphasis> – Users can subscribe to
+                            any channel where the Subscription Flag is set to “Yes”. </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Default Recipients</emphasis> – Each channel has
+                            a list of users and groups that receive all channel notifications.
+                        </para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+        <sect2>
+            <title>Managing Subscribers</title>
+            <para>Users can manage their subscriptions to channels where the Subscription Flag is
+                    <emphasis role="bold">Yes</emphasis> using the Channel Subscriptions form. On
+                the Main Menu, click the <emphasis role="bold">Channel Subscriptions</emphasis> link
+                in the <emphasis role="bold">Notification</emphasis> box:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/channel_subscriptions.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>This displays the list of channels that allow the user to manage their
+                subscriptions:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/channel_subscriptions2.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Click the <emphasis role="bold">Subscribe</emphasis> button for a channel to
+                subscribe to a channel for which you are not already subscribed. Click the <emphasis
+                    role="bold">Unsubscribe</emphasis> button to cancel your subscription to the
+                channel.</para>
+        </sect2>
     </sect1>
+<!-- Word Doc had 'Topic Coming Soon' for these two sections     
+    <sect1>
+        <title>Content and Content Types</title>
+    </sect1>
+    <sect1>
+        <title>Delivery</title>
+    </sect1>
+-->    
+    <sect1>
+        <title>Notification Priority</title>
+        <para>The priority of a notification indicates its importance. It has no effect on how KEN
+            processes the notification, but KEN can use it when delivering a message to determine
+            how to present the notification.</para>
+        <para>Each priority has these attributes:<itemizedlist>
+                <listitem>
+                    <para><emphasis role="bold">ID</emphasis> – This numeric value defines the order
+                        that KEN displays the priorities in the user interface. The lowest ID is
+                        displayed at the top of the selection field and is the default value. The
+                        remaining priorities are listed in the selection field in ascending ID
+                        order. Each priority must have a unique ID, but there is no requirement for
+                        the IDs to be consecutive or to start with a particular value. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Name</emphasis> – This is the text displayed to the
+                        user in the user interface. Each priority must have a unique name. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Description</emphasis> – This text further describes
+                        the priority. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Order</emphasis> – This numeric value determines the
+                        relative importance of the priority, with lower order numbers indicating a
+                        higher importance. Although not required, each priority should have a unique
+                        order value. There is no requirement for the order values to be consecutive
+                        or to start with a particular value. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Version</emphasis> – This numeric value lets you
+                        perform optimistic locking on the database row. It is initialized to one
+                        when the row is created and should be incremented each time the row is
+                        updated. </para>
+                </listitem>
+            </itemizedlist></para>
+        <para>By default, three priorities are defined in KEN:<table frame="none">
+                <title/>
+                <tgroup cols="4">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                    <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                    <colspec colname="c4" colnum="4" colwidth="1.0*"/>
+                    <thead>
+                        <row>
+                            <entry>ID</entry>
+                            <entry>Name</entry>
+                            <entry>Description</entry>
+                            <entry>Order</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <entry>1</entry>
+                            <entry>Normal</entry>
+                            <entry>Normal priority</entry>
+                            <entry>2</entry>
+                        </row>
+                        <row>
+                            <entry>2</entry>
+                            <entry>Low</entry>
+                            <entry>A low priority</entry>
+                            <entry>3</entry>
+                        </row>
+                        <row>
+                            <entry>3</entry>
+                            <entry>High</entry>
+                            <entry>A high priority</entry>
+                            <entry>1</entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table></para>
+    </sect1>
+    <sect1>
+        <title>Managing Priorities</title>
+            <para>There is no user interface page to manage priorities, so changes to the list of
+                priorities must be made by a programmer using SQL. See the KEN section of the
+                Technical Reference Guide for further information on this topic.</para>
+    </sect1>
+<!-- Word Doc had 'Topic Coming Soon' for these two sections    
+    <sect1>
+        <title>Senders and Recipients</title>
+    </sect1>
+-->    
 </chapter>

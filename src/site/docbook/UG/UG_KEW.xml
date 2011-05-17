@@ -1,7 +1,3033 @@
 <?xml version='1.0' encoding='UTF-8'?> 
-<chapter xml:id="UG_KEW" xmlns="http://docbook.org/ns/docbook" version="5.0">
+<chapter xml:id="UG_KEW" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KEW</title>
     <sect1>
-        <title>Introductory Topics</title>
+        <title>Kuali Enterprise Workflow: Overview</title>
+        <para>Kuali Enterprise Workflow, or KEW, is a module of Kuali Rice. KEW provides useful
+            features for automatically sending documents to people for approval or action using
+            workflows, managing the documents you receive through these workflows, searching for
+            documents, and checking information about documents that have been in a workflow. KEW is
+            built by and for higher education institutions and is especially designed for
+            automatically routing work across departmental boundaries.</para>
+        <para>Using KEW you can:<itemizedlist>
+                <listitem>
+                    <para>Automatically send (route) documents to individuals, groups, or roles
+                        (people who do a particular function) using workflows </para>
+                </listitem>
+                <listitem>
+                    <para>Create rules to automatically route documents based on the content of the
+                        document</para>
+                </listitem>
+                <listitem>
+                    <para>Change routing rules, and the documents affected by your changes are
+                        rerouted immediately </para>
+                </listitem>
+                <listitem>
+                    <para>Attach notes and other files to documents in workflows </para>
+                </listitem>
+                <listitem>
+                    <para>Build forms easily and use them in workflows </para>
+                </listitem>
+                <listitem>
+                    <para>Search for documents based on workflow information and some content in the
+                        document </para>
+                </listitem>
+                <listitem>
+                    <para>Check the history of documents and the people who took part in the
+                        workflow for each document </para>
+                </listitem>
+                <listitem>
+                    <para>Delegate items in a workflow to another person • Create and update groups
+                        for workflows </para>
+                </listitem>
+                <listitem>
+                    <para>Customize the email messages that are sent when someone needs to take an
+                        action for a workflow </para>
+                </listitem>
+                <listitem>
+                    <para>Choose whether or not you receive an email message when you have a new
+                        action item from a workflow </para>
+                </listitem>
+                <listitem>
+                    <para>Integrate KEW with the Kuali Service Bus (KSB) for routing documents
+                    </para>
+                </listitem>
+        </itemizedlist></para>
+        <para>Your institution may use some or all of these KEW features. Your institution may also
+            use some of these KEW features and combine them with other non-Kuali applications, such
+            as an application that manages users and/or groups, or an application that manages notes
+            or attachments.</para>
+        <para><emphasis role="bold">Information Sources</emphasis>: <link
+                xlink:href="http://kew.kuali.org/">http://kew.kuali.org/</link></para>
+        <sect2>
+            <title>What is KEW?</title>
+            <para>Kuali Enterprise Workflow provides a common routing and approval engine that
+                facilitates the automation of electronic processes across the enterprise. The
+                workflow product was built by and for higher education, so it is particularly well
+                suited to route mediated transactions across departmental boundaries. Workflow
+                facilitates distribution of processes out into the organizations to eliminate paper
+                processes and shadow feeder systems. In addition to facilitating routing and
+                approval, workflow can also automate process to process related flows. Each process
+                instance is assigned a unique identifier that is global across the organization.
+                Workflow keeps a permanent record of all processes and their participants.</para>
+        </sect2>
+        <sect2>
+            <title>KEW Features</title>
+            <itemizedlist>
+                <listitem>
+                    <para><emphasis role="bold">Flexible Workflow Engine</emphasis> - Support for
+                        sequential, parallel and dynamic routing paths. Extensible architecture
+                        allows for easy customization. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Content-Based Routing</emphasis> - Routing decisions
+                        can be made based on XML document content. XPath and other XML tools can be
+                        used to determine routing without writing code.</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Pluggable Components</emphasis> - Components can be
+                        deployed to the system at runtime using Plugins. Hot deployable class
+                        loading space provides a robust enterprise ready deployment environment for
+                        workflow code. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">People in the Routing Process</emphasis> - Documents
+                        can be routed to individuals, groups or roles. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Action List</emphasis> - Displays a list of each
+                        user's pending items which require his/her attention, such as documents
+                        which are awaiting approval. Users can configure whether they receive emails
+                        when the document enters their Action List. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Document Search and Route Log</emphasis> - Allows
+                        users to search for documents and see an audit trail of what has happened to
+                        the document during its life cycle. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Document Search Customization</emphasis> - Document
+                        based content can be associated with workflow data and searched on using our
+                        Document Search screens. Have a single place for all of your workflow
+                        document searches. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">EDocLite</emphasis> - EDocLite allows quick document
+                        building and integration with workflow using only XML. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Rules System</emphasis> - Provides a mechanism for
+                        defining business rules which govern how a document routes. Rule screens
+                        give functional users ability to maintain the business rules for their
+                        applications. Documents affected by rule changes are re-routed real time.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Notes and Attachments</emphasis> - Notes and
+                        Attachments can be attached to documents using KEW's notes and attachments
+                        services out of the box. Institution based attachment and note services can
+                        be used by overriding our default services. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Person Services</emphasis> - Maintains users of the
+                        system. You can use the Out-of-the-Box service or override with your
+                        institution's user services. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Group Services</emphasis> - Maintains groups of
+                        users. You can use the Out-of-the-Box service or override with your
+                        institution's group services. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Transactions</emphasis> - All transactions and
+                        documents route in a JTA transaction. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Web Service API</emphasis> - All system functions
+                        are available through Web Service APIs. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Security</emphasis> - Web service calls can be
+                        authorized using digital signatures. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Scalability</emphasis> - Can be clustered and run on
+                        multiple machines to allow for horizontal scalability. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Embeddable Engine</emphasis> - Workflow engine can
+                        be embedded in an application as well as ran as a standalone service.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Embeddable Web Application</emphasis> - Web portion
+                        can be embedded in an application as a Struts module. Run the Action List,
+                        Document Search, Route Log, Rules System and more from within your
+                        application with minimal effort. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Service Bus Integration</emphasis> - Integration
+                        with the Kuali Service Bus (KSB). Override any service from within workflow
+                        by having workflow grab the service from the bus or use workflow's pluggable
+                        components to deploy bus enabled services. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">JMX Support</emphasis> - A set of management
+                        functions are exposed through JMX. </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Spring Based Integration</emphasis> - KEW is
+                        designed with Spring based integration in mind. </para>
+                </listitem>
+            </itemizedlist>
+        </sect2>
+        <sect2>
+            <title>Why Use KEW?</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Provides a single action list for the constituents of the organization
+                            to see work that requires their attention</para>
+                    </listitem>
+                    <listitem>
+                        <para>Establishes a configurable way for service providers to define their
+                            processes, allowing them to alter those processes over time to reflect
+                            organizational change</para>
+                    </listitem>
+                    <listitem>
+                        <para>Promotes transparency of processes to the institution so that people
+                            can seamlessly see the status, actors, and the history of any
+                            institutional process which leverages KEW as its workflow engine</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </sect2>
+    </sect1>    
+    <sect1>
+        <title>Actions</title>
+        <sect2>
+            <title>Action List Guide</title>
+            <para>The <emphasis role="bold">Action List</emphasis> page includes your: <itemizedlist>
+                    <listitem>
+                        <para>Action List </para>
+                    </listitem>
+                    <listitem>
+                        <para>Outbox </para>
+                    </listitem>
+                    <listitem>
+                        <para>Action List Filter </para>
+                    </listitem>
+                    <listitem>
+                        <para>Preferences </para>
+                    </listitem>
+            </itemizedlist></para>
+            <para>In the Kuali Rice portal, the Action List button is available in the upper
+                left hand corner of the screen on most pages.</para>
+            <para>Your institution may have KEW links inside other applications, such as Kuali
+                Financial Systems (KFS). KFS may display an Action List button at the top left
+                of the KFS page like this:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/kfs_kew.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Clicking an Action List link or button displays your <emphasis role="bold"
+                    >Action List</emphasis> page. This is a sample KEW Action List; your
+                institution’s may look somewhat different:</para>
+            <para>On your Action List page is the list of documents on which you need to take an
+                action, such as Approve, Disapprove, or Acknowledge, and those which you have
+                already completed. These are your action requests. Action requests that someone
+                has delegated to you are also listed on your Action List page. Note: You can
+                only see the Action List for the person who is logged into KEW or another Kuali
+                application.</para>
+            <para>You can click the title at the top of a column to sort all of your action
+                requests by the information in that column. For example, if you click the column
+                title, Type, KEW sorts your action requests by their Type.</para>
+            <para>On your Action List, you can see this information about the documents on which
+                you need to take action:<itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">Id</emphasis>: A unique, system-generated ID
+                            for each document <itemizedlist>
+                                <listitem>
+                                    <para>When you click a Document Id, KEW displays the actions
+                                        you can take on this document, such as Blanket Approve,
+                                        Complete, Approve, Disapprove, and Cancel. The actions
+                                        you can take are determined by the document’s Type.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Based on your institution’s setup, you may see a Show
+                                        button in the Document Id column. Click the Show button
+                                        to see a summary of the document. </para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Type</emphasis>: The document’s type
+                            determines the actions you can take on it. </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Title</emphasis>: The title that the
+                            initiator gives to the document. Your institution may have standards
+                            for document titles that give you specific information about that
+                            document. </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Status</emphasis>: The current location of
+                            the document in its routing path. The Status may be: <itemizedlist>
+                                <listitem>
+                                    <para><emphasis role="bold">Approved</emphasis>: These
+                                        documents have been approved by all required reviewers
+                                        and are waiting for additional post-processing. </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Cancelled</emphasis>: These
+                                        documents have been stopped. The document’s initiator
+                                        can Cancel it before routing begins, or a reviewer of
+                                        the document can cancel it after routing begins. When a
+                                        document is cancelled, routing stops; it is not sent to
+                                        another Action List. </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Disapproved</emphasis>: These
+                                        documents have been disapproved by at least one
+                                        reviewer. Routing has stopped for these documents.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Enroute</emphasis>: Routing is
+                                        in progress on these documents and an action request is
+                                        waiting for someone to take action. </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Exception</emphasis>: A routing
+                                        exception has occurred on this document. Someone with
+                                        the appropriate KIM Permission (or someone from the
+                                        Exception Group for this Document Type, although this
+                                        feature is deprecated) must take action on this
+                                        document, and it has been sent to the Action List of
+                                        this workgroup. </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Initiated</emphasis>: A user or
+                                        a process has created this document, but it has not yet
+                                        been routed to anyone’s Action List. </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Processed</emphasis>: These
+                                        documents have been approved by all required users, and
+                                        their post-processing is completed. They may be waiting
+                                        for Acknowledgements. No further action is needed on
+                                        these documents. </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Saved</emphasis>: These
+                                        documents have been saved for later work. An author
+                                        (initiator) can save a document before routing begins,
+                                        or a reviewer can save a document before he or she takes
+                                        action on it. When someone saves a document, the
+                                        document goes on that person’s Action List. </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Final</emphasis>: All required
+                                        approvals and all acknowledgements have been received on
+                                        these documents. No changes are allowed to a document
+                                        that is in Final status. </para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Action Requested</emphasis>: The action that
+                            you have been asked to take on a document, such as to Approve it.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Initiator</emphasis>: The person who created
+                            this document in KEW. Click the initiator’s name to see information
+                            about the initiator, including (depending on the initiator's privacy
+                            preferences): <itemizedlist>
+                                <listitem>
+                                    <para>Principal Id and Name </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Entity Id </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Affiliations </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Names </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Phone Numbers </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Email Addresses </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Group and Role memberships </para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Delegator</emphasis>: If someone else has
+                            given authority in KEW for you to take action on their action
+                            requests, their name appears in this column. KEW displays both
+                            primary and secondary delegations this way on your Action List.
+                            There are two types of delegation in KEW, you may be a Primary
+                            Delegate or a Secondary Delegate: <itemizedlist>
+                                <listitem>
+                                    <para><emphasis role="bold">Primary Delegate</emphasis>: The
+                                        delegator turns over his or her full authority to a
+                                        primary delegate. The Action Requests for the delegator
+                                        only appear in the Action List of the primary delegate.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Secondary Delegate</emphasis>:
+                                        The secondary delegate acts as a temporary backup and
+                                        has the same authority as the delegator when the
+                                        delegator is not available to take action. Documents
+                                        appear in the Action Lists of both the delegator and the
+                                        delegate. When either acts on the document, it
+                                        disappears from both Action Lists. People often have a
+                                        secondary delegate who takes care of their action
+                                        requests when they are out of the office. </para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Date Created</emphasis>: The date and time
+                            the document for this action request was created. </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Group Request</emphasis>: When you receive
+                            an action request because you are part of a group, KEW displays the
+                            name of the group in this column. Only one member of a group is
+                            required to complete an action request. Click the group name on your
+                            Action List to see more details, including:  <itemizedlist>
+                                <listitem>
+                                    <para>Group Id </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Group Name </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Group Active Indicator </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Group Members and their user names</para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Actions</emphasis>: For documents that you
+                            receive only for your information (they don’t require that you take
+                            any further action), there is a dropdown menu in the Actions column.
+                            You can use this menu to agree that you’ve received the document for
+                            information purposes: Select FYI, then click the Take Actions button
+                            at the bottom of the page. </para>
+                        <para><inlinemediaobject>
+                                <imageobject>
+                                    <imagedata fileref="../images/action_list.png"/>
+                                </imageobject>
+                            </inlinemediaobject></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Log</emphasis>: (also known as the Route
+                            Log) Click the paper/magnifying glass icon in the Log column to
+                            display the Route Log page. This page has details about the routing
+                            path and Actions Taken on this document. Learn more about this
+                            information in the Route Log Guide. A sample Route Log page:</para>
+                        <para><inlinemediaobject>
+                                <imageobject>
+                                    <imagedata fileref="../images/route_log.png"/>
+                                </imageobject>
+                            </inlinemediaobject></para>
+                    </listitem>
+                </itemizedlist></para>
+                <para>If enabled for a particular document, messages can also be logged through
+                the route log tab (or page). This allows users to add a deferral message or
+                other message that will be reflected in the routing without taking an action on
+                the document.</para>
+            <para>This function is enabled by KIM permissions. These permissions have template
+                'Add Message to Route Log' which takes a document type name as a detail. The
+                bootstrap dataset contains one permission with this template and document type
+                detail 'KualiDocument', however this permission is not granted to any role. This
+                means the functionality will be disabled until the permission is assigned or
+                another permission record with this template and for another document type is
+                created and assigned. When matching permissions for a particular document type
+                the document type hierarchy is considered. Permission records for children
+                document types will override any permission record for its parents.</para>
+            <para>For example, if we wanted to enable the feature on all KualiDocuments except
+                document type 'Foo', we would first grant the permission with document type
+                detail 'KualiDocument' to a role. Then we would create an additional permission
+                with template 'Add Message to Route Log' and document type detail 'Foo'. For the
+                second permission we do not assign any roles. </para>
+            <para>By granting these permission(s) to one of the derived workflow roles we can
+                enable this feature to users who have active routing requests. Examples of such
+                roles are KR-WKFLW Approve Request Recipient and KR-WKFLW Acknowledge Request
+                Recipient.</para>
+        </sect2>
+        <sect2>
+            <title>Action List Preferences</title>
+            <para>You can customize the appearance and features of your Action List using the
+                Action List Preferences page on KEW. To display this page, click the Preferences
+                button at the top of the Action List page or click the User Preferences link in
+                the Workflow pane of the Main Menu tab. Action List page:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/action_list_page.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>This displays the Action List Preferences page, where you can make choices
+                about how KEW displays and refreshes (updates) your Action List and about how
+                and when you receive email reminders about your new action requests:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/action_list_preferences.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>The Action List Preferences page has three sections:</para>
+            <figure>
+                <title>Action List Preferences page, General section</title>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/action_list_preferences_general.png"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </figure>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>In the General section of the Action List Preferences page, you
+                            can set the Automatic Refresh Rate for your Action List. Your action
+                            requests come in from the server and your Actions Taken are sent to
+                            the server each time KEW refreshes (updates) your Action List page.
+                            You only see changes to your Action List when KEW refreshes it.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>Depending on the network and computers at your workplace, your
+                            computer may or may not slow down when KEW refreshes your Action
+                            List. If a refresh slows down your computer, you may decide to set
+                            the Automatic Refresh Rate for a longer period, such as 10 or 15
+                            minutes. </para>
+                    </listitem>
+                    <listitem>
+                        <para>The Action List Page Size tells KEW how many action requests to
+                            display at once on your Action List page. </para>
+                    </listitem>
+                    <listitem>
+                        <para>KEW can automatically send a reminder email to you when get new
+                            documents on your Action List. KEW permits you to choose to get
+                            email reminders on one of these schedules: <itemizedlist>
+                                <listitem>
+                                    <para><emphasis role="bold">None</emphasis> (KEW won’t send
+                                        you any email reminders for your Action List.) </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Daily</emphasis> (If you have
+                                        any new action requests, KEW sends you an email reminder
+                                        once a day.) </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Weekly</emphasis> (If you have
+                                        any new action requests, KEW sends you an email reminder
+                                        once a week.) </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Immediately</emphasis> (KEW
+                                        sends you an email reminder as soon as you receive a new
+                                        action request on a document. This is the default – the
+                                        setting when you start to use KEW.) </para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para>The next two fields on the Action List Preferences page allow you
+                            to choose whether or not you receive email reminders when action
+                            requests come to you because you are the delegate of another person
+                            in KEW. Placing a checkmark in the box tells KEW to send you email
+                            reminders in each situation.</para>
+                    </listitem>
+                    <listitem>
+                        <para>The Delegator Filter field lets you decide where to show action
+                            requests for which you are a secondary delegate. You can choose to
+                            have KEW display these action requests on your Action List page or
+                            not, using this dropdown menu. If you do not display action requests
+                            on which you are the Secondary Delegate on your Action List page,
+                            you can only see them on a Filter Page (see Filter, below).</para>
+                        <figure>
+                            <title>Action List Preferences page, Fields Displayed in Action List section</title>
+                            <inlinemediaobject>
+                                <imageobject>
+                                    <imagedata
+                                        fileref="../images/fields_displayed_in_action_list.png"
+                                    />
+                                </imageobject>
+                            </inlinemediaobject></figure>
+                    </listitem>
+                    <listitem>
+                        <para>You determine which fields are displayed on your Action List page
+                            using this section of the Action List Preferences page. Place a
+                            checkmark in the box next to fields that you want to display on your
+                            Action List page. (Click the box to checkmark it and click it again
+                            to un-checkmark it, and vice versa.)</para>
+                        <figure>
+                            <title>Action List Preferences page, Document Route Status Colors for Actionlist Entries section</title>
+                            <inlinemediaobject>
+                                <imageobject>
+                                    <imagedata
+                                        fileref="../images/document_route_status_colors.png"/>
+                                </imageobject>
+                            </inlinemediaobject>
+                        </figure>
+                    </listitem>
+                    <listitem>
+                        <para>In this section of the Action List Preferences page, you can
+                            choose a color for each different Status of action requests. This
+                            can help you quickly find action requests on which you need to take
+                            action.</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>For example, if you set these colors for these routing status levels: <itemizedlist>
+                    <listitem>
+                        <para>Green for Saved status </para>
+                    </listitem>
+                    <listitem>
+                        <para>Red for Approved status </para>
+                    </listitem>
+                    <listitem>
+                        <para>Blue for Exception status </para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>Your Action List Preferences page looks like this: </para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/action_list_preferences2.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Click the Save button at the bottom of the page to make these changes in your
+                Action List.</para>
+            <para>Action Lists your color changes by Status:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/action_list_error.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Remember, all of these preferences and settings are on your Action List
+                Preferences page.</para>
+            <sect3>
+                <title>Refresh</title>
+                <para>As described above, you can use the Action List Preferences page to tell
+                    KEW to automatically update (refresh) the information on your Action List on
+                    a regular schedule, such as every 15 minutes. You can also click the Refresh
+                    button near the top of your Action List page to update the page at any time.
+                </para>
+            </sect3>
+            <sect3>
+                <title>Filter</title>
+                <para>If you have a large Action List, the Filter function can help you by
+                    displaying only action requests of certain types. To use the Filter
+                    function, click the Filter button in the top right corner of your Action
+                    List page:</para>
+                <para>This displays the <emphasis role="bold">Action List Filter</emphasis>
+                    page: </para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/action_list_filter.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+            </sect3>
+            <sect3>
+                <title>Keys to using the Action List Filter:</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>Each of the fields on the Action List Filter page is called a
+                            criteria. You can choose to display only the action requests that
+                            are the same as one or more criteria, or you can choose to display
+                            all action requests except those that are the same as one or more
+                            criteria. You can also use some criteria to display action requests
+                            and some to not display action requests. </para>
+                    </listitem>
+                    <listitem>
+                        <para>If you want the filter to display action requests that meet one or
+                            more criteria, then just enter those criteria in the appropriate
+                            fields (field descriptions are below). Leave the Exclude? checkboxes
+                            blank for these criteria. </para>
+                    </listitem>
+                    <listitem>
+                        <para>If you want the filter to display only the action requests that
+                            don’t match one or more criteria, then checkmark the Exclude?
+                            checkbox for each of these criteria. This tells KEW not to display
+                            action requests that match these criteria. </para>
+                    </listitem>
+                    <listitem>
+                        <para>When you’ve selected the criteria you want to use in your filter,
+                            click the Filter button at the bottom of the Action List Filter
+                            page. KEW displays your Action List filtered in the way you
+                            requested. </para>
+                    </listitem>
+                    <listitem>
+                        <para>To display all action requests on your Action List page again,
+                            click the Clear button at the bottom of the Action List Filter page
+                            or the Clear Filter button at the top of your Action List page.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>To undo your most recent filter criteria, click the Reset button
+                            at the bottom of the Action List Filter page. This returns you to
+                            the list of Action Requests that met your previous set of filter
+                            criteria. </para>
+                    </listitem>                        
+                </itemizedlist>
+                <note><para>Note: The filter is case sensitive – use upper and lower case
+                    (capital letters and small letters) exactly the same as the item
+                    you’re filtering. For example, if an actual document title is Travel
+                    Doc 2, then you must type this in the Document Title field with a
+                    capital letter at the beginning of each word, exactly like the real
+                    document title. If you type it as travel doc 2, then the filter
+                    won’t recognize this document because the capitalization is
+                    different. </para></note>
+            </sect3>
+            <sect3>
+                <title>Filter Criteria:</title>
+                <itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">Document Title</emphasis>: The title given
+                            to the document when it was created. </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Document Route Status</emphasis>: The
+                            current routing Status of the document. You may filter for documents
+                            with these routing statuses: <itemizedlist>
+                                <listitem>
+                                    <para><emphasis role="bold">All</emphasis>: Selecting All
+                                        causes KEW to display all documents that have been
+                                        submitted for routing. If you select All and Exclude
+                                        (for the Document Route Status criteria), then KEW
+                                        displays only documents that are in Initiated status. </para>
+                                    <note><para>Documents that are in Initiated Status have not yet
+                                        been submitted for routing.</para></note>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Approved</emphasis>
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Disapproved</emphasis>
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Enroute</emphasis>
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Exception</emphasis>
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Processed</emphasis>
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Saved</emphasis>
+                                    </para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Action Requested</emphasis>: The action you
+                            need to take on a document. You may filter your action requests by
+                            these Action Requests: <itemizedlist>
+                                <listitem>
+                                    <para><emphasis role="bold">All</emphasis>: matches all
+                                        Action Requested types </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Acknowledge</emphasis>
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Approve</emphasis>
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Complete</emphasis></para>
+                                </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">FYI</emphasis>
+                                    </para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Action Requested Group</emphasis>: You may
+                            filter your action requests by the group to which the action
+                            requests were sent. For example, if you are a member of two groups,
+                            you might use this filter to display only the action requests you’ve
+                            received as part of one of those groups.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Document Type</emphasis>: Use this to filter
+                            based on Document Type. <itemizedlist>
+                                <listitem>
+                                    <para>The document’s type tells KEW who needs to take what
+                                        action on that document. This determines where KEW
+                                        routes the document. </para>
+                                </listitem>
+                                <listitem>
+                                    <para>You can use the Type filter to display only documents
+                                        of one type, or to display all of your documents except
+                                        one type. Click the checkbox next to <emphasis
+                                            role="bold">Exclude?</emphasis> if you do NOT want
+                                        to display the selected Type. </para>
+                                </listitem>
+                                <listitem>
+                                    <para>To choose a Type for your filter, click the magnifying
+                                        glass icon on the Type row. This takes you to the
+                                            <emphasis role="bold">Document Type
+                                            Lookup</emphasis> page. </para>
+                                    <para>Enter information in one or more of these fields to
+                                        find the Document Type you need for your filter, then
+                                        click the Search button. This displays a list of
+                                        document Types that match your search. Find the one you
+                                        need, and click return value for that Type. This returns
+                                        you to the previous page and automatically enters it in
+                                        the Type field. For example, in the screenshot below you
+                                        searched for a Type with maintenance in the Name. If you
+                                        want to use the first one in the list, KIM Principal
+                                        Maintenance Document, click return value in the row for
+                                        KIM Principal Maintenance Document. </para>
+                                    <para><inlinemediaobject>
+                                            <imageobject>
+                                              <imagedata
+                                              fileref="../images/document_type_lookup.png"/>
+                                            </imageobject>
+                                        </inlinemediaobject></para>
+                                    <note><para>If you do not find the Type that you need, you can
+                                        either do another search or click the link for return
+                                        with no value to return to the Action List Filter page
+                                        without a Type.</para></note>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Date Created</emphasis>: Use this filter
+                            criteria to select only action requests for documents that were (or
+                            were not) created between dates that you choose. You must enter each
+                            date in this format: MM/DD/YYYY, e.g., 12/25/2000 for December 25,
+                            2000. Instead of typing the date in the field, you can click the
+                            small Calendar icon next to the date field and then click the date
+                            you need from the calendar. When you click a date on the calendar,
+                            the small calendar disappears and that date is automatically entered
+                            in the date field. Use the small arrowheads on either side of the
+                            month’s name to display other months. A single arrowhead moves the
+                            calendar one month forward or back. A double arrowhead moves the
+                            calendar to the same month a year ahead or back. </para>
+                        <para>For example, if you could click the single arrowhead to the left
+                            of “April” on this calendar, the month displayed would change to
+                            March 2009. If you could click the double arrowhead to the right of
+                            “April”, the month would change to April 2010.</para>
+                        <para><inlinemediaobject>
+                                <imageobject>
+                                    <imagedata fileref="../images/date_created.png"/>
+                                </imageobject>
+                            </inlinemediaobject></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Date Last Assigned</emphasis>: Use this
+                            filter criteria to select only action requests for documents that
+                            were (or were not) assigned to someone between dates that you
+                            choose. You must enter each date in this format: MM/DD/YYYY. For
+                            more detail on entering or selecting dates, see Date Created
+                            above.</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>Clear Filter</title>
+                <para>When you have used a filter on your Action List, you can see a Clear
+                    Filter button at the top of your page:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/action_list_old.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>Click this button to display all of your action requests again. </para>
+                <note><para>If your Action List is not filtered, you cannot see the Clear Filter
+                    button.</para></note>
+                <para>Remember, you can click the Filter button at the top of your Action List
+                    page to return to the Filter page and change or Reset your filters.</para>
+            </sect3>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Action Requests and Actions Guide </title>
+        <sect2>
+            <title>Overview</title>
+            <para>Action Requests are one of the core functions of the Kuali Enterprise Workflow
+                (KEW) system. An Action Request is a call from KEW to a person or group to take
+                action on a document. Action Requests are created when the system or a person routes
+                (sends) a document to another user and ask that user to do something with the
+                document. You might ask someone to approve an expense, for example, or to
+                acknowledge that he or she received a copy of an expense report. </para>
+            <para>Once an Action Request has been created in KEW, the associated document is sent to
+                the appropriate users’ action lists. A user can open his or her Action List and from
+                there, view information about the document, open the document, and/or take the
+                requested action. If a user takes an action, for example, approves or disapproves a
+                document, that is called an Action Taken.</para>
+            <para>The path that the document takes from its starting point to final approval is
+                called its route. Each point along that path where a person needs to do something
+                with the document (approve, acknowledge, etc.) is called a node on the route.</para>
+        </sect2>
+        <sect2>
+            <title>Types of Action Requests</title>
+            <para>Each action request has one row on your Action List. There are five types of
+                Action Requests:</para>
+            <para>
+                <table frame="none">
+                    <title/>
+                    <tgroup cols="3">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.79*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.69*"/>
+                        <thead>
+                            <row>
+                                <entry>Action Requested </entry>
+                                <entry>Description </entry>
+                                <entry>Stops Document Until Action is Taken? </entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Complete </entry>
+                                <entry><para>You need to Complete the document.</para>
+                                <para>You may cancel a document when you have a Complete action
+                                        request on it.</para></entry>
+                                <entry>Yes</entry>
+                            </row>
+                            <row>
+                                <entry>Approve </entry>
+                                <entry><para>You should verify the document and either Approve or Disapprove it. </para>
+                                <para>You may cancel a document when you have an Approve action
+                                        request on it.</para></entry>
+                                <entry>Yes</entry>
+                            </row>
+                            <row>
+                                <entry>Acknowledge </entry>
+                                <entry>You need to acknowledge (agree) that you have seen the
+                                    document </entry>
+                                <entry><para>No</para>
+                                <para>If there are no other requests, the document changes to
+                                        Processed status even if there are outstanding Acknowledge
+                                        requests. </para></entry>
+                            </row>
+                            <row>
+                                <entry>FYI </entry>
+                                <entry>You have been told about this document and you need to Clear
+                                    the FYI on it</entry>
+                                <entry><para>No</para>
+                                <para>If there are no other requests, the document changes to Final
+                                        status even if there are outstanding FYI requests.</para></entry>
+                            </row>
+                            <row>
+                                <entry>Print</entry>
+                                <entry>You need to print this document and take some action with it,
+                                    such as mailing it to a vendor.</entry>
+                                <entry/>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>You can only Disapprove or Cancel a document if you have a Complete or
+                            Approve request. </para>
+                    </listitem>
+                    <listitem>
+                        <para>Complete and Approve are essentially the same: A Complete action
+                            satisfies an Approve request, and an Approve action satisfies a Complete
+                            request. </para>
+                    </listitem>
+                    <listitem>
+                        <para>When you Clear an FYI request, that action is not recorded on the
+                            Route Log (history of where the document has been and what has been done
+                            on it) for that document. </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>There are other actions that you can take in addition to Action Requests. We will
+                look at those in the Action Taken section below.</para>
+        </sect2>
+        <sect2>
+            <title>Action Request Recipients</title>
+            <para>Every action request has a recipient. The recipient is the individual or group of
+                individuals whose action is requested on the document. There are three types of recipients:<orderedlist>
+                    <listitem>
+                        <para>Person: An individual </para>
+                    </listitem>
+                    <listitem>
+                        <para>Group: A group of users who are members of a KIM Group </para>
+                    </listitem>
+                    <listitem>
+                        <para>Role: A group of users who are members of a KIM Role </para>
+                    </listitem>
+                </orderedlist></para>
+            <para>Roles are groups of users or KIM Groups associated with a document. </para>
+            <para>The first user in a Group to take action on a request satisfies (completes) that
+                request. Role requests can be set up to work the same way as Group requests or to
+                require that everyone in that Role approves the document before the request is
+                satisfied.</para>
+        </sect2>
+        <sect2>
+            <title>Action Request Hierarchies</title>
+            <para>In certain situations, you can use roles for action requests and you can delegate
+                action requests. You can think of these as trees or as a parent action request that
+                has children action requests.</para>
+            <para>Roles are groups of Principals or Groups that KEW creates based on rules your
+                institution sets up. Since KEW can only create an action request for a single person
+                or group but a role may have several people or groups in it, KEW creates an action
+                request for the role (a parent request), and that action request creates child
+                action requests that go to each person or group in that role. </para>
+            <para>The parent role request can have any number of children requests that are each
+                either a user request or a group request.</para>
+            <sect3>
+                <title>Action Request Delegation</title>
+                <para>In KEW, you may delegate, or give, your request authority to other people. For
+                    example, if Joe is the fiscal officer for an account but he doesn't actually
+                    approve documents, he may delegate his approval authority to Jane. Both Joe and
+                    Jane can now take actions on Joe’s action requests</para>
+                <para>If Jane approves a document as Joe’s delegate, Joe's action request is
+                    satisfied. If Joe approves the document, Jane's action request is satisfied.
+                </para>
+            </sect3>
+            <sect3>
+                <title>Combining Role Requests and Delegation</title>
+                <para>You can combine a role request with a delegation. In fact, in the previous
+                    example, the action request that is sent to Joe as a fiscal officer is really a
+                    role request. The action request tree for that scenario is:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/action_request_tree.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>This tree is three levels deep and shows a role delegating to a user. You can
+                    also have a role delegate to another role.</para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Action Request Activation and Deactivation</title>
+            <sect3>
+                <title>Activation</title>
+                <para>When action requests are created, they are in the Initialized state. They stay in
+                    this state until KEW determines that they need to be Activated. When a request
+                    becomes Activated, it appears in the user's Action List. </para>
+                <para>When action requests are created, they can be set to ignore previous actions or not.<itemizedlist>
+                        <listitem>
+                            <para>If <emphasis role="italic">Ignore Previous</emphasis> is true, the
+                                activation process will not consider previous actions that the user has
+                                taken. </para>
+                        </listitem>
+                        <listitem>
+                            <para>If <emphasis role="italic">Ignore Previous</emphasis> is false, the
+                                activation process will consider previous actions by the user and may
+                                even consider the action request satisfied by previous user actions.
+                                (This is sometimes referred to as a request being "auto-approved.")
+                            </para>
+                        </listitem>
+                </itemizedlist></para>
+                <para>During request activation, if the Ignore Previous flag is false and KEW determines
+                    that a previous action satisfies the current request, it will Deactivate the request
+                    instead of Activating it. Activation begins at a root request, but Deactivation
+                    begins at the request where KEW finds that a satisfying action has occurred if that
+                    request is set to not ignore previous actions.</para>
+                <note>
+                    <para>Action request structures can be hierarchical. Activation of requests always
+                        starts at the parent request and works down the tree, activating each level of the
+                        tree in turn. </para>
+                    <para>Roles can have an All Approve policy. All Approve means that all members of a role
+                        must approve the docusment before the entire request is deactivated. (See
+                        Deactivation below.)</para>
+                </note>
+            </sect3>
+            <sect3>
+                <title>Deactivation</title>
+                <para>When a user takes action on a document, that action may start the deactivation
+                    of other action requests on the document. For example, if Joe has a pending
+                    request and he takes an Approve action on it, his request is deactivated.
+                    Request deactivation changes the status of the request from Initialized or
+                    Activated to Deactivated. </para>
+                <para>If Joe’s action taken causes other action requests to be Deactivated, his
+                    action taken is associated with all of the requests that it Deactivates. </para>
+                <para>Unlike Activation, Deactivation always starts at the request that was
+                    satisfied by the action taken. For example, if Joe is delegating to Jane and
+                    Jane issues an Approve action on her request, Deactivation starts at Jane's
+                    request. However, if Joe issues the Approve action, Deactivation starts at the
+                    parent. </para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/deactivation_flow.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>If there are no roles set to "All Approve" on an action request, one action
+                    can Deactivate the entire request tree. This is because KEW works up and down
+                    the tree, Deactivating requests as it goes.</para>
+                <para>However, when there is an "All Approve" role, requests for all parties within
+                    the role must be Deactivated before the parent role request is Deactivated. For
+                    example, if we have an "All Approve" role request with three children requests,
+                    when one of the users takes action, their request is Deactivated, but since
+                    there are two other requests that still need to be satisfied, the Deactivation
+                    cannot go back to the parent role request. When the last of the three users has
+                    taken action, the parent role request is Deactivated.</para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Actions and Action Takens</title>
+            <para>Actions are how a user interacts with KEW. Actions can be performed in response to
+                an Action Request (such as an Approve action) or they can be user-initiated (such as
+                the routing of a document). Most, but not all, actions create Action Takens. The
+                Action Taken is recorded on the Route Log and associated with a satisfied action
+                request, where appropriate.</para>
+            <para>The KEW Action library contains these Actions, explained below:<itemizedlist>
+                    <listitem>
+                        <para>Acknowledge </para>
+                    </listitem>
+                    <listitem>
+                        <para>Approve </para>
+                    </listitem>
+                    <listitem>
+                        <para>Blanket Approve </para>
+                    </listitem>
+                    <listitem>
+                        <para>Cancel </para>
+                    </listitem>
+                    <listitem>
+                        <para>Clear FYI </para>
+                    </listitem>
+                    <listitem>
+                        <para>Complete </para>
+                    </listitem>
+                    <listitem>
+                        <para>Create Document </para>
+                    </listitem>
+                    <listitem>
+                        <para>Disapprove </para>
+                    </listitem>
+                    <listitem>
+                        <para>Log Document </para>
+                    </listitem>
+                    <listitem>
+                        <para>Move Document </para>
+                    </listitem>
+                    <listitem>
+                        <para>Return to Previous Node </para>
+                    </listitem>
+                    <listitem>
+                        <para>Route Document </para>
+                    </listitem>
+                    <listitem>
+                        <para>Save </para>
+                    </listitem>
+                    <listitem>
+                        <para>Superuser Actions <itemizedlist>
+                                <listitem>
+                                    <para>Superuser Approve Document </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Superuser Approve Node </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Superuser Approve Request </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Superuser Cancel </para>
+                                </listitem>
+                                <listitem>
+                                    <para>Superuser Disapprove </para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                </itemizedlist></para>
+            <sect3>
+                <title>Acknowledge Action</title>
+                <para>Use this action to satisfy an Acknowledge action request. When you take an
+                    Acknowledge action, it usually means that you have examined the document.
+                    Acknowledgement provides no real authority over the document; you can only take
+                    the Acknowledge action on this document.</para>
+                <para>When you take an Acknowledge action, KEW finds all pending acknowledge
+                    requests for that document that are routed to you and Deactivates them. It then
+                    records an Acknowledge Action Taken and associates it with the Deactivated
+                    requests. You may take an Acknowledge action even if you have no Acknowledge
+                    Action Requests.</para>
+            </sect3>
+            <sect3>
+                <title>Approve Action</title>
+                <para>Use this action to satisfy an Approve or Complete action request. When you use
+                    an Approve action, it means that you have looked at the document and approve
+                    that transaction.</para>
+                <para>When you use the Approve action, KEW Deactivates all pending approve or
+                    complete requests that have been routed to you for this document. You may take
+                    an Approve action even if you have no Approve or Complete action
+                    requests.</para>
+            </sect3>
+            <sect3>
+                <title>Blanket Approve Action</title>
+                <para>Use the Blanket Approve action to force a document to complete a set of action
+                    requests. This allows certain users to "push" a document through its routing. To
+                    take this action, you must have the appropriate KIM Permission (or be in the
+                    Blanket Approve Group which is set in the Document Type, but that is a
+                    deprecated feature). Unless you select a specific node (point in the document’s
+                    routing path) when you take a Blanket Approve Action, KEW finds all pending
+                    Approve or Complete requests at the current level in the request tree and
+                    Deactivates them. It records a Blanket Approve Action Taken and associates it
+                    with each of the Deactivated requests.</para>
+                <para>Then, KEW sends Acknowledge action requests to each person whose action
+                    request was satisfied by the Blanket Approve. It does this for all levels in the
+                    request tree until it reaches the end point set in the Blanket Approve Action or
+                    it reaches the end of the request tree.</para>
+            </sect3>
+            <sect3>
+                <title>Cancel Action</title>
+                <para>Use this action when a document is no longer valid and you need to cancel it.
+                    You must have a pending Approve or Complete action request on the document
+                    before you can Cancel it. Cancelling a document is similar to Disapproving it
+                    except that the Cancel action does not send out notifications.</para>
+                <para>When you take a Cancel action, KEW finds all pending requests on the document
+                    and Deactivates them. It records a Cancel Action Taken and associates it with
+                    the Deactivated requests. Then it sets the document's status to CANCELLED and
+                    the document is effectively dead.</para>
+            </sect3>
+            <sect3>
+                <title>Clear FYI Action</title>
+                <para>Use this action to satisfy an FYI action request. You usually get an FYI just
+                    to notify you about a document. You don’t need to take any action on an FYI
+                    request, but if you want to remove that FYI and document from your Action List,
+                    take the Clear FYI action.</para>
+                <para>When you take the Clear FYI action KEW locates all pending FYI requests on
+                    this document that are routed to you and Deactivates them. It then records an
+                    FYI Action Taken. You must have a pending FYI request on a document to use the
+                    Clear FYI action.</para>
+            </sect3>
+            <sect3>
+                <title>Complete Action</title>
+                <para>Use this action to satisfy an Approve or Complete action request. When you use
+                    a Complete, it means that you have looked at the document and completed any of
+                    the necessary information on the document so it can proceed. Complete action
+                    requests are typically created as the result of a Save action or in response to
+                    an Exception Routing request.</para>
+                <para>When you use the Complete action KEW finds all pending Approve or Complete
+                    requests that are routed to you and Deactivates them. If the document is in the
+                    Exception state, it changes it back to Enroute. It then records a Complete
+                    Action Taken. You may take a Complete action even if you have no Complete or
+                    Approve action requests.</para>
+            </sect3>
+            <sect3>
+                <title>Create Document Action</title>
+                <para>This action creates a new document in KEW of the chosen Document Type. This
+                    action does not record an Action Taken of any sort but simply begins a new
+                    document and assigns a document ID to it. The document begins in Initiated
+                    status. The Document type determines how the document is routed and what must be
+                    done for it. For example, an expense report might be routed (sent) to two or
+                    three different people for approval before it is paid.</para>
+            </sect3>
+            <sect3>
+                <title>Disapprove Action</title>
+                <para>When you have an Approve action request, you use a Disapprove action if the
+                    document does not meet the approval criteria. You must have a pending Approve or
+                    Complete request on the document before you can Disapprove it. Disapproving a
+                    document is similar to Cancelling it, except that Disapproval sends out
+                    notifications.</para>
+                <para>When you Disapprove a document, KEW finds all pending requests on the document
+                    and Deactivates them. Next, it creates Acknowledge notification requests to all
+                    users that had Approve or Complete action requests at the current node and all
+                    previous nodes. It also sends an Acknowledge notification request to the
+                    initiator of the document. Then the document's status is set to Disapproved and
+                    the document is effectively dead.</para>
+            </sect3>
+            <sect3>
+                <title>Log Document Action</title>
+                <para>This action simply enters a message on the document. It records an Action
+                    Taken but it is never associated with any action requests. This action displays
+                    a message on the document in the Route Log.</para>
+            </sect3>
+            <sect3>
+                <title>Move Document Action</title>
+                <para>This action moves a document either backward in the route path or forward.
+                    Moving the document backward works like the Return to Previous Node action and
+                    moving the document forward works like a Blanket Approve action. The difference
+                    between these is that the Action Taken is recorded as a Move action. </para>
+            </sect3>
+            <sect3>
+                <title>Return to Previous Node Action</title>
+                <para>Use this action to move a document to a previous node in the route. You must
+                    have a pending Approve or Complete request on the document before you can use
+                    this action.</para>
+                <para>When you use this action, KEW Deactivates all pending requests on the document
+                    and sets the current node on the document to the previous node that you
+                    requested (this is called the target node). It records a Return to Previous Node
+                    Action Taken and associates it with the Deactivated requests. Any requests on
+                    nodes between the current node and the target node are removed, effectively
+                    erasing them. KEW then sends the document through again to recreate requests on
+                    the target node. This way a document is "returned" to a previous node, rolling
+                    it back to its previous state at that point in the route.</para>
+            </sect3>
+            <sect3>
+                <title>Route Document Action</title>
+                <para>Use the Route Document action to route an Initialized or Saved document to
+                    other users. Only the initiator of the document can take this action unless the
+                    user has an "Initiate Document" KIM permission (or initiator_must_route policy
+                    is set to false in the Document Type, although this feature is deprecated). The
+                    Action Taken for a Route Document action is Complete.</para>
+                <para>When you use the Route Document action, it Deactivates all pending requests
+                    for the initiator of the document and it associates a Complete Action Taken with
+                    the Deactivated requests. The document’s state is then set to Enroute.</para>
+            </sect3>
+            <sect3>
+                <title>Save Document Action</title>
+                <para>Use this action to put a newly created document in the Action List of the
+                    document’s initiator. You can only use this action on a document in an Initiated
+                    status. When you use this action, KEW creates and Activates a Complete action
+                    request for the document’s initiator and then changes the document’s status to
+                    Saved.</para>
+            </sect3>
+            <sect3>
+                <title>Superuser Actions </title>
+                <para>Superuser actions let you move a document past workflow nodes where it may be
+                    held up because another user is unavailable to take action on it or due to a
+                    system problem. Superuser actions are an administrative tool and safety net.
+                    Superusers are designated with a KIM Permission (or they are listed in the
+                    Document Type, but this feature is deprecated). </para>
+            </sect3>
+            <sect3>
+                <title>Using the Superuser Functions</title>
+                <para>To use the Superuser functions, go to Document Search (it is a link in the
+                    left menu) and click the Superuser Search link.</para>
+                <para>Now, do a normal document search for the document on which you need to perform
+                    a Superuser action. When you find the document, click the Document/Notification
+                    Id link. If you are authorized to perform a Superuser action on this document,
+                    this takes you to the Superuser page. Otherwise, KEW displays a message that you
+                    are not authorized to take Superuser action on this document.</para>
+            </sect3>
+            <sect3>
+                <title>Superuser Approve Document Action</title>
+                <para>This action fully approves a document, Deactivating all remaining routing
+                    requests. KEW also records a Superuser Approve Action Taken and associates it
+                    with the Deactivated requests. The document's state changes to Approved and the
+                    document is scheduled for processing. The document status automatically changes
+                    to Final when it goes into the Workflow Engine. </para>
+            </sect3>
+            <sect3>
+                <title>Superuser Approve Node Action</title>
+                <para>This action approves the document through all nodes up to (but not including)
+                    a specified node. When the document gets to the specified node, requests are
+                    created as usual. This action is exactly the same as Blanket Approve except that
+                    no notification requests are created from the Superuser Approve Node
+                    action.</para>
+            </sect3>
+            <sect3>
+                <title>Superuser Approve Request Action</title>
+                <para>This action approves a single pending Approve or Complete action request. This
+                    works the same way as a standard Approve action except that the Superuser is
+                    acting in place of the responsible user.</para>
+            </sect3>
+            <sect3>
+                <title>Superuser Cancel Action</title>
+                <para>This action cancels the document. This action works exactly the same way as
+                    the standard Cancel action except that the Superuser does not need to have a
+                    pending request to Cancel a document.</para>
+            </sect3>
+            <sect3>
+                <title>Superuser Disapprove Action</title>
+                <para>This action disapproves the document. This action works the same way as the
+                    standard Disapprove action except that the Superuser does not need to have a
+                    pending request to perform the action. Also, on a Superuser disapprove, KEW does
+                    not send notification requests.</para>
+            </sect3>
+            <sect3>
+                <title>Superuser Return to Previous Node Action</title>
+                <para>This action returns the document to a previous node in the route path. This
+                    action works exactly the same way as the standard Return to Previous Node action
+                    except that the Superuser does not need to have a pending request to perform the
+                    action.</para>
+            </sect3>
+        </sect2>    
+    </sect1>
+    <sect1>
+        <title>Documents</title>
+        <sect2>
+            <title>eDocLite Overview</title>
+            <para>eDocLite is a framework designed for rapid development and implementation within
+                an existing Kuali Enterprise Workflow infrastructure. It allows for the development
+                of simple web applications, their forms and routing configurations using XML. Users
+                only have to enter data into the form and then submit it. Rules can be constructed
+                so that the form is then routed to a specific user or KIM Group based on the data
+                entered.</para>
+            <para>Web pages called eDoc's are generated and are associated with a specific document
+                type definition that provides the overall definition for how the document can be
+                routed. Document types can also exist in hierarchies which provide storage of common
+                information at various levels.</para>
+            <para>The form uses an XSLT stylesheet to generate the html code. Certain workflow
+                classes make helper data available to the stylesheet programmer and there are
+                several features that can be 'plugged-in' to eDocLite to further enhance its
+                usability in many situations.</para>
+            <note>
+            <para><emphasis role="bold">Key Ideas</emphasis>:<itemizedlist>
+                    <listitem>
+                        <para>Rapid implementation and development solution for simpler documents
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>Easily re-configured </para>
+                    </listitem>
+                    <listitem>
+                        <para>Easily manageable </para>
+                    </listitem>
+                    <listitem>
+                        <para>Entirely web-based from design/development and user perspectives
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>No java code required for developments; only XML with optional
+                            javascript for client side editing (workflow handles execution) </para>
+                    </listitem>
+                    <listitem>
+                        <para>Some validation javascript is automatically generated like regular
+                            expression editing and 'required field checking'. </para>
+                    </listitem>
+            </itemizedlist></para>
+            </note>    
+        </sect2>
+        <sect2>
+            <title>eDocLite Lookup</title>
+            <para>Use the <emphasis role="bold">eDocLite Lookup</emphasis> screen to quickly find
+                basic information about eDocLite documents and as the first step in creating a new
+                eDocLite. </para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/edoclite_link.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <sect3>
+                <title>Finding the eDocLite Lookup Screen</title>
+                <para>You can go to the <emphasis role="bold">eDocLite Lookup</emphasis> by:<orderedlist>
+                        <listitem>
+                            <para>Click the Main Menu tab </para>
+                        </listitem>
+                        <listitem>
+                            <para>Look in the Workflow section </para>
+                        </listitem>
+                        <listitem>
+                            <para>Click eDoc Lite </para>
+                        </listitem>
+                    </orderedlist></para>
+            </sect3>
+            <sect3>
+                <title>eDocLite Lookup Options</title>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/edoclite_lookup.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>On the eDocLite lookup page, users can search for an eDocLite document based
+                    on several criteria:</para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.47*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Id</entry>
+                                    <entry>The unique ID number assigned to each document.</entry>
+                                </row>
+                                <row>
+                                    <entry>Document Type</entry>
+                                    <entry>The name of the document type, which is specified in the
+                                        Document Type attribute of an eDocLite.</entry>
+                                </row>
+                                <row>
+                                    <entry>Definition</entry>
+                                    <entry>The name of the EDL XML definition.</entry>
+                                </row>
+                                <row>
+                                    <entry>Style</entry>
+                                    <entry>The style specified in the EDL XML file is the style
+                                        attribute of an eDocLite. Generally an EDL XML file has only
+                                        one definition name which relates to one and only one style
+                                        name.</entry>
+                                </row>
+                                <row>
+                                    <entry>Active Indicator</entry>
+                                    <entry>You have the choice of searching by the active status of
+                                        an eDocLite. </entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+                <para>You can use the above criteria to limit your search results. A search will
+                    produce a list of one or more results that look similar to the following:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/search_results.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>Clicking <emphasis role="bold">Create Document</emphasis> on any line takes
+                    you to the eDocLite document screen where new documents can be created. The line
+                    item you choose will result in that document being used as a template for the
+                    new one you are creating. More information on this follows in the section called
+                        <emphasis role="bold">Create New eDocLite Document</emphasis>.</para>
+                <para>Clicking any underlined Id will take you to the <emphasis role="bold">eDocLite
+                        Inquiry</emphasis> screen for that document.</para>
+                <note><para>Exporting the output list to XML will give you the option of viewing the XML
+                used to produce the list returned from the search.</para>
+                    </note>
+                    <para>Standard in KEW there is one eDocLite for electronic routing, and new
+                    eDocLites can be added based on business requirements. Some of the functions
+                    that eDocLites are used for in business include: <itemizedlist>
+                        <listitem>
+                            <para>Applicant Monitoring </para>
+                        </listitem>
+                        <listitem>
+                            <para>BLSC Request </para>
+                        </listitem>
+                        <listitem>
+                            <para>Course Change Request </para>
+                        </listitem>
+                        <listitem>
+                            <para>Grade Replacement Request </para>
+                        </listitem>
+                        <listitem>
+                            <para>Internship Contract </para>
+                        </listitem>
+                        <listitem>
+                            <para>Interview Request </para>
+                        </listitem>
+                        <listitem>
+                            <para>Mass Mailing Request </para>
+                        </listitem>
+                        <listitem>
+                            <para>Offer Request </para>
+                        </listitem>
+                        <listitem>
+                            <para>Program Plan Update </para>
+                        </listitem>
+                        <listitem>
+                            <para>REGR Access Request </para>
+                        </listitem>
+                        <listitem>
+                            <para>Removal Of Incomplete </para>
+                        </listitem>
+                        <listitem>
+                            <para>Revenue Producing Activity </para>
+                        </listitem>
+                        <listitem>
+                            <para>SUDS Request Document Type </para>
+                        </listitem>
+                        <listitem>
+                            <para>Search Status </para>
+                        </listitem>
+                        <listitem>
+                            <para>Special Credit Request </para>
+                        </listitem>
+                        <listitem>
+                            <para>Student Trip </para>
+                        </listitem>
+                        <listitem>
+                            <para>User Agreement </para>
+                        </listitem>
+                        <listitem>
+                            <para>Unit Change Request </para>
+                        </listitem>
+                        <listitem>
+                            <para>Vacancy Notice </para>
+                        </listitem>
+                        <listitem>
+                            <para>Vehicle Replacement </para>
+                        </listitem>
+                        <listitem>
+                            <para>Waiver Request </para>
+                        </listitem>
+                        <listitem>
+                            <para>New Course Request </para>
+                        </listitem>
+                    </itemizedlist></para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>eDocLite Inquiry</title>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/edoclite_inquiry.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>The Inquiry screen displays the same information as is found on a line of the
+                Lookup output, but this screen provides you with the export option. Exporting from
+                the Inquiry screen produces a XML file of the source for the eDocLite
+                document.</para>
+        </sect2>
+        <sect2>
+            <title>Create New eDocLite Document</title>
+            <para>To create a new eDocLite document to be routed in KEW, click on <emphasis
+                    role="bold">Create Document</emphasis> in the row for eDocLite type wanted. It
+                will take users to different forms of eDocLites depending on the document function,
+                but they all have three general parts:<itemizedlist>
+                    <listitem>
+                        <para>Document header </para>
+                    </listitem>
+                    <listitem>
+                        <para>Document body </para>
+                    </listitem>
+                    <listitem>
+                        <para>Routing action and annotation, and note area </para>
+                    </listitem>
+                </itemizedlist></para>
+            <sect3>
+                <title>Document Header</title>
+                <para>The Document Header contains the following fields: <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="3.08*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Document Type</entry>
+                                    <entry>The name defined by the document creator of this type of
+                                        eDocLite.</entry>
+                                </row>
+                                <row>
+                                    <entry>Document Status</entry>
+                                    <entry>The status of this document based on its routing
+                                        status.</entry>
+                                </row>
+                                <row>
+                                    <entry>Create Date</entry>
+                                    <entry>The date and time this document is created.</entry>
+                                </row>
+                                <row>
+                                    <entry>Document ID</entry>
+                                    <entry>The unique system generated ID for this document.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table></para>
+            </sect3>
+            <sect3>
+                <title>Document body</title>
+                <para>This portion of the document is where the user identifies the routing and
+                    complete business function. </para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="2.92*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Title</entry>
+                                    <entry>specifies the actions users are taking on the EDocLite
+                                        forms, including <emphasis role="bold">editing</emphasis>
+                                        and <emphasis role="bold">reviewing</emphasis>. Other
+                                        general information can be stored here such as contact
+                                        information, important notes, etc.</entry>
+                                </row>
+                                <row>
+                                    <entry>Form</entry>
+                                    <entry>Renders form fields and input areas for the user to
+                                        complete information required, depends upon the specific
+                                        eDocLite requirements.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+            <sect3>
+                <title>routing action and annotation, and note area</title>
+                <para>This area is used to add annotation and choose action to be taken on this
+                    eDocLite document. Annotation is the comments associated with the routing
+                    process. You can add them to different nodes of the routing process and take
+                    actions on an eDocLite by adding annotations. The annotation appears in the
+                    route log of eDocLite as comments. Notes are the comments associated with this
+                    specific eDocLite form and appear with the form and not in the route log. </para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="2.45*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Set annotation</entry>
+                                    <entry>The area to add annotation.</entry>
+                                </row>
+                                <row>
+                                    <entry>Action buttons</entry>
+                                    <entry>
+                                        <itemizedlist>
+                                            <listitem>
+                                                <para>route: begins and continues routing the
+                                                  eDocLite document.</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>save: saves the information currently on the
+                                                  eDocLite document.</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>cancel: cancels the actions on this eDocLite
+                                                  document, and the information on the form is not
+                                                  saved.</para>
+                                            </listitem>
+                                        </itemizedlist>
+                                    </entry>
+                                </row>
+                                <row>
+                                    <entry>create note</entry>
+                                    <entry>Area where users can add notes and attach documents to
+                                        this eDocLite form. This part keeps track of <emphasis
+                                            role="bold">Author, Date and time</emphasis>, and the
+                                            <emphasis role="bold">Note</emphasis> added. Users have
+                                        the right to add, edit and delete the notes they
+                                        create.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+                <para>The following is one example of an eDocLite form:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/edoclite_form.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/edoclite_form2.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <note><para>Notes that have been added to an eDocLite document can be edited or
+                    deleted.</para></note>
+            </sect3>
+            <sect3>
+                <title>Extendable functions</title>
+                <para>eDocLites are highly customizable. New eDocLites can be designed for new
+                    business and functional requirements. The document header and routing annotation
+                    and notes parts will be same or similar, the form will be different. </para>
+                <para>eDocLites can be designed to include following functions:</para>
+                <sect4>
+                    <title>Restricted read/write rights</title>
+                    <itemizedlist>
+                        <listitem>
+                            <para>Some fields in eDocLite can be set as <emphasis role="bold"
+                                    >GlobalReadOnly</emphasis>. With this setting they are disabled
+                                and can’t be edited by any user other than the author. </para>
+                        </listitem>
+                        <listitem>
+                            <para>Some fields in eDocLite can be set as <emphasis role="bold"
+                                    >ReadOnly</emphasis>, but users with rights can still edit them.
+                                After the initiator writes them they are disabled and become locked
+                                to some of the users in the routing process. But for users with
+                                proper rights in certain nodes in the routing process, the fields
+                                will become editable again. These users can take actions on them,
+                                such as modify, add, and return to a former routing node.</para>
+                        </listitem>
+                    </itemizedlist>
+                </sect4>
+                <sect4>
+                    <title>Hidden fields</title>
+                    <para>To accommodate some business requirements, certain fields and notes can be
+                        hidden from certain nodes in the routing process. For instance, some
+                        administrative notes on a course waiver request will be hidden from students
+                        when s/he gets the eDocLite form in the final stage of the routing
+                        process.</para>
+                </sect4>
+            </sect3>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Preferences</title>
+        <para>Workflow allows for users to individually configure certain aspects of the system. You
+            should be able to access the User Preferences from the Main portal page:</para>
+        <para><inlinemediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/select_user_preferences.png"/>
+                </imageobject>
+            </inlinemediaobject></para>
+        <para>After clicking the link you should be taken to Workflow Preferences screen:</para>
+        <para><inlinemediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/workflow_preferences.png"/>
+                </imageobject>
+            </inlinemediaobject></para>
+        <para>There are three configuration sections on this screen:</para>
+        <sect2>
+            <title>General Preferences</title>
+            <note><para>Many of these preferences can have their system wide default values changed via
+                configuration parameters. Look in the KEW technical documentation for information on
+                how to override the default values.</para></note>
+            <para>
+                <table frame="none">
+                    <title/>
+                    <tgroup cols="3">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.14*"/>
+                        <colspec colname="c3" colnum="3" colwidth="2.41*"/>
+                        <thead>
+                            <row>
+                                <entry>Name</entry>
+                                <entry>Default Value</entry>
+                                <entry>Description</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Automatic Refresh Rate</entry>
+                                <entry>15</entry>
+                                <entry>How often your action list updates (minutes).</entry>
+                            </row>
+                            <row>
+                                <entry>Action List Page Size</entry>
+                                <entry>10</entry>
+                                <entry># of actions displayed on action list</entry>
+                            </row>
+                            <row>
+                                <entry>Email Notification</entry>
+                                <entry>Immediate</entry>
+                                <entry>When action items emails should be sent. Can be none,
+                                    immediate, daily, weekly</entry>
+                            </row>
+                            <row>
+                                <entry>Receive Primary Delegation Emails</entry>
+                                <entry>True</entry>
+                                <entry>User will receive primary delegation emails</entry>
+                            </row>
+                            <row>
+                                <entry>Receive Secondary Delegation Emails</entry>
+                                <entry>False</entry>
+                                <entry>User will receive secondary delegation emails</entry>
+                            </row>
+                            <row>
+                                <entry>Delegator Filter</entry>
+                                <entry>Secondary Delegators on Action List Page</entry>
+                                <entry>Determines what is displayed on the action list page.
+                                    Options: <itemizedlist>
+                                        <listitem>
+                                            <para>Secondary Delegators on Action List Page</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>Secondary Delegators only on Filter Page</para>
+                                        </listitem>
+                                    </itemizedlist></entry>
+                            </row>
+                            <row>
+                                <entry>Primary Delegate Filter</entry>
+                                <entry>Primary Delegators on Action List Page</entry>
+                                <entry>Determines what is displayed on the action list page.
+                                    Options: <itemizedlist>
+                                        <listitem>
+                                            <para>Primary Delegators on Action List Page</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>Primary Delegators only on Filter Page</para>
+                                        </listitem>
+                                    </itemizedlist></entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Fields Displayed in Action List Preferences</title>
+            <para>These are the columns that will be displayed on the user’s action list
+                page.</para>
+            <para>
+                <table frame="none">
+                    <title/>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Name</entry>
+                                <entry>Default Value</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Document Type</entry>
+                                <entry>TRUE</entry>
+                            </row>
+                            <row>
+                                <entry>Title</entry>
+                                <entry>TRUE</entry>
+                            </row>
+                            <row>
+                                <entry>ActionRequested</entry>
+                                <entry>TRUE</entry>
+                            </row>
+                            <row>
+                                <entry>Initiator</entry>
+                                <entry>TRUE</entry>
+                            </row>
+                            <row>
+                                <entry>Delegator</entry>
+                                <entry>TRUE</entry>
+                            </row>
+                            <row>
+                                <entry>Date Created</entry>
+                                <entry>TRUE</entry>
+                            </row>
+                            <row>
+                                <entry>Date Approved</entry>
+                                <entry>FALSE</entry>
+                            </row>
+                            <row>
+                                <entry>Current Route Node(s)</entry>
+                                <entry>FALSE</entry>
+                            </row>
+                            <row>
+                                <entry>Workgroup Request</entry>
+                                <entry>TRUE</entry>
+                            </row>
+                            <row>
+                                <entry>Document Route Status</entry>
+                                <entry>TRUE</entry>
+                            </row>
+                            <row>
+                                <entry>Application Document Status</entry>
+                                <entry>FALSE</entry>
+                            </row>
+                            <row>
+                                <entry>Clear FYI</entry>
+                                <entry>TRUE</entry>
+                            </row>
+                            <row>
+                                <entry>Use Outbox</entry>
+                                <entry>TRUE</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Document Route Status Colors for Action list Entries</title>
+            <para>Each Document Route Status can be displayed with a certain color on the action
+                list. This section allows you to configure which colors are used. By default, no
+                colors are set.</para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Routing</title>
+        <sect2>
+            <title>Delegate Rules and Delegation Routing Rules</title>
+            <para>Rice provides a quick and convenient way to obtain information on Delegation Rules
+                through the <emphasis role="bold">Delegate Rule Lookup</emphasis>. This Lookup also
+                lets you create new Delegation Rules using the <emphasis role="bold">create
+                    new</emphasis> function and edit existing Delegation Rules.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/routing_rules_delegation.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>To access the <emphasis role="bold">Delegate Rule Lookup</emphasis> screen, click
+                    <emphasis role="bold">Routing Rules Delegation</emphasis> on the Rice Main
+                Menu.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/delegate_rule_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Use the <emphasis role="bold">Delegate Rule Lookup</emphasis> screen to find
+                information about a Delegation Rule. You can also create a new Rule by clicking the
+                create new button in the upper right corner of the screen. The create new function
+                is described in the Routing Rule Creation section later in this document.</para>
+            <para>When you do a search from the Delegate Rule Lookup screen, you can:<itemizedlist>
+                    <listitem>
+                        <para>View the Delegation Rule information returned by the search </para>
+                    </listitem>
+                    <listitem>
+                        <para>Edit a Delegation Rule </para>
+                    </listitem>
+                    <listitem>
+                        <para>Copy an existing Delegation Rule and create a new one based on that
+                            copy </para>
+                    </listitem>
+            </itemizedlist></para>
+            <para>Information about the Lookup function is in the next section of this document. The
+                other two functions are described in the Routing Rule Delegation Maintenance section
+                later in this document.</para>
+            <para>To find a Delegation Rule quickly, enter information in one or more of the fields
+                on the Lookup screen, then click the <emphasis role="bold">search</emphasis> button.
+                If you are not familiar with the search fields, you can leave all of the fields
+                blank and click the <emphasis role="bold">search</emphasis> button. The <emphasis
+                    role="bold">Delegate Rule Lookup</emphasis> page then displays all of the
+                Delegation Rule templates.</para>
+            <para>The fields on this screen are described in the Routing Rule Delegation Maintenance
+                section of this document.</para>
+            <note><para><emphasis role="bold">Parent Rule Id</emphasis> is a unique identification number
+                for a Rule Template; therefore, searching by the Parent Rule Id can be the fastest
+                way to find a particular Rule.</para></note>
+            <para>After you click the search button, Delegate Rule Lookup displays a list of Rules
+                that looks similar to this:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/rules_list.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Click <emphasis role="bold">edit</emphasis> on any row to go to the <emphasis
+                    role="bold">Routing Rule Delegation</emphasis> document for that Rule. You can
+                use this document to do maintenance on that Rule. This is discussed later in this
+                document, in the Routing Rule Delegation Maintenance section.</para>
+            <para>Click <emphasis role="bold">copy</emphasis> on any row to go to the <emphasis
+                    role="bold">Routing Rule Delegation</emphasis> document with the information
+                from that Rule copied into the document. This lets you add a new Delegation Rule
+                based on that information. This is discussed later in this document in the Routing
+                Rule Delegation Maintenance section.</para>
+            <para>Click a <emphasis role="bold">Delegation Rule Id</emphasis> to go to the <emphasis
+                    role="bold">Delegation Rule Inquiry</emphasis> screen for that Rule. This screen
+                displays specific information about how this Rule is set up in Rice. This screen is
+                discussed later in this document in the <emphasis role="bold">Delegation Rule
+                    Inquiry</emphasis> section.</para>
+            <para>Click a Parent Rule Id or a Name to go to the <emphasis role="bold">Rule
+                    Inquiry</emphasis> screen, where you can see details about that Parent Rule ID.
+                More information about this screen can be found in the Rule Inquiry section of this
+                User Guide.</para>
+            <para>Click a Rule Template to go to the <emphasis role="bold">Rule Template
+                    Inquiry</emphasis> screen. More information about this screen can be found in
+                the Rule Template Inquiry section of this User Guide.</para>
+            <para>The standard export options apply to this list of search results. An explanation
+                of the export options can be found in the Common Features and Functions section of
+                this User Guide.</para>
+        </sect2>
+        <sect2>
+            <title>Delegation Rule Inquiry</title>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/delegation_rule_inquiry.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>This screen provides specific information on how a <emphasis role="bold"
+                    >Rule</emphasis> works. From this screen, you can either click the <emphasis
+                    role="bold">close</emphasis> button to return to the previous screen or you can
+                export an XML version of this information.</para>
+            <para>The fields on this screen are described in the Rule Maintenance section of this
+                document.</para>
+        </sect2>
+        <sect2>
+            <title>Delegate Routing Rule Creation</title>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/delegate_routing_rule_creation.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>To create a new Delegate Routing Rule, start by selecting a Parent Rule to
+                associate with your new Delegate Rule:<orderedlist>
+                    <listitem>
+                        <para>Do a field lookup on the Select parent rule field.</para>
+                    </listitem>
+                    <listitem>
+                        <para>This displays the <emphasis role="bold">Rule Lookup</emphasis> screen
+                            where you search in the Rules your institution has defined in Rice to
+                            find the appropriate Parent Rule for your new Delegate Routing Rule.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>When you have found the appropriate Parent Rule, click its return
+                            value link to return to the Delegate Routing Rule Creation screen with
+                            this Parent Rule.</para>
+                        <para><inlinemediaobject>
+                                <imageobject>
+                                    <imagedata
+                                        fileref="../images/delegate_routing_rule_creation2.png"/>
+                                </imageobject>
+                            </inlinemediaobject></para>
+                    </listitem>
+                    <listitem>
+                        <para>Information from the Parent Rule you selected is now in the <emphasis
+                                role="bold">Select Parent Responsibility to Delegate From</emphasis>
+                            section of the <emphasis role="bold">Delegate Routing Rule
+                                Creation</emphasis> screen.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Click the <emphasis role="bold">Select</emphasis> button for this
+                            parent Rule.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Click the <emphasis role="bold">continue</emphasis> button.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Rice displays the <emphasis role="bold">Routing Rule
+                                Delegation</emphasis> screen. Use this screen to enter information
+                            for your new Rule. This is described in the <emphasis role="bold"
+                                >Routing Rule Delegation Maintenance</emphasis> section
+                            (next).</para>
+                    </listitem>
+                </orderedlist></para>
+        </sect2>
+        <sect2>
+            <title>Routing Rule Delegation Maintenance</title>
+            <para>You can use the <emphasis role="bold">Routing Rule Delegation</emphasis> document
+                screen for both editing existing Delegation Rules and for adding new Delegation
+                Rules to Rice. </para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/routing_rule_delegation.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <note><para>When Rice first displays the <emphasis role="bold">Routing Rule
+                    Delegation</emphasis> screen, all of the tabs except the Notes and Attachments,
+                Ad Hoc Recipients, and Route Log tabs, are expanded. They are all collapsed in the
+                screen print above so you can see all of them.</para></note>
+            <sect3>
+                <title>Document Layout</title>
+                <para>The Routing Rule Delegation screen you see when creating a new Rule has eight tabs:<itemizedlist>
+                        <listitem>
+                            <para>Document Overview </para>
+                        </listitem>
+                        <listitem>
+                            <para>Delegation Details </para>
+                        </listitem>
+                        <listitem>
+                            <para>Delegate Rule </para>
+                        </listitem>
+                        <listitem>
+                            <para>Persons </para>
+                        </listitem>
+                        <listitem>
+                            <para>Groups </para>
+                        </listitem>
+                        <listitem>
+                            <para>Notes and Attachments </para>
+                        </listitem>
+                        <listitem>
+                            <para>Ad Hoc Recipients </para>
+                        </listitem>
+                        <listitem>
+                            <para>Route Log </para>
+                        </listitem>
+                </itemizedlist></para>
+                <para>The <emphasis role="bold">Delegation Details, Delegate Rule,
+                        Persons</emphasis>, and <emphasis role="bold">Groups</emphasis> tabs are
+                    discussed in the sections that follow. The remaining four tabs are commonly used
+                    throughout Rice and are described in the Common Features and Functions section
+                    of the User Guide.</para>
+            </sect3>
+            <sect3>
+                <title>Delegation Details Tab</title>
+                <para>The Delegation Details tab is where you associate a Parent Rule with a
+                    Delegate Rule. It is also where you assign the Reviewer role.</para>
+                <para>The Delegation Details screen is displayed differently, depending on whether
+                    you are creating a new Rule or editing/copying a Rule. The version you see when
+                    creating a new Rule looks similar to this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/delegation_details.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>The information displayed is a copy of the information for the Parent Rule.
+                    Descriptions of these fields are below. Change this information as needed, then
+                    click the <emphasis role="bold">submit</emphasis> button to create this new
+                    Rule.</para>
+                <para>The version you see when editing or copying a Rule looks similar to
+                    this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/copying_rules.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>When you first see this version, the information in both columns is the same.
+                    You can modify the information in the fields in the right column, but not the
+                    left column. After changing the information appropriately in the right column,
+                    click the submit button to save your changes to this Rule.</para>
+                <para>The fields are the same in both versions of the screen:</para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Parent Rule Id</entry>
+                                    <entry>Rule Id of the Parent Rule for this Rule</entry>
+                                </row>
+                                <row>
+                                    <entry>Description</entry>
+                                    <entry>General description of this Rule</entry>
+                                </row>
+                                <row>
+                                    <entry>Reviewer</entry>
+                                    <entry>The person responsible for reviewing a document in the
+                                        routing process for this Rule</entry>
+                                </row>
+                                <row>
+                                    <entry>Type</entry>
+                                    <entry>The Type of the Reviewer</entry>
+                                </row>
+                                <row>
+                                    <entry>Action Request</entry>
+                                    <entry>The type of Action this Reviewer can take. This may be:<itemizedlist>
+                                            <listitem>
+                                                <para>Acknowledge</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>Complete</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>Approve</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>FYI</para>
+                                            </listitem>
+                                        </itemizedlist></entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+            <sect3>
+                <title>Delegate Rule tab</title>
+                <para>The Delegate Rule tab is displayed differently, depending on whether you are
+                    creating a new Rule or editing/copying a Rule. The version you see when creating
+                    a new Rule looks similar to this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/delegate_rule.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>Enter the appropriate information for your new Delegate Rule in these fields.
+                    There are descriptions of each of these fields below.</para>
+                <para>The version you see when editing or copying a Rule looks similar to
+                    this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/delegate_rule_copy.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>When you first see this version, the information in both columns is the same.
+                    You can modify the information in the fields in the right column, but not the
+                    left column. After changing the information in the right column
+                    appropriately.</para>
+                <para>The fields are the same in both versions of the screen:</para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Document Type</entry>
+                                    <entry>The Document Type defines the routing definition and
+                                        other properties for a set of documents. Each document is an
+                                        instance of a Document Type and conducts the same type of
+                                        business transaction as other instances of that Document
+                                        Type.</entry>
+                                </row>
+                                <row>
+                                    <entry>Rule Template</entry>
+                                    <entry>A Rule Template serves as a pattern or design for routing
+                                        Rules.</entry>
+                                </row>
+                                <row>
+                                    <entry>Delegation Type</entry>
+                                    <entry>Required. Options for Delegation Type are:<itemizedlist>
+                                            <listitem>
+                                                <para><emphasis role="bold">Primary</emphasis>: This
+                                                  means that the delegator turns over full authority
+                                                  to the delegate. The Action Requests for this
+                                                  delegator only show up in the Action List of the
+                                                  primary delegate. A primary delegation must be
+                                                  registered in KEW to be in effect.</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para><emphasis role="bold">Secondary</emphasis>:
+                                                  This means that the secondary delegate acts as a
+                                                  temporary backup delegator who has the same
+                                                  authority as the primary approver, or the
+                                                  secondary delegate acts as the delegator if the
+                                                  delegator is not available. Documents appear in
+                                                  the Action Lists of both the delegator and the
+                                                  secondary delegate. When either person acts on the
+                                                  document, it disappears from both Action Lists. A
+                                                  secondary delegation must be registered in KEW as
+                                                  being in effect for a specific time
+                                                  period(s).</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para><emphasis role="bold">Both</emphasis></para>
+                                            </listitem>
+                                        </itemizedlist></entry>
+                                </row>
+                                <row>
+                                    <entry>Name</entry>
+                                    <entry>The unique Name of the routing delegation Rule you are
+                                        creating or editing 
+                                        <note><para>You are not required to enter a Name, but if you don’t, Rice assigns a unique Name to the
+                                                Rule.</para></note>
+                                    </entry>
+                                </row>
+                                <row>
+                                    <entry>Description</entry>
+                                    <entry>The general description of the Rule</entry>
+                                </row>
+                                <row>
+                                    <entry>From Date</entry>
+                                    <entry>The start date of the routing Rule</entry>
+                                </row>
+                                <row>
+                                    <entry>To Date</entry>
+                                    <entry>The expiration date of the routing Rule</entry>
+                                </row>
+                                <row>
+                                    <entry>Force Action</entry>
+                                    <entry>This is a Yes or No flag. A checkmark means Yes, blank
+                                        means No.</entry>
+                                </row>
+                                <row>
+                                    <entry>Active</entry>
+                                    <entry>A True/False flag to indicate whether this Routing
+                                        Delegate Rule is active in Rice. If it is active, you can
+                                        use it in Rice.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+            <sect3>
+                <title>Persons tab</title>
+                <para>Rice displays the <emphasis role="bold">Persons</emphasis> tab differently,
+                    depending on whether you are creating a new Rule or editing/copying a Rule. This
+                    tab lets you add people to the Rule and set the type of Action each person needs
+                    to take under this Rule. The version of the Persons screen that you see when
+                    creating a new Delegate Rule looks similar to this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/persons_tab.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>Enter the appropriate information for the Persons section of your new Delegate
+                    Rule in these fields. There are descriptions of each of these fields
+                    below.</para>
+                <para>The version you see when editing or copying a Rule looks similar to
+                    this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/persons_tab_copy.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>Use the top portion of this tab to add a new Person to this Rule and set the
+                    Action that Person needs to take and its Priority. Use the lower portion of this
+                    tab to change existing values for this Rule. </para>
+                <note><para>When you create a new person, you must click the <emphasis role="bold"
+                        >add</emphasis> button when you have entered information in the three
+                    required fields. </para></note>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Person</entry>
+                                    <entry>Required. An individual user who receives the document
+                                        for the Action Requested.</entry>
+                                </row>
+                                <row>
+                                    <entry>Action Request</entry>
+                                    <entry>Required. The type of Action this person needs to take.
+                                        This Action may be one of these:<itemizedlist>
+                                            <listitem>
+                                                <para>Acknowledge</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>Complete</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>Approve</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>FYI</para>
+                                            </listitem>
+                                        </itemizedlist></entry>
+                                </row>
+                                <row>
+                                    <entry>Priority</entry>
+                                    <entry>Required. The priority associated with the Person in this
+                                        Rule. One is the highest Priority.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+            <sect3>
+                <title>Groups tab</title>
+                <para>The Groups tab differently, depending on whether you are creating a new Rule
+                    or editing/copying a Rule. The version you see when creating a new Rule looks
+                    similar to this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/groups_tab.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>Enter the appropriate information for the Groups section of your new Delegate
+                    Rule in these fields. These fields are described below.</para>
+                <para>The version you see when editing or copying a Rule looks similar to
+                    this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/groups_tab_copy.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>Use the top portion of this tab to add a new Group. Use the lower portion to
+                    change existing information for a Group. </para>
+                <note><para>When you create a new group, you must click the <emphasis role="bold">add</emphasis> button
+                        after you enter information in the required fields.</para></note>
+                <para><table frame="none">
+                    <title/>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Field</entry>
+                                <entry>Description</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Namespace</entry>
+                                <entry>The Namespace to which this Group will belong. A Namespace is
+                                        a way to set both Permissions and Entity Attributes. Each
+                                        Namespace instance is one level of Permissions and Entity
+                                        Attributes and is one record in Rice.</entry>
+                            </row>
+                                <row>
+                                    <entry>Name</entry>
+                                    <entry>The unique name of this Group</entry>
+                                </row>
+                            <row>
+                                <entry>Action Request</entry>
+                                <entry>Required. The type of Action this Group is expected to take.
+                                        The Action may be one of these:<itemizedlist>
+                                            <listitem>
+                                                <para>Acknowledge</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>Complete</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>Approve</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>FYI</para>
+                                            </listitem>
+                                        </itemizedlist></entry>
+                            </row>
+                            <row>
+                                <entry>Priority</entry>
+                                <entry>Required. The priority associated with the Group in this
+                                        Rule. One is the highest Priority.</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table></para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Rule Lookup</title>
+            <para>The Rice system provides a quick and convenient way to obtain information on Rules
+                through the <emphasis role="bold">Rule Lookup</emphasis> feature. This feature also
+                provides an entry point to creating a new Rule through the <emphasis role="bold"
+                    >create new</emphasis> function.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/routing_rules_link.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>To access the <emphasis role="bold">Rule Lookup</emphasis> screen click on
+                    <emphasis role="bold">Routing Rules</emphasis> on the Rice <emphasis role="bold"
+                    >Main Menu</emphasis>.</para>
+            <para>The <emphasis role="bold">Rule Lookup</emphasis> screen is used to view, edit or
+                copy information about routing rules defined in Rice. It is also the starting point
+                for creating a new rule using the <emphasis role="bold">Routing Rule Creation
+                </emphasis>screen.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/rule_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Click on the <emphasis role="bold">create new</emphasis> button to go to the
+                Routing Rule Creation screen. The process for creating a new Routing Rule is
+                discussed in the <emphasis role="bold">Routing Rule Creation</emphasis> section of
+                this document.</para>
+            <para>To limit your search results you can select one or more of the available search
+                criteria. </para>
+            <para>The fields on this screen are described in the <emphasis role="bold">Rule
+            Maintenance</emphasis> section of this document.</para>
+            <note>
+                <para><emphasis role="bold">Rule Id</emphasis> is a unique identification number for a
+                    particular rule template; therefore, search by rule Id can produce the most accurate
+                    search result. </para>
+                <para>If you are not familiar with the search criteria provided above you can simply
+                    click on the <emphasis role="bold">search</emphasis> button and the Rule Lookup page
+                    will automatically provide a list of rule templates.</para>
+            </note>
+            <para>Rule Lookups return a list that looks similar to the following:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/rule_lookup_results.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Clicking <emphasis role="bold">edit</emphasis> on any line item takes you to the
+                    <emphasis role="bold">Rule Maintenance Document Type Document</emphasis> where
+                you can perform maintenance on that rule. This is discussed later in this document
+                in the Rule Maintenance section.</para>
+            <para>Clicking <emphasis role="bold">copy</emphasis> on any line item takes you to the
+                    <emphasis role="bold">Rule Maintenance Document Type Document</emphasis> where
+                you can add a new rule based upon the rule you are copying. This is discussed later
+                in this document in the Rule Maintenance section.</para>
+            <para>Clicking a <emphasis role="bold">Rule Id</emphasis> will take you to the Rule
+                Inquiry screen for that specific rule. This is discussed later in this document in
+                the <emphasis role="bold">Rule Inquiry</emphasis> section.</para>
+            <para>Clicking a <emphasis role="bold">Document Type</emphasis> will take you to the
+                    <emphasis role="bold">Document Type Inquiry</emphasis> screen for that specific
+                rule. This is discussed in the <emphasis role="bold">Document Type
+                    Inquiry</emphasis> section of the User Guide.</para>
+            <para>The standard export options apply to this list. Explanation of the export options
+                can be found in the <emphasis role="bold">Common Features and Functions</emphasis>
+                section of the User Guide.</para>
+        </sect2>
+        <sect2>
+            <title>Rule Inquiry</title>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/rule_inquiry.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>This screen provides specific information on how the <emphasis role="bold"
+                    >Rule</emphasis> is set up in Rice. The fields on this screen are described in
+                the <emphasis role="bold">Rule Maintenance</emphasis> section of this
+                document.</para>
+        </sect2>
+        <sect2>
+            <title>Routing Rule Creation</title>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/routing_rule_creation.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>When creating a new Routing Rule you start by entering the <emphasis role="bold"
+                    >Document Type</emphasis> and the <emphasis role="bold">Rule Template</emphasis>
+                you want associated with your new Rule, then click the continue button. This takes
+                you to the <emphasis role="bold">Rule Maintenance Document Type Document</emphasis>
+                described in the <emphasis role="bold">Rule Maintenance</emphasis> section that
+                follows.</para>
+            <para>
+                <table frame="none">
+                    <title/>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Field</entry>
+                                <entry>Description</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Document Type</entry>
+                                <entry>You can select a new document type by clicking on the field
+                                    lookup button located at the right side of the <emphasis
+                                        role="bold">Doc Type </emphasis>field. </entry>
+                            </row>
+                            <row>
+                                <entry>Rule Template</entry>
+                                <entry>
+                                    <para>The name of the Rule Template with which this rule is
+                                        associated. A Rule Template serves as a pattern or design
+                                        for the routing rules and is a mechanism for providing
+                                        configuration information to rules. </para>
+                                    <para>You can select a new template by clicking on the field
+                                        lookup button located at right side of the Rule Template
+                                        field. </para>
+                                </entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Routing Report</title>
+            <para>The routing report is a tool to check workflow routing. You select a rule template
+                and enter any routing data required by the rule template. You can then view the
+                workflow routing that would be assigned to such a document.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/sample_travel_app.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <sect3>
+                <title>Using the Report</title>
+                <para>In the default implementation of Rice you can find the link to the Routing
+                    Report on the "Main" tab of the portal inside the "Workflow" pane. If for some
+                    reason the link is not visible on the "Main" tab you can still directly navigate
+                    to the Routing Report. To access the tool directly, replace the last part of the
+                    Rice Portal URL (<emphasis role="bold">portal.jsp</emphasis>) with <emphasis
+                        role="bold">kew/RoutingReport.do</emphasis> (for example, <emphasis
+                        role="bold">http://my.kuali.host/kuali/portal.jsp</emphasis> would become
+                        <emphasis role="bold"
+                        >http://my.kuali.host/kuali/kew/RoutingReport.do)</emphasis>. The following
+                    page is displayed:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/select_rule_template.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+            </sect3>
+            <sect3>
+                <title>Select a Rule Template</title>
+                <para>The first thing to do is select the rule template to use for the test from the
+                    drop-down list. When you select a template the page will update to show the
+                    routing data that you need to enter to run the test:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/select_rule_template2.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+            </sect3>
+            <sect3>
+                <title>Enter Routing Data</title>
+                <para>The data entry fields for the routing data use the standard controls described
+                    in the Standard Buttons on Lookup Screens document. Here is the example with the
+                    routing data:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/routing_data_entry.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>The specific information you need to enter is specific to the rule template
+                    you selected. Once you have entered the information, click the button to display
+                    the report:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/view_route_log_report.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+            </sect3>
+            <sect3>
+                <title>Report Contents</title>
+                <para>The upper section of the report (labeled “ID: 0”) contains the basic document
+                    information fields as if this was an actual document; several fields are blank
+                    since there is no actual document.</para>
+                <para>The lower section of the report (labeled “Pending Action Requests”) contains
+                    the routing that the document would be given. Clicking the button on any action
+                    displays more detail of the action:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/pending_action_requests.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Rule Maintenance</title>
+            <para>The <emphasis role="bold">Rule Maintenance Document Type Document</emphasis>
+                screen is used for both editing existing Rules and for adding new Rules to Rice. </para>
+            <figure>
+                <title>rule_maintenance_document_type_document.png</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/rule_maintenance_document_type_document.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <note>
+                <para>When Rice presents the <emphasis role="bold">Rule Maintenance Document Type
+                        Document</emphasis> screen all of the tabs except the Notes and Attachments, Ad
+                        Hoc Recipients and Route Log are expanded.</para>
+            </note>   
+            <sect3>
+                <title>Document Layout</title>
+                <para>The Rule Maintenance Document Type Document screen you see when creating a new
+                    rule is composed of seven tabs:<itemizedlist>
+                        <listitem>
+                            <para>Document Overview </para>
+                        </listitem>
+                        <listitem>
+                            <para>Rule </para>
+                        </listitem>
+                        <listitem>
+                            <para>Persons </para>
+                        </listitem>
+                        <listitem>
+                            <para>Groups </para>
+                        </listitem>
+                        <listitem>
+                            <para>Notes and Attachments </para>
+                        </listitem>
+                        <listitem>
+                            <para>Ad Hoc Recipients </para>
+                        </listitem>
+                        <listitem>
+                            <para>Route Log </para>
+                        </listitem>
+                    </itemizedlist></para>
+                <para>The screen you see when you are editing an existing Rule includes an
+                    additional tab called <emphasis role="bold">Roles</emphasis>.</para>
+                <para>The Rule, Persons, Groups and Roles tabs are unique and are discussed in the
+                    sections that follow. The remaining four tabs are commonly used throughout Rice
+                    and are described in the Common Features and Functions section of the User
+                    Guide.</para>
+            </sect3>
+            <sect3>
+                <title>Rule tab</title>
+                <para>The Rule tab is presented differently depending on whether you are creating a
+                    new Rule, or editing/copying a Rule. The version you see when creating a new
+                    Rule looks similar to this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/rule_tab.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>The version you see when editing or copying looks similar to this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/rule_tab_copy.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Document Type</entry>
+                                    <entry>The Document Type defines the routing definition and
+                                        other properties for a set of documents. Each document is an
+                                        instance of a Document Type and conducts the same type of
+                                        business transaction as other instances of that Document
+                                        Type.</entry>
+                                </row>
+                                <row>
+                                    <entry>Rule Template</entry>
+                                    <entry>The name of the Rule Template with which this rule is
+                                        associated. A Rule Template serves as a pattern or design
+                                        for the routing rules and is a mechanism for providing
+                                        configuration information to rules. </entry>
+                                </row>
+                                <row>
+                                    <entry>Name</entry>
+                                    <entry>
+                                        <para>The unique Name of the routing Name you are creating
+                                            or editing.</para>
+                                        <note><para>It is not required that you enter a Name, but if you don’t the system will assign a unique
+                                                value.</para></note>
+                                    </entry>
+                                </row>
+                                <row>
+                                    <entry>Description</entry>
+                                    <entry>The general description for the rule selected.</entry>
+                                </row>
+                                <row>
+                                    <entry>From Date</entry>
+                                    <entry>The start date of the routing rule.</entry>
+                                </row>
+                                <row>
+                                    <entry>To Date</entry>
+                                    <entry>The expiration date of the routing rule.</entry>
+                                </row>
+                                <row>
+                                    <entry>Force Action</entry>
+                                    <entry>Force Action is used to control workflow routing by
+                                        making the rule actions mandatory. This is a yes or no flag.
+                                        A check means yes, blank means no. </entry>
+                                </row>
+                                <row>
+                                    <entry>Active</entry>
+                                    <entry>A true/false flag to indicate if Routing Rule is active
+                                        in Rice can be applied or not.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+            <sect3>
+                <title>Persons tab</title>
+                <para>The Persons tab is presented differently depending on whether you are creating
+                    a new Rule, or editing/copying a Rule. The version you see when creating a new
+                    Rule looks similar to this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/person_tab.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>The version you see when editing or copying looks similar to this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/person_tab_copy.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Person</entry>
+                                    <entry>An individual user who receives the document for the
+                                        Action Requested.</entry>
+                                </row>
+                                <row>
+                                    <entry>Action Request</entry>
+                                    <entry>The type of action this person can take.<itemizedlist>
+                                            <listitem>
+                                                <para>Acknowledge</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>Complete</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>Approve</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>FYI</para>
+                                            </listitem>
+                                        </itemizedlist></entry>
+                                </row>
+                                <row>
+                                    <entry>Priority</entry>
+                                    <entry>The priority associated with the person in this rule.
+                                        Lower values mean higher priorities, with 1 being the
+                                        highest priority.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+            <sect3>
+                <title>Groups tab</title>
+                <para>The Groups tab is presented differently depending on whether you are creating
+                    a new Rule, or editing/copying a Rule. The version you see when creating a new
+                    Rule looks similar to this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/groups_tab.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>The version you see when editing or copying looks similar to this:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/groups_tab_copy.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>The top portion of this tab is used to add a new Group while the lower portion
+                    is used to change existing values. </para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Namespace</entry>
+                                    <entry>The Namespace to which this Group will belong. A
+                                        Namespace is a way to scope both Permissions and Entity
+                                        Attributes. Each Namespace instance is one level of scoping
+                                        and is one record in the system.</entry>
+                                </row>
+                                <row>
+                                    <entry>Name</entry>
+                                    <entry>The unique name of the Group.</entry>
+                                </row>
+                                <row>
+                                    <entry>Action Request</entry>
+                                    <entry>The type of action this Group is expected to take.<itemizedlist>
+                                            <listitem>
+                                                <para>Acknowledge</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>Complete</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>Approve</para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>FYI</para>
+                                            </listitem>
+                                        </itemizedlist></entry>
+                                </row>
+                                <row>
+                                    <entry>Priority</entry>
+                                    <entry>The priority associated with the Group in this rule. One
+                                        being the highest.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Rule Template Lookup</title>
+            <para>The <emphasis role="bold">Rules Template Lookup</emphasis> function is available
+                from any screen with the field lookup button next to the Rule Template field. Simply
+                click on the button and you will go a screen that looks like this.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/rule_template_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>The <emphasis role="bold">Rule Template Lookup</emphasis> page will automatically
+                provide a complete list of the rule templates. You can reduce the number of items
+                returned by your search by entering values in the fields, or if you are not sure or
+                familiar with the key word(s) for the search criteria, simply click on the search
+                button. </para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/rule_template_results.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Clicking on the <emphasis role="bold">Id</emphasis> field will take you to the
+                    <emphasis role="bold">Rule Template Inquiry</emphasis> screen for that
+                particular Rule Template.</para>
+            <para>
+                <table frame="none">
+                    <title/>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Field</entry>
+                                <entry>Description</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Return Value</entry>
+                                <entry>This is a link which will copy the Rule Template information
+                                    back to the screen which you originated from.</entry>
+                            </row>
+                            <row>
+                                <entry>Id</entry>
+                                <entry>A unique Id number for a specific rule template.</entry>
+                            </row>
+                            <row>
+                                <entry>Name</entry>
+                                <entry>The name of the rule template.</entry>
+                            </row>
+                            <row>
+                                <entry>Description</entry>
+                                <entry>A general description of the rule template.</entry>
+                            </row>
+                            <row>
+                                <entry>Delegation Rule Template</entry>
+                                <entry>The delegate rule template selected.</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Rule Template Inquiry</title>
+            <para>The <emphasis role="bold">Rule Template Inquiry</emphasis> screen provides
+                specific information about one particular <emphasis role="bold">Rule
+                    Template</emphasis>.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/rule_template_inquiry.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Clicking the export button will export a copy of the complete Rule Template in XML
+                format.</para>
+        </sect2>
+<!-- This was in orginal Word document, but the section was blank         
+        <sect2>
+            <title>Workflow</title>
+        </sect2>
+-->        
     </sect1>
 </chapter>

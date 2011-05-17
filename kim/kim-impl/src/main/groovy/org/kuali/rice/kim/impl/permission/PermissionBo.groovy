@@ -100,9 +100,8 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         bo.description = im.description
         bo.active = im.active
         bo.templateId = im.templateId
-		bo.attributes = new ArrayList<PermissionAttributeBo>()
-        for (attr in im.attributes) {
-            bo.attributes.add (PermissionAttributeBo.from(attr))
+        bo.attributes = im.attributes.collect {
+            PermissionAttributeBo.from(it)
         }
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;

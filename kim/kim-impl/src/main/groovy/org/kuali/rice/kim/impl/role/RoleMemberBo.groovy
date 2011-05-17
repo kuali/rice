@@ -37,12 +37,12 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.type.KimType
 import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.api.type.KimTypeInfoService
-import org.kuali.rice.kim.impl.membership.AbstractMember
+import org.kuali.rice.kim.impl.membership.AbstractMemberBo
 import org.springframework.util.AutoPopulatingList
 
 @Entity
 @Table(name = "KRIM_ROLE_MBR_T")
-public class RoleMemberBo extends AbstractMember implements RoleMemberContract {
+public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract {
 
     private static final long serialVersionUID = 1L;
 

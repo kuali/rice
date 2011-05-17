@@ -21,13 +21,15 @@ import javax.persistence.Entity
 import javax.persistence.Table
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
-import org.kuali.rice.kim.impl.common.attribute.AttributeData
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo
-import org.kuali.rice.kim.impl.type.KimTypeBo
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @Entity
 @Table(name="KRIM_PERM_ATTR_DATA_T")
-public class PermissionAttributeBo extends AttributeData implements KimAttributeDataContract {
+public class PermissionAttributeBo extends KimAttributeDataBo implements KimAttributeDataContract {
    
     @Column(name="PERM_ID")
     String assignedToId;
@@ -61,7 +63,6 @@ public class PermissionAttributeBo extends AttributeData implements KimAttribute
         bo.kimAttribute = KimAttributeBo.from(im.kimAttribute)
         bo.kimAttributeId = im.kimAttribute?.id
         bo.attributeValue = bo.attributeValue
-        bo.kimType = KimTypeBo.from(im.kimType)
         bo.kimTypeId = im.kimType?.id
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;

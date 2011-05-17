@@ -14,29 +14,15 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.impl.common.attribute
+package org.kuali.rice.kim.impl.membership
 
 import javax.persistence.Column
-import javax.persistence.Id
-import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
-import org.kuali.rice.kim.impl.type.KimTypeBo
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kim.impl.common.active.ActiveFromToBo
 
-public abstract class AttributeData extends PersistableBusinessObjectBase implements KimAttributeDataContract {
-    @Id
-	@Column(name="ATTR_DATA_ID")
-	String id
+public abstract class AbstractMemberBo extends ActiveFromToBo {
+    @Column(name="MBR_ID")
+	String memberId;
 
-	@Column(name="KIM_TYP_ID")
-	String kimTypeId
-
-    KimTypeBo kimType
-
-	@Column(name="KIM_ATTR_DEFN_ID")
-	String kimAttributeId
-
-    KimAttributeBo kimAttribute
-
-	@Column(name="ATTR_VAL")
-	String attributeValue
+	@Column(name="MBR_TYP_CD")
+	String typeCode;
 }

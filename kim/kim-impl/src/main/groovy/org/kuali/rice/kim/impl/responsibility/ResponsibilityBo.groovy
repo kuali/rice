@@ -28,163 +28,88 @@ import javax.persistence.Table
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
-import org.kuali.rice.core.util.AttributeSet
-import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kim.api.type.KimType
-import org.kuali.rice.kim.api.type.KimTypeAttribute
-import org.kuali.rice.kim.api.type.KimTypeInfoService
-import org.kuali.rice.kim.bo.role.KimResponsibility
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo
+import org.kuali.rice.kim.api.responsibility.Responsibility
+import org.kuali.rice.kim.api.responsibility.ResponsibilityContract
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo
-import org.kuali.rice.kim.util.KimConstants
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kns.service.DataDictionaryService
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb
-import org.springframework.util.AutoPopulatingList
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name = "KRIM_RSP_T")
-public class ResponsibilityBo extends PersistableBusinessObjectBase implements KimResponsibility {
+public class ResponsibilityBo extends PersistableBusinessObjectBase implements ResponsibilityContract {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "RSP_ID")
-    String responsibilityId;
+    String id
 
-    @Column(name = "NMSPC_CD")
-    String namespaceCode;
+    @Column(name="NMSPC_CD")
+    String namespaceCode
 
-    @Column(name = "NM")
-    String name;
+    @Column(name="NM")
+    String name
 
-    @Column(name = "DESC_TXT", length = 400)
+    @Column(name="DESC_TXT", length=400)
     String description;
 
-    @Type(type = "yes_no")
-    @Column(name = "ACTV_IND")
-    boolean active;
+    @Column(name="PERM_TMPL_ID")
+    String templateId
 
-    @OneToMany(targetEntity = ResponsibilityAttributeDataBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "responsibilityId")
+    @Column(name="ACTV_IND")
+    @Type(type="yes_no")
+    boolean active
+
+    @OneToOne(targetEntity=ResponsibilityTemplateBo.class,cascade=[],fetch=FetchType.EAGER)
+    @JoinColumn(name="PERM_TMPL_ID", insertable=false, updatable=false)
+    ResponsibilityTemplateBo template;
+
+    @OneToMany(targetEntity=ResponsibilityAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
-    //@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
-    List<ResponsibilityAttributeDataBo> detailObjects = new AutoPopulatingList(ResponsibilityAttributeDataBo.class);
+    List<ResponsibilityAttributeBo> attributes
 
-    @Column(name = "RSP_TMPL_ID")
-    String templateId;
-
-    @OneToOne(cascade = [], fetch = FetchType.EAGER)
-    @JoinColumn(name = "RSP_TMPL_ID", insertable = false, updatable = false)
-    ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
-
-    @OneToMany(targetEntity = RoleResponsibilityBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "responsibilityId")
+    @OneToMany(targetEntity=RoleResponsibilityBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
-    //@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
-    List<RoleResponsibilityBo> roleResponsibilities = new AutoPopulatingList(RoleResponsibilityBo.class);
+    List<RoleResponsibilityBo> rolePermissions
 
-
-    public KimResponsibilityInfo toSimpleInfo() {
-        KimResponsibilityInfo dto = new KimResponsibilityInfo();
-
-        dto.setResponsibilityId(getResponsibilityId());
-        dto.setNamespaceCode(getNamespaceCode());
-        dto.setName(getName());
-        dto.setDescription(getDescription());
-        dto.setActive(isActive());
-        dto.setDetails(getDetails());
-
-        return dto;
-    }
-
-
-
-
-
-
-    public String getDetailObjectsValues() {
-        StringBuffer detailObjectsToDisplay = new StringBuffer();
-        Iterator<ResponsibilityAttributeDataBo> respIter = getDetailObjects().iterator();
-        while (respIter.hasNext()) {
-            ResponsibilityAttributeDataBo responsibilityAttributeData = respIter.next();
-            detailObjectsToDisplay.append(responsibilityAttributeData.getAttributeValue());
-            if (respIter.hasNext()) {
-                detailObjectsToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
-            }
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    static Responsibility to(ResponsibilityBo bo) {
+        if (bo == null) {
+            return null
         }
-        return detailObjectsToDisplay.toString();
+
+        return Responsibility.Builder.create(bo).build();
     }
 
-    public String getDetailObjectsToDisplay() {
-        KimType kimType = getTypeInfoService().getKimType(getTemplate().getKimTypeId());
-        StringBuffer detailObjectsToDisplay = new StringBuffer();
-        Iterator<ResponsibilityAttributeDataBo> respIter = getDetailObjects().iterator();
-        while (respIter.hasNext()) {
-            ResponsibilityAttributeDataBo responsibilityAttributeData = respIter.next();
-            detailObjectsToDisplay.append(getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(responsibilityAttributeData.getKimAttributeId())));
-            detailObjectsToDisplay.append(KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR);
-            detailObjectsToDisplay.append(responsibilityAttributeData.getAttributeValue());
-            if (respIter.hasNext()) {
-                detailObjectsToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
-            }
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    static ResponsibilityBo from(Responsibility im) {
+        if (im == null) {
+            return null
         }
-        return detailObjectsToDisplay.toString();
-    }
 
-    protected String getKimAttributeLabelFromDD(KimTypeAttribute attribute) {
-        return getDataDictionaryService().getAttributeLabel(attribute.getKimAttribute().getComponentName(), attribute.getKimAttribute().getAttributeName());
-    }
-
-
-
-    protected transient AttributeSet detailsAsAttributeSet = null;
-
-    public AttributeSet getDetails() {
-        if (detailsAsAttributeSet == null) {
-            KimType kimType = getTypeInfoService().getKimType(getTemplate().getKimTypeId());
-            AttributeSet m = new AttributeSet();
-            for (ResponsibilityAttributeDataBo data: getDetailObjects()) {
-                KimTypeAttribute attribute = null;
-                if (kimType != null) {
-                    attribute = kimType.getAttributeDefinitionById(data.getKimAttributeId());
-                }
-                if (attribute != null) {
-                    m.put(attribute.getKimAttribute().getAttributeName(), data.getAttributeValue());
-                } else {
-                    m.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
-                }
-            }
-            detailsAsAttributeSet = m;
+        ResponsibilityBo bo = new ResponsibilityBo()
+        bo.id = im.id
+        bo.namespaceCode = im.namespaceCode
+        bo.name = im.name
+        bo.description = im.description
+        bo.active = im.active
+        bo.templateId = im.templateId
+        bo.attributes = im.attributes.collect {
+            ResponsibilityAttributeBo.from(it)
         }
-        return detailsAsAttributeSet;
+        bo.versionNumber = im.versionNumber
+        bo.objectId = im.objectId;
+
+        return bo
     }
-
-    public boolean hasDetails() {
-        return !detailObjects.isEmpty();
-    }
-
-    /*
-       Service Locator methods and static fields
-    */
-
-    private transient static KimTypeInfoService kimTypeInfoService;
-
-    protected KimTypeInfoService getTypeInfoService() {
-        if (kimTypeInfoService == null) {
-            kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
-        }
-        return kimTypeInfoService;
-    }
-
-    private transient DataDictionaryService dataDictionaryService;
-
-    public DataDictionaryService getDataDictionaryService() {
-        if (dataDictionaryService == null) {
-            dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
-        }
-        return dataDictionaryService;
-    }
-
 }

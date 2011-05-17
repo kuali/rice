@@ -59,9 +59,9 @@ public final class RemoteService {
 	}
 	
 	protected ServiceConfiguration constructServiceConfiguration() {
-		ServiceDescriptor serviceDescriptor = serviceRegistry.getServiceDescriptor(serviceInfo.getServiceId());
+		ServiceDescriptor serviceDescriptor = serviceRegistry.getServiceDescriptor(serviceInfo.getServiceDescriptorId());
 		if (serviceDescriptor == null) {
-			throw new IllegalStateException("Failed to locate ServiceDescriptor for ServiceInfo with serviceEndpointId=" + serviceInfo.getServiceId());
+			throw new IllegalStateException("Failed to locate ServiceDescriptor for ServiceInfo with serviceDescriptorId=" + serviceInfo.getServiceDescriptorId());
 		} else if (StringUtils.isBlank(serviceDescriptor.getDescriptor())) {
 			throw new IllegalStateException("ServiceDescriptor descriptor value is blank or null for descriptor with serviceEndpointId=" + serviceInfo.getServiceId());
 		}

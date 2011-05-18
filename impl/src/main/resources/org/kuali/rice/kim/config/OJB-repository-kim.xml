@@ -468,7 +468,7 @@
       <inverse-foreignkey field-ref="groupId" />
     </collection-descriptor>
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.impl.group.GroupAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="groupId" />
+      <inverse-foreignkey field-ref="assignedToId" />
     </collection-descriptor>
   </class-descriptor>
 
@@ -485,7 +485,7 @@
 
   <class-descriptor class="org.kuali.rice.kim.impl.group.GroupAttributeBo" table="KRIM_GRP_ATTR_DATA_T">
     <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_GRP_ATTR_DATA_ID_S" />
-    <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="assignedToId" column="GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />

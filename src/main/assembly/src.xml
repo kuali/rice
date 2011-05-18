@@ -15,18 +15,12 @@
   <fileSets>
     <fileSet>
       <directory>${project.basedir}</directory>
-      <includes>
-        <include>README*</include>
-        <include>LICENSE*</include>
-        <include>NOTICE*</include>
-        <include>**/pom.xml</include>
-        <include>**/src/**</include>
-        <include>**/scripts/**</include>
-      </includes>
       <excludes>
         <exclude>**/target/**</exclude>
         <exclude>**/atomikos-tmp/**</exclude>
         <exclude>**/jetty-tmp/**</exclude>
+        <exclude>work/**</exclude>
+        <exclude>velocity.log</exclude>
       </excludes>
     </fileSet>
   </fileSets>

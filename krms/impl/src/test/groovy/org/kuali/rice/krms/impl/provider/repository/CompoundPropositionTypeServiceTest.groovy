@@ -84,6 +84,7 @@ class CompoundPropositionTypeServiceTest {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract() {
 					String propId = "2";
 					String description = "";
+                    String ruleId = "1";
 					String typeId = "true";
 					String propositionTypeCode = PropositionType.SIMPLE.getCode();
 					String compoundOpCode = null;
@@ -96,6 +97,7 @@ class CompoundPropositionTypeServiceTest {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract() {
 					String propId = "2";
 					String description = "";
+                    String ruleId = "1";
 					String typeId = null;
 					String propositionTypeCode = PropositionType.SIMPLE.getCode();
 					String compoundOpCode = null;
@@ -108,6 +110,7 @@ class CompoundPropositionTypeServiceTest {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract() {
 			String propId = CompoundPropositionTypeServiceTest.ID;
 			String description = CompoundPropositionTypeServiceTest.DESCRIPTION;
+            String ruleId = "1";
 			String typeId = CompoundPropositionTypeServiceTest.TYPE_ID;
 			String propositionTypeCode = PropositionType.COMPOUND.getCode();
 			String compoundOpCode = logicalOperator.getCode();

@@ -31,7 +31,7 @@ public interface PropositionBoService {
      * @throws IllegalArgumentException if the proposition is null
      * @throws IllegalStateException if the proposition already exists in the system
      */
-    void createProposition(PropositionDefinition prop);
+    PropositionDefinition createProposition(PropositionDefinition prop);
 
     /**
      * This will update a {@link PropositionDefinition}.

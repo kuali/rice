@@ -44,7 +44,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#createAgenda(org.kuali.rice.krms.api.repository.agenda.AgendaDefinition)
 	 */
 	@Override
-	public void createAgenda(AgendaDefinition agenda) {
+	public AgendaDefinition createAgenda(AgendaDefinition agenda) {
 		if (agenda == null){
 			throw new IllegalArgumentException("agenda is null");
 		}
@@ -54,7 +54,10 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 		if (existing != null){
 			throw new IllegalStateException("the agenda to create already exists: " + agenda);			
 		}	
-		businessObjectService.save(from(agenda));		
+		
+		AgendaBo agendaBo = from(agenda);
+		businessObjectService.save(agendaBo);
+		return to(agendaBo);
 	}
 
 	/**
@@ -68,7 +71,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 			throw new IllegalArgumentException("agenda is null");
 		}
 		final String agendaIdKey = agenda.getId();
-		final AgendaDefinition existing = getAgendaByAgendaId(agendaIdKey);
+		final AgendaBo existing = businessObjectService.findBySinglePrimaryKey(AgendaBo.class, agendaIdKey);
 		if (existing == null) {
 			throw new IllegalStateException("the agenda does not exist: " + agenda);
 		}
@@ -81,7 +84,10 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 			toUpdate = agenda;
 		}
 
-		businessObjectService.save(from(toUpdate));
+		AgendaBo boToUpdate = from(toUpdate);
+		boToUpdate.setVersionNumber(existing.getVersionNumber());
+		
+		businessObjectService.save(boToUpdate);
 	}
 
 	/**
@@ -142,7 +148,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#createAgendaItem(org.kuali.rice.krms.api.repository.agenda.AgendaItem)
 	 */
 	@Override
-	public void createAgendaItem(AgendaItem agendaItem) {
+	public AgendaItem createAgendaItem(AgendaItem agendaItem) {
 		if (agendaItem == null){
 			throw new IllegalArgumentException("agendaItem is null");
 		}
@@ -152,7 +158,10 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 				throw new IllegalStateException("the agendaItem to create already exists: " + agendaItem);			
 			}
 		}
-		businessObjectService.save(AgendaItemBo.from(agendaItem));		
+		
+		AgendaItemBo bo = AgendaItemBo.from(agendaItem);
+		businessObjectService.save(bo);
+		return AgendaItemBo.to(bo);
 	}
 
 	/**

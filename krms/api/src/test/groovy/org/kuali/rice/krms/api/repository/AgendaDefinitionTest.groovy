@@ -73,8 +73,9 @@ class AgendaDefinitionTest {
 		AgendaDefinition.Builder.create(null, null, null, null, null)
 	}	
 
-	@Test(expected=IllegalArgumentException.class)
-	void test_AgendaDefinition_Builder_create_fail_null_agenda_id() {
+	@Test
+	void test_AgendaDefinition_Builder_create_null_agenda_id() {
+        // null ID is legit
 		AgendaDefinition.Builder.create(null, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
 	}
 

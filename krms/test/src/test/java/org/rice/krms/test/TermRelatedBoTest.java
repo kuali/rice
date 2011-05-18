@@ -19,7 +19,7 @@ import org.kuali.rice.krms.impl.repository.TermBoServiceImpl;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
-@BaselineMode(Mode.ROLLBACK)
+@BaselineMode(Mode.CLEAR_DB)
 public class TermRelatedBoTest extends AbstractBoTest {
 	
 	private TermBoService termBoService;
@@ -73,7 +73,7 @@ public class TermRelatedBoTest extends AbstractBoTest {
 
 		// TermResolver
 		TermResolverDefinition termResolverDef = 
-			TermResolverDefinition.Builder.create(null, "KRMS", "testResolver", krmsTermResolverTypeDefinition.getId(), 
+			TermResolverDefinition.Builder.create(null, "KRMS", "testResolver", null, krmsTermResolverTypeDefinition.getId(), 
 					TermSpecificationDefinition.Builder.create(outputTermSpec), 
 					Collections.singleton(TermSpecificationDefinition.Builder.create(prereqTermSpec)), 
 					null, 

@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.krms.api.repository
 
-import java.util.List;
+import java.util.Set;
 
-import javax.xml.bind.JAXBContext
-import javax.xml.bind.Marshaller
-import javax.xml.bind.Unmarshaller
-import org.junit.Test
-import org.junit.Assert
-import org.kuali.rice.krms.api.engine.TermSpecification;
-import org.kuali.rice.krms.api.repository.term.TermResolverDefinition.Builder;
-import org.kuali.rice.krms.api.repository.term.TermResolverAttribute
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.kuali.rice.krms.api.repository.term.TermResolverAttribute;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
-import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 
 
 /**
@@ -113,8 +112,7 @@ class TermResolverTest {
 		java.util.Set<TermResolverAttribute.Builder> attributes = [attribute];
 		java.util.Set<String> params = [PARAM_NAME+"1",PARAM_NAME+2];
 		
-		//create(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.krms.api.repository.TermSpecificationDefinition$Builder, java.util.List, java.util.List, java.util.List)
-		TermResolverDefinition termResolver = TermResolverDefinition.Builder.create(ID, NAMESPACE_CODE, NAME, TYPE_ID, output, prereqs, attributes, params).build()
+		TermResolverDefinition termResolver = TermResolverDefinition.Builder.create(ID, NAMESPACE_CODE, NAME, "", TYPE_ID, output, prereqs, attributes, params).build()
 				
 		JAXBContext jc = JAXBContext.newInstance(TermResolverDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()

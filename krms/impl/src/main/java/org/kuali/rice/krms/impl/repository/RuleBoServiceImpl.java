@@ -35,7 +35,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRule(org.kuali.rice.krms.api.repository.rule.RuleDefinition)
 	 */
 	@Override
-	public void createRule(RuleDefinition rule) {
+	public RuleDefinition createRule(RuleDefinition rule) {
 		if (rule == null){
 			throw new IllegalArgumentException("rule is null");
 		}
@@ -45,7 +45,9 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		if (existing != null){
 			throw new IllegalStateException("the rule to create already exists: " + rule);			
 		}	
-		businessObjectService.save(RuleBo.from(rule));
+		RuleBo ruleBo = RuleBo.from(rule);
+		businessObjectService.save(ruleBo);
+		return RuleBo.to(ruleBo);
 	}
 
 	/**
@@ -59,7 +61,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 			throw new IllegalArgumentException("rule is null");
 		}
 		final String ruleIdKey = rule.getId();
-		final RuleDefinition existing = getRuleByRuleId(ruleIdKey);
+		final RuleBo existing = businessObjectService.findBySinglePrimaryKey(RuleBo.class, ruleIdKey);
 		if (existing == null) {
 			throw new IllegalStateException("the rule does not exist: " + rule);
 		}
@@ -71,8 +73,10 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		} else {
 			toUpdate = rule;
 		}
+		RuleBo boToUpdate = RuleBo.from(toUpdate);
+		boToUpdate.setVersionNumber(existing.getVersionNumber());
 
-		businessObjectService.save(RuleBo.from(toUpdate));
+		businessObjectService.save(boToUpdate);
 	}
 
 	/**

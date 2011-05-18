@@ -11,6 +11,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 
 	def String propId
 	def String description
+    def String ruleId
 	def String typeId
 	def String propositionTypeCode
 	
@@ -41,6 +42,10 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	   PropositionBo bo = new PropositionBo()
 	   bo.propId = im.propId
 	   bo.description = im.description
+
+       //bo.ruleId = im.ruleId
+       setRuleIdRecursive(im.ruleId, bo)
+       
 	   bo.typeId = im.typeId
 	   bo.propositionTypeCode = im.propositionTypeCode
 	   bo.parameters = new ArrayList<PropositionParameterBo>()
@@ -54,6 +59,13 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	   }
 
 	   return bo
+   }
+   
+   private static void setRuleIdRecursive(String ruleId, PropositionBo prop) {
+       prop.ruleId = ruleId;
+       if (prop.compoundComponents != null) for (PropositionBo child : prop.compoundComponents) if (child != null) {
+           setRuleIdRecursive(ruleId, child);
+       }
    }
  
 } 

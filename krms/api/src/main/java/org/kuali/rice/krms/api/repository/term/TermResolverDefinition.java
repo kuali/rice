@@ -49,6 +49,7 @@ import org.kuali.rice.krms.api.repository.BuilderUtils;
 		TermResolverDefinition.Elements.ID,
 		TermResolverDefinition.Elements.NAMESPACE_CODE,
 		TermResolverDefinition.Elements.NAME,
+        TermResolverDefinition.Elements.CONTEXT_ID,
 		TermResolverDefinition.Elements.TYPE_ID,
 		TermResolverDefinition.Elements.OUTPUT,
 		TermResolverDefinition.Elements.PREREQUISITES,
@@ -58,7 +59,7 @@ import org.kuali.rice.krms.api.repository.BuilderUtils;
 })
 public final class TermResolverDefinition implements TermResolverDefinitionContract, ModelObjectComplete {
 	
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 	
 	@XmlElement(name = Elements.ID, required=false)
 	private final String id;
@@ -66,8 +67,10 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 	private final String namespaceCode;
 	@XmlElement(name = Elements.NAME, required=true)
 	private final String name;
-	@XmlElement(name = Elements.TYPE_ID, required=true)
-	private final String typeId;
+    @XmlElement(name = Elements.CONTEXT_ID, required=false)
+    private final String contextId;
+    @XmlElement(name = Elements.TYPE_ID, required=true)
+    private final String typeId;
 	@XmlElement(name = Elements.OUTPUT, required=false)
 	private final TermSpecificationDefinition output;
 	@XmlElement(name = "termSpecificationDefinition", required=false)
@@ -92,6 +95,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		id = null;
 		namespaceCode = null;
 		name = null;
+		contextId = null;
 		typeId = null;
 		output = null;
 		prerequisites = null;
@@ -103,6 +107,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		this.id = builder.getId();
 		this.namespaceCode = builder.getNamespaceCode();
 		this.name = builder.getName();
+		this.contextId = builder.getContextId();
 		this.typeId = builder.getTypeId();
 		this.output = builder.getOutput().build();
 		this.prerequisites = BuilderUtils.convertFromBuilderSet(builder.getPrerequisites());
@@ -118,7 +123,8 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		private String id;
 		private String namespaceCode;
 		private String name;
-		private String typeId;
+        private String contextId;
+        private String typeId;
 		private TermSpecificationDefinition.Builder output;
 		private Set<TermSpecificationDefinition.Builder> prerequisites;
 		private Set<TermResolverAttribute.Builder> attributes;
@@ -127,7 +133,8 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		private Builder(String id,
 				String namespaceCode,
 				String name,
-				String typeId,
+                String contextId,
+                String typeId,
 				TermSpecificationDefinition.Builder output,
 				Set<TermSpecificationDefinition.Builder> prerequisites,
 				Set<TermResolverAttribute.Builder> attributes,
@@ -148,6 +155,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 			setId(termResolver.getId());
 			setNamespaceCode(termResolver.getNamespaceCode());
 			setName(termResolver.getName());
+			setContextId(termResolver.getContextId());
 			setTypeId(termResolver.getTypeId());
 			setOutput(TermSpecificationDefinition.Builder.create(termResolver.getOutput()));
 			setPrerequisites(BuilderUtils.transform(termResolver.getPrerequisites(), TermSpecificationDefinition.Builder.toBuilder));
@@ -162,12 +170,13 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		public static Builder create(String id,
 				String namespaceCode,
 				String name,
+				String contextId,
 				String typeId,
 				TermSpecificationDefinition.Builder output,
 				Set<TermSpecificationDefinition.Builder> prerequisites,
 				Set<TermResolverAttribute.Builder> attributes,
 				Set<String> parameterNames) {
-			return new Builder(id, namespaceCode, name, typeId, output, prerequisites, attributes, parameterNames); 
+			return new Builder(id, namespaceCode, name, contextId, typeId, output, prerequisites, attributes, parameterNames); 
 		}
 
 		// Builder setters:
@@ -203,6 +212,13 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 			this.name = name;
 		}
 
+        /**
+         * @param contextId the contextId to set
+         */
+        public void setContextId(String contextId) {
+            this.contextId = contextId;
+        }
+		
 		/**
 		 * @param typeId the typeId to set
 		 */
@@ -267,6 +283,12 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		public String getName() {
 			return this.name;
 		}
+        /**
+         * @return the contextId
+         */
+        public String getContextId() {
+            return this.contextId;
+        }
 		/**
 		 * @return the typeId
 		 */
@@ -334,6 +356,13 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		return this.name;
 	}
 	
+    /**
+     * @return the contextId
+     */
+    public String getContextId() {
+        return this.contextId;
+    }
+
 	/**
 	 * @return the typeId
 	 */
@@ -411,7 +440,8 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		public static final String ID = "id";
 		public static final String NAMESPACE_CODE = "namespaceCode";
 		public static final String NAME = "name";
-		public static final String TYPE_ID = "typeId";
+        public static final String CONTEXT_ID = "contextId";
+        public static final String TYPE_ID = "typeId";
 		public static final String OUTPUT = "output";
 		public static final String PREREQUISITES = "prerequisites";
 		public static final String ATTRIBUTES = "attributes";

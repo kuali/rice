@@ -85,7 +85,7 @@ class RuleBoServiceImplTest {
 		TEST_ACTION_DEF = builder.build()
 		TEST_ACTION_BO = ActionBo.from(TEST_ACTION_DEF)
 
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setPropId(PROP_ID_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 		myPropBuilder.setTypeId(TYPE_ID)

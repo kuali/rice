@@ -1,9 +1,11 @@
 package org.rice.krms.test;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krms.impl.repository.TermBoService;
 
+@Ignore
 public class TermBoServiceTest extends KRMSTestCase {
 	
 	TermBoService termBoService = null;

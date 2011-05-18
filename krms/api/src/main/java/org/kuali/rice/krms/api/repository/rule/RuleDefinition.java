@@ -103,7 +103,11 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         this.namespace = builder.getNamespace();
         this.typeId = builder.getTypeId();
         this.propId = builder.getPropId();
-        this.proposition = builder.getProposition().build();
+        
+        if (builder.getProposition() != null) {
+            this.proposition = builder.getProposition().build();
+        }
+        
         List<ActionDefinition> actionList = new ArrayList<ActionDefinition> ();
         if (builder.getActions() != null){
         	for (ActionDefinition.Builder b : builder.actions){
@@ -218,7 +222,9 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         	
             Builder builder =  new Builder(contract.getId(), contract.getName(),
             		contract.getNamespace(), contract.getTypeId(), contract.getPropId());
-            builder.setProposition(PropositionDefinition.Builder.create(contract.getProposition()));
+            if (contract.getProposition() != null) {
+                builder.setProposition(PropositionDefinition.Builder.create(contract.getProposition()));
+            }
             builder.setActions(actionList);
             builder.setAttributes(attrBuilderList);
             return builder;
@@ -232,8 +238,8 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		 */
 
         public void setId(String ruleId) {
-            if (StringUtils.isBlank(ruleId)) {
-                throw new IllegalArgumentException("rule ID is blank");
+            if (ruleId != null && StringUtils.isBlank(ruleId)) {
+                throw new IllegalArgumentException("rule ID must be null or else non-blank");
             }
 			this.id = ruleId;
 		}
@@ -260,9 +266,9 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		}
 		
 		public void setPropId(String propId) {
-			if (StringUtils.isBlank(propId)) {
-                throw new IllegalArgumentException("proposition id is blank");
-			}
+		    if (propId != null && StringUtils.isBlank(propId)) {
+		        throw new IllegalArgumentException("propId must be null or non-blank");
+		    }
 			this.propId = propId;
 		}
 		

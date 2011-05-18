@@ -22,7 +22,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
 
 /**
- * This is a description of what this class does - gilesp don't forget to fill this in. 
+ * Agenda Item business object
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

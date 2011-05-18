@@ -29,6 +29,7 @@ public interface TermResolverDefinitionContract extends Identifiable {
 
 	String getNamespaceCode();
 	String getName();
+    String getContextId();
 	String getTypeId();
 	TermSpecificationDefinitionContract getOutput();
 	Set<? extends TermSpecificationDefinitionContract> getPrerequisites();

@@ -115,6 +115,7 @@ public final class PropositionParameter implements PropositionParameterContract,
         private String value;
         private String parameterType;
         private Integer sequenceNumber;
+        private PropositionDefinition.Builder proposition;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -152,15 +153,16 @@ public final class PropositionParameter implements PropositionParameterContract,
 		 * @throws IllegalArgumentException if the id is null or blank
 		 */
         public void setId(String id) {
-            if (StringUtils.isBlank(id)) {
+            if (id != null && StringUtils.isBlank(id)) {
                 throw new IllegalArgumentException("id is blank");
             }
             this.id = id;
         }
 
 		public void setPropId(String propId) {
-            if (StringUtils.isBlank(propId)) {
-                throw new IllegalArgumentException("propId is blank");
+		    // have to be able to create it with a null propId for chicken/egg reasons.
+            if (null != propId && StringUtils.isBlank(propId)) {
+                throw new IllegalArgumentException("propId must be null or non-blank");
             }
 			this.propId = propId;
 		}
@@ -189,6 +191,13 @@ public final class PropositionParameter implements PropositionParameterContract,
                 throw new IllegalArgumentException("parameter type is blank");				
 			}
 			this.sequenceNumber = sequenceNumber;
+		}
+		
+		public void setProposition(PropositionDefinition.Builder proposition) {
+		    if (proposition != null && !StringUtils.isBlank(proposition.getPropId())) {
+		        setPropId(proposition.getPropId());
+		    }
+		    this.proposition = proposition;
 		}
 
 		@Override
@@ -223,6 +232,9 @@ public final class PropositionParameter implements PropositionParameterContract,
 		 */
         @Override
         public PropositionParameter build() {
+            if (proposition == null && StringUtils.isBlank(propId)) {
+                throw new IllegalStateException("either proposition must be non-null or propId must be non-blank");
+            }
             return new PropositionParameter(this);
         }
 		

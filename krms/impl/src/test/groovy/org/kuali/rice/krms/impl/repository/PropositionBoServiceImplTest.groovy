@@ -43,15 +43,16 @@ class PropositionBoServiceImplTest {
 
 	// Simple Proposition data structures	
 	private static final List <PropositionParameter.Builder> parmList1 = createPropositionParametersSet1()
-	private static final PropositionDefinition proposition = createProposition()
-	private PropositionBo bo = PropositionBo.from(proposition)
+    private static final PropositionDefinition propositionWithId = createPropositionWithId()
+    private static final PropositionDefinition propositionWithNullId = createPropositionWithNullId()
+	private PropositionBo bo = PropositionBo.from(propositionWithId)
 
 	// Compound Propositon data structures
 	private static final List <PropositionParameter.Builder> parmListA = createPropositionParametersSet2()
 	private static final List <PropositionParameter.Builder> parmListB = createPropositionParametersSet3()
 	private static final PropositionDefinition.Builder propositionABuilder = createPropositionABuilder()
 	private static final PropositionDefinition.Builder propositionBBuilder = createPropositionBBuilder()
-	private static final PropositionDefinition compoundProposition = createCompoundProposition()
+	private static final PropositionDefinition compoundPropositionWithNullId = createCompoundPropositionWithNullId()
 
 	// for PropositionParameter tests 	
 	static List<PropositionParameter> parmList = new ArrayList<PropositionParameter>()
@@ -120,22 +121,20 @@ class PropositionBoServiceImplTest {
 
 	@Test
 	void test_create_proposition_exists() {
-		mock.demand.findBySinglePrimaryKey (1..1) { clazz, map -> bo }
 		def boService = mock.proxyDelegateInstance()
 		pservice.setBusinessObjectService(boService)
 		shouldFail(IllegalStateException.class) {
-			pservice.createProposition(proposition)
+			pservice.createProposition(propositionWithId)
 		}
 		mock.verify(boService)
 	}
 
     @Test
     void test_create_proposition_success() {
-        mock.demand.findBySinglePrimaryKey (1..1) { clazz, map -> null }
         mock.demand.save { PersistableBusinessObject bo -> }
         def boService = mock.proxyDelegateInstance()
         pservice.setBusinessObjectService(boService)
-        pservice.createProposition(proposition)
+        pservice.createProposition(propositionWithNullId)
         mock.verify(boService)
     }
 
@@ -155,7 +154,7 @@ class PropositionBoServiceImplTest {
         mock.demand.save { PersistableBusinessObject bo -> }
         def boService = mock.proxyDelegateInstance()
         pservice.setBusinessObjectService(boService)
-        pservice.updateProposition(proposition)
+        pservice.updateProposition(propositionWithId)
         mock.verify(boService)
     }
 
@@ -165,7 +164,7 @@ class PropositionBoServiceImplTest {
         def boService = mock.proxyDelegateInstance()
         pservice.setBusinessObjectService(boService)
 		shouldFail(IllegalStateException.class) {
-			pservice.updateProposition(proposition)
+			pservice.updateProposition(propositionWithId)
 		}
         mock.verify(boService)
     }
@@ -186,7 +185,7 @@ class PropositionBoServiceImplTest {
         mock.demand.findBySinglePrimaryKey (1..1) { clazz, map -> bo }
         def boService = mock.proxyDelegateInstance()
         pservice.setBusinessObjectService(boService)
-        Assert.assertEquals (proposition, pservice.getPropositionById("2002"))
+        Assert.assertEquals (propositionWithId, pservice.getPropositionById("2002"))
         mock.verify(boService)
     }
 
@@ -201,11 +200,10 @@ class PropositionBoServiceImplTest {
 
 	@Test
 	void test_create_compound_proposition_success() {
-		mock.demand.findBySinglePrimaryKey (1..1) { clazz, map -> null }
 		mock.demand.save { PersistableBusinessObject bo -> }
 		def boService = mock.proxyDelegateInstance()
 		pservice.setBusinessObjectService(boService)
-		pservice.createProposition(compoundProposition)
+		pservice.createProposition(compoundPropositionWithNullId)
 		mock.verify(boService)
 	}
 
@@ -413,22 +411,37 @@ class PropositionBoServiceImplTest {
 //
 // private static methods for creating test data
 //		
-	private static createProposition() {
+	private static createPropositionWithId() {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "2002"
 			def String description = "Is campus type = Bloomington"
-			def String typeId = "1"
+            def String ruleId = "1"
+            def String typeId = "1"
 			def String propositionTypeCode = "S"
 			def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmList1
 			def String compoundOpCode = null
 			def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
 		}).build()
 	}
+    
+    private static createPropositionWithNullId() {
+        return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
+            def String propId = null
+            def String description = "Is campus type = Bloomington"
+            def String ruleId = "1"
+            def String typeId = "1"
+            def String propositionTypeCode = "S"
+            def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmList1
+            def String compoundOpCode = null
+            def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
+        }).build()
+    }
 		
 	private static createPropositionABuilder() {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "100"
 			def String description = "Is campus type = Muir"
+            def String ruleId = "1"
 			def String typeId = "1"
 			def String propositionTypeCode = "S"
 			def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmListA
@@ -441,6 +454,7 @@ class PropositionBoServiceImplTest {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "101"
 			def String description = "Is campus type = Thurgood Marshall"
+            def String ruleId = "1"
 			def String typeId = "1"
 			def String propositionTypeCode = "S"
 			def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmListB
@@ -449,10 +463,11 @@ class PropositionBoServiceImplTest {
 		})
 	}
 		
-	private static createCompoundProposition() {
+	private static createCompoundPropositionWithNullId() {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-			def String propId = "111"
+			def String propId = null
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
+            def String ruleId = "1"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()

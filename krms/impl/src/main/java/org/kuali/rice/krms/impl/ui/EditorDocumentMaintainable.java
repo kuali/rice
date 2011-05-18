@@ -58,7 +58,7 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 			if (agendaIds == null || agendaIds.length != 1) { 
 				//throw new RiceRuntimeException("one and only one agendaId request parameter may be passed");
 			} else {
-				// TODO: throw out this hacky junk
+				// TODO: change this, it makes more sense for MAINTENANCE_EDIT_ACTION
 				String agendaId = agendaIds[0];
 
 				AgendaBo agenda = getBoService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
@@ -74,6 +74,17 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 		}
 		
 		
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
+	 */
+	@Override
+	public void saveBusinessObject() {
+	    // TODO here's where we can handle persisting our agenda and context
+	    super.saveBusinessObject();
 	}
 	
 //	/**

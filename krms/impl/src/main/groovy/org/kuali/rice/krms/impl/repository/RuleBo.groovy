@@ -19,6 +19,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	def PropositionBo proposition
 	def List<ActionBo> actions	
 	def Set<RuleAttributeBo> attributes
+    //def List<PropositionBo> allChildPropositions
 	
 	/**
 	* Converts a mutable bo to it's immutable counterpart

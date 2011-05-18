@@ -79,7 +79,7 @@
     
     <alias alias="jtaUserTransaction"  name="jtaTransactionManager"/>
 
-    <alias alias="transactionManager"  name="jtaTransactionManager"/>
+    <!-- alias alias="transactionManager"  name="jtaTransactionManager"/ -->
 
 
     <bean id="riceDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
@@ -121,7 +121,22 @@
         <property name="metadataLocation" value="classpath:org/kuali/rice/krms/config/OJB-repository-krms.xml" />
     </bean>
     
+    <!-- attempt to get our beans to be visible by the GRL -->
+    <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
+      <property name="localServiceName" value="KRMSContext" />
+    </bean>
+    
     <bean id="genericTestDao" class="org.rice.krms.test.GenericTestDao" p:jcdAlias="krmsDataSource"/>
+    
+    <bean id="testBoService" class="org.rice.krms.test.TestBoService">
+        <constructor-arg><ref local="genericTestDao" /></constructor-arg>
+    </bean>
+
+    <bean id="krmsAttributeDefinitionService" class="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionServiceImpl">
+        <property name="businessObjectService">
+            <ref local="testBoService"/>
+        </property>
+    </bean>
     
     <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" p:proxyTargetClass="true" >
         <property name="interceptorNames">

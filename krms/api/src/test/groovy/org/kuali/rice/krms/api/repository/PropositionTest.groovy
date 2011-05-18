@@ -39,6 +39,7 @@ class PropositionTest {
 	
 	private static final String PROP_ID = "202"
 	private static final String DESCRIPTION = "is Campus Bloomington"
+    private static final String RULE_ID = "1"
 	private static final String TYPE_ID = "1"
 	private static final String PROPOSITION_TYPE_CD_S = "S"
 	private static final String PROPOSITION_TYPE_CD_C = "C"
@@ -57,6 +58,7 @@ class PropositionTest {
 		<Proposition xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<propId>202</propId>
 			<description>is Campus Bloomington</description>
+            <ruleId>1</ruleId>
 			<typeId>1</typeId>
 			<propositionTypeCode>S</propositionTypeCode>
 			<parameter>
@@ -87,12 +89,14 @@ class PropositionTest {
 		<Proposition xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<propId>111</propId>
 			<description>Compound: Campus is Muir or Thurgood Marshall</description>
+            <ruleId>1</ruleId>
 			<typeId>1</typeId>
 			<propositionTypeCode>C</propositionTypeCode>
 			<compoundOpCode>|</compoundOpCode>
 			<proposition>
 				<propId>100</propId>
 				<description>Is campus type = Muir</description>
+				<ruleId>1</ruleId>
 				<typeId>1</typeId>
 				<propositionTypeCode>S</propositionTypeCode>
 					<parameter>
@@ -120,6 +124,7 @@ class PropositionTest {
 				<proposition>
 					<propId>101</propId>
 					<description>Is campus type = Thurgood Marshall</description>
+					<ruleId>1</ruleId>
 					<typeId>1</typeId>
 					<propositionTypeCode>S</propositionTypeCode>
 					<parameter>
@@ -149,48 +154,50 @@ class PropositionTest {
 		
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_all_null() {
-		PropositionDefinition.Builder.create(null, null)
+		PropositionDefinition.Builder.create(null, null, null, null)
 	}
 	
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_proposition_type() {
-		PropositionDefinition.Builder.create(null, PARM_LIST_1)
+		PropositionDefinition.Builder.create(null, RULE_ID, TYPE_ID, PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_proposition_type() {
-		PropositionDefinition.Builder.create("", PARM_LIST_1)
+		PropositionDefinition.Builder.create("", RULE_ID, TYPE_ID, PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace_proposition_type() {
-		PropositionDefinition.Builder.create("    ", PARM_LIST_1)
+		PropositionDefinition.Builder.create("    ", RULE_ID, TYPE_ID, PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_invalid_proposition_type() {
-		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_BAD, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_BAD, RULE_ID, TYPE_ID, PARM_LIST_1)
 	}
 
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_parameter_list() {
-		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, null)
+	@Test
+	void test_Builder_create_null_parameter_list() {
+        // null param list ok
+		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, null)
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_empty_parameter_list() {
-		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, EMPTY_PARM_LIST)
+	@Test
+	void test_Builder_create_empty_parameter_list() {
+        // empty param list ok
+		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, EMPTY_PARM_LIST)
 	}
 
 	@Test
 	void test_Builder_create_simple_proposition_success() {
-		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1)
 	}
 
 	@Test
 	void test_Builder_create_and_build_simple_proposition_success() {
-		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1).build()
+		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1).build()
 	}
 
 	@Test
@@ -198,6 +205,7 @@ class PropositionTest {
 		PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
+            def String ruleId = "1"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
@@ -211,6 +219,7 @@ class PropositionTest {
 		PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
+            def String ruleId = "1"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
@@ -221,17 +230,18 @@ class PropositionTest {
 
 	@Test
 	public void testXmlMarshaling_simple_proposition() {
- 		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+ 		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setPropId(PROP_ID)
 		myPropBuilder.setDescription(DESCRIPTION)
-		myPropBuilder.setTypeId(TYPE_ID)
 		PropositionDefinition myProp = myPropBuilder.build()
         JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
 	    Marshaller marshaller = jc.createMarshaller()
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
 	    StringWriter sw = new StringWriter()
 	    marshaller.marshal(myProp, sw)
 	    String xml = sw.toString()
-  
+        print xml
+        
 	    Unmarshaller unmarshaller = jc.createUnmarshaller();
 	    Object actual = unmarshaller.unmarshal(new StringReader(xml))
 	    Object expected = unmarshaller.unmarshal(new StringReader(SIMPLE_PROP_XML))
@@ -259,6 +269,7 @@ class PropositionTest {
 		PropositionDefinition myProp = PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
+            def String ruleId = "1"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
@@ -396,6 +407,7 @@ class PropositionTest {
 	  return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 		  def String propId = "100"
 		  def String description = "Is campus type = Muir"
+          def String ruleId = "1"
 		  def String typeId = "1"
 		  def String propositionTypeCode = "S"
 		  def List<? extends PropositionParameterContract> parameters = PropositionTest.PARM_LIST_A
@@ -408,6 +420,7 @@ class PropositionTest {
 	  return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 		  def String propId = "101"
 		  def String description = "Is campus type = Thurgood Marshall"
+          def String ruleId = "1"
 		  def String typeId = "1"
 		  def String propositionTypeCode = "S"
 		  def List<? extends PropositionParameterContract> parameters = PropositionTest.PARM_LIST_B

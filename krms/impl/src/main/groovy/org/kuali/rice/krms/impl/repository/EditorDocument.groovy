@@ -21,6 +21,7 @@ package org.kuali.rice.krms.impl.repository;
 * @author Kuali Rice Team (rice.collab@kuali.org)
 *
 */
+// TODO: rename this class and associated metadata since it isn't implementing Document
 public class EditorDocument {
 
    def ContextBo context

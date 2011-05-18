@@ -68,8 +68,8 @@ values ('101C', 'P101', 'BL', 'C', 1, 1)
 ;
 
 insert into krms_actn_t
-(actn_id, nm, desc_txt, typ_id, rule_id, seq_no, ver_nbr)
-values ( 'action2001', 'Say Hello', 'Send Hello SPAM', 'T3', 'R201', 1, 1)
+(actn_id, nm, nmspc_cd, desc_txt, typ_id, rule_id, seq_no, ver_nbr)
+values ( 'action2001', 'Say Hello', 'KRMS_TEST', 'Send Hello SPAM', 'T3', 'R201', 1, 1)
 ;
 
 insert into krms_cntxt_t

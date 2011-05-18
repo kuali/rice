@@ -37,17 +37,17 @@ public final class PropositionBoServiceImpl implements PropositionBoService {
 	 * @see org.kuali.rice.krms.impl.repository.PropositionBoService#createProposition(org.kuali.rice.krms.api.repository.proposition.PropositionDefinition)
 	 */
 	@Override
-	public void createProposition(PropositionDefinition prop) {
+	public PropositionDefinition createProposition(PropositionDefinition prop) {
 		if (prop == null){
 	        throw new IllegalArgumentException("proposition is null");
 		}
-		final String propIdKey = prop.getPropId();
-		final PropositionDefinition existing = getPropositionById(propIdKey);
-		if (existing != null && existing.getPropId().equals(propIdKey)){
-            throw new IllegalStateException("the proposition to create already exists: " + prop);			
-		}
+		if (null != prop.getPropId()) {
+	            throw new IllegalStateException("for creation, PropositionDefinition.id must be null");
+	    }
 		
-		businessObjectService.save(PropositionBo.from(prop));
+		PropositionBo propositionBo = PropositionBo.from(prop);
+		businessObjectService.save(propositionBo);
+		return PropositionBo.to(propositionBo);
 	}
 
 	/**

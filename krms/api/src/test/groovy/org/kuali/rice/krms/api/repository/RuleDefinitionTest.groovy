@@ -61,6 +61,7 @@ class RuleDefinitionTest {
 			<proposition>
 				<propId>PROP-001</propId>
 				<description>is Campus Bloomington</description>
+                <ruleId>RULEID001</ruleId>
 				<typeId>1234XYZ</typeId>
         		<propositionTypeCode>S</propositionTypeCode>
         		<parameter>
@@ -110,8 +111,9 @@ class RuleDefinitionTest {
 		RuleDefinition.Builder.create(null, null, null, null, null)
 	}	
 
-	@Test(expected=IllegalArgumentException.class)
-	void test_RuleDefinition_Builder_create_fail_null_rule_id() {
+	@Test
+	void test_RuleDefinition_Builder_create_null_rule_id() {
+        // null id is legit
 		RuleDefinition.Builder.create(null, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
 	}
 
@@ -170,8 +172,9 @@ class RuleDefinitionTest {
 		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, "    ", PROP_ID_1)
 	}
 
-	@Test(expected=IllegalArgumentException.class)
-	void test_RuleDefinition_Builder_create_fail_null_prop_id() {
+	@Test
+	void test_RuleDefinition_Builder_create_null_prop_id() {
+        // null propId is legit
 		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, null)
 	}
 
@@ -192,10 +195,9 @@ class RuleDefinitionTest {
 	
 	@Test
 	void test_RuleDefinition_Builder_create_and_build() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setPropId(PROP_ID_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
-		myPropBuilder.setTypeId(TYPE_ID)
 
 		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
 		myBuilder.setProposition myPropBuilder
@@ -204,10 +206,9 @@ class RuleDefinitionTest {
 	
 	@Test
 	public void testXmlMarshaling_small_RuleDefinition() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setPropId(PROP_ID_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
-		myPropBuilder.setTypeId(TYPE_ID)
 
 		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
 		myBuilder.setProposition myPropBuilder
@@ -239,10 +240,9 @@ class RuleDefinitionTest {
 	@Test
 	// TODO: add attributes
 	public void testXmlMarshaling_RuleDefinition_with_attributes() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setPropId(PROP_ID_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
-		myPropBuilder.setTypeId(TYPE_ID)
 
 		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
 		myBuilder.setProposition myPropBuilder
@@ -275,7 +275,7 @@ class RuleDefinitionTest {
 	@Test
 	// TODO: add actions
 	public void testXmlMarshaling_RuleDefinition_with_actions() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setPropId(PROP_ID_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 		myPropBuilder.setTypeId(TYPE_ID)

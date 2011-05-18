@@ -10,6 +10,7 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
 	def String id
 	def String namespaceCode
 	def String name
+    def String contextId
 	def String typeId
 	def String outputId
 	
@@ -41,6 +42,7 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
 	   bo.id = im.id
 	   bo.namespaceCode = im.namespaceCode
 	   bo.name = im.name
+       bo.contextId = im.contextId
 	   bo.typeId = im.typeId
 	   bo.output = TermSpecificationBo.from(im.output)
 	   bo.outputId = im.output.id

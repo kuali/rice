@@ -116,12 +116,11 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
     	this.whenFalseId = builder.getWhenFalseId();
     	this.alwaysId = builder.getAlwaysId();
 
-    	this.rule = builder.getRule().build();
-    	this.subAgenda = builder.getSubAgenda().build();
-
-    	this.whenTrue  = builder.getWhenTrue().build();
-    	this.whenFalse = builder.getWhenFalse().build();
-    	this.always = builder.getAlways().build();
+    	if (builder.getRule() != null) { this.rule = builder.getRule().build(); }
+    	if (builder.getSubAgenda() != null) { this.subAgenda = builder.getSubAgenda().build(); }
+    	if (builder.getWhenTrue() != null) { this.whenTrue  = builder.getWhenTrue().build(); }
+    	if (builder.getWhenFalse() != null) { this.whenFalse = builder.getWhenFalse().build(); }
+    	if (builder.getAlways() != null) { this.always = builder.getAlways().build(); }
     }
 
 	@Override

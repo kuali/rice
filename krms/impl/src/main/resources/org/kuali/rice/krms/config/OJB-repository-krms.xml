@@ -190,7 +190,7 @@
     </class-descriptor>
     
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.PropositionParameterBo" table="KRMS_PROP_PARM_T">
-		<field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_PROP_PARM_S"/>
+		<field-descriptor name="id" column="PROP_PARM_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_PROP_PARM_S"/>
 		<field-descriptor name="propId" column="PROP_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="value" column="PARM_VAL" jdbc-type="VARCHAR" />
 		<field-descriptor name="parameterType" column="PARM_TYP_CD" jdbc-type="VARCHAR" />
@@ -201,7 +201,8 @@
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.PropositionBo" table="KRMS_PROP_T">
 		<field-descriptor name="propId" column="PROP_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_PROP_S"/>
 		<field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
-		<field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
+        <field-descriptor name="ruleId" column="RULE_ID" jdbc-type="VARCHAR" />
+        <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="propositionTypeCode" column="DSCRM_TYP_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	    <collection-descriptor name="parameters" element-class-ref="org.kuali.rice.krms.impl.repository.PropositionParameterBo" 
@@ -251,19 +252,22 @@
   	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.RuleBo" table="KRMS_RULE_T">
-		<field-descriptor name="ruleId" column="RULE_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_RULE_S"/>
+		<field-descriptor name="id" column="RULE_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_RULE_S"/>
 		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
 		<field-descriptor name="propId" column="PROP_ID" jdbc-type="VARCHAR"  />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-    	<reference-descriptor name="proposition" class-ref="org.kuali.rice.krms.impl.repository.PropositionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+    	<reference-descriptor name="proposition" class-ref="org.kuali.rice.krms.impl.repository.PropositionBo" auto-retrieve="true" auto-update="true" auto-delete="none" proxy="true">
       		<foreignkey field-ref="propId" />
     	</reference-descriptor>
-	    <collection-descriptor name="actions" element-class-ref="org.kuali.rice.krms.impl.repository.ActionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+        <!--  collection-descriptor name="allChildPropositions" element-class-ref="org.kuali.rice.krms.impl.repository.PropositionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+            <inverse-foreignkey field-ref="ruleId" />
+        </collection-descriptor -->
+	    <collection-descriptor name="actions" element-class-ref="org.kuali.rice.krms.impl.repository.ActionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       		<inverse-foreignkey field-ref="ruleId" />
     	</collection-descriptor>
-	    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.krms.impl.repository.ActionAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+	    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.krms.impl.repository.ActionAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       		<inverse-foreignkey field-ref="actionId" />
     	</collection-descriptor>
 	</class-descriptor>

@@ -9,7 +9,7 @@ import org.kuali.rice.krms.impl.repository.PropositionBoService;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
-@BaselineMode(Mode.ROLLBACK)
+@BaselineMode(Mode.CLEAR_DB)
 public class PropositionBoServiceTest extends AbstractBoTest {
 //public class PropositionBoServiceTest extends LightWeightBoTest {
 	

@@ -56,8 +56,9 @@ class PropositionParameterTest {
 		PropositionParameter.Builder.create(null, null, null, null, null)
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_id() {
+	@Test
+	void test_Builder_create_null_id() {
+        // null id is legit
 		PropositionParameter.Builder.create(null, PROP_ID, VALUE, PARAMETER_TYPE_C, SEQUENCE_NUMBER_1)
 	}
 	
@@ -71,8 +72,9 @@ class PropositionParameterTest {
 		PropositionParameter.Builder.create("    ", PROP_ID, VALUE, PARAMETER_TYPE_C, SEQUENCE_NUMBER_1)
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_prop_id() {
+	@Test
+	void test_Builder_create_null_prop_id() {
+        // null prop id is legit
 		PropositionParameter.Builder.create(ID, null, VALUE, PARAMETER_TYPE_C, SEQUENCE_NUMBER_1)
 	}
 	

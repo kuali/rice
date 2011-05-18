@@ -24,7 +24,7 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
 
 public interface AgendaBoService {
 	
-	public void createAgenda(AgendaDefinition agenda);
+	public AgendaDefinition createAgenda(AgendaDefinition agenda);
 	public void updateAgenda(AgendaDefinition agenda);
 	
 	public AgendaDefinition getAgendaByAgendaId(String agendaId);
@@ -33,7 +33,7 @@ public interface AgendaBoService {
 	public Set<AgendaDefinition> getAgendasByContextId(String contextId);
 	
 	
-	public void createAgendaItem(AgendaItem agendaItem);
+	public AgendaItem createAgendaItem(AgendaItem agendaItem);
 	public void updateAgendaItem(AgendaItem agendaItem);
 	public void addAgendaItem(AgendaItem agendaItem, String parentId, Boolean position);
 	

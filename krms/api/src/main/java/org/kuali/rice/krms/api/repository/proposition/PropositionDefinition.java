@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 
 /**
@@ -48,7 +49,8 @@ import org.kuali.rice.krms.api.repository.LogicalOperator;
 @XmlType(name = PropositionDefinition.Constants.TYPE_NAME, propOrder = {
 		PropositionDefinition.Elements.PROP_ID,
 		PropositionDefinition.Elements.DESC,
-		PropositionDefinition.Elements.TYPE_ID,
+        PropositionDefinition.Elements.RULE_ID,
+        PropositionDefinition.Elements.TYPE_ID,
 		PropositionDefinition.Elements.PROP_TYPE_CODE,
 		"parameters",									// xml element name differs from class property name
 		PropositionDefinition.Elements.CMPND_OP_CODE,
@@ -58,6 +60,7 @@ import org.kuali.rice.krms.api.repository.LogicalOperator;
 public final class PropositionDefinition implements PropositionDefinitionContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
+	// TODO: change this to field name to id
 	@XmlElement(name = Elements.PROP_ID, required=true)
 	private String propId;
 	
@@ -67,7 +70,10 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 	@XmlElement(name = Elements.TYPE_ID, required=true)
 	private String typeId;
 	
-	@XmlElement(name = Elements.PROP_TYPE_CODE, required=true)
+    @XmlElement(name = Elements.RULE_ID, required=true)
+    private String ruleId;
+    
+    @XmlElement(name = Elements.PROP_TYPE_CODE, required=true)
 	private String propositionTypeCode;
 	
 	@XmlElement(name = Elements.PARAMETERS, required=false)
@@ -106,6 +112,7 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
     private PropositionDefinition(Builder builder) {
         this.propId = builder.getPropId();
         this.description = builder.getDescription();
+        this.ruleId = builder.getRuleId();
         this.typeId = builder.getTypeId();
         this.propositionTypeCode = builder.getPropositionTypeCode();
         
@@ -136,6 +143,13 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 	public String getDescription() {
 		return this.description;
 	}
+
+    /**
+     * @return the ruleId
+     */
+    public String getRuleId() {
+        return this.ruleId;
+    }
 
 	@Override
 	public String getTypeId() {
@@ -170,17 +184,22 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 		
         private String propId;
         private String description;
+        private String ruleId;
         private String typeId;
         private String propositionTypeCode;
         private List<PropositionParameter.Builder> parameters;
         private String compoundOpCode;
         private List<PropositionDefinition.Builder> compoundComponents;
+        private RuleDefinition.Builder rule;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
+		 * @param typeId TODO
 		 */
-        private Builder(String propTypeCode, List<PropositionParameter.Builder> parameters) {
+        private Builder(String propTypeCode, String ruleId, String typeId, List<PropositionParameter.Builder> parameters) {
 			setPropositionTypeCode(propTypeCode);
+			setRuleId(ruleId);
+			setTypeId(typeId);
 			setParameters(parameters);
         }
         
@@ -194,8 +213,8 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
         	return this;
         }
  
-        public static Builder create(String propTypeCode, List<PropositionParameter.Builder> parameters){
-        	return new Builder(propTypeCode, parameters);
+        public static Builder create(String propTypeCode, String ruleId, String typeId, List<PropositionParameter.Builder> parameters){
+        	return new Builder(propTypeCode, ruleId, typeId, parameters);
         }
         
         /**
@@ -222,11 +241,10 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
         			componentBuilderList.add(pBuilder);
         		}
         	}
-            Builder builder =  new Builder(contract.getPropositionTypeCode(), paramBuilderList)
+            Builder builder =  new Builder(contract.getPropositionTypeCode(), contract.getRuleId(), contract.getTypeId(), paramBuilderList)
             			.compoundOpCode(contract.getCompoundOpCode())
             			.compoundComponents(componentBuilderList);
             builder.setPropId(contract.getPropId());
-            builder.setTypeId(contract.getTypeId());
             builder.setDescription(contract.getDescription());
             return builder;
         }
@@ -245,10 +263,21 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 			this.description = desc;
 		}
 		
-		public void setTypeId(String typeId) {
-			this.typeId = typeId;
-		}
-		
+        public void setTypeId(String typeId) {
+            this.typeId = typeId;
+        }
+        
+        public void setRuleId(String ruleId) {
+            this.ruleId = ruleId;
+        }
+        
+        public void setRule(RuleDefinition.Builder rule) {
+            if (rule != null && !StringUtils.isBlank(rule.getId())) {
+                setRuleId(rule.getId());
+            }
+            this.rule = rule;
+        }
+        
 		public void setPropositionTypeCode(String propTypeCode) {
 			if (StringUtils.isBlank(propTypeCode)) {
                 throw new IllegalArgumentException("proposition type code is blank");
@@ -259,18 +288,14 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 			this.propositionTypeCode = propTypeCode;
 		}
 		
-		public void setParameters(List<PropositionParameter.Builder> parameters){
+		public void setParameters(List<PropositionParameter.Builder> parameters) {
 			// compound propositions have empty parameter lists
 			// Simple propositions must have a non-empty parameter list
 			if (parameters == null || parameters.isEmpty()){
-				if (PropositionType.COMPOUND.getCode().equals( this.propositionTypeCode)){
-					this.parameters = Collections.unmodifiableList(new ArrayList<PropositionParameter.Builder>());
-					return;
-				} else {
-					throw new IllegalArgumentException("no proposition parameters are specified");
-				}
+				this.parameters = Collections.unmodifiableList(new ArrayList<PropositionParameter.Builder>());
+			} else {
+			    this.parameters = Collections.unmodifiableList(parameters);
 			}
-			this.parameters = Collections.unmodifiableList(parameters);
 		}
 		
 		public void setCompoundOpCode(String opCode){
@@ -298,6 +323,11 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 		@Override
 		public String getDescription() {
 			return description;
+		}
+		
+		@Override
+		public String getRuleId() {
+		    return ruleId;
 		}
 
 		@Override
@@ -336,6 +366,8 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
         }
 		
     }
+    
+    
 	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
@@ -367,6 +399,7 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 	public static class Elements {
 		final static String PROP_ID = "propId";
 		final static String DESC = "description";
+        final static String RULE_ID = "ruleId";
 		final static String TYPE_ID = "typeId";
 		final static String PROP_TYPE_CODE = "propositionTypeCode";
 		final static String PARAMETERS = "parameter";

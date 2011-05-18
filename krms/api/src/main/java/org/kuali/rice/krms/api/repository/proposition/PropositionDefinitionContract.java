@@ -21,6 +21,14 @@ public interface PropositionDefinitionContract {
 	 * @return the id of the KRMS type.
 	 */
 	public String getTypeId();
+	
+	/**
+	 * This returns the ID of the rule this proposition belongs to.  May be null if this proposition has 
+	 * not yet been persisted.
+	 * 
+	 * @return the ID of the Rule this proposition belongs to.
+	 */
+	public String getRuleId();
 
 	/**
 	 * <p>

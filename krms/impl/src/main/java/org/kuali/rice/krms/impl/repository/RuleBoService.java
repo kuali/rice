@@ -29,7 +29,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
  *
  */
 public interface RuleBoService {
-	public void createRule(RuleDefinition rule);
+	public RuleDefinition createRule(RuleDefinition rule);
 	public void updateRule(RuleDefinition rule);
 	
 	public RuleDefinition getRuleByRuleId(String ruleId);

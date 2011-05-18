@@ -191,8 +191,8 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		 */
 
         public void setId(String agendaId) {
-            if (StringUtils.isBlank(agendaId)) {
-                throw new IllegalArgumentException("agenda ID is blank");
+            if (agendaId != null && StringUtils.isBlank(agendaId)) {
+                throw new IllegalArgumentException("agenda ID must be null or non-blank");
             }
 			this.id = agendaId;
 		}

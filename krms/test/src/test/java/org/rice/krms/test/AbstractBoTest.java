@@ -5,6 +5,7 @@ import javax.xml.namespace.QName;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -40,7 +41,7 @@ public abstract class AbstractBoTest extends KRMSTestCase {
 	
 	@Before
 	public void setup() {
-	    dao = (GenericTestDao)getTestHarnessSpringResourceLoader().getService(new QName("genericTestDao"));
+	    dao = (GenericTestDao)GlobalResourceLoader.getService(new QName("genericTestDao"));
 		boService = new TestBoService(dao);
 	}
 	

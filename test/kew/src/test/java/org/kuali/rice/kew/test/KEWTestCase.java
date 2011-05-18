@@ -27,8 +27,8 @@ import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.SQLDataLoader;
@@ -151,7 +151,7 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	public class ClearCacheLifecycle extends BaseLifecycle {
 		@Override
 		public void stop() throws Exception {
-			KEWServiceLocator.getCacheAdministrator().flushAll();
+			KsbApiServiceLocator.getCacheAdministrator().flushAll();
 			KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
 			KimApiServiceLocator.getRoleManagementService().flushRoleCaches();
 			super.stop();

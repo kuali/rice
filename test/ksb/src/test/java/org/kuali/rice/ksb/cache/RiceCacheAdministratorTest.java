@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.springframework.context.ApplicationContext;
 

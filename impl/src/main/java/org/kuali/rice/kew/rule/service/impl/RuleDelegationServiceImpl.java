@@ -43,6 +43,7 @@ import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 
 /**
@@ -204,14 +205,14 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
     	String responsibilityIdStr = responsibilityId.toString();
         LOG.info("Caching " + rules.size() + " rules for responsibilityId=" + responsibilityIdStr );
 
-        KEWServiceLocator.getCacheAdministrator().putInCache(getRuleDlgnCacheKey(responsibilityIdStr), rules, RULE_DLGN_GROUP_CACHE);
+        KsbApiServiceLocator.getCacheAdministrator().putInCache(getRuleDlgnCacheKey(responsibilityIdStr), rules, RULE_DLGN_GROUP_CACHE);
 
     }
     
     protected List<RuleDelegation> getListFromCache(Long responsibilityId) {
     	String responsibilityIdStr = responsibilityId.toString();
         LOG.debug("Retrieving List of Delegation Rules from cache for responsibilityId = " + responsibilityIdStr );
-        return (List) KEWServiceLocator.getCacheAdministrator().getFromCache(getRuleDlgnCacheKey(responsibilityIdStr));
+        return (List) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getRuleDlgnCacheKey(responsibilityIdStr));
     }
         
     protected String getRuleDlgnCacheKey(String responsibilityIdStr) {
@@ -221,7 +222,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
    
     public void flushRuleDlgnCache() {
         LOG.info("Flushing entire Rule Delegation Cache.");
-        KEWServiceLocator.getCacheAdministrator().flushGroup(RULE_DLGN_GROUP_CACHE);
+        KsbApiServiceLocator.getCacheAdministrator().flushGroup(RULE_DLGN_GROUP_CACHE);
     }
     
 

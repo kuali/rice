@@ -47,7 +47,7 @@ import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
+import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
 
 /**

@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 /**
  * This class decorates a UserOptionsService and provides distributed caching for findByOptionId calls, and 
@@ -215,9 +215,9 @@ public class UserOptionsServiceCache implements UserOptionsService {
     	@SuppressWarnings("unchecked")
     	public void putInCache(String principalId, String methodName, Object value, Object ... keySource) {
     		if (value != null) {
-    			KEWServiceLocator.getCacheAdministrator().putInCache(getCacheKey(principalId, methodName, keySource), new SoftReference(value), getCacheGroup(principalId));
+    			KsbApiServiceLocator.getCacheAdministrator().putInCache(getCacheKey(principalId, methodName, keySource), new SoftReference(value), getCacheGroup(principalId));
     		} else {
-    			KEWServiceLocator.getCacheAdministrator().putInCache(getCacheKey(principalId, methodName, keySource), NULL_OBJECT, getCacheGroup(principalId));
+    			KsbApiServiceLocator.getCacheAdministrator().putInCache(getCacheKey(principalId, methodName, keySource), NULL_OBJECT, getCacheGroup(principalId));
     		}
     	}
     	
@@ -233,7 +233,7 @@ public class UserOptionsServiceCache implements UserOptionsService {
     	@SuppressWarnings("unchecked")
     	public Object getFromCache(String principalId, String methodName, Object ... keySource) {
     		Object result = null;
-    		Object cacheReturned = KEWServiceLocator.getCacheAdministrator().getFromCache(getCacheKey(principalId, methodName, keySource));
+    		Object cacheReturned = KsbApiServiceLocator.getCacheAdministrator().getFromCache(getCacheKey(principalId, methodName, keySource));
     		if (cacheReturned == NULL_OBJECT) {
     			result = cacheReturned;
     		} else {
@@ -252,7 +252,7 @@ public class UserOptionsServiceCache implements UserOptionsService {
     	 */
     	public void clearCacheGroup(String principalId) {
     		if (principalId != null) {
-    			KEWServiceLocator.getCacheAdministrator().flushGroup(getCacheGroup(principalId));
+    			KsbApiServiceLocator.getCacheAdministrator().flushGroup(getCacheGroup(principalId));
     		}
     	}
     	
@@ -264,7 +264,7 @@ public class UserOptionsServiceCache implements UserOptionsService {
     	 * @param keySource the parameters to the method call that is being cached.  These are used to build the cache key, so order is important.
     	 */
     	public void clearCacheEntry(String principalId, String methodName, Object ... keySource) {
-    		KEWServiceLocator.getCacheAdministrator().flushEntry(getCacheKey(principalId, methodName, keySource));
+    		KsbApiServiceLocator.getCacheAdministrator().flushEntry(getCacheKey(principalId, methodName, keySource));
     	}
     	
     	/**

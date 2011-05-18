@@ -16,8 +16,8 @@
 package org.kuali.rice.kew.rule.service.impl;
 
 import org.kuali.rice.kew.rule.service.RuleDelegationCacheProcessor;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 public class RuleDelegationCacheProcessorImpl implements RuleDelegationCacheProcessor {
 
@@ -34,7 +34,7 @@ public class RuleDelegationCacheProcessorImpl implements RuleDelegationCacheProc
 	protected void flushListFromCache(Long responsibilityId) {
     	String responsibilityIdStr = responsibilityId.toString();
         LOG.info("Flushing delegation rules from Cache for responsibilityId='" + responsibilityIdStr );
-        KEWServiceLocator.getCacheAdministrator().flushEntry(getRuleDlgnCacheKey(responsibilityIdStr));
+        KsbApiServiceLocator.getCacheAdministrator().flushEntry(getRuleDlgnCacheKey(responsibilityIdStr));
     }
 	
 	protected String getRuleDlgnCacheKey(String responsibilityIdStr) {

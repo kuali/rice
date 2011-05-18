@@ -32,7 +32,7 @@ import org.kuali.rice.core.api.style.StyleService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
+import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
 
 /**

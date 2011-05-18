@@ -24,7 +24,7 @@ import org.kuali.rice.edl.impl.service.EDocLiteService;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -145,11 +145,11 @@ public class EDLControllerFactory {
 	}
 	
 	protected synchronized static Map fetchConfigFromCache(String definition) {
-		return (Map)KEWServiceLocator.getCacheAdministrator().getFromCache(getConfigCacheKey(definition));
+		return (Map) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getConfigCacheKey(definition));
 	}
 	
 	private synchronized static void putConfigInCache(String definition, Map configProcessorMappings) {
-		KEWServiceLocator.getCacheAdministrator().putInCache(getConfigCacheKey(definition), configProcessorMappings, CONFIG_CACHE_GROUP_NAME);
+		KsbApiServiceLocator.getCacheAdministrator().putInCache(getConfigCacheKey(definition), configProcessorMappings, CONFIG_CACHE_GROUP_NAME);
 	}
 	
 	private static String getConfigCacheKey(String definition) {
@@ -191,11 +191,11 @@ public class EDLControllerFactory {
 	}
 
 	public static void flushDefinitionFromConfigCache(String definition) {
-		KEWServiceLocator.getCacheAdministrator().flushEntry(getConfigCacheKey(definition));
+		KsbApiServiceLocator.getCacheAdministrator().flushEntry(getConfigCacheKey(definition));
 //		edlConfigCache.remove(defName);
 	}
 	
 	public static void flushDefinitionCache() {
-		KEWServiceLocator.getCacheAdministrator().flushGroup(CONFIG_CACHE_GROUP_NAME);
+		KsbApiServiceLocator.getCacheAdministrator().flushGroup(CONFIG_CACHE_GROUP_NAME);
 	}
 }

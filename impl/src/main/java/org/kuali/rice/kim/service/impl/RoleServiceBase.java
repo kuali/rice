@@ -18,7 +18,6 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
@@ -50,7 +49,8 @@ import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import javax.xml.namespace.QName;
@@ -1327,7 +1327,7 @@ public class RoleServiceBase {
     
     protected RiceCacheAdministrator getCacheAdministrator() {
 		if ( cacheAdministrator == null ) {
-			cacheAdministrator = KEWServiceLocator.getCacheAdministrator();
+			cacheAdministrator = KsbApiServiceLocator.getCacheAdministrator();
 		}
 		return cacheAdministrator;
     }

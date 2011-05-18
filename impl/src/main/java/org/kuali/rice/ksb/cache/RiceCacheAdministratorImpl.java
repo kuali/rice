@@ -26,9 +26,10 @@ import org.kuali.rice.ksb.api.bus.ServiceBus;
 import com.opensymphony.oscache.base.AbstractCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
+import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
 /**
- * Default implementation of the {@link RiceCacheAdministrator}.
+ * Default implementation of the {@link org.kuali.rice.ksb.api.cache.RiceCacheAdministrator}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -16,13 +16,6 @@
 
 package org.kuali.rice.core.impl.style;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.List;
-
-import javax.xml.transform.Templates;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -32,11 +25,18 @@ import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleRepositoryService;
 import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
+import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
+
+import javax.xml.transform.Templates;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.List;
 
 
 /**
  * Implements generic StyleService via existing EDL style table
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StyleRepositoryServiceImpl implements StyleRepositoryService {
@@ -51,31 +51,32 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
     public void setStyleDao(StyleDao styleDao) {
         this.styleDao = styleDao;
     }
-    
+
     public void setCache(RiceCacheAdministrator cache) {
-    	this.cache = cache;
+        this.cache = cache;
     }
 
     /**
      * Loads the named style from the database, or (if configured) imports it from a file
      * specified via a configuration parameter with a name of the format edl.style.&lt;styleName&gt;
      * {@inheritDoc}
+     *
      * @see org.kuali.rice.edl.impl.service.StyleService#getStyle(java.lang.String)
      */
     @Override
     public Style getStyle(String styleName) {
-    	if (StringUtils.isBlank(styleName)) {
-    		throw new RiceIllegalArgumentException("styleName was null or blank");
-    	}
-    	
-    	// try to fetch the style from the database
+        if (StringUtils.isBlank(styleName)) {
+            throw new RiceIllegalArgumentException("styleName was null or blank");
+        }
+
+        // try to fetch the style from the database
         StyleBo style = styleDao.getStyle(styleName);
         // if it's null, look for a config param specifiying a file to load
         if (style == null) {
             String propertyName = STYLE_CONFIG_PREFIX + "." + styleName;
             String location = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
             if (location != null) {
-            	
+
                 InputStream xml = null;
 
                 try {
@@ -89,15 +90,15 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
                 if (xml == null) {
                     throw new RiceRuntimeException(getUnableToLoadMessage(propertyName, location) + ", no such file");
                 }
-                
-                LOG.info("Automatically loading style '" + styleName + "' from '" + location + "' as configured by "+ propertyName);
+
+                LOG.info("Automatically loading style '" + styleName + "' from '" + location + "' as configured by " + propertyName);
                 List<Style> styles = CoreImplServiceLocator.getStyleXmlLoader().parseStyles(xml);
                 for (Style autoLoadedStyle : styles) {
-                	if (autoLoadedStyle.getName().equals(styleName)) {
-                		return autoLoadedStyle;
-                	}
+                    if (autoLoadedStyle.getName().equals(styleName)) {
+                        return autoLoadedStyle;
+                    }
                 }
-               	throw new RiceRuntimeException("Failed to locate auto-loaded style '" + styleName + "' after successful parsing of file from '" + location + "' as configured by "+ propertyName);
+                throw new RiceRuntimeException("Failed to locate auto-loaded style '" + styleName + "' after successful parsing of file from '" + location + "' as configured by " + propertyName);
             }
         }
         return StyleBo.to(style);
@@ -127,15 +128,15 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
 
     @Override
     public void saveStyle(Style data) {
-    	if (data == null) {
-    		throw new RiceIllegalArgumentException("The given style was null.");
-    	}
-    	StyleBo styleToUpdate = StyleBo.from(data);
-    	saveStyleBo(styleToUpdate);
+        if (data == null) {
+            throw new RiceIllegalArgumentException("The given style was null.");
+        }
+        StyleBo styleToUpdate = StyleBo.from(data);
+        saveStyleBo(styleToUpdate);
     }
-    
+
     protected void saveStyleBo(StyleBo styleBo) {
-    	StyleBo existingData = styleDao.getStyle(styleBo.getName());
+        StyleBo existingData = styleDao.getStyle(styleBo.getName());
         if (existingData != null) {
             existingData.setActive(false);
             styleDao.saveStyle(existingData);
@@ -143,12 +144,12 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
         styleDao.saveStyle(styleBo);
         removeStyleFromCache(styleBo.getName());
     }
-    
+
     @Override
     public List<String> getAllStyleNames() {
         return styleDao.getAllStyleNames();
     }
-    
+
     // cache helper methods
 
     /**

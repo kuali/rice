@@ -25,8 +25,8 @@ import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -106,7 +106,7 @@ public abstract class KENTestCase extends BaselineTestCase {
                 disableQuartzJobs();
             }
             public void stop() throws Exception {
-                KEWServiceLocator.getCacheAdministrator().flushAll();
+                KsbApiServiceLocator.getCacheAdministrator().flushAll();
 
                 LOG.info("Status of Ken scheduler on stop: " + (services.getScheduler().isStarted() ? "started" : "stopped"));
                 // stop quartz if a test failed to do so
@@ -143,7 +143,7 @@ public abstract class KENTestCase extends BaselineTestCase {
     public class ClearCacheLifecycle extends BaseLifecycle {
         @Override
         public void stop() throws Exception {
-            KEWServiceLocator.getCacheAdministrator().flushAll();
+            KsbApiServiceLocator.getCacheAdministrator().flushAll();
             KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
             KimApiServiceLocator.getRoleManagementService().flushRoleCaches();
             super.stop();

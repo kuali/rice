@@ -39,6 +39,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 
 /**
@@ -155,7 +156,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
      * document type name, null is returned.
      */
     protected DocumentType fetchFromCacheByName(String documentTypeName) {
-    	return (DocumentType)KEWServiceLocator.getCacheAdministrator().getFromCache(getNameCacheKey(documentTypeName));
+    	return (DocumentType) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getNameCacheKey(documentTypeName));
     }
 
     /**
@@ -163,7 +164,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
      * document type id, null is returned.
      */
     protected DocumentType fetchFromCacheById(Long documentTypeId) {
-    	return (DocumentType)KEWServiceLocator.getCacheAdministrator().getFromCache(getIdCacheKey(documentTypeId));
+    	return (DocumentType) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getIdCacheKey(documentTypeId));
     }
 
     /**
@@ -195,10 +196,10 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	}
     	//don't cache by name if this isn't the current version
     	if (documentType.getCurrentInd().booleanValue()) {
-    		KEWServiceLocator.getCacheAdministrator().putInCache(getNameCacheKey(documentType.getName()), documentType, DOCUMENT_TYPE_NAME_CACHE_GROUP);
+    		KsbApiServiceLocator.getCacheAdministrator().putInCache(getNameCacheKey(documentType.getName()), documentType, DOCUMENT_TYPE_NAME_CACHE_GROUP);
     	}
 
-    	KEWServiceLocator.getCacheAdministrator().putInCache(getIdCacheKey(documentType.getDocumentTypeId()), documentType, DOCUMENT_TYPE_ID_CACHE_GROUP);
+    	KsbApiServiceLocator.getCacheAdministrator().putInCache(getIdCacheKey(documentType.getDocumentTypeId()), documentType, DOCUMENT_TYPE_ID_CACHE_GROUP);
     }
 
     /**
@@ -206,7 +207,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
      * document type name, null is returned.
      */
     protected DocumentTypeDTO fetchDTOFromCacheByName(String documentTypeName) {
-    	return (DocumentTypeDTO)KEWServiceLocator.getCacheAdministrator().getFromCache(getDTONameCacheKey(documentTypeName));
+    	return (DocumentTypeDTO) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getDTONameCacheKey(documentTypeName));
     }
 
     /**
@@ -214,7 +215,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
      * document type id, null is returned.
      */
     protected DocumentTypeDTO fetchDTOFromCacheById(Long documentTypeId) {
-    	return (DocumentTypeDTO)KEWServiceLocator.getCacheAdministrator().getFromCache(getDTOIdCacheKey(documentTypeId));
+    	return (DocumentTypeDTO) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getDTOIdCacheKey(documentTypeId));
     }
 
     /**
@@ -246,10 +247,10 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	}
     	//don't cache by name if this isn't the current version
     	if ( documentType.getDocTypeCurrentInd().equals(KEWConstants.ACTIVE_CD) ) {
-    		KEWServiceLocator.getCacheAdministrator().putInCache(getDTONameCacheKey(documentType.getName()), documentType, DOCUMENT_TYPE_DTO_NAME_CACHE_GROUP);
+    		KsbApiServiceLocator.getCacheAdministrator().putInCache(getDTONameCacheKey(documentType.getName()), documentType, DOCUMENT_TYPE_DTO_NAME_CACHE_GROUP);
     	}
 
-    	KEWServiceLocator.getCacheAdministrator().putInCache(getDTOIdCacheKey(documentType.getDocTypeId()), documentType, DOCUMENT_TYPE_DTO_ID_CACHE_GROUP);
+    	KsbApiServiceLocator.getCacheAdministrator().putInCache(getDTOIdCacheKey(documentType.getDocTypeId()), documentType, DOCUMENT_TYPE_DTO_ID_CACHE_GROUP);
     }
 
     /**
@@ -260,12 +261,12 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 		//to be accurate-the data going in the db depends on it being accurate now.  This means the cache will be cleared multiple times
     	//over during an upload and the subsequent notification to this node.
     	LOG.info("clearing DocumentType cache because of local update");
-    	KEWServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_ID_CACHE_GROUP);
-    	KEWServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_NAME_CACHE_GROUP);
-    	KEWServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_DTO_ID_CACHE_GROUP);
-    	KEWServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_DTO_NAME_CACHE_GROUP);
-    	KEWServiceLocator.getCacheAdministrator().flushGroup(DocumentTypePermissionService.DOC_TYPE_PERM_CACHE_GROUP);
-    	KEWServiceLocator.getCacheAdministrator().flushEntry(CURRENT_ROOTS_IN_CACHE_KEY);
+    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_ID_CACHE_GROUP);
+    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_NAME_CACHE_GROUP);
+    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_DTO_ID_CACHE_GROUP);
+    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_DTO_NAME_CACHE_GROUP);
+    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DocumentTypePermissionService.DOC_TYPE_PERM_CACHE_GROUP);
+    	KsbApiServiceLocator.getCacheAdministrator().flushEntry(CURRENT_ROOTS_IN_CACHE_KEY);
     }
 
     public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute) {
@@ -409,11 +410,11 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     public synchronized List findAllCurrentRootDocuments() {
-    	List currentRootsInCache = (List) KEWServiceLocator.getCacheAdministrator().getFromCache(CURRENT_ROOTS_IN_CACHE_KEY);
+    	List currentRootsInCache = (List) KsbApiServiceLocator.getCacheAdministrator().getFromCache(CURRENT_ROOTS_IN_CACHE_KEY);
     	//we can do this because we whack the entire cache when a new document type comes into the picture.
     	if (currentRootsInCache == null) {
     		currentRootsInCache = getDocumentTypeDAO().findAllCurrentRootDocuments();
-    		KEWServiceLocator.getCacheAdministrator().putInCache(CURRENT_ROOTS_IN_CACHE_KEY, currentRootsInCache);
+    		KsbApiServiceLocator.getCacheAdministrator().putInCache(CURRENT_ROOTS_IN_CACHE_KEY, currentRootsInCache);
     	}
     	return currentRootsInCache;
     }

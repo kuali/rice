@@ -58,6 +58,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
@@ -263,21 +264,21 @@ public class DocumentTypeTest extends KEWTestCase {
     	// verify that the entry exists in OSCache
     	String childIdKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_PREFIX+child.getDocumentTypeId().toString();
     	String childNameKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_NAME_CACHE_PREFIX+child.getName();
-    	assertNotNull("No entry was found in the id cache.", KEWServiceLocator.getCacheAdministrator().getFromCache(childIdKey));
-    	assertNotNull("No entry was found in the name cache.", KEWServiceLocator.getCacheAdministrator().getFromCache(childNameKey));
+    	assertNotNull("No entry was found in the id cache.", KsbApiServiceLocator.getCacheAdministrator().getFromCache(childIdKey));
+    	assertNotNull("No entry was found in the name cache.", KsbApiServiceLocator.getCacheAdministrator().getFromCache(childNameKey));
 
     	// the parent document type should not be in the cache yet
     	String parentIdKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_PREFIX+child.getDocTypeParentId();
-    	assertNull("Entry for parent should not have been found in the id cache.", KEWServiceLocator.getCacheAdministrator().getFromCache(parentIdKey));
+    	assertNull("Entry for parent should not have been found in the id cache.", KsbApiServiceLocator.getCacheAdministrator().getFromCache(parentIdKey));
 
     	DocumentType parent = child.getParentDocType();
     	// the act of fetching the parent from the child should result in the parent being cached
-    	assertNotNull("Entry for parent should have been found in the id cache.", KEWServiceLocator.getCacheAdministrator().getFromCache(parentIdKey));
+    	assertNotNull("Entry for parent should have been found in the id cache.", KsbApiServiceLocator.getCacheAdministrator().getFromCache(parentIdKey));
 
     	// now flush the cache, there should be no entries
-    	KEWServiceLocator.getCacheAdministrator().flushAll();
-    	assertNull(KEWServiceLocator.getCacheAdministrator().getFromCache(childIdKey));
-    	assertNull(KEWServiceLocator.getCacheAdministrator().getFromCache(childNameKey));
+    	KsbApiServiceLocator.getCacheAdministrator().flushAll();
+    	assertNull(KsbApiServiceLocator.getCacheAdministrator().getFromCache(childIdKey));
+    	assertNull(KsbApiServiceLocator.getCacheAdministrator().getFromCache(childNameKey));
 
     	DocumentType child2 = null;
     	for (Iterator iter = parent.getChildrenDocTypes().iterator(); iter.hasNext();) {
@@ -697,9 +698,9 @@ public class DocumentTypeTest extends KEWTestCase {
 		//to be accurate-the data going in the db depends on it being accurate now.  This means the cache will be cleared multiple times
     	//over during an upload and the subsequent notification to this node.
     	LOG.info("clearing DocumentType cache because of local update");
-    	KEWServiceLocator.getCacheAdministrator().flushGroup(DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_GROUP);
-    	KEWServiceLocator.getCacheAdministrator().flushGroup(DocumentTypeServiceImpl.DOCUMENT_TYPE_NAME_CACHE_GROUP);
-    	KEWServiceLocator.getCacheAdministrator().flushEntry(DocumentTypeServiceImpl.CURRENT_ROOTS_IN_CACHE_KEY);
+    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_GROUP);
+    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DocumentTypeServiceImpl.DOCUMENT_TYPE_NAME_CACHE_GROUP);
+    	KsbApiServiceLocator.getCacheAdministrator().flushEntry(DocumentTypeServiceImpl.CURRENT_ROOTS_IN_CACHE_KEY);
     }
 
     private class LoadXml implements Runnable {

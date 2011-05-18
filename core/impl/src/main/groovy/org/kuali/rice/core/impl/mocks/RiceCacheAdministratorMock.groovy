@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.core.impl.mocks
 
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
+import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator
 
 /**
- * A simple mock for the {@link RiceCacheAdministrator} which uses a Map-based backend.
+ * A simple mock for the {@link org.kuali.rice.ksb.api.cache.RiceCacheAdministrator} which uses a Map-based backend.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

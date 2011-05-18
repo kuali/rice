@@ -83,6 +83,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
@@ -580,7 +581,7 @@ public class RuleServiceImpl implements RuleService {
 
     protected List<RuleBaseValues> getListFromCache(String ruleTemplateName, String documentTypeName) {
         LOG.debug("Retrieving List of Rules from cache for ruleTemplate='" + ruleTemplateName + "' and documentType='" + documentTypeName + "'");
-        return (List) KEWServiceLocator.getCacheAdministrator().getFromCache(getRuleCacheKey(ruleTemplateName, documentTypeName));
+        return (List) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getRuleCacheKey(ruleTemplateName, documentTypeName));
         //return (List) SpringServiceLocator.getCache().getCachedObjectById(RULE_CACHE_NAME, getRuleCacheKey(ruleTemplateName, documentTypeName));
     }
 
@@ -588,22 +589,22 @@ public class RuleServiceImpl implements RuleService {
         assert(ruleTemplateName != null) : "putListInCache was called with a null ruleTemplateName";
         LOG.info("Caching " + rules.size() + " rules for ruleTemplate='" + ruleTemplateName + "' and documentType='" + documentTypeName + "'");
         String groups[] = new String[] { getDocumentTypeRuleCacheGroupName(documentTypeName), RULE_GROUP_CACHE };
-        KEWServiceLocator.getCacheAdministrator().putInCache(getRuleCacheKey(ruleTemplateName, documentTypeName), rules, groups);
+        KsbApiServiceLocator.getCacheAdministrator().putInCache(getRuleCacheKey(ruleTemplateName, documentTypeName), rules, groups);
     }
 
     protected void flushDocumentTypeFromCache(String documentTypeName) {
         LOG.info("Flushing DocumentType from Cache for the given name: " + documentTypeName);
-        KEWServiceLocator.getCacheAdministrator().flushGroup(getDocumentTypeRuleCacheGroupName(documentTypeName));
+        KsbApiServiceLocator.getCacheAdministrator().flushGroup(getDocumentTypeRuleCacheGroupName(documentTypeName));
     }
 
     protected void flushListFromCache(String ruleTemplateName, String documentTypeName) {
         LOG.info("Flushing rules from Cache for ruleTemplate='" + ruleTemplateName + "' and documentType='" + documentTypeName + "'");
-        KEWServiceLocator.getCacheAdministrator().flushEntry(getRuleCacheKey(ruleTemplateName, documentTypeName));
+        KsbApiServiceLocator.getCacheAdministrator().flushEntry(getRuleCacheKey(ruleTemplateName, documentTypeName));
     }
 
     public void flushRuleCache() {
         LOG.info("Flushing entire Rule Cache.");
-        KEWServiceLocator.getCacheAdministrator().flushGroup(RULE_GROUP_CACHE);
+        KsbApiServiceLocator.getCacheAdministrator().flushGroup(RULE_GROUP_CACHE);
     }
 
     private Set getResponsibilityIdsFromGraph(RuleBaseValues rule, boolean isRuleCollecting) {

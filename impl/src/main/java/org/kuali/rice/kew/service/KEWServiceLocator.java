@@ -58,7 +58,6 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.persistence.EntityManagerFactory;
@@ -163,9 +162,7 @@ public final class KEWServiceLocator {
 
 	public static final String USER_TRANSACTION = "userTransaction";
 
-	public static final String CACHE_ADMINISTRATOR = "enCacheAdministrator";
-
-	public static final String SCHEDULER = "enScheduler";
+    public static final String SCHEDULER = "enScheduler";
 	
 	public static final String DOCUMENT_LINK_SERVICE = "enDocumentLinkService";
 
@@ -383,11 +380,7 @@ public final class KEWServiceLocator {
 		return (ActionRegistry) getBean(ACTION_REGISTRY);
 	}
 
-	public static RiceCacheAdministrator getCacheAdministrator() {
-		return (RiceCacheAdministrator) getBean(CACHE_ADMINISTRATOR);
-	}
-
-	public static EncryptionService getEncryptionService() {
+    public static EncryptionService getEncryptionService() {
 		return (EncryptionService) getBean(ENCRYPTION_SERVICE);
 	}
 

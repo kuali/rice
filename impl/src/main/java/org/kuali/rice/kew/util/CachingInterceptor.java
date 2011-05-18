@@ -23,7 +23,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 /**
  * <p>This is a generic caching proxy for KEW, using the cache administrator service to store results.  It's inteded
@@ -86,7 +86,7 @@ public class CachingInterceptor implements MethodInterceptor {
 		if (clearCacheOnMethods.contains(methodName)) {
 			if (LOG.isTraceEnabled()) { LOG.trace("clearing cache group " +cacheGroupName+" on " + methodName); }
 			// clear the cache
-			KEWServiceLocator.getCacheAdministrator().flushGroup(cacheGroupName);
+			KsbApiServiceLocator.getCacheAdministrator().flushGroup(cacheGroupName);
 			results = invocation.proceed();
 
 		} else if (cacheForMethods.contains(methodName)) {
@@ -95,7 +95,7 @@ public class CachingInterceptor implements MethodInterceptor {
 			String cacheKey = getCacheKey(methodName, invocation.getArguments());
 			if (cacheKey != null) {
 				SoftReference<Object> resultRef = 
-					(SoftReference<Object>) KEWServiceLocator.getCacheAdministrator().getFromCache(cacheKey);
+					(SoftReference<Object>) KsbApiServiceLocator.getCacheAdministrator().getFromCache(cacheKey);
 				
 				if (resultRef != null) { results = resultRef.get(); }
 				if (null != results) {
@@ -112,7 +112,7 @@ public class CachingInterceptor implements MethodInterceptor {
 	
 				// add to the cache
 				if (cacheKey != null) {
-					KEWServiceLocator.getCacheAdministrator().
+					KsbApiServiceLocator.getCacheAdministrator().
 					    putInCache(cacheKey, new SoftReference<Object>(results), cacheGroupName);
 				}
 			}

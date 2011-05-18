@@ -52,7 +52,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>rice-ksb-framework</artifactId>
+            <artifactId>rice-ksb-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -72,7 +72,7 @@ public class ResponsibilityServiceBase {
 	
 	protected RiceCacheAdministrator getCacheAdministrator() {
 		if ( cacheAdministrator == null ) {
-			cacheAdministrator = KEWServiceLocator.getCacheAdministrator();
+			cacheAdministrator = KsbApiServiceLocator.getCacheAdministrator();
 		}
 		return cacheAdministrator;
 	}

@@ -341,8 +341,17 @@ public class RoleServiceBase {
 		for (RoleMemberCacheKeyHelper searchKey : searchKeys) {
 			if (!usedKeys.contains(searchKey.getCacheKey())) {
 				List<RoleMemberImpl> tempMembers = (List<RoleMemberImpl>) getCacheAdministrator().getFromCache(searchKey.getCacheKey());
-				if (tempMembers != null) {
-					finalResults.addAll(tempMembers);
+				if (CollectionUtils.isNotEmpty(tempMembers)) { 
+					if(qualification != null && !qualification.isEmpty()) {
+						KimRoleTypeService roleTypeService = getRoleTypeService(searchKey.ROLE_ID);
+						for(RoleMemberImpl roleMember : tempMembers) {
+							if(roleTypeService.doesRoleQualifierMatchQualification(qualification, roleMember.getQualifier())) {
+								finalResults.add(roleMember); 
+							}
+						} 
+					} else {
+						finalResults.addAll(tempMembers);
+					}
 				} else {
 					uncachedKeys.add(searchKey);
 				}

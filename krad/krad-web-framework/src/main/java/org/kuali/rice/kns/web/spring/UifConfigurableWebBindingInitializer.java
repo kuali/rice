@@ -15,12 +15,17 @@
  */
 package org.kuali.rice.kns.web.spring;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import org.kuali.rice.core.util.type.AbstractKualiDecimal;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.util.type.KualiInteger;
 import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.rice.core.web.format.BigDecimalFormatter;
 import org.kuali.rice.core.web.format.CurrencyFormatter;
+import org.kuali.rice.core.web.format.DateFormatter;
+import org.kuali.rice.core.web.format.DateViewTimestampObjectFormatter;
 import org.kuali.rice.core.web.format.KualiIntegerCurrencyFormatter;
 import org.kuali.rice.core.web.format.PercentageFormatter;
 import org.springframework.web.bind.WebDataBinder;
@@ -40,6 +45,8 @@ public class UifConfigurableWebBindingInitializer extends ConfigurableWebBinding
         binder.registerCustomEditor(KualiDecimal.class, new UifKnsFormatterPropertyEditor(CurrencyFormatter.class)); 
         binder.registerCustomEditor(KualiInteger.class, new UifKnsFormatterPropertyEditor(KualiIntegerCurrencyFormatter.class));
         binder.registerCustomEditor(KualiPercent.class, new UifKnsFormatterPropertyEditor(PercentageFormatter.class));
+        binder.registerCustomEditor(Date.class, new UifKnsFormatterPropertyEditor(DateFormatter.class));
+        binder.registerCustomEditor(Timestamp.class, new UifKnsFormatterPropertyEditor(DateViewTimestampObjectFormatter.class));
         
         // TODO do we need this since we are switching to spring tags
         binder.registerCustomEditor(boolean.class, new UifBooleanEditor());

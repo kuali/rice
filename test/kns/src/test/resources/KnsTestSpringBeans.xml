@@ -134,7 +134,7 @@
 		</property>
 		<property name="services">
 			<list>
-				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition" p:localServiceName="lookupResultsDDBoLookupable" p:serviceNameSpaceURI="" p:serviceInterface="org.kuali.rice.kns.lookup.Lookupable" p:serviceEndPoint-ref="lookupResultsDDBoLookupableHelperUrl" p:messageExceptionHandler="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" p:millisToLive="-1" p:retryAttempts="0" p:priority="5">
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition" p:localServiceName="lookupResultsDDBoLookupable" p:serviceNameSpaceURI="" p:serviceInterface="org.kuali.rice.kns.lookup.Lookupable" p:messageExceptionHandler="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" p:millisToLive="-1" p:retryAttempts="0" p:priority="5">
 					<property name="service">
 						<ref bean="lookupResultsDDBoLookupable" />
 					</property>

@@ -47,9 +47,17 @@ public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements 
     	if (StringUtils.isBlank(contextSelectionCriteria.getNamespaceCode())){
     		throw new IllegalArgumentException("selection criteria namespace code is null or blank");
     	}
-    	Map<String, String> contextQualifiers = convertAttributeKeys(
+    	Map<String, String> attributesById = convertAttributeKeys(
     			contextSelectionCriteria.getContextQualifiers(),
     			contextSelectionCriteria.getNamespaceCode());
+    	Map<String, String> contextQualifiers = new HashMap<String,String>();
+    	contextQualifiers.put("namespace", contextSelectionCriteria.getNamespaceCode());
+    	contextQualifiers.put("name", contextSelectionCriteria.getName());
+    	for(String attributeId : attributesById.keySet()) {
+			contextQualifiers.put("attributes.attributeDefinitionId", attributeId);
+			contextQualifiers.put("attributes.value", attributesById.get(attributeId));
+		}    	
+    	
     	List<ContextBo> resultBos = (List<ContextBo>) getBusinessObjectService().findMatching(ContextBo.class, contextQualifiers);
 
     	//assuming 1 ?

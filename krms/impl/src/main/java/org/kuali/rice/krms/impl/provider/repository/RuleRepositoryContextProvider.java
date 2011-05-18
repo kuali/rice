@@ -42,6 +42,10 @@ public class RuleRepositoryContextProvider implements ContextProvider {
 		this.ruleRepositoryService = ruleRepositoryService;
 	}
 	
+	public void setRepositoryToEngineTranslator(RepositoryToEngineTranslator repositoryToEngineTranslator) {
+		this.repositoryToEngineTranslator = repositoryToEngineTranslator;
+	}
+	
 	protected ContextSelectionCriteria constructContextSelectionCriteria(SelectionCriteria selectionCriteria) {
 		Map<String, String> givenContextQualifiers = selectionCriteria.getContextQualifiers();
 		if (givenContextQualifiers == null || givenContextQualifiers.isEmpty()) {

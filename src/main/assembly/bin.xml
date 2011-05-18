@@ -35,5 +35,14 @@
         <exclude>WEB-INF/*</exclude>
       </excludes>
     </fileSet>
+    <!-- 
+    <fileSet>
+      <directory>web/target/rice-web-${project.version}/WEB-INF/lib</directory>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>*</include>
+      </includes>
+    </fileSet>
+     -->
   </fileSets>
 </assembly>

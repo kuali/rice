@@ -1,0 +1,48 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+  <id>bin</id>
+  <!-- This assembly creates a binary distribution -->
+  <formats>
+    <format>tar.gz</format>
+    <format>tar.bz2</format>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>${project.basedir}</directory>
+      <includes>
+        <include>licenses/**</include>
+        <include>security/**</include>
+        <include>config/**</include>
+        <include>scripts/**</include>
+        <include>*.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.basedir}</directory>
+      <outputDirectory>config</outputDirectory>
+      <includes>
+        <include>**/src/main/config/**</include>
+      </includes>
+      <excludes>
+        <exclude>**/target/**</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet>
+      <directory>web/src/main/webapp</directory>
+      <outputDirectory>webcontent</outputDirectory>
+      <excludes>
+        <exclude>*</exclude>
+        <exclude>WEB-INF/*</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet>
+      <directory>web/target/rice-web-${project.version}/WEB-INF/lib</directory>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>*</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</assembly>

@@ -18,8 +18,6 @@ package org.kuali.rice.kim.service.impl;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -119,6 +117,7 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
@@ -129,6 +128,8 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -151,6 +152,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	private ResponsibilityService responsibilityService;
 	private KimTypeInfoService kimTypeInfoService;
     private DocumentHelperService documentHelperService;
+    private ParameterService parameterService;
 
 
 	/**
@@ -556,7 +558,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		        	docRole.setEdit(true);
 		        	docRole.setRoleId(role.getRoleId());
 		        	docRole.setRoleName(role.getRoleName());
-		        	docRole.setRolePrncpls(populateDocRolePrncpl(role.getMembers(), identityManagementPersonDocument.getPrincipalId(), getAttributeDefinitionsForRole(docRole)));
+		        	docRole.setRolePrncpls(populateDocRolePrncpl(role.getNamespaceCode(), role.getMembers(), identityManagementPersonDocument.getPrincipalId(), getAttributeDefinitionsForRole(docRole)));
 		        	docRole.refreshReferenceObject("assignedResponsibilities");
 		        	if(docRole.getRolePrncpls()!=null && !docRole.getRolePrncpls().isEmpty()){
 		        		docRoles.add(docRole);
@@ -698,7 +700,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return (List<RoleResponsibilityActionImpl>)getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
 	}
 
-    protected List<KimDocumentRoleMember> populateDocRolePrncpl(List <RoleMemberImpl> roleMembers, String principalId, AttributeDefinitionMap definitions) {
+    protected List<KimDocumentRoleMember> populateDocRolePrncpl(String namespaceCode, List <RoleMemberImpl> roleMembers, String principalId, AttributeDefinitionMap definitions) {
 		List <KimDocumentRoleMember> docRoleMembers = new ArrayList <KimDocumentRoleMember>();
 		if(ObjectUtils.isNotNull(roleMembers)){
 	    	for (RoleMemberImpl rolePrincipal : roleMembers) {
@@ -711,7 +713,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	        		docRolePrncpl.setRoleId(rolePrincipal.getRoleId());
 	        		docRolePrncpl.setActiveFromDate(rolePrincipal.getActiveFromDate());
 	        		docRolePrncpl.setActiveToDate(rolePrincipal.getActiveToDate());
-	         		docRolePrncpl.setQualifiers(populateDocRoleQualifier(rolePrincipal.getAttributes(), definitions));
+	         		docRolePrncpl.setQualifiers(populateDocRoleQualifier(namespaceCode, rolePrincipal.getAttributes(), definitions));
 	         		docRolePrncpl.setEdit(true);
 	        		docRoleMembers.add(docRolePrncpl);
 	    		 }
@@ -723,7 +725,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     // UI layout for rolequalifier is a little different from kimroleattribute set up.
     // each principal may have member with same role multiple times with different qualifier, but the role
     // only displayed once, and the qualifier displayed multiple times.
-    protected List<KimDocumentRoleQualifier> populateDocRoleQualifier(List <RoleMemberAttributeDataImpl> qualifiers, AttributeDefinitionMap definitions) {
+    protected List<KimDocumentRoleQualifier> populateDocRoleQualifier(String namespaceCode, List <RoleMemberAttributeDataImpl> qualifiers, AttributeDefinitionMap definitions) {
 		List <KimDocumentRoleQualifier> docRoleQualifiers = new ArrayList <KimDocumentRoleQualifier>();
 		if(definitions!=null){
 			for (String key : definitions.keySet()) {
@@ -764,7 +766,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			// If all of the qualifiers are empty, return an empty list
 			// This is to prevent dynamic qualifiers from appearing in the
 			// person maintenance roles tab.  see KULRICE-3989 for more detail
-			if (!Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(SHOW_BLANK_QUALIFIERS))) {
+			// and KULRICE-5071 for detail on switching from config value to 
+			// application-scoped parameter
+			if (!isBlankRoleQualifierVisible(namespaceCode)) {
 				int qualCount = 0;
 				for (KimDocumentRoleQualifier qual : docRoleQualifiers){
 					if (StringUtils.isEmpty(qual.getAttrVal())){
@@ -1032,6 +1036,28 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimEntity.setAffiliations(entityAffiliations);
 	}
 
+    /*
+     * Added to address KULRICE-5071 : "Move the 'show blank qualifier' kim toggle from a Config param to a System param"
+     * 
+     * This method first checks for a namespace specific parameter with a detailTypeCode of "All" and parameterName of "KIM_SHOW_BLANK_QUALIFIERS". 
+     * If no parameter is found, it checks for the config property "kim.show.blank.qualifiers", and defaults to true if no config property exists. 
+     *
+     */
+    private boolean isBlankRoleQualifierVisible(String namespaceCode) {
+    	boolean showBlankQualifiers = true;
+		
+		Parameter param = getParameterService().retrieveParameter(namespaceCode, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KimConstants.ParameterKey.SHOW_BLANK_QUALIFIERS);
+	    if (param != null) {
+	    	showBlankQualifiers = "Y".equals(param.getParameterValue());
+	    } else {
+	    	String configProperty = ConfigContext.getCurrentContextConfig().getProperty(SHOW_BLANK_QUALIFIERS);
+	    	if (configProperty != null)
+	    		showBlankQualifiers = Boolean.valueOf(configProperty);
+	    }
+	    
+	    return showBlankQualifiers;
+    }
+    
    private boolean isSameAffiliation(KimEntityAffiliationImpl origAffiliation, KimEntityAffiliationImpl entityAffiliation){
     	//entityId
     	//affiliationTypeCode
@@ -2795,5 +2821,16 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	    	}
     	}
     	return qualifiers;
+    }
+    
+    public ParameterService getParameterService() {
+    	if ( parameterService == null ) {
+    		parameterService = KNSServiceLocator.getParameterService();
+    	}
+    	return parameterService;
+    }
+
+    public void setParameterService(ParameterService parameterService) {
+    	this.parameterService = parameterService;
     }
 }

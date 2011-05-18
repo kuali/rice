@@ -235,6 +235,10 @@ public class KimConstants {
 		public static final String KRIM_ATTR_DATA_ID_S = "KRIM_ATTR_DATA_ID_S";
 	}
 
+	public static class ParameterKey {
+		public static final String SHOW_BLANK_QUALIFIERS = "KIM_SHOW_BLANK_QUALIFIERS";
+	}
+	
 	/**
 	 *
 	 * KimGroupS can contain other KimGroupS and KimPrincipalS.

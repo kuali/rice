@@ -168,6 +168,7 @@
     <rice.java2ws.phase>process-classes</rice.java2ws.phase>
     <!-- Turn off Clover for now -->
     <kuali.clover.generate.info.phase>none</kuali.clover.generate.info.phase>
+    <kuali.release.goals>package assembly:assembly deploy site-deploy</kuali.release.goals>
   </properties>
 
   <build>
@@ -1858,33 +1859,11 @@
             <artifactId>maven-assembly-plugin</artifactId>
             <configuration>
               <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+              <descriptors>
+                <descriptor>src/main/resources/assemblies/src.xml</descriptor>
+                <descriptor>src/main/resources/assemblies/bin.xml</descriptor>
+              </descriptors>
             </configuration>
-            <executions>
-              <execution>
-                <id>create-src-distribution</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <descriptors>
-                    <descriptor>src/main/assembly/src.xml</descriptor>
-                  </descriptors>
-                </configuration>
-              </execution>
-              <execution>
-                <id>create-binary-distribution</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <descriptors>
-                    <descriptor>src/main/assembly/bin.xml</descriptor>
-                  </descriptors>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>

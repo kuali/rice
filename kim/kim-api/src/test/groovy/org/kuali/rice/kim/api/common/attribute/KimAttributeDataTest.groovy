@@ -53,6 +53,7 @@ class KimAttributeDataTest {
         <kimAttributeData xmlns="http://rice.kuali.org/kim/v2_0">
             <id>${ID}</id>
             <assignedToId>${GROUP_ID}</assignedToId>
+            <kimTypeId>${KIM_TYPE.id}</kimTypeId>
             <kimType>
                 <id>${KIM_TYPE.id}</id>
                 <versionNumber>${VER_NBR}</versionNumber>
@@ -91,6 +92,7 @@ class KimAttributeDataTest {
 		KimAttributeData groupAttribute =  KimAttributeData.Builder.create(new KimAttributeDataContract() {
             String getId() {KimAttributeDataTest.ID}
             String getAssignedToId() {KimAttributeDataTest.GROUP_ID}
+            String getKimTypeId() {KimAttributeDataTest.KIM_TYPE.id}
             KimType getKimType() {KimAttributeDataTest.KIM_TYPE}
             KimAttribute getKimAttribute() {KimAttributeDataTest.KIM_ATTRIBUTE}
             String getAttributeValue() {KimAttributeDataTest.ATTRIBUTE_VALUE}

@@ -50,6 +50,14 @@ public interface KimAttributeDataContract extends Identifiable, Versioned, Globa
      */
 	KimAttributeContract getKimAttribute();
 
+
+    /**
+     * The kim type id associated with the kim attribute data.  This can be null if no kim types are associated.
+     *
+     * @return the kim type id
+     */
+    String getKimTypeId();
+
     /**
      * The kim type associated with the kim attribute data.  This can be null if no kim types are associated.
      *

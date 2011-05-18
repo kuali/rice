@@ -5,10 +5,10 @@
     <output-test url="file://$MODULE_DIR$/../../../core/api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../core/api">
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/wsdl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/annotations" isTestSource="false" />

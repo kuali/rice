@@ -12,13 +12,7 @@ import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl
 import org.kuali.rice.kim.api.group.GroupUpdateService
 import org.kuali.rice.kns.bo.PersistableBusinessObject
 
-/**
- * Created by IntelliJ IDEA.
- * User: jjhanso
- * Date: 5/9/11
- * Time: 12:54 PM
- * To change this template use File | Settings | File Templates.
- */
+
 class GroupUpdateServiceImplTest {
 
     //importing the should fail method since I don't want to extend

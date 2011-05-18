@@ -59,7 +59,7 @@ public class GroupAttributeBo extends KimAttributeDataBo implements KimAttribute
         bo.kimAttribute = KimAttributeBo.from(im.kimAttribute)
         bo.kimAttributeId = im.kimAttribute?.id
         bo.attributeValue = bo.attributeValue
-        bo.kimTypeId = im.kimType?.id
+        bo.kimTypeId = im.kimTypeId
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;
 

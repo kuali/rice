@@ -24,7 +24,7 @@ import org.kuali.rice.kim.api.type.KimType
 class PermissionAttributeBoTest {
 	@Test
 	public void testNotEqualsWithPermission() {
-    KimAttributeData immutable = KimAttributeData.Builder.create(KimType.Builder.create()).build()
+    KimAttributeData immutable = KimAttributeData.Builder.create("1").build()
     PermissionAttributeBo bo = PermissionAttributeBo.from(immutable)
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

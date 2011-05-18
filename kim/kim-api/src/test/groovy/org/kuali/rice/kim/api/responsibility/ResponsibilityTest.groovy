@@ -82,6 +82,7 @@ class ResponsibilityTest {
 	                <assignedToId>${ATTRIBUTES_1_PERMISSION_ID}</assignedToId>
 	                <versionNumber>${VERSION_NUMBER}</versionNumber>
 	                <objectId>${ATTRIBUTES_1_OBJ_ID}</objectId>
+	                <kimTypeId>${KIM_TYPE_1_ID}</kimTypeId>
 	                <kimType>
 	                    <id>${KIM_TYPE_1_ID}</id>
 	                    <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
@@ -160,6 +161,7 @@ class ResponsibilityTest {
 					 String getAttributeValue() {ResponsibilityTest.ATTRIBUTES_1_VALUE}
                      String getAssignedToId() {ResponsibilityTest.ATTRIBUTES_1_PERMISSION_ID}
 					 Long getVersionNumber() {ResponsibilityTest.ATTRIBUTES_1_VER_NBR}
+                     String getKimTypeId() {ResponsibilityTest.KIM_TYPE_1_ID}
 					 KimType getKimType() {ResponsibilityTest.KIM_TYPE_1}
                      KimAttribute getKimAttribute() {ResponsibilityTest.KIM_ATTRIBUTE_1}
                      String getObjectId() {ResponsibilityTest.ATTRIBUTES_1_OBJ_ID}}).build() ]}

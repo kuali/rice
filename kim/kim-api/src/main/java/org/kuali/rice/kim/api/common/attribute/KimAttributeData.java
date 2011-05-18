@@ -41,6 +41,7 @@ import java.util.Collection;
 @XmlType(name = KimAttributeData.Constants.TYPE_NAME, propOrder = {
         KimAttributeData.Elements.ID,
         KimAttributeData.Elements.ASSIGNED_TO_ID,
+        KimAttributeData.Elements.KIM_TYPE_ID,
         KimAttributeData.Elements.KIM_TYPE,
         KimAttributeData.Elements.KIM_ATTRIBUTE,
         KimAttributeData.Elements.ATTRIBUTE_VALUE,
@@ -55,7 +56,10 @@ public class KimAttributeData implements KimAttributeDataContract, ModelObjectCo
     @XmlElement(name = Elements.ASSIGNED_TO_ID, required = false)
     private final String assignedToId;
 
-    @XmlElement(name = Elements.KIM_TYPE, required = true)
+    @XmlElement(name = Elements.KIM_TYPE_ID, required = true)
+    private final String kimTypeId;
+
+    @XmlElement(name = Elements.KIM_TYPE, required = false)
     private final KimType kimType;
 
     @XmlElement(name = Elements.KIM_ATTRIBUTE, required = false)
@@ -77,6 +81,7 @@ public class KimAttributeData implements KimAttributeDataContract, ModelObjectCo
     private KimAttributeData() {
         this.id = null;
         this.assignedToId = null;
+        this.kimTypeId = null;
         this.kimType = null;
         this.kimAttribute = null;
         this.attributeValue = null;
@@ -87,7 +92,9 @@ public class KimAttributeData implements KimAttributeDataContract, ModelObjectCo
     public KimAttributeData(Builder builder) {
         this.id = builder.getId();
         this.assignedToId = builder.getAssignedToId();
-        this.kimType = builder.getKimType().build();
+        this.kimTypeId = builder.getKimTypeId();
+        this.kimType =
+                builder.getKimType() != null ? builder.getKimType().build() : null;
         this.kimAttribute =
                 builder.getKimAttribute() != null ? builder.getKimAttribute().build() : null;
         this.attributeValue = builder.getAttributeValue();
@@ -103,6 +110,11 @@ public class KimAttributeData implements KimAttributeDataContract, ModelObjectCo
     @Override
     public String getAssignedToId() {
         return assignedToId;
+    }
+
+    @Override
+    public String getKimTypeId() {
+        return kimTypeId;
     }
 
     @Override
@@ -148,33 +160,37 @@ public class KimAttributeData implements KimAttributeDataContract, ModelObjectCo
         public static class Builder implements KimAttributeDataContract, ModelBuilder, Serializable {
         private String id;
         private String assignedToId;
+        private String kimTypeId;
         private KimType.Builder kimType;
         private KimAttribute.Builder kimAttribute;
         private String attributeValue;
         private Long versionNumber;
         private String objectId;
 
-        private Builder(KimType.Builder kimType) {
-            setKimType(kimType);
+        private Builder(String kimTypeId) {
+            setKimTypeId(kimTypeId);
         }
 
         /**
          * creates a Parameter with the required fields.
          */
-        public static Builder create(KimType.Builder kimType) {
-            return new Builder(kimType);
+        public static Builder create(String kimTypeId) {
+            return new Builder(kimTypeId);
         }
 
         /**
-         * creates a Parameter from an existing {@link org.kuali.rice.core.api.parameter.ParameterContract}.
+         * creates a KimAttributeData from an existing {@link org.kuali.rice.kim.api.common.attribute.KimAttributeContract}
          */
         public static Builder create(KimAttributeDataContract contract) {
-            Builder builder = new Builder(KimType.Builder.create(contract.getKimType()));
+            Builder builder = new Builder(contract.getKimTypeId());
             builder.setAssignedToId(contract.getAssignedToId());
 
             builder.setId(contract.getId());
             if (contract.getKimAttribute() != null) {
                 builder.setKimAttribute(KimAttribute.Builder.create(contract.getKimAttribute()));
+            }
+            if (contract.getKimType() != null) {
+                builder.setKimType(KimType.Builder.create(contract.getKimType()));
             }
             builder.setValue(contract.getAttributeValue());
             builder.setVersionNumber(contract.getVersionNumber());
@@ -201,6 +217,15 @@ public class KimAttributeData implements KimAttributeDataContract, ModelObjectCo
 
         public void setAssignedToId(final String assignedToId) {
             this.assignedToId = assignedToId;
+        }
+
+        @Override
+        public String getKimTypeId(){
+            return kimTypeId;
+        }
+
+        public void setKimTypeId(String kimTypeId) {
+            this.kimTypeId = kimTypeId;
         }
 
         @Override
@@ -270,6 +295,7 @@ public class KimAttributeData implements KimAttributeDataContract, ModelObjectCo
     static class Elements {
         final static String ID = "id";
         final static String ASSIGNED_TO_ID = "assignedToId";
+        final static String KIM_TYPE_ID = "kimTypeId";
         final static String KIM_TYPE = "kimType";
         final static String KIM_ATTRIBUTE = "kimAttribute";
         final static String ATTRIBUTE_VALUE = "attributeValue";

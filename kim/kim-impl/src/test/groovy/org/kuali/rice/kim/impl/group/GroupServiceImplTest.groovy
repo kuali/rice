@@ -28,14 +28,9 @@ import org.kuali.rice.kim.api.group.GroupService
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.kim.util.KimConstants
 import org.kuali.rice.kns.service.BusinessObjectService
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 
-/**
- * Created by IntelliJ IDEA.
- * User: jjhanso
- * Date: 4/12/11
- * Time: 1:58 PM
- * To change this template use File | Settings | File Templates.
- */
+
 class GroupServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 

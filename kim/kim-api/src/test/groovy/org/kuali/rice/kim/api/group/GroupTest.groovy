@@ -117,6 +117,7 @@ class GroupTest {
               <attribute>
                 <id>${ATTRIBUTES_1_ID}</id>
                 <assignedToId>${ATTRIBUTES_1_GROUP_ID}</assignedToId>
+                <kimTypeId>${KIM_TYPE_1.id}</kimTypeId>
                 <kimType>
                     <id>${KIM_TYPE_1.id}</id>
                     <versionNumber>${VERSION_NUMBER}</versionNumber>
@@ -135,6 +136,7 @@ class GroupTest {
               <attribute>
                 <id>${ATTRIBUTES_2_ID}</id>
                 <assignedToId>${ATTRIBUTES_2_GROUP_ID}</assignedToId>
+                <kimTypeId>${KIM_TYPE_2.id}</kimTypeId>
                 <kimType>
                     <id>${KIM_TYPE_2.id}</id>
                     <versionNumber>${VERSION_NUMBER}</versionNumber>
@@ -223,6 +225,7 @@ class GroupTest {
                     KimAttributeData.Builder.create(new KimAttributeDataContract() {
 				        String getId() {GroupTest.ATTRIBUTES_1_ID}
                         String getAssignedToId() {GroupTest.ATTRIBUTES_1_GROUP_ID}
+                        String getKimTypeId() {GroupTest.KIM_TYPE_1.id}
                         KimType getKimType() {GroupTest.KIM_TYPE_1}
                         KimAttribute getKimAttribute() {GroupTest.KIM_ATTRIBUTE_1}
                         String getAttributeValue() {GroupTest.ATTRIBUTES_1_VALUE}
@@ -231,6 +234,7 @@ class GroupTest {
                     KimAttributeData.Builder.create(new KimAttributeDataContract() {
 				        String getId() {GroupTest.ATTRIBUTES_2_ID}
                         String getAssignedToId() {GroupTest.ATTRIBUTES_2_GROUP_ID}
+                        String getKimTypeId() {GroupTest.KIM_TYPE_2.id}
                         KimType getKimType() {GroupTest.KIM_TYPE_2}
                         KimAttribute getKimAttribute() {GroupTest.KIM_ATTRIBUTE_2}
                         String getAttributeValue() {GroupTest.ATTRIBUTES_2_VALUE}

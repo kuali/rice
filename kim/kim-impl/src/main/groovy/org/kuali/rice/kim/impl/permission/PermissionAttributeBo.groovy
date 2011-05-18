@@ -63,7 +63,7 @@ public class PermissionAttributeBo extends KimAttributeDataBo implements KimAttr
         bo.kimAttribute = KimAttributeBo.from(im.kimAttribute)
         bo.kimAttributeId = im.kimAttribute?.id
         bo.attributeValue = bo.attributeValue
-        bo.kimTypeId = im.kimType?.id
+        bo.kimTypeId = im.kimTypeId
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;
 

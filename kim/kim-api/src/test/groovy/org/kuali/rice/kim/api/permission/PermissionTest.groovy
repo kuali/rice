@@ -80,6 +80,7 @@ class PermissionTest {
 	                <assignedToId>${ATTRIBUTES_1_PERMISSION_ID}</assignedToId>
 	                <versionNumber>${VERSION_NUMBER}</versionNumber>
 	                <objectId>${ATTRIBUTES_1_OBJ_ID}</objectId>
+	                <kimTypeId>${KIM_TYPE_1_ID}</kimTypeId>
 	                <kimType>
 	                    <id>${KIM_TYPE_1_ID}</id>
 	                    <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
@@ -158,6 +159,7 @@ class PermissionTest {
 					 String getAttributeValue() {PermissionTest.ATTRIBUTES_1_VALUE}
                      String getAssignedToId() {PermissionTest.ATTRIBUTES_1_PERMISSION_ID}
 					 Long getVersionNumber() {PermissionTest.ATTRIBUTES_1_VER_NBR}
+                     String getKimTypeId() {PermissionTest.KIM_TYPE_1_ID}
 					 KimType getKimType() {PermissionTest.KIM_TYPE_1}
                      KimAttribute getKimAttribute() {PermissionTest.KIM_ATTRIBUTE_1}
                      String getObjectId() {PermissionTest.ATTRIBUTES_1_OBJ_ID}}).build() ]}			

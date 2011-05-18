@@ -240,7 +240,7 @@ public class GroupXmlParser {
             AttributeSet attributeSet = new AttributeSet();
             List<KimAttributeData.Builder> groupAttributes = new ArrayList<KimAttributeData.Builder>();
             for (Element attr : attributes ) {
-                KimAttributeData.Builder attrBuilder = KimAttributeData.Builder.create(KimType.Builder.create(kimTypeInfo));
+                KimAttributeData.Builder attrBuilder = KimAttributeData.Builder.create(kimTypeInfo.getId());
                 String key = attr.getAttributeValue(KEY);
                 String value = attr.getAttributeValue(VALUE);
                 attrBuilder.setKimAttribute(KimAttribute.Builder.create("org.kuali.rice.kim.bo.impl.KimAttributes", key, kimTypeInfo.getNamespaceCode()));

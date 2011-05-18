@@ -2,8 +2,8 @@
  * KRADConversion.groovy
  *
  * A groovy script which can be used to updates KNS to KRAD. Generate Attribute
- * definition, Inquiry, Lookup view definitions and Maintenance view definitions
- * in same Xml file. 
+ * definition, Inquiry and Lookup view definitions in one Xml file and Maintenance
+ * view definitions in other Xml file. 
  */
 
 import groovy.xml.XmlUtil
@@ -362,7 +362,12 @@ if(dDRoot != null) {
         //Iterate through each bean
         (0..<beans.size()).each {
             def beanNode = beans[it]
-            println("bean id : "+beanNode.@id)            
+            println("bean id : "+beanNode.@id)
+            def parentBeanNode = mDRoot.bean.find{ it.@parent == beanNode.@id }
+            if(parentBeanNode != null) {
+                //println("Removed bean id : "+parentBeanNode.@id)
+                parentBeanNode.replaceNode({})   
+            }
             
             if(beanNode.@parent == "MaintenanceDocumentEntry") {
                 def maintenanceParentBeanNode = beanNode
@@ -373,129 +378,142 @@ if(dDRoot != null) {
                 def lockingKeysPropertyNode = maintenanceParentBeanNode.property.find{ it.@name == "lockingKeys"}
                 def docTypePropertyNode = maintenanceParentBeanNode.property.find{ it.@name == "documentTypeName"}
                 def docClassPropertyNode = maintenanceParentBeanNode.property.find{ it.@name == "documentAuthorizerClass"}
-                dDRoot.append(beanNode.replaceNode {
-                        bean(id:"$objectName-MaintenanceView",parent:"MaintenanceView") {
-                            if(titlePropertyNode != null) {
-                                property(name:"title",value:titlePropertyNode.@value)
-                            }
-                            if(bOPropertyNode != null) {
-                                property(name:"dataObjectClassName",value:bOPropertyNode.@value)
-                            }
-                            if(maintainableSectionsPropertyNode != null) {
-                                property(name:"items") {
-                                    list(merge:"true") {
-                                        (0..<maintainableSectionsPropertyNode.list.ref.size()).each {
-                                            def referenceNode = maintainableSectionsPropertyNode.list.ref[it] 
-                                            def referenceBeanNode = mDRoot.bean.find{ it.@id == referenceNode.@bean }
-                                            if(referenceBeanNode != null && referenceBeanNode.@parent != "MaintainableSectionDefinition") {
-                                                referenceBeanNode = mDRoot.bean.find{ it.@id == referenceBeanNode.@parent }
-                                            }
-                                            def innerBeanNode = referenceBeanNode
-                                            
-                                            // Checking whether the collection or not
-                                            def collectionField = innerBeanNode.property.list.bean.find{ it.@parent == "MaintainableCollectionDefinition" };
-                                            if(collectionField == null) {                                        
-                                                def sectionTitlePropertyNode = innerBeanNode.property.find{ it.@name == "title" }
-                                                def maintainableItemsPropertyNode = innerBeanNode.property.find{ it.@name == "maintainableItems" }
-                                                bean(parent:'MaintenanceGroupSectionGridLayout') {
-                                                    if(sectionTitlePropertyNode != null) {
-                                                        property(name:"title",value:sectionTitlePropertyNode.@value)
-                                                    }                                                    
-                                                    if(maintainableItemsPropertyNode != null) {
-                                                        property(name:"items") {
-                                                            list {
-                                                                (0..<maintainableItemsPropertyNode.list.bean.size()).each {
-                                                                    def innerMaintItemsBeanNode = maintainableItemsPropertyNode.list.bean[it]
-                                                                    def attributeValue
-                                                                    innerMaintItemsBeanNode.attributes().each() { key, value -> if(key.toString().endsWith("name")){ attributeValue = value } }                                                                                                            
-                                                                    bean('xmlns:p':beanSchema,parent:'AttributeField','p:propertyName':attributeValue) 
-                                                                }
-                                                            }
-                                                        }
-                                                    }                                            
-                                                } 
-                                            } else {
-                                                def sectionTitlePropertyNode = innerBeanNode.property.find{ it.@name == "title" }                                        
-                                                def maintainableItems = innerBeanNode.property.list.bean.property.find{ it.@name == "maintainableFields" }
-                                                def businessObjectPropertyNode = innerBeanNode.property.list.bean.property.find{ it.@name == "businessObjectClass" } 
-                                                def attributeNamePropertyNode = innerBeanNode.property.list.bean.property.find{ it.@name == "name" } 
-                                                def summaryTitlePropertyNode = innerBeanNode.property.list.bean.property.find{ it.@name == "summaryTitle" } 
-                                                def summaryFieldsPropertyNode = innerBeanNode.property.list.bean.property.find{ it.@name == "summaryFields" } 
-                                                bean(parent:'MaintenanceCollectionGroupSection') {
-                                                    if(sectionTitlePropertyNode != null) {
-                                                        property(name:"title",value:sectionTitlePropertyNode.@value)
-                                                    }
-                                                    if(businessObjectPropertyNode != null) {
-                                                        property(name:"collectionObjectClass",value:businessObjectPropertyNode.@value)
-                                                    }
-                                                    if(attributeNamePropertyNode != null) {
-                                                        property(name:"propertyName",value:attributeNamePropertyNode.@value)
-                                                    }
-                                                    if(maintainableItems != null) {
-                                                        property(name:"items") {
-                                                            list {
-                                                                (0..<maintainableItems.list.bean.size()).each {
-                                                                    def innerInquiryFieldsBeanNode = maintainableItems.list.bean[it]
-                                                                    def attributeValue
-                                                                    innerInquiryFieldsBeanNode.attributes().each() { key, value -> if(key.toString().endsWith("name")){ attributeValue = value } }                                                                                                            
-                                                                    bean('xmlns:p':beanSchema,parent:'AttributeField','p:propertyName':attributeValue) 
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    if(summaryTitlePropertyNode != null) {
-                                                        property(name:"layoutManager.summaryTitle",value:summaryTitlePropertyNode.@value)
-                                                    } 
-                                                    if(summaryFieldsPropertyNode != null) {
-                                                        property(name:"layoutManager.summaryFields") {
-                                                            list {
-                                                                (0..<summaryFieldsPropertyNode.list.bean.size()).each {
-                                                                    def innerSummaryFieldsBeanNode = summaryFieldsPropertyNode.list.bean[it]
-                                                                    def attributeValue
-                                                                    innerSummaryFieldsBeanNode.attributes().each() { key, value -> if(key.toString().endsWith("name")){ attributeValue = value } }                                                                                                            
-                                                                    value(attributeValue) 
-                                                                }
-                                                            }
-                                                        }
-                                                   }
-                                               } 
-                                            }                                                                 
+                beanNode.replaceNode {
+                    bean(id:"$objectName-MaintenanceView",parent:"MaintenanceView") {
+                        if(titlePropertyNode != null) {
+                            property(name:"title",value:titlePropertyNode.@value)
+                        }
+                        if(bOPropertyNode != null) {
+                            property(name:"dataObjectClassName",value:bOPropertyNode.@value)
+                        }
+                        if(maintainableSectionsPropertyNode != null) {
+                            property(name:"items") {
+                                list(merge:"true") {
+                                    (0..<maintainableSectionsPropertyNode.list.ref.size()).each {
+                                        def referenceNode = maintainableSectionsPropertyNode.list.ref[it] 
+                                        def referenceBeanNode = mDRoot.bean.find{ it.@id == referenceNode.@bean }
+                                        if(referenceBeanNode != null && referenceBeanNode.@parent != "MaintainableSectionDefinition") {
+                                            referenceBeanNode = mDRoot.bean.find{ it.@id == referenceBeanNode.@parent }
                                         }
+                                        def innerBeanNode = referenceBeanNode
+                                        if(referenceBeanNode != null) {
+                                            referenceBeanNode.replaceNode({})   
+                                        }
+                                        // Checking whether the collection or not
+                                        def collectionField = innerBeanNode.property.list.bean.find{ it.@parent == "MaintainableCollectionDefinition" };
+                                        if(collectionField == null) {                                        
+                                            def sectionTitlePropertyNode = innerBeanNode.property.find{ it.@name == "title" }
+                                            def maintainableItemsPropertyNode = innerBeanNode.property.find{ it.@name == "maintainableItems" }
+                                            bean(parent:'MaintenanceGroupSectionGridLayout') {
+                                                if(sectionTitlePropertyNode != null) {
+                                                    property(name:"title",value:sectionTitlePropertyNode.@value)
+                                                }                                                    
+                                                if(maintainableItemsPropertyNode != null) {
+                                                    property(name:"items") {
+                                                        list {
+                                                            (0..<maintainableItemsPropertyNode.list.bean.size()).each {
+                                                                def innerMaintItemsBeanNode = maintainableItemsPropertyNode.list.bean[it]
+                                                                def attributeValue
+                                                                innerMaintItemsBeanNode.attributes().each() { key, value -> if(key.toString().endsWith("name")){ attributeValue = value } }                                                                                                            
+                                                                bean('xmlns:p':beanSchema,parent:'AttributeField','p:propertyName':attributeValue) 
+                                                            }
+                                                        }
+                                                    }
+                                                }                                            
+                                            } 
+                                        } else {
+                                            def sectionTitlePropertyNode = innerBeanNode.property.find{ it.@name == "title" }                                        
+                                            def maintainableItems = innerBeanNode.property.list.bean.property.find{ it.@name == "maintainableFields" }
+                                            def businessObjectPropertyNode = innerBeanNode.property.list.bean.property.find{ it.@name == "businessObjectClass" } 
+                                            def attributeNamePropertyNode = innerBeanNode.property.list.bean.property.find{ it.@name == "name" } 
+                                            def summaryTitlePropertyNode = innerBeanNode.property.list.bean.property.find{ it.@name == "summaryTitle" } 
+                                            def summaryFieldsPropertyNode = innerBeanNode.property.list.bean.property.find{ it.@name == "summaryFields" } 
+                                            bean(parent:'MaintenanceCollectionGroupSection') {
+                                                if(sectionTitlePropertyNode != null) {
+                                                    property(name:"title",value:sectionTitlePropertyNode.@value)
+                                                }
+                                                if(businessObjectPropertyNode != null) {
+                                                    property(name:"collectionObjectClass",value:businessObjectPropertyNode.@value)
+                                                }
+                                                if(attributeNamePropertyNode != null) {
+                                                    property(name:"propertyName",value:attributeNamePropertyNode.@value)
+                                                }
+                                                if(maintainableItems != null) {
+                                                    property(name:"items") {
+                                                        list {
+                                                            (0..<maintainableItems.list.bean.size()).each {
+                                                                def innerInquiryFieldsBeanNode = maintainableItems.list.bean[it]
+                                                                def attributeValue
+                                                                innerInquiryFieldsBeanNode.attributes().each() { key, value -> if(key.toString().endsWith("name")){ attributeValue = value } }                                                                                                            
+                                                                bean('xmlns:p':beanSchema,parent:'AttributeField','p:propertyName':attributeValue) 
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                if(summaryTitlePropertyNode != null) {
+                                                    property(name:"layoutManager.summaryTitle",value:summaryTitlePropertyNode.@value)
+                                                } 
+                                                if(summaryFieldsPropertyNode != null) {
+                                                    property(name:"layoutManager.summaryFields") {
+                                                        list {
+                                                            (0..<summaryFieldsPropertyNode.list.bean.size()).each {
+                                                                def innerSummaryFieldsBeanNode = summaryFieldsPropertyNode.list.bean[it]
+                                                                def attributeValue
+                                                                innerSummaryFieldsBeanNode.attributes().each() { key, value -> if(key.toString().endsWith("name")){ attributeValue = value } }                                                                                                            
+                                                                value(attributeValue) 
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } 
+                                        }                                                                 
                                     }
                                 }
-                            }                            
-                        }                        
-                    }
-                )
-                dDRoot.append(beanNode.replaceNode {
-                        bean(id:objectName+"MaintenanceDocument", parent:"MaintenanceDocumentEntry") {
-                            if(bOPropertyNode != null) {
-                                property(name:"businessObjectClass",value:bOPropertyNode.@value)
                             }
-                            if(maintainableClassPropertyNode != null) {
-                                property(name:"maintainableClass",value:maintainableClassPropertyNode.@value)
-                            }
-                            if(docTypePropertyNode != null) {
-                                property(name:"documentTypeName",value:docTypePropertyNode.@value)
-                            }
-                            if(docClassPropertyNode != null) {
-                                property(name:"documentAuthorizerClass",value:docClassPropertyNode.@value)
-                            }
-                            if(lockingKeysPropertyNode != null) {
-                                property(name:"lockingKeys") {
-                                    list {
-                                        (0..<lockingKeysPropertyNode.list.value.size()).each {
-                                            value(lockingKeysPropertyNode.list.value[it].value())
-                                        }
+                        }                            
+                    }                        
+                }
+                
+                beanNode.replaceNode {
+                    bean(id:objectName+"MaintenanceDocument", parent:"MaintenanceDocumentEntry") {
+                        if(bOPropertyNode != null) {
+                            property(name:"businessObjectClass",value:bOPropertyNode.@value)
+                        }
+                        if(maintainableClassPropertyNode != null) {
+                            property(name:"maintainableClass",value:maintainableClassPropertyNode.@value)
+                        }
+                        if(docTypePropertyNode != null) {
+                            property(name:"documentTypeName",value:docTypePropertyNode.@value)
+                        }
+                        if(docClassPropertyNode != null) {
+                            property(name:"documentAuthorizerClass",value:docClassPropertyNode.@value)
+                        }
+                        if(lockingKeysPropertyNode != null) {
+                            property(name:"lockingKeys") {
+                                list {
+                                    (0..<lockingKeysPropertyNode.list.value.size()).each {
+                                        value(lockingKeysPropertyNode.list.value[it].value())
                                     }
                                 }
                             }
                         }
                     }
-                )
-                            
+                }                                            
             }
-        }            
+        } 
+        
+        def writer = new StringWriter()
+        XmlUtil.serialize(mDRoot, writer) 
+        
+        def fileOut 
+        try {
+            fileOut= new File(outputFilePath+objectName+"MaintenanceDocument.xml")
+            def result = writer.toString()        
+            
+            fileOut.write(result) 
+        } catch(java.io.FileNotFoundException ex) {
+            errorText()
+        } 
     }
     
     def writer = new StringWriter()
@@ -504,7 +522,8 @@ if(dDRoot != null) {
     def fileOut 
     try {
         fileOut= new File(outputFilePath+objectName+".xml")
-        def result = writer.toString()                
+        def result = writer.toString()        
+        
         fileOut.write(result) 
     } catch(java.io.FileNotFoundException ex) {
         errorText()

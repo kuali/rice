@@ -172,7 +172,6 @@ public class ErrorsField extends FieldBase {
 			if(errorCount < messageMap.getErrorCount()){
 				List<String> diff = messageMap.getPropertiesWithErrors();
 				diff.removeAll(masterKeyList);
-				//errors.add("Unknown Server Error(s): " + Arrays.toString(diff.toArray()));
 				for (String key : diff) {
     				errors.addAll(getMessages(view, key,
                             messageMap.getErrorMessagesForProperty(key, true)));

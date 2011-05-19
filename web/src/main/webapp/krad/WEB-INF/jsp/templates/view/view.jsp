@@ -52,7 +52,9 @@
 
 		<c:if test="${view.renderForm}">
 			<form:hidden path="pageId" />
-			<form:hidden id="currentPageTitle" path="view.currentPage.title"/>
+			<c:if test="${!empty view.currentPage}">
+				<form:hidden id="currentPageTitle" path="view.currentPage.title"/>
+			</c:if>
 			<form:hidden path="jumpToId" />
 			<form:hidden path="jumpToName" />
 			<form:hidden path="focusId" />

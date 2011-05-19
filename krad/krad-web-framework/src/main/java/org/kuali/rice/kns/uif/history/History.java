@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.util.ViewModelUtils;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 
 /**
@@ -204,10 +207,10 @@ public class History implements Serializable{
                 
                 String url = "";
                 if(breadcrumb.getUrl().contains("?")){
-                    url = breadcrumb.getUrl() + "&history=" + historyParam + "&showHome=false";
+                    url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + historyParam;
                 }
                 else{
-                    url = breadcrumb.getUrl() + "?history=" + historyParam + "&showHome=false";
+                    url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + historyParam;
                 }
                 breadcrumb.setUrl(url);
                 breadcrumbs.add(breadcrumb);
@@ -238,10 +241,10 @@ public class History implements Serializable{
         
         String url = "";
         if(breadcrumb.getUrl().contains("?")){
-            url = breadcrumb.getUrl() + "&history=" + historyParam + "&showHome=false";
+            url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + historyParam;
         }
         else{
-            url = breadcrumb.getUrl() + "?history=" + historyParam + "&showHome=false";
+            url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + historyParam;
         }
         breadcrumb.setUrl(url);
         return breadcrumb;
@@ -319,26 +322,70 @@ public class History implements Serializable{
     @SuppressWarnings("unchecked")
     public void setCurrent(UifFormBase form, HttpServletRequest request) {
        if(!request.getMethod().equals("POST")){
+           boolean showHomeValue = false;
+           boolean pageIdValue = false;
+           boolean formKeyValue = false;
            String queryString = "";
            String url = request.getRequestURL().toString();
            //remove history attribute
            Enumeration<String> params = request.getParameterNames();
            while(params.hasMoreElements()){
                String key = params.nextElement();
-               if(!key.equals("history")){
+               if(!key.equals(UifConstants.UrlParams.HISTORY)){
                    for(String value: request.getParameterValues(key)){
                        queryString = queryString + "&" + key + "=" + value;  
                    }
-                   
+               }
+               else if(key.equals(UifConstants.UrlParams.PAGE_ID)){
+                   pageIdValue = true;
+               }
+               else if(key.equals(UifConstants.UrlParams.SHOW_HOME)){
+                   showHomeValue = true;
+               }
+               else if(key.equals(UifConstants.UrlParams.FORM_KEY)){
+                   formKeyValue = true;
                }
            }
+           
+           //add formKey and pageId to url
+           if(StringUtils.isNotBlank(form.getFormKey()) && !formKeyValue){
+               queryString = queryString + "&" + UifConstants.UrlParams.FORM_KEY  + form.getFormKey();
+           }
+           if(StringUtils.isNotBlank(form.getPageId()) && !pageIdValue){
+               queryString = queryString + "&" + UifConstants.UrlParams.PAGE_ID +  form.getPageId();
+           }
+           if(!showHomeValue){
+               queryString = queryString + "&" + UifConstants.UrlParams.SHOW_HOME + "=false";
+           }
+           
            queryString = queryString.replaceFirst("&", "");
            
            if(StringUtils.isNotEmpty(queryString)){
                url = url + "?" + queryString;
            }
            
-           this.setCurrent(form.getViewId(), form.getPageId(), form.getView().getTitle(), url, form.getFormKey());
+           View view = form.getView();
+           String title = view.getTitle();
+           //may move this into view logic instead in the future if it is required for the view's title (not just breadcrumb)
+           //if so remove this and just use getTitle - this logic would be in performFinalize instead
+           Object titleValue = ViewModelUtils.getValue(view, form, view.getViewLabelFieldPropertyName(), view.getViewLabelFieldBindingInfo());
+           String titleAppend = "";
+           if(titleValue != null){
+               titleAppend = titleValue.toString();
+           }
+           if(StringUtils.isNotBlank(titleAppend) && view.getAppendOption() != null){
+               if(view.getAppendOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.DASH)){
+                   title = title + " - " + titleAppend;
+               }
+               else if(view.getAppendOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.PARENTHESIS)){
+                   title = title + "(" + titleAppend +")";
+               }
+               else if(view.getAppendOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.REPLACE)){
+                   title = titleAppend;
+               }
+               //else it is none or blank so no title modification will be used
+           }
+           this.setCurrent(form.getViewId(), form.getPageId(), title, url, form.getFormKey());
        }
     }
 }

@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.field.AttributeField;
 
 /**
@@ -134,6 +135,23 @@ public class ViewModelUtils {
         }
 
         return parentObject;
+    }
+    
+    public static Object getValue(View view, Object model, String propertyName, BindingInfo bindingInfo){
+        Object value = null;
+        if(bindingInfo == null && StringUtils.isNotBlank(propertyName)){
+            if(StringUtils.isNotBlank(view.getDefaultBindingObjectPath())){
+                value = ObjectPropertyUtils.getPropertyValue(model, view.getDefaultBindingObjectPath() + "." + propertyName);
+            }
+            else{
+                value = ObjectPropertyUtils.getPropertyValue(model, propertyName);
+            }
+            
+        }
+        else if(bindingInfo != null){
+            value = ObjectPropertyUtils.getPropertyValue(model, bindingInfo.getBindingPath());
+        }
+        return value;
     }
 
 }

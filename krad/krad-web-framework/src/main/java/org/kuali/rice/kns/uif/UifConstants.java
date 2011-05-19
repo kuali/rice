@@ -147,4 +147,19 @@ public class UifConstants {
 		public static final String DATE = "kuali_date";
 		public static final int ADD_ROW_DEFAULT_INDEX = 0;
 	}
+	
+	public static class TitleAppendTypes{
+        public static final String DASH = "dash";
+        public static final String PARENTHESIS = "parenthesis";
+        public static final String REPLACE = "replace";
+        public static final String NONE = "none";
+    }
+	
+    public static class UrlParams {
+        public static final String SHOW_HISTORY = "showHistory";
+        public static final String SHOW_HOME = "showHome";
+        public static final String FORM_KEY = "formKey";
+        public static final String PAGE_ID = "pageId";
+        public static final String HISTORY = "history";
+    }
 }

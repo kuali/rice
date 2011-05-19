@@ -27,6 +27,7 @@
 		<property name="breadcrumbs">
 			<bean parent="Breadcrumbs" />
 		</property>
+		<property name="appendOption" value="dash" />
 		<property name="growlMessagingEnabled" value="true" />
 		<property name="growlsWidget">
 			<bean parent="GrowlsWidget" />
@@ -142,7 +143,7 @@
 			</bean>
 		</property>
 	</bean>
-
+	
 	<bean id="DocumentView" abstract="true" parent="DocumentView-parentBean" />
 	<bean id="DocumentView-parentBean" abstract="true"
 		class="org.kuali.rice.kns.uif.container.DocumentView" parent="KNSFormView">
@@ -192,31 +193,32 @@
 	</bean>
 
 
-      <bean id="IncidentReportView" parent="IncidentReportView-parentBean" />
-      <bean id="IncidentReportView-parentBean" abstract="true" parent="KNSFormView">
-            <property name="title" value="Incident Report" />
-            <property name="id" value="Incident-Report" />
-            <property name="entryPageId" value="page1" />
-            <property name="items">
-                  <list>
-                        <bean parent="Page" p:id="page1">
-                              <property name="items">
-                                    <list>
-                                          <ref bean="IncidentDetailGroup" />
-                                          <ref bean="IncidentStackGroup" />
-                                    </list>
-                              </property>
-                        </bean>
-                  </list>
-            </property>
-            <property name="formClass"
-                  value="org.kuali.rice.kns.web.spring.form.IncidentReportForm" />
-            <property name="viewName" value="default" />
-            <property name="footer">
-				<bean parent="Footer" />
-			</property>
-			 <property name="summary" value="Please use the Incident Report form below to report the problems"/>
-      </bean>
+	<bean id="IncidentReportView" parent="IncidentReportView-parentBean" />
+	<bean id="IncidentReportView-parentBean" abstract="true" parent="KNSFormView">
+		<property name="title" value="Incident Report" />
+		<property name="id" value="Incident-Report" />
+		<property name="entryPageId" value="page1" />
+		<property name="items">
+			<list>
+				<bean parent="Page" p:id="page1">
+					<property name="items">
+						<list>
+							<ref bean="IncidentDetailGroup" />
+							<ref bean="IncidentStackGroup" />
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="formClass"
+			value="org.kuali.rice.kns.web.spring.form.IncidentReportForm" />
+		<property name="viewName" value="default" />
+		<property name="footer">
+			<bean parent="Footer" />
+		</property>
+		<property name="summary"
+			value="Please use the Incident Report form below to report the problems" />
+	</bean>
 
 	<bean id="IncidentDetailGroup" parent="GroupGridLayout">
 		<property name="header.headerText" value="Incident Feedback" />
@@ -276,7 +278,7 @@
 				</bean>
 			</list>
 		</property>
-	</bean>      
+	</bean>
 
 
 	<!-- Base Pages -->

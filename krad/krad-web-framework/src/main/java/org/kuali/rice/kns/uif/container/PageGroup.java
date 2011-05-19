@@ -63,16 +63,16 @@ public class PageGroup extends Group {
             ConfigurationService configService = KNSServiceLocator.getKualiConfigurationService();
             MessageMap messageMap = GlobalVariables.getMessageMap();
             if(messageMap.hasErrors()){
-                String message = "An error has occured, see page for more details.";
+                String message = configService.getPropertyString("growl.hasErrors");
                 if(StringUtils.isNotBlank(message)){
-                    growlScript = growlScript + "showGrowl('" + message + "', 'Error', 'errorGrowl');";
+                    growlScript = growlScript + "showGrowl('" + message + "', '"+ configService.getPropertyString("general.error") +"', 'errorGrowl');";
                 }
             }
             
             if(messageMap.hasWarnings()){
-                String message = "The server returned a warning, see page for more details";
+                String message = configService.getPropertyString("growl.hasWarnings");
                 if(StringUtils.isNotBlank(message)){
-                    growlScript = growlScript + "showGrowl('" + message + "', 'Warning', 'warningGrowl');";
+                    growlScript = growlScript + "showGrowl('" + message + "', '"+ configService.getPropertyString("general.warning") +"', 'warningGrowl');";
                 }
             }
             
@@ -101,7 +101,7 @@ public class PageGroup extends Group {
                 }
                 
                 if(StringUtils.isNotBlank(message)){
-                    growlScript = growlScript + "showGrowl('" + message + "', 'Information', 'infoGrowl');";
+                    growlScript = growlScript + "showGrowl('" + message + "', '"+ configService.getPropertyString("general.info") +"', 'infoGrowl');";
                 }
             }
             

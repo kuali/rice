@@ -24,11 +24,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.service.DataObjectMetaDataService;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
 import org.kuali.rice.kns.uif.authorization.Authorizer;
 import org.kuali.rice.kns.uif.authorization.PresentationController;
+import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.ReferenceCopy;
 import org.kuali.rice.kns.uif.core.RequestParameter;
@@ -36,9 +39,11 @@ import org.kuali.rice.kns.uif.field.LinkField;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.util.BooleanMap;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
+import org.kuali.rice.kns.uif.util.ViewModelUtils;
 import org.kuali.rice.kns.uif.widget.BreadCrumbs;
 import org.kuali.rice.kns.uif.widget.GrowlsWidget;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.spring.UifControllerHandlerInterceptor;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -68,7 +73,11 @@ public class View extends ContainerBase {
 
     private String viewName;
     
+    //Breadcrumbs
     private BreadCrumbs breadcrumbs;
+    private String viewLabelFieldPropertyName;
+    private BindingInfo viewLabelFieldBindingInfo;
+    private String appendOption;
     
     //Growls support
     private GrowlsWidget growlsWidget;
@@ -177,6 +186,40 @@ public class View extends ContainerBase {
             Group firstPageGroup = getItems().get(0);
             currentPageId = firstPageGroup.getId();
         }
+        
+    }
+    
+    /**
+     * This method is used to determine what property name is to be used for view label appendage, called before the generation
+     * of history/breadcrumb/title, but cannot be called from performInitialize because the abstractTypeClasses
+     * map may not be populated before super.performInitialize is called from a view child class (required for
+     * ViewModelUtils#getPropertyType determination used in this method)
+     * 
+     * Currently called from UifControllerHandlerInterceptor...
+     * @see ViewModelUtils#getPropertyType
+     * @see UifControllerHandlerInterceptor#postHandle
+     */
+    public void determineViewLabelPropertyName(){
+        //We have binding info but a custom viewLabelFieldPropertyName is set
+        if(viewLabelFieldBindingInfo != null && StringUtils.isNotBlank(viewLabelFieldPropertyName)){
+            viewLabelFieldBindingInfo.setDefaults(this, viewLabelFieldPropertyName);
+        }
+        //Nothing is preset, auto determine title
+        else if(viewLabelFieldBindingInfo == null && StringUtils.isBlank(viewLabelFieldPropertyName)){
+            Class<?> doClass;
+            if(StringUtils.isNotBlank(this.getDefaultBindingObjectPath())){
+                doClass = ViewModelUtils.getPropertyType(this, this.getDefaultBindingObjectPath());
+            }
+            else{
+                doClass = this.getFormClass();
+            }
+            DataObjectMetaDataService mds = KNSServiceLocatorWeb.getDataObjectMetaDataService();
+            if(doClass != null){
+                String title = mds.getTitleAttribute(doClass);
+                viewLabelFieldPropertyName = title;
+            }
+        }
+        //else assumption is to use whatever is in viewLabelFieldBindingInfo or viewLabelFieldPropertyName
     }
 
     /**
@@ -972,5 +1015,49 @@ public class View extends ContainerBase {
 	 */
 	public void setValidateDirty(boolean validateDirty) {
 		this.validateDirty = validateDirty;
-	}    
+	}
+
+    /**
+     * @return the viewLabelFieldPropertyName
+     */
+    public String getViewLabelFieldPropertyName() {
+        return this.viewLabelFieldPropertyName;
+    }
+
+    /**
+     * @param viewLabelFieldPropertyName the viewLabelFieldPropertyName to set
+     */
+    public void setViewLabelFieldPropertyName(String viewLabelFieldPropertyName) {
+        this.viewLabelFieldPropertyName = viewLabelFieldPropertyName;
+    }
+
+    /**
+     * @return the viewLabelFieldBindingInfo
+     */
+    public BindingInfo getViewLabelFieldBindingInfo() {
+        return this.viewLabelFieldBindingInfo;
+    }
+
+    /**
+     * @param viewLabelFieldBindingInfo the viewLabelFieldBindingInfo to set
+     */
+    public void setViewLabelFieldBindingInfo(BindingInfo viewLabelFieldBindingInfo) {
+        this.viewLabelFieldBindingInfo = viewLabelFieldBindingInfo;
+    }
+
+    /**
+     * @return the appendOption
+     */
+    public String getAppendOption() {
+        return this.appendOption;
+    }
+
+    /**
+     * @param appendOption the appendOption to set
+     */
+    public void setAppendOption(String appendOption) {
+        this.appendOption = appendOption;
+    }
+	
+	
 }

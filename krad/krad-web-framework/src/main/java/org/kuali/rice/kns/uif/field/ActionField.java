@@ -99,8 +99,8 @@ public class ActionField extends FieldBase {
 	public void performFinalize(View view, Object model, Component parent) {
 		super.performFinalize(view, model, parent);
 		
-		actionParameters.put("showHome", "false");
-		actionParameters.put("showHistory", "false");
+		actionParameters.put(UifConstants.UrlParams.SHOW_HOME, "false");
+		actionParameters.put(UifConstants.UrlParams.SHOW_HISTORY, "false");
 
 		if (StringUtils.isNotBlank(navigateToPageId)) {
 			actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
@@ -154,10 +154,10 @@ public class ActionField extends FieldBase {
     			}
 			}
 			
-			//TODO possibly fix some other way - prevents showing history and showing home again on actions which submit the form
-			writeParamsScript = writeParamsScript + "writeHiddenToForm('showHistory' , '"
+			//TODO possibly fix some other way - this is a workaround, prevents showing history and showing home again on actions which submit the form
+			writeParamsScript = writeParamsScript + "writeHiddenToForm('" + UifConstants.UrlParams.SHOW_HISTORY + "', '"
                 + "false" + "'); ";
-			writeParamsScript = writeParamsScript + "writeHiddenToForm('showHome' , '"
+			writeParamsScript = writeParamsScript + "writeHiddenToForm('" + UifConstants.UrlParams.SHOW_HOME + "' , '"
                 + "false" + "'); ";
 			
 			if(StringUtils.isBlank(focusOnAfterSubmit)){

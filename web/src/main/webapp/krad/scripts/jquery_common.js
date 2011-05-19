@@ -158,7 +158,7 @@ function resizeDialog() {
  */
 function setPageBreadcrumb(){
 	//check to see if page has navigation element, if so show breadcrumb
-	if(jq("#viewnavigation_div").html()){
+	if(jq("#viewnavigation_div").html() && jq("#breadcrumbs").length){
 		var pageTitle = jq("#currentPageTitle").val();
 		var pageId = jq("#pageId").val();
 		jq("#breadcrumbs").find("#page_breadcrumb").remove();

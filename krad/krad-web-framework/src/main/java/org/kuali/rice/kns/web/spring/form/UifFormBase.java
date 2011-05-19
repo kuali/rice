@@ -87,7 +87,7 @@ public class UifFormBase implements Serializable {
         viewRequestParameters = new HashMap<String, String>();
         newCollectionLines = new HashMap<String, Object>();
         actionParameters = new HashMap<String, String>();
-        formHistory = new History();
+        //formHistory = new History();
     }
 
     /**

@@ -26,7 +26,7 @@
 <form:textarea id="${control.id}" path="${field.bindingInfo.bindingPath}" 
                rows="${control.rows}" cols="${control.cols}" readonly="${control.readOnly}"
                cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
-               tabindex="${control.tabIndex}" maxLength="${field.maxLength}" minLength="${field.minLength}"/>
+               tabindex="${control.tabIndex}" maxLength="${control.maxLength}" minLength="${control.minLength}"/>
                
 <c:if test="${(!empty control.watermarkText)}">
 	<krad:script value="createWatermark('${control.id}', '${control.watermarkText}');" />

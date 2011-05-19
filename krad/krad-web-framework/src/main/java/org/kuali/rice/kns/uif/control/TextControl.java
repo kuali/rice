@@ -18,7 +18,9 @@ package org.kuali.rice.kns.uif.control;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.widget.DatePicker;
 
 /**
@@ -31,6 +33,8 @@ public class TextControl extends ControlBase {
 	private static final long serialVersionUID = -8267606288443759880L;
 
 	private int size;
+    private Integer maxLength;
+    private Integer minLength;
 
 	private DatePicker datePicker;
 	private String watermarkText = StringUtils.EMPTY;
@@ -52,7 +56,33 @@ public class TextControl extends ControlBase {
 		return components;
 	}
 
-	/**
+    /**
+     * The following actions are performed:
+     *
+     * <ul>
+     * <li>Defaults maxLength, minLength (if not set) to maxLength of parent field</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.kns.uif.core.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+     *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        if (parent instanceof AttributeField) {
+            AttributeField field = (AttributeField) parent;
+            if (getMaxLength() == null) {
+                setMaxLength(field.getMaxLength());
+            }
+
+            if (getMinLength() == null) {
+                setMinLength(field.getMinLength());
+            }
+        }
+    }
+
+    /**
 	 * Horizontal display size of the control (in number of characters)
 	 * 
 	 * @return int size
@@ -61,11 +91,56 @@ public class TextControl extends ControlBase {
 		return this.size;
 	}
 
-	public void setSize(int size) {
-		this.size = size;
-	}
+    /**
+     * Setter for the horizontal display size
+     *
+     * @param size
+     */
+    public void setSize(int size) {
+        this.size = size;
+    }
 
-	/**
+    /**
+     * Maximum number of characters that can be inputted
+     *
+     * <p>If not set on control, max length of field will be used</p>
+     *
+     * @return int max number of characters
+     */
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    /**
+     * Setter for the max number of input characters
+     *
+     * @param maxLength
+     */
+    public void setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
+    }
+
+    /**
+     * Minimum number of characters that can be inputted
+     *
+     * <p>If not set on control, min length of field will be used</p>
+     *
+     * @return int max number of characters
+     */
+    public Integer getMinLength() {
+        return minLength;
+    }
+
+    /**
+     * Setter for the min number of input characters
+     *
+     * @param maxLength
+     */
+    public void setMinLength(Integer minLength) {
+        this.minLength = minLength;
+    }
+
+    /**
 	 * Renders a calendar that can be used to select a date value for the text
 	 * control. The <code>Calendar</code> instance contains configuration such
 	 * as the date format string
@@ -102,6 +177,7 @@ public class TextControl extends ControlBase {
     /**
      * If set to true, this control will have a button which can be clicked to expand the text area through
      * a popup window so the user has more space to type and see the data they are entering in this text field
+     *
      * @return the textExpand
      */
     public boolean isTextExpand() {

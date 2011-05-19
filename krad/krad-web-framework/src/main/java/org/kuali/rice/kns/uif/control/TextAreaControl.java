@@ -16,73 +16,146 @@
 package org.kuali.rice.kns.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.field.AttributeField;
 
 /**
  * Represents a HTML TextArea control. Generally used for values that are very
  * large (such as a description)
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TextAreaControl extends ControlBase {
-	private static final long serialVersionUID = -4664558047325456844L;
-	
-	private int rows;
-	private int cols;
-	private boolean textExpand;
-	private String watermarkText = StringUtils.EMPTY;
-	
-	public TextAreaControl() {
+    private static final long serialVersionUID = -4664558047325456844L;
 
-	}
+    private int rows;
+    private int cols;
+    private Integer maxLength;
+    private Integer minLength;
 
-	/**
-	 * Number of rows the control should span (horizontal length)
-	 * 
-	 * @return int number of rows
-	 */
-	public int getRows() {
-		return this.rows;
-	}
+    private boolean textExpand;
+    private String watermarkText = StringUtils.EMPTY;
 
-	public void setRows(int rows) {
-		this.rows = rows;
-	}
+    public TextAreaControl() {
+        super();
+    }
 
-	/**
-	 * Number of columns the control should span (vertical length)
-	 * 
-	 * @return int number of columns
-	 */
-	public int getCols() {
-		return this.cols;
-	}
+    /**
+     * The following actions are performed:
+     *
+     * <ul>
+     * <li>Defaults maxLength, minLength (if not set) to maxLength of parent field</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.kns.uif.core.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+     *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
 
-	public void setCols(int cols) {
-		this.cols = cols;
-	}
-	
-	/**
-	 * @return the watermarkText
-	 */
-	public String getWatermarkText() {
-		return this.watermarkText;
-	}
+        if (parent instanceof AttributeField) {
+            AttributeField field = (AttributeField) parent;
+            if (getMaxLength() == null) {
+                setMaxLength(field.getMaxLength());
+            }
 
-	/**
-	 * @param watermarkText the watermarkText to set
-	 */
-	public void setWatermarkText(String watermarkText) {
-		//to avoid users from putting in the same value as the watermark adding some spaces here
-		//see watermark troubleshooting for more info
-		if (StringUtils.isNotEmpty(watermarkText)) {
-			watermarkText = watermarkText + "   ";
-		}
-		this.watermarkText = watermarkText;
-	}
+            if (getMinLength() == null) {
+                setMinLength(field.getMinLength());
+            }
+        }
+    }
+
+    /**
+     * Number of rows the control should span (horizontal length)
+     *
+     * @return int number of rows
+     */
+    public int getRows() {
+        return this.rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    /**
+     * Number of columns the control should span (vertical length)
+     *
+     * @return int number of columns
+     */
+    public int getCols() {
+        return this.cols;
+    }
+
+    public void setCols(int cols) {
+        this.cols = cols;
+    }
+
+    /**
+     * Maximum number of characters that can be inputted
+     *
+     * <p>If not set on control, max length of field will be used</p>
+     *
+     * @return int max number of characters
+     */
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    /**
+     * Setter for the max number of input characters
+     *
+     * @param maxLength
+     */
+    public void setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
+    }
+
+    /**
+     * Minimum number of characters that can be inputted
+     *
+     * <p>If not set on control, min length of field will be used</p>
+     *
+     * @return int max number of characters
+     */
+    public Integer getMinLength() {
+        return minLength;
+    }
+
+    /**
+     * Setter for the min number of input characters
+     *
+     * @param maxLength
+     */
+    public void setMinLength(Integer minLength) {
+        this.minLength = minLength;
+    }
+
+    /**
+     * @return the watermarkText
+     */
+    public String getWatermarkText() {
+        return this.watermarkText;
+    }
+
+    /**
+     * @param watermarkText the watermarkText to set
+     */
+    public void setWatermarkText(String watermarkText) {
+        //to avoid users from putting in the same value as the watermark adding some spaces here
+        //see watermark troubleshooting for more info
+        if (StringUtils.isNotEmpty(watermarkText)) {
+            watermarkText = watermarkText + "   ";
+        }
+        this.watermarkText = watermarkText;
+    }
 
     /**
      * If set to true, this control will have a button which can be clicked to expand the text area through
      * a popup window so the user has more space to type and see the data they are entering in this text field
+     *
      * @return the textExpand
      */
     public boolean isTextExpand() {
@@ -95,7 +168,6 @@ public class TextAreaControl extends ControlBase {
     public void setTextExpand(boolean textExpand) {
         this.textExpand = textExpand;
     }
-	
-	
+
 
 }

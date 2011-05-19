@@ -25,7 +25,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="TextControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.TextControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/control/text.jsp"/>
       <property name="size" value="30"/>
-  </bean>  
+  </bean>
+
+  <bean id="CurrencyControl" parent="CurrencyControl-parentBean"/>
+  <bean id="CurrencyControl-parentBean" abstract="true" parent="TextControl">
+      <property name="styleClasses" value="amount"/>
+  </bean>
   
   <bean id="CheckboxControl" parent="CheckboxControl-parentBean"/>
   <bean id="CheckboxControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.CheckboxControl" scope="prototype">

@@ -24,9 +24,9 @@
  --%>
 
 <form:input id="${control.id}" path="${field.bindingInfo.bindingPath}" 
-            size="${control.size}" maxlength="${field.maxLength}" readonly="${control.readOnly}"
+            size="${control.size}" maxlength="${control.maxLength}" readonly="${control.readOnly}"
             cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
-            tabindex="${control.tabIndex}" minLength="${field.minLength}"/>
+            tabindex="${control.tabIndex}" minLength="${control.minLength}"/>
 
 <c:if test="${(!empty control.watermarkText)}">
 	<krad:script value="createWatermark('${control.id}', '${control.watermarkText}');" />

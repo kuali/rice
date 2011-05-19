@@ -27,6 +27,7 @@
         <form-bean name="KualiLogoutForm" type="org.kuali.rice.kns.web.struts.form.KualiLogoutForm" />
     	<!-- End required KNS forms -->
 	    <form-bean name="TravelDocumentForm2" type="edu.sampleu.travel.web.form.TravelDocumentForm2" />
+	    <form-bean name="BookOrderForm" type="edu.sampleu.bookstore.document.web.BookOrderForm"/>
     </form-beans>
 
 	<global-exceptions>
@@ -78,6 +79,11 @@
 		<action path="/travelDocument2" name="TravelDocumentForm2" input="/WEB-INF/jsp/travelDocument2.jsp" type="edu.sampleu.travel.web.action.TravelDocumentAction2"
 			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
 			<forward name="basic" path="/WEB-INF/jsp/travelDocument2.jsp" />
+		</action>
+		
+		<action path="/bookOrder" name="BookOrderForm" input="/WEB-INF/jsp/BookOrder.jsp" type="edu.sampleu.bookstore.document.web.BookOrderAction"
+			scope="session" parameter="methodToCall" validate="true" attribute="KualiForm">
+			<forward name="basic" path="/WEB-INF/jsp/BookOrder.jsp"/>
 		</action>
     </action-mappings>
 

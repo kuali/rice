@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  <bean id="Author" parent="Author-parentBean"/>
+  <bean id="Author-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="objectClass" value="edu.sampleu.bookstore.bo.Author"/>
+    <property name="objectLabel" value="Author"/>
+    <property name="collections">
+      <list>
+        <bean parent="CollectionDefinition" p:name="addresses" p:label="Addresses" p:shortLabel="Addresses" p:elementLabel="Address"/>
+        <bean parent="CollectionDefinition" p:name="books" p:label="Books" p:shortLabel="Books" p:elementLabel="Book"/>
+      </list>
+    </property>
+    <property name="attributes">
+      <list merge="true">
+        <ref bean="Author-Id"/>
+        <ref bean="Author-Name"/>
+        <ref bean="Author-Email"/>
+        <ref bean="Author-PhoneNbr"/>
+        <ref bean="Author-Active"/>
+        <ref bean="Author-extension-accountNumber"/>
+        <ref bean="Author-extension-bankName"/>
+      </list>
+    </property>
+    <property name="titleAttribute" value="authorId"/>
+    <property name="primaryKeys">
+      <list>
+        <value>authorId</value>
+      </list>
+    </property>
+  </bean>
+  <bean id="Author-Id" parent="Author-Id-parentBean"/>
+  <bean id="Author-Id-parentBean" abstract="true" parent="AttributeReferenceDummy-genericSystemId">
+    <property name="name" value="authorId"/>
+    <property name="label" value="Author Name"/>
+    <property name="shortLabel" value="ID"/>
+    <property name="maxLength" value="14"/>
+    <property name="validationPattern">
+      <bean parent="NumericValidationPattern"/>
+    </property>
+<!--    <property name="control">-->
+<!--      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.Author" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="authorId" p:labelAttribute="authorName"/>-->
+<!--    </property>-->
+<!--     <property name="controlField">-->
+<!--      <bean parent="TextControl" p:size="10"/>-->
+<!--    </property>-->
+ 	<property name="controlField">
+      <bean parent="HiddenControl"/>
+    </property>
+    <property name="summary" value="ID identifying the Auhtor."/>
+    <property name="description" value="ID identifying the Author."/>
+  </bean>
+  <bean id="Author-Name" parent="Author-Name-parentBean"/>
+  <bean id="Author-Name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="authorName"/>
+    <property name="forceUppercase" value="false"/>
+    <property name="label" value="Author Name"/>
+    <property name="shortLabel" value="Name"/>
+    <property name="maxLength" value="100"/>
+    <property name="validationPattern">
+      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="50"/>
+    </property>
+    <property name="required" value="true"/>
+    <property name="summary" value="Name identifying the Author."/>
+    <property name="description" value="Name identifying the Author."/>
+  </bean>
+  <bean id="Author-Email" parent="Author-Email-parentBean"/>
+  <bean id="Author-Email-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="email"/>
+    <property name="forceUppercase" value="false"/>
+    <property name="label" value="Email Id"/>
+    <property name="shortLabel" value="Email"/>
+    <property name="maxLength" value="100"/>
+    <property name="validationPattern">
+      <bean parent="EmailAddressValidationPattern"/>
+    </property>
+     <property name="controlField">
+      <bean parent="TextControl" p:size="50"/>
+    </property>
+    <property name="required" value="true"/>
+    <property name="summary" value="Email identifying the Author."/>
+    <property name="description" value="Email identifying the Author."/>
+  </bean>
+  <bean id="Author-PhoneNbr" parent="Author-Phone-parentBean"/>
+  <bean id="Author-Phone-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="phoneNbr"/>
+    <property name="label" value="Phone No."/>
+    <property name="shortLabel" value="Phone"/>
+    <property name="maxLength" value="20"/>
+    <property name="validationPattern">
+      <bean parent="PhoneNumberValidationPattern"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="50"/>
+    </property>
+    <property name="required" value="true"/>
+    <property name="summary" value="Name identifying the Author."/>
+    <property name="description" value="Name identifying the Author."/>
+  </bean>
+  <bean id="Author-Active" parent="Author-Active-parentBean"/>
+  <bean id="Author-Active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+    <property name="name" value="active"/>
+  </bean>
+  <bean id="Author-extension-bankName" parent="Author-extension-bankName-parentBean"/>
+  <bean id="Author-extension-bankName-parentBean" abstract="true" parent="Account-bankName">
+    <property name="name" value="extension.bankName"/>
+  </bean>
+  <bean id="Author-extension-accountNumber" parent="Author-extension-accountNumber-parentBean"/>
+  <bean id="Author-extension-accountNumber-parentBean" abstract="true" parent="Account-accountNumber">
+    <property name="name" value="extension.accountNumber"/>
+  </bean>
+  <bean id="Author-InquiryView" parent="InquiryView">
+    <property name="title" value="Author Inquiry"/>
+    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Author"/>
+    <property name="Items">
+      <list>
+        <bean parent="GroupSectionGridLayout">
+          <property name="title" value="Author Information"/>
+          <property name="layoutManager.numberOfColumns" value="2"/>
+          <property name="items">
+            <list>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="authorName"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="email"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="active"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="GroupSectionGridLayout">
+          <property name="title" value="Account Information"/>
+          <property name="layoutManager.numberOfColumns" value="2"/>
+          <property name="items">
+            <list>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="extension.accountNumber"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="extension.bankName"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="CollectionGroupSection">
+          <property name="title" value="Addresses"/>
+          <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Address"/>
+          <property name="propertyName" value="addresses"/>
+          <property name="items">
+            <list>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="type"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street1"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street2"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="city"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="province"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="country"/>
+            </list>
+          </property>
+          <property name="layoutManager.summaryFields">
+            <list>
+              <value>type</value>
+            </list>
+          </property>
+          <property name="layoutManager.summaryTitle" value ="Address"/>
+        </bean>
+        <bean parent="CollectionGroupSection">
+          <property name="title" value="Books"/>
+          <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Book"/>
+          <property name="propertyName" value="books"/>
+          <property name="items">
+            <list>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="title"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="isbn"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="price"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="rating"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="publisher"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="publicationDate"/>
+            </list>
+          </property>
+          <property name="layoutManager.summaryFields">
+            <list>
+              <value>title</value>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <bean id="Author-LookupView" parent="LookupView">
+    <property name="title" value="Author Lookup"/>
+    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Author"/>
+    <property name="criteriaFields">
+      <list>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="authorName"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="email"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="active"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="authorId"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="authorName"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="email"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="phoneNbr"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="active"/>
+      </list>
+    </property>
+  </bean>
+ 
+</beans>

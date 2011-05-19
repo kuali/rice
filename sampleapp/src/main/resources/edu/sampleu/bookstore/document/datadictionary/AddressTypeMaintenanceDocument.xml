@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  <bean id="AddressTypeMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
+    <property name="workflowPropertyGroups">
+      <list>
+        <bean parent="WorkflowPropertyGroup">
+          <property name="workflowProperties">
+            <list>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="WorkflowProperty" p:path="oldMaintainableObject.businessObject"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="WorkflowProperty" p:path="newMaintainableObject.businessObject"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <bean id="AddressType-MaintenanceView" parent="MaintenanceView">
+    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.AddressType"/>
+    <property name="items">
+      <list merge="true">
+        <bean parent="MaintenanceGroupSectionGridLayout">
+          <property name="title" value="Add/Edit Address Type"/>
+          <property name="items">
+            <list>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="type"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="description"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="active"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <bean id="AddressTypeMaintenanceDocument" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="edu.sampleu.bookstore.bo.AddressType"/>
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="documentTypeName" value="AddressTypeMaintenanceDocument"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="lockingKeys">
+      <list>
+        <value>type</value>
+      </list>
+    </property>
+  </bean>
+</beans>

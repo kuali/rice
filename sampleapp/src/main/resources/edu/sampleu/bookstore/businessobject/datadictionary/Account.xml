@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  <bean id="Account" abstract="true" parent="DataObjectEntry">
+    <property name="objectClass" value="edu.sampleu.bookstore.bo.Account"/>
+    <property name="objectLabel" value="Account"/>
+    <property name="attributes">
+      <list>
+        <ref bean="Account-authorId"/>
+        <ref bean="Account-accountNumber"/>
+        <ref bean="Account-bankName"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="Account-accountNumber" parent="AttributeDefinition">
+    <property name="label" value="Account Number"/>
+    <property name="shortLabel" value="Acc no."/>
+    <property name="forceUppercase" value="true"/>
+    <property name="maxLength" value="15"/>
+    <property name="required" value="true"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="15"/>
+    </property>
+    <property name="validationPattern">
+      <bean parent="AlphaNumericValidationPattern" p:exactLength="15"/>
+    </property>
+  </bean>
+  <bean id="Account-authorId" parent="Author-Id">
+    <property name="name" value="authorId"/>
+  </bean>
+  <bean id="Account-bankName" parent="AttributeDefinition">
+    <property name="label" value="Bank Name"/>
+    <property name="shortLabel" value="Bank"/>
+    <property name="forceUppercase" value="true"/>
+    <property name="maxLength" value="50"/>
+    <property name="required" value="true"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="50"/>
+    </property>
+    <property name="validationPattern">
+      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+  </bean>
+</beans>

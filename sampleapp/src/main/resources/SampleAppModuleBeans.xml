@@ -79,6 +79,19 @@
                 <value>classpath:edu/sampleu/travel/uif/Travel-testView2.xml</value>             
                 <value>classpath:edu/sampleu/travel/uif/FiscalOfficerView.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/FiscalOfficerLookup.xml</value>
+                <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/BookType.xml</value>
+                <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/AddressType.xml</value>
+                <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/BookOrder.xml</value>
+                <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/Account.xml</value>
+                <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/Address.xml</value>
+                <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/Book.xml</value>
+                <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/Author.xml</value>
+                <value>classpath:edu/sampleu/bookstore/document/datadictionary/AddressTypeMaintenanceDocument.xml</value>
+                <value>classpath:edu/sampleu/bookstore/document/datadictionary/AuthorMaintenanceDocument.xml</value>
+                <value>classpath:edu/sampleu/bookstore/document/datadictionary/BookMaintenanceDocument.xml</value>
+                <value>classpath:edu/sampleu/bookstore/document/datadictionary/BookOrderDocument.xml</value>
+                <value>classpath:edu/sampleu/bookstore/document/datadictionary/BookTypeMaintenanceDocument.xml</value>
+                
             </list>
         </property>
         <property name="databaseRepositoryFilePaths">
@@ -89,6 +102,7 @@
         <property name="packagePrefixes">
             <list>
                 <value>edu.sampleu.travel</value>
+                 <value>edu.sampleu.bookstore</value>
             </list>
         </property>
     </bean>
@@ -102,6 +116,7 @@
     </bean>
     
     <bean id="fiscalOfficerService" class="edu.sampleu.travel.service.FiscalOfficerServiceImpl" />
+    <bean id="bookTypeService" class="edu.sampleu.bookstore.service.BookTypeServiceImpl" />
     
     <bean id="fiscalOfficerInfoInquiryViewHelperService"
         class="edu.sampleu.travel.service.FiscalOfficerInfoInquiryViewHelperServiceImpl">
@@ -111,7 +126,8 @@
         </bean>
       </property>
     </bean>
-    
+	
+	  
     <bean id="fiscalOfficerInfoLookupViewHelperService"
         class="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl"
         scope="prototype">
@@ -123,6 +139,37 @@
       </property>
     </bean>
     
+     <bean id="bookTypeInquiryViewHelperService"
+        class="edu.sampleu.bookstore.service.BookTypeInquiryViewHelperServiceImpl">
+      <property name="dataDictionaryService">
+        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+          <property name="serviceName" value="dataDictionaryService" />
+        </bean>
+      </property>
+    </bean>
+   
+   
+    <bean id="bookTypeLookupViewHelperService"
+        class="edu.sampleu.bookstore.service.BookTypeLookupViewHelperServiceImpl"
+        scope="prototype">
+      
+      <property name="dataDictionaryService">
+        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+          <property name="serviceName" value="dataDictionaryService" />
+        </bean>
+      </property>
+    </bean>
+    
+    <bean id="bookTypeMaintainable"
+        class="edu.sampleu.bookstore.service.BookTypeMaintainableImpl"
+        scope="prototype">
+        
+      <property name="dataDictionaryService">
+        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+          <property name="serviceName" value="dataDictionaryService" />
+        </bean>
+      </property>
+    </bean>
     <bean id="fiscalOfficerInfoMaintainable"
         class="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"
         scope="prototype">

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  <bean id="Address" parent="Address-parentBean"/>
+  <bean id="Address-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="objectClass" value="edu.sampleu.bookstore.bo.Address"/>
+    <property name="objectLabel" value="Address"/>
+    <property name="attributes">
+      <list>
+        <ref bean="Address-id"/>
+        <ref bean="Address-type"/>
+        <ref bean="Address-street1"/>
+        <ref bean="Address-street2"/>
+        <ref bean="Address-city"/>
+        <ref bean="Address-province"/>
+        <ref bean="Address-country"/>
+        <ref bean="Address-addressType-type"/>
+      </list>
+    </property>
+    <property name="relationships">
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="addressType"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="PrimitiveAttributeDefinition" p:sourceName="type" p:targetName="type"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="titleAttribute" value="addressId"/>
+    <property name="primaryKeys">
+      <list>
+        <value>addressId</value>
+      </list>
+    </property>
+  </bean>
+  <bean id="Address-id" parent="Address-id-parentBean"/>
+  <bean id="Address-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Id"/>
+    <property name="maxLength" value="19"/>
+    <property name="validationPattern">
+      <bean parent="NumericValidationPattern"/>
+    </property>
+    <property name="controlField">
+       <bean parent="HiddenControl"/>
+    </property>
+    <property name="name" value="addressId"/>
+    <property name="label" value="Address Id"/>
+  </bean>
+  <bean id="Address-type " parent="Address-type-parentBean"/>
+  <bean id="Address-type-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="type"/>
+    <property name="label" value="Address Type"/>
+    <property name="shortLabel" value="Type"/>
+    <property name="summary" value="Address Type of the Address."/>
+    <property name="description" value="Address Type of the Address."/>
+<!--      <property name="control">-->
+<!--      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.AddressType" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="type" p:labelAttribute="type"/>-->
+<!--    </property>-->
+<!--    <property name="controlField">-->
+<!--      <bean parent="TextControl" p:size="10"/>-->
+<!--    </property>-->
+     <property name="controlField">
+                <bean parent="SelectControl"/>
+        </property>
+        <property name="optionsFinder">
+                <bean class="edu.sampleu.bookstore.document.keyvalue.AddressTypeKeyValues" />
+        </property>  
+  </bean>
+  <bean id="Address-street1" parent="Address-street1-parentBean"/>
+  <bean id="Address-street1-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Street 1"/>
+    <property name="maxLength" value="19"/>
+    <property name="validationPattern">
+      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="name" value="street1"/>
+    <property name="label" value="Street 1"/>
+     <property name="controlField">
+      <bean parent="TextControl" p:size="30"/>
+    </property>
+  </bean>
+  <bean id="Address-street2" parent="Address-street2-parentBean"/>
+  <bean id="Address-street2-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Street 2"/>
+    <property name="maxLength" value="19"/>
+    <property name="validationPattern">
+      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="name" value="street2"/>
+    <property name="label" value="Street 2"/>
+     <property name="controlField">
+      <bean parent="TextControl" p:size="30"/>
+    </property>
+  </bean>
+  <bean id="Address-city" parent="Address-city-parentBean"/>
+  <bean id="Address-city-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="City"/>
+    <property name="maxLength" value="100"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
+    </property>
+    <property name="name" value="city"/>
+    <property name="label" value="City"/>
+      <property name="controlField">
+      <bean parent="TextControl" p:size="30"/>
+    </property>
+  </bean>
+  <bean id="Address-province" parent="Address-province-parentBean"/>
+  <bean id="Address-province-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Province"/>
+    <property name="maxLength" value="32"/>
+    <property name="validationPattern">
+      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="name" value="province"/>
+    <property name="label" value="Province"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="30"/>
+    </property>
+  </bean>
+  <bean id="Address-country" parent="Address-country-parentBean"/>
+  <bean id="Address-country-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Country"/>
+    <property name="maxLength" value="25"/>
+    <property name="validationPattern">
+      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="name" value="country"/>
+    <property name="label" value="Country"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="17"/>
+    </property>
+  </bean>
+  <bean id="Address-addressType-type" parent="Address-addressType-type-parentBean"/>
+  <bean id="Address-addressType-type-parentBean" abstract="true" parent="AddressType-type">
+    <property name="name" value="addressType.type"/>
+    <property name="label" value="Address Type"/>
+    <property name="shortLabel" value="Type"/>
+    <property name="maxLength" value="40"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
+    </property>     
+    <property name="controlField">
+      <bean parent="TextControl" p:size="30"/>
+    </property>
+  </bean>
+  <bean id="Address-LookupView" parent="LookupView">
+    <property name="title" value="Address Lookup"/>
+    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Address"/>
+    <property name="criteriaFields">
+      <list>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="addressType.type"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="city"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="province"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="country"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="addressId"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="addressType.type"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street1"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street2"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="city"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="province"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="country"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="Address-InquiryView" parent="InquiryView">
+    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Address"/>
+    <property name="Items">
+      <list>
+        <bean parent="GroupSectionGridLayout">
+          <property name="title" value="Address Information"/>
+          <property name="layoutManager.numberOfColumns" value="2"/>
+          <property name="items">
+            <list>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="addressId"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="addressType.type"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street1"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street2"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="city"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="province"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="country"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+</beans>

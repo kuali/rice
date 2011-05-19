@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  <bean id="BookType" parent="BookType-parentBean"/>
+  <bean id="BookType-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="objectClass" value="edu.sampleu.bookstore.bo.BookType"/>
+    <property name="objectLabel" value="Book Type"/>
+    <property name="collections">
+      <list>
+        <bean parent="CollectionDefinition" p:name="books" p:label="Books" p:shortLabel="Books" p:elementLabel="Book"/>
+      </list>
+    </property>
+    <property name="attributes">
+      <list>
+        <ref bean="BookType-typeCode"/>
+        <ref bean="BookType-name"/>
+        <ref bean="BookType-description"/>
+        <ref bean="BookType-active"/>
+      </list>
+    </property>
+    <property name="titleAttribute" value="name"/>
+    <property name="primaryKeys">
+      <list>
+        <value>name</value>
+      </list>
+    </property>
+  </bean>
+  <bean id="BookType-typeCode" parent="BookType-typeCode-parentBean"/>
+  <bean id="BookType-typeCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="typeCode"/>
+    <property name="forceUppercase" value="true"/>
+    <property name="label" value="Book Type Code"/>
+    <property name="shortLabel" value="Code"/>
+    <property name="maxLength" value="40"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="validationPattern">
+      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="false"/>
+    </property>
+    <property name="required" value="true"/>
+    <property name="summary" value="Code identifying the book type."/>
+    <property name="description" value="Code identifying the book type."/>
+  </bean>
+  <bean id="BookType-name" parent="BookType-name-parentBean"/>
+  <bean id="BookType-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="name"/>
+    <property name="forceUppercase" value="false"/>
+    <property name="label" value="Book Type Name"/>
+    <property name="shortLabel" value="Name"/>
+    <property name="maxLength" value="100"/>
+    <property name="validationPattern">
+      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="100"/>
+    </property>
+    <property name="required" value="true"/>
+    <property name="summary" value="Name identifying the book type."/>
+    <property name="description" value="Name identifying the book type."/>
+  </bean>
+  <bean id="BookType-description" parent="BookType-description-parentBean"/>
+  <bean id="BookType-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="description"/>
+    <property name="forceUppercase" value="false"/>
+    <property name="label" value="Book Type Description"/>
+    <property name="shortLabel" value="Description"/>
+    <property name="maxLength" value="500"/>
+    <property name="validationPattern">
+      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="100"/>
+    </property>
+    <property name="required" value="false"/>
+    <property name="summary" value="Description identifying the book type."/>
+    <property name="description" value="Description identifying the book type."/>
+  </bean>
+  <bean id="BookType-active" parent="BookType-active-parentBean"/>
+  <bean id="BookType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+    <property name="name" value="active"/>
+  </bean>
+  <bean id="BookType-InquiryView" parent="InquiryView">
+    <property name="title" value="Book Type Inquiry"/>
+    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType"/>
+    <property name="Items">
+      <list>
+        <bean parent="GroupSectionGridLayout">
+          <property name="title" value="Book Type Information"/>
+          <property name="layoutManager.numberOfColumns" value="2"/>
+          <property name="items">
+            <list>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="typeCode"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="name"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="description"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="active"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="CollectionGroupSection">
+          <property name="title" value="Books"/>
+          <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Book"/>
+          <property name="propertyName" value="books"/>
+          <property name="items">
+            <list>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="title"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="isbn"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="price"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="rating"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="publisher"/>
+              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="publicationDate"/>
+            </list>
+          </property>
+          <property name="layoutManager.summaryFields">
+            <list>
+              <value>title</value>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <bean id="BookType-LookupView" parent="LookupView">
+    <property name="title" value="Book Type Lookup"/>
+    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType"/>
+    <property name="criteriaFields">
+      <list>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="typeCode"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="name"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="active"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="typeCode"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="name"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="description"/>
+        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="active"/>
+      </list>
+    </property>
+  </bean>  
+</beans>

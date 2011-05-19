@@ -1,0 +1,90 @@
+package edu.sampleu.bookstore.document.web;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import edu.sampleu.bookstore.bo.Book;
+import edu.sampleu.bookstore.bo.BookOrder;
+import edu.sampleu.bookstore.document.BookOrderDocument;
+
+/*
+ * BookOrderAction class file for BookOrder maintenance Object
+ * Actions prior to submit and post-Submit processes are handled.  
+ */
+
+public class BookOrderAction extends KualiTransactionalDocumentActionBase {
+
+	public ActionForward addBookOrder(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		BookOrderForm form = (BookOrderForm) actionForm;
+        BookOrderDocument document = form.getBookOrderDocument();
+
+        BookOrder newBookEntry = form.getNewBookOrder();       
+        document.addBookOrder(newBookEntry);
+        
+		for (BookOrder entry : document.getBookOrders()) {
+			if (entry.getBookId() != null) {
+				Book book = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class, entry.getBookId());
+
+				entry.setUnitPrice(book.getPrice());
+				Double totalPrice = 0.0d;
+				if (book.getPrice() != null && entry.getQuantity() != null) {
+					totalPrice = book.getPrice().doubleValue() * entry.getQuantity().intValue();
+					if (entry.getDiscount() != null	&& entry.getDiscount().doubleValue() > 0) {
+						totalPrice = totalPrice - (totalPrice * entry.getDiscount().doubleValue() / 100);
+					}
+				}
+				entry.setTotalPrice(new KualiDecimal(totalPrice));
+			}
+		}
+
+        // clear the used book order entry
+        form.setNewBookOrder(new BookOrder());
+
+        return mapping.findForward("basic");
+    }
+	
+	public ActionForward deleteBookOrder(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        BookOrderForm form = (BookOrderForm) actionForm;
+        BookOrderDocument document = form.getBookOrderDocument();
+        
+        int deleteIndex = getLineToDelete(request);
+        document.removeBookOrder(deleteIndex);
+
+        return mapping.findForward("basic");        
+    }
+
+	@Override
+	protected void doProcessingAfterPost(KualiForm actionForm, HttpServletRequest request) {
+		super.doProcessingAfterPost(actionForm, request);
+		BookOrderForm form = (BookOrderForm) actionForm;
+        BookOrderDocument document = form.getBookOrderDocument();
+        for (BookOrder entry : document.getBookOrders()) {
+        	if(entry.getBookId() != null){
+        	Book book = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class, entry.getBookId());        	
+        	entry.setUnitPrice(book.getPrice());
+			Double totalPrice = 0.0d;
+			if (book.getPrice() != null && entry.getQuantity() != null) {
+				totalPrice = book.getPrice().doubleValue() * entry.getQuantity().intValue();
+				if (entry.getDiscount() != null && entry.getDiscount().doubleValue() > 0) {
+					totalPrice = totalPrice	- (totalPrice * entry.getDiscount().doubleValue() / 100);
+				}
+			}
+			entry.setTotalPrice(new KualiDecimal(totalPrice));
+        	entry.setBook(book);
+        	}
+        }
+	}
+
+	
+    
+    
+	
+}

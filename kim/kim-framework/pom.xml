@@ -32,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>krad-Web-framework</artifactId>
+            <artifactId>krad-web-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
 

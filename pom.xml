@@ -785,9 +785,9 @@
     <module>krms</module>
     <module>client-contrib</module>
     <module>shareddata</module>
-    <module>dist</module>
     <module>kew</module>
     <module>ksb</module>
+    <module>dist</module>
   </modules>
 
   <repositories>
@@ -1848,27 +1848,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <profiles>
-    <profile>
-      <id>kuali-release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <configuration>
-              <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-              <descriptors>
-                <descriptor>src/main/resources/assemblies/src.xml</descriptor>
-                <descriptor>src/main/resources/assemblies/bin.xml</descriptor>
-              </descriptors>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
   <scm>
     <connection>scm:svn:https://test.kuali.org/svn/rice/trunk</connection>

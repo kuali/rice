@@ -6,9 +6,9 @@
 }
 .view_header {
 	background: #EBEBEB url(../../images/masthead1.gif);
-	border-bottom: 1px solid #999;
+	/* [disabled]border-bottom: 1px solid #999; */
 	min-width:800px;
-	margin-bottom: 15px;
+	/* [disabled]margin-bottom: 15px; */
 	background-color: #EBEBEB;
 }
 h1 {
@@ -93,8 +93,8 @@ div.globalbuttons { text-align:center;	padding-top: 10px; padding-bottom: 10px;}
 	-moz-border-radius: 8px;
 	border-radius: 8px;
 	border: 1px solid #999;
-	margin-bottom: 4px;
-	padding: 0px 12px 12px;
+	margin-bottom: 12px;
+	padding: 0px 12px 4px;
 }
 
 .summary {
@@ -278,7 +278,7 @@ li label.error{
 }
 
 .boxLayoutVerticalItem{
-	padding-bottom: 20px;
+	padding-bottom: 0px;
 	display: block;
 }
 
@@ -294,6 +294,8 @@ Tab menu
 .tab-navigation-block{
 	padding: 0 !important;
 	padding-left: 20px !important;
+	background-color:#D8D8D8;
+	font-size:0.8em;
 	
 }
 
@@ -302,25 +304,26 @@ Tab menu
 }
 
 .tab-navigation-block li{
-    float: left;
-    list-style: none outside none;
-    margin: 0 0.2em 1px 0;
-    padding: 0;
-    position: relative;
-    top: 2px;
-    white-space: nowrap;
+	float: left;
+	list-style: none outside none;
+	margin: 0 0.2em 1px 0;
+	padding: 0;
+	position: relative;
+	top: 2px;
+	white-space: nowrap;
 	clear: none;
+	font-weight: bold;
 }
 
 .tab-navigation-block li a{
 	float: left;
-    padding: 0.5em 1em;
-    text-decoration: none;
+	padding: 0.2em 0.6em;
+	text-decoration: none;
 }
 
 .tab-navigation-block li.ui-state-active{
-	border-bottom: 1px solid #F6F6F6;
-	background-color: #F6F6F6;
+	border-bottom: 1px solid #ffffff;
+	background-color: #ffffff;
 }
 
 .tab-navigation-block li.ui-state-active a{
@@ -337,3 +340,6 @@ Tab menu
 	margin-left:20px;  	
   	margin-right:20px;
  }
+ #viewpage_div h2 {
+	color:#666666;
+}

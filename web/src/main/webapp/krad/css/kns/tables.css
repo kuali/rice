@@ -30,7 +30,6 @@ table.datatable th {
 	padding-left:1em;
 	padding-right:0.3em;
 	vertical-align: middle;
-	
 }
 table.datatable td {
 	background-color:#fff;
@@ -56,24 +55,29 @@ table.datatable th[scope="row"].collection-header {
 table.datatable td.collection-header {
 	padding: 0em;
 	text-align: left;
+	border-style: none;
 }	
 
 table.datatable th[scope="col"] { text-align:center;font-size:.8em;
 }
 
-table.datatable th[scope="row"] { 
+table.datatable th[scope="row"] {
 	text-align:right;
 	vertical-align: middle;
-	
+	background: url(../../images/th-back.gif);	
 }
 
 .collection-header th[scope="row"] { 
 	text-align: left;
 	vertical-align: middle;
+	border:none;
 }
 
 
-table.datatable {border-collapse:collapse;
+table.datatable {
+	border-collapse:collapse;
 	width:100%;
 	border-right: 1px solid #999;
-	border-bottom: 1px solid #999;}
+	border-bottom: 1px solid #999;
+	margin-bottom: 10px;
+}

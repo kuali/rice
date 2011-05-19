@@ -90,10 +90,10 @@ div.grouping-header-expandable h3 img {
 
 /*KFS STYLE DOC HEADER*/
 #viewpage_div .grouping-header-expandable h2 {
-	margin-top:10px;
-	margin-left:3px;
+	margin-top:4px;
 	margin-bottom: 4px;
 	vertical-align: middle;
+	font-size:.9em;
 }
 #viewpage_div .page_header .grouping-header-expandable h3 {
 	font-size: 0.9em;
@@ -105,28 +105,28 @@ div.grouping-header-expandable h3 img {
 	padding-bottom: 40px;
 }
 
-#viewpage_div h4 {
-	font-size: 0.9em;
-	/* [disabled]font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif; */
-	background: #d6d6d6;
-	padding: 6px;
-	margin: 0px;
-	border-right: 1px solid #999;
-	border-left: 1px solid #999;
-	color: #333;
-	font-weight: bold;
-}
 
-.collection-header h4 {
+.header h3 {
 	font-size: 0.9em;
-	background: #C3C3C3;
-	border-right: 1px solid #999;
-	border-left: 1px solid #999;
-	border-top: 1px solid #999;
-	color: #333;	
+	background-color:#666666;
+	/* [disabled]border-right: 1px solid #999; */
+	/* [disabled]border-left: 1px solid #999; */
+	/* [disabled]border-top: 1px solid #999; */
+	color: #FFF;
 	padding: 3px;
 	font-weight: bold;
 }
 
-.header {
+.header h4 {
+	font-size: 0.9em;
+	background-color:#C3C3C3;
+	/* [disabled]border-right: 1px solid #999; */
+	/* [disabled]border-left: 1px solid #999; */
+	/* [disabled]border-top: 1px solid #999; */
+	color: #000;
+	padding: 3px;
+	font-weight: bold;
 }
+
+
+

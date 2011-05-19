@@ -26,6 +26,7 @@ import java.util.List;
 public class ConfigFactoryBean implements FactoryBean<org.kuali.rice.core.api.config.property.Config> {
 
 	private List<String> configLocations;
+	private boolean initialize = false;
 
 	public static String CONFIG_OVERRIDE_LOCATION;
 
@@ -50,6 +51,11 @@ public class ConfigFactoryBean implements FactoryBean<org.kuali.rice.core.api.co
 		}
 
 		config.parseConfig();
+		
+		if (initialize) {
+			ConfigContext.init(config);
+		}
+		
 		return config;
 	}
 
@@ -69,6 +75,10 @@ public class ConfigFactoryBean implements FactoryBean<org.kuali.rice.core.api.co
 
 	public void setConfigLocations(List<String> configLocations) {
 		this.configLocations = configLocations;
+	}
+	
+	public void setInitialize(boolean initialize) {
+		this.initialize = initialize;
 	}
 
 }

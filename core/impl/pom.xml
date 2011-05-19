@@ -145,26 +145,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.acegisecurity</groupId>
-            <artifactId>acegi-security</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.acegisecurity</groupId>
-            <artifactId>acegi-security-cas</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>cas</groupId>
-            <artifactId>casclient</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jasig.cas.client</groupId>
-            <artifactId>cas-client-core</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
         </dependency>

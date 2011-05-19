@@ -60,8 +60,6 @@
     <maven.surefire.skip>false</maven.surefire.skip>
 
     <!-- project dependencies -->
-    <!-- no longer maintained - should use spring security instead -->
-    <acegi.version>1.0.7</acegi.version>
     <antlr.version>2.7.7</antlr.version>
     <aopalliance.version>1.0</aopalliance.version>
     <asm.version>3.2</asm.version>
@@ -69,7 +67,6 @@
 
     <!-- the 3.x codebase is completely different - switching will require rewriting much code -->
     <bsf.version>2.4.0</bsf.version>
-    <casclient.version>2.1.1</casclient.version>
     <cas-client-core.version>3.2.0</cas-client-core.version>
     <cglib.version>2.2</cglib.version>
     <commons-beanutils.version>1.8.3</commons-beanutils.version>
@@ -291,6 +288,7 @@
                       <exclude>org.opensymphony.quartz</exclude>
                       <exclude>opensymphony:quartz</exclude>
                       <exclude>javassist</exclude>
+                      <exclude>org.jasig.cas</exclude>
 
                       <!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
                       <exclude>commons-logging</exclude>
@@ -840,19 +838,6 @@
       </dependency>
 
       <dependency>
-        <!-- groupid was changed to org.jasig.cas in later versions -->
-        <groupId>cas</groupId>
-        <artifactId>casclient</artifactId>
-        <version>${casclient.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>commons-logging</artifactId>
-            <groupId>commons-logging</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
         <groupId>cglib</groupId>
         <!-- using nodep to resolve a problem with the asm dependency -->
         <artifactId>cglib-nodep</artifactId>
@@ -1094,51 +1079,18 @@
         <version>${oscache.version}</version>
         <exclusions>
           <exclusion>
-            <artifactId>commons-logging</artifactId>
             <groupId>commons-logging</groupId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.acegisecurity</groupId>
-        <artifactId>acegi-security</artifactId>
-        <version>${acegi.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-remoting</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-support</artifactId>
-          </exclusion>
-          <exclusion>
             <artifactId>commons-logging</artifactId>
-            <groupId>commons-logging</groupId>
           </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.acegisecurity</groupId>
-        <artifactId>acegi-security-cas</artifactId>
-        <version>${acegi.version}</version>
-        <exclusions>
           <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>javax.jms</groupId>
+            <artifactId>jms</artifactId>
           </exclusion>
         </exclusions>
-        <scope>runtime</scope>
       </dependency>
 
       <dependency>
@@ -1542,6 +1494,10 @@
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
 
@@ -1629,6 +1585,28 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-webmvc</artifactId>
         <version>${spring.version}</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-cas-client</artifactId>
+        <version>${spring.version}</version>
+        <exclusions>
+        	<exclusion>
+        		<groupId>commons-logging</groupId>
+            	<artifactId>commons-logging</artifactId>
+        	</exclusion>
+        	<exclusion>
+        		<groupId>org.jasig.cas</groupId>
+        		<artifactId>cas-client-core</artifactId>        	
+        	</exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>

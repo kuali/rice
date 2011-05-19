@@ -39,6 +39,7 @@ import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
 import org.kuali.rice.core.impl.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.ksb.api.KsbConstants;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.AlternateEndpoint;
@@ -90,6 +91,10 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	private PlatformTransactionManager platformTransactionManager;
 	
+	public KSBConfigurer() {
+		super(KsbConstants.KSB_MODULE_NAME);
+	}
+	
 	@Override
 	public void addAdditonalToConfig() {
 		configureDataSource();
@@ -101,10 +106,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 	@Override
 	public List<String> getPrimarySpringFiles(){
 		final List<String> springFileLocations = new ArrayList<String>();
-		
-		// TODO hack 'cause KSB used KNS - this needs to be fixed!!!
-		springFileLocations.add("classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml");
-		
+				
 		boolean isJpa = OrmUtils.isJpaEnabled("rice.ksb");
 		if (isJpa) {
 			// TODO redo this once we're back to JPA
@@ -123,6 +125,8 @@ public class KSBConfigurer extends ModuleConfigurer {
         }
         
         if (getRunMode().equals( RunMode.LOCAL )) {
+    		// TODO hack 'cause KSB used KNS - this needs to be fixed!!!
+    		springFileLocations.add("classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml");
         	springFileLocations.add(REGISTRY_SERVER_SPRING);
         	springFileLocations.add(OJB_REGISTRY_SPRING);
         	if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.LOAD_KNS_MODULE_CONFIGURATION, false)) {

@@ -4,6 +4,8 @@ import org.kuali.rice.core.api.CoreConstants;
 
 public final class KsbConstants {
 
+	public static final String KSB_MODULE_NAME = "KSB";
+	
 	public static final String HTTP_INVOKER_SERVICE_TYPE = "httpInvoker";
 	public static final String SOAP_SERVICE_TYPE = "SOAP";
 	public static final String REST_SERVICE_TYPE = "REST";

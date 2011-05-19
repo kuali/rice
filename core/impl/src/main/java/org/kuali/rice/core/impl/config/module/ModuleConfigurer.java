@@ -16,6 +16,16 @@
 
 package org.kuali.rice.core.impl.config.module;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
+
+import javax.servlet.ServletContext;
+import javax.xml.namespace.QName;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,14 +34,10 @@ import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoaderContainer;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
-import org.kuali.rice.core.impl.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.impl.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.util.RiceConstants;
 import org.springframework.beans.factory.DisposableBean;
@@ -41,15 +47,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.web.context.ServletContextAware;
-
-import javax.servlet.ServletContext;
-import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
 
 // FIXME: this class must be put in an API module somehow
 public class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener<ApplicationEvent>, ServletContextAware {
@@ -61,6 +58,13 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	private Properties properties = new Properties();
 	private String moduleName;
 	private ServletContext servletContext;
+	
+	public ModuleConfigurer() {
+	}
+	
+	public ModuleConfigurer(String moduleName) {
+		this.moduleName = moduleName;
+	}
 	
 	@Override
 	public final void start() throws Exception {

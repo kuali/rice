@@ -26,6 +26,9 @@
   <packaging>pom</packaging>
   <version>2.0.0-m5-SNAPSHOT</version>
   <name>rice-dist</name>
+  <properties>
+    <kuali.testjar.phase>none</kuali.testjar.phase>
+  </properties>
   <profiles>
     <profile>
       <id>kuali-release</id>

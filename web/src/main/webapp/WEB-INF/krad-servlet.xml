@@ -26,6 +26,8 @@
 
   <bean id="uifControllerHandlerInterceptor" class="org.kuali.rice.kns.web.spring.UifControllerHandlerInterceptor" />
   
+  <bean id="exceptionResolver" class="org.kuali.rice.kns.web.spring.UifHandlerExceptionResolver"/>
+  
   <bean class="org.kuali.rice.kns.web.spring.UifAnnotationMethodHandleAdapter">
     <property name="webBindingInitializer">
       <ref bean="kradConfigurableWebBindingInitializer"/>

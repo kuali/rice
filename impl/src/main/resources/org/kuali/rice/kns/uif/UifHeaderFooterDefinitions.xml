@@ -136,6 +136,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>  
   </bean>
   
+ <bean id="FooterIncidentReport" parent="Footer">
+      <property name="items">
+        <list> 
+          <bean parent="ActionField" p:methodToCall="submitReport" p:actionLabel="Submit Report"/>
+          <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="Cancel" />
+        </list>
+      </property>  
+  </bean>
+  
   <bean id="FooterDocument" parent="Footer">
       <property name="items">
         <list> 

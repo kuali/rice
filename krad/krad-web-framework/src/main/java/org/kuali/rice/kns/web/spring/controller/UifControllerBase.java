@@ -42,6 +42,7 @@ import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.uif.util.LookupInquiryUtils;
+import org.kuali.rice.kns.uif.util.UifWebUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
@@ -216,7 +217,7 @@ public abstract class UifControllerBase {
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=addLine")
 	public ModelAndView addLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
-
+		
 		String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
 		if (StringUtils.isBlank(selectedCollectionPath)) {
 			throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
@@ -445,18 +446,7 @@ public abstract class UifControllerBase {
      * @return ModelAndView object with the contained form
      */
     protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {
-        // update form with the requested view id and page
-        form.setViewId(viewId);
-        if (StringUtils.isNotBlank(pageId)) {
-            form.setPageId(pageId);
-        }
-
-        // create the spring return object pointing to View.jsp
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject(UifConstants.DEFAULT_MODEL_NAME, form);
-        modelAndView.setViewName(UifConstants.SPRING_VIEW_ID);
-
-        return modelAndView;
+        return UifWebUtils.getUIFModelAndView(form, viewId, pageId);
     }
 
 	protected ViewService getViewService() {

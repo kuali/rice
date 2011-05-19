@@ -18,7 +18,6 @@ package org.kuali.rice.kew.role.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -26,8 +25,8 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.service.support.KimDelegationTypeService;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
+import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -37,7 +36,7 @@ import org.kuali.rice.kim.util.KimConstants;
  * 
  */
 public class ActionRequestDerivedRoleTypeServiceImpl extends
-		KimDerivedRoleTypeServiceBase implements KimRoleTypeService, KimDelegationTypeService{
+		KimDerivedRoleTypeServiceBase implements KimRoleTypeService, KimDelegationTypeService {
 	private static final String NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Non-Ad Hoc Approve Request Recipient";
 	private static final String APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Approve Request Recipient";
 	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";

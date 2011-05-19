@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support;
+package org.kuali.rice.kim.framework.type;
 
 import java.util.List;
 
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.service.support.KimTypeService;
 
 /**
  * This is a service interface that must be used for a service related to a role type.

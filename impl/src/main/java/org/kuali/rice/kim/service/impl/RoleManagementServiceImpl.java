@@ -32,11 +32,11 @@ import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
+import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.RoleUpdateService;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.springframework.beans.factory.InitializingBean;
 

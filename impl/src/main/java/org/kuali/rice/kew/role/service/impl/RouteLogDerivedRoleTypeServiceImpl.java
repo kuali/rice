@@ -24,8 +24,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.service.support.KimDelegationTypeService;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.framework.type.KimRoleTypeService;
+import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 

@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 
 public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService {
 
@@ -102,7 +102,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	/**
 	 * This base implementation does nothing but log that the method was called.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#principalInactivated(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#principalInactivated(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void principalInactivated(String principalId, String namespaceCode,
@@ -136,7 +136,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	/**
 	 * Returns false by default.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public boolean shouldCacheRoleMembershipResults(String namespaceCode,

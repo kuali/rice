@@ -8,8 +8,8 @@ import javax.xml.namespace.QName;
 /**
  * The {@code ServiceBus} is the primary api that client applications use to
  * interact with the Kuali Service Bus.  It provides capabilities to retrieve
- * services endpoints and proxies for use when needing to invoke a service.  It
- * also provides a mechanism by which a client application can publih it's own
+ * services endpoints for use when needing to invoke a service.  It
+ * also provides a mechanism by which a client application can publish it's own
  * services to the bus.
  * 
  * <p>The service bus may be backed by a service registry which can be used to
@@ -21,7 +21,11 @@ import javax.xml.namespace.QName;
  * <p>Note that the {@code ServiceBus} manages two primary collections of
  * {@link Endpoint} classes.  Those that have been published by this application
  * (referred to as "local" endpoints) and those which have been published by other
- * applications (referred to as "remote" endpoints). 
+ * applications (referred to as "remote" endpoints).
+ * 
+ * @see Endpoint
+ * @see ServiceConfiguration
+ * @see ServiceDefinition
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

@@ -95,6 +95,7 @@
 		<oscache.version>2.3.2</oscache.version>
 		<quartz.version>1.6.0</quartz.version>
 		<servlet-api.version>2.4</servlet-api.version>
+		<slf4j.version>1.6.1</slf4j.version>
 		<spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
 		<spring.version>2.5.6</spring.version>
 		<struts-el.version>1.2.9</struts-el.version>
@@ -531,6 +532,18 @@
 				<version>${servlet-api.version}</version>
 				<scope>provided</scope>
 			</dependency>
+	    	<dependency>
+		    	<groupId>org.slf4j</groupId>
+		    	<artifactId>slf4j-api</artifactId>
+		    	<version>${slf4j.version}</version>
+		    	<scope>runtime</scope>
+			</dependency>
+	    	<dependency>
+		    	<groupId>org.slf4j</groupId>
+		    	<artifactId>slf4j-log4j12</artifactId>
+		    	<version>${slf4j.version}</version>
+		    	<scope>runtime</scope>
+			</dependency>	
 			<dependency>
 				<groupId>cas</groupId>
 				<artifactId>casclient</artifactId>

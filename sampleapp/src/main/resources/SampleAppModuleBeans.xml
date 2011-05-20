@@ -116,7 +116,6 @@
     </bean>
     
     <bean id="fiscalOfficerService" class="edu.sampleu.travel.service.FiscalOfficerServiceImpl" />
-    <bean id="bookTypeService" class="edu.sampleu.bookstore.service.BookTypeServiceImpl" />
     
     <bean id="fiscalOfficerInfoInquiryViewHelperService"
         class="edu.sampleu.travel.service.FiscalOfficerInfoInquiryViewHelperServiceImpl">
@@ -138,38 +137,7 @@
         </bean>
       </property>
     </bean>
-    
-     <bean id="bookTypeInquiryViewHelperService"
-        class="edu.sampleu.bookstore.service.BookTypeInquiryViewHelperServiceImpl">
-      <property name="dataDictionaryService">
-        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-          <property name="serviceName" value="dataDictionaryService" />
-        </bean>
-      </property>
-    </bean>
-   
-   
-    <bean id="bookTypeLookupViewHelperService"
-        class="edu.sampleu.bookstore.service.BookTypeLookupViewHelperServiceImpl"
-        scope="prototype">
-      
-      <property name="dataDictionaryService">
-        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-          <property name="serviceName" value="dataDictionaryService" />
-        </bean>
-      </property>
-    </bean>
-    
-    <bean id="bookTypeMaintainable"
-        class="edu.sampleu.bookstore.service.BookTypeMaintainableImpl"
-        scope="prototype">
-        
-      <property name="dataDictionaryService">
-        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-          <property name="serviceName" value="dataDictionaryService" />
-        </bean>
-      </property>
-    </bean>
+
     <bean id="fiscalOfficerInfoMaintainable"
         class="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"
         scope="prototype">

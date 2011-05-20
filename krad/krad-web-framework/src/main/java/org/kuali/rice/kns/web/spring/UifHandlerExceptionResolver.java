@@ -88,15 +88,18 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setView(getViewService().getView("Incident-Report",
                 incidentReportForm.getViewRequestParameters()));
         // Add a new History entry to avoid errors in the postHandle
-        History history = incidentReportForm.getFormHistory();
+        History history = new History();
         HistoryEntry entry = new HistoryEntry("", "", "Incident Report", "", "");
         history.setCurrent(entry);
+        incidentReportForm.setFormHistory(history);
+        // Set render full view to force full render
+        incidentReportForm.setRenderFullView(true);
         ModelAndView modelAndView = UifWebUtils.getUIFModelAndView(incidentReportForm, "Incident-Report", "");
         try {
             UifWebUtils.postControllerHandle(request, response, handler, modelAndView);
         } catch (Exception e) {
             LOG.error("An error stopped the incident form from loading", e);
-        }
+        }        
         return modelAndView;
     }
 

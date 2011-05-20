@@ -30,7 +30,8 @@
 
 <c:if test="${!empty manager.style}">
   <c:set var="style" value="style=\"${manager.style}\""/>
-</c:if> 
+</c:if>
+
 <c:if test="${!empty manager.headerFields}">
 	<table id="${manager.id}" ${style} ${styleClass}>
 		
@@ -49,5 +50,6 @@
 	  	
 	</table>
 </c:if>
+
 <%-- invoke table tools widget --%>
 <krad:template component="${manager.tableTools}" componentId="${manager.id}"/>    

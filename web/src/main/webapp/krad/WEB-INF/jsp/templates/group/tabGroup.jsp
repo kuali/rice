@@ -17,16 +17,8 @@
 
 <tiles:useAttribute name="tabGroup" classname="org.kuali.rice.kns.uif.container.TabGroup"/>
 
-<krad:div component="${tabGroup}">
+<krad:group group="${group}" groupBodyIdSuffix="_tabGroup">
 
-  <!----------------------------------- #GROUP '${tabGroup.id}' HEADER --------------------------------------->
-  <krad:template component="${tabGroup.header}"/>
-  
-  <div id="${tabGroup.id}_tabGroup">
-    <%-- tabGroup summary text --%>
-    <krad:template component="${tabGroup.summaryMessageField}"/>
-    <krad:template component="${tabGroup.errorsField}"/>
-  
     <%-- render items through layout manager --%>
     <div id="${tabGroup.id}_tabs">
 	  <%-- render items in list --%>
@@ -37,19 +29,15 @@
 	      </li>
 	    </c:forEach>
 	  </ul>
-	    <c:forEach items="${tabGroup.items}" var="item">
+
+      <c:forEach items="${tabGroup.items}" var="item">
 	      <div id="${item.id}_tab">
 	         <krad:template component="${item}"/>
 	      </div>
-	    </c:forEach>
-
+	  </c:forEach>
 	</div>
 
-    <!----------------------------------- #GROUP '${tabGroup.id}' FOOTER --------------------------------------->
-    <krad:template component="${tabGroup.footer}"/>
-  </div>
-</krad:div>
+</krad:group>
 
-<%-- render tabGroup accordion --%>
-<krad:template component="${tabGroup.accordion}" parent="${tabGroup}"/>
+<%-- render tabs widget --%>
 <krad:template component="${tabGroup.tabsWidget}" parent="${tabGroup}"/>

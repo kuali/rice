@@ -98,7 +98,7 @@ public class BindingInfo implements Serializable {
         }
 
         if (StringUtils.isNotBlank(bindByNamePrefix)) {
-            if (StringUtils.isNotBlank(formedBindingPath)) {
+            if (!bindByNamePrefix.startsWith("[") && StringUtils.isNotBlank(formedBindingPath)) {
                 formedBindingPath += ".";
             }
             formedBindingPath += bindByNamePrefix;
@@ -114,6 +114,33 @@ public class BindingInfo implements Serializable {
         }
 
         return formedBindingPath;
+    }
+
+    /**
+     * Returns the binding prefix string that can be used to setup the binding
+     * on <code>DataBinding</code> components that are children of the component
+     * that contains the <code>BindingInfo</code>. The binding prefix is formed
+     * like the binding path but without including the object path
+     *
+     * @return String binding prefix for nested components
+     */
+    public String getBindingPrefixForNested() {
+        String bindingPrefix = "";
+
+        if (StringUtils.isNotBlank(bindByNamePrefix)) {
+            bindingPrefix = bindByNamePrefix;
+        }
+
+        if (bindToMap) {
+            bindingPrefix += "['" + bindingName + "']";
+        } else {
+            if (StringUtils.isNotBlank(bindingPrefix)) {
+                bindingPrefix += ".";
+            }
+            bindingPrefix += bindingName;
+        }
+
+        return bindingPrefix;
     }
 
     /**

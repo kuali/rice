@@ -77,7 +77,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * The following actions are performed:
-     * 
+     *
      * <ul>
      * <li>Set fieldBindModelPath to the collection model path (since the fields
      * have to belong to the same model as the collection)</li>
@@ -86,7 +86,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * <li>Sets the dictionary entry (if blank) on each of the items to the
      * collection class</li>
      * </ul>
-     * 
+     *
      * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
      */
     @Override

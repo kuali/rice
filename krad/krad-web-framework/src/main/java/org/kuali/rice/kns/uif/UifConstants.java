@@ -125,6 +125,7 @@ public class UifConstants {
 		public static final String IS_ADD_LINE = "isAddLine";
 		public static final String LINE = "line";
 		public static final String MANAGER = "manager";
+        public static final String NODE = "node";
 		public static final String PARENT = "parent";
 		public static final String VIEW = "view";
 	}

@@ -402,9 +402,9 @@ public abstract class UifControllerBase {
         // On post redirects we need to make sure we are sending the history
         // forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
+
         // If this is an Ajax call only return the redirectURL view with the URL
-        // set
-        // This is to avoid automatic redirect when using light boxes
+        // set this is to avoid automatic redirect when using light boxes
         if (urlParameters.get("ajaxCall") != null && urlParameters.get("ajaxCall").equals("true")) {
             urlParameters.remove("ajaxCall");
             String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
@@ -449,9 +449,6 @@ public abstract class UifControllerBase {
         return KNSServiceLocatorWeb.getViewService();
     }
 
-    /**
-     * @return the sessionDocumentService
-     */
     public SessionDocumentService getSessionDocumentService() {
         return KNSServiceLocatorWeb.getSessionDocumentService();
     }

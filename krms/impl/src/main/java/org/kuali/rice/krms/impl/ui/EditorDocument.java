@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
+import org.kuali.rice.core.util.Node;
+import org.kuali.rice.core.util.Tree;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krms.framework.engine.AgendaTree;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
@@ -33,6 +36,30 @@ public class EditorDocument extends PersistableBusinessObjectBase {
 	private ContextBo context;
 	private AgendaBo agenda;
 	private AgendaItemBo agendaItemAddLine;
+
+    public Tree<AgendaItemBo, String> getAgendaRuleTree() {
+        Tree<AgendaItemBo, String> agendaTree = new Tree<AgendaItemBo, String>();
+
+        Node<AgendaItemBo, String> rootNode = new Node<AgendaItemBo, String>();
+        agendaTree.setRootElement(rootNode);
+
+        Node<AgendaItemBo, String> child1 = new Node<AgendaItemBo, String>();
+        child1.setNodeLabel("Animal Expenses Included. Reminder to include Animal special review");
+        child1.setData(new AgendaItemBo());
+        rootNode.getChildren().add(child1);
+
+        Node<AgendaItemBo, String> child2 = new Node<AgendaItemBo, String>();
+        child2.setNodeLabel("Animal Expenses Included. Reminder to include Animal special review");
+        child2.setData(new AgendaItemBo());
+        child1.getChildren().add(child2);
+
+        Node<AgendaItemBo, String> child3 = new Node<AgendaItemBo, String>();
+        child3.setNodeLabel("Animal Expenses Included. Reminder to include Animal special review");
+        child3.setData(new AgendaItemBo());
+        rootNode.getChildren().add(child3);
+
+        return agendaTree;
+    }
 	
 	/**
      * @return the agendaItemAddLine

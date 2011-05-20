@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.field.AttributeField;
 

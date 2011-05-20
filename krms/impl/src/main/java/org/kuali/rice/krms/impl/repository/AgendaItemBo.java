@@ -63,7 +63,11 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 		}
 		return sb.toString();
 	}
-	
+
+    public String getRuleText() {
+        return "Build up rule text string";
+    }
+
 //	def List<AgendaItemBo> alwaysList
 //	def List<AgendaItemBo> whenTrueList
 //	def List<AgendaItemBo> whenFalseList

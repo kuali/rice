@@ -170,7 +170,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="StackedLayoutManager"/>
       </property> 
-  </bean> 
+  </bean>
+
+  <bean id="TreeGroup" abstract="true" parent="TreeGroup-parentBean"/>
+  <bean id="TreeGroup-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.TreeGroup" parent="Group">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/treeGroup.jsp"/>
+      <property name="bindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
+      <property name="dataGroupPrototype">
+        <bean parent="Group"/>
+      </property>
+      <property name="nodeLabelPrototype">
+        <bean parent="MessageField"/>
+      </property>
+      <property name="treeWidget">
+        <bean parent="TreeWidget"/>
+      </property>
+  </bean>
   
   <bean id="CollectionGroupSection" abstract="true" parent="CollectionGroupSection-parentBean"/>
   <bean id="CollectionGroupSection-parentBean" parent="CollectionGroup">

@@ -401,3 +401,8 @@ div.green .value {
 	font-weight:bold;
 	
 }
+
+input.amount
+{
+	text-align: right;
+}

@@ -172,7 +172,7 @@ function setPageBreadcrumb(){
 		else if(pageId){
 			pageTitle = jq("a[name='"+ pageId + "']").text();
 			if(pageTitle){
-				jq("#breadcrumbs").append("<span id='page_breadcrumb'> » <span class='current'>" + pageTitle + "</span></span>");
+				jq("#breadcrumbs").append("<span id='page_breadcrumb'> ï¿½ <span class='current'>" + pageTitle + "</span></span>");
 				jq("#current_breadcrumb_span").hide();
 				jq("#current_breadcrumb_anchor").show();
 				bcSet=true;
@@ -709,7 +709,24 @@ function createLoading(showLoading) {
 function createTable(controlId, options) {
 	jq(document).ready(function() {
 		var oTable = jq("#" + controlId).dataTable(options);
-	})
+	});
+}
+
+/**
+ * Uses jQuery jsTree plug-in to decorate a div with tree functionality. The
+ * second argument is a Map of options that are available
+ * for the plug-in. See <link>http://www.jstree.com/documentation/</link> for
+ * documentation on these options
+ *
+ * @param controlId -
+ *          id for the div that should be decorated
+ * @param options -
+ *          map of option settings (option name/value pairs) for the plugin
+ */
+function createTree(controlId, options) {
+	jq(document).ready(function() {
+		jq("#" + controlId).jstree(options);
+	});
 }
 
 /**

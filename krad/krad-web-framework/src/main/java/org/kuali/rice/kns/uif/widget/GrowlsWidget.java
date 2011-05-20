@@ -19,26 +19,28 @@ package org.kuali.rice.kns.uif.widget;
  * GrowlsWidget sets up settings for growls global to the current view and its pages
  * Some basic options of the plugin are exposed through this class, however additional options
  * can be passed through setComponentOptions as usual.
- * However, the header and theme option is set by the growl processing in PageGroup 
+ * However, the header and theme option is set by the growl processing in PageGroup
  * automatically.
  * See the jquery jGrowl plugin for more details.
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class GrowlsWidget extends WidgetBase{
-    
+public class GrowlsWidget extends WidgetBase {
     private static final long serialVersionUID = -8701090110933484411L;
+
     private boolean sticky;
     private int timeShown;
     private String position;
+
     /**
      * If true, the growl will stick to the page until the user dismisses it
+     *
      * @return the sticky
      */
     public boolean isSticky() {
         return this.sticky;
     }
+
     /**
      * @param sticky the sticky to set
      */
@@ -46,13 +48,16 @@ public class GrowlsWidget extends WidgetBase{
         this.sticky = sticky;
         this.getComponentOptions().put("sticky", Boolean.toString(sticky));
     }
+
     /**
      * The time growls are shown in milliseconds
+     *
      * @return the timeShown
      */
     public int getTimeShown() {
         return this.timeShown;
     }
+
     /**
      * @param timeShown the timeShown to set
      */
@@ -60,14 +65,17 @@ public class GrowlsWidget extends WidgetBase{
         this.timeShown = timeShown;
         this.getComponentOptions().put("life", Integer.toString(timeShown));
     }
+
     /**
      * The position for the growls to appear in the window
      * There are five options available: top-left, top-right, bottom-left, bottom-right, center.
+     *
      * @return the position
      */
     public String getPosition() {
         return this.position;
     }
+
     /**
      * @param position the position to set
      */

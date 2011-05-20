@@ -15,15 +15,13 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="group" classname="org.kuali.rice.kns.uif.container.Group"/>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.TreeWidget"/>
+<tiles:useAttribute name="componentId"/>
 
-<krad:group group="${group}">
-
-    <%-- render items through layout manager --%>
-    <tiles:insertTemplate template="${group.layoutManager.template}">
-        <tiles:putAttribute name="items" value="${group.items}"/>
-        <tiles:putAttribute name="manager" value="${group.layoutManager}"/>
-        <tiles:putAttribute name="container" value="${group}"/>
-    </tiles:insertTemplate>
-
-</krad:group>
+<%--
+    Invokes JS method to implement a tree plug-in
+ --%>
+ 
+<krad:script value="
+  createTree('${componentId}', ${widget.componentOptionsJSString});
+"/>

@@ -21,8 +21,10 @@ import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.HeaderField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
+import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 
 /**
  * Generates <code>Field</code> instances to produce a comparison view among
@@ -85,8 +87,6 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         if (component == null) {
             return;
         }
-
-        LOG.debug("Running compare field initializer on component: " + component.getId());
 
         // list to hold the generated compare items
         List<Component> comparisonItems = new ArrayList<Component>();

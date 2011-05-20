@@ -93,7 +93,7 @@
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBox.jsp"/>
       <property name="componentOptions">
           <map>
-<entry key="autoScale" value="false"/>              
+              <entry key="autoScale" value="false"/>
               <entry key="centerOnScroll" value="true"/>     
               <entry key="transitionIn" value="fade"/>   
               <entry key="transitionOut" value="fade"/>
@@ -213,7 +213,7 @@
       <property name="conditionalRender" value="#parent.readOnly"/>
   </bean>   
   
-<bean id="DirectInquiry" parent="DirectInquiry-parentBean"/>
+  <bean id="DirectInquiry" parent="DirectInquiry-parentBean"/>
   <bean id="DirectInquiry-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.DirectInquiry" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/directInquiry.jsp"/>
       <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/spring/inquiry"/>
@@ -261,6 +261,17 @@
       <property name="sticky" value="false"/>
       <property name="timeShown" value="7000"/>
       <property name="position" value="top-right"/>
+  </bean>
+
+  <bean id="TreeWidget" parent="TreeWidget-parentBean"/>
+  <bean id="TreeWidget-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.TreeWidget" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/tree.jsp"/>
+      <property name="componentOptions">
+          <map>
+              <entry key="themes" value="{'theme' : 'default', 'dots' : 'true', 'icons' : 'false'}"/>
+              <entry key="plugins" value="[ 'themes','html_data' ]"/>
+          </map>
+      </property>
   </bean>
   
   <!-- Modifiers -->

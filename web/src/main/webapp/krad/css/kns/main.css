@@ -118,7 +118,6 @@ div.globalbuttons { text-align:center;	padding-top: 10px; padding-bottom: 10px;}
 
 span.desc {
 	color: #000000;
-    display: block;
     font-weight: bold;
     white-space: nowrap;
 }
@@ -343,6 +342,12 @@ Tab menu
  #viewpage_div h2 {
 	color:#666666;
 }
+
 .action {
 	text-decoration:underline;
+}
+
+input.amount
+{
+	text-align: right;
 }

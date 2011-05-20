@@ -103,16 +103,6 @@ public class ComponentUtils {
         return copy;
     }
 
-    public static <T extends Component> T copyField(T component, String addBindingPrefix, String idSuffix) {
-        T copy = copy(component, idSuffix);
-
-        if (copy instanceof DataBinding) {
-            prefixBindingPath((DataBinding) copy, addBindingPrefix);
-        }
-
-        return copy;
-    }
-
     public static <T extends Field> List<T> copyFieldList(List<T> fields, String addBindingPrefix, String idSuffix) {
         List<T> copiedFieldList = copyFieldList(fields, idSuffix);
 
@@ -130,6 +120,14 @@ public class ComponentUtils {
         }
 
         return copiedFieldList;
+    }
+
+    public static <T extends Component> T copyComponent(T component, String addBindingPrefix, String idSuffix) {
+        T copy = copy(component, idSuffix);
+
+        prefixBindingPathNested(component, addBindingPrefix);
+
+        return copy;
     }
 
     public static <T extends Component> List<T> copyComponentList(List<T> components, String idSuffix) {
@@ -196,6 +194,18 @@ public class ComponentUtils {
                 List<Field> groupFields = getComponentsOfType(((GroupField) field).getItems(), Field.class);
                 prefixBindingPath(groupFields, addBindingPrefix);
             }
+        }
+    }
+
+    public static void prefixBindingPathNested(Component component, String addBindingPrefix) {
+        if (component instanceof DataBinding) {
+            prefixBindingPath((DataBinding) component, addBindingPrefix);
+        }
+
+        for (Component nested : component.getNestedComponents()) {
+           if (nested != null) {
+              prefixBindingPathNested(nested, addBindingPrefix);
+           }
         }
     }
 

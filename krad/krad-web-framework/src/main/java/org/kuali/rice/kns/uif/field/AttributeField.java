@@ -146,6 +146,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * The following actions are performed:
+     *
      * <ul>
      * <li>Sets up the client side validation for constraints on this field. In
      * addition, it sets up the messages applied to this field</li>

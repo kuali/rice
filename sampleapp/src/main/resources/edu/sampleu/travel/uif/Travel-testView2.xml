@@ -24,6 +24,10 @@ limitations under the License.
     <property name="title" value="Test View 2"/>
     <property name="entryPageId" value="page1"/>
     <property name="additionalCssFiles" ref="ks-css"/>
+     <property name="viewLabelFieldBindingInfo">
+        <bean parent="BindingInfo" p:bindToForm="true"/>
+    </property>
+	<property name="viewLabelFieldPropertyName" value="field1"/>
 	<property name="errorsField">
         <bean parent="ErrorsField_View">
 	       	<property name="additionalKeysToMatch">

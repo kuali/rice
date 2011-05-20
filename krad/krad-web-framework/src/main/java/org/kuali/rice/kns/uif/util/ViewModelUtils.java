@@ -149,7 +149,9 @@ public class ViewModelUtils {
             
         }
         else if(bindingInfo != null){
-            value = ObjectPropertyUtils.getPropertyValue(model, bindingInfo.getBindingPath());
+            if(StringUtils.isNotBlank(bindingInfo.getBindingPath()) && !bindingInfo.getBindingPath().equals("null")){
+                value = ObjectPropertyUtils.getPropertyValue(model, bindingInfo.getBindingPath());
+            }
         }
         return value;
     }

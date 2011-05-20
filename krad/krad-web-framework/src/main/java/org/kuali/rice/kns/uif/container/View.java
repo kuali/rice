@@ -1,17 +1,12 @@
 /*
- * Copyright 2007 The Kuali Foundation
- * 
- * Licensed under the Educational Community License, Version 1.0 (the
- * "License"); you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Copyright 2007 The Kuali Foundation Licensed under the Educational Community
+ * License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.opensource.org/licenses/ecl1.php Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package org.kuali.rice.kns.uif.container;
 
@@ -72,14 +67,14 @@ public class View extends ContainerBase {
     private static final long serialVersionUID = -1220009725554576953L;
 
     private String viewName;
-    
-    //Breadcrumbs
+
+    // Breadcrumbs
     private BreadCrumbs breadcrumbs;
     private String viewLabelFieldPropertyName;
     private BindingInfo viewLabelFieldBindingInfo;
     private String appendOption;
-    
-    //Growls support
+
+    // Growls support
     private GrowlsWidget growlsWidget;
     private boolean growlMessagingEnabled;
 
@@ -121,13 +116,13 @@ public class View extends ContainerBase {
     private String viewMenuGrouping;
 
     private boolean validateDirty;
-    
+
     @RequestParameter
     private boolean dialogMode;
 
     @RequestParameter
     private String returnTarget;
-    
+
     @ReferenceCopy
     private ViewHelperService viewHelperService;
 
@@ -149,7 +144,6 @@ public class View extends ContainerBase {
 
     /**
      * The following initialization is performed:
-     * 
      * <ul>
      * <li>If a single paged view, set items in page group and put the page in
      * the items list</li>
@@ -172,8 +166,7 @@ public class View extends ContainerBase {
                 // reset the items list to include the one page
                 items = new ArrayList<Group>();
                 ((List<Group>) items).add(page);
-            }
-            else {
+            } else {
                 throw new RuntimeException("For single paged views the page Group must be set.");
             }
         }
@@ -181,45 +174,48 @@ public class View extends ContainerBase {
         // set the entry page
         if (StringUtils.isNotBlank(entryPageId)) {
             currentPageId = entryPageId;
-        }
-        else {
+        } else {
             Group firstPageGroup = getItems().get(0);
             currentPageId = firstPageGroup.getId();
         }
-        
+
     }
-    
+
     /**
-     * This method is used to determine what property name is to be used for view label appendage, called before the generation
-     * of history/breadcrumb/title, but cannot be called from performInitialize because the abstractTypeClasses
-     * map may not be populated before super.performInitialize is called from a view child class (required for
+     * This method is used to determine what property name is to be used for
+     * view label appendage, called before the generation of
+     * history/breadcrumb/title, but cannot be called from performInitialize
+     * because the abstractTypeClasses map may not be populated before
+     * super.performInitialize is called from a view child class (required for
      * ViewModelUtils#getPropertyType determination used in this method)
-     * 
      * Currently called from UifControllerHandlerInterceptor...
+     * 
+     * @see View#setViewLabelFieldPropertyName(String)
+     * @see View#setViewLabelFieldBindingInfo(BindingInfo)
      * @see ViewModelUtils#getPropertyType
      * @see UifControllerHandlerInterceptor#postHandle
      */
-    public void determineViewLabelPropertyName(){
-        //We have binding info but a custom viewLabelFieldPropertyName is set
-        if(viewLabelFieldBindingInfo != null && StringUtils.isNotBlank(viewLabelFieldPropertyName)){
+    public void determineViewLabelPropertyName() {
+        // We have binding info but a custom viewLabelFieldPropertyName is set
+        if (viewLabelFieldBindingInfo != null && StringUtils.isNotBlank(viewLabelFieldPropertyName)) {
             viewLabelFieldBindingInfo.setDefaults(this, viewLabelFieldPropertyName);
         }
-        //Nothing is preset, auto determine title
-        else if(viewLabelFieldBindingInfo == null && StringUtils.isBlank(viewLabelFieldPropertyName)){
+        // Nothing is preset, auto determine title
+        else if (viewLabelFieldBindingInfo == null && StringUtils.isBlank(viewLabelFieldPropertyName)) {
             Class<?> doClass;
-            if(StringUtils.isNotBlank(this.getDefaultBindingObjectPath())){
+            if (StringUtils.isNotBlank(this.getDefaultBindingObjectPath())) {
                 doClass = ViewModelUtils.getPropertyType(this, this.getDefaultBindingObjectPath());
-            }
-            else{
+            } else {
                 doClass = this.getFormClass();
             }
             DataObjectMetaDataService mds = KNSServiceLocatorWeb.getDataObjectMetaDataService();
-            if(doClass != null){
+            if (doClass != null) {
                 String title = mds.getTitleAttribute(doClass);
                 viewLabelFieldPropertyName = title;
             }
         }
-        //else assumption is to use whatever is in viewLabelFieldBindingInfo or viewLabelFieldPropertyName
+        // else assumption is to use whatever is in viewLabelFieldBindingInfo or
+        // viewLabelFieldPropertyName
     }
 
     /**
@@ -282,7 +278,7 @@ public class View extends ContainerBase {
         for (Iterator<? extends Group> iterator = this.getItems().iterator(); iterator.hasNext();) {
             Group pageGroup = iterator.next();
             if (pageGroup.getId().equals(getCurrentPageId())) {
-                return (PageGroup)pageGroup;
+                return (PageGroup) pageGroup;
             }
         }
 
@@ -519,20 +515,21 @@ public class View extends ContainerBase {
     public void setDialogMode(boolean dialogMode) {
         this.dialogMode = dialogMode;
     }
-    
-    /**
-	 * @param returnTarget the returnTarget to set
-	 */
-	public void setReturnTarget(String returnTarget) {
-		this.returnTarget = returnTarget;
-	}
 
-	/**
-	 * @return the returnTarget
-	 */
-	public String getReturnTarget() {
-		return returnTarget;
-	}    
+    /**
+     * @param returnTarget
+     *            the returnTarget to set
+     */
+    public void setReturnTarget(String returnTarget) {
+        this.returnTarget = returnTarget;
+    }
+
+    /**
+     * @return the returnTarget
+     */
+    public String getReturnTarget() {
+        return returnTarget;
+    }
 
     /**
      * View type name the view is associated with
@@ -644,7 +641,6 @@ public class View extends ContainerBase {
     /**
      * PresentationController class that should be used for the
      * <code>View</code> instance
-     * 
      * <p>
      * The presentation controller is consulted to determine component (group,
      * field) state such as required, read-only, and hidden. The presentation
@@ -672,7 +668,6 @@ public class View extends ContainerBase {
 
     /**
      * Authorizer class that should be used for the <code>View</code> instance
-     * 
      * <p>
      * The authorizer class is consulted to determine component (group, field)
      * state such as required, read-only, and hidden based on the users
@@ -703,7 +698,6 @@ public class View extends ContainerBase {
 
     /**
      * Map of strings that flag what actions can be taken in the UI
-     * 
      * <p>
      * These can be used in conditional expressions in the dictionary or by
      * other UI logic
@@ -726,7 +720,6 @@ public class View extends ContainerBase {
 
     /**
      * Map of edit modes that enabled for the view
-     * 
      * <p>
      * These can be used in conditional expressions in the dictionary or by
      * other UI logic
@@ -750,7 +743,6 @@ public class View extends ContainerBase {
     /**
      * Map that contains expressions to evaluate and make available as variables
      * for conditional expressions within the view
-     * 
      * <p>
      * Each Map entry contains one expression variables, where the map key gives
      * the name for the variable, and the map value gives the variable
@@ -958,6 +950,7 @@ public class View extends ContainerBase {
 
     /**
      * Breadcrumb widget used for displaying homeward path and history
+     * 
      * @return the breadcrumbs
      */
     public BreadCrumbs getBreadcrumbs() {
@@ -965,14 +958,17 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @param breadcrumbs the breadcrumbs to set
+     * @param breadcrumbs
+     *            the breadcrumbs to set
      */
     public void setBreadcrumbs(BreadCrumbs breadcrumbs) {
         this.breadcrumbs = breadcrumbs;
     }
 
     /**
-     * Growls widget which sets up global settings for the growls used in this view and its pages
+     * Growls widget which sets up global settings for the growls used in this
+     * view and its pages
+     * 
      * @return the growlsWidget
      */
     public GrowlsWidget getGrowlsWidget() {
@@ -980,19 +976,22 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @param growlsWidget the growlsWidget to set
+     * @param growlsWidget
+     *            the growlsWidget to set
      */
     public void setGrowlsWidget(GrowlsWidget growlsWidget) {
         this.growlsWidget = growlsWidget;
     }
 
     /**
-     * Growls use the messages contained in the message map.
-     * If enabled, info messages in their entirety will be displayed in growls, for warning and error messages
-     * a growl message will notify the user that these messages exist on the page.
-     * If this setting is disabled, it is recommended that infoMessage display be enabled for
-     * the page ErrorsField bean in order to display relevant information to the user.
-     * Note: the growl scripts are built out in the PageGroup class.
+     * Growls use the messages contained in the message map. If enabled, info
+     * messages in their entirety will be displayed in growls, for warning and
+     * error messages a growl message will notify the user that these messages
+     * exist on the page. If this setting is disabled, it is recommended that
+     * infoMessage display be enabled for the page ErrorsField bean in order to
+     * display relevant information to the user. Note: the growl scripts are
+     * built out in the PageGroup class.
+     * 
      * @return the growlMessagingEnabled
      */
     public boolean isGrowlMessagingEnabled() {
@@ -1000,22 +999,23 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @param growlMessagingEnabled the growlMessagingEnabled to set
+     * @param growlMessagingEnabled
+     *            the growlMessagingEnabled to set
      */
     public void setGrowlMessagingEnabled(boolean growlMessagingEnabled) {
         this.growlMessagingEnabled = growlMessagingEnabled;
     }
-    
-    public boolean isValidateDirty() {
-		return this.validateDirty;
-	}
 
-	/**
-	 * Setter for dirty validation. 
-	 */
-	public void setValidateDirty(boolean validateDirty) {
-		this.validateDirty = validateDirty;
-	}
+    public boolean isValidateDirty() {
+        return this.validateDirty;
+    }
+
+    /**
+     * Setter for dirty validation.
+     */
+    public void setValidateDirty(boolean validateDirty) {
+        this.validateDirty = validateDirty;
+    }
 
     /**
      * @return the viewLabelFieldPropertyName
@@ -1025,7 +1025,20 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @param viewLabelFieldPropertyName the viewLabelFieldPropertyName to set
+     * Sets the property name to be used to determine what will be used in the
+     * breadcrumb title of this view
+     * The title can be determined from a
+     * combination of this and viewLabelFieldbindingInfo: If only
+     * viewLabelFieldPropertyName is set, the title we be determined against the
+     * defaultBindingObjectPath. If only viewLabelFieldbindingInfo is set it
+     * must provide information about what object(bindToForm or explicit) and
+     * path to use. If both viewLabelFieldbindingInfo and
+     * viewLabelFieldPropertyName are set, the bindingInfo will be used with a
+     * the viewLabelFieldPropertyName as its bindingPath. If neither are set,
+     * the default title attribute from the dataObject's metadata (determined by the
+     * defaultBindingObjectPath's object) will be used.
+     * @param viewLabelFieldPropertyName
+     *            the viewLabelFieldPropertyName to set
      */
     public void setViewLabelFieldPropertyName(String viewLabelFieldPropertyName) {
         this.viewLabelFieldPropertyName = viewLabelFieldPropertyName;
@@ -1039,7 +1052,21 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @param viewLabelFieldBindingInfo the viewLabelFieldBindingInfo to set
+     * The binding info settings to use when selecting a field to use in the
+     * breadcrumb title for this view. 
+     * The title can be determined from a
+     * combination of this and viewLabelFieldPropertyName: If only
+     * viewLabelFieldPropertyName is set, the title we be determined against the
+     * defaultBindingObjectPath. If only viewLabelFieldbindingInfo is set it
+     * must provide information about what object(bindToForm or explicit) and
+     * path to use. If both viewLabelFieldbindingInfo and
+     * viewLabelFieldPropertyName are set, the bindingInfo will be used with a
+     * the viewLabelFieldPropertyName as its bindingPath. If neither are set,
+     * the default title attribute from the dataObject's metadata (determined by the
+     * defaultBindingObjectPath's object) will be used.
+     * 
+     * @param viewLabelFieldBindingInfo
+     *            the viewLabelFieldBindingInfo to set
      */
     public void setViewLabelFieldBindingInfo(BindingInfo viewLabelFieldBindingInfo) {
         this.viewLabelFieldBindingInfo = viewLabelFieldBindingInfo;
@@ -1053,11 +1080,19 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @param appendOption the appendOption to set
+     * The option to use when appending the view label on the breadcrumb title.
+     * Available options: 'dash', 'parenthesis', and 'replace'(don't append -
+     * simply replace the title). MUST be set for the viewLabelField to be used
+     * in the breadcrumb, if not set no appendage will be added.
+     * 
+     * @see View#setViewLabelFieldPropertyName(String)
+     * @see View#setViewLabelFieldBindingInfo(BindingInfo)
+     * 
+     * @param appendOption
+     *            the appendOption to set
      */
     public void setAppendOption(String appendOption) {
         this.appendOption = appendOption;
     }
-	
-	
+
 }

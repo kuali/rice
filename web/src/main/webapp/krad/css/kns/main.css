@@ -343,3 +343,6 @@ Tab menu
  #viewpage_div h2 {
 	color:#666666;
 }
+.action {
+	text-decoration:underline;
+}

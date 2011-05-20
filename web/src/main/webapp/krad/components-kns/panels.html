@@ -1,0 +1,1859 @@
+<!-- begin of view render -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!----------------------------------- #BEGIN HEAD --------------------------------------->
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+<!-- global variables for scripting are setup here -->
+<script type="text/javascript">
+    var jsContextPath = "/kr-dev";
+    var dialogMode = false;
+</script>
+<title>&lt;!-- bean:message key="app.title" /--&gt; &lt;!--  TODO: find spring replacement --&gt;
+      :: Travel Account Maintenance</title>
+<link type="text/css" rel="stylesheet" href="../css/jquery.jgrowl.css">
+<link type="text/css" rel="stylesheet" href="../css/showLoading.css">
+<link type="text/css" rel="stylesheet" href="../css/demo_table.css">
+<link type="text/css" rel="stylesheet" href="../css/TableTools.css">
+<link type="text/css" rel="stylesheet" href="../scripts/fancybox/jquery.fancybox-1.3.4.css">
+<link type="text/css" rel="stylesheet" href="../css/popoutTextarea.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/reset.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/jquery-ui-1.8.11.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/main.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/fonts.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/headers.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/tables.css">
+<link type="text/css" rel="stylesheet" href="../css/kuali-stacked.css">
+
+<!-- custom script for the view -->
+<script type="text/javascript">
+      jq(document).ready(function() {
+        
+      })
+    </script>
+</head>
+
+<!----------------------------------- #BEGIN BODY --------------------------------------->
+
+<!----------------------------------- #BEGIN BODY --------------------------------------->
+
+<body>
+<div id="TravelAccount-MaintenanceView_div" class="workarea" >
+  <div id="view_div"> 
+    
+    <!----------------------------------- #BEGIN FORM --------------------------------------->
+    
+    <form id="kualiForm" style="form_format topLabel page" action="http://localhost:8080/kr-dev/spring/maintenance" method="post" enctype="multipart/form-data" onsubmit="createLoading(true);return hasFormAlreadyBeenSubmitted();">
+      <a name="topOfForm"></a>
+      <div id="breadcrumbs" class="breadcrumbs"> <a href="/kr-dev/portal.do">Home</a><span> &raquo; </span> <span id="current_breadcrumb_span" class="current">Travel Account Maintenance</span> <a id="current_breadcrumb_anchor" style="display:none;" href="http://localhost:8080/kr-dev/spring/maintenance?number=a14&returnLocation=http://localhost:8080/kr-dev/portal.do&methodToCall=maintenanceEdit&hideReturnLink=true&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&history=null%2Cnull%2CHome%2C%2Fkr-dev%2Fportal.do%2Cnull&showHome=false"/>Travel Account Maintenance</a> </div>
+      
+      <!----------------------------------- #VIEW HEADER --------------------------------------->
+      <div id="viewheader_div">
+        <div id="10104ee8_div" class="doc_view_header clearfix" >
+          <div id="10104ee8_header"  class="left">
+            <h1>Travel Account Maintenance</h1>
+          </div>
+          <div id="group_docheader_div" class="group_docheader" > 
+            
+            <!----------------------------------- #GROUP 'group_docheader' HEADER --------------------------------------->
+            
+            <div id="group_docheader_group">
+              <table id="group_docheader_layout"  >
+                <tr>
+                  <th scope="row"  colspan="1" 
+          rowspan="1"  class="desc"> <span id="cb8df14_label_span" class="desc" >
+                    <label id="cb8df14_label" for="cb8df14"> Document Number: </label>
+                    </span> </th>
+                  <td  colspan="1" rowspan="1"
+          class="field_attribute" ><span id="cb8df14_attribute_span" class="field_attribute" > 3159 </span>
+                    <div id="cb8df14_errors_div" class="errorsField" style="display: none;"> 
+                      
+                      <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                      
+                      <div id="cb8df14_errors_errorMessages" style="display: none;" class="errorMessages">
+                        <ul>
+                        </ul>
+                      </div>
+                      
+                      <!--  Warning messages  --> 
+                      
+                      <!--  Info messages  --> 
+                      
+                    </div></td>
+                  <th scope="row"  colspan="1" 
+          rowspan="1"  class="desc"> <span id="3d3da092_label_span" class="desc" >
+                    <label id="3d3da092_label" for="3d3da092"> Document Status: </label>
+                    </span> </th>
+                  <td  colspan="1" rowspan="1"
+          class="field_attribute" ><span id="3d3da092_attribute_span" class="field_attribute" > INITIATED </span>
+                    <div id="3d3da092_errors_div" class="errorsField" style="display: none;"> 
+                      
+                      <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                      
+                      <div id="3d3da092_errors_errorMessages" style="display: none;" class="errorMessages">
+                        <ul>
+                        </ul>
+                      </div>
+                      
+                      <!--  Warning messages  --> 
+                      
+                      <!--  Info messages  --> 
+                      
+                    </div></td>
+                </tr>
+                <tr>
+                  <th scope="row"  colspan="1" 
+          rowspan="1"  class="desc"> <span id="18f8f0a7_label_span" class="desc" >
+                    <label id="18f8f0a7_label" for="18f8f0a7"> Initiator Network Id: </label>
+                    </span> </th>
+                  <td  colspan="1" rowspan="1"
+          class="field_attribute" ><span id="18f8f0a7_attribute_span" class="field_attribute" > admin </span>
+                    <div id="18f8f0a7_errors_div" class="errorsField" style="display: none;"> 
+                      
+                      <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                      
+                      <div id="18f8f0a7_errors_errorMessages" style="display: none;" class="errorMessages">
+                        <ul>
+                        </ul>
+                      </div>
+                      
+                      <!--  Warning messages  --> 
+                      
+                      <!--  Info messages  --> 
+                      
+                    </div></td>
+                  <th scope="row"  colspan="1" 
+          rowspan="1"  class="desc"> <span id="7f7f70bf_label_span" class="desc" >
+                    <label id="7f7f70bf_label" for="7f7f70bf"> Creation Timestamp: </label>
+                    </span> </th>
+                  <td  colspan="1" rowspan="1"
+          class="field_attribute" ><span id="7f7f70bf_attribute_span" class="field_attribute" > 03:34 PM 05/19/2011 </span>
+                    <div id="7f7f70bf_errors_div" class="errorsField" style="display: none;"> 
+                      
+                      <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                      
+                      <div id="7f7f70bf_errors_errorMessages" style="display: none;" class="errorMessages">
+                        <ul>
+                        </ul>
+                      </div>
+                      
+                      <!--  Warning messages  --> 
+                      
+                      <!--  Info messages  --> 
+                      
+                    </div></td>
+                </tr>
+              </table>
+              
+              <!----------------------------------- #GROUP 'group_docheader' FOOTER ---------------------------------------> 
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!--Changing any ids here will break navigation slide out functionality -->
+      <div id="viewlayout_div"> 
+        <!----------------------------------- #VIEW NAVIGATION --------------------------------------->
+        <div id="viewnavigation_div"> </div>
+        <input id="viewId" name="viewId" type="hidden" value="TravelAccount-MaintenanceView"/>
+        <input id="formKey" name="formKey" type="hidden" value="a8e60e96-1482-4ac7-a61b-c40a271699bc"/>
+        <input id="validateDirty" name="validateDirty" type="hidden" value="true"/>
+        
+        <!----------------------------------- #VIEW PAGE --------------------------------------->
+        <div id="viewpage_div">
+          <div id="1eac6995_div"  > 
+            
+            <!----------------------------------- #GROUP '1eac6995' HEADER --------------------------------------->
+            
+            <div id="HeaderPage_AccordionEdit_div" class="page_header" >
+              <div id="HeaderPage_AccordionEdit_header"  class="header">
+                <h1></h1>
+              </div>
+              <div id="7827aaf0_div" class="group_expandclose" > 
+                
+                <!----------------------------------- #GROUP '7827aaf0' HEADER --------------------------------------->
+                
+                <div id="7827aaf0_group">
+                  <div id="38653ad5_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                    
+                    <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                    
+                    <div id="38653ad5_errorMessages" style="display: none;" class="errorMessages">
+                      <ul>
+                      </ul>
+                    </div>
+                    
+                    <!--  Warning messages  --> 
+                    
+                    <!--  Info messages  --> 
+                    
+                  </div>
+                  <div id="7827aaf0_layout"  class="fieldLine clearfix"> <span >
+                    <input type="submit" id="actn_expn" value="expand all"  class="ui-priority-secondary-sm boxLayoutHorizontalItem" />
+                    <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;actn_expn&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;actn_expn&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;actn_expn&#039;); expandAccordions();
+    });"/>
+                    <input type="submit" id="actn_cllps" value="collapse all"  class="ui-priority-secondary-sm boxLayoutHorizontalItem" />
+                    <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;actn_cllps&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;actn_cllps&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;actn_cllps&#039;); collapseAccordions();
+    });"/>
+                    <span id="msg_reqind_span" class="boxLayoutHorizontalItem" >* indicates required field</span> </span> </div>
+                  
+                  <!----------------------------------- #GROUP '7827aaf0' FOOTER ---------------------------------------> 
+                  
+                </div>
+              </div>
+            </div>
+            <div id="1eac6995_group">
+              <div id="14d0ba03_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                
+                <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                
+                <div id="14d0ba03_errorMessages" style="display: none;" class="errorMessages"> <strong></strong>
+                  <ul>
+                  </ul>
+                </div>
+                
+                <!--  Warning messages  --> 
+                
+                <!--  Info messages  --> 
+                
+              </div>
+              <div id="1eac6995_layout"  class="fieldLine clearfix"> <span > <span class="fieldLine boxLayoutVerticalItem clearfix" style="">
+                <div id="group_docoverview_div" class="wrap" > 
+                  
+                  <!----------------------------------- #GROUP 'group_docoverview' HEADER --------------------------------------->
+                  
+                  <div id="5d277b59_div" class="grouping-header-expandable" >
+                    <div id="5d277b59_header"  class="header">
+                      <h2>Document Overview</h2>
+                    </div>
+                  </div>
+                  <div id="group_docoverview_group">
+                    <div id="38653ad5_1_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                      
+                      <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                      
+                      <div id="38653ad5_1_errorMessages" style="display: none;" class="errorMessages">
+                        <ul>
+                        </ul>
+                      </div>
+                      
+                      <!--  Warning messages  --> 
+                      
+                      <!--  Info messages  --> 
+                      
+                    </div>
+                    <table id="group_docoverview_layout"  class="datatable">
+                      <tr>
+                        <th scope="row"  colspan="1" 
+          rowspan="1"  class="desc"> <span id="26f3bbad_label_span" class="desc" > <span id="1bf75734_4_span" class="required" >*</span>
+                          <label id="26f3bbad_label" for="26f3bbad"> Description: </label>
+                          </span> </th>
+                        <td  colspan="1" rowspan="1"
+          class="field_attribute" ><span id="26f3bbad_attribute_span" class="field_attribute" >
+                          <input id="26f3bbad" name="document.documentHeader.documentDescription" class="required" tabindex="0" type="text" value="" size="45" maxlength="40"/>
+                          </span>
+                          <div id="26f3bbad_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="26f3bbad_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                        <th scope="row"  colspan="1" 
+          rowspan="2"  class="desc"> <span id="4ba66ed5_label_span" class="desc" >
+                          <label id="4ba66ed5_label" for="4ba66ed5"> Explanation: </label>
+                          </span> </th>
+                        <td  colspan="1" rowspan="2"
+          class="field_attribute" ><span id="4ba66ed5_attribute_span" class="field_attribute" >
+                          <textarea id="4ba66ed5" name="document.documentHeader.explanation" tabindex="0" maxLength="400" rows="3" cols="40"></textarea>
+                          </span>
+                          <div id="4ba66ed5_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="4ba66ed5_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"  colspan="1" 
+          rowspan="1"  class="desc"> <span id="1bb688c0_label_span" class="desc" >
+                          <label id="1bb688c0_label" for="1bb688c0"> Organization Document Number: </label>
+                          </span> </th>
+                        <td  colspan="1" rowspan="1"
+          class="field_attribute" ><span id="1bb688c0_attribute_span" class="field_attribute" >
+                          <input id="1bb688c0" name="document.documentHeader.organizationDocumentNumber" tabindex="0" type="text" value="" size="12" maxlength="10"/>
+                          </span>
+                          <div id="1bb688c0_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="1bb688c0_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                    </table>
+                    
+                    <!----------------------------------- #GROUP 'group_docoverview' FOOTER ---------------------------------------> 
+                    
+                  </div>
+                </div>
+                <input type="hidden" name="script"  value="
+  createAccordion(&#039;group_docoverview&#039;, &#039;5d277b59&#039;, true, 
+  		          &#039;/kr-dev/krad/images/arrow-col.png&#039;, &#039;/kr-dev/krad/images/arrow-exp.png&#039;, 500);
+"/>
+                </span> <span class="fieldLine boxLayoutVerticalItem clearfix" style="">
+                <div id="dd5a30_div" class="wrap" > 
+                  
+                  <!----------------------------------- #GROUP 'dd5a30' HEADER --------------------------------------->
+                  
+                  <div id="5d277b59_2_div" class="grouping-header-expandable" >
+                    <div id="5d277b59_2_header"  class="header">
+                      <h2>Account Information</h2>
+                    </div>
+                  </div>
+                  <div id="dd5a30_group">
+                    <div id="38653ad5_4_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                      
+                      <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                      
+                      <div id="38653ad5_4_errorMessages" style="display: none;" class="errorMessages">
+                        <ul>
+                        </ul>
+                      </div>
+                      
+                      <!--  Warning messages  --> 
+                      
+                      <!--  Info messages  --> 
+                      
+                    </div>
+                    <table id="dd5a30_layout"  class="datatable">
+                      <tr>
+                        <th scope="row" width="50.0%" colspan="2" 
+          rowspan="1"  class="collection-header"> <div id="efd025dnull_div" class="collection-header" >
+                            <div id="efd025dnull_header"  class="header">
+                              <h4>Old</h4>
+                            </div>
+                          </div>
+                        </th>
+                        <td width="50.0%" colspan="2" rowspan="1"
+          class="collection-header" ><div id="efd025dnull_div" class="collection-header" >
+                            <div id="efd025dnull_header"  class="header">
+                              <h4>New</h4>
+                            </div>
+                          </div></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="14a1bcd3null_label_span" class="desc" >
+                          <label id="14a1bcd3null_label" for="14a1bcd3null"> Travel Account Number: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="14a1bcd3null_attribute_span" class="field_attribute" >
+                          <input type="hidden" name="script"  value="
+   createLightBox(&#039;6beb3926_7null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+"/>
+                          <a id="6beb3926_7null" href="http://localhost:8080/kr-dev/spring/inquiry?number=a14&methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount" target="_blank"
+     class="action">a14</a> </span>
+                          <div id="14a1bcd3null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="14a1bcd3null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="14a1bcd3null_label_span" class="desc" >
+                          <label id="14a1bcd3null_label" for="14a1bcd3null"> Travel Account Number: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="14a1bcd3null_attribute_span" class="field_attribute" > <span id="14a1bcd3null_summary_span" class="summary" >Unique identifier for account</span>
+                          <input id="14a1bcd3null" name="document.newMaintainableObject.dataObject.number" tabindex="0" type="text" value="a14" size="10" maxlength="10"/>
+                          <input type="image" id="1ff52524_7null" src="/kr-dev/krad/images/book_open.png" 
+            alt="Direct Inquiry"   />
+                          <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1ff52524_7null&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1ff52524_7null&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;1ff52524_7null&#039;); directInquiry(&#034;http://localhost:8080/kr-dev/spring/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&#034;, &#034;document.newMaintainableObject.dataObject.number:number&#034;, true, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;70%&#034;,height:&#034;90%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+    });"/>
+                          <span id="14a1bcd3null_constraint_span" class="constraint" >Must be 10 digits</span> </span>
+                          <div id="14a1bcd3null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="14a1bcd3null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="673cb3anull_label_span" class="desc" >
+                          <label id="673cb3anull_label" for="673cb3anull"> Account Name: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="673cb3anull_attribute_span" class="field_attribute" > ********* </span>
+                          <div id="673cb3anull_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="673cb3anull_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="673cb3anull_label_span" class="desc" >
+                          <label id="673cb3anull_label" for="673cb3anull"> Account Name: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="673cb3anull_attribute_span" class="field_attribute" >
+                          <input id="673cb3anull" name="document.newMaintainableObject.dataObject.name" tabindex="0" type="text" value="2BARlSx4Fog=" size="30" maxlength="30"/>
+                          </span>
+                          <div id="673cb3anull_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="673cb3anull_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="1c235025null_label_span" class="desc" > <span id="1bf75734_10null_span" class="required" >*</span>
+                          <label id="1c235025null_label" for="1c235025null"> Travel Account Type Code: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="1c235025null_attribute_span" class="field_attribute" > CAT </span>
+                          <div id="1c235025null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="1c235025null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="1c235025null_label_span" class="desc" > <span id="1bf75734_10null_span" class="required" >*</span>
+                          <label id="1c235025null_label" for="1c235025null"> Travel Account Type Code: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="1c235025null_attribute_span" class="field_attribute" > <span id="1c235025null_summary_span" class="summary" >Type code grouping for account</span>
+                          <input id="1c235025null" name="document.newMaintainableObject.dataObject.extension.accountTypeCode" class="required" tabindex="0" type="text" value="CAT" size="2" maxlength="3"/>
+                          <input type="image" id="43a2a89a_9null" src="/kr-dev/krad/images/searchicon.gif" 
+            alt="Search Field"   />
+                          <input type="hidden" name="script"  value="
+   createLightBoxLookup(&#039;43a2a89a_9null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;}, {&#034;methodToCall&#034;:&#034;performLookup&#034;,&#034;actionParameters[baseLookupUrl]&#034;:&#034;http://localhost:8080/kr-dev/spring/lookup&#034;,&#034;actionParameters[showHistory]&#034;:&#034;false&#034;,&#034;actionParameters[conversionFields]&#034;:&#034;accountTypeCode:document.newMaintainableObject.dataObject.extension.accountTypeCode&#034;,&#034;actionParameters[dataObjectClassName]&#034;:&#034;edu.sampleu.travel.bo.TravelAccountType&#034;,&#034;actionParameters[showHome]&#034;:&#034;false&#034;,&#034;actionParameters[lookupParameters]&#034;:&#034;document.newMaintainableObject.dataObject.extension.accountTypeCode:accountTypeCode&#034;});
+"/>
+                          </span>
+                          <div id="1c235025null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="1c235025null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5262bb91null_label_span" class="desc" >
+                          <label id="5262bb91null_label" for="5262bb91null"> Travel Sub Account Number: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="5262bb91null_attribute_span" class="field_attribute" > </span>
+                          <div id="5262bb91null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="5262bb91null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5262bb91null_label_span" class="desc" >
+                          <label id="5262bb91null_label" for="5262bb91null"> Travel Sub Account Number: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="5262bb91null_attribute_span" class="field_attribute" >
+                          <input id="5262bb91null" name="document.newMaintainableObject.dataObject.subAccount" tabindex="0" type="text" value="" size="10" maxlength="10"/>
+                          <span id="5262bb91null_constraint_span" class="constraint" >Must be 10 digits</span> </span>
+                          <div id="5262bb91null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="5262bb91null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="500856d8null_label_span" class="desc" >
+                          <label id="500856d8null_label" for="500856d8null"> Sub Account Name: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="500856d8null_attribute_span" class="field_attribute" > ********* </span>
+                          <div id="500856d8null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="500856d8null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="500856d8null_label_span" class="desc" >
+                          <label id="500856d8null_label" for="500856d8null"> Sub Account Name: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="500856d8null_attribute_span" class="field_attribute" >
+                          <input id="500856d8null" name="document.newMaintainableObject.dataObject.subAccountName" tabindex="0" type="text" value="" size="30" maxlength="30"/>
+                          </span>
+                          <div id="500856d8null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="500856d8null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="537da7f4null_label_span" class="desc" >
+                          <label id="537da7f4null_label" for="537da7f4null"> Date Created: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="537da7f4null_attribute_span" class="field_attribute" > ********* </span>
+                          <div id="537da7f4null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="537da7f4null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="537da7f4null_label_span" class="desc" >
+                          <label id="537da7f4null_label" for="537da7f4null"> Date Created: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="537da7f4null_attribute_span" class="field_attribute" >
+                          <input id="537da7f4null" name="document.newMaintainableObject.dataObject.createDate" tabindex="0" type="text" value="" size="10" maxlength="21"/>
+                          <input type="hidden" name="script"  value="createDatePicker(&#039;537da7f4null&#039;, {showOn:&#034;button&#034;,buttonImage:&#034;/kr-dev/krad/images/cal.gif&#034;,buttonImageOnly:true,showAnim:&#034;slide&#034;,showButtonPanel:true,changeMonth:true,changeYear:true});"/>
+                          </span>
+                          <div id="537da7f4null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="537da7f4null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5e9daefenull_label_span" class="desc" >
+                          <label id="5e9daefenull_label" for="5e9daefenull"> Subsidized Percent: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="5e9daefenull_attribute_span" class="field_attribute" > </span>
+                          <div id="5e9daefenull_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="5e9daefenull_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5e9daefenull_label_span" class="desc" >
+                          <label id="5e9daefenull_label" for="5e9daefenull"> Subsidized Percent: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="5e9daefenull_attribute_span" class="field_attribute" >
+                          <input id="5e9daefenull" name="document.newMaintainableObject.dataObject.subsidizedPercent" tabindex="0" type="text" value="" size="6" maxlength="20"/>
+                          <input type="hidden" name="script"  value="createWatermark(&#039;5e9daefenull&#039;, &#039;##.##   &#039;);"/>
+                          </span>
+                          <div id="5e9daefenull_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="5e9daefenull_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="424bd639null_label_span" class="desc" >
+                          <label id="424bd639null_label" for="424bd639null"> Travel Fiscal Officer Id: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="424bd639null_attribute_span" class="field_attribute" > 2 </span>
+                          <div id="424bd639null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="424bd639null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                        <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="424bd639null_label_span" class="desc" >
+                          <label id="424bd639null_label" for="424bd639null"> Travel Fiscal Officer Id: </label>
+                          </span> </th>
+                        <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="424bd639null_attribute_span" class="field_attribute" > <span id="424bd639null_summary_span" class="summary" >Responsbile for aproving account expenses</span>
+                          <input id="424bd639null" name="document.newMaintainableObject.dataObject.foId" tabindex="0" type="text" value="2" size="5" maxlength="10"/>
+                          <input type="image" id="43a2a89a_14null" src="/kr-dev/krad/images/searchicon.gif" 
+            alt="Search Field"   />
+                          <input type="hidden" name="script"  value="
+   createLightBoxLookup(&#039;43a2a89a_14null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;}, {&#034;methodToCall&#034;:&#034;performLookup&#034;,&#034;actionParameters[baseLookupUrl]&#034;:&#034;http://localhost:8080/kr-dev/spring/lookup&#034;,&#034;actionParameters[showHistory]&#034;:&#034;false&#034;,&#034;actionParameters[conversionFields]&#034;:&#034;id:document.newMaintainableObject.dataObject.foId&#034;,&#034;actionParameters[dataObjectClassName]&#034;:&#034;edu.sampleu.travel.bo.FiscalOfficer&#034;,&#034;actionParameters[showHome]&#034;:&#034;false&#034;,&#034;actionParameters[lookupParameters]&#034;:&#034;document.newMaintainableObject.dataObject.foId:id&#034;});
+"/>
+                          </span>
+                          <div id="424bd639null_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="424bd639null_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                    </table>
+                    
+                    <!----------------------------------- #GROUP 'dd5a30' FOOTER ---------------------------------------> 
+                    
+                  </div>
+                </div>
+                <input type="hidden" name="script"  value="
+  createAccordion(&#039;dd5a30&#039;, &#039;5d277b59_2&#039;, true, 
+  		          &#039;/kr-dev/krad/images/arrow-col.png&#039;, &#039;/kr-dev/krad/images/arrow-exp.png&#039;, 500);
+"/>
+                </span> <span class="fieldLine boxLayoutVerticalItem clearfix" style="">
+                <div id="28e091d4_div" class="wrap" > 
+                  
+                  <!----------------------------------- #GROUP '28e091d4' HEADER --------------------------------------->
+                  
+                  <div id="4c5cba16_div" class="grouping-header-expandable" >
+                    <div id="4c5cba16_header"  class="header">
+                      <h2>Fiscal Officer Accounts</h2>
+                    </div>
+                  </div>
+                  <div id="28e091d4_group">
+                    <div id="38653ad5_5_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                      
+                      <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                      
+                      <div id="38653ad5_5_errorMessages" style="display: none;" class="errorMessages">
+                        <ul>
+                        </ul>
+                      </div>
+                      
+                      <!--  Warning messages  --> 
+                      
+                      <!--  Info messages  --> 
+                      
+                    </div>
+                    <div id="28e091d4_layout"  class="fieldLine clearfix"> <span >
+                      <div id="4a8c1400_l-1_div"  > 
+                        
+                        <!----------------------------------- #GROUP '4a8c1400_l-1' HEADER --------------------------------------->
+                        
+                        <div id="5280fbef_l-1_div" class="collection-header" >
+                          <div id="5280fbef_l-1_header"  class="header">
+                            <h4>add</h4>
+                          </div>
+                        </div>
+                        <div id="4a8c1400_l-1_group">
+                          <div id="38653ad5_l-1_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="38653ad5_l-1_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div>
+                          <table id="null_l-1"  class="datatable">
+                            <tr>
+                              <th scope="row" width="50.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_add_label_span" class="desc" >
+                                <label id="444c05c1_add_label" for="444c05c1_add"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="50.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem 28e091d4-addField" ><span id="444c05c1_add_attribute_span" class="field_attribute boxLayoutHorizontalItem 28e091d4-addField" > <span id="444c05c1_add_summary_span" class="summary" >Unique identifier for account</span>
+                                <input id="444c05c1_add" name="newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number" class="ignoreValid" tabindex="0" type="text" value="" size="10" maxlength="10"/>
+                                <input type="image" id="1ff52524_add" src="/kr-dev/krad/images/book_open.png" 
+            alt="Direct Inquiry"   />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1ff52524_add&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1ff52524_add&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;1ff52524_add&#039;); directInquiry(&#034;http://localhost:8080/kr-dev/spring/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&#034;, &#034;newCollectionLines[&#039;document.newMaintainableObject.dataObject.fiscalOfficer.accounts&#039;].number:number&#034;, true, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;70%&#034;,height:&#034;90%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+    });"/>
+                                <span id="444c05c1_add_constraint_span" class="constraint" >Must be 10 digits</span> </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="50.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_add_label_span" class="desc" >
+                                <label id="5b0de4ee_add_label" for="5b0de4ee_add"> Account Name: </label>
+                                </span> </th>
+                              <td width="50.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem 28e091d4-addField" ><span id="5b0de4ee_add_attribute_span" class="field_attribute boxLayoutHorizontalItem 28e091d4-addField" >
+                                <input id="5b0de4ee_add" name="newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].name" class="ignoreValid" tabindex="0" type="text" value="" size="30" maxlength="30"/>
+                                </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="50.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_add_label_span" class="desc" >
+                                <label id="6d30f3f5_add_label" for="6d30f3f5_add"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="50.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem 28e091d4-addField" ><span id="6d30f3f5_add_attribute_span" class="field_attribute boxLayoutHorizontalItem 28e091d4-addField" > <span id="6d30f3f5_add_summary_span" class="summary" >Responsbile for aproving account expenses</span>
+                                <input id="6d30f3f5_add" name="newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId" class="ignoreValid" tabindex="0" type="text" value="" size="5" maxlength="10"/>
+                                <input type="image" id="43a2a89a_add" src="/kr-dev/krad/images/searchicon.gif" 
+            alt="Search Field"   />
+                                <input type="hidden" name="script"  value="
+   createLightBoxLookup(&#039;43a2a89a_add&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;}, {&#034;methodToCall&#034;:&#034;performLookup&#034;,&#034;actionParameters[baseLookupUrl]&#034;:&#034;http://localhost:8080/kr-dev/spring/lookup&#034;,&#034;actionParameters[showHistory]&#034;:&#034;false&#034;,&#034;actionParameters[conversionFields]&#034;:&#034;id:newCollectionLines[&#039;document.newMaintainableObject.dataObject.fiscalOfficer.accounts&#039;].foId&#034;,&#034;actionParameters[dataObjectClassName]&#034;:&#034;edu.sampleu.travel.bo.FiscalOfficer&#034;,&#034;actionParameters[showHome]&#034;:&#034;false&#034;,&#034;actionParameters[lookupParameters]&#034;:&#034;newCollectionLines[&#039;document.newMaintainableObject.dataObject.fiscalOfficer.accounts&#039;].foId:id&#034;});
+"/>
+                                </span></td>
+                            </tr>
+                          </table>
+                          
+                          <!----------------------------------- #GROUP '4a8c1400_l-1' FOOTER --------------------------------------->
+                          
+                          <div id="121c323a_l-1_div" class="globalbuttons" > 
+                            
+                            <!----------------------------------- #GROUP '121c323a_l-1' HEADER --------------------------------------->
+                            
+                            <div id="121c323a_l-1_group">
+                              <div id="null_l-1"  > <span >
+                                <input type="submit" id="78e36a63_add" value="add"  class="ui-priority-primary-sm" />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;78e36a63_add&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;addLine&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[actionType]&#039; , &#039;addLine&#039;); writeHiddenToForm(&#039;actionParameters[selectedCollectionPath]&#039; , &#039;document.newMaintainableObject.dataObject.fiscalOfficer.accounts&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;444c05c1_add&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;28e091d4&#039;); addLineToCollection(&#039;28e091d4&#039;);
+    });"/>
+                                </span> </div>
+                              
+                              <!----------------------------------- #GROUP '121c323a_l-1' FOOTER ---------------------------------------> 
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="script"  value="
+  createAccordion(&#039;4a8c1400_l-1&#039;, &#039;5280fbef_l-1&#039;, true, 
+  		          &#039;/kr-dev/krad/images/icon_expand.png&#039;, &#039;/kr-dev/krad/images/icon_collapse.png&#039;, 500);
+"/>
+                      <div id="2f012501_l0_div"  > 
+                        
+                        <!----------------------------------- #GROUP '2f012501_l0' HEADER --------------------------------------->
+                        
+                        <div id="5280fbef_l0_div" class="collection-header" >
+                          <div id="5280fbef_l0_header"  class="header">
+                            <h4>Travel Account ( a14 )</h4>
+                          </div>
+                        </div>
+                        <div id="2f012501_l0_group">
+                          <div id="38653ad5_l0_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="38653ad5_l0_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div>
+                          <table id="2f012501_layout_l0"  class="datatable">
+                            <tr>
+                              <th scope="row" width="50.0%" colspan="2" 
+          rowspan="1"  class="collection-header"> <div id="efd025dnull_div" class="collection-header" >
+                                  <div id="efd025dnull_header"  class="header">
+                                    <h4>Old</h4>
+                                  </div>
+                                </div>
+                              </th>
+                              <td width="50.0%" colspan="2" rowspan="1"
+          class="collection-header" ><div id="efd025dnull_div" class="collection-header" >
+                                  <div id="efd025dnull_header"  class="header">
+                                    <h4>New</h4>
+                                  </div>
+                                </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_0null_label_span" class="desc" >
+                                <label id="444c05c1_0null_label" for="444c05c1_0null"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="444c05c1_0null_attribute_span" class="field_attribute boxLayoutHorizontalItem" >
+                                <input type="hidden" name="script"  value="
+   createLightBox(&#039;6beb3926_0null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+"/>
+                                <a id="6beb3926_0null" href="http://localhost:8080/kr-dev/spring/inquiry?number=a14&methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount" target="_blank"
+     class="action">a14</a> </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_0null_label_span" class="desc" >
+                                <label id="444c05c1_0null_label" for="444c05c1_0null"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="444c05c1_0null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > <span id="444c05c1_0null_summary_span" class="summary" >Unique identifier for account</span>
+                                <input id="444c05c1_0null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number" tabindex="0" type="text" value="a14" size="10" maxlength="10"/>
+                                <input type="image" id="1ff52524_0null" src="/kr-dev/krad/images/book_open.png" 
+            alt="Direct Inquiry"   />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1ff52524_0null&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1ff52524_0null&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;1ff52524_0null&#039;); directInquiry(&#034;http://localhost:8080/kr-dev/spring/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&#034;, &#034;document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number:number&#034;, true, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;70%&#034;,height:&#034;90%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+    });"/>
+                                <span id="444c05c1_0null_constraint_span" class="constraint" >Must be 10 digits</span> </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_0null_label_span" class="desc" >
+                                <label id="5b0de4ee_0null_label" for="5b0de4ee_0null"> Account Name: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="5b0de4ee_0null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > ********* </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_0null_label_span" class="desc" >
+                                <label id="5b0de4ee_0null_label" for="5b0de4ee_0null"> Account Name: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="5b0de4ee_0null_attribute_span" class="field_attribute boxLayoutHorizontalItem" >
+                                <input id="5b0de4ee_0null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].name" tabindex="0" type="text" value="2BARlSx4Fog=" size="30" maxlength="30"/>
+                                </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_0null_label_span" class="desc" >
+                                <label id="6d30f3f5_0null_label" for="6d30f3f5_0null"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="6d30f3f5_0null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > 2 </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_0null_label_span" class="desc" >
+                                <label id="6d30f3f5_0null_label" for="6d30f3f5_0null"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="6d30f3f5_0null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > <span id="6d30f3f5_0null_summary_span" class="summary" >Responsbile for aproving account expenses</span>
+                                <input id="6d30f3f5_0null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId" tabindex="0" type="text" value="2" size="5" maxlength="10"/>
+                                <input type="image" id="43a2a89a_0null" src="/kr-dev/krad/images/searchicon.gif" 
+            alt="Search Field"   />
+                                <input type="hidden" name="script"  value="
+   createLightBoxLookup(&#039;43a2a89a_0null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;}, {&#034;methodToCall&#034;:&#034;performLookup&#034;,&#034;actionParameters[baseLookupUrl]&#034;:&#034;http://localhost:8080/kr-dev/spring/lookup&#034;,&#034;actionParameters[showHistory]&#034;:&#034;false&#034;,&#034;actionParameters[conversionFields]&#034;:&#034;id:document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId&#034;,&#034;actionParameters[dataObjectClassName]&#034;:&#034;edu.sampleu.travel.bo.FiscalOfficer&#034;,&#034;actionParameters[showHome]&#034;:&#034;false&#034;,&#034;actionParameters[lookupParameters]&#034;:&#034;document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId:id&#034;});
+"/>
+                                </span></td>
+                            </tr>
+                          </table>
+                          
+                          <!----------------------------------- #GROUP '2f012501_l0' FOOTER --------------------------------------->
+                          
+                          <div id="121c323a_l0_div" class="globalbuttons" > 
+                            
+                            <!----------------------------------- #GROUP '121c323a_l0' HEADER --------------------------------------->
+                            
+                            <div id="121c323a_l0_group">
+                              <div id="121c323a_layout_l0"  class="fieldLine clearfix"> <span >
+                                <input type="submit" id="1a5dc7960" value="delete"  class="ui-priority-secondary-sm" />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1a5dc7960&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;deleteLine&#039;); writeHiddenToForm(&#039;actionParameters[selectedLineIndex]&#039; , &#039;0&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[selectedCollectionPath]&#039; , &#039;document.newMaintainableObject.dataObject.fiscalOfficer.accounts&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1a5dc7960&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;28e091d4_div&#039;); jq(&#039;#kualiForm&#039;).submit();
+    });"/>
+                                </span> </div>
+                              
+                              <!----------------------------------- #GROUP '121c323a_l0' FOOTER ---------------------------------------> 
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="script"  value="
+  createAccordion(&#039;2f012501_l0&#039;, &#039;5280fbef_l0&#039;, true, 
+  		          &#039;/kr-dev/krad/images/icon_expand.png&#039;, &#039;/kr-dev/krad/images/icon_collapse.png&#039;, 500);
+"/>
+                      <div id="2f012501_l1_div"  > 
+                        
+                        <!----------------------------------- #GROUP '2f012501_l1' HEADER --------------------------------------->
+                        
+                        <div id="5280fbef_l1_div" class="collection-header" >
+                          <div id="5280fbef_l1_header"  class="header">
+                            <h4>Travel Account ( a2 )</h4>
+                          </div>
+                        </div>
+                        <div id="2f012501_l1_group">
+                          <div id="38653ad5_l1_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="38653ad5_l1_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div>
+                          <table id="2f012501_layout_l1"  class="datatable">
+                            <tr>
+                              <th scope="row" width="50.0%" colspan="2" 
+          rowspan="1"  class="collection-header"> <div id="efd025dnull_div" class="collection-header" >
+                                  <div id="efd025dnull_header"  class="header">
+                                    <h4>Old</h4>
+                                  </div>
+                                </div>
+                              </th>
+                              <td width="50.0%" colspan="2" rowspan="1"
+          class="collection-header" ><div id="efd025dnull_div" class="collection-header" >
+                                  <div id="efd025dnull_header"  class="header">
+                                    <h4>New</h4>
+                                  </div>
+                                </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_1null_label_span" class="desc" >
+                                <label id="444c05c1_1null_label" for="444c05c1_1null"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="444c05c1_1null_attribute_span" class="field_attribute boxLayoutHorizontalItem" >
+                                <input type="hidden" name="script"  value="
+   createLightBox(&#039;6beb3926_1null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+"/>
+                                <a id="6beb3926_1null" href="http://localhost:8080/kr-dev/spring/inquiry?number=a2&methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount" target="_blank"
+     class="action">a2</a> </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_1null_label_span" class="desc" >
+                                <label id="444c05c1_1null_label" for="444c05c1_1null"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="444c05c1_1null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > <span id="444c05c1_1null_summary_span" class="summary" >Unique identifier for account</span>
+                                <input id="444c05c1_1null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[1].number" tabindex="0" type="text" value="a2" size="10" maxlength="10"/>
+                                <input type="image" id="1ff52524_1null" src="/kr-dev/krad/images/book_open.png" 
+            alt="Direct Inquiry"   />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1ff52524_1null&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1ff52524_1null&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;1ff52524_1null&#039;); directInquiry(&#034;http://localhost:8080/kr-dev/spring/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&#034;, &#034;document.newMaintainableObject.dataObject.fiscalOfficer.accounts[1].number:number&#034;, true, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;70%&#034;,height:&#034;90%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+    });"/>
+                                <span id="444c05c1_1null_constraint_span" class="constraint" >Must be 10 digits</span> </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_1null_label_span" class="desc" >
+                                <label id="5b0de4ee_1null_label" for="5b0de4ee_1null"> Account Name: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="5b0de4ee_1null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > ********* </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_1null_label_span" class="desc" >
+                                <label id="5b0de4ee_1null_label" for="5b0de4ee_1null"> Account Name: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="5b0de4ee_1null_attribute_span" class="field_attribute boxLayoutHorizontalItem" >
+                                <input id="5b0de4ee_1null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[1].name" tabindex="0" type="text" value="mYTJuJ4mSMY=" size="30" maxlength="30"/>
+                                </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_1null_label_span" class="desc" >
+                                <label id="6d30f3f5_1null_label" for="6d30f3f5_1null"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="6d30f3f5_1null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > 2 </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_1null_label_span" class="desc" >
+                                <label id="6d30f3f5_1null_label" for="6d30f3f5_1null"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="6d30f3f5_1null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > <span id="6d30f3f5_1null_summary_span" class="summary" >Responsbile for aproving account expenses</span>
+                                <input id="6d30f3f5_1null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[1].foId" tabindex="0" type="text" value="2" size="5" maxlength="10"/>
+                                <input type="image" id="43a2a89a_1null" src="/kr-dev/krad/images/searchicon.gif" 
+            alt="Search Field"   />
+                                <input type="hidden" name="script"  value="
+   createLightBoxLookup(&#039;43a2a89a_1null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;}, {&#034;methodToCall&#034;:&#034;performLookup&#034;,&#034;actionParameters[baseLookupUrl]&#034;:&#034;http://localhost:8080/kr-dev/spring/lookup&#034;,&#034;actionParameters[showHistory]&#034;:&#034;false&#034;,&#034;actionParameters[conversionFields]&#034;:&#034;id:document.newMaintainableObject.dataObject.fiscalOfficer.accounts[1].foId&#034;,&#034;actionParameters[dataObjectClassName]&#034;:&#034;edu.sampleu.travel.bo.FiscalOfficer&#034;,&#034;actionParameters[showHome]&#034;:&#034;false&#034;,&#034;actionParameters[lookupParameters]&#034;:&#034;document.newMaintainableObject.dataObject.fiscalOfficer.accounts[1].foId:id&#034;});
+"/>
+                                </span></td>
+                            </tr>
+                          </table>
+                          
+                          <!----------------------------------- #GROUP '2f012501_l1' FOOTER --------------------------------------->
+                          
+                          <div id="121c323a_l1_div" class="globalbuttons" > 
+                            
+                            <!----------------------------------- #GROUP '121c323a_l1' HEADER --------------------------------------->
+                            
+                            <div id="121c323a_l1_group">
+                              <div id="121c323a_layout_l1"  class="fieldLine clearfix"> <span >
+                                <input type="submit" id="1a5dc7961" value="delete"  class="ui-priority-secondary-sm" />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1a5dc7961&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;deleteLine&#039;); writeHiddenToForm(&#039;actionParameters[selectedLineIndex]&#039; , &#039;1&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[selectedCollectionPath]&#039; , &#039;document.newMaintainableObject.dataObject.fiscalOfficer.accounts&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1a5dc7961&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;28e091d4_div&#039;); jq(&#039;#kualiForm&#039;).submit();
+    });"/>
+                                </span> </div>
+                              
+                              <!----------------------------------- #GROUP '121c323a_l1' FOOTER ---------------------------------------> 
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="script"  value="
+  createAccordion(&#039;2f012501_l1&#039;, &#039;5280fbef_l1&#039;, true, 
+  		          &#039;/kr-dev/krad/images/icon_expand.png&#039;, &#039;/kr-dev/krad/images/icon_collapse.png&#039;, 500);
+"/>
+                      <div id="2f012501_l2_div"  > 
+                        
+                        <!----------------------------------- #GROUP '2f012501_l2' HEADER --------------------------------------->
+                        
+                        <div id="5280fbef_l2_div" class="collection-header" >
+                          <div id="5280fbef_l2_header"  class="header">
+                            <h4>Travel Account ( a6 )</h4>
+                          </div>
+                        </div>
+                        <div id="2f012501_l2_group">
+                          <div id="38653ad5_l2_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="38653ad5_l2_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div>
+                          <table id="2f012501_layout_l2"  class="datatable">
+                            <tr>
+                              <th scope="row" width="50.0%" colspan="2" 
+          rowspan="1"  class="collection-header"> <div id="efd025dnull_div" class="collection-header" >
+                                  <div id="efd025dnull_header"  class="header">
+                                    <h4>Old</h4>
+                                  </div>
+                                </div>
+                              </th>
+                              <td width="50.0%" colspan="2" rowspan="1"
+          class="collection-header" ><div id="efd025dnull_div" class="collection-header" >
+                                  <div id="efd025dnull_header"  class="header">
+                                    <h4>New</h4>
+                                  </div>
+                                </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_2null_label_span" class="desc" >
+                                <label id="444c05c1_2null_label" for="444c05c1_2null"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="444c05c1_2null_attribute_span" class="field_attribute boxLayoutHorizontalItem" >
+                                <input type="hidden" name="script"  value="
+   createLightBox(&#039;6beb3926_2null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+"/>
+                                <a id="6beb3926_2null" href="http://localhost:8080/kr-dev/spring/inquiry?number=a6&methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount" target="_blank"
+     class="action">a6</a> </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_2null_label_span" class="desc" >
+                                <label id="444c05c1_2null_label" for="444c05c1_2null"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="444c05c1_2null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > <span id="444c05c1_2null_summary_span" class="summary" >Unique identifier for account</span>
+                                <input id="444c05c1_2null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[2].number" tabindex="0" type="text" value="a6" size="10" maxlength="10"/>
+                                <input type="image" id="1ff52524_2null" src="/kr-dev/krad/images/book_open.png" 
+            alt="Direct Inquiry"   />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1ff52524_2null&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1ff52524_2null&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;1ff52524_2null&#039;); directInquiry(&#034;http://localhost:8080/kr-dev/spring/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&#034;, &#034;document.newMaintainableObject.dataObject.fiscalOfficer.accounts[2].number:number&#034;, true, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;70%&#034;,height:&#034;90%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+    });"/>
+                                <span id="444c05c1_2null_constraint_span" class="constraint" >Must be 10 digits</span> </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_2null_label_span" class="desc" >
+                                <label id="5b0de4ee_2null_label" for="5b0de4ee_2null"> Account Name: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="5b0de4ee_2null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > ********* </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_2null_label_span" class="desc" >
+                                <label id="5b0de4ee_2null_label" for="5b0de4ee_2null"> Account Name: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="5b0de4ee_2null_attribute_span" class="field_attribute boxLayoutHorizontalItem" >
+                                <input id="5b0de4ee_2null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[2].name" tabindex="0" type="text" value="OmH5dXBlsZo=" size="30" maxlength="30"/>
+                                </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_2null_label_span" class="desc" >
+                                <label id="6d30f3f5_2null_label" for="6d30f3f5_2null"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="6d30f3f5_2null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > 2 </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_2null_label_span" class="desc" >
+                                <label id="6d30f3f5_2null_label" for="6d30f3f5_2null"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="6d30f3f5_2null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > <span id="6d30f3f5_2null_summary_span" class="summary" >Responsbile for aproving account expenses</span>
+                                <input id="6d30f3f5_2null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[2].foId" tabindex="0" type="text" value="2" size="5" maxlength="10"/>
+                                <input type="image" id="43a2a89a_2null" src="/kr-dev/krad/images/searchicon.gif" 
+            alt="Search Field"   />
+                                <input type="hidden" name="script"  value="
+   createLightBoxLookup(&#039;43a2a89a_2null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;}, {&#034;methodToCall&#034;:&#034;performLookup&#034;,&#034;actionParameters[baseLookupUrl]&#034;:&#034;http://localhost:8080/kr-dev/spring/lookup&#034;,&#034;actionParameters[showHistory]&#034;:&#034;false&#034;,&#034;actionParameters[conversionFields]&#034;:&#034;id:document.newMaintainableObject.dataObject.fiscalOfficer.accounts[2].foId&#034;,&#034;actionParameters[dataObjectClassName]&#034;:&#034;edu.sampleu.travel.bo.FiscalOfficer&#034;,&#034;actionParameters[showHome]&#034;:&#034;false&#034;,&#034;actionParameters[lookupParameters]&#034;:&#034;document.newMaintainableObject.dataObject.fiscalOfficer.accounts[2].foId:id&#034;});
+"/>
+                                </span></td>
+                            </tr>
+                          </table>
+                          
+                          <!----------------------------------- #GROUP '2f012501_l2' FOOTER --------------------------------------->
+                          
+                          <div id="121c323a_l2_div" class="globalbuttons" > 
+                            
+                            <!----------------------------------- #GROUP '121c323a_l2' HEADER --------------------------------------->
+                            
+                            <div id="121c323a_l2_group">
+                              <div id="121c323a_layout_l2"  class="fieldLine clearfix"> <span >
+                                <input type="submit" id="1a5dc7962" value="delete"  class="ui-priority-secondary-sm" />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1a5dc7962&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;deleteLine&#039;); writeHiddenToForm(&#039;actionParameters[selectedLineIndex]&#039; , &#039;2&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[selectedCollectionPath]&#039; , &#039;document.newMaintainableObject.dataObject.fiscalOfficer.accounts&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1a5dc7962&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;28e091d4_div&#039;); jq(&#039;#kualiForm&#039;).submit();
+    });"/>
+                                </span> </div>
+                              
+                              <!----------------------------------- #GROUP '121c323a_l2' FOOTER ---------------------------------------> 
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="script"  value="
+  createAccordion(&#039;2f012501_l2&#039;, &#039;5280fbef_l2&#039;, true, 
+  		          &#039;/kr-dev/krad/images/icon_expand.png&#039;, &#039;/kr-dev/krad/images/icon_collapse.png&#039;, 500);
+"/>
+                      <div id="2f012501_l3_div"  > 
+                        
+                        <!----------------------------------- #GROUP '2f012501_l3' HEADER --------------------------------------->
+                        
+                        <div id="5280fbef_l3_div" class="collection-header" >
+                          <div id="5280fbef_l3_header"  class="header">
+                            <h4>Travel Account ( a8 )</h4>
+                          </div>
+                        </div>
+                        <div id="2f012501_l3_group">
+                          <div id="38653ad5_l3_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="38653ad5_l3_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div>
+                          <table id="2f012501_layout_l3"  class="datatable">
+                            <tr>
+                              <th scope="row" width="50.0%" colspan="2" 
+          rowspan="1"  class="collection-header"> <div id="efd025dnull_div" class="collection-header" >
+                                  <div id="efd025dnull_header"  class="header">
+                                    <h4>Old</h4>
+                                  </div>
+                                </div>
+                              </th>
+                              <td width="50.0%" colspan="2" rowspan="1"
+          class="collection-header" ><div id="efd025dnull_div" class="collection-header" >
+                                  <div id="efd025dnull_header"  class="header">
+                                    <h4>New</h4>
+                                  </div>
+                                </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_3null_label_span" class="desc" >
+                                <label id="444c05c1_3null_label" for="444c05c1_3null"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="444c05c1_3null_attribute_span" class="field_attribute boxLayoutHorizontalItem" >
+                                <input type="hidden" name="script"  value="
+   createLightBox(&#039;6beb3926_3null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+"/>
+                                <a id="6beb3926_3null" href="http://localhost:8080/kr-dev/spring/inquiry?number=a8&methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount" target="_blank"
+     class="action">a8</a> </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_3null_label_span" class="desc" >
+                                <label id="444c05c1_3null_label" for="444c05c1_3null"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="444c05c1_3null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > <span id="444c05c1_3null_summary_span" class="summary" >Unique identifier for account</span>
+                                <input id="444c05c1_3null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[3].number" tabindex="0" type="text" value="a8" size="10" maxlength="10"/>
+                                <input type="image" id="1ff52524_3null" src="/kr-dev/krad/images/book_open.png" 
+            alt="Direct Inquiry"   />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1ff52524_3null&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1ff52524_3null&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;1ff52524_3null&#039;); directInquiry(&#034;http://localhost:8080/kr-dev/spring/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&#034;, &#034;document.newMaintainableObject.dataObject.fiscalOfficer.accounts[3].number:number&#034;, true, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;70%&#034;,height:&#034;90%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+    });"/>
+                                <span id="444c05c1_3null_constraint_span" class="constraint" >Must be 10 digits</span> </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_3null_label_span" class="desc" >
+                                <label id="5b0de4ee_3null_label" for="5b0de4ee_3null"> Account Name: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="5b0de4ee_3null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > ********* </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_3null_label_span" class="desc" >
+                                <label id="5b0de4ee_3null_label" for="5b0de4ee_3null"> Account Name: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="5b0de4ee_3null_attribute_span" class="field_attribute boxLayoutHorizontalItem" >
+                                <input id="5b0de4ee_3null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[3].name" tabindex="0" type="text" value="YTUv5bujimo=" size="30" maxlength="30"/>
+                                </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_3null_label_span" class="desc" >
+                                <label id="6d30f3f5_3null_label" for="6d30f3f5_3null"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="6d30f3f5_3null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > 2 </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_3null_label_span" class="desc" >
+                                <label id="6d30f3f5_3null_label" for="6d30f3f5_3null"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="6d30f3f5_3null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > <span id="6d30f3f5_3null_summary_span" class="summary" >Responsbile for aproving account expenses</span>
+                                <input id="6d30f3f5_3null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[3].foId" tabindex="0" type="text" value="2" size="5" maxlength="10"/>
+                                <input type="image" id="43a2a89a_3null" src="/kr-dev/krad/images/searchicon.gif" 
+            alt="Search Field"   />
+                                <input type="hidden" name="script"  value="
+   createLightBoxLookup(&#039;43a2a89a_3null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;}, {&#034;methodToCall&#034;:&#034;performLookup&#034;,&#034;actionParameters[baseLookupUrl]&#034;:&#034;http://localhost:8080/kr-dev/spring/lookup&#034;,&#034;actionParameters[showHistory]&#034;:&#034;false&#034;,&#034;actionParameters[conversionFields]&#034;:&#034;id:document.newMaintainableObject.dataObject.fiscalOfficer.accounts[3].foId&#034;,&#034;actionParameters[dataObjectClassName]&#034;:&#034;edu.sampleu.travel.bo.FiscalOfficer&#034;,&#034;actionParameters[showHome]&#034;:&#034;false&#034;,&#034;actionParameters[lookupParameters]&#034;:&#034;document.newMaintainableObject.dataObject.fiscalOfficer.accounts[3].foId:id&#034;});
+"/>
+                                </span></td>
+                            </tr>
+                          </table>
+                          
+                          <!----------------------------------- #GROUP '2f012501_l3' FOOTER --------------------------------------->
+                          
+                          <div id="121c323a_l3_div" class="globalbuttons" > 
+                            
+                            <!----------------------------------- #GROUP '121c323a_l3' HEADER --------------------------------------->
+                            
+                            <div id="121c323a_l3_group">
+                              <div id="121c323a_layout_l3"  class="fieldLine clearfix"> <span >
+                                <input type="submit" id="1a5dc7963" value="delete"  class="ui-priority-secondary-sm" />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1a5dc7963&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;deleteLine&#039;); writeHiddenToForm(&#039;actionParameters[selectedLineIndex]&#039; , &#039;3&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[selectedCollectionPath]&#039; , &#039;document.newMaintainableObject.dataObject.fiscalOfficer.accounts&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1a5dc7963&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;28e091d4_div&#039;); jq(&#039;#kualiForm&#039;).submit();
+    });"/>
+                                </span> </div>
+                              
+                              <!----------------------------------- #GROUP '121c323a_l3' FOOTER ---------------------------------------> 
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="script"  value="
+  createAccordion(&#039;2f012501_l3&#039;, &#039;5280fbef_l3&#039;, true, 
+  		          &#039;/kr-dev/krad/images/icon_expand.png&#039;, &#039;/kr-dev/krad/images/icon_collapse.png&#039;, 500);
+"/>
+                      <div id="2f012501_l4_div"  > 
+                        
+                        <!----------------------------------- #GROUP '2f012501_l4' HEADER --------------------------------------->
+                        
+                        <div id="5280fbef_l4_div" class="collection-header" >
+                          <div id="5280fbef_l4_header"  class="header">
+                            <h4>Travel Account ( a9 )</h4>
+                          </div>
+                        </div>
+                        <div id="2f012501_l4_group">
+                          <div id="38653ad5_l4_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="38653ad5_l4_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div>
+                          <table id="2f012501_layout_l4"  class="datatable">
+                            <tr>
+                              <th scope="row" width="50.0%" colspan="2" 
+          rowspan="1"  class="collection-header"> <div id="efd025dnull_div" class="collection-header" >
+                                  <div id="efd025dnull_header"  class="header">
+                                    <h4>Old</h4>
+                                  </div>
+                                </div>
+                              </th>
+                              <td width="50.0%" colspan="2" rowspan="1"
+          class="collection-header" ><div id="efd025dnull_div" class="collection-header" >
+                                  <div id="efd025dnull_header"  class="header">
+                                    <h4>New</h4>
+                                  </div>
+                                </div></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_4null_label_span" class="desc" >
+                                <label id="444c05c1_4null_label" for="444c05c1_4null"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="444c05c1_4null_attribute_span" class="field_attribute boxLayoutHorizontalItem" >
+                                <input type="hidden" name="script"  value="
+   createLightBox(&#039;6beb3926_4null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+"/>
+                                <a id="6beb3926_4null" href="http://localhost:8080/kr-dev/spring/inquiry?number=a9&methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount" target="_blank"
+     class="action">a9</a> </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="444c05c1_4null_label_span" class="desc" >
+                                <label id="444c05c1_4null_label" for="444c05c1_4null"> Travel Account Number: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="444c05c1_4null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > <span id="444c05c1_4null_summary_span" class="summary" >Unique identifier for account</span>
+                                <input id="444c05c1_4null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[4].number" tabindex="0" type="text" value="a9" size="10" maxlength="10"/>
+                                <input type="image" id="1ff52524_4null" src="/kr-dev/krad/images/book_open.png" 
+            alt="Direct Inquiry"   />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1ff52524_4null&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1ff52524_4null&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;1ff52524_4null&#039;); directInquiry(&#034;http://localhost:8080/kr-dev/spring/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&#034;, &#034;document.newMaintainableObject.dataObject.fiscalOfficer.accounts[4].number:number&#034;, true, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;70%&#034;,height:&#034;90%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+    });"/>
+                                <span id="444c05c1_4null_constraint_span" class="constraint" >Must be 10 digits</span> </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_4null_label_span" class="desc" >
+                                <label id="5b0de4ee_4null_label" for="5b0de4ee_4null"> Account Name: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="5b0de4ee_4null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > ********* </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="5b0de4ee_4null_label_span" class="desc" >
+                                <label id="5b0de4ee_4null_label" for="5b0de4ee_4null"> Account Name: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="5b0de4ee_4null_attribute_span" class="field_attribute boxLayoutHorizontalItem" >
+                                <input id="5b0de4ee_4null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[4].name" tabindex="0" type="text" value="AIllK4WzC6U=" size="30" maxlength="30"/>
+                                </span></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_4null_label_span" class="desc" >
+                                <label id="6d30f3f5_4null_label" for="6d30f3f5_4null"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="6d30f3f5_4null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > 2 </span></td>
+                              <th scope="row" width="25.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="6d30f3f5_4null_label_span" class="desc" >
+                                <label id="6d30f3f5_4null_label" for="6d30f3f5_4null"> Travel Fiscal Officer Id: </label>
+                                </span> </th>
+                              <td width="25.0%" colspan="1" rowspan="1"
+          class="field_attribute boxLayoutHorizontalItem" ><span id="6d30f3f5_4null_attribute_span" class="field_attribute boxLayoutHorizontalItem" > <span id="6d30f3f5_4null_summary_span" class="summary" >Responsbile for aproving account expenses</span>
+                                <input id="6d30f3f5_4null" name="document.newMaintainableObject.dataObject.fiscalOfficer.accounts[4].foId" tabindex="0" type="text" value="2" size="5" maxlength="10"/>
+                                <input type="image" id="43a2a89a_4null" src="/kr-dev/krad/images/searchicon.gif" 
+            alt="Search Field"   />
+                                <input type="hidden" name="script"  value="
+   createLightBoxLookup(&#039;43a2a89a_4null&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;}, {&#034;methodToCall&#034;:&#034;performLookup&#034;,&#034;actionParameters[baseLookupUrl]&#034;:&#034;http://localhost:8080/kr-dev/spring/lookup&#034;,&#034;actionParameters[showHistory]&#034;:&#034;false&#034;,&#034;actionParameters[conversionFields]&#034;:&#034;id:document.newMaintainableObject.dataObject.fiscalOfficer.accounts[4].foId&#034;,&#034;actionParameters[dataObjectClassName]&#034;:&#034;edu.sampleu.travel.bo.FiscalOfficer&#034;,&#034;actionParameters[showHome]&#034;:&#034;false&#034;,&#034;actionParameters[lookupParameters]&#034;:&#034;document.newMaintainableObject.dataObject.fiscalOfficer.accounts[4].foId:id&#034;});
+"/>
+                                </span></td>
+                            </tr>
+                          </table>
+                          
+                          <!----------------------------------- #GROUP '2f012501_l4' FOOTER --------------------------------------->
+                          
+                          <div id="121c323a_l4_div" class="globalbuttons" > 
+                            
+                            <!----------------------------------- #GROUP '121c323a_l4' HEADER --------------------------------------->
+                            
+                            <div id="121c323a_l4_group">
+                              <div id="121c323a_layout_l4"  class="fieldLine clearfix"> <span >
+                                <input type="submit" id="1a5dc7964" value="delete"  class="ui-priority-secondary-sm" />
+                                <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1a5dc7964&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;deleteLine&#039;); writeHiddenToForm(&#039;actionParameters[selectedLineIndex]&#039; , &#039;4&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[selectedCollectionPath]&#039; , &#039;document.newMaintainableObject.dataObject.fiscalOfficer.accounts&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1a5dc7964&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;28e091d4_div&#039;); jq(&#039;#kualiForm&#039;).submit();
+    });"/>
+                                </span> </div>
+                              
+                              <!----------------------------------- #GROUP '121c323a_l4' FOOTER ---------------------------------------> 
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="script"  value="
+  createAccordion(&#039;2f012501_l4&#039;, &#039;5280fbef_l4&#039;, true, 
+  		          &#039;/kr-dev/krad/images/icon_expand.png&#039;, &#039;/kr-dev/krad/images/icon_collapse.png&#039;, 500);
+"/>
+                      </span> <span id="28e091d4_layout_errors_block" class="errorsField" style="float:left;"> </span> </div>
+                    
+                    <!----------------------------------- #GROUP '28e091d4' FOOTER ---------------------------------------> 
+                    
+                  </div>
+                </div>
+                <input type="hidden" name="script"  value="
+  createAccordion(&#039;28e091d4&#039;, &#039;4c5cba16&#039;, true, 
+  		          &#039;/kr-dev/krad/images/arrow-col.png&#039;, &#039;/kr-dev/krad/images/arrow-exp.png&#039;, 500);
+"/>
+                </span> <span class="fieldLine boxLayoutVerticalItem clearfix" style="">
+                <div id="group_docnotes_div" class="tableborders wrap" > 
+                  
+                  <!----------------------------------- #GROUP 'group_docnotes' HEADER --------------------------------------->
+                  
+                  <div id="5de39029_div" class="grouping-header-expandable" >
+                    <div id="5de39029_header"  class="header">
+                      <h2>Notes and Attachments (0)</h2>
+                    </div>
+                  </div>
+                  <div id="group_docnotes_group">
+                    <div id="38653ad5_2_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                      
+                      <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                      
+                      <div id="38653ad5_2_errorMessages" style="display: none;" class="errorMessages">
+                        <ul>
+                        </ul>
+                      </div>
+                      
+                      <!--  Warning messages  --> 
+                      
+                      <!--  Info messages  --> 
+                      
+                    </div>
+                    <table id="group_docnotes_layout"  class="datatable display">
+                      <thead>
+                        <tr>
+                          <th scope="col" width="14.285714285714286%" colspan="1" 
+          rowspan="1" style="text-align: center;" class="infoline"> <span id="1b74318a_c1_span" class="infoline" style="text-align: center;">
+                            <label id="1b74318a_c1" for=""> </label>
+                            </span> </th>
+                          <th scope="col" width="14.285714285714286%" colspan="1" 
+          rowspan="1" style="text-align: center;" class="infoline"> <span id="1b74318a_c1_span" class="infoline" style="text-align: center;">
+                            <label id="1b74318a_c1" for=""> Posted Date/Time Stamp </label>
+                            </span> </th>
+                          <th scope="col" width="14.285714285714286%" colspan="1" 
+          rowspan="1" style="text-align: center;" class="infoline"> <span id="1b74318a_c2_span" class="infoline" style="text-align: center;">
+                            <label id="1b74318a_c2" for=""> Principal Name </label>
+                            </span> </th>
+                          <th scope="col" width="14.285714285714286%" colspan="1" 
+          rowspan="1" style="text-align: center;" class="infoline"> <span id="1b74318a_c3_span" class="infoline" style="text-align: center;"> <span id="1bf75734_c3_span" class="required" >*</span>
+                            <label id="1b74318a_c3" for=""> Note Text </label>
+                            </span> </th>
+                          <th scope="col" width="14.285714285714286%" colspan="1" 
+          rowspan="1" style="text-align: center;" class="infoline"> <span id="1b74318a_c4_span" class="infoline" style="text-align: center;">
+                            <label id="1b74318a_c4" for=""> Attached File </label>
+                            </span> </th>
+                          <th scope="col" width="14.285714285714286%" colspan="1" 
+          rowspan="1" style="text-align: center;" class="infoline"> <span id="1b74318a_c5_span" class="infoline" style="text-align: center;">
+                            <label id="1b74318a_c5" for=""> Attachment Type Code </label>
+                            </span> </th>
+                          <th scope="col" width="14.285714285714286%" colspan="1" 
+          rowspan="1" style="text-align: center;" class="infoline"> <span id="1b74318a_c5_span" class="infoline" style="text-align: center;">
+                            <label id="1b74318a_c5" for=""> Actions </label>
+                            </span> </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td width="14.285714285714286%" colspan="1" rowspan="1"
+          class="desc" even><span id="2ce90f2d_l-1_span" class="desc" >
+                            <label id="2ce90f2d_l-1" for=""> add: </label>
+                            </span></td>
+                          <td width="14.285714285714286%" colspan="1" rowspan="1"
+          class="field_attribute group_docnotes-addField" even><span id="6ccc0376_add_attribute_span" class="field_attribute group_docnotes-addField" > </span>
+                            <div id="6ccc0376_add_errors_div" class="errorsField" style="display: none;"> 
+                              
+                              <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                              
+                              <div id="6ccc0376_add_errors_errorMessages" style="display: none;" class="errorMessages">
+                                <ul>
+                                </ul>
+                              </div>
+                              
+                              <!--  Warning messages  --> 
+                              
+                              <!--  Info messages  --> 
+                              
+                            </div></td>
+                          <td width="14.285714285714286%" colspan="1" rowspan="1"
+          class="field_attribute group_docnotes-addField" even><span id="45f76fc7_add_attribute_span" class="field_attribute group_docnotes-addField" > </span>
+                            <div id="45f76fc7_add_errors_div" class="errorsField" style="display: none;"> 
+                              
+                              <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                              
+                              <div id="45f76fc7_add_errors_errorMessages" style="display: none;" class="errorMessages">
+                                <ul>
+                                </ul>
+                              </div>
+                              
+                              <!--  Warning messages  --> 
+                              
+                              <!--  Info messages  --> 
+                              
+                            </div></td>
+                          <td width="14.285714285714286%" colspan="1" rowspan="1"
+          class="field_attribute group_docnotes-addField" even><span id="56d15836_add_attribute_span" class="field_attribute group_docnotes-addField" >
+                            <textarea id="56d15836_add" name="newCollectionLines['document.notes'].noteText" class="ignoreValid required" tabindex="0" maxLength="800" rows="3" cols="50"></textarea>
+                            </span>
+                            <div id="56d15836_add_errors_div" class="errorsField" style="display: none;"> 
+                              
+                              <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                              
+                              <div id="56d15836_add_errors_errorMessages" style="display: none;" class="errorMessages">
+                                <ul>
+                                </ul>
+                              </div>
+                              
+                              <!--  Warning messages  --> 
+                              
+                              <!--  Info messages  --> 
+                              
+                            </div></td>
+                          <td width="14.285714285714286%" colspan="1" rowspan="1"
+          class="group_docnotes-addField" even><div id="2b426075_add_div"  > 
+                              
+                              <!----------------------------------- #GROUP '2b426075_add' HEADER --------------------------------------->
+                              
+                              <div id="2b426075_add_group">
+                                <div id="38653ad5_add_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                                  
+                                  <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                                  
+                                  <div id="38653ad5_add_errorMessages" style="display: none;" class="errorMessages">
+                                    <ul>
+                                    </ul>
+                                  </div>
+                                  
+                                  <!--  Warning messages  --> 
+                                  
+                                  <!--  Info messages  --> 
+                                  
+                                </div>
+                                <div id="2b426075_layout_add"  class="fieldLine clearfix"> <span style="float:left;"> <span class="fieldContainerVerticalItem clearfix" style="padding-bottom: 3px;"> <span id="519fbfd6_add_attribute_span" class="field_attribute" >
+                                  <input type="file" id="519fbfd6_add_attribute"
+       size="15" class="" tabIndex="0"/>
+                                  </span> </span> <span class="fieldContainerVerticalItem clearfix" style="padding-bottom: 3px;">
+                                  <input type="submit" id="4eeba477_add" value="cancel"   />
+                                  <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;4eeba477_add&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;cancelBOAttachment&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;4eeba477_add&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;4eeba477_add&#039;); jq(&#039;#kualiForm&#039;).submit();
+    });"/>
+                                  </span> </span> <span id="2b426075_layout_add_errors_block" class="errorsField" style="float:left;">
+                                  <div id="519fbfd6_add_errors_div" class="errorsField" style="display: none;"> 
+                                    
+                                    <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                                    
+                                    <div id="519fbfd6_add_errors_errorMessages" style="display: none;" class="errorMessages">
+                                      <ul>
+                                      </ul>
+                                    </div>
+                                    
+                                    <!--  Warning messages  --> 
+                                    
+                                    <!--  Info messages  --> 
+                                    
+                                  </div>
+                                  </span> </div>
+                                
+                                <!----------------------------------- #GROUP '2b426075_add' FOOTER ---------------------------------------> 
+                                
+                              </div>
+                            </div></td>
+                          <td width="14.285714285714286%" colspan="1" rowspan="1"
+          class="field_attribute group_docnotes-addField" even><span id="649be74f_add_attribute_span" class="field_attribute group_docnotes-addField" > </span>
+                            <div id="649be74f_add_errors_div" class="errorsField" style="display: none;"> 
+                              
+                              <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                              
+                              <div id="649be74f_add_errors_errorMessages" style="display: none;" class="errorMessages">
+                                <ul>
+                                </ul>
+                              </div>
+                              
+                              <!--  Warning messages  --> 
+                              
+                              <!--  Info messages  --> 
+                              
+                            </div></td>
+                          <td width="14.285714285714286%" colspan="1" rowspan="1"
+         style="text-align: center;"  even><div id="2b426075_l-1_div"  style="text-align: center;"> 
+                              
+                              <!----------------------------------- #GROUP '2b426075_l-1' HEADER --------------------------------------->
+                              
+                              <div id="2b426075_l-1_group">
+                                <div id="38653ad5_l-1_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                                  
+                                  <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                                  
+                                  <div id="38653ad5_l-1_errorMessages" style="display: none;" class="errorMessages">
+                                    <ul>
+                                    </ul>
+                                  </div>
+                                  
+                                  <!--  Warning messages  --> 
+                                  
+                                  <!--  Info messages  --> 
+                                  
+                                </div>
+                                <div id="2b426075_layout_l-1"  class="fieldLine clearfix"> <span style="float:left;"> <span class="fieldContainerVerticalItem clearfix" style="padding-bottom: 3px;">
+                                  <input type="submit" id="62728743_add" value="add"  class="ui-priority-primary-sm" />
+                                  <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;62728743_add&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;insertBONote&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[actionType]&#039; , &#039;addLine&#039;); writeHiddenToForm(&#039;actionParameters[selectedCollectionPath]&#039; , &#039;document.notes&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;6ccc0376_add&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;group_docnotes&#039;); addLineToCollection(&#039;group_docnotes&#039;);
+    });"/>
+                                  </span> </span> </div>
+                                
+                                <!----------------------------------- #GROUP '2b426075_l-1' FOOTER ---------------------------------------> 
+                                
+                              </div>
+                            </div></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    
+                    <!----------------------------------- #GROUP 'group_docnotes' FOOTER ---------------------------------------> 
+                    
+                  </div>
+                </div>
+                <input type="hidden" name="script"  value="
+  createAccordion(&#039;group_docnotes&#039;, &#039;5de39029&#039;, false, 
+  		          &#039;/kr-dev/krad/images/arrow-col.png&#039;, &#039;/kr-dev/krad/images/arrow-exp.png&#039;, 500);
+"/>
+                </span> <span class="fieldLine boxLayoutVerticalItem clearfix" style="">
+                <div id="group_docroutelog_div" class="wrap" > 
+                  
+                  <!----------------------------------- #GROUP 'group_docroutelog' HEADER --------------------------------------->
+                  
+                  <div id="5d277b59_1_div" class="grouping-header-expandable" >
+                    <div id="5d277b59_1_header"  class="header">
+                      <h2>Route Log</h2>
+                    </div>
+                  </div>
+                  <div id="group_docroutelog_group">
+                    <div id="38653ad5_3_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                      
+                      <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                      
+                      <div id="38653ad5_3_errorMessages" style="display: none;" class="errorMessages">
+                        <ul>
+                        </ul>
+                      </div>
+                      
+                      <!--  Warning messages  --> 
+                      
+                      <!--  Info messages  --> 
+                      
+                    </div>
+                    <div id="group_docroutelog_layout"  class="fieldLine clearfix"> <span > <span class="fieldLine boxLayoutVerticalItem clearfix" style="">
+                      <iframe id="routeLogIFrame" src="http://localhost:8080/kr-dev/kew/RouteLog.do?documentId=3159" 
+        width="95%" height="500" hspace="0" vspace="0" 
+        frameborder="0" title=""> </iframe>
+                      <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;routeLogIFrame&#039;).load(function() {
+     setRouteLogIframeDimensions();
+    });"/>
+                      </span> </span> </div>
+                    
+                    <!----------------------------------- #GROUP 'group_docroutelog' FOOTER ---------------------------------------> 
+                    
+                  </div>
+                </div>
+                <input type="hidden" name="script"  value="
+  createAccordion(&#039;group_docroutelog&#039;, &#039;5d277b59_1&#039;, false, 
+  		          &#039;/kr-dev/krad/images/arrow-col.png&#039;, &#039;/kr-dev/krad/images/arrow-exp.png&#039;, 500);
+"/>
+                </span> </span> </div>
+              
+              <!----------------------------------- #GROUP '1eac6995' FOOTER ---------------------------------------> 
+              
+            </div>
+          </div>
+          <input type="hidden" name="script"  value="jq(document).ready(function() {
+     
+setupValidator();setGrowlDefaults({position:&#034;top-right&#034;,sticky:false,life:7000});
+    });"/>
+          <input id="pageId" name="pageId" type="hidden" value=""/>
+          <input id="currentPageTitle" name="view.currentPage.title" type="hidden" value=""/>
+          <input id="jumpToId" name="jumpToId" type="hidden" value=""/>
+          <input id="jumpToName" name="jumpToName" type="hidden" value=""/>
+          <input id="focusId" name="focusId" type="hidden" value=""/>
+          <input id="formHistory.historyParameterString" name="formHistory.historyParameterString" type="hidden" value="null%2Cnull%2CHome%2C%2Fkr-dev%2Fportal.do%2Cnull%24TravelAccount-MaintenanceView%2Cnull%2CTravel+Account+Maintenance%2Chttp%3A%2F%2Flocalhost%3A8080%2Fkr-dev%2Fspring%2Fmaintenance%3Fnumber%3Da14%26returnLocation%3Dhttp%3A%2F%2Flocalhost%3A8080%2Fkr-dev%2Fportal.do%26methodToCall%3DmaintenanceEdit%26hideReturnLink%3Dtrue%26dataObjectClassName%3Dedu.sampleu.travel.bo.TravelAccount%2Ca8e60e96-1482-4ac7-a61b-c40a271699bc"/>
+          <input type="hidden" name="script"  value="performJumpTo();"/>
+          <input type="hidden" name="script"  value="performFocus();"/>
+        </div>
+      </div>
+      
+      <!----------------------------------- #VIEW FOOTER --------------------------------------->
+      <div id="viewfooter_div">
+        <div id="4947c4ee_div" class="globalbuttons" > 
+          
+          <!----------------------------------- #GROUP '4947c4ee' HEADER --------------------------------------->
+          
+          <div id="4947c4ee_group">
+            <div id="4947c4ee_layout"  class="fieldLine clearfix"> <span >
+              <input type="submit" id="33c063ff" value="submit"  class="boxLayoutHorizontalItem" />
+              <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;33c063ff&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;route&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;33c063ff&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;33c063ff&#039;); jq(&#039;#kualiForm&#039;).submit();
+    });"/>
+              <input type="submit" id="1be514e4" value="save"  class="boxLayoutHorizontalItem" />
+              <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;1be514e4&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;save&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;1be514e4&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;1be514e4&#039;); jq(&#039;#kualiForm&#039;).submit();
+    });"/>
+              <input type="submit" id="63a7a517" value="blanket approve"  class="boxLayoutHorizontalItem" />
+              <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;63a7a517&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;blanketApprove&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;63a7a517&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;63a7a517&#039;); jq(&#039;#kualiForm&#039;).submit();
+    });"/>
+              <input type="submit" id="5ca40b6e" value="close"  class="ui-priority-secondary boxLayoutHorizontalItem" />
+              <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;5ca40b6e&#039;).click(function(e) {
+     e.preventDefault(); if (checkDirty(e) == false) { writeHiddenToForm(&#039;methodToCall&#039; , &#039;close&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;5ca40b6e&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;5ca40b6e&#039;); jq(&#039;#kualiForm&#039;).submit(); ; } 
+    });"/>
+              <a id="15ea9246"  onclick="return false"   class="action boxLayoutHorizontalItem"> cancel </a>
+              <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;15ea9246&#039;).click(function(e) {
+     e.preventDefault(); if (checkDirty(e) == false) { writeHiddenToForm(&#039;methodToCall&#039; , &#039;cancel&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;15ea9246&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;15ea9246&#039;); jq(&#039;#kualiForm&#039;).submit(); ; } 
+    });"/>
+              </span> </div>
+            
+            <!----------------------------------- #GROUP '4947c4ee' FOOTER ---------------------------------------> 
+            
+          </div>
+        </div>
+      </div>
+      <span id="formComplete"></span>
+    </form>
+    <!----------------------------------- End Form ---------------------------------------> 
+    
+  </div>
+</div>
+</body>
+</html>
+
+<!-- end of view render -->
+
+</html>
+<!-- end of view render -->

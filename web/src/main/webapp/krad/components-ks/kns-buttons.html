@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Untitled Document</title>
+		<link href="../css/reset-meyer.css" rel="stylesheet" type="text/css" />
+		<link href="../css/layout.css" rel="stylesheet" type="text/css" />
+		<link href="../css/buttons.css" rel="stylesheet" type="text/css" />
+		<link href="../css/theme-kns.css" rel="stylesheet" type="text/css" />
+		<link href="../css/demo.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="../js/jquery-1.5.1.min.js"></script>
+		<script type="text/javascript" src="../js/jquery-ui-1.8.11.custom.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				
+				//hover states on the static widgets
+				$('.live input, .live button').hover(
+					function() { $(this).addClass('ui-state-hover'); }, 
+					function() { $(this).removeClass('ui-state-hover'); }
+				);
+				
+			});
+		</script>
+		</head>
+
+		<body>
+        <div class="fl-container-750 fl-centered"> 
+          <!--          <div class="fl-container-flex header">
+            <h1>Buttons</h1>
+          </div>-->
+          <div class="fl-container-flex content">
+            <div class="fl-container-700 fl-centered">
+                <div class="tableborders">
+              <div class="fl-theme-ks">
+              <div style="padding-top:.5em; padding-bottom:.5em; font-size:1.2em">Buttons - Primary </div>
+                <table>
+                  <tr>
+                    <th scope="row">VD Reference</th>
+                    <td><img src="images-ref/buttonsmall_save.gif" width="53" height="18" alt="asdf" /></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Enabled</th>
+                    <td><input name="" type="button" class="button-primary ui-corner-all" value="Save ">
+                      
+                  </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">In Focus</th>
+                    <td><input name="" type="button" class="button-primary ui-corner-all ui-state-hover" value="Save "></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Disabled</th>
+                    <td><input name="input" type="button" class="button-primary ui-corner-all ui-state-disabled" value="Save " /></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Live Demo</th>
+                    <td><div class="live">
+                        <input name="input" type="button" class="button-primary ui-corner-all" value="Save " />
+                      </div>
+                      </td>
+                  </tr>
+                </table>
+                 <br />
+                <div style="padding-top:.5em; padding-bottom:.5em; font-size:1.2em">Buttons - Secondary </div>                <table>
+                  <tr>
+                    <th scope="row">VD Reference</th>
+                    <td><img src="images-ref/tinybutton-add1.gif" width="40" height="15" alt="sadf" /></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Enabled</th>
+                    <td><input name="input2" type="button" class="button-secondary1 ui-corner-all" value="Add" />
+                      
+                      <!--<br />
+                   --></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">In Focus</th>
+                    <td><input name="input2" type="button" class="button-secondary1 ui-corner-all ui-state-hover" value="Add" /></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Disabled</th>
+                    <td><input name="input2" type="button" class="button-secondary1 ui-corner-all ui-state-disabled" value="Add" /></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Live Demo</th>
+                    <td><div class="live">
+                        <input name="input2" type="button" class="button-secondary1 ui-corner-all" value="Add" />
+                      </div>
+                      
+                      <!--<br />
+                    <img src="secondary.png" width="140" height="26" alt="sadf" />--></td>
+                  </tr>
+                </table>
+                <p>&nbsp;</p>
+                <!--              <h2>Rendered as &lt;button&gt;</h2>
+              <table>
+                <tr>
+                  <th scope="col">&nbsp;</th>
+                  <th scope="col">Primary</th>
+                  <th scope="col">Secondary</th>
+                </tr>
+                <tr>
+                  <th scope="row">Enabled</th>
+                  <td><button  class="button-primary ui-corner-all">Button</button></td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <th scope="row">In Focus</th>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <th scope="row">Disabled</th>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+              </table>--> 
+              </div></div>
+            </div>
+          </div>
+          <!--    <div class="fl-container-flex footer"> asdf </div>--> 
+        </div>
+</body>
+</html>

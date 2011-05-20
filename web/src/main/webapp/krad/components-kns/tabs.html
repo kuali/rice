@@ -1,0 +1,248 @@
+<!-- begin of view render -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!----------------------------------- #BEGIN HEAD --------------------------------------->
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+<!-- global variables for scripting are setup here -->
+<script type="text/javascript">
+    var jsContextPath = "/kr-dev";
+    var dialogMode = false;
+</script>
+<title>&lt;!-- bean:message key="app.title" /--&gt; &lt;!--  TODO: find spring replacement --&gt;
+      :: Travel Account Maintenance</title>
+<link type="text/css" rel="stylesheet" href="../css/jquery.jgrowl.css">
+<link type="text/css" rel="stylesheet" href="../css/showLoading.css">
+<link type="text/css" rel="stylesheet" href="../css/demo_table.css">
+<link type="text/css" rel="stylesheet" href="../css/TableTools.css">
+<link type="text/css" rel="stylesheet" href="../scripts/fancybox/jquery.fancybox-1.3.4.css">
+<link type="text/css" rel="stylesheet" href="../css/popoutTextarea.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/reset.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/jquery-ui-1.8.11.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/main.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/fonts.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/headers.css">
+<link type="text/css" rel="stylesheet" href="../css/kns/tables.css">
+<link type="text/css" rel="stylesheet" href="../css/kuali-stacked.css">
+
+<!-- custom script for the view -->
+<script type="text/javascript">
+      jq(document).ready(function() {
+        
+      })
+    </script>
+</head>
+
+<!----------------------------------- #BEGIN BODY --------------------------------------->
+
+<body>
+<div id="FiscalOfficerInfoInquiry2_div" class="workarea" >
+  <div id="view_div"> 
+    
+    <!----------------------------------- #BEGIN FORM --------------------------------------->
+    
+    <form  id="kualiForm" style="form_format topLabel page" action="http://localhost:8080/kr-dev/spring/inquiry" method="post" enctype="multipart/form-data" onsubmit="createLoading(true);return hasFormAlreadyBeenSubmitted();">
+      <a name="topOfForm"></a>
+      <div id="breadcrumbs" class="breadcrumbs"> <a href="/kr-dev/portal.do">Home</a><span> &raquo; </span> <span id="current_breadcrumb_span" class="current">Fiscal Officer Inquiry 2</span> <a id="current_breadcrumb_anchor" style="display:none;" href="http://localhost:8080/kr-dev/spring/inquiry?viewId=FiscalOfficerInfoInquiry2&returnLocation=http://localhost:8080/kr-dev/portal.do&methodToCall=start&hideReturnLink=true&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&id=2&history=null%2Cnull%2CHome%2C%2Fkr-dev%2Fportal.do%2Cnull&showHome=false"/>Fiscal Officer Inquiry 2</a> </div>
+      
+      <!----------------------------------- #VIEW HEADER --------------------------------------->
+      <div id="viewheader_div" >
+        <div id="70da3e7_div" class="view_header" >
+          <div id="70da3e7_header"  class="header">
+            <h1>Fiscal Officer Inquiry 2</h1>
+          </div>
+        </div>
+      </div>
+      
+      <!--Changing any ids here will break navigation slide out functionality -->
+      <div id="viewlayout_div" >
+        <!----------------------------------- #VIEW NAVIGATION --------------------------------------->
+        <div id="viewnavigation_div"   >
+      
+            
+            <!----------------------------------- #NAVIGATION --------------------------------------->
+            
+            <div id="tabMenu_div" class="ui-tabs tab-navigation-block">
+              <ul id="tabMenu" class="ui-helper-reset ui-helper-clearfix tabMenu">
+                <li class="ui-state-default ui-corner-top ui-state-active"> <a id="39d0c448" href="#page1" onclick="return false" name="page1" class="action"> Information </a>
+                  <input type="hidden" value="jq('#' + '39d0c448').click(function(e) {
+
+     e.preventDefault();writeHiddenToForm('methodToCall' , 'navigate'); writeHiddenToForm('actionParameters[navigateToPageId]' , 'page1'); writeHiddenToForm('actionParameters[showHistory]' , 'false'); writeHiddenToForm('actionParameters[showHome]' , 'false'); writeHiddenToForm('showHistory' , 'false'); writeHiddenToForm('showHome' , 'false'); writeHiddenToForm('focusId' , ''); writeHiddenToForm('jumpToId' , 'TOP'); submitForm();
+
+    });">
+                </li>
+                <li class="ui-state-default ui-corner-top"> <a id="3906709f" href="#page2" onclick="return false" name="page2" class="action"> Accounts </a>
+                  <input type="hidden" value="jq('#' + '3906709f').click(function(e) {
+
+     e.preventDefault();writeHiddenToForm('methodToCall' , 'navigate'); writeHiddenToForm('actionParameters[navigateToPageId]' , 'page2'); writeHiddenToForm('actionParameters[showHistory]' , 'false'); writeHiddenToForm('actionParameters[showHome]' , 'false'); writeHiddenToForm('showHistory' , 'false'); writeHiddenToForm('showHome' , 'false'); writeHiddenToForm('focusId' , ''); writeHiddenToForm('jumpToId' , 'TOP'); submitForm();
+
+    });">
+                </li>
+              </ul>
+            </div>
+       
+        </div>
+        
+        <!----------------------------------- #VIEW PAGE --------------------------------------->
+        
+        <div id="viewpage_div">
+          <div id="page1_div"  > 
+            
+            <!----------------------------------- #GROUP 'page1' HEADER --------------------------------------->
+            
+            <div id="45f76fc7_div" class="page_header" >
+              <div id="45f76fc7_header"  class="header">
+                <h1></h1>
+              </div>
+            </div>
+            <div id="page1_group">
+              <div id="77cb95b3_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                
+                <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                
+                <div id="77cb95b3_errorMessages" style="display: none;" class="errorMessages"> <strong></strong>
+                  <ul>
+                  </ul>
+                </div>
+                
+                <!--  Warning messages  --> 
+                
+                <!--  Info messages  --> 
+                
+              </div>
+              <div id="page1_layout"  class="fieldLine clearfix"> <span > <span class="fieldLine boxLayoutVerticalItem clearfix" style="">
+                <div id="information_div" class="wrap" > 
+                  
+                  <!----------------------------------- #GROUP 'information' HEADER --------------------------------------->
+                  
+                  <div id="25844fbe_div" class="grouping-header-expandable" >
+                    <div id="25844fbe_header"  class="header">
+                      <h2>Fiscal Officer Information</h2>
+                    </div>
+                  </div>
+                  <div id="information_group">
+                    <div id="2c878286_div" class="errorsField errorsFieldForContainer noHighlight" style="display: none;"> 
+                      
+                      <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                      
+                      <div id="2c878286_errorMessages" style="display: none;" class="errorMessages">
+                        <ul>
+                        </ul>
+                      </div>
+                      
+                      <!--  Warning messages  --> 
+                      
+                      <!--  Info messages  --> 
+                      
+                    </div>
+                    <table id="information_layout"  class="datatable">
+                      <tr>
+                        <th scope="row" width="50.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="55cbf3f8_label_span" class="desc" >
+                          <label id="55cbf3f8_label" for="55cbf3f8"> Travel Fiscal Officer Id: </label>
+                          </span> </th>
+                        <td width="50.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="55cbf3f8_attribute_span" class="field_attribute" >
+                          <input type="hidden" name="script"  value="
+   createLightBox(&#039;35bcfced&#039;, {autoScale:false,centerOnScroll:true,transitionIn:&#034;fade&#034;,transitionOut:&#034;fade&#034;,speedIn:&#034;200&#034;,speedOut:&#034;200&#034;,width:&#034;75%&#034;,height:&#034;95%&#034;,hideOnOverlayClick:false,type:&#034;iframe&#034;});
+"/>
+                          <a id="35bcfced" href="http://localhost:8080/kr-dev/spring/inquiry?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&id=2" target="_blank"
+     class="action">2</a> </span>
+                          <div id="55cbf3f8_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="55cbf3f8_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" width="50.0%" colspan="1" 
+          rowspan="1"  class="desc"> <span id="40fe4ac9_label_span" class="desc" >
+                          <label id="40fe4ac9_label" for="40fe4ac9"> Fiscal Officer User Name: </label>
+                          </span> </th>
+                        <td width="50.0%" colspan="1" rowspan="1"
+          class="field_attribute" ><span id="40fe4ac9_attribute_span" class="field_attribute" > fran </span>
+                          <div id="40fe4ac9_errors_div" class="errorsField" style="display: none;"> 
+                            
+                            <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
+                            
+                            <div id="40fe4ac9_errors_errorMessages" style="display: none;" class="errorMessages">
+                              <ul>
+                              </ul>
+                            </div>
+                            
+                            <!--  Warning messages  --> 
+                            
+                            <!--  Info messages  --> 
+                            
+                          </div></td>
+                      </tr>
+                    </table>
+                    
+                    <!----------------------------------- #GROUP 'information' FOOTER ---------------------------------------> 
+                    
+                  </div>
+                </div>
+                <input type="hidden" name="script"  value="
+  createAccordion(&#039;information&#039;, &#039;25844fbe&#039;, true, 
+  		          &#039;/kr-dev/krad/images/arrow-col.png&#039;, &#039;/kr-dev/krad/images/arrow-exp.png&#039;, 500);
+"/>
+                </span> </span> </div>
+              
+              <!----------------------------------- #GROUP 'page1' FOOTER ---------------------------------------> 
+              
+            </div>
+          </div>
+          <input type="hidden" name="script"  value="jq(document).ready(function() {
+     
+setupValidator();setGrowlDefaults({position:&#034;top-right&#034;,sticky:false,life:7000});
+    });"/>
+          <input id="pageId" name="pageId" type="hidden" value=""/>
+          <input id="currentPageTitle" name="view.currentPage.title" type="hidden" value=""/>
+          <input id="jumpToId" name="jumpToId" type="hidden" value=""/>
+          <input id="jumpToName" name="jumpToName" type="hidden" value=""/>
+          <input id="focusId" name="focusId" type="hidden" value=""/>
+          <input id="formHistory.historyParameterString" name="formHistory.historyParameterString" type="hidden" value="null%2Cnull%2CHome%2C%2Fkr-dev%2Fportal.do%2Cnull%24FiscalOfficerInfoInquiry2%2Cnull%2CFiscal+Officer+Inquiry+2%2Chttp%3A%2F%2Flocalhost%3A8080%2Fkr-dev%2Fspring%2Finquiry%3FviewId%3DFiscalOfficerInfoInquiry2%26returnLocation%3Dhttp%3A%2F%2Flocalhost%3A8080%2Fkr-dev%2Fportal.do%26methodToCall%3Dstart%26hideReturnLink%3Dtrue%26dataObjectClassName%3Dedu.sampleu.travel.dto.FiscalOfficerInfo%26id%3D2%2C3dc4d0b0-c933-42af-9485-6cd6f8bb444d"/>
+          <input type="hidden" name="script"  value="performJumpTo();"/>
+          <input type="hidden" name="script"  value="performFocus();"/>
+        </div>
+      </div>
+      
+      <!----------------------------------- #VIEW FOOTER --------------------------------------->
+      <div id="viewfooter_div">
+        <div id="77ae020_div" class="globalbuttons" > 
+          
+          <!----------------------------------- #GROUP '77ae020' HEADER --------------------------------------->
+          
+          <div id="77ae020_group">
+            <div id="77ae020_layout"  class="fieldLine clearfix"> <span >
+              <input type="submit" id="39c2b01c" value="Close"  class="ui-priority-secondary boxLayoutHorizontalItem" />
+              <input type="hidden" name="script"  value="jq(&#039;#&#039; + &#039;39c2b01c&#039;).click(function(e) {
+     e.preventDefault();writeHiddenToForm(&#039;methodToCall&#039; , &#039;close&#039;); writeHiddenToForm(&#039;actionParameters[showHistory]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;actionParameters[showHome]&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHistory&#039; , &#039;false&#039;); writeHiddenToForm(&#039;showHome&#039; , &#039;false&#039;); writeHiddenToForm(&#039;focusId&#039; , &#039;39c2b01c&#039;); writeHiddenToForm(&#039;jumpToId&#039; , &#039;39c2b01c&#039;); jq(&#039;#kualiForm&#039;).submit();
+    });"/>
+              </span> </div>
+            
+            <!----------------------------------- #GROUP '77ae020' FOOTER ---------------------------------------> 
+            
+          </div>
+        </div>
+      </div>
+      <span id="formComplete"></span>
+    </form>
+    
+    <!----------------------------------- End Form ---------------------------------------> 
+    
+  </div>
+</div>
+</body>
+</html>
+<!-- end of view render -->

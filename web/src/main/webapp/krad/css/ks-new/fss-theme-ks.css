@@ -1,0 +1,71 @@
+/*  -------------------  BUTTON STYLES  -------------------  */
+
+.fl-theme-ks .button-primary {
+	border-color:#469C3D;
+	/*defines gradient background*/
+	background-image: -moz-linear-gradient(top, #99DE80, #62D255);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99DE80), color-stop(1, #62D255));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#99DE80', EndColorStr='#62D255')";
+	/* fallback for < 8 versions of IE*/
+	background-color:#73C561;
+	/* font styling */
+	color: #2A2A2A;
+}
+.fl-theme-ks .button-secondary1 {
+	border-color:#469C3D;
+	/*defines gradient background*/
+	background-image: -moz-linear-gradient(top, #99DE80, #62D255);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99DE80), color-stop(1, #62D255));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#99DE80', EndColorStr='#62D255')";
+	/* fallback for < 8 versions of IE*/
+	background-color:#73C561;
+	color: #2A2A2A;
+}
+
+.fl-theme-ks .button-secondary2 {
+	border-color:#3F7826;
+	/*defines gradient background*/
+	background-image: -moz-linear-gradient(top, #ffffff, #e2e2e2);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #e2e2e2));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#e2e2e2')";
+	/* fallback for < 8 versions of IE*/
+	background-color:#73C561;
+	color: #3F7826;
+}
+.fl-theme-ks .button-primary a, .button-primary a:link, .button-primary a:visited {
+	color: #eeeeee;
+}
+.fl-theme-ks .ui-state-hover {
+	border-color:#07662a ;
+	/*defines gradient background*/
+	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#07662a', EndColorStr='#044d1f')";
+	color: #ffffff;
+	background-color:#060;
+}
+.fl-theme-ks .ui-state-hover a, .ui-state-hover a:hover {
+	color: #ffffff;
+}
+.fl-theme-ks .ui-state-disabled {
+	border-color:#a6a6a6;
+	/*defines gradient background*/
+	background-image: -moz-linear-gradient(top, #ABDEA5, #C8EABC);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ABDEA5), color-stop(1, #C8EABC));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ABDEA5', EndColorStr='#C8EABC')";
+	color:#7fa393;
+	background-color:#CCC;
+	text-shadow: none;
+}
+
+.fl-theme-ks .ui-state-disabled2 {
+	border-color:#a6a6a6;
+	/*defines gradient background*/
+	background-image: -moz-linear-gradient(top, #ffffff, #e2e2e2);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #e2e2e2));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#e2e2e2')";
+	color:#666666;
+	background-color:#CCC;
+	text-shadow: none;
+}
+

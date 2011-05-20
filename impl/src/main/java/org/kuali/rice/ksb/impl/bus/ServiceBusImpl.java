@@ -282,8 +282,8 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 		}
 		LocalService localService = new LocalService(getInstanceId(), serviceDefinition);
 		synchronized (serviceLock) {
-			localServices.put(serviceDefinition.getServiceName(), localService);
 			serviceExportManager.exportService(serviceDefinition);
+			localServices.put(serviceDefinition.getServiceName(), localService);
 		}
 		if (synchronize) {
 			synchronize();
@@ -335,8 +335,8 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 		List<Boolean> servicesRemoved = new ArrayList<Boolean>();
 		synchronized (serviceLock) {
 			for (QName serviceName : serviceNames) {
-				LocalService localService = localServices.remove(serviceName);
 				serviceExportManager.removeService(serviceName);
+				LocalService localService = localServices.remove(serviceName);
 				if (localService != null) {
 					servicesRemoved.add(Boolean.TRUE);
 					serviceRemoved = true;

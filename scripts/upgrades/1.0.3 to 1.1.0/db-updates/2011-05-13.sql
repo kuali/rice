@@ -2,9 +2,9 @@ drop table KRSB_SVC_DEF_T
 /
 drop table KRSB_FLT_SVC_DEF_T
 /
-drop table KRSB_SVC_DEF_S
+drop sequence KRSB_SVC_DEF_S
 /
-drop table KRSB_FLT_SVC_DEF_S
+drop sequence KRSB_FLT_SVC_DEF_S
 /
 CREATE TABLE KRSB_SVC_DSCRPTR_T (
   SVC_DSCRPTR_ID varchar2(40) NOT NULL,

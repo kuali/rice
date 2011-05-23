@@ -3,6 +3,7 @@ package org.kuali.rice.krms.framework.engine;
 import java.util.Map;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 
 public class BasicAgenda implements Agenda {
 
@@ -26,7 +27,7 @@ public class BasicAgenda implements Agenda {
 		if (eventName.equals(environment.getSelectionCriteria().getEventName())) {
 			for (String agendaQualifierName : qualifiers.keySet()) {
 			    // ignore the eventName qualifier, we've already matched it
-			    if (agendaQualifierName.equals("eventName")) continue;
+			    if (agendaQualifierName.equals(AgendaDefinition.Constants.EVENT)) continue;
 			    
 				String qualifierValue = qualifiers.get(agendaQualifierName);
 				String environmentQualifierValue = environment.getSelectionCriteria().getAgendaQualifiers().get(agendaQualifierName);

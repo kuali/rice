@@ -88,7 +88,8 @@ public class Node<T, K> implements Serializable {
     }
 
     /**
-     * Inserts a Node<T, K> at the specified position in the child list. Will     * throw an ArrayIndexOutOfBoundsException if the index does not exist.
+     * Inserts a Node<T, K> at the specified position in the child list. Will
+     * throw an ArrayIndexOutOfBoundsException if the index does not exist.
      *
      * @param index the position to insert at.
      * @param child the Node<T, K> object to insert.

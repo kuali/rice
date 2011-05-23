@@ -19,6 +19,7 @@
     <mainChannel:sampleTravelApplication />
     <mainChannel:kradBookStoreApplication />
     <mainChannel:kradTestLinks />
+    <mainChannel:kradTestLinks2 />
 </td>
 <td class="content" valign="top">
 <mainChannel:workflow />

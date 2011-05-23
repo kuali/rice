@@ -70,15 +70,16 @@
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountType.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountUseRate.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelRequestDocument.xml</value>
-                <value>classpath:edu/sampleu/travel/uif/TestInquiries.xml</value>
+                <value>classpath:edu/sampleu/travel/uif/TravelAccountInquiry.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/TestKNSInquiries.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/TravelAccountLookup.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/TravelAccountTypeLookup.xml</value>
-                <value>classpath:edu/sampleu/travel/uif/TestMaintenance.xml</value>
+                <value>classpath:edu/sampleu/travel/uif/TravelAccountMaintenance.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/Travel-testView1.xml</value>   
                 <value>classpath:edu/sampleu/travel/uif/Travel-testView2.xml</value>             
                 <value>classpath:edu/sampleu/travel/uif/FiscalOfficerView.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/FiscalOfficerLookup.xml</value>
+                <value>classpath:edu/sampleu/travel/uif/TravelAlternateViews.xml</value>
                 <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/BookType.xml</value>
                 <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/AddressType.xml</value>
                 <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/BookOrder.xml</value>

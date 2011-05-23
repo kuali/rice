@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
-<channel:portalChannelTop channelTitle="KRAD Testing" />
+<channel:portalChannelTop channelTitle="KRAD Testing - KS L&F" />
 <div class="body">
   <strong>Screen Element Testing</strong>
   <ul class="chan">
@@ -25,35 +25,10 @@
    <br/>
    <strong>BO Class Tests</strong>
    <ul class="chan">
-     <li><portal:portalLink displayTitle="true" title="Travel Account Inquiry" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&number=a14&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-     <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (New)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
-     <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (Edit)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=maintenanceEdit&number=a14&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
-     <li><portal:portalLink displayTitle="true" title="Travel Account Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-     <li><portal:portalLink displayTitle="true" title="Travel Account Type Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccountType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+     <li><portal:portalLink displayTitle="true" title="Travel Account Inquiry" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&number=a14&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_inquiry&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+     <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (New)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_maintenance&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+     <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (Edit)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=maintenanceEdit&number=a14&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_maintenance&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+     <li><portal:portalLink displayTitle="true" title="Travel Account Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_lookup&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
   </ul>
-  <br/>
-  <strong>Non BO Class Tests</strong>
-  <ul class="chan">
-    <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Inquiry" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Inquiry 2" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&viewId=FiscalOfficerInfoInquiry2&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Inquiry 3" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&viewId=FiscalOfficerInfoInquiry3&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-    <br/>
-    <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-    <br/>
-    <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Maintenance (New)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
-    <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Maintenance (Edit)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=maintenanceEdit&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo"/></li> 
-  </ul>
-  <br/>
-  <strong>KNS Inquiries</strong>
-   <ul class="chan">
-	 <li><portal:portalLink displayTitle="true" title="Component" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&namespaceCode=KR-WKFLW&code=ActionList&dataObjectClassName=org.kuali.rice.core.impl.component.ComponentBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-     <li><portal:portalLink displayTitle="true" title="Group" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&id=1&dataObjectClassName=org.kuali.rice.kim.impl.group.GroupBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-	 <li><portal:portalLink displayTitle="true" title="Permission" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&permissionId=140&dataObjectClassName=org.kuali.rice.kim.bo.impl.PermissionImpl&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-     <li><portal:portalLink displayTitle="true" title="Responsibility" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&responsibilityId=1&dataObjectClassName=org.kuali.rice.kim.bo.impl.ResponsibilityImpl&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-     <!-- <li><portal:portalLink displayTitle="true" title="Role" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&roleId=1&dataObjectClassName=org.kuali.rice.kim.bo.impl.RoleImpl&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> -->
-     <li><portal:portalLink displayTitle="true" title="Rule" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&ruleBaseValuesId=1103&dataObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-     <li><portal:portalLink displayTitle="true" title="Rule Delegation" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&ruleDelegationId=1641&dataObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
-  </ul>
-  
 </div>
 <channel:portalChannelBottom />

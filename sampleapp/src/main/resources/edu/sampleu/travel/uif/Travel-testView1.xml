@@ -45,7 +45,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>          
         </list>
       </property>    
-      <property name="additionalCssFiles" ref="ka-css"/>
+      <property name="additionalCssFiles" ref="ks-css"/>
       <property name="formClass" value="edu.sampleu.travel.krad.form.UITestForm"/>
       <property name="defaultBindingObjectPath" value="travelAccount1"/>
    </bean>

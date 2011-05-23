@@ -256,5 +256,13 @@
     	<reference-descriptor name="book" class-ref="edu.sampleu.bookstore.bo.Book" auto-retrieve="true"  proxy="true" >
         	<foreignkey field-ref="bookId" />
     	</reference-descriptor>
-	</class-descriptor>  
+	</class-descriptor>
+
+<!--
+//**********************
+//   Financial
+//**********************
+
+-->
+
 </descriptor-repository>

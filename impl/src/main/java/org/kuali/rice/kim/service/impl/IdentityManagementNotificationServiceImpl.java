@@ -47,10 +47,11 @@ public class IdentityManagementNotificationServiceImpl implements
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#principalUpdated()
      */
     public void principalUpdated() {
-        KIMServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
-        KIMServiceLocator.getPersonService().flushPersonCaches();
+    	KIMServiceLocator.getIdentityManagementService().flushAllCaches();
+    	KIMServiceLocator.getPersonService().flushPersonCaches();
+    	roleUpdated();
     }
-
+    
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#responsibilityUpdated()
      */

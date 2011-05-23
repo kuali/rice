@@ -289,7 +289,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 		termResolverDef = termBoService.createTermResolver(termResolverDef);
 		
 	    // Attribute Defn for generic type;
-        KrmsAttributeDefinition.Builder genericTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, "eventName", "KRMS_TEST");
+        KrmsAttributeDefinition.Builder genericTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, "Event", "KRMS_TEST");
         genericTypeAttributeDefnBuilder.setLabel("event name");
         KrmsAttributeDefinition genericTypeAttributeDefinition = krmsAttributeDefinitionService.createAttributeDefinition(genericTypeAttributeDefnBuilder.build());
         
@@ -311,7 +311,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 	    AgendaItem agendaItem = agendaBoService.createAgendaItem(agendaItemBuilder.build());
 	    
 	    AgendaDefinition.Builder agendaDefBuilder = AgendaDefinition.Builder.create(agendaDef);
-	    agendaDefBuilder.setAttributes(Collections.singletonMap("eventName", "Earthquake"));
+	    agendaDefBuilder.setAttributes(Collections.singletonMap("Event", "Earthquake"));
 	    agendaDefBuilder.setFirstItemId(agendaItem.getId());
 	    agendaDef = agendaDefBuilder.build();
 	    

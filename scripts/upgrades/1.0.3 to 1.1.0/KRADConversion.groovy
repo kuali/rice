@@ -9,7 +9,6 @@
 import groovy.xml.XmlUtil
 
 if (args.length < 3) { 
-    //Output File Path is optional
     println 'usage: groovy KRADConversion.groovy -object objectName -inputFilePath inputFilePath -outputFilePath outputFilePath'    
 }
 
@@ -35,7 +34,8 @@ if(objectName == null) {
 Map<String, String> dDPropertyMapping = ["businessObjectClass":"objectClass", "BusinessObjectEntry":"DataObjectEntry"]
 List<String> removePropertyList = ["inquiryDefinition","lookupDefinition"]
 
-def beanSchema = "http://www.springframework.org/schema/p"
+def beanSchema = 'http://www.springframework.org/schema/p'
+def oldSchema = 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
 def dDRoot
 
 try {
@@ -509,7 +509,8 @@ if(dDRoot != null) {
         try {
             fileOut= new File(outputFilePath+objectName+"MaintenanceDocument.xml")
             def result = writer.toString()        
-            
+            result = result.replace("xmlns:p="+"\"$beanSchema\"","")
+            result = result.replace(oldSchema, "$oldSchema xmlns:p="+"\"$beanSchema\"")
             fileOut.write(result) 
         } catch(java.io.FileNotFoundException ex) {
             errorText()
@@ -521,9 +522,10 @@ if(dDRoot != null) {
 
     def fileOut 
     try {
-        fileOut= new File(outputFilePath+objectName+".xml")
+        fileOut= new File(outputFilePath+objectName+".xml")         
         def result = writer.toString()        
-        
+        result = result.replace("xmlns:p="+"\"$beanSchema\"","")
+        result = result.replace(oldSchema, "$oldSchema xmlns:p="+"\"$beanSchema\"")
         fileOut.write(result) 
     } catch(java.io.FileNotFoundException ex) {
         errorText()

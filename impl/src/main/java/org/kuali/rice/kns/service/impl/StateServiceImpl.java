@@ -17,6 +17,7 @@ package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.bo.State;
 import org.kuali.rice.kns.service.CountryService;
 import org.kuali.rice.kns.service.KualiModuleService;
@@ -102,11 +103,13 @@ public class StateServiceImpl implements StateService {
         if (StringUtils.isBlank(alternatePostalCountryCode)) {
             throw new IllegalArgumentException("The alternatePostalCountryCode can not be an empty String.");
         }
+        
+        Country country = countryService.getByAlternatePostalCountryCode(alternatePostalCountryCode);
+        if(country == null) {
+        	throw new IllegalArgumentException("The alternatePostalCountryCode is not a valid code.");
+        }
 
-        Map<String, Object> altPostalStateMap = new HashMap<String, Object>();
-        altPostalStateMap.put(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternatePostalCountryCode);
-
-        return kualiModuleService.getResponsibleModuleService(State.class).getExternalizableBusinessObjectsList(State.class, altPostalStateMap);
+        return findAllStates(country.getPostalCountryCode());
     }
 
     /**

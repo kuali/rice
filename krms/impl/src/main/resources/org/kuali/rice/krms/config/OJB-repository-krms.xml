@@ -245,7 +245,7 @@
     	<field-descriptor name="attributeDefinitionId" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     	<reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      		<foreignkey field-ref="id" />
+      		<foreignkey field-ref="attributeDefinitionId" />
     	</reference-descriptor>
   	</class-descriptor>
 
@@ -277,7 +277,7 @@
     	<field-descriptor name="attributeDefinitionId" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     	<reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      		<foreignkey field-ref="id" />
+      		<foreignkey field-ref="attributeDefinitionId" />
     	</reference-descriptor>
   	</class-descriptor>
   	
@@ -316,7 +316,7 @@
         <field-descriptor name="attributeDefinitionId" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-            <foreignkey field-ref="id" />
+            <foreignkey field-ref="attributeDefinitionId" />
         </reference-descriptor>
     </class-descriptor>
     

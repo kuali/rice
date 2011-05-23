@@ -57,7 +57,7 @@ public final class ContextBoServiceImpl implements ContextBoService {
 	        throw new IllegalArgumentException("context is null");
 		}
 		final String contextIdKey = context.getId();
-		final ContextDefinition existing = getContextByContextId(contextIdKey);
+		final ContextBo existing = businessObjectService.findBySinglePrimaryKey(ContextBo.class, contextIdKey);
         if (existing == null) {
             throw new IllegalStateException("the context does not exist: " + context);
         }

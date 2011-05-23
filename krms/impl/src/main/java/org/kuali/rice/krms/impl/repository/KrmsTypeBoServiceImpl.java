@@ -62,9 +62,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
         if (krmsType == null) {
             throw new IllegalArgumentException("krmsType is null");
         }
-		final String nameKey = krmsType.getName();
-		final String namespaceKey = krmsType.getNamespace();
-		final KrmsTypeDefinition existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
+		final String idKey = krmsType.getId();
+		final KrmsTypeBo existing = businessObjectService.findBySinglePrimaryKey(KrmsTypeBo.class, idKey);
         if (existing == null) {
             throw new IllegalStateException("the KRMS type does not exist: " + krmsType);
         }

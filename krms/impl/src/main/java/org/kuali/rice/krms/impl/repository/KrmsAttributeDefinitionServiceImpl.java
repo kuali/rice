@@ -86,9 +86,8 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
 		if (attributeDefinition == null){
 	        throw new IllegalArgumentException("attributeDefinition is null");
 		}
-		final String nameKey = attributeDefinition.getName();
-		final String namespaceKey = attributeDefinition.getNamespace();
-		final KrmsAttributeDefinition existing = getAttributeDefinitionByNameAndNamespace(nameKey, namespaceKey);
+		final String idKey = attributeDefinition.getId();
+		final KrmsAttributeDefinitionBo existing = businessObjectService.findBySinglePrimaryKey(KrmsAttributeDefinitionBo.class, idKey);
 		if (existing == null){
             throw new IllegalStateException("the krms attribute definition does not exist: " + attributeDefinition);			
 		}

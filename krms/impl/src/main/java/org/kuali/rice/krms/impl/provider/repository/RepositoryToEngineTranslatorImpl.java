@@ -113,7 +113,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 	
 	@Override
 	public Agenda translateAgendaDefinition(AgendaDefinition agendaDefinition) {
-	    String eventName = MapUtils.getString(agendaDefinition.getAttributes(), "eventName", StringUtils.EMPTY);
+	    String eventName = MapUtils.getString(agendaDefinition.getAttributes(), AgendaDefinition.Constants.EVENT, StringUtils.EMPTY);
 
 	    // TODO: this limits an agenda to a single event.  Is that good enough?
 		return new BasicAgenda(eventName, agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, this));

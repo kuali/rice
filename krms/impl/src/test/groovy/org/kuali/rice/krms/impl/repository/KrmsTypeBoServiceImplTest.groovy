@@ -243,8 +243,8 @@ class KrmsTypeBoServiceImplTest {
 
   @Test
   void test_updateKrmsType_does_not_exist() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {
-			Class clazz, Map map -> null
+		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {
+			Class clazz, String id -> null
 		}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 		KrmsTypeRepositoryService service = new KrmsTypeBoServiceImpl()
@@ -257,7 +257,7 @@ class KrmsTypeBoServiceImplTest {
 
   @Test
   void test_updateKrmsType_success() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> TEST_KRMS_TYPE_BO}
+		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_KRMS_TYPE_BO}
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 		KrmsTypeRepositoryService service = new KrmsTypeBoServiceImpl()

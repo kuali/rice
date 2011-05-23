@@ -301,12 +301,13 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	}
 	
 	/**
-	 * Defines some internal constants used on this class.
+	 * Defines some constants used on this class.
 	 */
-	static class Constants {
+	public static class Constants {
 		final static String ROOT_ELEMENT_NAME = "agenda";
 		final static String TYPE_NAME = "AgendaType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_furutreElements" };
+        public final static String EVENT = "Event";   // key for event attribute
 	}
 	
 	/**

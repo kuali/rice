@@ -69,7 +69,7 @@ public final class ActionBoServiceImpl implements ActionBoService {
 	        throw new IllegalArgumentException("action is null");
 		}
 		final String actionIdKey = action.getId();
-		final ActionDefinition existing = getActionByActionId(actionIdKey);
+		final ActionBo existing = businessObjectService.findBySinglePrimaryKey(ActionBo.class, actionIdKey);
         if (existing == null) {
             throw new IllegalStateException("the action does not exist: " + action);
         }
@@ -185,7 +185,7 @@ public final class ActionBoServiceImpl implements ActionBoService {
 	        throw new IllegalArgumentException("action attribute is null");
 		}
 		final String attrIdKey = attribute.getId();
-		final ActionAttribute existing = getActionAttributeById(attrIdKey);
+		final ActionAttributeBo existing = businessObjectService.findBySinglePrimaryKey(ActionAttributeBo.class, attrIdKey);
         if (existing == null) {
             throw new IllegalStateException("the action attribute does not exist: " + attribute);
         }

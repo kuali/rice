@@ -19,6 +19,10 @@ insert into krms_attr_defn_t
 values('Q44001', 'Context1Qualifier', 'KRMS_TEST', 'Context 1 Qualifier', 'Y', 1)
 ;
 
+insert into krms_attr_defn_t
+(attr_defn_id, nm, nmspc_cd, lbl, actv, ver_nbr)
+values('Q33001', 'Event', 'KRMS_TEST', 'Event Name', 'Y', 1)
+;
 insert into krms_typ_t 
 (typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
 values ('T2', 'CAMPUS', 'KRMS_TEST', 'myCampusService', 'Y', 1)
@@ -37,6 +41,16 @@ values ('T4', 'CONTEXT', 'KRMS_TEST',  'Y', 1)
 insert into krms_typ_attr_t
 (typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr)
 values ('T4A', 1, 'T4', 'Q44001', 'Y', 1)
+;
+
+insert into krms_typ_t 
+(typ_id, nm, nmspc_cd, actv, ver_nbr)
+values ('T5', 'AGENDA', 'KRMS_TEST',  'Y', 1)
+;
+
+insert into krms_typ_attr_t
+(typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr)
+values ('T5A', 1, 'T5', 'Q33001', 'Y', 1)
 ;
 
 insert into krms_rule_t
@@ -93,6 +107,11 @@ VALUES('AGENDA301ITEM1', 'R201', 'AGENDA301', 1)
 ;
 
 update krms_agenda_t set INIT_AGENDA_ITM_ID = 'AGENDA301ITEM1' where agenda_id = 'AGENDA301'
+;
+
+insert into krms_agenda_attr_t
+(agenda_attr_id, agenda_id, attr_val, attr_defn_id, ver_nbr)
+values('AGENDA_ATTR1', 'AGENDA301', 'EARTHQUAKE', 'Q33001', 1)
 ;
 
 insert into krms_term_spec_t

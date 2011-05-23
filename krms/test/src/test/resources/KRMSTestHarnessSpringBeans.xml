@@ -126,18 +126,6 @@
       <property name="localServiceName" value="KRMSContext" />
     </bean>
     
-    <bean id="genericTestDao" class="org.rice.krms.test.GenericTestDao" p:jcdAlias="krmsDataSource"/>
-    
-    <bean id="testBoService" class="org.rice.krms.test.TestBoService">
-        <constructor-arg><ref local="genericTestDao" /></constructor-arg>
-    </bean>
-
-    <bean id="krmsAttributeDefinitionService" class="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionServiceImpl">
-        <property name="businessObjectService">
-            <ref local="testBoService"/>
-        </property>
-    </bean>
-    
     <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" p:proxyTargetClass="true" >
         <property name="interceptorNames">
             <list>
@@ -175,14 +163,34 @@
             <ref bean="matchAllWithPropReq" />
         </property>
     </bean>
+    
+    
+    
+    
+    
+    
+    <!-- Wire up services for our tests -->
+    
+    <bean id="genericTestDao" class="org.rice.krms.test.GenericTestDao" p:jcdAlias="krmsDataSource"/>
+    
+    <bean id="testBoService" class="org.rice.krms.test.TestBoService">
+        <constructor-arg><ref local="genericTestDao" /></constructor-arg>
+    </bean>
 
+    <bean id="krmsAttributeDefinitionService" class="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionServiceImpl">
+        <property name="businessObjectService">
+            <ref local="testBoService"/>
+        </property>
+    </bean>
+    
+    <bean id="testResolverTypeService1" class="org.rice.krms.test.TestTermResolverTypeService" />
+    
+    <bean id="testActionTypeService" class="org.rice.krms.test.TestActionTypeService">
+        <constructor-arg><value>testAction</value></constructor-arg>
+    </bean>
+    
+    
+    <!-- Import core beans -->
     <import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
-<!-- 
-    <import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/kns/config/KNSConfigSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/kim/config/KIMConfigSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/krms/config/KRMSConfigSpringBeans.xml"/>
--->
-
+    
 </beans>

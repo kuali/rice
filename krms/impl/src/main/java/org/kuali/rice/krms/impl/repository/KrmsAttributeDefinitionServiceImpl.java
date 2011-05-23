@@ -64,7 +64,7 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
     
 
 	@Override
-	public void createAttributeDefinition(KrmsAttributeDefinition attributeDefinition) {
+	public KrmsAttributeDefinition createAttributeDefinition(KrmsAttributeDefinition attributeDefinition) {
 		if (attributeDefinition == null){
 	        throw new IllegalArgumentException("attributeDefinition is null");
 		}
@@ -74,7 +74,11 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
 		if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
             throw new IllegalStateException("the krms attribute definition to create already exists: " + attributeDefinition);			
 		}
-		businessObjectService.save(KrmsAttributeDefinitionBo.from(attributeDefinition));
+		
+		KrmsAttributeDefinitionBo bo = KrmsAttributeDefinitionBo.from(attributeDefinition);
+		businessObjectService.save(bo);
+
+		return KrmsAttributeDefinitionBo.to(bo);
 	}
 
 	@Override

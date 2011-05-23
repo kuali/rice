@@ -25,8 +25,11 @@ public class BasicAgenda implements Agenda {
 	public boolean appliesTo(ExecutionEnvironment environment) {
 		if (eventName.equals(environment.getSelectionCriteria().getEventName())) {
 			for (String agendaQualifierName : qualifiers.keySet()) {
+			    // ignore the eventName qualifier, we've already matched it
+			    if (agendaQualifierName.equals("eventName")) continue;
+			    
 				String qualifierValue = qualifiers.get(agendaQualifierName);
-				String environmentQualifierValue = environment.getSelectionCriteria().getAgendaQualifiers().get(qualifierValue);
+				String environmentQualifierValue = environment.getSelectionCriteria().getAgendaQualifiers().get(agendaQualifierName);
 				if (!qualifierValue.equals(environmentQualifierValue)) {
 					return false;
 				}

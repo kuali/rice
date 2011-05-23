@@ -17,7 +17,6 @@ package org.kuali.rice.krms.framework.engine.expression;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.Term;
-import org.kuali.rice.krms.api.engine.TermResolutionEngine;
 import org.kuali.rice.krms.api.engine.TermResolutionException;
 
 /**
@@ -29,11 +28,9 @@ import org.kuali.rice.krms.api.engine.TermResolutionException;
 public final class TermExpression implements Expression<Object> {
 
 	private final Term term;
-	private final TermResolutionEngine termResolutionEngine;
 
-	public TermExpression(Term term, TermResolutionEngine termResolutionEngine) {
+	public TermExpression(Term term) {
 		this.term = term;
-		this.termResolutionEngine = termResolutionEngine;
 	}
 
 	/**
@@ -42,7 +39,7 @@ public final class TermExpression implements Expression<Object> {
 	 */
 	@Override
 	public Object invoke(ExecutionEnvironment environment) {
-		return termResolutionEngine.resolveTerm(term);
+	    return environment.resolveTerm(term);
 	}
 
 }

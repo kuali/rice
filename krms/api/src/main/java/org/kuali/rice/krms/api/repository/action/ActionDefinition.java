@@ -213,13 +213,13 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the id value to set, must not be null or blank
-		 * @throws IllegalArgumentException if the id is null or blank
+		 * @param id the id value to set, must be null or non-blank
+		 * @throws IllegalArgumentException if the id is non-null and blank
 		 */
 
         public void setId(String actionId) {
-            if (StringUtils.isBlank(actionId)) {
-                throw new IllegalArgumentException("action ID is blank");
+            if (actionId != null && StringUtils.isBlank(actionId)) {
+                throw new IllegalArgumentException("action ID must be null or non-blank");
             }
 			this.id = actionId;
 		}

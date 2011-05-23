@@ -63,7 +63,6 @@ import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
  */
 public class SimplePropositionTypeService implements PropositionTypeService {
 
-	private TermResolutionEngine termResolutionEngine;
 	private TermBoService termBoService;
 	private FunctionRepositoryService functionRepositoryService;
 	private KrmsTypeResolver typeResolver;
@@ -128,7 +127,7 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 				if (termDefinition == null) { throw new RepositoryDataException("unable to load term with id " + termId);}
 				Term term = translateTermDefinition(termDefinition);
 				
-				new TermExpression(term, termResolutionEngine);
+				stack.addFirst(new TermExpression(term));
 			}
 		}
 		if (stack.size() != 1) {
@@ -156,10 +155,6 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 		return new Term(new TermSpecification(termSpecificationDefinition.getName(), termSpecificationDefinition.getType()), paramsMap);
 	}
 
-	public void setTermResolutionEngine(TermResolutionEngine termResolutionEngine) {
-		this.termResolutionEngine = termResolutionEngine;
-	}
-	
 	/**
 	 * @param termBoService the termBoService to set
 	 */

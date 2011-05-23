@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
@@ -111,8 +113,10 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 	
 	@Override
 	public Agenda translateAgendaDefinition(AgendaDefinition agendaDefinition) {
-		// TODO: Handle event name.  Is it one of attributes?
-		return new BasicAgenda("", agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, this));
+	    String eventName = MapUtils.getString(agendaDefinition.getAttributes(), "eventName", StringUtils.EMPTY);
+
+	    // TODO: this limits an agenda to a single event.  Is that good enough?
+		return new BasicAgenda(eventName, agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, this));
 	}
 		
 	@Override
@@ -246,7 +250,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 				actions.add(translateActionDefinition(actionDefinition));
 			}
 		}
-		return new BasicRule(condition, actions);
+		return new BasicRule(ruleDefinition.getName(), condition, actions);
 	}
 	
 	@Override

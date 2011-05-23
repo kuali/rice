@@ -181,6 +181,7 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
             Builder builder =  new Builder(contract.getId(), contract.getName(), contract.getNamespace());
             builder.setNamespace(contract.getNamespace());
             builder.setActive(contract.isActive());
+            builder.setServiceName(contract.getServiceName());
             List <KrmsTypeAttribute.Builder> attrBuilderList = new ArrayList<KrmsTypeAttribute.Builder>();
             if (contract.getAttributes() != null) {
             	for(KrmsTypeAttributeContract attr : contract.getAttributes()){
@@ -189,6 +190,8 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
             		attrBuilderList.add(myBuilder);
             	}
             }
+            builder.setAttributes(attrBuilderList);
+            
             return builder;
         }
 

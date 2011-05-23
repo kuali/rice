@@ -35,7 +35,7 @@ public interface KrmsAttributeDefinitionService {
      * @throws IllegalArgumentException if the attribute definition is null
      * @throws IllegalStateException if the attribute definition already exists in the system
      */
-    void createAttributeDefinition(KrmsAttributeDefinition attributeDefinition);
+	KrmsAttributeDefinition createAttributeDefinition(KrmsAttributeDefinition attributeDefinition);
 
     /**
      * This will update a {@link KrmsAttributeDefinition}.

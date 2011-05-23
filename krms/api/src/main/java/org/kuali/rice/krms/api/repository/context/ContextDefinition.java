@@ -295,7 +295,7 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 		
 		public void setAgendas(Set<? extends AgendaDefinitionContract> agendaContracts) {
 			this.agendas = new HashSet<AgendaDefinition.Builder>();
-			for (AgendaDefinitionContract agendaContract : agendaContracts) {
+			if (agendaContracts != null) for (AgendaDefinitionContract agendaContract : agendaContracts) {
 				this.agendas.add(AgendaDefinition.Builder.create(agendaContract));
 			}
 		}

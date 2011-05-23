@@ -27,7 +27,7 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinition;
  *
  */
 public interface ActionBoService {
-	public void createAction(ActionDefinition action);
+	public ActionDefinition createAction(ActionDefinition action);
 	public void updateAction(ActionDefinition action);
 	
 	public ActionDefinition getActionByActionId(String actionId);
@@ -35,7 +35,7 @@ public interface ActionBoService {
 	public List<ActionDefinition> getActionsByRuleId(String ruleId);
 	public ActionDefinition getActionByRuleIdAndSequenceNumber(String ruleId, Integer sequenceNumber);
 	
-	public void createActionAttribute(ActionAttribute actionAttribute);
+	public ActionAttribute createActionAttribute(ActionAttribute actionAttribute);
 	public void updateActionAttribute(ActionAttribute actionAttribute);
 	
 }

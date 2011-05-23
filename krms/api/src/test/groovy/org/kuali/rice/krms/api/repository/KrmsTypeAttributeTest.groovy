@@ -78,8 +78,9 @@ class KrmsTypeAttributeTest {
 		KrmsTypeAttribute.Builder.create(null, null, null, null)
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_id() {
+	@Test
+	void test_Builder_create_null_id() {
+        // null ID is neede to create
 		KrmsTypeAttribute.Builder.create(null, TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 	}
 	
@@ -93,9 +94,10 @@ class KrmsTypeAttributeTest {
 		KrmsTypeAttribute.Builder.create("    ", TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_type_id() {
-		KrmsTypeAttribute.Builder.create(ID, null, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+	@Test
+	void test_Builder_create_null_type_id() {
+        // type ID needs to be nullable so that it can be added to types that haven't been persisted yet 
+		KrmsTypeAttribute.Builder.create(null, null, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

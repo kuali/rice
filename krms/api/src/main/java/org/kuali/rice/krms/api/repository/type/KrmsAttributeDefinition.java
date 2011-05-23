@@ -171,12 +171,12 @@ public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionCon
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the id value to set, must not be null or blank
-		 * @throws IllegalArgumentException if the id is null or blank
+		 * @param id the id value to set, must be null or non-blank
+		 * @throws IllegalArgumentException if the id is non-null and blank
 		 */
         public void setId(String id) {
-            if (StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("id is blank");
+            if (null != id && StringUtils.isBlank(id)) {
+                throw new IllegalArgumentException("id must be null or non-blank");
             }
             this.id = id;
         }

@@ -41,7 +41,7 @@ public final class ActionBoServiceImpl implements ActionBoService {
 	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#createAction(org.kuali.rice.krms.api.repository.action.ActionDefinition)
 	 */
 	@Override
-	public void createAction(ActionDefinition action) {
+	public ActionDefinition createAction(ActionDefinition action) {
 		if (action == null){
 	        throw new IllegalArgumentException("action is null");
 		}
@@ -51,7 +51,11 @@ public final class ActionBoServiceImpl implements ActionBoService {
 		if (existing != null){
             throw new IllegalStateException("the action to create already exists: " + action);			
 		}	
-		businessObjectService.save(ActionBo.from(action));
+		
+		ActionBo bo = ActionBo.from(action);
+		businessObjectService.save(bo);
+		
+		return ActionBo.to(bo);
 	}
 
 	/**
@@ -154,7 +158,7 @@ public final class ActionBoServiceImpl implements ActionBoService {
 	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#createActionAttribute(org.kuali.rice.krms.api.repository.action.ActionAttribute)
 	 */
 	@Override
-	public void createActionAttribute(ActionAttribute attribute) {
+	public ActionAttribute createActionAttribute(ActionAttribute attribute) {
 		if (attribute == null){
 	        throw new IllegalArgumentException("action attribute is null");
 		}
@@ -163,7 +167,11 @@ public final class ActionBoServiceImpl implements ActionBoService {
 		if (existing != null){
             throw new IllegalStateException("the action attribute to create already exists: " + attribute);			
 		}		
-		businessObjectService.save(ActionAttributeBo.from(attribute));		
+		
+		ActionAttributeBo bo = ActionAttributeBo.from(attribute);
+		businessObjectService.save(bo);
+		
+		return ActionAttributeBo.to(bo);
 	}
 
 	/**

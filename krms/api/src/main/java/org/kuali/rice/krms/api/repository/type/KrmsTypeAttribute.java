@@ -171,19 +171,19 @@ public final class KrmsTypeAttribute implements KrmsTypeAttributeContract, Model
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the id value to set, must not be null or blank
-		 * @throws IllegalArgumentException if the id is null or blank
+		 * @param id the id value to set, must  be null or non-blank
+		 * @throws IllegalArgumentException if the id is not null and blank
 		 */
         public void setId(String id) {
-            if (StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("id is blank");
+            if (null != id && StringUtils.isBlank(id)) {
+                throw new IllegalArgumentException("id must be null or non-blank");
             }
             this.id = id;
         }
 
 		public void setTypeId(String typeId) {
-            if (StringUtils.isBlank(typeId)) {
-                throw new IllegalArgumentException("typeId is blank");
+            if (null != typeId && StringUtils.isBlank(typeId)) {
+                throw new IllegalArgumentException("typeId must be null or non-blank");
             }
 			this.typeId = typeId;
 		}

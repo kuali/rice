@@ -55,8 +55,9 @@ class KrmsAttributeDefinitionTest {
 		KrmsAttributeDefinition.Builder.create(null, null, null)
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_id() {
+	@Test
+	void test_Builder_create_null_id() {
+        // null ID is needed for creation
 		KrmsAttributeDefinition.Builder.create(null, ORG_NAME, NAMESPACE)
 	}
 	

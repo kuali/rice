@@ -7,7 +7,7 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
 
-public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract{
+public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract {
 
 	def String id
 	def String namespace
@@ -17,21 +17,23 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 	def Boolean active
 
 	def String firstItemId
-	def Set<AgendaAttributeBo> attributes
+	def Set<AgendaAttributeBo> attributeBos
 	
 	def List<AgendaItemBo> items
 
 	public String getNamespaceCode(){
 		return namespace
 	}
-	public Map<String,String> getAttributes(){
-		// TODO: Implement
-		Map<String, String> map = new HashMap<String,String>()
-		for (attr in attributes){
-			map.put(attr.attributeDefinition.name, attr.value)
-		}
-		return map
-	}
+
+    public Map<String, String> getAttributes() {
+        HashMap<String, String> attributes = new HashMap<String, String>();
+        for (attr in attributeBos) {
+            attributes.put( attr.attributeDefinition.name, attr.value )
+        }
+        return attributes;
+    }
+    
+
 	
 //	/**
 //	 * Converts a mutable bo to it's immutable counterpart

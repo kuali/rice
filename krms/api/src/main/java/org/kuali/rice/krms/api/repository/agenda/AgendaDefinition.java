@@ -179,7 +179,9 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
             Builder builder =  new Builder(contract.getId(), contract.getName(),
             		contract.getNamespaceCode(), contract.getTypeId(), contract.getContextId());
             builder.setFirstItemId( contract.getFirstItemId() );
-            builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
+            if (contract.getAttributes() != null) {
+                builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
+            }
             return builder;
         }
 

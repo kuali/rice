@@ -56,6 +56,7 @@ public interface ContextDefinitionContract extends Versioned, Identifiable {
 	String getTypeId();
 	
 	
+	// TODO: this java doc is confusing
 	/**
 	 * Returns the set of agendas contained within the context definition. 
 	 * This method should never return null but can return null.

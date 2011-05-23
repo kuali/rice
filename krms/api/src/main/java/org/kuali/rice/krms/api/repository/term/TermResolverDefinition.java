@@ -47,8 +47,8 @@ import org.kuali.rice.krms.api.repository.BuilderUtils;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = TermResolverDefinition.Constants.TYPE_NAME, propOrder = {
 		TermResolverDefinition.Elements.ID,
-		TermResolverDefinition.Elements.NAMESPACE_CODE,
 		TermResolverDefinition.Elements.NAME,
+        TermResolverDefinition.Elements.NAMESPACE_CODE,
         TermResolverDefinition.Elements.CONTEXT_ID,
 		TermResolverDefinition.Elements.TYPE_ID,
 		TermResolverDefinition.Elements.OUTPUT,
@@ -142,6 +142,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 			setId(id);
 			setNamespaceCode(namespaceCode);
 			setName(name);
+			setContextId(contextId);
 			setTypeId(typeId);
 			setOutput(output);
 			setPrerequisites(prerequisites);
@@ -317,7 +318,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		 * @return the parameterNames
 		 */
 		public Set<String> getParameterNames() {
-			return this.parameterNames;
+			return (parameterNames == null) ? Collections.<String>emptySet() : parameterNames;
 		}
 		
 		/**

@@ -102,7 +102,8 @@ class AgendaBoServiceImplTest {
 		attributeBo2.setValue( ATTR_VALUE_2 );
 		attributeBo2.attributeDefinition = ADB2;
 		Set<AgendaAttributeBo> attributes = [attributeBo1, attributeBo2]
-		TEST_AGENDA_BO.setAttributes(attributes);
+        
+		TEST_AGENDA_BO.setAttributeBos(attributes);
 	}
 
 	@Before

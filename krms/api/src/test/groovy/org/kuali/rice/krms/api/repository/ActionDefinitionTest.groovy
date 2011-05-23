@@ -71,8 +71,9 @@ class ActionDefinitionTest {
 		ActionDefinition.Builder.create(null, null, null, null, null, null)
 	}	
 
-	@Test(expected=IllegalArgumentException.class)
-	void test_ActionDefinition_Builder_create_fail_null_action_id() {
+	@Test
+	void test_ActionDefinition_Builder_create_null_action_id() {
+        // null ID is needed to be able to create
 		ActionDefinition.Builder.create(null, ACTION_NAME_1, NAMESPACE, TYPE_ID, RULE_ID_1, SEQUENCE_1)
 	}
 

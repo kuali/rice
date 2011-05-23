@@ -4,28 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
-import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeRuleEntry;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeSubAgendaEntry;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
-import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 /**
@@ -51,11 +40,14 @@ public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements 
     			contextSelectionCriteria.getContextQualifiers(),
     			contextSelectionCriteria.getNamespaceCode());
     	Map<String, String> contextQualifiers = new HashMap<String,String>();
+    	
+    	// TODO: use new criteria API so we can match multiple qualifiers at once.
+    	
     	contextQualifiers.put("namespace", contextSelectionCriteria.getNamespaceCode());
     	contextQualifiers.put("name", contextSelectionCriteria.getName());
-    	for(String attributeId : attributesById.keySet()) {
-			contextQualifiers.put("attributes.attributeDefinitionId", attributeId);
-			contextQualifiers.put("attributes.value", attributesById.get(attributeId));
+    	for(Entry<String,String> attributeEntry : attributesById.entrySet()) {
+			contextQualifiers.put("attributes.attributeDefinitionId", attributeEntry.getKey());
+			contextQualifiers.put("attributes.value", attributeEntry.getValue());
 		}    	
     	
     	List<ContextBo> resultBos = (List<ContextBo>) getBusinessObjectService().findMatching(ContextBo.class, contextQualifiers);
@@ -112,7 +104,7 @@ public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements 
 	public List<RuleDefinition> getRules(List<String> ruleIds) {
 		Map<String,String> fieldValues = new HashMap<String,String>();
 		for (String ruleId : ruleIds){
-			fieldValues.put("ruleId", ruleId);
+			fieldValues.put("id", ruleId);
 		}
 		Collection<RuleBo> bos = getBusinessObjectService().findMatching(RuleBo.class, fieldValues);
 		ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();

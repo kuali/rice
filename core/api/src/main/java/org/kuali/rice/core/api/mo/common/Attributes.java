@@ -55,7 +55,7 @@ public final class Attributes implements Serializable {
     }
 
     private Attributes(final Map<String, String> map) {
-        this.keyValues = new HashMap<String, String>(map);
+        this.keyValues = map;
     }
 
     /**
@@ -72,7 +72,7 @@ public final class Attributes implements Serializable {
      * @throws IllegalArgumentException if map is null
      */
     public static Attributes fromMap(Map<String, String> map) {
-        return new Attributes(map);
+        return new Attributes(new HashMap<String, String>(map));
     }
 
      /**
@@ -98,8 +98,12 @@ public final class Attributes implements Serializable {
      * @return Attributes
      * @throws IllegalArgumentException if keyValue is null
      */
-    public static Attributes fromKeyValue(KeyValue keyValue) {
-        return new Attributes(Collections.singletonMap(keyValue.getKey(), keyValue.getValue()));
+    public static Attributes fromKeyValues(KeyValue... keyValues) {
+        Map<String, String> map = new HashMap<String, String>();
+        for (KeyValue keyValue : keyValues) {
+            map.put(keyValue.getKey(), keyValue.getValue());
+        }
+        return new Attributes(map);
     }
 
     /**

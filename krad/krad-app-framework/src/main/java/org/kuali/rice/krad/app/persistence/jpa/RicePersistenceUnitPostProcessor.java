@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa;
-
-import javax.sql.DataSource;
+package org.kuali.rice.krad.app.persistence.jpa;
 
 import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
+
+import javax.sql.DataSource;
 
 public class RicePersistenceUnitPostProcessor implements PersistenceUnitPostProcessor {
 	static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RicePersistenceUnitPostProcessor.class);

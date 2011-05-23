@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
+package org.kuali.rice.krad.app.persistence.jpa;
 
 import org.kuali.rice.core.framework.persistence.jpa.NullEntityManagerFactory;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

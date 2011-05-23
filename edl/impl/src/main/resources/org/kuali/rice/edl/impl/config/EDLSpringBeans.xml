@@ -267,7 +267,7 @@
 	</bean>
 
 	<!-- START JPA CONFIGURATION -->
-	<bean id="edlEntityManagerFactory" class="org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
+	<bean id="edlEntityManagerFactory" class="org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
 		<constructor-arg value="rice.kew" />
 		<constructor-arg ref="enWorkflowDataSource" />
 	</bean>

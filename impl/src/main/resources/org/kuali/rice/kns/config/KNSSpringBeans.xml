@@ -1138,18 +1138,18 @@
 		<property name="defaultDataSource" ref="knsApplicationDataSource"/>
 		<property name="persistenceUnitPostProcessors">
   			<list>
-  				<bean class="org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa.RicePersistenceUnitPostProcessor" />
+  				<bean class="org.kuali.rice.krad.app.persistence.jpa.RicePersistenceUnitPostProcessor" />
   			</list>
   		</property>
 	</bean>
 
-  <bean id="knsApplicationEntityManagerFactory" class="org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
+  <bean id="knsApplicationEntityManagerFactory" class="org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
     <constructor-arg value="rice.kns.application"/>
     <constructor-arg ref="knsApplicationDataSource" />
     <constructor-arg value="rice.kns" />
   </bean>
 
-  <bean id="knsServerEntityManagerFactory" class="org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
+  <bean id="knsServerEntityManagerFactory" class="org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
     <constructor-arg value="rice.kns.server"/>
     <constructor-arg ref="knsServerDataSource"/>
     <constructor-arg value="rice.kns" />

@@ -22,7 +22,7 @@
           <property name="objectAttributeName" value="addressType"/>
           <property name="primitiveAttributes">
             <list>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="PrimitiveAttributeDefinition" p:sourceName="type" p:targetName="type"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="type" p:targetName="type"/>
             </list>
           </property>
         </bean>
@@ -73,7 +73,7 @@
     <property name="shortLabel" value="Street 1"/>
     <property name="maxLength" value="19"/>
     <property name="validationPattern">
-      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="name" value="street1"/>
     <property name="label" value="Street 1"/>
@@ -86,7 +86,7 @@
     <property name="shortLabel" value="Street 2"/>
     <property name="maxLength" value="19"/>
     <property name="validationPattern">
-      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="name" value="street2"/>
     <property name="label" value="Street 2"/>
@@ -112,7 +112,7 @@
     <property name="shortLabel" value="Province"/>
     <property name="maxLength" value="32"/>
     <property name="validationPattern">
-      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="name" value="province"/>
     <property name="label" value="Province"/>
@@ -125,7 +125,7 @@
     <property name="shortLabel" value="Country"/>
     <property name="maxLength" value="25"/>
     <property name="validationPattern">
-      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="name" value="country"/>
     <property name="label" value="Country"/>
@@ -151,21 +151,21 @@
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Address"/>
     <property name="criteriaFields">
       <list>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="addressType.type"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="city"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="province"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="country"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="addressType.type"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="city"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="province"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="country"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="addressId"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="addressType.type"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street1"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street2"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="city"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="province"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="country"/>
+        <bean parent="AttributeField" p:propertyName="addressId"/>
+        <bean parent="AttributeField" p:propertyName="addressType.type"/>
+        <bean parent="AttributeField" p:propertyName="street1"/>
+        <bean parent="AttributeField" p:propertyName="street2"/>
+        <bean parent="AttributeField" p:propertyName="city"/>
+        <bean parent="AttributeField" p:propertyName="province"/>
+        <bean parent="AttributeField" p:propertyName="country"/>
       </list>
     </property>
   </bean>
@@ -178,13 +178,13 @@
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="addressId"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="addressType.type"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street1"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street2"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="city"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="province"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="country"/>
+              <bean parent="AttributeField" p:propertyName="addressId"/>
+              <bean parent="AttributeField" p:propertyName="addressType.type"/>
+              <bean parent="AttributeField" p:propertyName="street1"/>
+              <bean parent="AttributeField" p:propertyName="street2"/>
+              <bean parent="AttributeField" p:propertyName="city"/>
+              <bean parent="AttributeField" p:propertyName="province"/>
+              <bean parent="AttributeField" p:propertyName="country"/>
             </list>
           </property>
         </bean>

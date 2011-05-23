@@ -57,7 +57,7 @@
     <property name="shortLabel" value="Name"/>
     <property name="maxLength" value="100"/>
     <property name="validationPattern">
-      <bean xmlns:p="http://www.springframework.org/schema/p" parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="controlField">
       <bean parent="TextControl" p:size="50"/>
@@ -121,9 +121,9 @@
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="authorName"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="email"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="active"/>
+              <bean parent="AttributeField" p:propertyName="authorName"/>
+              <bean parent="AttributeField" p:propertyName="email"/>
+              <bean parent="AttributeField" p:propertyName="active"/>
             </list>
           </property>
         </bean>
@@ -132,8 +132,8 @@
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="extension.accountNumber"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="extension.bankName"/>
+              <bean parent="AttributeField" p:propertyName="extension.accountNumber"/>
+              <bean parent="AttributeField" p:propertyName="extension.bankName"/>
             </list>
           </property>
         </bean>
@@ -143,12 +143,12 @@
           <property name="propertyName" value="addresses"/>
           <property name="items">
             <list>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="type"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street1"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="street2"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="city"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="province"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="country"/>
+              <bean parent="AttributeField" p:propertyName="type"/>
+              <bean parent="AttributeField" p:propertyName="street1"/>
+              <bean parent="AttributeField" p:propertyName="street2"/>
+              <bean parent="AttributeField" p:propertyName="city"/>
+              <bean parent="AttributeField" p:propertyName="province"/>
+              <bean parent="AttributeField" p:propertyName="country"/>
             </list>
           </property>
           <property name="layoutManager.summaryFields">
@@ -164,12 +164,12 @@
           <property name="propertyName" value="books"/>
           <property name="items">
             <list>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="title"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="isbn"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="price"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="rating"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="publisher"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="publicationDate"/>
+              <bean parent="AttributeField" p:propertyName="title"/>
+              <bean parent="AttributeField" p:propertyName="isbn"/>
+              <bean parent="AttributeField" p:propertyName="price"/>
+              <bean parent="AttributeField" p:propertyName="rating"/>
+              <bean parent="AttributeField" p:propertyName="publisher"/>
+              <bean parent="AttributeField" p:propertyName="publicationDate"/>
             </list>
           </property>
           <property name="layoutManager.summaryFields">
@@ -186,18 +186,18 @@
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Author"/>
     <property name="criteriaFields">
       <list>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="authorName"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="email"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="LookupCriteriaAttributeField" p:propertyName="active"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="authorName"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="email"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="authorId"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="authorName"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="email"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="phoneNbr"/>
-        <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="active"/>
+        <bean parent="AttributeField" p:propertyName="authorId"/>
+        <bean parent="AttributeField" p:propertyName="authorName"/>
+        <bean parent="AttributeField" p:propertyName="email"/>
+        <bean parent="AttributeField" p:propertyName="phoneNbr"/>
+        <bean parent="AttributeField" p:propertyName="active"/>
       </list>
     </property>
   </bean>

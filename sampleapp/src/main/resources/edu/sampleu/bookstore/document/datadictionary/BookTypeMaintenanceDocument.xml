@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   <bean id="BookTypeMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
     <property name="workflowPropertyGroups">
       <list>
         <bean parent="WorkflowPropertyGroup">
           <property name="workflowProperties">
             <list>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="WorkflowProperty" p:path="oldMaintainableObject.businessObject"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="WorkflowProperty" p:path="newMaintainableObject.businessObject"/>
+              <bean parent="WorkflowProperty" p:path="oldMaintainableObject.businessObject"/>
+              <bean parent="WorkflowProperty" p:path="newMaintainableObject.businessObject"/>
             </list>
           </property>
         </bean>
@@ -22,10 +22,10 @@
           <property name="title" value="Add/Edit Book Type"/>
           <property name="items">
             <list>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="typeCode"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="name"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="description"/>
-              <bean xmlns:p="http://www.springframework.org/schema/p" parent="AttributeField" p:propertyName="active"/>
+              <bean parent="AttributeField" p:propertyName="typeCode"/>
+              <bean parent="AttributeField" p:propertyName="name"/>
+              <bean parent="AttributeField" p:propertyName="description"/>
+              <bean parent="AttributeField" p:propertyName="active"/>
             </list>
           </property>
         </bean>

@@ -77,26 +77,26 @@
 	border-bottom: 1px dotted #C9C9C9;
 	border-top: 1px dotted #C9C9C9;
 	clear: both;
-	color: #777777;
+	color: #FFFFFF;
 	font-family: Arial, Helvetica, sans-serif;
 	letter-spacing: 0.02em;
 	padding: 3px 0 3px 15px;
-	background: #E4E4E4;
+	background: #666666;
 	font-size: 0.8em;
  }
  
  .breadcrumbs span{
-	color: #666;
+	color: #FFF;
  }
  
  .breadcrumbs a{
-	color: #666;
-	text-decoration: none;
+	color: #FFF;
+	text-decoration: underline;
  }
  
  .breadcrumbs a:visited{
-	color: #666;
-	text-decoration: none;
+	color: #FFF;
+	text-decoration: underline;
  }
  
  .breadcrumbs a:focus, .breadcrumbs a:hover{
@@ -104,9 +104,30 @@
  }
  
  .breadcrumbs .current{
-	color: #000;
+	color: #FFF;
  }
 
+
+.ui-datepicker-calendar td { text-align:center; padding:.2em}
+
+
+.ui-datepicker-title select {font-size:.7em}
+
+
+.ui-datepicker-title { text-align:center}
+
+
+.ui-datepicker-calendar .ui-state-default {border:none;
+	background:none;
+	font-weight: normal;
+	color: #9c1c1c;
+	font-size:.7em}
  
  
  
+ 
+ 
+ 
+ .ui-datepicker-buttonpane button { font-size:.7em}
+ 
+  .ui-datepicker-buttonpane { text-align:center; background-color:#999999}

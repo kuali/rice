@@ -44,7 +44,7 @@ table.datatable td, th {
 	padding-top: 0.2em;
 	padding-bottom: 0.2em;
 	vertical-align: middle;
-	font-size:.8em;
+	font-size:.7em;
 }
 
 table.datatable th[scope="row"].collection-header {
@@ -58,13 +58,15 @@ table.datatable td.collection-header {
 	border-style: none;
 }	
 
-table.datatable th[scope="col"] { text-align:center;font-size:.8em;
+table.datatable th[scope="col"] {
+	text-align:center;
+	font-size:0.7em;padding:.5em;
 }
 
 table.datatable th[scope="row"] {
 	text-align:right;
 	vertical-align: middle;
-	background: url(../../images/th-back.gif);	
+	background: url(../../images/th-back.gif); padding:.5em;
 }
 
 .collection-header th[scope="row"] { 
@@ -80,4 +82,11 @@ table.datatable {
 	border-right: 1px solid #999;
 	border-bottom: 1px solid #999;
 	margin-bottom: 10px;
+}
+
+
+.dataTables_info, .dataTables_length{ font-size:.7em}
+
+tr .field_attribute.group_docnotes-addField {
+	background: url(../../images/th-back1.gif) bottom;
 }

@@ -48,8 +48,8 @@ div#maincontent h3 {
 /*EXPANDABLE HEADER BEGIN*/
 
 div.grouping-header-expandable {
-	border-radius: 8px;
-	margin-bottom: 0px;
+	margin-bottom: 12px;
+	margin-top: 8px;
 }
 div.grouping-header-expandable a {
 	color:#000;
@@ -93,7 +93,8 @@ div.grouping-header-expandable h3 img {
 	margin-top:4px;
 	margin-bottom: 4px;
 	vertical-align: middle;
-	font-size:.9em;
+	font-size:0.7em;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 #viewpage_div .page_header .grouping-header-expandable h3 {
 	font-size: 0.9em;
@@ -107,14 +108,12 @@ div.grouping-header-expandable h3 img {
 
 
 .header h3 {
-	font-size: 0.9em;
+	font-size: 0.7em;
 	background-color:#666666;
-	/* [disabled]border-right: 1px solid #999; */
-	/* [disabled]border-left: 1px solid #999; */
-	/* [disabled]border-top: 1px solid #999; */
 	color: #FFF;
 	padding: 3px;
 	font-weight: bold;
+	border-top: 1px solid #999;
 }
 
 .header h4 {
@@ -127,6 +126,3 @@ div.grouping-header-expandable h3 img {
 	padding: 3px;
 	font-weight: bold;
 }
-
-
-

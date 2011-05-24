@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.kim.api.responsibility;
 
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
-
-import java.util.List;
 
 /**
  * This is the contract for a Permission. Represents a single permission within the system.
@@ -61,9 +59,9 @@ public interface ResponsibilityContract extends Versioned, GloballyUnique, Inact
 	String getTemplateId();   
 	
    /** 
-	 * List of Attributes for a Permission. 
+	 * Attributes for a Permission.
 	 * 
 	 * @ return attributes
 	 */
-    List<? extends KimAttributeDataContract> getAttributes();
+    Attributes getAttributes();
 }

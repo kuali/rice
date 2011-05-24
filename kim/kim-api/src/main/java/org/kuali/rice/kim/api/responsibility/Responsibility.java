@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.api.responsibility;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -23,22 +22,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * An immutable representation of a {@link ResponsibilityContract}.
@@ -80,9 +74,8 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
     @XmlElement(name = Responsibility.Elements.TEMPLATE_ID, required = true)
     private final String templateId;
 
-    @XmlElementWrapper(name = Elements.ATTRIBUTES, required = false)
-    @XmlElement(name = Elements.ATTRIBUTE, required = false)
-    private final List<KimAttributeData> attributes;
+    @XmlElement(name = Elements.ATTRIBUTES, required = false)
+    private final Attributes attributes;
 
     @XmlElement(name = Responsibility.Elements.ACTIVE, required = false)
     private boolean active;
@@ -124,13 +117,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         this.name = builder.getName();
         this.description = builder.getDescription();
         this.templateId = builder.getTemplateId();
-        final List<KimAttributeData> temp = new ArrayList<KimAttributeData>();
-        if (!CollectionUtils.isEmpty(builder.getAttributes())) {
-            for (KimAttributeData.Builder attribute : builder.getAttributes()) {
-                temp.add(attribute.build());
-            }
-        }
-        this.attributes = Collections.unmodifiableList(temp);
+        this.attributes = builder.getAttributes();
         this.active = builder.isActive();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
@@ -190,7 +177,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
 	 * @see ResponsibilityContract#getAttributes()
 	 */
 	@Override
-	public List<KimAttributeData> getAttributes() {
+	public Attributes getAttributes() {
 		return this.attributes;
 	}
 
@@ -234,7 +221,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         private String name;
         private String description;
         private String templateId;
-        private List<KimAttributeData.Builder> attributes;
+        private Attributes attributes;
         private Long versionNumber = 1L;
         private String objectId;
         private boolean active;
@@ -259,14 +246,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         public static Builder create(ResponsibilityContract contract) {
             Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), contract.getTemplateId());
             builder.setDescription(contract.getDescription());
-            List<KimAttributeData.Builder> attributeBuilders = new ArrayList<KimAttributeData.Builder>();
-            if (!CollectionUtils.isEmpty(contract.getAttributes())) {
-                for (KimAttributeDataContract attributeContract : contract.getAttributes()) {
-                    KimAttributeData.Builder attributeBuilder = KimAttributeData.Builder.create(attributeContract);
-                    attributeBuilders.add(attributeBuilder);
-                }
-            }
-            builder.setAttributes(Collections.unmodifiableList(attributeBuilders));
+            builder.setAttributes(contract.getAttributes());
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -362,11 +342,11 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         }
 
 		@Override
-		public List<KimAttributeData.Builder> getAttributes() {
+		public Attributes getAttributes() {
 			return attributes;
 		}
 		
-		public void setAttributes(List<KimAttributeData.Builder> attributes) {
+		public void setAttributes(Attributes attributes) {
             this.attributes = attributes;
         }
 		
@@ -396,7 +376,6 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         static final String DESCRIPTION = "description";
         static final String TEMPLATE_ID = "templateId"; 
         static final String ATTRIBUTES = "attributes";
-        static final String ATTRIBUTE = "attribute";
         static final String ACTIVE = "active";
     }
 }

@@ -14,10 +14,7 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -178,37 +175,5 @@ public class ImmutableKeyValue implements KeyValue, Comparable<KeyValue>{
     static class Elements {
         final static String KEY = "key";
         final static String VALUE = "value";
-    }
-
-    /** will adapt to an unmodifiable map/list. */
-    public static class ImmutableKeyValueMapAdapter extends XmlAdapter<Collection<ImmutableKeyValue>, Map<String, String>> {
-        @Override
-        public Map<String, String> unmarshal(final Collection<ImmutableKeyValue> vs) {
-            if (vs == null) {
-                return null;
-            }
-            final Map<String, String> m = new HashMap<String, String>();
-            for (ImmutableKeyValue v : vs) {
-                if (v != null) {
-                    m.put(v.getKey(), v.getValue());
-                }
-            }
-            return Collections.unmodifiableMap(m);
-        }
-
-        @Override
-        public Collection<ImmutableKeyValue> marshal(final Map<String, String> vs) {
-            if (vs == null) {
-                return null;
-            }
-
-           final  Collection<ImmutableKeyValue> c = new ArrayList<ImmutableKeyValue>();
-            for (Map.Entry<String, String> v : vs.entrySet()) {
-                if (v != null) {
-                    c.add(ImmutableKeyValue.fromMapEntry(v));
-                }
-            }
-            return Collections.unmodifiableCollection(c);
-        }
     }
 }

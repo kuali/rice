@@ -18,8 +18,10 @@ package org.kuali.rice.kim.impl.common.attribute
 
 import javax.persistence.Transient
 import org.apache.commons.lang.StringUtils
+import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
+import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
@@ -45,5 +47,26 @@ abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implemen
             kimType = KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId));
         }
         return kimType;
+    }
+
+    static <T extends KimAttributeDataBo> Attributes toAttributes(Collection<T> bos) {
+        if(bos != null) {
+            def m = [:]
+            bos.each {
+                if (it != null) {
+                    KimTypeAttribute attribute = null;
+                    if ( it.kimType != null ) {
+                        attribute = KimTypeBo.to(it.kimType).getAttributeDefinitionById( it.getKimAttributeId() );
+                    }
+                    if ( attribute != null ) {
+                        m[attribute.getKimAttribute().getAttributeName()] = it.getAttributeValue();
+                    } else {
+                        m[it.getKimAttribute().getAttributeName()] = it.getAttributeValue();
+                    }
+                }
+            }
+            return Attributes.fromMap(m)
+        }
+        return Attributes.empty();
     }
 }

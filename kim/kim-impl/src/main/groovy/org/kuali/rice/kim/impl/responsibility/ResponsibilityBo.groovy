@@ -28,8 +28,10 @@ import javax.persistence.Table
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
+import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.responsibility.Responsibility
 import org.kuali.rice.kim.api.responsibility.ResponsibilityContract
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
@@ -68,11 +70,17 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 
     @OneToMany(targetEntity=ResponsibilityAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
-    List<ResponsibilityAttributeBo> attributes
+    List<ResponsibilityAttributeBo> responsibilityAttributes
 
     @OneToMany(targetEntity=RoleResponsibilityBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
-    List<RoleResponsibilityBo> rolePermissions
+    List<RoleResponsibilityBo> roleResponsibilities
+
+    Attributes attributes
+
+    Attributes getAttributes() {
+        return KimAttributeDataBo.toAttributes(responsibilityAttributes)
+    }
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -104,9 +112,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
         bo.description = im.description
         bo.active = im.active
         bo.templateId = im.templateId
-        bo.attributes = im.attributes.collect {
-            ResponsibilityAttributeBo.from(it)
-        }
+        bo.attributes = im.attributes
         bo.versionNumber = im.versionNumber
         bo.objectId = im.objectId;
 

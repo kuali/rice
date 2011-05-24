@@ -20,11 +20,8 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
+import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.common.attribute.KimAttribute
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData
-import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
-import org.kuali.rice.kim.api.permission.Permission
-import org.kuali.rice.kim.api.permission.PermissionContract
 import org.kuali.rice.kim.api.type.KimType
 
 class ResponsibilityTest {
@@ -69,65 +66,47 @@ class ResponsibilityTest {
 	}
 	
 	private static final String XML = """
-		<responsibility xmlns="http://rice.kuali.org/kim/v2_0">
-			<id>${ID}</id>
-			<namespaceCode>${NAMESPACE_CODE}</namespaceCode>
-			<name>${NAME}</name>
-			<description>${DESCRIPTION}</description>
-			<templateId>${TEMPLATE_ID}</templateId>
-			<attributes>
-			    <attribute>
-	                <id>${ATTRIBUTES_1_ID}</id>
-	                <attributeValue>${ATTRIBUTES_1_VALUE}</attributeValue>
-	                <assignedToId>${ATTRIBUTES_1_PERMISSION_ID}</assignedToId>
-	                <versionNumber>${VERSION_NUMBER}</versionNumber>
-	                <objectId>${ATTRIBUTES_1_OBJ_ID}</objectId>
-	                <kimTypeId>${KIM_TYPE_1_ID}</kimTypeId>
-	                <kimType>
-	                    <id>${KIM_TYPE_1_ID}</id>
-	                    <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
-	                    <active>${ACTIVE}</active>
-	                    <versionNumber>${VERSION_NUMBER}</versionNumber>
-	                    <objectId>${KIM_TYPE_1_OBJ_ID}</objectId>
-	                </kimType>
-	                <kimAttribute>
-                    	<id>${KIM_ATTRIBUTE_1_ID}</id>
-                    	<componentName>${KIM_ATTRIBUTE_1_COMPONENT_NAME}</componentName>
-						<attributeName>${KIM_ATTRIBUTE_1_NAME}</attributeName>
-						<namespaceCode>${NAMESPACE_CODE}</namespaceCode>
-						<versionNumber>${VERSION_NUMBER}</versionNumber>
-					</kimAttribute>					
-				</attribute>  
-			</attributes>
-			<active>${ACTIVE}</active>
-			<versionNumber>${VERSION_NUMBER}</versionNumber>
-        	<objectId>${OBJECT_ID}</objectId>
-		</responsibility>
+        <ns2:responsibility xmlns:ns2="http://rice.kuali.org/kim/v2_0" xmlns="http://rice.kuali.org/core/v2_0">
+          <ns2:id>${ID}</ns2:id>
+          <ns2:namespaceCode>${NAMESPACE_CODE}</ns2:namespaceCode>
+          <ns2:name>${NAME}</ns2:name>
+          <ns2:description>${DESCRIPTION}</ns2:description>
+          <ns2:templateId>${TEMPLATE_ID}</ns2:templateId>
+          <ns2:active>${ACTIVE}</ns2:active>
+          <ns2:attributes>
+            <item xmlns="" xmlns:ns3="http://rice.kuali.org/core/v2_0">
+              <ns3:key>${KIM_ATTRIBUTE_1_NAME}</ns3:key>
+              <ns3:value>${ATTRIBUTES_1_VALUE}</ns3:value>
+            </item>
+          </ns2:attributes>
+          <ns2:versionNumber>${VERSION_NUMBER}</ns2:versionNumber>
+          <ns2:objectId>${OBJECT_ID}</ns2:objectId>
+        </ns2:responsibility>
 		"""
 	
     @Test
     void happy_path() {
-        Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID)
+        Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID)
     }
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_null() {
-		Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).setVersionNumber(null);
+		Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).setVersionNumber(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_less_than_1() {
-		Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).setVersionNumber(-1);
+		Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).setVersionNumber(-1);
 	}
 	
 	@Test
 	void test_copy() {
-		def o1b = Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID)
+		def o1b = Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID)
 		o1b.description = DESCRIPTION
 
 		def o1 = o1b.build()
 
-		def o2 = Permission.Builder.create(o1).build()
+		def o2 = Responsibility.Builder.create(o1).build()
 
 		Assert.assertEquals(o1, o2)
 	}
@@ -141,7 +120,8 @@ class ResponsibilityTest {
 	  Responsibility responsibility = this.create()
 	  marshaller.marshal(responsibility,sw)
 	  String xml = sw.toString()
-
+      println(responsibility)
+      println(xml)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
 	  Object actual = unmarshaller.unmarshal(new StringReader(xml))
 	  Object expected = unmarshaller.unmarshal(new StringReader(XML))
@@ -155,16 +135,7 @@ class ResponsibilityTest {
 			String getName() {ResponsibilityTest.NAME}
 			String getDescription() {ResponsibilityTest.DESCRIPTION}
 			String getTemplateId() {ResponsibilityTest.TEMPLATE_ID}
-			List<KimAttributeData> getAttributes() {[
-				KimAttributeData.Builder.create(new KimAttributeDataContract() {
-					 String getId() {ResponsibilityTest.ATTRIBUTES_1_ID}
-					 String getAttributeValue() {ResponsibilityTest.ATTRIBUTES_1_VALUE}
-                     String getAssignedToId() {ResponsibilityTest.ATTRIBUTES_1_PERMISSION_ID}
-					 Long getVersionNumber() {ResponsibilityTest.ATTRIBUTES_1_VER_NBR}
-                     String getKimTypeId() {ResponsibilityTest.KIM_TYPE_1_ID}
-					 KimType getKimType() {ResponsibilityTest.KIM_TYPE_1}
-                     KimAttribute getKimAttribute() {ResponsibilityTest.KIM_ATTRIBUTE_1}
-                     String getObjectId() {ResponsibilityTest.ATTRIBUTES_1_OBJ_ID}}).build() ]}
+			Attributes getAttributes() { Attributes.fromStrings(ResponsibilityTest.KIM_ATTRIBUTE_1_NAME, ResponsibilityTest.ATTRIBUTES_1_VALUE)}
 			boolean isActive() {ResponsibilityTest.ACTIVE.toBoolean()}
 			Long getVersionNumber() {ResponsibilityTest.VERSION_NUMBER}
 			String getObjectId() {ResponsibilityTest.OBJECT_ID}

@@ -112,17 +112,6 @@ public class PageGroup extends Group {
     }
 
     /**
-     * onDocumentReady script configured on the <code>View</code> gets placed in
-     * a document ready jQuery block
-     * 
-     * @see org.kuali.rice.kns.uif.core.ComponentBase#getSupportsOnDocumentReady()
-     */
-    @Override
-    public boolean getSupportsOnDocumentReady() {
-        return true;
-    }
-
-    /**
      * When this is true, the first field of the kualiForm will be focused by
      * default, unless the parameter focusId is set on the form (by an
      * actionField), then that field will be focused instead. When this setting

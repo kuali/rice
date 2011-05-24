@@ -210,5 +210,4 @@ public class FieldBase extends ComponentBase implements Field {
 	public void setLabelFieldRendered(boolean labelFieldRendered) {
 		this.labelFieldRendered = labelFieldRendered;
 	}
-
 }

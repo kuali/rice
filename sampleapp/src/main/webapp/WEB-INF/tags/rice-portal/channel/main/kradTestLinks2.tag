@@ -21,6 +21,7 @@
   <ul class="chan">
 	 <li><portal:portalLink displayTitle="true" title="Test View 1" url="${ConfigProperties.application.url}/spring/uitest?viewId=Travel-testView1_KNS&methodToCall=start" /></li>
      <li><portal:portalLink displayTitle="true" title="Test View 2" url="${ConfigProperties.application.url}/spring/uitest?viewId=Travel-testView2_KNS&methodToCall=start" /></li>
+     <li><portal:portalLink displayTitle="true" title="Incident Report" url="${ConfigProperties.application.url}/spring/uitest?viewId=Travel-testView2_KNS&methodToCall=foo" /></li>
    </ul>
    <br/>
    <strong>BO Class Tests</strong>
@@ -54,6 +55,13 @@
      <li><portal:portalLink displayTitle="true" title="Rule" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&ruleBaseValuesId=1103&dataObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
      <li><portal:portalLink displayTitle="true" title="Rule Delegation" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&ruleDelegationId=1641&dataObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
   </ul>
-  
+  <strong>Financial</strong>
+  <ul class="chan">
+   <li><portal:portalLink displayTitle="true" title="Address Type Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.financial.bo.AddressType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+   <li><portal:portalLink displayTitle="true" title="Ownership Type Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.financial.bo.OwnershipType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+   <li><portal:portalLink displayTitle="true" title="Payment Term Type Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.financial.bo.PaymentTermType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+   <li><portal:portalLink displayTitle="true" title="Vendor Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.financial.bo.VendorDetail&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+   <li><portal:portalLink displayTitle="true" title="Vendor Maintenance" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.financial.bo.VendorDetail&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+  </ul>
 </div>
 <channel:portalChannelBottom />

@@ -39,12 +39,14 @@
          <c:if test="${not empty field.alternateDisplayValue}">
   	     	<c:out value="${field.alternateDisplayValue}"/>
   	     </c:if>
+
   	     <c:if test="${empty field.alternateDisplayValue}">
   	        <%-- If alternate display value is not present, look for additional property to display --%>
   	        <c:if test="${not empty field.additionalDisplayAttributeName}">
   	        	<s:bind path="${field.bindingInfo.bindingPath}">${status.value} - </s:bind>
   	        	<s:bind path="${field.additionalDisplayAttributeBindingInfo.bindingPath}">${status.value}</s:bind>
   	        </c:if>
+
   	        <%-- If either alternate value or additional property not preset, display the actual property value --%>
   	        <c:if test="${empty field.additionalDisplayAttributeName}">
   	     		<s:bind path="${field.bindingInfo.bindingPath}">${status.value}</s:bind>
@@ -54,27 +56,28 @@
     </c:when>
   
     <c:otherwise>          
-    
       <%-- render field summary --%>
       <krad:template component="${field.summaryMessageField}"/>
       
       <krad:template component="${field.control}" field="${field}"/>
-      
     </c:otherwise>
   </c:choose>
+
+  <%-- render field quickfinder --%>
+  <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
+
+  <%-- render field direct inquiry if field is editable --%>
+  <c:if test="${field.fieldDirectInquiry.render && !field.readOnly}">
+        <krad:template component="${field.fieldDirectInquiry}" componentId="${field.id}"/>
+  </c:if>
   
   <%-- render field label right --%>
   <c:if test="${renderLabel && (field.labelPlacement eq 'RIGHT')}">
     <krad:template component="${field.labelField}"/>
   </c:if>
-  
-  <%-- render field quickfinder --%>
-  <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
-  
-  <%-- render field direct inquiry if field is editable --%>
-  <c:if test="${field.fieldDirectInquiry.render && !field.readOnly}">
-        <krad:template component="${field.fieldDirectInquiry}" componentId="${field.id}"/>
-  </c:if>
+
+  <!-- placeholder for dynamic field markers -->
+  <span id="${field.id}_markers"></span>
 
   <c:if test="${!field.readOnly}">
     <%-- render field constraint --%>
@@ -84,6 +87,7 @@
   <%-- render field help --%>
   
 </krad:span>
+
 <c:if test="${!field.errorsField.alternateContainer}">
 	<krad:template component="${field.errorsField}"/>
 </c:if>

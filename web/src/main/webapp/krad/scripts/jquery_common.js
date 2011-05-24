@@ -858,6 +858,35 @@ function showFieldIcon(errorsDivId, errorCount){
 	}
 }
 
+/**
+ * Adds the icon that indicates the contents of a field have changed from the compared value (for instance the new side
+ * on maintenance documents) to the field markers span
+ *
+ * @param fieldId - id for the field the icon should be added to
+ */
+function showChangeIcon(fieldId) {
+    var fieldMarkerSpan = jq("#" + fieldId + "_markers");
+    var fieldIcon = jq("#" + fieldId + "_changeIcon");
+
+    if (fieldMarkerSpan.length > 0 && fieldIcon.length == 0) {
+       fieldMarkerSpan.append("<img id='"+ fieldId +"_changeIcon' alt='change' src='/kr-dev/krad/images/asterisk_orange.png'>");
+    }
+}
+
+/**
+ * Add icon to a group header that indicates the data for the group has changed
+ *
+ * @param headerFieldId - id for the header field the icon should be added to
+ */
+function showChangeIconOnHeader(headerFieldId) {
+    var headerSpan = jq("#" + headerFieldId + "_header");
+    var headerIcon = jq("#" + headerFieldId + "_changeIcon");
+
+    if (headerSpan.length > 0 && headerIcon.length == 0) {
+       headerSpan.append("<img id='"+ headerFieldId +"_changeIcon' alt='change' src='/kr-dev/krad/images/asterisk_orange.png'>");
+    }
+}
+
 //Applies the watermark to the input with the id specified
 function createWatermark(id, watermark){
 	jq("#" + id).watermark(watermark);

@@ -124,19 +124,21 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * <p>
      * The following initialization is performed:
+     *
      * <ul>
+     * <li>Set ids for nested field components</li>
      * <li>Set defaults for binding</li>
      * <li>Default the model path if not set</li>
      * </ul>
-     * </p>
-     * 
+     *
      * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
      */
     @Override
     public void performInitialization(View view) {
         super.performInitialization(view);
+
+        setupIds();
 
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
@@ -148,9 +150,10 @@ public class AttributeField extends FieldBase implements DataBinding {
      * The following actions are performed:
      *
      * <ul>
+     * <li>Set the ids for the various attribute components, done again in finalize in
+     * case a nested component has been replaced</li>
      * <li>Sets up the client side validation for constraints on this field. In
      * addition, it sets up the messages applied to this field</li>
-     * <li>Set the ids for the various attribute components</li>
      * </ul>
      * 
      * @see org.kuali.rice.kns.uif.core.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
@@ -172,12 +175,14 @@ public class AttributeField extends FieldBase implements DataBinding {
             constraintMessageField.setMessageText(constraint);
         }
 
-        if (alternateDisplayAttributeBindingInfo != null && StringUtils.isNotBlank(getAlternateDisplayAttributeName())){
-        	alternateDisplayAttributeBindingInfo.setDefaults(view, getAlternateDisplayAttributeName());        	
+        if (alternateDisplayAttributeBindingInfo != null &&
+                StringUtils.isNotBlank(getAlternateDisplayAttributeName())) {
+            alternateDisplayAttributeBindingInfo.setDefaults(view, getAlternateDisplayAttributeName());
         }
-        
-        if (additionalDisplayAttributeBindingInfo != null && StringUtils.isNotBlank(getAdditionalDisplayAttributeName())){
-        	additionalDisplayAttributeBindingInfo.setDefaults(view, getAdditionalDisplayAttributeName());        	
+
+        if (additionalDisplayAttributeBindingInfo != null &&
+                StringUtils.isNotBlank(getAdditionalDisplayAttributeName())) {
+            additionalDisplayAttributeBindingInfo.setDefaults(view, getAdditionalDisplayAttributeName());
         }
         
         /**
@@ -206,8 +211,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * 
-     * This method sets the alternate display value to be displayed when the field 
+     * This method sets the alternate display value to be displayed when the field
      * is readonly. If alternate display property is set and attributesecurity
      * exists in that field, it displays the value based on that setting. Otherwise,
      * set the display value based on this fields security setting.
@@ -216,7 +220,6 @@ public class AttributeField extends FieldBase implements DataBinding {
      * @param model
      */
     private void setAlternateDisplayValue(View view, Object model){
-    	
     	AttributeSecurity attributeSecurity = null;
     	String bindingPath = null;
     	
@@ -229,14 +232,12 @@ public class AttributeField extends FieldBase implements DataBinding {
     	 * If alternate display property is set, check for that fields security
     	 */
     	if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())){
-    		
     		AttributeField alternateField = view.getViewIndex().getAttributeField(getAlternateDisplayAttributeBindingInfo());
     		
 			if (alternateField != null && alternateField.getAttributeSecurity() != null){
     			attributeSecurity = alternateField.getAttributeSecurity();
     			bindingPath = getAlternateDisplayAttributeBindingInfo().getBindingPath();
     		}
-			
 		}
     		
     	/**
@@ -280,7 +281,10 @@ public class AttributeField extends FieldBase implements DataBinding {
         if (getFieldLookup() != null) {
             getFieldLookup().setId(id + UifConstants.IdSuffixes.QUICK_FINDER);
         }
-        setId(id + UifConstants.IdSuffixes.ATTRIBUTE);
+
+        if (!StringUtils.contains(getId(), UifConstants.IdSuffixes.ATTRIBUTE)) {
+            setId(id + UifConstants.IdSuffixes.ATTRIBUTE);
+        }
     }
 
     /**

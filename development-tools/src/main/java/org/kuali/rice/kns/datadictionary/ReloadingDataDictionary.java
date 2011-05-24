@@ -90,7 +90,7 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
 				String filePathClassesDir = classFileResource.getFile().getAbsolutePath();
 				String sourceFilePath = StringUtils.replace(filePathClassesDir, classesDir, sourceDir);
 
-				File dictionaryFile = new File(sourceFilePath);
+				File dictionaryFile = new File(filePathClassesDir);
 				if (dictionaryFile.exists()) {
 					LOG.debug("Monitoring dictionary file: " + dictionaryFile.getName());
 					dictionaryFileMonitor.addFile(dictionaryFile);

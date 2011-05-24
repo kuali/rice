@@ -297,7 +297,7 @@
     	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     	<field-descriptor name="name" column="POSTAL_CNTRY_NM" jdbc-type="VARCHAR" />
-    	<!-- <field-descriptor name="postalCountryRestrictedIndicator" column="PSTL_CNTRY_RSTRC_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion3" />-->
+    	<field-descriptor name="restricted" column="PSTL_CNTRY_RSTRC_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
 		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
   </class-descriptor>
 

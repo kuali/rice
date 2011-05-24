@@ -49,7 +49,7 @@ import org.springframework.util.MethodInvoker;
  * @see org.kuali.rice.kns.uif.field.Field
  * @see org.kuali.rice.kns.uif.widget.Widget
  */
-public interface Component extends Serializable, Ordered {
+public interface Component extends Serializable, Ordered, ScriptEventSupport {
 
     /**
      * The unique id (within a given tree) for the component

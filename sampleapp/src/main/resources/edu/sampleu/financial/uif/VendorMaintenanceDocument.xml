@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+>
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+   <bean id="VendorMaintenanceDocument" parent="VendorMaintenanceDocument-parentBean" />
+   <bean id="VendorMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+      <property name="businessObjectClass" value="edu.sampleu.financial.bo.VendorDetail" />
+      <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+      <property name="lockingKeys">
+         <list>
+            <value>vendorHeaderGeneratedIdentifier</value>
+            <value>vendorDetailAssignedIdentifier</value>
+         </list>
+      </property>
+      <property name="documentTypeName" value="PVEN" />
+      <property name="workflowAttributes">
+         <ref bean="VendorMaintenanceDocument-workflowAttributes" />
+      </property>
+   </bean>
+
+   <bean id="VendorMaintenanceView" parent="VendorMaintenanceView-parentBean" />
+   <bean id="VendorMaintenanceView-parentBean" abstract="true" parent="MaintenanceView">
+      <property name="title" value="Vendor Maintenance Document" />
+      <property name="dataObjectClassName" value="edu.sampleu.financial.bo.VendorDetail" />
+      <property name="validateClientSide" value="false" />
+      <property name="items">
+         <list merge="true">
+            <bean parent="MaintenanceGroupSectionGridLayout">
+               <property name="items">
+                  <list>
+                     <bean parent="HeaderFour" p:headerText="General Information" p:colSpan="2"/>
+                     <bean parent="AttributeField" p:propertyName="vendorHeaderGeneratedIdentifier" />
+                     <bean parent="AttributeField" p:propertyName="vendorDetailAssignedIdentifier" />
+                     <bean parent="AttributeField" p:propertyName="vendorNumber" p:readOnly="true"/>
+                     <bean parent="AttributeField" p:propertyName="vendorParentIndicator" p:defaultValue="true"/>
+                     <bean parent="AttributeField" p:propertyName="vendorParentName" p:readOnly="true"/>
+                     <bean parent="AttributeField" p:propertyName="vendorName" />
+                     <bean parent="AttributeField" p:propertyName="vendorLastName" />
+                     <bean parent="AttributeField" p:propertyName="vendorFirstName" />
+                     <bean parent="HeaderFour" p:headerText="Corporate Information" p:colSpan="2"/>
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorTypeCode" p:required="true"/>
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorForeignIndicator" p:defaultValue="No" p:required="true"/>
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorTaxNumber" />
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorTaxTypeCode" />
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorOwnershipCode" p:required="true"/>
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorOwnershipCategoryCode" />
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorW9ReceivedIndicator" />
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorW8BenReceivedIndicator" />
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorFederalWithholdingTaxBeginningDate" />
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorFederalWithholdingTaxEndDate" />
+                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorDebarredIndicator" />
+                  </list>
+               </property>
+               <property name="title" value="Vendor" />
+            </bean>
+            <bean parent="MaintenanceCollectionGroupSection">
+               <property name="title" value="Address" />
+               <property name="collectionObjectClass" value="edu.sampleu.financial.bo.VendorAddress" />
+               <property name="propertyName" value="vendorAddresses" />
+               <property name="items">
+                  <list>
+                     <bean parent="AttributeField" p:propertyName="vendorAddressGeneratedIdentifier" />
+                     <bean parent="AttributeField" p:propertyName="vendorAddressTypeCode" />
+                     <bean parent="AttributeField" p:propertyName="vendorLine1Address" />
+                     <bean parent="AttributeField" p:propertyName="vendorLine2Address" />
+                     <bean parent="AttributeField" p:propertyName="vendorCityName" />
+                     <bean parent="AttributeField" p:propertyName="vendorStateCode" />
+                     <bean parent="AttributeField" p:propertyName="vendorZipCode" />
+                     <bean parent="AttributeField" p:propertyName="vendorAddressInternationalProvinceName" />
+                     <bean parent="AttributeField" p:propertyName="vendorCountryCode" />
+                     <bean parent="AttributeField" p:propertyName="vendorAttentionName" />
+                     <bean parent="AttributeField" p:propertyName="vendorBusinessToBusinessUrlAddress" />
+                     <bean parent="AttributeField" p:propertyName="vendorFaxNumber" />
+                     <bean parent="AttributeField" p:propertyName="vendorAddressEmailAddress" p:constraint="must be valid email address"/>
+                     <bean parent="AttributeField" p:propertyName="vendorDefaultAddressIndicator" />
+                     <bean parent="AttributeField" p:propertyName="vendorHeaderGeneratedIdentifier" />
+                     <bean parent="AttributeField" p:propertyName="vendorDetailAssignedIdentifier" />
+                     <bean parent="AttributeField" p:propertyName="active" />
+                  </list>
+               </property>
+               <property name="layoutManager.summaryTitle" value="Address" />
+               <property name="layoutManager.summaryFields">
+                  <list>
+                     <value>vendorAddressTypeCode</value>
+                     <value>vendorCityName</value>
+                  </list>
+               </property>
+               <property name="subCollections">
+                  <list>
+                     <bean parent="MaintenanceCollectionGroupSection">
+                        <property name="title" value="" />
+                        <property name="collectionObjectClass" value="edu.sampleu.financial.bo.VendorDefaultAddress" />
+                        <property name="propertyName" value="vendorDefaultAddresses" />
+                        <property name="items">
+                           <list>
+                              <bean parent="AttributeField" p:propertyName="vendorCampusCode" />
+                              <bean parent="AttributeField" p:propertyName="vendorAddressGeneratedIdentifier" />
+                              <bean parent="AttributeField" p:propertyName="vendorDefaultAddressGeneratedIdentifier" />
+                              <bean parent="AttributeField" p:propertyName="active" />
+                           </list>
+                        </property>
+                        <property name="layoutManager.summaryTitle" value="Default Address" />
+                        <property name="layoutManager.summaryFields">
+                           <list>
+                              <value>vendorCampusCode</value>
+                           </list>
+                        </property>
+                     </bean>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   
+    <bean id="VendorMaintenanceDocument-workflowAttributes" parent="VendorMaintenanceDocument-workflowAttributes-parentBean"/>
+    <bean id="VendorMaintenanceDocument-workflowAttributes-parentBean" abstract="true" parent="WorkflowAttributes"/>
+
+</beans>

@@ -49,7 +49,7 @@ import org.springframework.util.MethodInvoker;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ComponentBase implements Component, ScriptEventSupport {
+public abstract class ComponentBase implements Component {
     private static final long serialVersionUID = -4449335748129894350L;
 
     private String id;
@@ -113,6 +113,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
     @ReferenceCopy(newCollectionInstance = true)
     private transient Map<String, Object> context;
 
+    private Map<String, String> propertyExpressions;
     private List<PropertyReplacer> propertyReplacers;
 
     public ComponentBase() {
@@ -127,6 +128,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
         componentModifiers = new ArrayList<ComponentModifier>();
         componentOptions = new HashMap<String, String>();
         context = new HashMap<String, Object>();
+        propertyExpressions = new HashMap<String, String>();
         propertyReplacers = new ArrayList<PropertyReplacer>();
     }
 
@@ -341,6 +343,10 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
      */
     public void setRender(boolean render) {
         this.render = render;
+    }
+
+    public void setRender(String render) {
+      this.propertyExpressions.put("render", render);
     }
 
     /**
@@ -678,6 +684,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
         this.context.put(objectName, object);
     }
 
+    public Map<String, String> getPropertyExpressions() {
+        return propertyExpressions;
+    }
+
+    public void setPropertyExpressions(Map<String, String> propertyExpressions) {
+        this.propertyExpressions = propertyExpressions;
+    }
+
     /**
      * @see org.kuali.rice.kns.uif.core.Component#getPropertyReplacers()
      */
@@ -735,7 +749,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
      * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnDocumentReady()
      */
     public boolean getSupportsOnDocumentReady() {
-        return false;
+        return true;
     }
 
     /**

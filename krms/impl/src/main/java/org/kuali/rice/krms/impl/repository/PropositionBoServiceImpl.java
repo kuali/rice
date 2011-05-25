@@ -41,7 +41,7 @@ public final class PropositionBoServiceImpl implements PropositionBoService {
 		if (prop == null){
 	        throw new IllegalArgumentException("proposition is null");
 		}
-		if (null != prop.getPropId()) {
+		if (null != prop.getId()) {
 	            throw new IllegalStateException("for creation, PropositionDefinition.id must be null");
 	    }
 		
@@ -60,15 +60,15 @@ public final class PropositionBoServiceImpl implements PropositionBoService {
         if (prop == null) {
             throw new IllegalArgumentException("proposition is null");
         }
-		final String propIdKey = prop.getPropId();
+		final String propIdKey = prop.getId();
 		final PropositionDefinition existing = getPropositionById(propIdKey);
         if (existing == null) {
             throw new IllegalStateException("the proposition does not exist: " + prop);
         }
         final PropositionDefinition toUpdate;
-        if (!existing.getPropId().equals(prop.getPropId())){
+        if (!existing.getId().equals(prop.getId())){
         	final PropositionDefinition.Builder builder = PropositionDefinition.Builder.create(prop);
-        	builder.setPropId(existing.getPropId());
+        	builder.setId(existing.getId());
         	toUpdate = builder.build();
         } else {
         	toUpdate = prop;

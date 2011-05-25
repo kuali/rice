@@ -61,11 +61,14 @@ class PropositionBoServiceImplTest {
 	@BeforeClass
 	static void createSampleBOs() {
 		PropositionParameterBo bo1 = new PropositionParameterBo(id: "1000",
-			propId:"2001", value: "campusCode", parameterType: "T", sequenceNumber: new Integer("0"))
+			propId:"2001", value: "campusCode", parameterType: "T",
+			sequenceNumber: new Integer("0"), versionNumber: new Long(1))
 		PropositionParameterBo bo2 = new PropositionParameterBo(id: "1001",
-			propId:"2001", value: "BL", parameterType: "C", sequenceNumber: new Integer("1"))
+			propId:"2001", value: "BL", parameterType: "C", 
+			sequenceNumber: new Integer("1"), versionNumber: new Long(1))
 		PropositionParameterBo bo3 = new PropositionParameterBo(id: "1003",
-			propId:"2001", value: ComparisonOperator.EQUALS, parameterType: "F", sequenceNumber: new Integer("2"))
+			propId:"2001", value: ComparisonOperator.EQUALS, parameterType: "F", 
+			sequenceNumber: new Integer("2"), versionNumber: new Long(1))
 		for (bo in [bo1, bo2, bo3]) {
 		  boList.add(bo)
 		}
@@ -79,6 +82,7 @@ class PropositionBoServiceImplTest {
 			def String value = "campusCode"
 			def String parameterType = "T"
 			def Integer sequenceNumber = new Integer("0")
+			def Long versionNumber = new Long(1);
 		}).build()
 		PropositionParameter parm2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "1001"
@@ -86,6 +90,7 @@ class PropositionBoServiceImplTest {
 			def String value = "BL"
 			def String parameterType = "C"
 			def Integer sequenceNumber = new Integer("1")
+			def Long versionNumber = new Long(1);
 		}).build()
 		PropositionParameter parm3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "1003"
@@ -93,6 +98,7 @@ class PropositionBoServiceImplTest {
 			def String value = ComparisonOperator.EQUALS
 			def String parameterType = "F"
 			def Integer sequenceNumber = new Integer("2")
+			def Long versionNumber = new Long(1);
 		}).build()
 		for (p in [parm1, parm2, parm3]) {
 		  parmList.add(p)
@@ -413,7 +419,7 @@ class PropositionBoServiceImplTest {
 //		
 	private static createPropositionWithId() {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-			def String propId = "2002"
+			def String id = "2002"
 			def String description = "Is campus type = Bloomington"
             def String ruleId = "1"
             def String typeId = "1"
@@ -421,12 +427,13 @@ class PropositionBoServiceImplTest {
 			def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmList1
 			def String compoundOpCode = null
 			def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
+			def Long versionNumber = new Long(1)
 		}).build()
 	}
     
     private static createPropositionWithNullId() {
         return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-            def String propId = null
+            def String id = null
             def String description = "Is campus type = Bloomington"
             def String ruleId = "1"
             def String typeId = "1"
@@ -434,12 +441,13 @@ class PropositionBoServiceImplTest {
             def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmList1
             def String compoundOpCode = null
             def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
+			def Long versionNumber = new Long(1)
         }).build()
     }
 		
 	private static createPropositionABuilder() {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-			def String propId = "100"
+			def String id = "100"
 			def String description = "Is campus type = Muir"
             def String ruleId = "1"
 			def String typeId = "1"
@@ -447,12 +455,13 @@ class PropositionBoServiceImplTest {
 			def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmListA
 			def String compoundOpCode = null
 			def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
+			def Long versionNumber = new Long(1)
 		})
 	}
 		
 	private static createPropositionBBuilder() {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-			def String propId = "101"
+			def String id = "101"
 			def String description = "Is campus type = Thurgood Marshall"
             def String ruleId = "1"
 			def String typeId = "1"
@@ -460,12 +469,13 @@ class PropositionBoServiceImplTest {
 			def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmListB
 			def String compoundOpCode = null
 			def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
+			def Long versionNumber = new Long(1)
 		})
 	}
 		
 	private static createCompoundPropositionWithNullId() {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-			def String propId = null
+			def String id = null
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
             def String ruleId = "1"
 			def String typeId = "1"
@@ -473,6 +483,7 @@ class PropositionBoServiceImplTest {
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.getCode()
 			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionBoServiceImplTest.propositionABuilder, PropositionBoServiceImplTest.propositionBBuilder)
+			def Long versionNumber = new Long(1)
 		}).build()
 	}
 		
@@ -484,6 +495,7 @@ class PropositionBoServiceImplTest {
 			def String value = "campusCode"
 			def String parameterType = "T"
 			def Integer sequenceNumber = new Integer(0)
+			def Long versionNumber = new Long(1)
 		})
 		PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "1001"
@@ -491,6 +503,7 @@ class PropositionBoServiceImplTest {
 			def String value = "BL"
 			def String parameterType = "C"
 			def Integer sequenceNumber = new Integer(1)
+			def Long versionNumber = new Long(1)
 		})
 		PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "1003"
@@ -498,6 +511,7 @@ class PropositionBoServiceImplTest {
 			def String value = ComparisonOperator.EQUALS
 			def String parameterType = "F"
 			def Integer sequenceNumber = new Integer(2)
+			def Long versionNumber = new Long(1)
 		})
 		for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 			propParms.add (ppb)
@@ -512,6 +526,7 @@ class PropositionBoServiceImplTest {
 			def String value = "campusCode"
 			def String parameterType = "T"
 			def Integer sequenceNumber = new Integer(0)
+			def Long versionNumber = new Long(1)
 		})
 		PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "2001"
@@ -519,6 +534,7 @@ class PropositionBoServiceImplTest {
 			def String value = "Muir"
 			def String parameterType = "C"
 			def Integer sequenceNumber = new Integer(1)
+			def Long versionNumber = new Long(1)
 		})
 		PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "2002"
@@ -526,6 +542,7 @@ class PropositionBoServiceImplTest {
 			def String value = ComparisonOperator.EQUALS
 			def String parameterType = "F"
 			def Integer sequenceNumber = new Integer(2)
+			def Long versionNumber = new Long(1)
 		})
 		for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 			propParms.add (ppb)
@@ -540,6 +557,7 @@ class PropositionBoServiceImplTest {
 			def String value = "campusCode"
 			def String parameterType = "T"
 			def Integer sequenceNumber = new Integer("0")
+			def Long versionNumber = new Long(1)
 		})
 		PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "2011"
@@ -547,6 +565,7 @@ class PropositionBoServiceImplTest {
 			def String value = "Thurgood Marshall"
 			def String parameterType = "C"
 			def Integer sequenceNumber = new Integer("1")
+			def Long versionNumber = new Long(1)
 		})
 		PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "2012"
@@ -554,6 +573,7 @@ class PropositionBoServiceImplTest {
 			def String value = ComparisonOperator.EQUALS
 			def String parameterType = "F"
 			def Integer sequenceNumber = new Integer("2")
+			def Long versionNumber = new Long(1)
 		})
 		for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 			propParms.add (ppb)

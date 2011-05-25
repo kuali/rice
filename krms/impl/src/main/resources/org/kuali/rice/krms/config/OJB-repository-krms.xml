@@ -200,7 +200,7 @@
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.PropositionBo" table="KRMS_PROP_T">
-		<field-descriptor name="propId" column="PROP_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_PROP_S"/>
+		<field-descriptor name="id" column="PROP_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_PROP_S"/>
 		<field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
         <field-descriptor name="ruleId" column="RULE_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />

@@ -11,29 +11,12 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract
 
-@Entity
-@Table(name="KRMS_PROP_PARM_T")
 public class PropositionParameterBo extends PersistableBusinessObjectBase implements PropositionParameterContract {
 
-	@Id
-	@GeneratedValue(generator="KRMS_PROP_PARM_S")
-	@GenericGenerator(name="KRMS_PROP_PARM_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters=[
-		@Parameter(name="sequence_name",value="KRMS_PROP_PARM_S"),
-		@Parameter(name="value_column",value="id")
-	])
-	@Column(name="ID")
 	def String id
-	
-	@Column(name="PROP_ID")
 	def String propId
-	
-	@Column(name="PARM_VAL")
 	def String value
-	
-	@Column(name="PARM_TYP_CD")
 	def String parameterType
-	
-	@Column(name="SEQ_NO")
 	def Integer sequenceNumber
 	
 	
@@ -74,7 +57,7 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 	   bo.value = im.value
 	   bo.parameterType = im.parameterType
 	   bo.sequenceNumber = im.sequenceNumber
-
+	   bo.versionNumber = im.versionNumber
 	   return bo
    }
    
@@ -88,6 +71,7 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 		   bo.value = im.value
 		   bo.parameterType = im.parameterType
 		   bo.sequenceNumber = im.sequenceNumber
+		   bo.versionNumber = im.versionNumber
 	   	   bos.add(bo);
 	   }
 	   return Collections.unmodifiableList(bos)

@@ -85,8 +85,7 @@ class RuleBoServiceImplTest {
 		TEST_ACTION_DEF = builder.build()
 		TEST_ACTION_BO = ActionBo.from(TEST_ACTION_DEF)
 
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
-		myPropBuilder.setPropId(PROP_ID_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 		myPropBuilder.setTypeId(TYPE_ID)
 
@@ -278,6 +277,7 @@ class RuleBoServiceImplTest {
 					def String value = "campusCode"
 					def String parameterType = "T"
 					def Integer sequenceNumber = new Integer(0)
+					def Long versionNumber = new Long(1);
 				})
 		PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 					def String id = "1001"
@@ -285,6 +285,7 @@ class RuleBoServiceImplTest {
 					def String value = "BL"
 					def String parameterType = "C"
 					def Integer sequenceNumber = new Integer(1)
+					def Long versionNumber = new Long(1);
 				})
 		PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 					def String id = "1003"
@@ -292,6 +293,7 @@ class RuleBoServiceImplTest {
 					def String value = "EQUALS"
 					def String parameterType = "F"
 					def Integer sequenceNumber = new Integer(2)
+					def Long versionNumber = new Long(1);
 				})
 		for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 			propParms.add (ppb)

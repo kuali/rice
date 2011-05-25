@@ -237,7 +237,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         // Proposition
         PropositionDefinition.Builder propositionDefBuilder =
-            PropositionDefinition.Builder.create(PropositionType.SIMPLE.getCode(), ruleDef.getId(), null /* type code is only for custom props */, Collections.<PropositionParameter.Builder>emptyList());
+            PropositionDefinition.Builder.create(null, PropositionType.SIMPLE.getCode(), ruleDef.getId(), null /* type code is only for custom props */, Collections.<PropositionParameter.Builder>emptyList());
         propositionDefBuilder.setDescription("is campus bloomington");
         
         // PropositionParams

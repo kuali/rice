@@ -58,7 +58,7 @@ public class KrmsTypeResolverImpl implements KrmsTypeResolver {
 			} else if (PropositionType.SIMPLE == propositionType) {
 				return defaultSimplePropositionTypeService;
 			}
-			throw new RepositoryDataException("Proposition does not have a typeId defined and does not define a valid proposition type code.  Proposition id is: " + propositionDefinition.getPropId());
+			throw new RepositoryDataException("Proposition does not have a typeId defined and does not define a valid proposition type code.  Proposition id is: " + propositionDefinition.getId());
 		}
 		KrmsTypeDefinition typeDefinition = getTypeDefinition(propositionDefinition.getTypeId());
 		return resolveTypeService(typeDefinition, PropositionTypeService.class);

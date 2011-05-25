@@ -109,6 +109,7 @@ public class AgendaItemBoFoo extends PersistableBusinessObjectBase {
 		builder.setWhenTrueId( bo.getWhenTrueId() )
 		builder.setWhenFalseId( bo.getWhenFalseId() )
 		builder.setAlwaysId( bo.getAlwaysId() )
+		builder.setVersionNumber( bo.getVersionNumber() );
 		return builder.build()	
 		// NOTE: should we create tree nodes (whenTrue, whenFalse, always) ??
 		//   If so, we would end up creating the entire sub-tree.
@@ -134,6 +135,7 @@ public class AgendaItemBoFoo extends PersistableBusinessObjectBase {
 	   bo.whenTrueId = im.whenTrueId
 	   bo.whenFalseId = im.whenFalseId
 	   bo.alwaysId = im.alwaysId
+	   bo.versionNumber = im.versionNumber
 	   
 	   return bo
    }

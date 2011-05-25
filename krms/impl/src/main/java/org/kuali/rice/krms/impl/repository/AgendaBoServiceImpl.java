@@ -321,6 +321,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	   bo.setTypeId( im.getTypeId() );
 	   bo.setContextId( im.getContextId() );
 	   bo.setFirstItemId( im.getFirstItemId() );
+	   bo.setVersionNumber( im.getVersionNumber() );
 
 	   // build the set of agenda attribute BOs
 	   Set<AgendaAttributeBo> attributes = new HashSet<AgendaAttributeBo>();
@@ -340,7 +341,6 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 		   attributes.add( attributeBo );
 	   }
 	   bo.setAttributeBos(attributes);
-//	   bo.setAttributes(attrMap);
 	   
 	   return bo;
    }

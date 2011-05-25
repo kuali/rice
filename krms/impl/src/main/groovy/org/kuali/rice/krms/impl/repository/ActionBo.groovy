@@ -47,7 +47,7 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 	   for (attr in im.attributes){
 		   bo.attributes.add (ActionAttributeBo.from(attr))
 	   }
-
+	   bo.versionNumber = im.versionNumber
 	   return bo
    }
  

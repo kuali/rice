@@ -82,7 +82,7 @@ class CompoundPropositionTypeServiceTest {
 	
 	private static PropositionDefinition createTrueProp() {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract() {
-					String propId = "2";
+					String id = "2";
 					String description = "";
                     String ruleId = "1";
 					String typeId = "true";
@@ -90,12 +90,13 @@ class CompoundPropositionTypeServiceTest {
 					String compoundOpCode = null;
 					List parameters = [ PropositionParameter.Builder.create("1", "2", "true", PropositionParameterType.CONSTANT.getCode(), 1) ];
 					List compoundComponents = []; 
+					Long versionNumber = new Long(1)
 				}).build();
 	}
 	
 	private static PropositionDefinition createFalseProp() {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract() {
-					String propId = "2";
+					String id = "2";
 					String description = "";
                     String ruleId = "1";
 					String typeId = null;
@@ -103,12 +104,13 @@ class CompoundPropositionTypeServiceTest {
 					String compoundOpCode = null;
 					List parameters = [ PropositionParameter.Builder.create("1", "2", "false", PropositionParameterType.CONSTANT.getCode(), 1) ];
 					List compoundComponents = [];
+					Long versionNumber = new Long(1)
 				}).build();
 	}
 	
 	private static PropositionDefinition createCompoundPropositionDefinition(LogicalOperator logicalOperator) {
 		return PropositionDefinition.Builder.create(new PropositionDefinitionContract() {
-			String propId = CompoundPropositionTypeServiceTest.ID;
+			String id = CompoundPropositionTypeServiceTest.ID;
 			String description = CompoundPropositionTypeServiceTest.DESCRIPTION;
             String ruleId = "1";
 			String typeId = CompoundPropositionTypeServiceTest.TYPE_ID;
@@ -119,6 +121,7 @@ class CompoundPropositionTypeServiceTest {
 				CompoundPropositionTypeServiceTest.createTrueProp(),
 				CompoundPropositionTypeServiceTest.createFalseProp()
 			];
+			Long versionNumber = new Long(1)
 		}).build();
 	}
 	

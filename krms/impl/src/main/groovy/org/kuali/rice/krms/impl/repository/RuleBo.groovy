@@ -54,6 +54,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	   for (action in im.actions){
 		   bo.actions.add( ActionBo.from(action) )
 	   }
+	   bo.versionNumber = im.versionNumber
 	   return bo
    }
  

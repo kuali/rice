@@ -9,7 +9,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContr
 
 public class PropositionBo extends PersistableBusinessObjectBase implements PropositionDefinitionContract {
 
-	def String propId
+	def String id
 	def String description
     def String ruleId
 	def String typeId
@@ -40,7 +40,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	   if (im == null) { return null }
 
 	   PropositionBo bo = new PropositionBo()
-	   bo.propId = im.propId
+	   bo.id = im.id
 	   bo.description = im.description
 
        //bo.ruleId = im.ruleId
@@ -57,7 +57,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	   for (prop in im.compoundComponents){
 		   bo.compoundComponents.add (PropositionBo.from(prop))
 	   }
-
+	   bo.versionNumber = im.versionNumber
 	   return bo
    }
    

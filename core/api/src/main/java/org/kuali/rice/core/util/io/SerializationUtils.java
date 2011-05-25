@@ -18,16 +18,28 @@ package org.kuali.rice.core.util.io;
 import java.io.Serializable;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.SerializationException;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * TODO ... 
+ * {@code SerializationUtils} is a set of utilities to add in the serialization
+ * of java objects.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public final class SerializationUtils {
 
+	/**
+	 * Serializes the given {@link Serializable} object and then executes a
+	 * Base 64 encoding on it, returning the encoded value as a String.
+	 * 
+	 * @param object the object to serialize, cannot be null
+	 * @return a base 64-encoded representation of the serialized object
+	 * 
+	 * @throws IllegalArgumentException if the given object is null
+	 * @throws SerializationException if the serialization fails
+	 */
 	public static String serializeToBase64(Serializable object) {
 		if (object == null) {
 			throw new IllegalArgumentException("Cannot serialize a null object");
@@ -36,6 +48,16 @@ public final class SerializationUtils {
 		return new Base64().encodeAsString(serializedBytes);
     }
 	
+	/**
+	 * Deserializes the given base 64-encoded string value to it's Serializable
+	 * object representation.
+	 * 
+	 * @param base64Value the base 64-encoded value to deserialize, must not be null or a blank string
+	 * @return the deserialized object
+	 * 
+	 * @throws IllegalArgumentException if the given value is is null or blank
+	 * @throws SerializationException if the deserialization fails
+	 */
 	public static Serializable deserializeFromBase64(String base64Value) {
 		if (StringUtils.isBlank(base64Value)) {
 			throw new IllegalArgumentException("Cannot deserialize a null or blank base64 string value.");

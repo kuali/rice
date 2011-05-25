@@ -60,7 +60,7 @@
           <property name="objectAttributeName" value="template"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="template.responsibilityTemplateId" p:targetName="responsibilityTemplateId"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="template.id" p:targetName="id"/>
             </list>
           </property>
           <property name="supportAttributes">
@@ -117,7 +117,7 @@
   </bean>
     
   <bean id="ResponsibilityImpl-templateId" parent="ResponsibilityImpl-templateId-parentBean"/>
-  <bean id="ResponsibilityImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.responsibilityTemplateId" p:label="Template Identifier" p:shortLabel="Template Identifier" p:maxLength="40" p:required="false">
+  <bean id="ResponsibilityImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.id" p:label="Template Identifier" p:shortLabel="Template Identifier" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="HiddenControlDefinition"/>
     </property>
@@ -342,7 +342,7 @@
           <bean parent="FieldDefinition" p:attributeName="detailCriteria"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToRole.roleId"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalId"/>
-          <bean parent="FieldDefinition" p:attributeName="template.responsibilityTemplateId"/>
+          <bean parent="FieldDefinition" p:attributeName="template.id"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToGroup.id"/>
           <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
       </list>

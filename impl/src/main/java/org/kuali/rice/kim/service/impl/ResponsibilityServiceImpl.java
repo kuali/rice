@@ -27,10 +27,10 @@ import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimResponsibilityDao;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
@@ -99,34 +99,42 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
 
     public KimResponsibilityTemplateInfo getResponsibilityTemplate(
     		String responsibilityTemplateId) {
-    	KimResponsibilityTemplateImpl impl = getResponsibilityTemplateImpl(responsibilityTemplateId);
-    	if ( impl != null ) {
-    		return impl.toInfo();
+        ResponsibilityTemplateBo impl = getResponsibilityTemplateImpl(responsibilityTemplateId);
+        return toInfo(impl);
+    }
+
+    private static KimResponsibilityTemplateInfo toInfo(ResponsibilityTemplateBo bo) {
+        if ( bo != null ) {
+    		KimResponsibilityTemplateInfo info = new KimResponsibilityTemplateInfo();
+            info.setResponsibilityTemplateId(bo.getId());
+		    info.setNamespaceCode(bo.getNamespaceCode());
+		    info.setName(bo.getName());
+		    info.setDescription(bo.getDescription());
+	    	info.setKimTypeId(bo.getKimTypeId());
+		    info.setActive(bo.isActive());
+            return info;
     	}
-    	return null;
+        return null;
     }
     
     public KimResponsibilityTemplateInfo getResponsibilityTemplateByName(
     		String namespaceCode, String responsibilityTemplateName) {
-    	KimResponsibilityTemplateImpl impl = getResponsibilityTemplateImplsByName(namespaceCode, responsibilityTemplateName);
-    	if ( impl != null ) {
-    		return impl.toInfo();
-    	}
-    	return null;
+    	ResponsibilityTemplateBo impl = getResponsibilityTemplateImplsByName(namespaceCode, responsibilityTemplateName);
+        return toInfo(impl);
     }
     
-    public KimResponsibilityTemplateImpl getResponsibilityTemplateImpl(
+    public ResponsibilityTemplateBo getResponsibilityTemplateImpl(
     		String responsibilityTemplateId) {
-    	return getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityTemplateImpl.class, responsibilityTemplateId);
+    	return getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityTemplateBo.class, responsibilityTemplateId);
     }
     
-	public KimResponsibilityTemplateImpl getResponsibilityTemplateImplsByName(
+	public ResponsibilityTemplateBo getResponsibilityTemplateImplsByName(
     		String namespaceCode, String responsibilityTemplateName) {
     	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
     	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
     	pk.put( KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, responsibilityTemplateName );
 		pk.put( KNSPropertyConstants.ACTIVE, "Y");
-    	return getBusinessObjectService().findByPrimaryKey( KimResponsibilityTemplateImpl.class, pk );
+    	return getBusinessObjectService().findByPrimaryKey( ResponsibilityTemplateBo.class, pk );
     }
     
     public RoleResponsibilityImpl getRoleResponsibilityImpl(String roleResponsibilityId) {
@@ -299,7 +307,8 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     protected Map<String,KimResponsibilityTypeService> getResponsibilityTypeServicesByTemplateId(Collection<KimResponsibilityImpl> responsibilities) {
     	Map<String,KimResponsibilityTypeService> responsibilityTypeServices = new HashMap<String, KimResponsibilityTypeService>(responsibilities.size());
     	for ( KimResponsibilityImpl responsibility : responsibilities ) {
-    		String serviceName = responsibility.getTemplate().getKimType().getServiceName();
+
+            String serviceName = KimApiServiceLocator.getKimTypeInfoService().getKimType(responsibility.getTemplate().getKimTypeId()).getServiceName();
     		if ( serviceName != null ) {
     			KimResponsibilityTypeService responsibiltyTypeService = (KimResponsibilityTypeService) KIMServiceLocatorInternal.getService(serviceName);
     			if ( responsibiltyTypeService != null ) {

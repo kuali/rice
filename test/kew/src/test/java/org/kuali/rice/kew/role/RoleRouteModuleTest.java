@@ -33,13 +33,13 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -328,15 +328,15 @@ public class RoleRouteModuleTest extends KEWTestCase {
          */
 
         String templateId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S");
-    	KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
-        template.setResponsibilityTemplateId(templateId);
+    	ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
+        template.setId(templateId);
         template.setNamespaceCode(NAMESPACE);
         template.setName("Review");
         template.setKimTypeId(kimRespType.getId());
         template.setActive(true);
         template.setDescription("description");
 
-        template = (KimResponsibilityTemplateImpl) KNSServiceLocator.getBusinessObjectService().save(template);
+        template = (ResponsibilityTemplateBo) KNSServiceLocator.getBusinessObjectService().save(template);
 
 
         /**
@@ -381,7 +381,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         responsibility.setNamespaceCode(NAMESPACE);
         responsibility.setResponsibilityId(responsibilityId);
         responsibility.setTemplate(template);
-        responsibility.setTemplateId(template.getResponsibilityTemplateId());
+        responsibility.setTemplateId(template.getId());
 
         responsibility = (KimResponsibilityImpl) KNSServiceLocator.getBusinessObjectService().save(responsibility);
 
@@ -440,15 +440,15 @@ public class RoleRouteModuleTest extends KEWTestCase {
          */
 
         String templateId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S");
-    	KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
-        template.setResponsibilityTemplateId(templateId);
+    	ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
+        template.setId(templateId);
         template.setNamespaceCode(NAMESPACE);
         template.setName("AllApproveReview");
         template.setKimTypeId(kimRespType.getId());
         template.setActive(true);
         template.setDescription("description");
 
-        template = (KimResponsibilityTemplateImpl) KNSServiceLocator.getBusinessObjectService().save(template);
+        template = (ResponsibilityTemplateBo) KNSServiceLocator.getBusinessObjectService().save(template);
 
         /**
          * Create the responsibility details for RoleRouteModuleTest2
@@ -492,7 +492,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         responsibility.setNamespaceCode(NAMESPACE);
         responsibility.setResponsibilityId(responsibilityId);
         responsibility.setTemplate(template);
-        responsibility.setTemplateId(template.getResponsibilityTemplateId());
+        responsibility.setTemplateId(template.getId());
 
         responsibility = (KimResponsibilityImpl) KNSServiceLocator.getBusinessObjectService().save(responsibility);
 

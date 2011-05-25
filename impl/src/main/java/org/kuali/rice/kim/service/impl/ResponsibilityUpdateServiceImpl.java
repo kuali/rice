@@ -73,7 +73,8 @@ public class ResponsibilityUpdateServiceImpl extends ResponsibilityServiceBase i
 	    		attributesToAdd.remove(attrName);
 	    	}
 	    	for ( Entry<String,String> attrEntry : attributesToAdd.entrySet() ) {
-	    		KimTypeAttribute attr = resp.getTemplate().getKimType().getAttributeDefinitionByName(attrEntry.getKey());
+
+                KimTypeAttribute attr = KimApiServiceLocator.getKimTypeInfoService().getKimType(resp.getTemplate().getKimTypeId()).getAttributeDefinitionByName(attrEntry.getKey());
 	    		if (attr != null && StringUtils.isNotBlank(attrEntry.getValue()) ) {
 	    			ResponsibilityAttributeDataImpl newDetail = new ResponsibilityAttributeDataImpl();
 	    			newDetail.setId(getNewAttributeDataId());

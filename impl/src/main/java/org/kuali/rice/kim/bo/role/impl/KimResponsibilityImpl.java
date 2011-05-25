@@ -26,6 +26,7 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -75,7 +76,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	protected String templateId;
 	@OneToOne(cascade={},fetch=FetchType.EAGER)
     @JoinColumn(name="RSP_TMPL_ID", insertable=false, updatable=false)
-	protected KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
+	protected ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
 	
 	@OneToMany(targetEntity=RoleResponsibilityImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="responsibilityId")
 	@Fetch(value = FetchMode.SELECT)
@@ -184,11 +185,11 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		return detailsAsAttributeSet;
 	}
 
-	public KimResponsibilityTemplateImpl getTemplate() {
+	public ResponsibilityTemplateBo getTemplate() {
 		return this.template;
 	}
 
-	public void setTemplate(KimResponsibilityTemplateImpl template) {
+	public void setTemplate(ResponsibilityTemplateBo template) {
 		this.template = template;
 	}
 

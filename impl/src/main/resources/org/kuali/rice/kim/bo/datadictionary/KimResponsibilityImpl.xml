@@ -35,7 +35,7 @@
           <property name="objectAttributeName" value="template"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="templateId" p:targetName="responsibilityTemplateId"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="templateId" p:targetName="id"/>
             </list>
           </property>
           <property name="supportAttributes">

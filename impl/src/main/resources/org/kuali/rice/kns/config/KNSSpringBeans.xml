@@ -164,7 +164,7 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/type/KimType.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityTemplateImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/responsibility/ResponsibilityTemplate.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityImpl.xml</value>
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml</value>

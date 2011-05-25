@@ -40,6 +40,7 @@ import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 		AgendaDefinition.Elements.CONTEXT_ID,
 		AgendaDefinition.Elements.FIRST_ITEM_ID,
 		AgendaDefinition.Elements.ATTRIBUTES,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class AgendaDefinition implements AgendaDefinitionContract, ModelObjectComplete{
@@ -67,7 +68,10 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
 	private final Map<String, String> attributes;
 	
-	@SuppressWarnings("unused")
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+
+    @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
@@ -83,6 +87,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
     	this.contextId = null;
     	this.firstItemId = null;
     	this.attributes = null;
+        this.versionNumber = null;
     }
     
     /**
@@ -99,6 +104,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         this.contextId = builder.getContextId();
         this.firstItemId = builder.getFirstItemId();
         this.attributes = Collections.unmodifiableMap(new HashMap<String, String>(builder.getAttributes()));
+        this.versionNumber = builder.getVersionNumber();
     }
     
 	@Override
@@ -136,7 +142,12 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		return this.attributes; 
 	}
 
-	/**
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+    
+ 	/**
      * This builder is used to construct instances of KRMS Repository Agenda.  It enforces the constraints of the {@link AgendaDefinitionContract}.
      */
     public static class Builder implements AgendaDefinitionContract, ModelBuilder, Serializable {
@@ -150,6 +161,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         private String contextId;
         private String firstItemId;
         private Map<String, String> attributes;
+        private Long versionNumber;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -182,6 +194,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
             if (contract.getAttributes() != null) {
                 builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
             }
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 
@@ -239,6 +252,10 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 			this.attributes = attributes;
 		}
 		
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
 		@Override
 		public String getId() {
 			return id;
@@ -273,6 +290,11 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		public Map<String, String> getAttributes() {
 			return attributes;
 		}
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
 
 		/**
 		 * Builds an instance of a Agenda based on the current state of the builder.

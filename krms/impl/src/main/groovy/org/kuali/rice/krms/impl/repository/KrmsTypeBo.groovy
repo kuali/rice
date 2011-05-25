@@ -40,6 +40,7 @@ public class KrmsTypeBo extends PersistableBusinessObjectBase implements Inactiv
 		for( attr in im.attributes ){
 			bo.attributes.add(KrmsTypeAttributeBo.from(attr))
 		}
+		bo.versionNumber = im.versionNumber
 		return bo
 	}
 

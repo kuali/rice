@@ -37,7 +37,8 @@ class KrmsTypeTest {
 	private static final String TYPE_ID="1234ABCD"
 	private static final String NAME="Chart_Org"
 	private static final String SERVICE_NAME="chartOrgService"
-		
+	private static final Long VERSION_NUMBER = new Long(1)
+	
 	private static final String ATTR_ID_1="CHART_ATTR"
 	private static final String CHART_ATTR_DEF_ID = "1000"
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
@@ -125,6 +126,7 @@ class KrmsTypeTest {
 					String getServiceName() { KrmsTypeTest.SERVICE_NAME }
 					boolean isActive() { true }
 					List<KrmsTypeAttribute> getAttributes() {null}
+					Long getVersionNumber() { KrmsTypeTest.VERSION_NUMBER }
 				}).build()
 	}
 

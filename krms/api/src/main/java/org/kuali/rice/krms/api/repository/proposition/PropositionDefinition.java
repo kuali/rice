@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -22,6 +23,7 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Elements;
 
 
 /**
@@ -47,22 +49,23 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 @XmlRootElement(name = PropositionDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PropositionDefinition.Constants.TYPE_NAME, propOrder = {
-		PropositionDefinition.Elements.PROP_ID,
+		PropositionDefinition.Elements.ID,
 		PropositionDefinition.Elements.DESC,
         PropositionDefinition.Elements.RULE_ID,
         PropositionDefinition.Elements.TYPE_ID,
 		PropositionDefinition.Elements.PROP_TYPE_CODE,
-		"parameters",									// xml element name differs from class property name
+		PropositionDefinition.Elements.PARAMETERS,									// xml element name differs from class property name
 		PropositionDefinition.Elements.CMPND_OP_CODE,
-		"compoundComponents",							// xml element name differs from class property name
+		PropositionDefinition.Elements.CMPND_COMPONENTS,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PropositionDefinition implements PropositionDefinitionContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	// TODO: change this to field name to id
-	@XmlElement(name = Elements.PROP_ID, required=true)
-	private String propId;
+	@XmlElement(name = Elements.ID, required=true)
+	private String id;
 	
 	@XmlElement(name = Elements.DESC, required=true)
 	private String description;
@@ -75,16 +78,21 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
     
     @XmlElement(name = Elements.PROP_TYPE_CODE, required=true)
 	private String propositionTypeCode;
-	
-	@XmlElement(name = Elements.PARAMETERS, required=false)
+
+	@XmlElementWrapper(name = Elements.PARAMETERS)
+	@XmlElement(name = Elements.PARAMETER, required=false)
 	private List<PropositionParameter> parameters;
 	
 	@XmlElement(name = Elements.CMPND_OP_CODE, required=false)
 	private String compoundOpCode;
 	
-	@XmlElement(name = Elements.CMPND_COMPONENTS, required=false)
+	@XmlElementWrapper(name = Elements.CMPND_COMPONENTS, required=false)
+	@XmlElement(name = Elements.CMPND_COMPONENT, required=false)
 	private List<PropositionDefinition> compoundComponents;
 	
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+    	
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
@@ -94,13 +102,14 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
      */
     private PropositionDefinition() {
-    	this.propId = null;
+    	this.id = null;
     	this.description = null;
     	this.typeId = null;
     	this.propositionTypeCode = null;
     	this.parameters = null;
     	this.compoundOpCode = null;
     	this.compoundComponents = null;
+        this.versionNumber = null;
     }
     
     /**
@@ -110,7 +119,7 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 	 * @param builder the Builder from which to construct the KRMS Proposition
 	 */
     private PropositionDefinition(Builder builder) {
-        this.propId = builder.getPropId();
+        this.id = builder.getId();
         this.description = builder.getDescription();
         this.ruleId = builder.getRuleId();
         this.typeId = builder.getTypeId();
@@ -130,13 +139,14 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
         	for (PropositionDefinition.Builder b : builder.compoundComponents){
         		componentList.add(b.build());
         	}
+            this.compoundComponents = Collections.unmodifiableList(componentList);
         }
-        this.compoundComponents = Collections.unmodifiableList(componentList);
+        this.versionNumber = builder.getVersionNumber();
     }
     
 	@Override
-	public String getPropId() {
-		return this.propId;
+	public String getId() {
+		return this.id;
 	}
 
 	@Override
@@ -176,13 +186,18 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 		return this.compoundComponents; 
 	}
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+        
 	/**
      * This builder is used to construct instances of KRMS Proposition.  It enforces the constraints of the {@link PropositionDefinitionContract}.
      */
     public static class Builder implements PropositionDefinitionContract, ModelBuilder, Serializable {
     	private static final long serialVersionUID = -6889320709850568900L;
 		
-        private String propId;
+        private String id;
         private String description;
         private String ruleId;
         private String typeId;
@@ -191,12 +206,14 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
         private String compoundOpCode;
         private List<PropositionDefinition.Builder> compoundComponents;
         private RuleDefinition.Builder rule;
+        private Long versionNumber;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 * @param typeId TODO
 		 */
-        private Builder(String propTypeCode, String ruleId, String typeId, List<PropositionParameter.Builder> parameters) {
+        private Builder(String propId, String propTypeCode, String ruleId, String typeId, List<PropositionParameter.Builder> parameters) {
+        	setId(propId);
 			setPropositionTypeCode(propTypeCode);
 			setRuleId(ruleId);
 			setTypeId(typeId);
@@ -213,8 +230,8 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
         	return this;
         }
  
-        public static Builder create(String propTypeCode, String ruleId, String typeId, List<PropositionParameter.Builder> parameters){
-        	return new Builder(propTypeCode, ruleId, typeId, parameters);
+        public static Builder create(String propId, String propTypeCode, String ruleId, String typeId, List<PropositionParameter.Builder> parameters){
+        	return new Builder(propId, propTypeCode, ruleId, typeId, parameters);
         }
         
         /**
@@ -234,18 +251,19 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
         			paramBuilderList.add(myBuilder);
         		}
         	}
+            Builder builder =  new Builder(contract.getId(), contract.getPropositionTypeCode(), contract.getRuleId(), contract.getTypeId(), paramBuilderList);
+            
         	List <PropositionDefinition.Builder> componentBuilderList = new ArrayList<PropositionDefinition.Builder>();
         	if (contract.getCompoundComponents() != null) {
         		for (PropositionDefinitionContract cContract : contract.getCompoundComponents()){
         			PropositionDefinition.Builder pBuilder = PropositionDefinition.Builder.create(cContract);
         			componentBuilderList.add(pBuilder);
         		}
+                builder.setCompoundComponents(componentBuilderList);
         	}
-            Builder builder =  new Builder(contract.getPropositionTypeCode(), contract.getRuleId(), contract.getTypeId(), paramBuilderList)
-            			.compoundOpCode(contract.getCompoundOpCode())
-            			.compoundComponents(componentBuilderList);
-            builder.setPropId(contract.getPropId());
+        	builder.setCompoundOpCode(contract.getCompoundOpCode());
             builder.setDescription(contract.getDescription());
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 
@@ -255,8 +273,11 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 		 * @param id the id value to set
 		 */
 
-        public void setPropId(String propId) {
-			this.propId = propId;
+        public void setId(String propId) {
+            if (propId != null && StringUtils.isBlank(propId)) {
+                throw new IllegalArgumentException("proposition id must not be blank");            	
+            }
+			this.id = propId;
 		}
 
 		public void setDescription(String desc) {
@@ -314,10 +335,13 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 			this.compoundComponents = Collections.unmodifiableList(components);
 		}
 		
-
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
 		@Override
-		public String getPropId() {
-			return propId;
+		public String getId() {
+			return id;
 		}
 
 		@Override
@@ -355,6 +379,11 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 			return compoundComponents;
 		}
 
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
+
 		/**
 		 * Builds an instance of a Proposition based on the current state of the builder.
 		 * 
@@ -387,7 +416,7 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String ROOT_ELEMENT_NAME = "Proposition";
+		final static String ROOT_ELEMENT_NAME = "proposition";
 		final static String TYPE_NAME = "PropositionType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
@@ -397,14 +426,16 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 	 * when this object is marshalled to XML.
 	 */
 	public static class Elements {
-		final static String PROP_ID = "propId";
+		final static String ID = "id";
 		final static String DESC = "description";
         final static String RULE_ID = "ruleId";
 		final static String TYPE_ID = "typeId";
 		final static String PROP_TYPE_CODE = "propositionTypeCode";
-		final static String PARAMETERS = "parameter";
+		final static String PARAMETER = "parameter";
+		final static String PARAMETERS = "parameters";
 		final static String CMPND_OP_CODE = "compoundOpCode";
-		final static String CMPND_COMPONENTS = "proposition";
+		final static String CMPND_COMPONENTS = "compoundComponents";
+		final static String CMPND_COMPONENT = "proposition";
 	}
 
 	

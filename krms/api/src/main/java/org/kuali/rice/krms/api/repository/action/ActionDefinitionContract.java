@@ -1,10 +1,11 @@
 package org.kuali.rice.krms.api.repository.action;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 import java.util.Set;
 
-public interface ActionDefinitionContract extends Identifiable {
+public interface ActionDefinitionContract extends Identifiable, Versioned {
 
 	/**
 	 * This is the name of the Action 

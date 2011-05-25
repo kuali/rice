@@ -2,13 +2,10 @@ package org.kuali.rice.krms.api.repository.proposition;
 
 import java.util.List;
 
-public interface PropositionDefinitionContract {
-	/**
-	 * This is the ID for the KRMS proposition
-	 * @return ID for KRMS proposition.
-	 */
-	public String getPropId();
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
+public interface PropositionDefinitionContract extends Identifiable, Versioned {
 	/**
 	 * This is the description text for the KRMS proposition
 	 * @return description for KRMS type.
@@ -75,7 +72,8 @@ public interface PropositionDefinitionContract {
 	 * This method returns the propositions which are contained in a
 	 * compound proposition.
 	 * 
-	 * @return
+	 * @return an ordered list of the Propositions which make up the compound
+	 * proposition.
 	 */
 	public List<? extends PropositionDefinitionContract> getCompoundComponents();
 }

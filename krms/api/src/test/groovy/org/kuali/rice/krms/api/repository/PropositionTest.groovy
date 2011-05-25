@@ -55,155 +55,192 @@ class PropositionTest {
 
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String SIMPLE_PROP_XML = """
-		<Proposition xmlns="http://rice.kuali.org/krms/repository/v2_0">
-			<propId>202</propId>
+		<proposition xmlns="http://rice.kuali.org/krms/repository/v2_0">
+			<id>202</id>
 			<description>is Campus Bloomington</description>
             <ruleId>1</ruleId>
 			<typeId>1</typeId>
 			<propositionTypeCode>S</propositionTypeCode>
-			<parameter>
-				<id>1000</id>
-				<propId>2001</propId>
-				<value>campusCode</value>
-				<parameterType>T</parameterType>
-				<sequenceNumber>0</sequenceNumber>
-			</parameter>
-			<parameter>
-				<id>1001</id>
-				<propId>2001</propId>
-				<value>BL</value>
-				<parameterType>C</parameterType>
-				<sequenceNumber>1</sequenceNumber>
-			</parameter>
-			<parameter>
-				<id>1003</id>
-				<propId>2001</propId>
-				<value>EQUALS</value>
-				<parameterType>F</parameterType>
-				<sequenceNumber>2</sequenceNumber>
-			</parameter>
-		</Proposition>
+			<parameters>
+				<parameter>
+					<id>1000</id>
+					<propId>2001</propId>
+					<value>campusCode</value>
+					<parameterType>T</parameterType>
+					<sequenceNumber>0</sequenceNumber>
+					<versionNumber>1</versionNumber>
+				</parameter>
+				<parameter>
+					<id>1001</id>
+					<propId>2001</propId>
+					<value>BL</value>
+					<parameterType>C</parameterType>
+					<sequenceNumber>1</sequenceNumber>
+					<versionNumber>1</versionNumber>
+				</parameter>
+				<parameter>
+					<id>1003</id>
+					<propId>2001</propId>
+					<value>EQUALS</value>
+					<parameterType>F</parameterType>
+					<sequenceNumber>2</sequenceNumber>
+					<versionNumber>1</versionNumber>
+				</parameter>
+			</parameters>
+			<versionNumber>1</versionNumber>
+		</proposition>
 		"""
 
 	private static final String COMPOUND_PROP_XML = """
-		<Proposition xmlns="http://rice.kuali.org/krms/repository/v2_0">
-			<propId>111</propId>
+		<proposition xmlns="http://rice.kuali.org/krms/repository/v2_0">
+			<id>111</id>
 			<description>Compound: Campus is Muir or Thurgood Marshall</description>
             <ruleId>1</ruleId>
 			<typeId>1</typeId>
 			<propositionTypeCode>C</propositionTypeCode>
+			<parameters/>
 			<compoundOpCode>|</compoundOpCode>
-			<proposition>
-				<propId>100</propId>
-				<description>Is campus type = Muir</description>
-				<ruleId>1</ruleId>
-				<typeId>1</typeId>
-				<propositionTypeCode>S</propositionTypeCode>
-					<parameter>
-						<id>2000</id>
-						<propId>100</propId>
-						<value>campusCode</value>
-						<parameterType>T</parameterType>
-						<sequenceNumber>0</sequenceNumber>
-					</parameter>
-					<parameter>
-						<id>2001</id>
-						<propId>100</propId>
-						<value>Muir</value>
-						<parameterType>C</parameterType>
-						<sequenceNumber>1</sequenceNumber>
-					</parameter>
-					<parameter>
-						<id>2002</id>
-						<propId>100</propId>
-						<value>EQUALS</value>
-						<parameterType>F</parameterType>
-						<sequenceNumber>2</sequenceNumber>
-					</parameter>
+			<compoundComponents>
+				<proposition>
+					<id>100</id>
+					<description>Is campus type = Muir</description>
+					<ruleId>1</ruleId>
+					<typeId>1</typeId>
+					<propositionTypeCode>S</propositionTypeCode>
+					<parameters>
+						<parameter>
+							<id>2000</id>
+							<propId>100</propId>
+							<value>campusCode</value>
+							<parameterType>T</parameterType>
+							<sequenceNumber>0</sequenceNumber>
+							<versionNumber>1</versionNumber>
+						</parameter>
+						<parameter>
+							<id>2001</id>
+							<propId>100</propId>
+							<value>Muir</value>
+							<parameterType>C</parameterType>
+							<sequenceNumber>1</sequenceNumber>
+							<versionNumber>1</versionNumber>
+						</parameter>
+						<parameter>
+							<id>2002</id>
+							<propId>100</propId>
+							<value>EQUALS</value>
+							<parameterType>F</parameterType>
+							<sequenceNumber>2</sequenceNumber>
+							<versionNumber>1</versionNumber>
+						</parameter>
+					</parameters>
+					<compoundComponents/>
+					<versionNumber>1</versionNumber>
 				</proposition>
 				<proposition>
-					<propId>101</propId>
+					<id>101</id>
 					<description>Is campus type = Thurgood Marshall</description>
 					<ruleId>1</ruleId>
 					<typeId>1</typeId>
 					<propositionTypeCode>S</propositionTypeCode>
-					<parameter>
-						<id>2010</id>
-						<propId>101</propId>
-						<value>campusCode</value>
-						<parameterType>T</parameterType>
-						<sequenceNumber>0</sequenceNumber>
-					</parameter>
-					<parameter>
-						<id>2011</id>
-						<propId>101</propId>
-						<value>Thurgood Marshall</value>
-						<parameterType>C</parameterType>
-						<sequenceNumber>1</sequenceNumber>
-					</parameter>
-					<parameter>
-						<id>2012</id>
-						<propId>101</propId>
-						<value>EQUALS</value>
-						<parameterType>F</parameterType>
-						<sequenceNumber>2</sequenceNumber>
-					</parameter>
+					<parameters>
+						<parameter>
+							<id>2010</id>
+							<propId>101</propId>
+							<value>campusCode</value>
+							<parameterType>T</parameterType>
+							<sequenceNumber>0</sequenceNumber>
+							<versionNumber>1</versionNumber>
+						</parameter>
+						<parameter>
+							<id>2011</id>
+							<propId>101</propId>
+							<value>Thurgood Marshall</value>
+							<parameterType>C</parameterType>
+							<sequenceNumber>1</sequenceNumber>
+							<versionNumber>1</versionNumber>
+					 	</parameter>
+						<parameter>
+							<id>2012</id>
+							<propId>101</propId>
+							<value>EQUALS</value>
+							<parameterType>F</parameterType>
+							<sequenceNumber>2</sequenceNumber>
+							<versionNumber>1</versionNumber>
+						</parameter>
+					</parameters>
+					<compoundComponents/>
+					<versionNumber>1</versionNumber>
 				</proposition>
-			</Proposition>
+			</compoundComponents>
+		    <versionNumber>1</versionNumber>
+		</proposition>
 	"""
 		
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_all_null() {
-		PropositionDefinition.Builder.create(null, null, null, null)
+		PropositionDefinition.Builder.create(null, null, null, null, null)
 	}
 	
-	
+	void test_Builder_create_fail_null_prop_id() {
+		PropositionDefinition.Builder.create(null, PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1)
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	void test_Builder_create_fail_empty_prop_id() {
+		PropositionDefinition.Builder.create("", PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1)
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	void test_Builder_create_fail_whitespace_prop_id() {
+		PropositionDefinition.Builder.create("    ", PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1)
+	}
+
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_proposition_type() {
-		PropositionDefinition.Builder.create(null, RULE_ID, TYPE_ID, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, null, RULE_ID, TYPE_ID, PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_proposition_type() {
-		PropositionDefinition.Builder.create("", RULE_ID, TYPE_ID, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, "", RULE_ID, TYPE_ID, PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace_proposition_type() {
-		PropositionDefinition.Builder.create("    ", RULE_ID, TYPE_ID, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, "    ", RULE_ID, TYPE_ID, PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_invalid_proposition_type() {
-		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_BAD, RULE_ID, TYPE_ID, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, PROPOSITION_TYPE_CD_BAD, RULE_ID, TYPE_ID, PARM_LIST_1)
 	}
 
 	@Test
 	void test_Builder_create_null_parameter_list() {
         // null param list ok
-		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, null)
+		PropositionDefinition.Builder.create(PROP_ID, PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, null)
 	}
 	
 	@Test
 	void test_Builder_create_empty_parameter_list() {
         // empty param list ok
-		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, EMPTY_PARM_LIST)
+		PropositionDefinition.Builder.create(PROP_ID, PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, EMPTY_PARM_LIST)
 	}
 
 	@Test
 	void test_Builder_create_simple_proposition_success() {
-		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1)
 	}
 
 	@Test
 	void test_Builder_create_and_build_simple_proposition_success() {
-		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1).build()
+		PropositionDefinition.Builder.create(PROP_ID, PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1).build()
 	}
 
 	@Test
 	void test_Builder_create_compound_proposition_sucess() {
 		PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-			def String propId = "111"
+			def String id = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
             def String ruleId = "1"
 			def String typeId = "1"
@@ -211,13 +248,14 @@ class PropositionTest {
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.getCode()
 			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
+			def Long versionNumber = new Long(1)
 		})
 	}
 	
 	@Test
 	void test_Builder_create_and_build_compound_proposition_success() {
 		PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-			def String propId = "111"
+			def String id = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
             def String ruleId = "1"
 			def String typeId = "1"
@@ -225,14 +263,15 @@ class PropositionTest {
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.getCode()
 			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
-		}).build()
+			def Long versionNumber = new Long(1)
+				}).build()
 	}
 
 	@Test
 	public void testXmlMarshaling_simple_proposition() {
- 		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1)
-		myPropBuilder.setPropId(PROP_ID)
+ 		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID, PROPOSITION_TYPE_CD_S, RULE_ID, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setDescription(DESCRIPTION)
+		myPropBuilder.setVersionNumber( new Long(1) )
 		PropositionDefinition myProp = myPropBuilder.build()
         JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
 	    Marshaller marshaller = jc.createMarshaller()
@@ -253,7 +292,7 @@ class PropositionTest {
 	  JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
 	  PropositionDefinition myProp = (PropositionDefinition) unmarshaller.unmarshal(new StringReader(SIMPLE_PROP_XML))
-	  Assert.assertEquals(PROP_ID, myProp.propId)
+	  Assert.assertEquals(PROP_ID, myProp.id)
 	  Assert.assertEquals(DESCRIPTION, myProp.description)
 	  Assert.assertEquals(TYPE_ID, myProp.typeId)
 	  Assert.assertEquals(PROPOSITION_TYPE_CD_S, myProp.propositionTypeCode)
@@ -267,7 +306,7 @@ class PropositionTest {
 	@Test
 	public void testXmlMarshaling_compound_proposition() {
 		PropositionDefinition myProp = PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-			def String propId = "111"
+			def String id = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
             def String ruleId = "1"
 			def String typeId = "1"
@@ -275,6 +314,7 @@ class PropositionTest {
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.getCode()
 			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
+			def Long versionNumber = new Long(1)
 		}).build()
 
 		JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
@@ -296,7 +336,7 @@ class PropositionTest {
 	  JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
 	  PropositionDefinition myProp = (PropositionDefinition) unmarshaller.unmarshal(new StringReader(COMPOUND_PROP_XML))
-	  Assert.assertEquals("111", myProp.propId)
+	  Assert.assertEquals("111", myProp.id)
 	  Assert.assertEquals("Compound: Campus is Muir or Thurgood Marshall", myProp.description)
 	  Assert.assertEquals("1", myProp.typeId)
 	  Assert.assertEquals(PROPOSITION_TYPE_CD_C, myProp.propositionTypeCode)
@@ -306,11 +346,11 @@ class PropositionTest {
 	  for (pb in [PROP_A_BUILDER, PROP_B_BUILDER]){
 		  pList.add (pb.build())
 	  }
-	  Assert.assertEquals(pList.get(0).propId, myProp.compoundComponents.get(0).propId)
+	  Assert.assertEquals(pList.get(0).id, myProp.compoundComponents.get(0).id)
 	  Assert.assertEquals(pList.get(0).description, myProp.compoundComponents.get(0).description)
 	  Assert.assertEquals(pList.get(0).typeId, myProp.compoundComponents.get(0).typeId)
 	  Assert.assertEquals(pList.get(0).propositionTypeCode, myProp.compoundComponents.get(0).propositionTypeCode)
-	  Assert.assertEquals(pList.get(1).propId, myProp.compoundComponents.get(1).propId)
+	  Assert.assertEquals(pList.get(1).id, myProp.compoundComponents.get(1).id)
 	  Assert.assertEquals(pList.get(1).description, myProp.compoundComponents.get(1).description)
 	  Assert.assertEquals(pList.get(1).typeId, myProp.compoundComponents.get(1).typeId)
 	  Assert.assertEquals(pList.get(1).propositionTypeCode, myProp.compoundComponents.get(1).propositionTypeCode)
@@ -327,6 +367,7 @@ class PropositionTest {
 		  def String value = "campusCode"
 		  def String parameterType = "T"
 		  def Integer sequenceNumber = new Integer(0)
+		  def Long versionNumber = new Long(1)
 	  })
 	  PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "1001"
@@ -334,6 +375,7 @@ class PropositionTest {
 		  def String value = "BL"
 		  def String parameterType = "C"
 		  def Integer sequenceNumber = new Integer(1)
+		  def Long versionNumber = new Long(1)
 	  })
 	  PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "1003"
@@ -341,6 +383,7 @@ class PropositionTest {
 		  def String value = "EQUALS"
 		  def String parameterType = "F"
 		  def Integer sequenceNumber = new Integer(2)
+		  def Long versionNumber = new Long(1)
 	  })
 	  for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 		  propParms.add (ppb)
@@ -355,6 +398,7 @@ class PropositionTest {
 		  def String value = "campusCode"
 		  def String parameterType = "T"
 		  def Integer sequenceNumber = new Integer(0)
+		  def Long versionNumber = new Long(1)
 	  })
 	  PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "2001"
@@ -362,6 +406,7 @@ class PropositionTest {
 		  def String value = "Muir"
 		  def String parameterType = "C"
 		  def Integer sequenceNumber = new Integer(1)
+		  def Long versionNumber = new Long(1)
 	  })
 	  PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "2002"
@@ -369,6 +414,7 @@ class PropositionTest {
 		  def String value = "EQUALS"
 		  def String parameterType = "F"
 		  def Integer sequenceNumber = new Integer(2)
+		  def Long versionNumber = new Long(1)
 	  })
 	  for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 		  propParms.add (ppb)
@@ -383,6 +429,7 @@ class PropositionTest {
 		  def String value = "campusCode"
 		  def String parameterType = "T"
 		  def Integer sequenceNumber = new Integer("0")
+		  def Long versionNumber = new Long(1)
 	  })
 	  PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "2011"
@@ -390,6 +437,7 @@ class PropositionTest {
 		  def String value = "Thurgood Marshall"
 		  def String parameterType = "C"
 		  def Integer sequenceNumber = new Integer("1")
+		  def Long versionNumber = new Long(1)
 	  })
 	  PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 		  def String id = "2012"
@@ -397,6 +445,7 @@ class PropositionTest {
 		  def String value = "EQUALS"
 		  def String parameterType = "F"
 		  def Integer sequenceNumber = new Integer("2")
+		  def Long versionNumber = new Long(1)
 	  })
 	  for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 		  propParms.add (ppb)
@@ -405,7 +454,7 @@ class PropositionTest {
   }
   private static createPropositionABuilder() {
 	  return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-		  def String propId = "100"
+		  def String id = "100"
 		  def String description = "Is campus type = Muir"
           def String ruleId = "1"
 		  def String typeId = "1"
@@ -413,12 +462,13 @@ class PropositionTest {
 		  def List<? extends PropositionParameterContract> parameters = PropositionTest.PARM_LIST_A
 		  def String compoundOpCode = null
 		  def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
+		  def Long versionNumber = new Long(1)
 	  })
   }
 	  
   private static createPropositionBBuilder() {
 	  return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
-		  def String propId = "101"
+		  def String id = "101"
 		  def String description = "Is campus type = Thurgood Marshall"
           def String ruleId = "1"
 		  def String typeId = "1"
@@ -426,6 +476,7 @@ class PropositionTest {
 		  def List<? extends PropositionParameterContract> parameters = PropositionTest.PARM_LIST_B
 		  def String compoundOpCode = null
 		  def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
+		  def Long versionNumber = new Long(1)
 	  })
   }
 	  

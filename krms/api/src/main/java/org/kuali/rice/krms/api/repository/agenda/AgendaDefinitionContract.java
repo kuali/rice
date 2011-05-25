@@ -2,17 +2,10 @@ package org.kuali.rice.krms.api.repository.agenda;
 
 import java.util.Map;
 
-public interface AgendaDefinitionContract {
-	/**
-	 * This is the ID for the Agenda
-	 *
-	 * <p>
-	 * It is a ID of a Agenda
-	 * </p>
-	 * @return ID for Agenda
-	 */
-	public String getId();
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
+public interface AgendaDefinitionContract extends Identifiable, Versioned {
 	/**
 	 * This is the name of the Agenda 
 	 *
@@ -40,10 +33,19 @@ public interface AgendaDefinitionContract {
 	 */
 	public String getTypeId();
 	
+	/**
+	 * This is the ID of the Context relative to the Agenda. 
+	 *
+	 * @return id for Context relative to the Agenda
+	 */	
 	public String getContextId();
 	
+	/**
+	 * This is the ID of the first AgendaItem to be executed in the Agenda. 
+	 *
+	 * @return id of the first AgendaItem.
+	 */	
 	public String getFirstItemId();
-	
 	
 	/**
 	 * This method returns a list of attributes associated with the 
@@ -53,5 +55,4 @@ public interface AgendaDefinitionContract {
 	 */
 	public Map<String, String> getAttributes();
 	
-
 }

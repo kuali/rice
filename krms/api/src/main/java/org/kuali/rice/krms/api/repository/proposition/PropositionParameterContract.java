@@ -2,9 +2,9 @@ package org.kuali.rice.krms.api.repository.proposition;
 
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
-public interface PropositionParameterContract extends Identifiable {
-
+public interface PropositionParameterContract extends Identifiable, Versioned {
 	/**
 	 * This is the Id for the parent proposition.
 	 *

@@ -33,6 +33,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		PropositionParameter.Elements.VALUE,
 		PropositionParameter.Elements.PARM_TYPE,
 		PropositionParameter.Elements.SEQUENCE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PropositionParameter implements PropositionParameterContract, ModelObjectComplete{
@@ -48,6 +49,8 @@ public final class PropositionParameter implements PropositionParameterContract,
 	private String parameterType;
 	@XmlElement(name = Elements.SEQUENCE, required=true)
 	private Integer sequenceNumber;
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -63,6 +66,7 @@ public final class PropositionParameter implements PropositionParameterContract,
     	this.value = null;
     	this.parameterType = null;
     	this.sequenceNumber = null;
+        this.versionNumber = null;
     }
     
     /**
@@ -77,6 +81,7 @@ public final class PropositionParameter implements PropositionParameterContract,
         this.value = builder.getValue();
         this.parameterType = builder.getParameterType();
         this.sequenceNumber = builder.getSequenceNumber();
+        this.versionNumber = builder.getVersionNumber();
     }
     
 	@Override
@@ -103,6 +108,11 @@ public final class PropositionParameter implements PropositionParameterContract,
 		return this.sequenceNumber; 
 	}
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+        
 	/**
      * This builder is used to construct instances of PropositionParameter.  
      * It enforces the constraints of the {@link PropositionParameterContract}.
@@ -115,6 +125,7 @@ public final class PropositionParameter implements PropositionParameterContract,
         private String value;
         private String parameterType;
         private Integer sequenceNumber;
+        private Long versionNumber;
         private PropositionDefinition.Builder proposition;
 
 		/**
@@ -143,6 +154,7 @@ public final class PropositionParameter implements PropositionParameterContract,
                 throw new IllegalArgumentException("contract is null");
             }
             Builder builder =  new Builder(contract.getId(), contract.getPropId(), contract.getValue(), contract.getParameterType(), contract.getSequenceNumber());
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 
@@ -194,12 +206,16 @@ public final class PropositionParameter implements PropositionParameterContract,
 		}
 		
 		public void setProposition(PropositionDefinition.Builder proposition) {
-		    if (proposition != null && !StringUtils.isBlank(proposition.getPropId())) {
-		        setPropId(proposition.getPropId());
+		    if (proposition != null && !StringUtils.isBlank(proposition.getId())) {
+		        setPropId(proposition.getId());
 		    }
 		    this.proposition = proposition;
 		}
 
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
 		@Override
 		public String getId() {
 			return id;
@@ -224,6 +240,11 @@ public final class PropositionParameter implements PropositionParameterContract,
 		public Integer getSequenceNumber() {
 			return sequenceNumber;
 		}
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
 
 		/**
 		 * Builds an instance of a PropositionParameter based on the current state of the builder.

@@ -36,7 +36,8 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		KrmsTypeDefinition.Elements.NAMESPACE,
 		KrmsTypeDefinition.Elements.SERVICENAME,
 		KrmsTypeDefinition.Elements.ACTIVE,
-		"attributes",
+		KrmsTypeDefinition.Elements.ATTRIBUTES,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, ModelObjectComplete{
@@ -54,6 +55,8 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
 	private boolean active;
 	@XmlElement(name = Elements.ATTRIBUTE, required=false)
 	private List<KrmsTypeAttribute> attributes;
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -69,6 +72,7 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
     	this.serviceName = null;
     	this.active = false;
     	this.attributes = null;
+        this.versionNumber = null;
     }
     
     /**
@@ -90,6 +94,7 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
         		}
         }
         this.attributes = Collections.unmodifiableList(attrList);
+        this.versionNumber = builder.getVersionNumber();
     }
     
 	@Override
@@ -122,6 +127,11 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
 		return this.attributes; 
 	}
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+        
 	/**
      * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeDefinitionContract}.
      */
@@ -134,6 +144,7 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
         private String serviceName = "";
         private boolean active;
         private List<KrmsTypeAttribute.Builder> attributes;
+        private Long versionNumber;
         
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -191,7 +202,7 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
             	}
             }
             builder.setAttributes(attrBuilderList);
-            
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 
@@ -238,29 +249,44 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
 			this.active = active;
 		}
 
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
+		@Override
 		public String getId() {
 			return id;
 		}
 
+		@Override
 		public String getName() {
 			return name;
 		}
 
+		@Override
 		public String getNamespace() {
 			return namespace;
 		}
 
+		@Override
 		public String getServiceName() {
 			return serviceName;
 		}
 		
+		@Override
 		public List<KrmsTypeAttribute.Builder> getAttributes(){
 			return attributes;
 		}
 
+		@Override
 		public boolean isActive() {
 			return active;
 		}
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
 
 		/**
 		 * Builds an instance of a KrmsType based on the current state of the builder.
@@ -308,5 +334,6 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
 		final static String SERVICENAME = "serviceName";
 		final static String ACTIVE = "active";
 		final static String ATTRIBUTE = "attribute";
+		final static String ATTRIBUTES = "attributes";
 	}
 }

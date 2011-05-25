@@ -59,32 +59,37 @@ class RuleDefinitionTest {
 			<namespace>KRMS_TEST</namespace>
 			<typeId>1234XYZ</typeId>
 			<proposition>
-				<propId>PROP-001</propId>
+				<id>PROP-001</id>
 				<description>is Campus Bloomington</description>
                 <ruleId>RULEID001</ruleId>
 				<typeId>1234XYZ</typeId>
         		<propositionTypeCode>S</propositionTypeCode>
-        		<parameter>
-            		<id>1000</id>
-            		<propId>2001</propId>
-            		<value>campusCode</value>
-            		<parameterType>T</parameterType>
-            		<sequenceNumber>0</sequenceNumber>
-        		</parameter>
-        		<parameter>
-            		<id>1001</id>
-            		<propId>2001</propId>
-            		<value>BL</value>
-            		<parameterType>C</parameterType>
-            		<sequenceNumber>1</sequenceNumber>
-        		</parameter>
-        		<parameter>
-            		<id>1003</id>
-            		<propId>2001</propId>
-            		<value>EQUALS</value>
-            		<parameterType>F</parameterType>
-            		<sequenceNumber>2</sequenceNumber>
-        		</parameter>
+        		<parameters>
+        			<parameter>
+            			<id>1000</id>
+            			<propId>2001</propId>
+            			<value>campusCode</value>
+            			<parameterType>T</parameterType>
+            			<sequenceNumber>0</sequenceNumber>
+            			<versionNumber>1</versionNumber>
+        			</parameter>
+        			<parameter>
+						<id>1001</id>
+            			<propId>2001</propId>
+            			<value>BL</value>
+            			<parameterType>C</parameterType>
+            			<sequenceNumber>1</sequenceNumber>
+            			<versionNumber>1</versionNumber>
+        			</parameter>
+        			<parameter>
+						<id>1003</id>
+            			<propId>2001</propId>
+            			<value>EQUALS</value>
+            			<parameterType>F</parameterType>
+            			<sequenceNumber>2</sequenceNumber>
+            			<versionNumber>1</versionNumber>
+        			</parameter>
+        		</parameters>
     		</proposition>
 		</rule>	"""
 
@@ -195,8 +200,7 @@ class RuleDefinitionTest {
 	
 	@Test
 	void test_RuleDefinition_Builder_create_and_build() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
-		myPropBuilder.setPropId(PROP_ID_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 
 		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
@@ -206,8 +210,7 @@ class RuleDefinitionTest {
 	
 	@Test
 	public void testXmlMarshaling_small_RuleDefinition() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
-		myPropBuilder.setPropId(PROP_ID_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 
 		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
@@ -240,8 +243,7 @@ class RuleDefinitionTest {
 	@Test
 	// TODO: add attributes
 	public void testXmlMarshaling_RuleDefinition_with_attributes() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
-		myPropBuilder.setPropId(PROP_ID_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 
 		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
@@ -275,8 +277,7 @@ class RuleDefinitionTest {
 	@Test
 	// TODO: add actions
 	public void testXmlMarshaling_RuleDefinition_with_actions() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
-		myPropBuilder.setPropId(PROP_ID_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 		myPropBuilder.setTypeId(TYPE_ID)
 
@@ -318,6 +319,7 @@ class RuleDefinitionTest {
 			def String value = "campusCode"
 			def String parameterType = "T"
 			def Integer sequenceNumber = new Integer(0)
+			def Long versionNumber = new Long(1)
 		})
 		PropositionParameter.Builder ppBuilder2 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "1001"
@@ -325,6 +327,7 @@ class RuleDefinitionTest {
 			def String value = "BL"
 			def String parameterType = "C"
 			def Integer sequenceNumber = new Integer(1)
+			def Long versionNumber = new Long(1)
 		})
 		PropositionParameter.Builder ppBuilder3 = PropositionParameter.Builder.create(new PropositionParameterContract() {
 			def String id = "1003"
@@ -332,6 +335,7 @@ class RuleDefinitionTest {
 			def String value = "EQUALS"
 			def String parameterType = "F"
 			def Integer sequenceNumber = new Integer(2)
+			def Long versionNumber = new Long(1)
 		})
 		for ( ppb in [ppBuilder1, ppBuilder2, ppBuilder3]){
 			propParms.add (ppb)

@@ -40,6 +40,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		ActionDefinition.Elements.RULE_ID,
 		ActionDefinition.Elements.SEQUENCE_NUMBER,
 		ActionDefinition.Elements.ATTRIBUTES,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class ActionDefinition implements ActionDefinitionContract, ModelObjectComplete{
@@ -63,7 +64,10 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	@XmlElementWrapper(name = Elements.ATTRIBUTES)
 	@XmlElement(name = Elements.ATTRIBUTE, required=false)
 	private Set<ActionAttribute> attributes;
-	
+
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+    	
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
@@ -82,6 +86,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
     	this.ruleId = null;
     	this.sequenceNumber = null;
     	this.attributes = null;
+        this.versionNumber = null;
     }
     
     /**
@@ -104,6 +109,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         	}
         	this.attributes = Collections.unmodifiableSet(attrSet);
         }
+        this.versionNumber = builder.getVersionNumber();
     }
     
 	@Override
@@ -146,6 +152,11 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 		return this.attributes; 
 	}
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+        
 	/**
      * This builder is used to construct instances of KRMS Repository Action.  It enforces the constraints of the {@link ActionDefinitionContract}.
      */
@@ -160,6 +171,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         private String ruleId;
         private Integer sequenceNumber;
         private Set<ActionAttribute.Builder> attributes;
+        private Long versionNumber;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -207,6 +219,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
             		contract.getSequenceNumber())
             			.description(contract.getDescription())
             			.attributes(attrBuilderList);
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 
@@ -273,6 +286,10 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 			this.attributes = Collections.unmodifiableSet(attributes);
 		}
 		
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
 		@Override
 		public String getId() {
 			return id;
@@ -312,6 +329,11 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 		public Set<ActionAttribute.Builder> getAttributes() {
 			return attributes;
 		}
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
 
 		/**
 		 * Builds an instance of a Action based on the current state of the builder.

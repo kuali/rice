@@ -34,6 +34,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		KrmsAttributeDefinition.Elements.LABEL,
 		KrmsAttributeDefinition.Elements.ACTIVE,
 		KrmsAttributeDefinition.Elements.COMPONENT_NAME,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionContract, ModelObjectComplete{
@@ -51,6 +52,8 @@ public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionCon
 	private boolean active;
 	@XmlElement(name = Elements.COMPONENT_NAME, required=false)
 	private String componentName;
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -66,6 +69,7 @@ public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionCon
     	this.label = null;
     	this.active = false;
     	this.componentName = null;
+        this.versionNumber = null;
     }
     
     /**
@@ -81,6 +85,7 @@ public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionCon
         this.label = builder.getLabel();
         this.active = builder.isActive();
         this.componentName = builder.getComponentName();
+        this.versionNumber = builder.getVersionNumber();
     }
     
 	public String getId() {
@@ -107,6 +112,11 @@ public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionCon
 		return this.componentName;
 	}
 	
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+        
 	/**
      * This builder is used to construct instances of KrmsAttributeDefinition.  It enforces the constraints of the {@link KrmsAttributeDefinitionContract}.
      */
@@ -119,6 +129,7 @@ public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionCon
         private String label;
         private boolean active;
         private String componentName;
+        private Long versionNumber;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -165,6 +176,7 @@ public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionCon
             builder.setActive(contract.isActive());
             builder.setLabel(contract.getLabel());
             builder.setComponentName(contract.getComponentName());
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 
@@ -207,29 +219,44 @@ public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionCon
 			this.active = active;
 		}
 
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
+		@Override
 		public String getId() {
 			return id;
 		}
 
+		@Override
 		public String getName() {
 			return name;
 		}
 
+		@Override
 		public String getNamespace() {
 			return namespace;
 		}
 
+		@Override
 		public String getComponentName() {
 			return componentName;
 		}
 
+		@Override
 		public String getLabel() {
 			return label;
 		}
 
+		@Override
 		public boolean isActive() {
 			return active;
 		}
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
 
 		/**
 		 * Builds an instance of a CampusType based on the current state of the builder.

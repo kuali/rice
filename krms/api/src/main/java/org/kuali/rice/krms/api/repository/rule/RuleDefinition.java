@@ -45,6 +45,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 		RuleDefinition.Elements.PROPOSITION,
 		RuleDefinition.Elements.ACTIONS,
 		RuleDefinition.Elements.ATTRIBUTES,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class RuleDefinition implements RuleDefinitionContract, ModelObjectComplete{
@@ -69,6 +70,9 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	@XmlElement(name = Elements.ATTRIBUTE, required=false)
 	private Set<RuleAttribute> attributes;
 	
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+    	
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
@@ -89,6 +93,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
     	this.proposition = null;
     	this.actions = null;
     	this.attributes = null;
+        this.versionNumber = null;
     }
     
     /**
@@ -122,6 +127,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         	}
             this.attributes = Collections.unmodifiableSet(attributes);
         }
+        this.versionNumber = builder.getVersionNumber();
     }
     
 	@Override
@@ -164,6 +170,11 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		return this.attributes; 
 	}
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+        
 	/**
      * This builder is used to construct instances of KRMS Repository Rule.  It enforces the constraints of the {@link RuleDefinitionContract}.
      */
@@ -178,6 +189,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         private PropositionDefinition.Builder proposition;
         private List<ActionDefinition.Builder> actions;
         private Set<RuleAttribute.Builder> attributes;
+        private Long versionNumber;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -227,6 +239,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
             }
             builder.setActions(actionList);
             builder.setAttributes(attrBuilderList);
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 
@@ -274,7 +287,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		
 		public void setProposition(PropositionDefinition.Builder prop) {
 			this.proposition = prop;
-			this.setPropId(prop.getPropId());
+			this.setPropId(prop.getId());
 		}
 		
 		public void setActions(List<ActionDefinition.Builder> actions) {
@@ -293,6 +306,10 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 			this.attributes = Collections.unmodifiableSet(attributes);
 		}
 		
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
 		@Override
 		public String getId() {
 			return id;
@@ -331,6 +348,11 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		public Set<RuleAttribute.Builder> getAttributes() {
 			return attributes;
 		}
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
 
 		/**
 		 * Builds an instance of a Rule based on the current state of the builder.

@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
@@ -44,7 +45,8 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 		AgendaItem.Elements.WHEN_TRUE,
 		AgendaItem.Elements.WHEN_FALSE,
 		AgendaItem.Elements.ALWAYS,
-		"_elements"
+        CoreConstants.CommonElements.VERSION_NUMBER,
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class AgendaItem implements AgendaItemContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
@@ -75,9 +77,12 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 	@XmlElement(name = Elements.ALWAYS, required=false)
 	private AgendaItem always;
 	
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+    	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
 	
 	 /** 
@@ -99,6 +104,8 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
     	this.whenTrue = null;
     	this.whenFalse = null;
     	this.always = null;
+    	
+        this.versionNumber = null;
     }
     
     /**
@@ -115,6 +122,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
     	this.whenTrueId = builder.getWhenTrueId();
     	this.whenFalseId = builder.getWhenFalseId();
     	this.alwaysId = builder.getAlwaysId();
+        this.versionNumber = builder.getVersionNumber();
 
     	if (builder.getRule() != null) { this.rule = builder.getRule().build(); }
     	if (builder.getSubAgenda() != null) { this.subAgenda = builder.getSubAgenda().build(); }
@@ -183,6 +191,11 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 		return this.always; 
 	}
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+        
 	/**
      * This builder is used to construct instances of KRMS Repository AgendaItem.  It enforces the constraints of the {@link AgendaItemContract}.
      */
@@ -195,6 +208,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
         private String whenTrueId;
         private String whenFalseId;
         private String alwaysId;
+        private Long versionNumber;
         
         private RuleDefinition.Builder rule;
         private AgendaDefinition.Builder subAgenda;
@@ -247,6 +261,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
         	if (contract.getAlways() != null){
         		builder.setAlways( AgendaItem.Builder.create( contract.getAlways()));
         	}
+            builder.setVersionNumber(contract.getVersionNumber());
         	return builder;
         }
 
@@ -321,8 +336,10 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 			this.always = always;
 		}
 
-			
-		
+		public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        		
 		@Override
 		public String getId() {
 			return id;
@@ -382,6 +399,11 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 		public AgendaItem.Builder getAlways() {
 			return always;
 		}
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
 
 		/**
 		 * Builds an instance of a AgendaItem based on the current state of the builder.

@@ -39,7 +39,7 @@ public class KrmsAttributeDefinitionBo extends PersistableBusinessObjectBase imp
 	   bo.label = im.label
 	   bo.active = im.active
 	   bo.componentName = im.componentName
-
+	   bo.versionNumber = im.versionNumber
 	   return bo
    }
  

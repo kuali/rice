@@ -155,18 +155,18 @@
         <td colspan=10 class="tab-subhead">Members:</td>
       </tr>
       <tr>
-        <th>&nbsp;</th> 
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberTypeCode}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberTypeCode&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberId}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberId&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberNamespaceCode}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberNamespaceCode&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberName}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberName&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberFullName}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberFullName${roleMemberAttributes.memberFullName[fieldName]}&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeFromDate}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.activeFromDate&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument"/>
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeToDate}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.activeToDate&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument"/>
+        <th>&nbsp;<input type="hidden" id="sortMethodToCallPlaceholder" name="sortMethodToCallPlaceholder" value="placeholder"/></th>
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberTypeCode}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.memberTypeCode';submitForm();" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberId}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.memberId';submitForm();" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberNamespaceCode}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.memberNamespaceCode';submitForm();" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberName}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.memberName';submitForm();" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberFullName}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.memberFullName';submitForm();"/>
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeFromDate}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.activeFromDate';submitForm();"/>
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeToDate}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.activeToDate';submitForm();"/>
         <c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
           <c:set var="fieldName" value="${attrDefn.attributeName}" />
           <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
-          <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.${fieldName}&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument"/>
+          <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.${fieldName}';submitForm();"/>
         </c:forEach>
         <c:if test="${canModifyAssignees}"> 
           <kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
@@ -206,7 +206,8 @@
                     </div>
                 </td>
                 <td align="left" valign="middle">
-                    <div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberNamespaceCode"  attributeEntry="${roleMemberAttributes.memberNamespaceCode}" readOnly="true"  />
+                    <div align="center"> 
+                    	<kul:htmlControlAttribute property="document.members[${statusMember.index}].memberNamespaceCode"  attributeEntry="${roleMemberAttributes.memberNamespaceCode}" readOnly="true"  /> 	
                     </div>
                 </td>
                 <td align="left" valign="middle">
@@ -217,7 +218,9 @@
                 </td>
                 <td align="left" valign="middle">
                     <kul:inquiry boClassName="${inquiryClass}" keyValues="${keyValue}=${member.memberId}" render="true">
-                        	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberFullName"  attributeEntry="${roleMemberAttributes.memberFullName}" readOnly="true"  />
+                        	<div align="center"> 
+<%--                         		<a href="javascript:document.forms[0].sortMethodToCallPlaceholder=methodToCall.sort.memberFullName${roleMemberAttributes.memberFullName[fieldName]}"></a> --%>
+                        		<kul:htmlControlAttribute property="document.members[${statusMember.index}].memberFullName"  attributeEntry="${roleMemberAttributes.memberFullName}" readOnly="true"  />
 							</div>
                     </kul:inquiry>
                     

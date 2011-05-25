@@ -21,6 +21,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -33,10 +34,12 @@ import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
+import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.web.struts.action.KualiTableRenderAction;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -51,7 +54,7 @@ import java.util.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class IdentityManagementGroupDocumentAction extends IdentityManagementDocumentActionBase {
+public class IdentityManagementGroupDocumentAction extends IdentityManagementDocumentActionBase implements KualiTableRenderAction {
 
 	/**
 	 * This constructs a ...
@@ -63,69 +66,23 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 		addMethodToCallToUncheckedList( CHANGE_NAMESPACE_METHOD_TO_CALL );
 	}
 	
+    /**
+     * This method doesn't actually sort the column - it's just that we need a sort method in
+     * order to exploit the existing methodToCall logic. The sorting is handled in the execute
+     * method below, and delegated to the KualiTableRenderFormMetadata object. 
+     * 
+     * @param mapping
+     * @param form 
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-           IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
-           super.createDocument(groupDocumentForm);
-           GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfo(groupDocumentForm.getGroupId());
-//    	if ( groupDocumentForm.getGroupId() == null ) {
-        if(group == null) {
-    		groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
-    		groupDocumentForm.getGroupDocument().initializeDocumentForNewGroup();
-    		groupDocumentForm.setGroupId( groupDocumentForm.getGroupDocument().getGroupId() );
-    		setKimType(groupDocumentForm.getGroupDocument().getGroupTypeId(), groupDocumentForm);
-    	} else {
-    		loadGroupIntoDocument( groupDocumentForm.getGroupId(), groupDocumentForm );
-    	}
 
-		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
-		if (groupDocumentForm.getMemberRows() != null) {
-		    memberTableMetadata.jumpToFirstPage(groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
-		}
-//
-           Document document = groupDocumentForm.getDocument();
-           KualiWorkflowDocument workflowDocument = groupDocumentForm.getDocument().getDocumentHeader().getWorkflowDocument();
-           groupDocumentForm.populateHeaderFields(workflowDocument);
-           groupDocumentForm.setDocId(document.getDocumentNumber());
-           groupDocumentForm.setCanAssignGroup(validAssignGroup(groupDocumentForm.getGroupDocument()));
-           sortedGroupMembers(groupDocumentForm.getGroupDocument(), memberTableMetadata.getColumnToSortName());
-
-           GlobalVariables.getUserSession().addObject(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_SHORT_KEY, groupDocumentForm.getGroupDocument());
-           return refresh(mapping, groupDocumentForm, request, response);
-       }
-
-    private void sortedGroupMembers(IdentityManagementGroupDocument groupDocument, final String columnToSortName) {
-        Collections.sort(groupDocument.getMembers(), new Comparator<GroupDocumentMember>() {
-
-            public int compare(final GroupDocumentMember m1, final GroupDocumentMember m2) {
-
-                if (m1 == null && m2 == null) {
-                    return 0;
-                } else if (m1 == null) {
-                    return -1;
-                } else if (m2 == null) {
-                    return 1;
-                }
-                if ("memberTypeCode".equals(columnToSortName)) {
-                    return m1.getMemberTypeCode().compareToIgnoreCase(m2.getMemberTypeCode());
-                } else if ("memberId".equals(columnToSortName)) {
-                    return m1.getMemberId().compareToIgnoreCase(m2.getMemberId());
-                }  else if ("memberNamespaceCode".equals(columnToSortName)) {
-                    return m1.getMemberNamespaceCode().compareToIgnoreCase(m2.getMemberNamespaceCode());
-                } else if ("memberName".equals(columnToSortName)) {
-                    return m1.getMemberId().compareToIgnoreCase(m2.getMemberId());
-                }else if ("memberFullName".equals(columnToSortName)) {
-                    return m1.getMemberFullName().compareToIgnoreCase(m2.getMemberFullName());
-                } else if ("activeFromDate".equals(columnToSortName)) {
-                    return m1.getActiveFromDate().compareTo(m2.getActiveFromDate());
-                } else if ("activeToDate".equals(columnToSortName)) {
-                    return m1.getActiveToDate().compareTo(m2.getActiveToDate());
-                }
-                return m1.getMemberName().compareToIgnoreCase(m2.getMemberName());
-            }
-        });
-
+    	return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-
+    
     @Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -141,6 +98,8 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
 		if (groupDocumentForm.getMemberRows() != null) {
 			memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
+			// KULRICE-3972: need to be able to sort by column header like on lookups when editing large roles and groups
+			memberTableMetadata.sort(groupDocumentForm.getMemberRows(), groupDocumentForm.getRecordsPerPage());
 		}
 		
 		ActionForward forward = super.execute(mapping, groupDocumentForm, request, response);

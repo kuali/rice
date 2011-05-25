@@ -119,14 +119,14 @@
                 <td colspan=9 class="tab-subhead">Members:</td>
               </tr>
 	        	<tr>
-	        		<th>&nbsp;</th> 
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberTypeCode}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberTypeCode&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
-                    <kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberId}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberId&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberNamespaceCode}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberNamespace&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberName}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberName&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberFullName}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberFullName&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeFromDate}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.activeFromDate&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeToDate}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.activeToDate&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
+	        		<th>&nbsp;<input type="hidden" id="sortMethodToCallPlaceholder" name="sortMethodToCallPlaceholder" value="placeholder"/></th>
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberTypeCode}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.memberTypeCode';submitForm();" />
+                    <kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberId}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.memberId';submitForm();" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberNamespaceCode}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.memberNamespaceCode';submitForm();" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberName}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.memberName';submitForm();" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberFullName}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.memberFullName';submitForm();" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeFromDate}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.activeFromDate';submitForm();" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeToDate}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.activeToDate';submitForm();" />
 					<c:if test="${canAssignGroup}">	
 	            		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col" horizontal="false" />
 					</c:if>	

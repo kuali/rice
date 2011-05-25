@@ -33,7 +33,7 @@ public class PagingBannerUtils {
 		throw new UnsupportedOperationException("do not call");
 	}
 
-    public static String getAlphabeticalValueAfterSubmit(String paramPrefix, Enumeration<String> parameterNames) {
+    public static String getStringValueAfterPrefix(String paramPrefix, Enumeration<String> parameterNames) {
         for (String parameterName : CollectionUtils.toIterable(parameterNames)) {
             if (parameterName.startsWith(paramPrefix)) {
                 parameterName = WebUtils.endsWithCoordinates(parameterName) ? parameterName : parameterName + ".x";

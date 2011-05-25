@@ -65,7 +65,7 @@
 			<forward name="basic" path="/WEB-INF/jsp/identityManagementPersonDocument.jsp" />
 		</action>
 		<action path="/identityManagementRoleDocument" name="IdentityManagementRoleDocumentForm" input="/WEB-INF/jsp/identityManagementRoleDocument.jsp" type="org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction"
-			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
+			scope="session" parameter="methodToCall" validate="true" attribute="KualiForm">
 			<forward name="basic" path="/WEB-INF/jsp/identityManagementRoleDocument.jsp" />
 		</action>
 		<action path="/identityManagementGroupDocument" name="IdentityManagementGroupDocumentForm" input="/WEB-INF/jsp/identityManagementGroupDocument.jsp" type="org.kuali.rice.kim.web.struts.action.IdentityManagementGroupDocumentAction"

@@ -49,6 +49,7 @@ import java.util.Collection;
         Delegate.Elements.DELEGATION_MEMBER_ID,
         Delegate.Elements.MEMBER_NAME,
         Delegate.Elements.MEMBER_NAMESPACE_CODE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class Delegate extends InactivatableFromToImpl implements DelegateContract, ModelObjectComplete {
@@ -85,6 +86,9 @@ public class Delegate extends InactivatableFromToImpl implements DelegateContrac
     @XmlElement(name = Elements.MEMBER_NAMESPACE_CODE)
     private final String memberNamespaceCode;
 
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER)
+    private final Long versionNumber;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -102,6 +106,7 @@ public class Delegate extends InactivatableFromToImpl implements DelegateContrac
         delegationMemberId = null;
         memberName = null;
         memberNamespaceCode = null;
+        versionNumber = null;
     }
 
     private Delegate(Builder b) {
@@ -115,6 +120,7 @@ public class Delegate extends InactivatableFromToImpl implements DelegateContrac
         delegationMemberId = b.getDelegationMemberId();
         memberName = b.getMemberName();
         memberNamespaceCode = b.getMemberNamespaceCode();
+        versionNumber = b.getVersionNumber();
     }
 
     public String getDelegationTypeCode() {
@@ -157,6 +163,10 @@ public class Delegate extends InactivatableFromToImpl implements DelegateContrac
         return this.roleId;
     }
 
+    public Long getVersionNumber() {
+        return this.versionNumber;
+    }
+
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
@@ -184,6 +194,7 @@ public class Delegate extends InactivatableFromToImpl implements DelegateContrac
         private String delegationMemberId;
         private String memberName;
         private String memberNamespaceCode;
+        private Long versionNumber;
 
         private Builder() {
         }
@@ -200,6 +211,7 @@ public class Delegate extends InactivatableFromToImpl implements DelegateContrac
             b.setDelegationMemberId(delegateContract.getDelegationMemberId());
             b.setMemberName(delegateContract.getMemberName());
             b.setMemberNamespaceCode(delegateContract.getMemberNamespaceCode());
+            b.setVersionNumber(delegateContract.getVersionNumber());
 
             return b;
         }
@@ -321,6 +333,14 @@ public class Delegate extends InactivatableFromToImpl implements DelegateContrac
 
         public void setRoleId(String roleId) {
             this.roleId = roleId;
+        }
+
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
+
+        public void setVersionNumber(Long versionNumber) {
+            this.versionNumber = versionNumber;
         }
 
         @Override

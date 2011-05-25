@@ -155,7 +155,7 @@
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/common/attribute/KimAttribute.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/responsibility/ResponsibilityAttribute.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/ReviewResponsibility.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml</value>

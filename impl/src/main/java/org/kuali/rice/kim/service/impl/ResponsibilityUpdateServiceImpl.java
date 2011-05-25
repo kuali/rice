@@ -21,7 +21,7 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
 import org.kuali.rice.kim.service.ResponsibilityUpdateService;
 
 import java.util.Iterator;
@@ -57,10 +57,10 @@ public class ResponsibilityUpdateServiceImpl extends ResponsibilityServiceBase i
 	    	resp.setDescription(description);
 	    	resp.setActive(active);
 	    	AttributeSet attributesToAdd = new AttributeSet( responsibilityDetails );
-	    	List<ResponsibilityAttributeDataImpl> details = resp.getDetailObjects();
-	    	Iterator<ResponsibilityAttributeDataImpl> detailIter = details.iterator();
+	    	List<ResponsibilityAttributeBo> details = resp.getDetailObjects();
+	    	Iterator<ResponsibilityAttributeBo> detailIter = details.iterator();
 	    	while ( detailIter.hasNext() ) {
-	    		ResponsibilityAttributeDataImpl detail = detailIter.next();
+	    		ResponsibilityAttributeBo detail = detailIter.next();
 	    		String attrName = detail.getKimAttribute().getAttributeName();
 	    		String attrValue = attributesToAdd.get(attrName);
 	    		// if not present in the list or is blank, remove from the list
@@ -76,7 +76,7 @@ public class ResponsibilityUpdateServiceImpl extends ResponsibilityServiceBase i
 
                 KimTypeAttribute attr = KimApiServiceLocator.getKimTypeInfoService().getKimType(resp.getTemplate().getKimTypeId()).getAttributeDefinitionByName(attrEntry.getKey());
 	    		if (attr != null && StringUtils.isNotBlank(attrEntry.getValue()) ) {
-	    			ResponsibilityAttributeDataImpl newDetail = new ResponsibilityAttributeDataImpl();
+	    			ResponsibilityAttributeBo newDetail = new ResponsibilityAttributeBo();
 	    			newDetail.setId(getNewAttributeDataId());
 	    			newDetail.setKimAttributeId(attr.getKimAttribute().getId());
 	    			newDetail.setKimTypeId(resp.getTemplate().getKimTypeId());

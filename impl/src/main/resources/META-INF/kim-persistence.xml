@@ -67,7 +67,7 @@
     <class>org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl</class>
     <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo</class>
     <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo</class>
     <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl</class>
     <class>org.kuali.rice.kim.document.IdentityManagementKimDocument</class>

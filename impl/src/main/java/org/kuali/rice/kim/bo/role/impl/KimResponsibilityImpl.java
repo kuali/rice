@@ -26,6 +26,7 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -67,10 +68,10 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	@Column(name="ACTV_IND")
 	protected boolean active;
 
-	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="responsibilityId")
+	@OneToMany(targetEntity=ResponsibilityAttributeBo.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="responsibilityId")
 	@Fetch(value = FetchMode.SELECT)
 	//@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
-	protected List<ResponsibilityAttributeDataImpl> detailObjects = new AutoPopulatingList(ResponsibilityAttributeDataImpl.class);
+	protected List<ResponsibilityAttributeBo> detailObjects = new AutoPopulatingList(ResponsibilityAttributeBo.class);
 	
 	@Column(name="RSP_TMPL_ID")
 	protected String templateId;
@@ -150,11 +151,11 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		return dto;
 	}
 	
-	public List<ResponsibilityAttributeDataImpl> getDetailObjects() {
+	public List<ResponsibilityAttributeBo> getDetailObjects() {
 		return this.detailObjects;
 	}
 
-	public void setDetailObjects(List<ResponsibilityAttributeDataImpl> detailObjects) {
+	public void setDetailObjects(List<ResponsibilityAttributeBo> detailObjects) {
 		this.detailObjects = detailObjects;
 		detailsAsAttributeSet = null;
 	}
@@ -169,7 +170,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		if ( detailsAsAttributeSet == null ) {
 			KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 			AttributeSet m = new AttributeSet();
-			for ( ResponsibilityAttributeDataImpl data : getDetailObjects() ) {
+			for ( ResponsibilityAttributeBo data : getDetailObjects() ) {
 				KimTypeAttribute attribute = null;
 				if ( kimType != null ) {
 					attribute = kimType.getAttributeDefinitionById( data.getKimAttributeId() );
@@ -231,9 +232,9 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 
 	public String getDetailObjectsValues(){
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
-		Iterator<ResponsibilityAttributeDataImpl> respIter = getDetailObjects().iterator();
+		Iterator<ResponsibilityAttributeBo> respIter = getDetailObjects().iterator();
 		while ( respIter.hasNext() ) {
-			ResponsibilityAttributeDataImpl responsibilityAttributeData = respIter.next();
+			ResponsibilityAttributeBo responsibilityAttributeData = respIter.next();
 			detailObjectsToDisplay.append( responsibilityAttributeData.getAttributeValue() );
 			if ( respIter.hasNext() ) {
 				detailObjectsToDisplay.append( KimConstants.KimUIConstants.COMMA_SEPARATOR );
@@ -245,9 +246,9 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	public String getDetailObjectsToDisplay() {
 		KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
-		Iterator<ResponsibilityAttributeDataImpl> respIter = getDetailObjects().iterator();
+		Iterator<ResponsibilityAttributeBo> respIter = getDetailObjects().iterator();
 		while ( respIter.hasNext() ) {
-			ResponsibilityAttributeDataImpl responsibilityAttributeData = respIter.next();
+			ResponsibilityAttributeBo responsibilityAttributeData = respIter.next();
 			detailObjectsToDisplay.append( getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(responsibilityAttributeData.getKimAttributeId())));
 			detailObjectsToDisplay.append( KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR );
 			detailObjectsToDisplay.append( responsibilityAttributeData.getAttributeValue() );

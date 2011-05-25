@@ -22,8 +22,8 @@ import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
@@ -36,7 +36,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.util.ObjectUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -100,13 +104,13 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 
     @SuppressWarnings("unchecked")
 	protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
-    	List<ResponsibilityAttributeDataImpl> responsibilityAttributeData = 
-    		(List<ResponsibilityAttributeDataImpl>)ObjectUtils.getPropertyValue(businessObject, attributeName);
+    	List<ResponsibilityAttributeBo> responsibilityAttributeData =
+    		(List<ResponsibilityAttributeBo>)ObjectUtils.getPropertyValue(businessObject, attributeName);
     	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ATTRIBUTE_DATA_ID);
-    	for(ResponsibilityAttributeDataImpl responsibilityAttributeDataImpl: responsibilityAttributeData){
-    		htmlData.add(getInquiryUrlForPrimaryKeys(ResponsibilityAttributeDataImpl.class, responsibilityAttributeDataImpl, primaryKeys, 
+    	for(ResponsibilityAttributeBo responsibilityAttributeDataImpl: responsibilityAttributeData){
+    		htmlData.add(getInquiryUrlForPrimaryKeys(ResponsibilityAttributeBo.class, responsibilityAttributeDataImpl, primaryKeys,
     			getKimAttributeLabelFromDD(responsibilityAttributeDataImpl.getKimAttribute().getAttributeName())+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
     			responsibilityAttributeDataImpl.getAttributeValue()));
     	}

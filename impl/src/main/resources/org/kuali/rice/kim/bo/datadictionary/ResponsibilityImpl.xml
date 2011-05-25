@@ -146,7 +146,7 @@
   </bean>
   
   <bean id="ResponsibilityImpl-attributeValue" parent="ResponsibilityImpl-attributeValue-parentBean"/>
-  <bean id="ResponsibilityImpl-attributeValue-parentBean" parent="KimResponsibilityAttributeDataImpl-attributeValue" abstract="true"/>
+  <bean id="ResponsibilityImpl-attributeValue-parentBean" parent="ResponsibilityAttribute-attributeValue" abstract="true"/>
   
   <bean id="ResponsibilityImpl-template.name" parent="ResponsibilityImpl-template.name-parentBean"/>
   <bean id="ResponsibilityImpl-template.name-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.name" p:label="Template Name" p:shortLabel="Template Name" p:maxLength="40" p:required="false">
@@ -265,7 +265,7 @@
             <list>
 				<bean parent="InquiryCollectionDefinition">
 	                <property name="attributeName" value="detailObjects"/>
-	                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl"/>
+	                <property name="businessObjectClass" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo"/>
 	                <property name="numberOfColumns" value="2"/>
 	                <property name="inquiryFields">
 						<list>

@@ -33,12 +33,12 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
@@ -346,7 +346,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         String responsibilityId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ID_S");
 
         String dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
-        ResponsibilityAttributeDataImpl documentTypeDetail = new ResponsibilityAttributeDataImpl();
+        ResponsibilityAttributeBo documentTypeDetail = new ResponsibilityAttributeBo();
         documentTypeDetail.setId(dataId);
         documentTypeDetail.setAttributeValue("RoleRouteModuleTest1");
         documentTypeDetail.setKimAttribute(documentTypeAttribute);
@@ -355,7 +355,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         documentTypeDetail.setAssignedToId(responsibilityId);
 
         dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
-        ResponsibilityAttributeDataImpl nodeNameDetail = new ResponsibilityAttributeDataImpl();
+        ResponsibilityAttributeBo nodeNameDetail = new ResponsibilityAttributeBo();
         nodeNameDetail.setId(dataId);
         nodeNameDetail.setAttributeValue("Role1");
         nodeNameDetail.setKimAttribute(nodeNameAttribute);
@@ -369,7 +369,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          * Create the responsibility
          */
 
-        List<ResponsibilityAttributeDataImpl> detailObjects = new ArrayList<ResponsibilityAttributeDataImpl>();
+        List<ResponsibilityAttributeBo> detailObjects = new ArrayList<ResponsibilityAttributeBo>();
         detailObjects.add(documentTypeDetail);
         detailObjects.add(nodeNameDetail);
 
@@ -457,7 +457,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         String responsibilityId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ID_S");
 
         String dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
-        ResponsibilityAttributeDataImpl documentTypeDetail = new ResponsibilityAttributeDataImpl();
+        ResponsibilityAttributeBo documentTypeDetail = new ResponsibilityAttributeBo();
         documentTypeDetail.setId(dataId);
         documentTypeDetail.setAttributeValue("RoleRouteModuleTest2");
         documentTypeDetail.setKimAttribute(documentTypeAttribute);
@@ -466,7 +466,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         documentTypeDetail.setAssignedToId(responsibilityId);
 
         dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
-        ResponsibilityAttributeDataImpl nodeNameDetail = new ResponsibilityAttributeDataImpl();
+        ResponsibilityAttributeBo nodeNameDetail = new ResponsibilityAttributeBo();
         nodeNameDetail.setId(dataId);
         nodeNameDetail.setAttributeValue("Role1");
         nodeNameDetail.setKimAttribute(nodeNameAttribute);
@@ -480,7 +480,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          * Create the responsibility
          */
 
-        List<ResponsibilityAttributeDataImpl> detailObjects = new ArrayList<ResponsibilityAttributeDataImpl>();
+        List<ResponsibilityAttributeBo> detailObjects = new ArrayList<ResponsibilityAttributeBo>();
         detailObjects.add(documentTypeDetail);
         detailObjects.add(nodeNameDetail);
 

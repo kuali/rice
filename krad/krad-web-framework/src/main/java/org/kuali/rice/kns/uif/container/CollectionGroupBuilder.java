@@ -216,9 +216,6 @@ public class CollectionGroupBuilder implements Serializable {
         // remove fields from the line that have render false
         lineFields = removeNonRenderLineFields(view, model, collectionGroup, lineFields, currentLine, lineIndex);
 
-		// add generated fields to the view's index
-		view.getViewIndex().addFields(lineFields);
-
 		// if not add line build sub-collection field groups
 		List<GroupField> subCollectionFields = new ArrayList<GroupField>();
 		if ((lineIndex != -1) && (collectionGroup.getSubCollections() != null)) {
@@ -238,8 +235,6 @@ public class CollectionGroupBuilder implements Serializable {
 				GroupField groupFieldPrototype = layoutManager.getSubCollectionGroupFieldPrototype();
 				GroupField subCollectionGroupField = ComponentUtils.copy(groupFieldPrototype, collectionGroup.getId() + "s" + subLineIndex);
 				subCollectionGroupField.setGroup(subCollectionGroup);
-				
-				view.getViewIndex().addCollection(subCollectionGroup);
 
 				subCollectionFields.add(subCollectionGroupField);
 			}

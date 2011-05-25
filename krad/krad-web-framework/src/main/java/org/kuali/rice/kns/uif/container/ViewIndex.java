@@ -37,20 +37,23 @@ import org.kuali.rice.kns.uif.util.ComponentUtils;
  */
 public class ViewIndex implements Serializable {
 	private static final long serialVersionUID = 4700818801272201371L;
-	
-	private Set<AttributeField> attributeFields;
-	private Map<String, AttributeField> attributeFieldIndex;
 
-	private Set<CollectionGroup> collections;
+    private Map<String, Component> index;
+	private Map<String, AttributeField> attributeFieldIndex;
 	private Map<String, CollectionGroup> collectionsIndex;
 
-	public ViewIndex() {
-		attributeFields = new HashSet<AttributeField>();
-		collections = new HashSet<CollectionGroup>();
+    /**
+     * Constructs new instance and performs indexing on View instance
+     *
+     * @param view - view instance to index
+     */
+    public ViewIndex(View view) {
+        index(view);
 	}
 
 	/**
-	 * Creates the field indexes based on the currently held fields
+	 * Walks through the View tree and indexes all components found. All components
+     * are indexed by their IDs with the special indexing done for certain components
 	 * 
 	 * <p>
 	 * <code>AttributeField</code> instances are indexed by the attribute path.
@@ -64,17 +67,55 @@ public class ViewIndex implements Serializable {
 	 * incoming request parameter
 	 * </p>
 	 */
-	public void index() {
+	protected void index(View view) {
+        index = new HashMap<String, Component>();
 		attributeFieldIndex = new HashMap<String, AttributeField>();
-		for (AttributeField field : attributeFields) {
-			attributeFieldIndex.put(field.getBindingInfo().getBindingPath(), field);
-		}
+        collectionsIndex = new HashMap<String, CollectionGroup>();
 
-		collectionsIndex = new HashMap<String, CollectionGroup>();
-		for (CollectionGroup collection : collections) {
-			collectionsIndex.put(collection.getBindingInfo().getBindingPath(), collection);
-		}
+        indexComponent(view);
 	}
+
+    /**
+     * Adds an entry to the main index for the given component. If the component
+     * is of type <code>AttributeField</code> or <code>CollectionGroup</code> an
+     * entry is created in the corresponding indexes for those types as well. Then
+     * the #indexComponent method is called for each of the component's children
+     *
+     * <p>
+     *   If the component is already contained in the indexes, it will be replaced
+     * </p>
+     *
+     * @param component - component instance to index
+     */
+    public void indexComponent(Component component) {
+        if (component == null) {
+            return;
+        }
+
+        index.put(component.getId(), component);
+
+        if (component instanceof AttributeField) {
+            AttributeField field = (AttributeField) component;
+            attributeFieldIndex.put(field.getBindingInfo().getBindingPath(), field);
+        } else if (component instanceof CollectionGroup) {
+            CollectionGroup collectionGroup = (CollectionGroup) component;
+            collectionsIndex.put(collectionGroup.getBindingInfo().getBindingPath(), collectionGroup);
+        }
+
+        for (Component nestedComponent : component.getNestedComponents()) {
+            indexComponent(nestedComponent);
+        }
+    }
+
+    /**
+     * Retrieves a <code>Component</code> from the view index by Id
+     *
+     * @param id - id for the component to retrieve
+     * @return Component instance found in index, or null if no such component exists
+     */
+    public Component getComponentById(String id) {
+        return index.get(id);
+    }
 
 	/**
 	 * Retrieves a <code>AttributeField</code> instance from the index
@@ -85,56 +126,6 @@ public class ViewIndex implements Serializable {
 	 */
 	public AttributeField getAttributeFieldByPath(String attributePath) {
 		return attributeFieldIndex.get(attributePath);
-	}
-
-	/**
-	 * Set of <code>AttributeField</code> instances that are held in the index
-	 * 
-	 * @return Set<AttributeField>
-	 */
-	public Set<AttributeField> getAttributeFields() {
-		return this.attributeFields;
-	}
-
-	/**
-	 * Setter for the AttributeField set
-	 * 
-	 * @param attributeFields
-	 */
-	public void setAttributeFields(Set<AttributeField> attributeFields) {
-		this.attributeFields = attributeFields;
-	}
-
-	/**
-	 * Adds an <code>AttributeField</code> instance to the Set of fields to
-	 * index
-	 * 
-	 * @param field
-	 *            - AttributeField instance to index
-	 */
-	public void addAttributeField(AttributeField field) {
-		attributeFields.add(field);
-	}
-
-	/**
-	 * Adds any <code>AttributeField</code> instances to the Set of fields to
-	 * index. If the field is a <code>GroupField</code> it is recursively
-	 * checked for attribute field items
-	 * 
-	 * @param fields
-	 *            - List of fields instances to add
-	 */
-	public void addFields(List<? extends Field> fields) {
-		for (Field field : fields) {
-			if (field instanceof AttributeField) {
-				attributeFields.add((AttributeField) field);
-			}
-			else if (field instanceof GroupField) {
-				List<? extends Field> groupFields = ComponentUtils.getComponentsOfType(((GroupField) field).getItems(),
-						Field.class);
-				addFields(groupFields);
-			}
-		}
 	}
 
 	/**
@@ -149,44 +140,6 @@ public class ViewIndex implements Serializable {
 	}
 
 	/**
-	 * Setter for the attribute fields index map
-	 * 
-	 * @param attributeFieldIndex
-	 */
-	public void setAttributeFieldIndex(Map<String, AttributeField> attributeFieldIndex) {
-		this.attributeFieldIndex = attributeFieldIndex;
-	}
-
-	/**
-	 * Set of <code>CollectionGroup</code> instances that are held in the index
-	 * 
-	 * @return Set<CollectionGroup>
-	 */
-	public Set<CollectionGroup> getCollections() {
-		return this.collections;
-	}
-
-	/**
-	 * Setter for the Set of <code>CollectionGroup</code> instances
-	 * 
-	 * @param collections
-	 */
-	public void setCollections(Set<CollectionGroup> collections) {
-		this.collections = collections;
-	}
-
-	/**
-	 * Adds a <code>CollectionGroup</code> instances to the set of collections
-	 * to index
-	 * 
-	 * @param collectionGroup
-	 *            - collection group instance to index
-	 */
-	public void addCollection(CollectionGroup collectionGroup) {
-		collections.add(collectionGroup);
-	}
-
-	/**
 	 * Gets the Map that contains collection indexing information. The Map key
 	 * gives the binding path to the collection, and the Map value givens the
 	 * <code>CollectionGroup</code> instance
@@ -195,15 +148,6 @@ public class ViewIndex implements Serializable {
 	 */
 	public Map<String, CollectionGroup> getCollectionsIndex() {
 		return this.collectionsIndex;
-	}
-
-	/**
-	 * Setter for the collections index map
-	 * 
-	 * @param collectionsIndex
-	 */
-	public void setCollectionsIndex(Map<String, CollectionGroup> collectionsIndex) {
-		this.collectionsIndex = collectionsIndex;
 	}
 
 	/**
@@ -218,48 +162,42 @@ public class ViewIndex implements Serializable {
 		return collectionsIndex.get(collectionPath);
 	}
 
-	/**
-	 * This method finds the attribute field based on the binding path. First, it tries
-	 * to find in the attribute collection. If not present there, search in the collection
-	 * 
-	 * @param bindingInfo based on this this, attribute field will be return
-	 * @return AttributeField
-	 */
-	public AttributeField getAttributeField(BindingInfo bindingInfo){
-		
-		/**
-		 * Find in the attribute index first.
-		 */
-    	AttributeField attributeField = getAttributeFieldByPath(bindingInfo.getBindingPath());
-    	
-    	if (attributeField == null){
-    		
-    		/**
-			 * Lets search the collections (by collection's binding path)
-			 */
-			String path = bindingInfo.getBindingObjectPath() + "." + bindingInfo.getBindByNamePrefix();
-			
-			 CollectionGroup collectionGroup = getCollectionGroupByPath(stripIndexesFromPropertyPath(path));
-			 if (collectionGroup != null){
-    			 for (Component item : ((CollectionGroup)collectionGroup).getItems()) {
-     				if (item instanceof AttributeField){
-        				if (StringUtils.equals(((AttributeField)item).getPropertyName(), bindingInfo.getBindingName())){
-        					attributeField = (AttributeField)item;
-        					break;
-        				}
-     				}
-     			}
-			 }
-    	}
-    	
-    	return attributeField;
+    /**
+     * Finds the attribute field based on the binding path. First, it tries
+     * to find in the attribute collection. If not present there, search in the collection
+     *
+     * @param bindingInfo based on this this, attribute field will be return
+     * @return AttributeField
+     */
+    public AttributeField getAttributeField(BindingInfo bindingInfo) {
+        // Find in the attribute index first.
+        AttributeField attributeField = getAttributeFieldByPath(bindingInfo.getBindingPath());
+
+        if (attributeField == null) {
+            // Lets search the collections (by collection's binding path)
+            String path = bindingInfo.getBindingObjectPath() + "." + bindingInfo.getBindByNamePrefix();
+
+            CollectionGroup collectionGroup = getCollectionGroupByPath(stripIndexesFromPropertyPath(path));
+            if (collectionGroup != null) {
+                for (Component item : ((CollectionGroup) collectionGroup).getItems()) {
+                    if (item instanceof AttributeField) {
+                        if (StringUtils
+                                .equals(((AttributeField) item).getPropertyName(), bindingInfo.getBindingName())) {
+                            attributeField = (AttributeField) item;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return attributeField;
     }
 	
 	/**
      * Strips indexes from the property path. 
      * bo.fiscalOfficer.accounts[0].name returns bo.fiscalOfficer.accounts.name which can be used 
      * to find the components from the CollectionGroup index
-     * 
      */
     private String stripIndexesFromPropertyPath(String propertyPath){
     	String returnValue = propertyPath;

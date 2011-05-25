@@ -202,7 +202,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 			if (sequenceField instanceof AttributeField) {
 				((AttributeField) sequenceField).getBindingInfo().setBindByNamePrefix(bindingPath);
-				view.getViewIndex().addAttributeField((AttributeField) sequenceField);
 			}
 
 			ComponentUtils.updateContextForLine(sequenceField, currentLine, lineIndex);

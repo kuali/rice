@@ -192,17 +192,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         // for attribute fields, set defaults from dictionary entry
         if (component instanceof AttributeField) {
             initializeAttributeFieldFromDataDictionary(view, (AttributeField) component);
-
-            // add attribute field to the view's index
-            view.getViewIndex().addAttributeField((AttributeField) component);
         }
 
         // for collection groups set defaults from dictionary entry
         if (component instanceof CollectionGroup) {
             // TODO: initialize from dictionary
-
-            // add collection group to the view's index
-            view.getViewIndex().addCollection((CollectionGroup) component);
         }
 
         // invoke component initializers setup to run in the initialize phase

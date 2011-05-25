@@ -104,7 +104,7 @@ public class ViewServiceImpl implements ViewService {
 
 		// do indexing
 		LOG.info("processing indexing for view: " + view.getId());
-		view.getViewIndex().index();
+		view.index();
 
 		// update status on view
 		LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
@@ -129,7 +129,7 @@ public class ViewServiceImpl implements ViewService {
 
 		// do indexing
 		LOG.info("processing indexing for view: " + view.getId());
-		view.getViewIndex().index();
+		view.index();
 
 		// update status on view
 		LOG.debug("Updating view status to UPDATED for view: " + view.getId());

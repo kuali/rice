@@ -132,8 +132,6 @@ public class View extends ContainerBase {
         viewTypeName = ViewType.DEFAULT;
         viewStatus = UifConstants.ViewStatus.CREATED;
 
-        viewIndex = new ViewIndex();
-
         additionalScriptFiles = new ArrayList<String>();
         additionalCssFiles = new ArrayList<String>();
         items = new ArrayList<Group>();
@@ -590,21 +588,20 @@ public class View extends ContainerBase {
     }
 
     /**
+     * Invoked to produce a ViewIndex of the current view's components
+     */
+    public void index() {
+        ViewIndex viewIndex = new ViewIndex(this);
+        this.viewIndex = viewIndex;
+    }
+
+    /**
      * Holds field indexes of the <code>View</code> instance for retrieval
-     * 
+     *
      * @return ViewIndex instance
      */
     public ViewIndex getViewIndex() {
         return this.viewIndex;
-    }
-
-    /**
-     * Setter for the <code>ViewIndex</code> instance
-     * 
-     * @param viewIndex
-     */
-    public void setViewIndex(ViewIndex viewIndex) {
-        this.viewIndex = viewIndex;
     }
 
     /**

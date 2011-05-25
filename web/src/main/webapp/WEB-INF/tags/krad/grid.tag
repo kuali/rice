@@ -73,7 +73,7 @@
    <c:if test="${(colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)}">
      <tr>
      
-     <%-- force first cell of each row to be header --%>
+     <%-- force alternating cells to be header --%>
      <c:if test="${renderAlternatingHeaderColumns}">
         <c:set var="renderHeaderColumn" value="true"/>
      </c:if>
@@ -118,18 +118,20 @@
    <krad:attributeBuilder component="${item}"/>
      
    <%-- render cell and item template --%>
-   <c:if test="${renderHeaderRow || renderHeaderColumn}">
-      <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}" 
+   <c:choose>
+     <c:when test="${renderHeaderRow || renderHeaderColumn || (item.class.simpleName eq 'HeaderField')}">
+       <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}"
           rowspan="${item.rowSpan}" ${style} ${styleClass}>
-       <krad:template component="${item}"/>
-      </th>  
-   </c:if>
-   <c:if test="${!renderHeaderRow && !renderHeaderColumn}">
-     <td ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
+        <krad:template component="${item}"/>
+       </th>
+     </c:when>
+     <c:otherwise>
+       <td ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
          ${style} ${styleClass} ${evenOddClass}>
-       <krad:template component="${item}"/>
-     </td>
-   </c:if>
+        <krad:template component="${item}"/>
+       </td>
+     </c:otherwise>
+   </c:choose>
    
    <%-- if alternating headers flip flag --%>
    <c:if test="${renderAlternatingHeaderColumns}">

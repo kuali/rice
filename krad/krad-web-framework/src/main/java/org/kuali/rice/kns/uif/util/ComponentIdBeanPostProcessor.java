@@ -60,7 +60,8 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
                     beanName = StringUtils.substringAfterLast(beanName, "#");
                 }
 
-                component.setId(beanName);
+                // adding two underscores to name so we can pick off the original dictionary id
+                component.setId(beanName + "__");
             }
         }
 

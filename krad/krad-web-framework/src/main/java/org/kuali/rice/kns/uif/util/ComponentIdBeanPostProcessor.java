@@ -20,6 +20,8 @@ import org.kuali.rice.kns.uif.core.Component;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
+import java.awt.*;
+
 /**
  * Sets the unique Id for a <code>Component</code> if not set
  * 
@@ -60,13 +62,15 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
                     beanName = StringUtils.substringAfterLast(beanName, "#");
                 }
 
-                if (StringUtils.contains(beanName, "__")) {
-                    throw new RuntimeException(("Bean id is not allowed to have two underscores together"));
-                }
-
-                // adding two underscores to name so we can pick off the original dictionary id
-                component.setId(beanName + "__");
+                component.setId(beanName);
             }
+
+            if (StringUtils.contains(component.getId(), "__")) {
+                throw new RuntimeException(("Bean id is not allowed to have two underscores together"));
+            }
+
+            // adding two underscores to name so we can pick off the original dictionary id
+            component.setId(component.getId() + "__");
         }
 
         return bean;

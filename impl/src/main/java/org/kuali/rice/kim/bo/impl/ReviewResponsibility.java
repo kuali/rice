@@ -16,13 +16,17 @@
 package org.kuali.rice.kim.bo.impl;
 
 import org.hibernate.annotations.Type;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
-import org.kuali.rice.kim.bo.role.KimResponsibility;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -72,17 +76,17 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 	public ReviewResponsibility() {
 	}
 	
-	public ReviewResponsibility( KimResponsibility resp ) {
+	public ReviewResponsibility( ResponsibilityBo resp ) {
 		loadFromKimResponsibility(resp);
 	}
 	
-	public void loadFromKimResponsibility( KimResponsibility resp ) {
-    	setResponsibilityId( resp.getResponsibilityId() );
+	public void loadFromKimResponsibility( ResponsibilityBo resp ) {
+    	setResponsibilityId( resp.getId() );
     	setNamespaceCode( resp.getNamespaceCode() );
     	setName( resp.getName() );
     	setDescription( resp.getDescription() );
     	setActive( resp.isActive() );
-    	AttributeSet respDetails = resp.getDetails();
+    	Attributes respDetails = resp.getAttributes();
     	setDocumentTypeName( respDetails.get( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME ) );
     	setRouteNodeName( respDetails.get( KimConstants.AttributeConstants.ROUTE_NODE_NAME ) );
     	setActionDetailsAtRoleMemberLevel( Boolean.valueOf( respDetails.get( KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ) ) );

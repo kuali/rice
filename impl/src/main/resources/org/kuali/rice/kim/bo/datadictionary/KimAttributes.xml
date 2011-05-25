@@ -201,9 +201,9 @@
   <bean id="KimAttributes-permissionName-parentBean" parent="KimPermissionImpl-name" abstract="true" p:name="permissionName" p:required="false">
   </bean>
 
-  <!-- Should be converted to use KimResponsibilityImpl.xml once created -->
+  <!-- Should be converted to use Responsibility.xml once created -->
   <bean id="KimAttributes-responsibilityName" parent="KimAttributes-responsibilityName-parentBean"/>
-  <bean id="KimAttributes-responsibilityName-parentBean" parent="KimResponsibilityImpl-name" abstract="true" p:name="responsibilityName" p:required="false">
+  <bean id="KimAttributes-responsibilityName-parentBean" parent="Responsibility-name" abstract="true" p:name="responsibilityName" p:required="false">
   </bean>  
 
   <bean id="KimAttributes-sectionId" parent="KimAttributes-sectionId-parentBean"/>

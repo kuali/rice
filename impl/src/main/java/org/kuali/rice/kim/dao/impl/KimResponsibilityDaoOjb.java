@@ -15,21 +15,20 @@
  */
 package org.kuali.rice.kim.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
-import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimResponsibilityDao;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -43,11 +42,7 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getRoleIdsForResponsibilities(java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getRoleIdsForResponsibilities(Collection<? extends KimResponsibility> responsibilities) {
-		List<String> responsibilityIds = new ArrayList<String>( responsibilities.size() );
-		for ( KimResponsibility kp : responsibilities ) {
-			responsibilityIds.add( kp.getResponsibilityId() );
-		}
+	public List<String> getRoleIdsForResponsibilities(Collection<String> responsibilityIds) {
 		Criteria c = new Criteria();
 		c.addIn( KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, responsibilityIds );
 		c.addEqualTo( KNSPropertyConstants.ACTIVE, true );
@@ -61,13 +56,10 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 		return roleIds;
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.dao.KimResponsibilityDao#getRoleIdsForResponsibility(org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl)
-	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getRoleIdsForResponsibility( KimResponsibility responsibility) {
+	public List<String> getRoleIdsForResponsibility( String responsibilityId) {
 		Criteria c = new Criteria();
-		c.addEqualTo( KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, responsibility.getResponsibilityId() );
+		c.addEqualTo( KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, responsibilityId );
 		c.addEqualTo( KNSPropertyConstants.ACTIVE, true );
 		
 		Query query = QueryFactory.newQuery( RoleResponsibilityImpl.class, c, true );

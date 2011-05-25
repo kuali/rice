@@ -50,7 +50,7 @@
     </property>
   </bean>
 
-  <bean id="ReviewResponsibility-responsibilityId" parent="ResponsibilityImpl-responsibilityId"/>
+  <bean id="ReviewResponsibility-responsibilityId" parent="ResponsibilityImpl-id" p:name="responsibilityId" />
   
   <bean id="ReviewResponsibility-namespaceCode" parent="ReviewResponsibility-namespaceCode-parentBean"/>
   <bean id="ReviewResponsibility-namespaceCode-parentBean" parent="Namespace-code" abstract="true" 

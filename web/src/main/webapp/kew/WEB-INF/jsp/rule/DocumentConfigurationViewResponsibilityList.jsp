@@ -18,7 +18,7 @@
 	                                <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
 		                                <c:param name="methodToCall" value="Constants.MAINTENANCE_NEWWITHEXISTING_ACTION" />
 		                                <%-- TODO: replace this class name with the interface or maintenance class and let module service handle --%>
-		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl"/>
+		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityBo"/>
 		                                <%-- TODO: replace hard-coding of attribute IDs with lookup stored on form --%>
 		                                <c:param name="detailObjects[0].kimAttributeId" value="13"/>
 		                                <c:param name="detailObjects[0].attributeValue" value="${documentType.name}"/>
@@ -68,8 +68,8 @@
 	                                <td>
 	                                    <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
 		                                    <c:param name="methodToCall" value="edit" />
-		                                    <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl"/>
-		                                    <c:param name="responsibilityId" value="${resp.responsibilityId}"/>
+		                                    <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityBo"/>
+		                                    <c:param name="id" value="${resp.id}"/>
 	                                    </c:url>" target="_blank">Edit Responsibility</a>
 	                                </td>
                                 </c:if>

@@ -15,18 +15,18 @@
  limitations under the License.
 -->
 
-  <bean id="KimResponsibilityImpl" parent="KimResponsibilityImpl-parentBean"/>
+  <bean id="Responsibility" parent="Responsibility-parentBean"/>
 
-  <bean id="KimResponsibilityImpl-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl" p:titleAttribute="responsibilityId" p:objectLabel="Responsibility" p:inquiryDefinition-ref="KimResponsibilityImpl-inquiryDefinition">
+  <bean id="Responsibility-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.responsibility.ResponsibilityBo" p:titleAttribute="id" p:objectLabel="Responsibility" p:inquiryDefinition-ref="Responsibility-inquiryDefinition">
     <property name="attributes">
       <list>
-        <ref bean="KimResponsibilityImpl-template.namespaceCode"/>
-        <ref bean="KimResponsibilityImpl-template.name"/>
-        <ref bean="KimResponsibilityImpl-namespaceCode"/>
-        <ref bean="KimResponsibilityImpl-name"/>
-        <ref bean="KimResponsibilityImpl-detailObjects"/>
-        <ref bean="KimResponsibilityImpl-templateId"/>
-        <ref bean="KimResponsibilityImpl-detailObjectsValues"/>
+        <ref bean="Responsibility-template.namespaceCode"/>
+        <ref bean="Responsibility-template.name"/>
+        <ref bean="Responsibility-namespaceCode"/>
+        <ref bean="Responsibility-name"/>
+        <ref bean="Responsibility-detailObjects"/>
+        <ref bean="Responsibility-templateId"/>
+        <ref bean="Responsibility-detailObjectsValues"/>
       </list>
     </property>
 	<property name="relationships">
@@ -49,48 +49,48 @@
     </property>
   </bean>
 
-  <bean id="KimResponsibilityImpl-template.namespaceCode" parent="KimResponsibilityImpl-template.namespaceCode-parentBean"/>
-  <bean id="KimResponsibilityImpl-template.namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
+  <bean id="Responsibility-template.namespaceCode" parent="Responsibility-template.namespaceCode-parentBean"/>
+  <bean id="Responsibility-template.namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
   </bean>
     
-  <bean id="KimResponsibilityImpl-templateId" parent="KimResponsibilityImpl-templateId-parentBean"/>
-  <bean id="KimResponsibilityImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="templateId" p:label="Template Id" p:shortLabel="Template Id" p:maxLength="40" p:required="false">
+  <bean id="Responsibility-templateId" parent="Responsibility-templateId-parentBean"/>
+  <bean id="Responsibility-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="templateId" p:label="Template Id" p:shortLabel="Template Id" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
     
-  <bean id="KimResponsibilityImpl-template.name" parent="KimResponsibilityImpl-template.name-parentBean"/>
-  <bean id="KimResponsibilityImpl-template.name-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.name" p:label="Template Name" p:shortLabel="Template Name" p:maxLength="40" p:required="false">
+  <bean id="Responsibility-template.name" parent="Responsibility-template.name-parentBean"/>
+  <bean id="Responsibility-template.name-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.name" p:label="Template Name" p:shortLabel="Template Name" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
   
   
-  <bean id="KimResponsibilityImpl-namespaceCode" parent="KimResponsibilityImpl-namespaceCode-parentBean"/>
-  <bean id="KimResponsibilityImpl-namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Responsibility Namespace" p:shortLabel="Responsibility Namespace">
+  <bean id="Responsibility-namespaceCode" parent="Responsibility-namespaceCode-parentBean"/>
+  <bean id="Responsibility-namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Responsibility Namespace" p:shortLabel="Responsibility Namespace">
   </bean>
   
-  <bean id="KimResponsibilityImpl-name" parent="KimResponsibilityImpl-name-parentBean"/>
-  <bean id="KimResponsibilityImpl-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Responsibility Name" p:shortLabel="Responsibility Name">
+  <bean id="Responsibility-name" parent="Responsibility-name-parentBean"/>
+  <bean id="Responsibility-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Responsibility Name" p:shortLabel="Responsibility Name">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
 
-  <bean id="KimResponsibilityImpl-detailObjects" parent="KimResponsibilityImpl-detailObjects-parentBean"/>
-  <bean id="KimResponsibilityImpl-detailObjects-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailObjects" p:label="Responsibility Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
+  <bean id="Responsibility-detailObjects" parent="Responsibility-detailObjects-parentBean"/>
+  <bean id="Responsibility-detailObjects-parentBean" parent="AttributeDefinition" abstract="true" p:name="responsibilityAttributes" p:label="Responsibility Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
 
-  <bean id="KimResponsibilityImpl-detailObjectsValues" parent="KimResponsibilityImpl-detailObjects" p:name="detailObjectsValues">
+  <bean id="Responsibility-detailObjectsValues" parent="Responsibility-detailObjects" p:name="detailObjectsValues">
   </bean>
 
-  <bean id="KimResponsibilityImpl-inquiryDefinition" parent="KimResponsibilityImpl-inquiryDefinition-parentBean"/>
-  <bean id="KimResponsibilityImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Responsibility Inquiry">
+  <bean id="Responsibility-inquiryDefinition" parent="Responsibility-inquiryDefinition-parentBean"/>
+  <bean id="Responsibility-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Responsibility Inquiry">
     <property name="inquirySections">
       <list>
         <bean parent="InquirySectionDefinition" p:title="Responsibility Attributes" p:numberOfColumns="1">

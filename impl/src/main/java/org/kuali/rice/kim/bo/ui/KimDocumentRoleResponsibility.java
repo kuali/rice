@@ -15,7 +15,13 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.List;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
+import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,13 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
-import org.springframework.util.AutoPopulatingList;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -54,7 +54,7 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 	@Column(name="RSP_ID")
 	protected String responsibilityId;
 	@Transient
-	protected KimResponsibilityImpl kimResponsibility;
+	protected ResponsibilityBo kimResponsibility;
 	@Transient
 	protected List<KimDocumentRoleResponsibilityAction> roleRspActions = new AutoPopulatingList(KimDocumentRoleResponsibilityAction.class);
 	
@@ -80,12 +80,21 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 	/**
 	 * @return the kimResponsibility
 	 */
-	public KimResponsibilityImpl getKimResponsibility() {
+	public ResponsibilityBo getKimResponsibility() {
 		if ( kimResponsibility == null && responsibilityId != null ) {
 			//TODO: this needs to be changed to use the KimResponsibilityInfo object
 			// but the changes are involved in the UiDocumentService based on the copyProperties method used
 			// to move the data to/from the document/real objects
-			kimResponsibility = ((ResponsibilityServiceImpl) KimApiServiceLocator.getResponsibilityService()).getResponsibilityImpl(getResponsibilityId());
+            KimResponsibilityInfo info = KimApiServiceLocator.getResponsibilityService().getResponsibility(getResponsibilityId());
+			ResponsibilityBo bo = new ResponsibilityBo();
+            bo.setActive(info.isActive());
+            bo.setAttributes(Attributes.fromMap(info.getDetails()));
+            bo.setDescription(info.getDescription());
+            bo.setId(info.getResponsibilityId());
+            bo.setName(info.getName());
+            bo.setNamespaceCode(info.getNamespaceCode());
+
+            kimResponsibility = bo;
 		}
 		return this.kimResponsibility;
 	}
@@ -100,7 +109,7 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 	/**
 	 * @param kimResponsibility the kimResponsibility to set
 	 */
-	public void setKimResponsibility(KimResponsibilityImpl kimResponsibility) {
+	public void setKimResponsibility(ResponsibilityBo kimResponsibility) {
 		this.kimResponsibility = kimResponsibility;
 	}
 

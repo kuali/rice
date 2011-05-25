@@ -166,7 +166,7 @@
                 <value>classpath:org/kuali/rice/kim/impl/type/KimType.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/ResponsibilityTemplate.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/responsibility/Responsibility.xml</value>
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml</value>
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/ResponsibilityImpl.xml</value>
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>

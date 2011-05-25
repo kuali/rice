@@ -32,13 +32,13 @@ import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
@@ -373,17 +373,17 @@ public class RoleRouteModuleTest extends KEWTestCase {
         detailObjects.add(documentTypeDetail);
         detailObjects.add(nodeNameDetail);
 
-        KimResponsibilityImpl responsibility = new KimResponsibilityImpl();
+        ResponsibilityBo responsibility = new ResponsibilityBo();
         responsibility.setActive(true);
         responsibility.setDescription("resp1");
-        responsibility.setDetailObjects(detailObjects);
+        responsibility.setResponsibilityAttributes(detailObjects);
         responsibility.setName("VoluntaryReview");
         responsibility.setNamespaceCode(NAMESPACE);
-        responsibility.setResponsibilityId(responsibilityId);
+        responsibility.setId(responsibilityId);
         responsibility.setTemplate(template);
         responsibility.setTemplateId(template.getId());
 
-        responsibility = (KimResponsibilityImpl) KNSServiceLocator.getBusinessObjectService().save(responsibility);
+        responsibility = (ResponsibilityBo) KNSServiceLocator.getBusinessObjectService().save(responsibility);
 
         /**
          * Create the RoleResponsibility
@@ -484,17 +484,17 @@ public class RoleRouteModuleTest extends KEWTestCase {
         detailObjects.add(documentTypeDetail);
         detailObjects.add(nodeNameDetail);
 
-        KimResponsibilityImpl responsibility = new KimResponsibilityImpl();
+        ResponsibilityBo responsibility = new ResponsibilityBo();
         responsibility.setActive(true);
         responsibility.setDescription("resp2");
-        responsibility.setDetailObjects(detailObjects);
+        responsibility.setResponsibilityAttributes(detailObjects);
         responsibility.setName("VoluntaryReview");
         responsibility.setNamespaceCode(NAMESPACE);
-        responsibility.setResponsibilityId(responsibilityId);
+        responsibility.setId(responsibilityId);
         responsibility.setTemplate(template);
         responsibility.setTemplateId(template.getId());
 
-        responsibility = (KimResponsibilityImpl) KNSServiceLocator.getBusinessObjectService().save(responsibility);
+        responsibility = (ResponsibilityBo) KNSServiceLocator.getBusinessObjectService().save(responsibility);
 
         /**
          * Create the RoleResponsibility

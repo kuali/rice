@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.kim.bo.role.KimResponsibilityTemplate;
+import org.kuali.rice.kns.bo.Inactivateable;
+
+import java.io.Serializable;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KimResponsibilityTemplateInfo implements KimResponsibilityTemplate, Serializable {
+public class KimResponsibilityTemplateInfo implements Inactivateable, Serializable {
 
 	private static final long serialVersionUID = -282533234389371097L;
 	
@@ -52,23 +52,14 @@ public class KimResponsibilityTemplateInfo implements KimResponsibilityTemplate,
 		this.active = active;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.role.KimResponsibility#getDescription()
-	 */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.role.KimResponsibility#getResponsibilityId()
-	 */
 	public String getResponsibilityTemplateId() {
 		return responsibilityTemplateId;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.role.KimResponsibility#getName()
-	 */
 	public String getName() {
 		return name;
 	}

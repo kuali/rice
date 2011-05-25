@@ -519,7 +519,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 					roleRespAction.setDocumentNumber(getDocumentNumber());
 					if ( !StringUtils.equals( roleRespAction.getRoleResponsibilityId(), "*" ) ) {
 						for(KimDocumentRoleResponsibility responsibility: getResponsibilities()){
-							if( StringUtils.equals( roleRespAction.getKimResponsibility().getResponsibilityId(), responsibility.getResponsibilityId() ) ) {
+							if( StringUtils.equals( roleRespAction.getKimResponsibility().getId(), responsibility.getResponsibilityId() ) ) {
 								roleRespAction.setRoleResponsibilityId(responsibility.getRoleResponsibilityId());
 							}
 						}

@@ -23,7 +23,6 @@ import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
@@ -33,6 +32,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
@@ -217,7 +217,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     protected boolean validResponsibilities(IdentityManagementRoleDocument document){
-    	KimResponsibilityImpl kimResponsibilityImpl;
+    	ResponsibilityBo kimResponsibilityImpl;
     	boolean valid = true;
     	int i = 0;
     	for(KimDocumentRoleResponsibility responsibility: document.getResponsibilities()){

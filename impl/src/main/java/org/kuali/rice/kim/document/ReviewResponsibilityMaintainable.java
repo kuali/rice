@@ -23,7 +23,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -105,7 +105,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	}
 	
 	protected void populateReviewTemplateInfo() {
-		KimResponsibilityTemplateInfo template = KimApiServiceLocator.getResponsibilityService().getResponsibilityTemplateByName( KEWConstants.KEW_NAMESPACE, KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
+		KimResponsibilityTemplateInfo template = KimApiServiceLocator.getResponsibilityService().getResponsibilityTemplateByName(KEWConstants.KEW_NAMESPACE, KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
 		
 		reviewTemplateId = template.getResponsibilityTemplateId();
 	}
@@ -142,11 +142,11 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 				throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityMaintainable.prepareBusinessObject passed a null object." );
 			}
 			if ( businessObject instanceof ResponsibilityImpl ) {
-				KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, ((ResponsibilityImpl)businessObject).getResponsibilityId() );
+				ResponsibilityBo resp = getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, ((ResponsibilityBo)businessObject).getId() );
 				businessObject = new ReviewResponsibility( resp );
 			} else if ( businessObject instanceof ReviewResponsibility ) {
 				// lookup the KimResponsibilityImpl and convert to a ReviewResponsibility
-				KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, ((ReviewResponsibility)businessObject).getResponsibilityId() );		
+				ResponsibilityBo resp = getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, ((ReviewResponsibility)businessObject).getResponsibilityId() );
 				((ReviewResponsibility)businessObject).loadFromKimResponsibility(resp);
 			} else {
 				throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityMaintainable passed an unsupported object type: " + businessObject.getClass() );

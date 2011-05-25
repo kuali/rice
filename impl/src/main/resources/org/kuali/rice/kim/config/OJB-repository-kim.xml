@@ -655,8 +655,8 @@
   <!-- ******************************************************************* -->
 
 
-  <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl" table="KRIM_RSP_T">
-    <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" primarykey="true" />
+  <class-descriptor class="org.kuali.rice.kim.impl.responsibility.ResponsibilityBo" table="KRIM_RSP_T">
+    <field-descriptor name="id" column="RSP_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
     <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
@@ -667,11 +667,11 @@
     <reference-descriptor name="template" class-ref="org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="templateId" target-field-ref="id"/>
     </reference-descriptor>
-    <collection-descriptor name="detailObjects" element-class-ref="org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="responsibilityAttributes" element-class-ref="org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="responsibilityId" target-field-ref="id"/>
     </collection-descriptor>
 	<collection-descriptor name="roleResponsibilities" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="responsibilityId" />
+      <inverse-foreignkey field-ref="responsibilityId" target-field-ref="id" />
     </collection-descriptor>
   </class-descriptor>
 
@@ -693,8 +693,8 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <reference-descriptor name="kimResponsibility" class-ref="org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="responsibilityId" />
+    <reference-descriptor name="kimResponsibility" class-ref="org.kuali.rice.kim.impl.responsibility.ResponsibilityBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="responsibilityId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
 

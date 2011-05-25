@@ -64,7 +64,7 @@
     <class>org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl</class>
     <class>org.kuali.rice.kim.bo.role.impl.RolePermissionImpl</class>
     <class>org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl</class>
+    <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityBo</class>
     <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo</class>
     <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl</class>
     <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo</class>

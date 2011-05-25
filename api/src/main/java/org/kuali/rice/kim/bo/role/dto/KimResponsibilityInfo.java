@@ -15,11 +15,12 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.kim.bo.role.KimResponsibility;
+import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kns.bo.Inactivateable;
+
+import java.io.Serializable;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -27,7 +28,7 @@ import org.kuali.rice.kim.bo.role.KimResponsibility;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KimResponsibilityInfo extends ResponsibilityDetailsInfo implements KimResponsibility, Serializable {
+public class KimResponsibilityInfo implements Serializable, Inactivateable {
 
 	private static final long serialVersionUID = 7887896860986162310L;
 	protected String namespaceCode;
@@ -77,5 +78,29 @@ public class KimResponsibilityInfo extends ResponsibilityDetailsInfo implements 
 		}
 		return StringUtils.equals( responsibilityId, ((KimResponsibilityInfo)object).responsibilityId );
 	}
-	
+
+
+    	protected String responsibilityId;
+
+	protected AttributeSet details;
+
+	public String getResponsibilityId() {
+		return this.responsibilityId;
+	}
+
+	public void setResponsibilityId(String responsibilityId) {
+		this.responsibilityId = responsibilityId;
+	}
+
+	public AttributeSet getDetails() {
+		return this.details;
+	}
+
+	public void setDetails(AttributeSet responsibilityDetails) {
+		this.details = responsibilityDetails;
+	}
+
+	public boolean hasDetails() {
+		return !details.isEmpty();
+	}
 }

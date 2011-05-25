@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.util;
 
+import org.kuali.rice.core.api.CoreConstants;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.kuali.rice.core.api.CoreConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -219,7 +219,7 @@ public final class KimConstants {
 		public static final String ROLE_ID = "roleId";
 		public static final String GROUP_ID = "id";
 		public static final String KIM_TYPE_ID = "id";
-		public static final String RESPONSIBILITY_ID = "responsibilityId";
+		public static final String RESPONSIBILITY_ID = "id";
 		public static final String PERMISSION_ID = "permissionId";
 		public static final String DELEGATION_ID = "delegationId";
 		public static final String RESPONSIBILITY_TEMPLATE_ID = "responsibilityTemplateId";

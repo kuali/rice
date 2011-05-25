@@ -18,9 +18,16 @@ package org.kuali.rice.kim.bo.role.impl;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.RoleResponsibility;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,9 +48,9 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 	@Column(name="ACTV_IND")
 	protected boolean active;
 	
-	@ManyToOne(targetEntity=KimResponsibilityImpl.class, fetch = FetchType.EAGER, cascade = { })
+	@ManyToOne(targetEntity=ResponsibilityBo.class, fetch = FetchType.EAGER, cascade = { })
 	@JoinColumn(name = "RSP_ID", insertable = false, updatable = false)
-	protected KimResponsibilityImpl kimResponsibility;
+	protected ResponsibilityBo kimResponsibility;
 
 	/**
 	 * @see org.kuali.rice.kim.bo.role.RoleResponsibility#getResponsibilityId()
@@ -86,11 +93,11 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 		this.roleResponsibilityId = roleResponsibilityId;
 	}
 
-	public KimResponsibilityImpl getKimResponsibility() {
+	public ResponsibilityBo getKimResponsibility() {
 		return this.kimResponsibility;
 	}
 
-	public void setKimResponsibility(KimResponsibilityImpl kimResponsibility) {
+	public void setKimResponsibility(ResponsibilityBo kimResponsibility) {
 		this.kimResponsibility = kimResponsibility;
 	}
 

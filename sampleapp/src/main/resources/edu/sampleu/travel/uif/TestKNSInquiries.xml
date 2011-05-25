@@ -373,7 +373,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <list>
 	              <bean parent="AttributeField" p:propertyName="ruleDelegationId"/>
 	              <bean parent="AttributeField" p:propertyName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId"/>
-	              <bean parent="AttributeField" p:propertyName="responsibilityId"/>
+	              <bean parent="AttributeField" p:propertyName="id"/>
 	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.documentType.name"/>
 	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.ruleTemplate.name"/>
 	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.description"/>

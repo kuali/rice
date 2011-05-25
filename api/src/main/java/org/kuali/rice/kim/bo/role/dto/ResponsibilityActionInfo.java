@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
+import org.kuali.rice.core.util.AttributeSet;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.bo.role.KimResponsibility;
-import org.kuali.rice.kim.bo.role.ResponsibilityAction;
 
 
 /**
@@ -30,7 +28,7 @@ import org.kuali.rice.kim.bo.role.ResponsibilityAction;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class ResponsibilityActionInfo implements ResponsibilityAction, Serializable {
+public class ResponsibilityActionInfo implements Serializable {
 
 	private static final long serialVersionUID = 308199072590100177L;
 	
@@ -56,7 +54,7 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	public ResponsibilityActionInfo() {
 	}
 	
-	public ResponsibilityActionInfo(String principalId, String groupId, String memberRoleId, KimResponsibility responsibility,
+	public ResponsibilityActionInfo(String principalId, String groupId, String memberRoleId, KimResponsibilityInfo responsibility,
 			String roleId, AttributeSet qualifier, List<DelegateInfo> delegates ) {
 		this.principalId = principalId;
 		this.groupId = groupId;

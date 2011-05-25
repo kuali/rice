@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -31,8 +25,8 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
+import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -41,6 +35,12 @@ import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -152,7 +152,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 				(responsibilitiesForRoleSearchResults!=null && !responsibilitiesForRoleSearchResults.isEmpty())){
 			for(ResponsibilityImpl responsibility: responsibilitySearchResults){
 				for(ResponsibilityImpl responsibilityFromRoleSearch: responsibilitiesForRoleSearchResults){
-					if(responsibilityFromRoleSearch.getResponsibilityId().equals(responsibility.getResponsibilityId()))
+					if(responsibilityFromRoleSearch.getId().equals(responsibility.getId()))
 						matchedResponsibilities.add(responsibilityFromRoleSearch);
 				}
 			}
@@ -172,9 +172,9 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	
 	@SuppressWarnings("unchecked")
 	private List<ResponsibilityImpl> searchResponsibilities(Map<String, String> responsibilitySearchCriteria, boolean unbounded){
-		return getResponsibilitiesSearchResultsCopy((List<KimResponsibilityImpl>)
+		return getResponsibilitiesSearchResultsCopy((List<ResponsibilityBo>)
 					getLookupService().findCollectionBySearchHelper(
-							KimResponsibilityImpl.class, responsibilitySearchCriteria, unbounded));	
+							ResponsibilityBo.class, responsibilitySearchCriteria, unbounded));
 	}
 	
 	private List<ResponsibilityImpl> getResponsibilitiesWithRoleSearchCriteria(Map<String, String> roleSearchCriteria, boolean unbounded){
@@ -195,9 +195,9 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 			tempResponsibilities = searchResponsibilities(responsibilityCriteria, unbounded);
 			actualSizeIfTruncated += getActualSizeIfTruncated(tempResponsibilities);
 			for(ResponsibilityImpl responsibility: tempResponsibilities){
-				if(!collectedResponsibilityIds.contains(responsibility.getResponsibilityId())){
+				if(!collectedResponsibilityIds.contains(responsibility.getId())){
 					populateAssignedToRoles(responsibility);
-					collectedResponsibilityIds.add(responsibility.getResponsibilityId());
+					collectedResponsibilityIds.add(responsibility.getId());
 					responsibilities.add(responsibility);
 				}
 				//need to find roles that current role is a member of and build search string
@@ -216,7 +216,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	private void populateAssignedToRoles(ResponsibilityImpl responsibility){
 		AttributeSet criteria = new AttributeSet();
 		if ( responsibility.getAssignedToRoles().isEmpty() ) {
-			for(RoleResponsibilityImpl roleResponsibility: responsibility.getRoleResponsibilities()){
+			for(RoleResponsibilityBo roleResponsibility: responsibility.getRoleResponsibilities()){
 				criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleResponsibility.getRoleId());
 				responsibility.getAssignedToRoles().add((RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria));
 			}
@@ -249,7 +249,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 				filteredResponsibilities.add(responsibility);
 				populateAssignedToRoles(responsibility);
 			} else {
-				if ( isMapSubset( responsibility.getDetails(), detailCriteria ) ) {
+				if ( isMapSubset( new AttributeSet(responsibility.getAttributes().toMap()), detailCriteria ) ) {
 					filteredResponsibilities.add(responsibility);
 					populateAssignedToRoles(responsibility);
 				}
@@ -258,10 +258,10 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		return filteredResponsibilities;
 	}
 	
-	private List<ResponsibilityImpl> getResponsibilitiesSearchResultsCopy(List<KimResponsibilityImpl> responsibilitySearchResults){
+	private List<ResponsibilityImpl> getResponsibilitiesSearchResultsCopy(List<ResponsibilityBo> responsibilitySearchResults){
 		List<ResponsibilityImpl> responsibilitySearchResultsCopy = new CollectionIncomplete<ResponsibilityImpl>(
 				new ArrayList<ResponsibilityImpl>(), getActualSizeIfTruncated(responsibilitySearchResults));
-		for(KimResponsibilityImpl responsibilityImpl: responsibilitySearchResults){
+		for(ResponsibilityBo responsibilityImpl: responsibilitySearchResults){
 			ResponsibilityImpl responsibilityCopy = new ResponsibilityImpl();
 			try{
 				PropertyUtils.copyProperties(responsibilityCopy, responsibilityImpl);
@@ -289,10 +289,10 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		List<ResponsibilityImpl> returnList = new ArrayList<ResponsibilityImpl>(perm1);
 		List<String> responsibilityIds = new ArrayList<String>(perm1.size());
 		for (ResponsibilityImpl perm : returnList) {
-			responsibilityIds.add(perm.getResponsibilityId());
+			responsibilityIds.add(perm.getId());
 		}
 		for (int i=0; i<perm2.size(); i++) {
-		    if (!responsibilityIds.contains(perm2.get(i).getResponsibilityId())) {
+		    if (!responsibilityIds.contains(perm2.get(i).getId())) {
 		    	returnList.add(perm2.get(i));
 		    }
 		}

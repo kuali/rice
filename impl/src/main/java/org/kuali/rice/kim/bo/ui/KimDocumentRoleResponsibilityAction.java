@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.kew.util.CodeTranslator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
+import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
+import org.kuali.rice.kns.util.ObjectUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,15 +33,6 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -64,7 +66,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 	@Column(name="FRC_ACTN")
 	protected boolean forceAction;
 	@Transient
-	protected KimResponsibilityImpl kimResponsibility;
+	protected ResponsibilityBo kimResponsibility;
 	@Transient
 	protected RoleResponsibilityImpl roleResponsibility;
 	
@@ -77,24 +79,28 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 	/**
 	 * @return the kimResponsibility
 	 */
-	public KimResponsibilityImpl getKimResponsibility() {
-		try {
+	public ResponsibilityBo getKimResponsibility() {
 			if ( ObjectUtils.isNull( kimResponsibility ) && ObjectUtils.isNotNull( getRoleResponsibility() ) ) {
-				//TODO: this needs to be changed to use the KimResponsibilityInfo object
-				// but the changes are involved in the UiDocumentService based on the copyProperties method used
-				// to move the data to/from the document/real objects
-				kimResponsibility = ((ResponsibilityServiceImpl) KimApiServiceLocator.getResponsibilityService()).getResponsibilityImpl(getRoleResponsibility().getResponsibilityId());
+			//TODO: this needs to be changed to use the KimResponsibilityInfo object
+			// but the changes are involved in the UiDocumentService based on the copyProperties method used
+			// to move the data to/from the document/real objects
+            KimResponsibilityInfo info = KimApiServiceLocator.getResponsibilityService().getResponsibility(getRoleResponsibility().getResponsibilityId());
+			ResponsibilityBo bo = new ResponsibilityBo();
+            bo.setActive(info.isActive());
+            bo.setAttributes(Attributes.fromMap(info.getDetails()));
+            bo.setDescription(info.getDescription());
+            bo.setId(info.getResponsibilityId());
+            bo.setName(info.getName());
+            bo.setNamespaceCode(info.getNamespaceCode());
+
+            kimResponsibility = bo;
 			}
-		} catch( RuntimeException ex ) {
-			ex.printStackTrace();
-			throw ex;
-		}
 		return kimResponsibility;
 	}
 	/**
 	 * @param kimResponsibility the kimResponsibility to set
 	 */
-	public void setKimResponsibility(KimResponsibilityImpl kimResponsibility) {
+	public void setKimResponsibility(ResponsibilityBo kimResponsibility) {
 		this.kimResponsibility = kimResponsibility;
 	}
 	public String getRoleResponsibilityActionId() {

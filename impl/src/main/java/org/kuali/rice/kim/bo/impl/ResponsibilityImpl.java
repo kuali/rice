@@ -15,21 +15,20 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.util.List;
-
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ResponsibilityImpl extends KimResponsibilityImpl {
+public class ResponsibilityImpl extends ResponsibilityBo {
 
 	private static final long serialVersionUID = 1L;
 	@Transient

@@ -20,8 +20,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.service.ResponsibilityUpdateService;
 
 import java.util.Iterator;
@@ -45,10 +45,10 @@ public class ResponsibilityUpdateServiceImpl extends ResponsibilityServiceBase i
     		String description, boolean active, AttributeSet responsibilityDetails ) {
     	// look for an existing responsibility of the given type
     	try {
-	    	KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, responsibilityId);
+	    	ResponsibilityBo resp = getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, responsibilityId);
 	    	if ( resp == null ) {
-	    		resp = new KimResponsibilityImpl();
-	    		resp.setResponsibilityId(responsibilityId);
+	    		resp = new ResponsibilityBo();
+	    		resp.setId(responsibilityId);
 	    	}
 	    	resp.setTemplateId(responsibilityTemplateId);
 	    	resp.refreshReferenceObject( "template" );
@@ -57,7 +57,7 @@ public class ResponsibilityUpdateServiceImpl extends ResponsibilityServiceBase i
 	    	resp.setDescription(description);
 	    	resp.setActive(active);
 	    	AttributeSet attributesToAdd = new AttributeSet( responsibilityDetails );
-	    	List<ResponsibilityAttributeBo> details = resp.getDetailObjects();
+	    	List<ResponsibilityAttributeBo> details = resp.getResponsibilityAttributes();
 	    	Iterator<ResponsibilityAttributeBo> detailIter = details.iterator();
 	    	while ( detailIter.hasNext() ) {
 	    		ResponsibilityAttributeBo detail = detailIter.next();

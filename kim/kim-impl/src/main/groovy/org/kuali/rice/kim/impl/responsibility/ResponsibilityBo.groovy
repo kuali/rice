@@ -29,11 +29,19 @@ import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
 import org.kuali.rice.core.api.mo.common.Attributes
+import org.kuali.rice.core.util.AttributeSet
 import org.kuali.rice.kim.api.responsibility.Responsibility
 import org.kuali.rice.kim.api.responsibility.ResponsibilityContract
+import org.kuali.rice.kim.api.services.KimApiServiceLocator
+import org.kuali.rice.kim.api.type.KimType
+import org.kuali.rice.kim.api.type.KimTypeAttribute
+import org.kuali.rice.kim.api.type.KimTypeInfoService
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kns.service.DataDictionaryService
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -79,7 +87,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
     Attributes attributes
 
     Attributes getAttributes() {
-        return KimAttributeDataBo.toAttributes(responsibilityAttributes)
+        return responsibilityAttributes != null ? KimAttributeDataBo.toAttributes(responsibilityAttributes) : attributes
     }
 
     /**
@@ -118,4 +126,50 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 
         return bo
     }
+
+    //FIXME: temporary methods
+    KimResponsibilityInfo toSimpleInfo() {
+		KimResponsibilityInfo dto = new KimResponsibilityInfo();
+
+		dto.setResponsibilityId( getId() );
+		dto.setNamespaceCode( getNamespaceCode() );
+		dto.setName( getName() );
+		dto.setDescription( getDescription() );
+		dto.setActive( isActive() );
+		dto.setDetails( new AttributeSet(getAttributes().toMap()) );
+
+		return dto;
+	}
+
+    String getDetailObjectsValues(){
+		return responsibilityAttributes.collect {it.attributeValue}.join(",")
+	}
+
+    public String getDetailObjectsToDisplay() {
+		final KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
+
+        return responsibilityAttributes.collect {
+            getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(it.kimAttributeId)) + ":" + it.attributeValue
+        }.join(",")
+	}
+
+    private String getKimAttributeLabelFromDD( KimTypeAttribute attribute ){
+    	return getDataDictionaryService().getAttributeLabel(attribute.getKimAttribute().getComponentName(), attribute.getKimAttribute().getAttributeName() );
+    }
+
+	private DataDictionaryService dataDictionaryService;
+	private DataDictionaryService getDataDictionaryService() {
+		if(dataDictionaryService == null){
+			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
+		}
+		return dataDictionaryService;
+	}
+
+	private KimTypeInfoService kimTypeInfoService;
+	private KimTypeInfoService getTypeInfoService() {
+		if(kimTypeInfoService == null){
+			kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
+		}
+		return kimTypeInfoService;
+	}
 }

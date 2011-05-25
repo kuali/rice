@@ -15,20 +15,20 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.rule.event.ui.AddResponsibilityEvent;
 import org.kuali.rice.kim.rule.ui.AddResponsibilityRule;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -47,7 +47,7 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
 			return false;
 		}
 
-		KimResponsibilityImpl kimResponsibilityImpl = newResponsibility.getKimResponsibility();
+		ResponsibilityBo kimResponsibilityImpl = newResponsibility.getKimResponsibility();
 		if(kimResponsibilityImpl==null){
 			GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Responsibility"});
 			return false;

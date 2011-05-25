@@ -21,9 +21,9 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
@@ -152,7 +152,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("responsibilityId", fieldValues.get("responsibilityId").toString());
-		KimResponsibilityImpl responsibilityImpl = (KimResponsibilityImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimResponsibilityImpl.class, criteria);
+		ResponsibilityBo responsibilityImpl = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, criteria);
 		return getResponsibilitiesSearchResultsCopy(responsibilityImpl);
 	}
 
@@ -164,7 +164,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private ResponsibilityImpl getResponsibilitiesSearchResultsCopy(KimResponsibilityImpl responsibilitySearchResult){
+	private ResponsibilityBo getResponsibilitiesSearchResultsCopy(ResponsibilityBo responsibilitySearchResult){
 		ResponsibilityImpl responsibilitySearchResultCopy = new ResponsibilityImpl();
 		try{
 			PropertyUtils.copyProperties(responsibilitySearchResultCopy, responsibilitySearchResult);
@@ -173,7 +173,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 			ex.printStackTrace();
 		}
 		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("responsibilityId", responsibilitySearchResultCopy.getResponsibilityId());
+		criteria.put("id", responsibilitySearchResultCopy.getId());
 		List<RoleResponsibilityImpl> roleResponsibilitys = 
 			(List<RoleResponsibilityImpl>) KNSServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityImpl.class, criteria);
 		List<RoleImpl> assignedToRoles = new ArrayList<RoleImpl>();

@@ -60,6 +60,10 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
                     beanName = StringUtils.substringAfterLast(beanName, "#");
                 }
 
+                if (StringUtils.contains(beanName, "__")) {
+                    throw new RuntimeException(("Bean id is not allowed to have two underscores together"));
+                }
+
                 // adding two underscores to name so we can pick off the original dictionary id
                 component.setId(beanName + "__");
             }

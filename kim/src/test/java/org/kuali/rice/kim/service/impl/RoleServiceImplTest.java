@@ -251,6 +251,8 @@ public class RoleServiceImplTest extends KIMTestCase {
 			
 			String[] cachedRoleMemberIdsArray = {"r3p5", "r4p10", "r4g5", "r5p6", "r5g6", "r5r3"};
 			String[] allRoleMemberIdsArray = {"r3p5", "r4p10", "r4g5", "r5p6", "r5g6", "r5r3", "r6p9", "r6r4"};
+            String[] cachedRoleMemberIdsArray2 = {"r4g5", "r5g6", "r5r3"};
+            String[] allRoleMemberIdsArray2 = {"r4g5", "r5g6", "r5r3", "r6r4"};
 			List<String> groupIds = Arrays.asList(new String[] {"g5","g6"});
 			List<String> oneGroupId = Collections.singletonList("g5");
 			List<String> oneRoleId = Collections.singletonList("r3");
@@ -262,9 +264,9 @@ public class RoleServiceImplTest extends KIMTestCase {
 							RoleDaoAction.ROLE_MEMBERS_FOR_ROLE_IDS, RoleDaoAction.ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS };
 			
 			String[][] results = { {"r3p5"}, {"r5p6"}, {"r3p5","r4p10","r5p6"}, {"r4g5","r5g6"}, {"r4g5"}, {"r5g6"}, {"r5r3"},
-					{"r4p10","r4g5","r5r3"}, {"r4p10","r4g5","r5g6","r5r3"}, {"r5g6","r5r3"} };
+					{"r4p10","r4g5","r5r3"}, {"r4p10","r5r3"}, {"r5g6","r5r3"} };
 			String[][] allResults = {{"r6p9"}, {"r3p5","r4p10","r5p6","r6p9"}, {"r5r3","r6r4"}, {"r6r4"},
-					{"r4p10","r4g5","r5r3","r6r4"}, {"r4p10","r4g5","r5g6","r5r3","r6r4"}};
+					{"r4p10","r4g5","r5r3","r6r4"}, {"r4p10","r4g5","r5g6","r5r3","r6r4"}, {"r4p10","r5r3","r6r4"}};
 			
 			// Ensure that by-ID caching of individual role members is working properly.
 			assertKimObjectCachingByIdIsWorking(Arrays.asList(cachedRoleMemberIdsArray), Arrays.asList(allRoleMemberIdsArray), ROLE_MEMBER_IMPL_CHECKER);
@@ -292,9 +294,9 @@ public class RoleServiceImplTest extends KIMTestCase {
 			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, Role.GROUP_MEMBER_TYPE, results[3], results[3]);
 			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, Role.ROLE_MEMBER_TYPE, results[6], allResults[2]);
 			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, null, cachedRoleMemberIdsArray, allRoleMemberIdsArray);
-			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, null, groupIds, null, cachedRoleMemberIdsArray, allRoleMemberIdsArray);
+			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, null, groupIds, null, cachedRoleMemberIdsArray2, allRoleMemberIdsArray2);
 			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, "p10", oneGroupId, null, results[7], allResults[4]);
-			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, "p10", null, null, results[8], allResults[5]);
+			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, "p10", null, null, results[8], allResults[6]);
 			assertRoleMemberListCachingIsWorking(daoActions[4], oneRoleId2, "p5", groupIds, null, results[9], results[9]);
 		}
 		

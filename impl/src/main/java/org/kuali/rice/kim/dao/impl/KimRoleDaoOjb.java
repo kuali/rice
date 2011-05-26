@@ -353,20 +353,23 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	public List<RoleMemberImpl> getRoleMembersForRoleIdsWithFilters( Collection<String> roleIds, String principalId, List<String> groupIds, AttributeSet qualification) {
 		Criteria c = new Criteria();
 
-		if(roleIds!=null && !roleIds.isEmpty())
+		if(CollectionUtils.isNotEmpty(roleIds)) {
 			c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
-		Criteria orSet = new Criteria();
+        }
+        Criteria orSet = new Criteria();
 		orSet.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.ROLE_MEMBER_TYPE );
-		Criteria principalCheck = new Criteria();
-		if(principalId!=null)
+		if(StringUtils.isNotBlank(principalId)) {
+            Criteria principalCheck = new Criteria();
 			principalCheck.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);
-		principalCheck.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
-		orSet.addOrCriteria( principalCheck );
-		Criteria groupCheck = new Criteria();
-		if(groupIds!=null && !groupIds.isEmpty())
+		    principalCheck.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
+		    orSet.addOrCriteria( principalCheck );
+        }
+		if(CollectionUtils.isNotEmpty(groupIds)) {
+            Criteria groupCheck = new Criteria();
 			groupCheck.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
-		groupCheck.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
-		orSet.addOrCriteria( groupCheck );
+		    groupCheck.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
+            orSet.addOrCriteria( groupCheck );
+        }
 		c.addAndCriteria( orSet );
 		addSubCriteriaBasedOnRoleQualification(c, qualification);
 		

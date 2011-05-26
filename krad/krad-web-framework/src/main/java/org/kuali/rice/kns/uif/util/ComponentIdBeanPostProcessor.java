@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.uif.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.core.Component;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -24,12 +25,13 @@ import java.awt.*;
 
 /**
  * Sets the unique Id for a <code>Component</code> if not set
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
 
-    public ComponentIdBeanPostProcessor() {}
+    public ComponentIdBeanPostProcessor() {
+    }
 
     /**
      * @see org.springframework.beans.factory.config.BeanPostProcessor#postProcessBeforeInitialization(java.lang.Object,
@@ -42,12 +44,12 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
 
     /**
      * Sets the unique Id for a <code>Component</code> if not set
-     * 
+     *
      * <p>
      * Will use the bean name (if not the spring generated) or generate a
      * numeric identifier
      * </p>
-     * 
+     *
      * @see org.springframework.beans.factory.config.BeanPostProcessor#postProcessAfterInitialization(java.lang.Object,
      *      java.lang.String)
      * @see org.kuali.rice.kns.uif.core.Component#getDecorators
@@ -66,14 +68,10 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
             }
 
             if (StringUtils.contains(component.getId(), "__")) {
-                throw new RuntimeException(("Bean id is not allowed to have two underscores together"));
+                throw new RuntimeException(("Component id is not allowed to have two underscores together"));
             }
-
-            // adding two underscores to name so we can pick off the original dictionary id
-            component.setId(component.getId() + "__");
         }
 
         return bean;
     }
-
 }

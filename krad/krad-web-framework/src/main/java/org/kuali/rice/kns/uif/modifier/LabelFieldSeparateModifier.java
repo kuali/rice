@@ -67,7 +67,11 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
 				Field field = (Field) item;
 
 				// pull out label field
-				if (field.isRender() && field.getLabelField() != null && field.getLabelField().isRender()) {
+				if (field.getLabelField() != null && field.getLabelField().isRender()) {
+                    if (!field.isRender()) {
+                       field.getLabelField().setRender(false);
+                    }
+
 					groupFields.add(field.getLabelField());
 
 					// set boolean to indicate label field should not be

@@ -23,8 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.datadictionary.uif.UifDictionaryIndex;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.uif.container.View;
@@ -233,7 +232,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewById(org.kuali.rice.krad.datadictionary.view.ViewDictionaryIndex,
 	 *      java.lang.String)
 	 */
-	public View getViewById(ViewDictionaryIndex index, String viewId) {
+	public View getViewById(UifDictionaryIndex index, String viewId) {
 		if (StringUtils.isBlank(viewId)) {
 			throw new IllegalArgumentException("invalid (blank) view id");
 		}
@@ -245,10 +244,10 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getViewByTypeIndex(org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex,
+	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getViewByTypeIndex(org.kuali.rice.kns.datadictionary.uif.UifDictionaryIndex,
 	 *      java.lang.String, java.util.Map)
 	 */
-	public View getViewByTypeIndex(ViewDictionaryIndex index, String viewTypeName, Map<String, String> indexKey) {
+	public View getViewByTypeIndex(UifDictionaryIndex index, String viewTypeName, Map<String, String> indexKey) {
 		if (StringUtils.isBlank(viewTypeName)) {
 			throw new IllegalArgumentException("invalid (blank) view type name");
 		}
@@ -260,10 +259,10 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getViewsForType(org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex,
+	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getViewsForType(org.kuali.rice.kns.datadictionary.uif.UifDictionaryIndex,
 	 *      java.lang.String)
 	 */
-	public List<View> getViewsForType(ViewDictionaryIndex index, String viewTypeName) {
+	public List<View> getViewsForType(UifDictionaryIndex index, String viewTypeName) {
 		if (StringUtils.isBlank(viewTypeName)) {
 			throw new IllegalArgumentException("invalid (blank) view type name");
 		}

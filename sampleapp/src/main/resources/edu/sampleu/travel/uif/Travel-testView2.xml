@@ -106,7 +106,7 @@ limitations under the License.
 </bean>
 
 <bean id="testValidationSection1" parent="Group">
-    <property name="id" value="testSection1"/>
+    <property name="id" value="testValidationSection1"/>
     <property name="title" value="Test Section 1"/>
     <property name="accordion.render" value="false"/>
     <property name="styleClasses" value="group_header"/>    

@@ -16,6 +16,7 @@ import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
+import org.kuali.rice.kns.uif.core.RequestParameter;
 
 /**
  * View type for Maintenance documents
@@ -50,6 +51,9 @@ public class MaintenanceView extends DocumentView {
     private Class<?> dataObjectClassName;
 
     private String oldObjectBindingPath;
+
+    @RequestParameter
+    private String maintenanceAction;
 
     public MaintenanceView() {
         super();
@@ -133,6 +137,25 @@ public class MaintenanceView extends DocumentView {
      */
     public void setOldObjectBindingPath(String oldObjectBindingPath) {
         this.oldObjectBindingPath = oldObjectBindingPath;
+    }
+
+    /**
+     * Indicates what maintenance action (new, edit, copy) was
+     * requested
+     *
+     * @return String maintenance action
+     */
+    public String getMaintenanceAction() {
+        return maintenanceAction;
+    }
+
+    /**
+     * Setter for the maintenance action
+     *
+     * @param maintenanceAction
+     */
+    public void setMaintenanceAction(String maintenanceAction) {
+        this.maintenanceAction = maintenanceAction;
     }
 
     protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {

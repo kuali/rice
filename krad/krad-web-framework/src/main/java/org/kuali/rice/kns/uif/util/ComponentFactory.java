@@ -33,7 +33,7 @@ public class ComponentFactory {
     protected static final String MESSAGE_FIELD = "MessageField";
 
     public static MessageField getMessageField() {
-        return (MessageField) getDataDictionaryService().getDictionaryObject(MESSAGE_FIELD);
+        return (MessageField) getDataDictionaryService().getComponentById(MESSAGE_FIELD);
     }
 
     protected static DataDictionaryService getDataDictionaryService() {

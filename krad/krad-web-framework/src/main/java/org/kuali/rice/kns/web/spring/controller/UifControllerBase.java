@@ -52,20 +52,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework
- * <p>
+ *
  * Provides common methods such as:
+ *
  * <ul>
  * <li>Authorization methods such as method to call check</li>
  * <li>Preparing the View instance and setup in the returned
  * <code>ModelAndView</code></li>
  * </ul>
- * </p>
- * <p>
+ *
  * All subclass controller methods after processing should call one of the
  * #getUIFModelAndView methods to setup the <code>View</code> and return the
  * <code>ModelAndView</code> instance.
- * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class UifControllerBase {
@@ -75,14 +74,11 @@ public abstract class UifControllerBase {
     private SessionDocumentService sessionDocumentService;
 
     /**
-     * This method will create/obtain the model(form) object before it is passed
+     * Create/obtain the model(form) object before it is passed
      * to the Binder/BeanWrapper. This method is not intended to be overridden
      * by client applications as it handles framework setup and session
      * maintenance. Clients should override createIntialForm() instead when they
      * need custom form initialization.
-     * 
-     * @param request
-     * @return
      */
     @ModelAttribute(value = "KualiForm")
     public UifFormBase initForm(HttpServletRequest request) {
@@ -108,14 +104,11 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * This method will be called to create a new model(form) object when
+     * Called to create a new model(form) object when
      * necessary. This usually occurs on the initial request in a conversation
      * (when the model is not present in the session). This method must be
      * overridden when extending a controller and using a different form type
      * than the superclass.
-     * 
-     * @param request
-     * @return
      */
     protected abstract UifFormBase createInitialForm(HttpServletRequest request);
 
@@ -141,8 +134,6 @@ public abstract class UifControllerBase {
     /**
      * Returns an immutable Set of methodToCall parameters that should not be
      * checked for authorization.
-     * 
-     * @return
      */
     public Set<String> getMethodToCallsToNotCheckAuthorization() {
         return Collections.unmodifiableSet(methodToCallsToNotCheckAuthorization);
@@ -151,9 +142,6 @@ public abstract class UifControllerBase {
     /**
      * Override this method to provide controller class-level access controls to
      * the application.
-     * 
-     * @param form
-     * @throws AuthorizationException
      */
     public void checkAuthorization(UifFormBase form, String methodToCall) throws AuthorizationException {
         String principalId = GlobalVariables.getUserSession().getPrincipalId();
@@ -169,11 +157,8 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * override this method to add data from the form for role qualification in
+     * Override this method to add data from the form for role qualification in
      * the authorization check
-     * 
-     * @param form
-     * @param methodToCall
      */
     protected Map<String, String> getRoleQualification(UifFormBase form, String methodToCall) {
         return new HashMap<String, String>();
@@ -194,17 +179,6 @@ public abstract class UifControllerBase {
      * Called by the add line action for a new collection line. Method
      * determines which collection the add action was selected for and invokes
      * the view helper service to add the line
-     * 
-     * @param uifForm
-     *            - form instance that contains the data (should extend
-     *            UifFormBase)
-     * @param result
-     *            - contains results of the data binding
-     * @param request
-     *            - HTTP request
-     * @param response
-     *            - HTTP response
-     * @return ModelAndView
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addLine")
     public ModelAndView addLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
@@ -226,17 +200,6 @@ public abstract class UifControllerBase {
      * determines which collection the action was selected for and the line
      * index that should be removed, then invokes the view helper service to
      * process the action
-     * 
-     * @param uifForm
-     *            - form instance that contains the data (should extend
-     *            UifFormBase)
-     * @param result
-     *            - contains results of the data binding
-     * @param request
-     *            - HTTP request
-     * @param response
-     *            - HTTP response
-     * @return ModelAndView
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteLine")
     public ModelAndView deleteLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
@@ -260,6 +223,30 @@ public abstract class UifControllerBase {
         View view = uifForm.getPreviousView();
         view.getViewHelperService().processCollectionDeleteLine(view, uifForm, selectedCollectionPath,
                 selectedLineIndex);
+
+        return getUIFModelAndView(uifForm);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=showInactiveRecords")
+    public ModelAndView showInactiveRecords(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+                                            HttpServletRequest request, HttpServletResponse response) {
+
+        String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        if (StringUtils.isBlank(selectedCollectionPath)) {
+            throw new RuntimeException("Selected collection was not set for show inactive records");
+        }
+
+        return getUIFModelAndView(uifForm);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=hideInactiveRecords")
+    public ModelAndView hideInactiveRecords(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+                                            HttpServletRequest request, HttpServletResponse response) {
+
+        String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        if (StringUtils.isBlank(selectedCollectionPath)) {
+            throw new RuntimeException("Selected collection was not set for hide inactive records");
+        }
 
         return getUIFModelAndView(uifForm);
     }

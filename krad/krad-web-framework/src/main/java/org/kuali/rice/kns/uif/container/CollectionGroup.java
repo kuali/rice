@@ -14,7 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifParameters;
+import org.kuali.rice.kns.uif.core.ActiveCollectionFilter;
 import org.kuali.rice.kns.uif.core.BindingInfo;
+import org.kuali.rice.kns.uif.core.CollectionFilter;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.field.ActionField;
@@ -22,6 +27,7 @@ import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.LabelField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
+import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -61,6 +67,9 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean renderLineActions;
     private List<ActionField> actionFields;
 
+    private boolean showInactive;
+    private CollectionFilter activeCollectionFilter;
+
     private List<CollectionGroup> subCollections;
 
     private CollectionGroupBuilder collectionGroupBuilder;
@@ -68,6 +77,7 @@ public class CollectionGroup extends Group implements DataBinding {
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
+        showInactive = false;
 
         actionFields = new ArrayList<ActionField>();
         addLineFields = new ArrayList<Field>();
@@ -83,6 +93,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * have to belong to the same model as the collection)</li>
      * <li>Set defaults for binding</li>
      * <li>Default add line field list to groups items list</li>
+     * <li>Sets default active collection filter if not set</li>
      * <li>Sets the dictionary entry (if blank) on each of the items to the
      * collection class</li>
      * </ul>
@@ -122,6 +133,11 @@ public class CollectionGroup extends Group implements DataBinding {
         
         if ((addLineFields == null) || addLineFields.isEmpty()) {
             addLineFields = getItems();
+        }
+
+        // if active collection filter not set use default
+        if (this.activeCollectionFilter == null) {
+            activeCollectionFilter = new ActiveCollectionFilter();
         }
         
         // set static collection path on items
@@ -167,7 +183,44 @@ public class CollectionGroup extends Group implements DataBinding {
     public void performApplyModel(View view, Object model) {
         super.performApplyModel(view, model);
 
+        pushCollectionGroupToReference();
+
+        performCollectionFiltering(view, model);
+
         getCollectionGroupBuilder().build(view, model, this);
+    }
+
+    /**
+     * Sets a reference in the context map for all nested components to the collection group
+     * instance, and sets name as parameter for an action fields in the group
+     */
+    protected void pushCollectionGroupToReference() {
+        ComponentUtils
+                .pushObjectToContext(this.getNestedComponents(), UifConstants.ContextVariableNames.COLLECTION_GROUP,
+                        this);
+
+        List<ActionField> actionFields =
+                ComponentUtils.getComponentsOfTypeDeep(this.getNestedComponents(), ActionField.class);
+        for (ActionField actionField : actionFields) {
+            actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
+                    this.getBindingInfo().getBindingPath());
+        }
+    }
+
+    /**
+     * Performs any filtering necessary on the collection before building the collection fields
+     *
+     * <p>
+     * If showInactive is set to false and the collection line type implements <code>Inactivatable</code>,
+     * invokes the active collection filer
+     * </p>
+     *
+     * @param model - object containing the views data, from which the collection will be pulled
+     */
+    protected void performCollectionFiltering(View view, Object model) {
+        if (Inactivatable.class.isAssignableFrom(this.collectionObjectClass) && !showInactive) {
+            this.activeCollectionFilter.filter(view, model, this);
+        }
     }
 
     /**
@@ -460,6 +513,51 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public void setAddLineActionFields(List<ActionField> addLineActionFields) {
         this.addLineActionFields = addLineActionFields;
+    }
+
+    /**
+     * Indicates whether inactive collections lines should be displayed
+     *
+     * <p>
+     * Setting only applies when the collection line type implements the
+     * <code>Inactivatable</code> interface. If true and showInactive is
+     * set to false, the collection will be filtered to remove any items
+     * whose active status returns false
+     * </p>
+     *
+     * @return boolean true to show inactive records, false to not render inactive records
+     */
+    public boolean isShowInactive() {
+        return showInactive;
+    }
+
+    /**
+     * Setter for the show inactive indicator
+     *
+     * @param boolean show inactive
+     */
+    public void setShowInactive(boolean showInactive) {
+        this.showInactive = showInactive;
+    }
+
+    /**
+     * Collection filter instance for filtering the collection data when the
+     * showInactive flag is set to false
+     *
+     * @return CollectionFilter
+     */
+    public CollectionFilter getActiveCollectionFilter() {
+        return activeCollectionFilter;
+    }
+
+    /**
+     * Setter for the collection filter to use for filter inactive records from the
+     * collection
+     *
+     * @param activeCollectionFilter - CollectionFilter instance
+     */
+    public void setActiveCollectionFilter(CollectionFilter activeCollectionFilter) {
+        this.activeCollectionFilter = activeCollectionFilter;
     }
 
     /**

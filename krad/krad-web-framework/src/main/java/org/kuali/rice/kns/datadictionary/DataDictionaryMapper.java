@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex;
+import org.kuali.rice.kns.datadictionary.uif.UifDictionaryIndex;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
@@ -138,7 +138,7 @@ public interface DataDictionaryMapper {
 	 * @param viewId - unique id for view
 	 * @return View instance associated with the id
 	 */
-	public View getViewById(ViewDictionaryIndex index, String viewId);
+	public View getViewById(UifDictionaryIndex index, String viewId);
 	
 	/**
 	 * Called to retrieve a <code>View</code> instance that is of the given type
@@ -153,7 +153,7 @@ public interface DataDictionaryMapper {
 	 *            an unique view instance
 	 * @return View instance that matches the given index
 	 */
-	public View getViewByTypeIndex(ViewDictionaryIndex index, String viewTypeName, Map<String, String> indexKey);
+	public View getViewByTypeIndex(UifDictionaryIndex index, String viewTypeName, Map<String, String> indexKey);
 	
 	/**
 	 * Gets all <code>View</code> prototypes configured for the given view type
@@ -165,5 +165,5 @@ public interface DataDictionaryMapper {
 	 * @return List<View> view prototypes with the given type name, or empty
 	 *         list
 	 */
-	public List<View> getViewsForType(ViewDictionaryIndex index, String viewTypeName);
+	public List<View> getViewsForType(UifDictionaryIndex index, String viewTypeName);
 }

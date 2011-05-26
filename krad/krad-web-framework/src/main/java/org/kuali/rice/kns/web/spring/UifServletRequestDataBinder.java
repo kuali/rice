@@ -109,6 +109,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         form.setPreviousView(previousView);
 
         Map<String, String> viewRequestParameters = new HashMap<String, String>();
+        // TODO: this should get from form not previous view, test
         if (previousView != null) {
             viewRequestParameters = previousView.getViewRequestParameters();
         }

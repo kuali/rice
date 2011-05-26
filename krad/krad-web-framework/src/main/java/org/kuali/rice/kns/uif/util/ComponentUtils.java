@@ -10,15 +10,6 @@
  */
 package org.kuali.rice.kns.uif.util;
 
-import java.beans.PropertyDescriptor;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kns.uif.UifConstants;
@@ -34,6 +25,15 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.OrderComparator;
 
+import java.beans.PropertyDescriptor;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Utility class providing methods to help create and modify
  * <code>Component</code> instances
@@ -44,7 +44,7 @@ public class ComponentUtils {
 
     public static <T extends Component> T copy(T component, String idSuffix) {
         T copy = copyObject(component);
-        updateIdsWithSuffix(copy, idSuffix);
+        updateIdsWithSuffixNested(copy, idSuffix);
         
         return copy;
     }
@@ -227,14 +227,14 @@ public class ComponentUtils {
         }
     }
 
-    public static void updateIdsWithSuffix(List<? extends Component> components, String idSuffix) {
+    public static void updateIdsWithSuffixNested(List<? extends Component> components, String idSuffix) {
         for (Component component : components) {
-            updateIdsWithSuffix(component, idSuffix);
+            updateIdsWithSuffixNested(component, idSuffix);
         }
     }
 
-    public static void updateIdsWithSuffix(Component component, String idSuffix) {
-        component.setId(component.getId() + idSuffix);
+    public static void updateIdsWithSuffixNested(Component component, String idSuffix) {
+        updateIdsWithSuffix(component, idSuffix);
 
         if (Container.class.isAssignableFrom(component.getClass())) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
@@ -243,9 +243,18 @@ public class ComponentUtils {
 
         for (Component nested : component.getNestedComponents()) {
             if (nested != null) {
-                updateIdsWithSuffix(nested, idSuffix);
+                updateIdsWithSuffixNested(nested, idSuffix);
             }
         }
+    }
+
+    public static void updateIdsWithSuffix(Component component, String idSuffix) {
+        // make sure id has two underscore delimiter so we can pick off original dictionary id
+        if (!StringUtils.contains(component.getId(), "__")) {
+            component.setId(component.getId() + "__");
+        }
+
+        component.setId(component.getId() + idSuffix);
     }
 
     public static void setComponentsPropertyDeep(List<? extends Component> components, String propertyPath,

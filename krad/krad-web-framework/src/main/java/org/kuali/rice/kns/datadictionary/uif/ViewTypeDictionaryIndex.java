@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.view;
+package org.kuali.rice.kns.datadictionary.uif;
 
 import java.util.HashMap;
 import java.util.Map;

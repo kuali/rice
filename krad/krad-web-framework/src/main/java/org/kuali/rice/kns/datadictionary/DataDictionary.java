@@ -36,10 +36,11 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
-import org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex;
+import org.kuali.rice.kns.datadictionary.uif.UifDictionaryIndex;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.util.ComponentIdBeanPostProcessor;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -68,7 +69,7 @@ public class DataDictionary  {
 	protected DataDictionaryIndex ddIndex = new DataDictionaryIndex(ddBeans);
 	
 	// View indices
-	protected ViewDictionaryIndex viewIndex = new ViewDictionaryIndex(ddBeans);
+	protected UifDictionaryIndex uifIndex = new UifDictionaryIndex(ddBeans);
 
 	/**
 	 * The DataDictionaryMapper
@@ -177,11 +178,11 @@ public class DataDictionary  {
             Thread t = new Thread(ddIndex);
             t.start();
             
-            Thread t2 = new Thread(viewIndex);
+            Thread t2 = new Thread(uifIndex);
             t2.start();   
         } else {
             ddIndex.run();
-            viewIndex.run();
+            uifIndex.run();
         }
     }
 
@@ -297,7 +298,7 @@ public class DataDictionary  {
 	 * @return View instance associated with the id
 	 */
 	public View getViewById(String viewId) {
-		return ddMapper.getViewById(viewIndex, viewId);
+		return ddMapper.getViewById(uifIndex, viewId);
 	}
 	
 	/**
@@ -312,7 +313,7 @@ public class DataDictionary  {
 	 * @return View instance that matches the given index
 	 */
 	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey) {
-		return ddMapper.getViewByTypeIndex(viewIndex, viewTypeName, indexKey);
+		return ddMapper.getViewByTypeIndex(uifIndex, viewTypeName, indexKey);
 	}
 	
 	/**
@@ -325,7 +326,7 @@ public class DataDictionary  {
 	 *         list
 	 */
 	public List<View> getViewsForType(String viewTypeName) {
-		return ddMapper.getViewsForType(viewIndex, viewTypeName);
+		return ddMapper.getViewsForType(uifIndex, viewTypeName);
 	}
 
     /**
@@ -683,21 +684,16 @@ public class DataDictionary  {
 			LOG.info("DataDictionary.performOverrides(): Performing override on bean: " + bean.toString());
 		}
     }
-    
-    /**
-     * Returns an Object configured in the dictionary with the given bean
-     * id/name. Standard Spring scoping rules apply in terms of prototypes
-     * or singletons
-     * 
-     * @param beanId
-     *            - id/name of the bean in the data dictionary
-     * @return Object found for id or null if no object was found
-     */
-    public Object getDictionaryObject(String beanId) {
-        if (ddBeans.containsBean(beanId)) {
-            return ddBeans.getBean(beanId);
-        }
 
-        return null;
+    /**
+     * Returns a Component configured in the dictionary with the given
+     * id. Standard Spring scoping rules apply in terms of prototypes
+     * or singletons
+     *
+     * @param id - id of the component set in the dictionary of set by the framework
+     * @return Component found for id or null if no component was found
+     */
+    public Component getComponentById(String id) {
+        return uifIndex.getComponentById(id);
     }
 }

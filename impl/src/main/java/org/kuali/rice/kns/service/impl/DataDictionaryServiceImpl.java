@@ -881,10 +881,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.kns.service.DataDictionaryService#getDictionaryObject(java.lang.String)
+     * @see org.kuali.rice.kns.service.DataDictionaryService#getComponentById(java.lang.String)
      */
-    public Object getDictionaryObject(String beanId) {
-        return dataDictionary.getDictionaryObject(beanId);
+    public Object getComponentById(String id) {
+        return dataDictionary.getComponentById(id);
     }
 
     public void addDataDictionaryLocation(String location) throws IOException {

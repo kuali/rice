@@ -118,7 +118,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="NavigationGroupTabMenu" abstract="true" parent="NavigationGroupTabMenu-parentBean"/>
   <bean id="NavigationGroupTabMenu-parentBean" abstract="true" parent="NavigationGroup">
       <property name="navigationType" value="TAB_MENU"/>
-  </bean>  
+  </bean>
+
+  <bean id="TreeGroup" abstract="true" parent="TreeGroup-parentBean"/>
+  <bean id="TreeGroup-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.TreeGroup" parent="Group">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/treeGroup.jsp"/>
+      <property name="bindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
+      <property name="dataGroupPrototype">
+        <bean parent="Group"/>
+      </property>
+      <property name="nodeLabelPrototype">
+        <bean parent="MessageField"/>
+      </property>
+      <property name="treeWidget">
+        <bean parent="TreeWidget"/>
+      </property>
+  </bean>
   
   <bean id="GroupSection" abstract="true" parent="GroupSection-parentBean"/>
   <bean id="GroupSection-parentBean" abstract="true" parent="Group">
@@ -154,8 +171,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <ref bean="BindingInfo"/>
       </property>      
       <property name="addLineLabelField">
-        <bean parent="LabelField" p:labelText="add" 
-              p:requiredMessageField.render="false"/>
+        <bean parent="LabelField" p:labelText="add" p:requiredMessageField.render="false"/>
       </property>  
       <property name="addLineActionFields">
         <list>
@@ -167,34 +183,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <bean parent="ActionField_SmallSecondary" p:methodToCall="deleteLine" p:actionLabel="delete"/>
         </list>
       </property>
+      <property name="header.group">
+         <bean parent="Group_ShowHideInactive"/>
+      </property>
       <property name="layoutManager">
         <bean parent="StackedLayoutManager"/>
       </property> 
   </bean>
 
-  <bean id="TreeGroup" abstract="true" parent="TreeGroup-parentBean"/>
-  <bean id="TreeGroup-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.TreeGroup" parent="Group">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/group/treeGroup.jsp"/>
-      <property name="bindingInfo">
-        <ref bean="BindingInfo"/>
-      </property>
-      <property name="dataGroupPrototype">
-        <bean parent="Group"/>
-      </property>
-      <property name="nodeLabelPrototype">
-        <bean parent="MessageField"/>
-      </property>
-      <property name="treeWidget">
-        <bean parent="TreeWidget"/>
-      </property>
-  </bean>
-  
   <bean id="CollectionGroupSection" abstract="true" parent="CollectionGroupSection-parentBean"/>
   <bean id="CollectionGroupSection-parentBean" parent="CollectionGroup">
     <property name="styleClasses" value="wrap"/>
-    <property name="header">
-      <bean parent="HeaderTwo" p:styleClasses="grouping-header-expandable"/>
-    </property> 
+    <property name="header.styleClasses" value="grouping-header-expandable"/>
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-col.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-exp.png"/>    
   </bean>  
@@ -209,9 +209,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="CollectionGroupSectionTableLayout" abstract="true" parent="CollectionGroupSectionTableLayout-parentBean"/>
   <bean id="CollectionGroupSectionTableLayout-parentBean" parent="CollectionGroupTableLayout">
     <property name="styleClasses" value="wrap"/>
-    <property name="header">
-      <bean parent="HeaderTwo" p:styleClasses="grouping-header-expandable"/>
-    </property> 
+    <property name="header.styleClasses" value="grouping-header-expandable"/>
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-col.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-exp.png"/>    
   </bean>   
@@ -240,7 +238,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             </list>
         </property>
       </bean>
-    </property>    
+    </property>
+    <property name="activeCollectionFilter">
+      <bean class="org.kuali.rice.kns.uif.core.MaintenanceActiveCollectionFilter"
+            p:oldBindingObjectPath="document.oldMaintainableObject.dataObject" />
+    </property>
   </bean>
   
   <!-- Common Groups -->
@@ -276,6 +278,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          </list>
       </property>
       <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+  </bean>
+
+  <bean id="Group_ShowHideInactive" parent="GroupBodyOnly"
+        p:conditionalRender="#isAssignableFrom(T(org.kuali.rice.core.api.mo.common.active.Inactivatable),
+    #collectionGroup.collectionObjectClass)">
+    <property name="items">
+      <list>
+        <bean parent="ActionField_ShowInactive" p:conditionalRender="!#collectionGroup.showInactive"/>
+        <bean parent="ActionField_HideInactive" p:conditionalRender="#collectionGroup.showInactive"/>
+      </list>
+    </property>
   </bean>
   
   <bean id="Group_DocumentHeader" parent="GroupGridBodyOnly" p:conditionalReadOnly="true">

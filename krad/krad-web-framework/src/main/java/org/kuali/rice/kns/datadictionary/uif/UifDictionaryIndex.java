@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.view;
+package org.kuali.rice.kns.datadictionary.uif;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,14 +27,14 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.datadictionary.DataDictionaryException;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.service.ViewTypeService;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 /**
- * Indexes <code>View</code> bean entries for retrieval
+ * Indexes <code>View</code> and <code>Component</code> bean entries for retrieval
  * 
  * <p>
- * Builds up a Map index where the key is the view id, and the value is the bean
  * name. This is used to retrieve a <code>View</code> instance by its unique id.
  * Furthermore, view of certain types (that have a <code>ViewTypeService</code>
  * are indexed by their type to support retrieval of views based on parameters.
@@ -42,8 +42,8 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ViewDictionaryIndex implements Runnable {
-	private static final Log LOG = LogFactory.getLog(ViewDictionaryIndex.class);
+public class UifDictionaryIndex implements Runnable {
+	private static final Log LOG = LogFactory.getLog(UifDictionaryIndex.class);
 
 	private DefaultListableBeanFactory ddBeans;
 
@@ -56,7 +56,10 @@ public class ViewDictionaryIndex implements Runnable {
 	// view entries indexed by type
 	private Map<String, ViewTypeDictionaryIndex> viewEntriesByType;
 
-	public ViewDictionaryIndex(DefaultListableBeanFactory ddBeans) {
+    // component entries indexed by component id and bean name
+    private Map<String, String> componentBeanEntriesById;
+
+	public UifDictionaryIndex(DefaultListableBeanFactory ddBeans) {
 		this.ddBeans = ddBeans;
 	}
 
@@ -140,6 +143,24 @@ public class ViewDictionaryIndex implements Runnable {
 		return typeViews;
 	}
 
+    /**
+     * Returns a Component configured in the dictionary with the given
+     * id. Standard Spring scoping rules apply in terms of prototypes
+     * or singletons
+     *
+     * @param id - id of the component set in the dictionary of set by the framework
+     * @return Component found for id or null if no component was found
+     */
+    public Component getComponentById(String id) {
+        if (componentBeanEntriesById.containsKey(id)) {
+            String componentBeanId = componentBeanEntriesById.get(id);
+
+            return (Component) ddBeans.getBean(componentBeanId);
+        }
+
+        return null;
+    }
+
 	/**
 	 * Initializes the view index <code>Map</code> then iterates through all the
 	 * beans in the factory that implement <code>View</code>, adding them to the
@@ -149,6 +170,7 @@ public class ViewDictionaryIndex implements Runnable {
 		viewBeanEntriesById = new HashMap<String, String>();
 		viewEntriesByBean = new HashMap<String, View>();
 		viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
+        componentBeanEntriesById = new HashMap<String, String>();
 
 		Map<String, View> viewBeans = ddBeans.getBeansOfType(View.class);
 		for (String beanName : viewBeans.keySet()) {
@@ -163,6 +185,17 @@ public class ViewDictionaryIndex implements Runnable {
 
 			indexViewForType(view, beanName);
 		}
+
+        Map<String, Component> components = ddBeans.getBeansOfType(Component.class);
+        for (String beanName : components.keySet()) {
+            Component component = components.get(beanName);
+            if (componentBeanEntriesById.containsKey(component.getId())) {
+                throw new DataDictionaryException(
+                        "Two components must not share the same id. Found duplicate id: " + component.getId());
+            }
+
+            componentBeanEntriesById.put(component.getId(), beanName);
+        }
 	}
 
 	/**

@@ -30,9 +30,6 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersCo
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 import org.kuali.rice.kns.uif.UifConstants;
-import org.kuali.rice.kns.uif.container.CollectionGroup;
-import org.kuali.rice.kns.uif.container.FormView;
-import org.kuali.rice.kns.uif.container.InquiryView;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.uif.control.MultiValueControlBase;
@@ -40,6 +37,7 @@ import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
+import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.widget.DirectInquiry;
 import org.kuali.rice.kns.uif.widget.Inquiry;
@@ -267,23 +265,23 @@ public class AttributeField extends FieldBase implements DataBinding {
             getControl().setId(id);
         }
         if (getErrorsField() != null) {
-            getErrorsField().setId(id + UifConstants.IdSuffixes.ERRORS);
+            ComponentUtils.updateIdsWithSuffix(getErrorsField(), UifConstants.IdSuffixes.ERRORS);
         }
         if (getLabelField() != null) {
-            getLabelField().setId(id + UifConstants.IdSuffixes.LABEL);
+            ComponentUtils.updateIdsWithSuffix(getLabelField(), UifConstants.IdSuffixes.LABEL);
         }
         if (getSummaryMessageField() != null) {
-            getSummaryMessageField().setId(id + UifConstants.IdSuffixes.SUMMARY);
+            ComponentUtils.updateIdsWithSuffix(getSummaryMessageField(), UifConstants.IdSuffixes.SUMMARY);
         }
         if (getConstraintMessageField() != null) {
-            getConstraintMessageField().setId(id + UifConstants.IdSuffixes.CONSTRAINT);
+            ComponentUtils.updateIdsWithSuffix(getConstraintMessageField(), UifConstants.IdSuffixes.CONSTRAINT);
         }
         if (getFieldLookup() != null) {
-            getFieldLookup().setId(id + UifConstants.IdSuffixes.QUICK_FINDER);
+            ComponentUtils.updateIdsWithSuffix(getFieldLookup(), UifConstants.IdSuffixes.QUICK_FINDER);
         }
 
         if (!StringUtils.contains(getId(), UifConstants.IdSuffixes.ATTRIBUTE)) {
-            setId(id + UifConstants.IdSuffixes.ATTRIBUTE);
+            ComponentUtils.updateIdsWithSuffix(this, UifConstants.IdSuffixes.ATTRIBUTE);
         }
     }
 

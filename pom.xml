@@ -148,8 +148,7 @@
     <source.plugin.version>2.1.2</source.plugin.version>
     <assembly.plugin.version>2.2.1</assembly.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
-    <web.launch.spring.file />
-    
+
     <!-- Connect documentation generate to site generation -->
     <rice.docbook.phase>pre-site</rice.docbook.phase>
     <!-- Where the original documentation source is located -->
@@ -482,12 +481,6 @@
             <webAppConfig>
               <contextPath>${web.launch.context.path}</contextPath>
             </webAppConfig>
-            <systemProperties>
-              <systemProperty>
-                <name>web.bootstrap.spring.file</name>
-                <value>${web.launch.spring.file}</value>
-              </systemProperty>
-            </systemProperties>
           </configuration>
 
           <dependencies>
@@ -511,9 +504,6 @@
           <version>1.1</version>
           <configuration>
             <path>${web.launch.context.path}</path>
-            <systemProperties>
-              <web.bootstrap.spring.file>${web.launch.spring.file}</web.bootstrap.spring.file>
-            </systemProperties>
           </configuration>
           <dependencies>
             <dependency>

@@ -63,7 +63,7 @@
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.0.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springmodules:spring-modules-ojb:0.8a" />
@@ -109,12 +109,11 @@
           <element id="archive" name="rice-core-impl-2.0.0-m5-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-impl" />
           </element>
-          <element id="archive" name="rice-ksb-framework-2.0.0-m5-SNAPSHOT.jar">
-            <element id="module-output" name="rice-ksb-framework" />
+          <element id="archive" name="rice-ksb-api-2.0.0-m5-SNAPSHOT.jar">
+            <element id="module-output" name="rice-ksb-api" />
           </element>
           <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
           <element id="library" level="project" name="Maven: opensymphony:oscache:2.4.1" />
-          <element id="library" level="project" name="Maven: javax.jms:jms:1.1" />
           <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" />
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.4" />
           <element id="library" level="project" name="Maven: xml-resolver:xml-resolver:1.2" />
@@ -143,12 +142,6 @@
           <element id="library" level="project" name="Maven: xalan:xalan:2.7.1" />
           <element id="library" level="project" name="Maven: xalan:serializer:2.7.1" />
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-databinding-aegis:2.3.4" />
-          <element id="library" level="project" name="Maven: org.acegisecurity:acegi-security:1.0.7" />
-          <element id="library" level="project" name="Maven: org.acegisecurity:acegi-security-cas:1.0.7" />
-          <element id="library" level="project" name="Maven: cas:cas-server:3.0.4" />
-          <element id="library" level="project" name="Maven: cas:cas:2.0.12" />
-          <element id="library" level="project" name="Maven: cas:casclient:2.1.1" />
-          <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.2.0" />
           <element id="library" level="project" name="Maven: javax.mail:mail:1.4.4" />
           <element id="library" level="project" name="Maven: cglib:cglib-nodep:2.2" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
@@ -178,17 +171,24 @@
           <element id="archive" name="rice-shareddata-web-2.0.0-m5-SNAPSHOT.jar">
             <element id="module-output" name="rice-shareddata-web" />
           </element>
-          <element id="archive" name="rice-ksb-api-2.0.0-m5-SNAPSHOT.jar">
-            <element id="module-output" name="rice-ksb-api" />
+          <element id="archive" name="rice-ksb-framework-2.0.0-m5-SNAPSHOT.jar">
+            <element id="module-output" name="rice-ksb-framework" />
           </element>
           <element id="archive" name="rice-edl-framework-2.0.0-m5-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-framework" />
           </element>
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.8" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.8" />
+          <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.2.0" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-cas-client:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:3.0.5.RELEASE" />
           <element id="archive" name="rice-edl-impl-2.0.0-m5-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-impl" />
           </element>
         </element>
       </element>
+      <element id="artifact" artifact-name="rice-web:war exploded" />
     </root>
   </artifact>
 </component>

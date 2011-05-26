@@ -49,6 +49,7 @@ import org.kuali.rice.krms.api.repository.BuilderUtils;
 		TermDefinition.Elements.ID,
 		TermDefinition.Elements.SPECIFICATION,
 		TermDefinition.Elements.PARAMETERS,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class TermDefinition implements TermDefinitionContract, ModelObjectComplete {
@@ -62,6 +63,8 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 	@XmlElementWrapper(name = Elements.PARAMETERS, required=false)
 	@XmlElement(name = "parameter", required=false)
 	private final Set<TermParameterDefinition> parameters;
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -74,12 +77,14 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 		id = null;
 		specification = null;
 		parameters = null;
+        versionNumber = null;
 	}
 	
 	private TermDefinition(Builder builder) {
 		id = builder.getId();
 		specification = builder.getSpecification().build();
 		parameters = BuilderUtils.convertFromBuilderSet(builder.getParameters());
+		versionNumber = builder.getVersionNumber();
 	}
 	
 	/**
@@ -95,6 +100,7 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 		private String id;
 		private TermSpecificationDefinition.Builder specification;
 		private Set<TermParameterDefinition.Builder> parameters;
+        private Long versionNumber;
 		
 		private Builder(String id, TermSpecificationDefinition.Builder termSpecificationDefinition, 
 				Set<TermParameterDefinition.Builder> termParameters) {
@@ -127,12 +133,14 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 			Set<TermParameterDefinition.Builder> outParams = 
 				BuilderUtils.transform(term.getParameters(), TermParameterDefinition.Builder.toBuilder);
 
-			return create(term.getId(), 
+			Builder builder = create(term.getId(), 
 					// doing my TermSpecificationDefinitionContract conversion inline:
 					TermSpecificationDefinition.Builder.create(term.getSpecification()),
 					// this is made immutable in the setter
 					outParams 
 					);
+			builder.setVersionNumber(term.getVersionNumber());
+			return builder;
 		}
 		
 		// Builder setters:
@@ -166,6 +174,13 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 			this.parameters = parameters;
 		}
 
+		/**
+		 * @param versionNumber the versionNumber to set.  May be null.
+		 */
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
 		// Builder getters:
 		
 		/**
@@ -194,6 +209,14 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 			return parameters;
 		}
 		
+		/**
+		 * @return the version number
+		 */
+        @Override
+        public Long getVersionNumber() {
+            return this.versionNumber;
+        }
+        
 		/**
 		 * Builds the {@link TermDefinition}, or dies trying.
 		 * 
@@ -229,6 +252,14 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 	}
 	
 	/**
+	 * @see org.kuali.rice.core.api.mo.common.Versioned#getVersionNumber()
+	 */
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+
+    /**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

@@ -34,6 +34,7 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.BuilderUtils;
 import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Builder;
 
 /**
  * Immutable DTO for TermSpecifications.  Construction must be done via the {@link Builder} inner class.
@@ -48,6 +49,7 @@ import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
 		TermSpecificationDefinition.Elements.CONTEXT_ID,
 		TermSpecificationDefinition.Elements.NAME,
 		TermSpecificationDefinition.Elements.TYPE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class TermSpecificationDefinition implements TermSpecificationDefinitionContract, ModelObjectComplete {
@@ -62,6 +64,8 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 	private final String name;
 	@XmlElement(name = Elements.TYPE, required=true)
 	private final String type;
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -75,6 +79,7 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		contextId = null;
 		name = null;
 		type = null;
+        versionNumber = null;
 	}
 	
 	/**
@@ -87,6 +92,7 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		contextId = b.getContextId();
 		name = b.getName();
 		type = b.getType();
+		versionNumber = b.getVersionNumber();
 	}
 	
 	/**
@@ -102,6 +108,7 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		private String contextId;
 		private String name;
 		private String type;
+        private Long versionNumber;
 		
 		private static final String NON_NULL_NON_EMPTY_ERROR =  " must be non-null and must contain non-whitespace chars"; 
 
@@ -147,10 +154,12 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		 */
 		public static Builder create(TermSpecificationDefinitionContract termSpecification) {
 			if (termSpecification == null) throw new IllegalArgumentException("termSpecification must be non-null");
-			return new Builder(termSpecification.getId(), 
+			Builder builder =new Builder(termSpecification.getId(), 
 					termSpecification.getContextId(), 
 					termSpecification.getName(), 
 					termSpecification.getType());
+			builder.setVersionNumber(termSpecification.getVersionNumber());
+			return builder;
 		}
 		
 		// Setters
@@ -195,6 +204,13 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 			this.type = type;
 		}
 		
+		/**
+		 * @param versionNumber the versionNumber to set.  May be null.
+		 */
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
 		// Getters
 		
 		/**
@@ -228,6 +244,14 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		public String getType() {
 			return this.type;
 		}
+
+		/**
+		 * @return the version number
+		 */
+        @Override
+        public Long getVersionNumber() {
+            return this.versionNumber;
+        }
 
 		/**
 		 * Constructs a {@link TermSpecificationDefinition}
@@ -274,6 +298,14 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		return type;
 	}
 	
+	/**
+	 * @see org.kuali.rice.core.api.mo.common.Versioned#getVersionNumber()
+	 */
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+    
 	/**
 	* @see java.lang.Object#equals(java.lang.Object)
 	*/

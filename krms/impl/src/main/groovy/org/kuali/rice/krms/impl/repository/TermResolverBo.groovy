@@ -83,6 +83,7 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
         for (attr in im.attributes){
             bo.attributes.add (TermResolverAttributeBo.from(attr))
         }
+	    bo.versionNumber = im.versionNumber
         return bo
     }
     public TermSpecificationBo getOutput(){

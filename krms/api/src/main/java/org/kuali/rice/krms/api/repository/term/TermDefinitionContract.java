@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.api.repository.term;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 import java.util.Set;
 
@@ -25,7 +26,7 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface TermDefinitionContract extends Identifiable {
+public interface TermDefinitionContract extends Identifiable, Versioned {
 	
 	/**
 	 * @return the associated {@link TermSpecificationDefinitionContract}

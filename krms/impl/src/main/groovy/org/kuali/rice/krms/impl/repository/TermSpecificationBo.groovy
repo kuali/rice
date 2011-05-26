@@ -37,7 +37,8 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
 	   bo.contextId = im.contextId
 	   bo.name = im.name
 	   bo.type = im.type
-
+	   bo.versionNumber = im.versionNumber
+	   
 	   return bo
    }
  

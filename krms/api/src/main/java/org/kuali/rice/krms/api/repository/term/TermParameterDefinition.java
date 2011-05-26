@@ -49,6 +49,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Constants;
 		TermParameterDefinition.Elements.ID,
 		TermParameterDefinition.Elements.NAME,
 		TermParameterDefinition.Elements.VALUE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class TermParameterDefinition implements TermParameterDefinitionContract, ModelObjectComplete {
@@ -66,7 +67,10 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 	@XmlElement(name = Elements.VALUE)
 	private final String value;
 	
-	@SuppressWarnings("unused")
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+
+    @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
@@ -76,6 +80,7 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 		termId = null;
 		name = null;
 		value = null;
+        versionNumber = null;
 	}
 	
 	private TermParameterDefinition(Builder builder) {
@@ -83,6 +88,7 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 		termId = builder.getTermId();
 		name = builder.getName();
 		value = builder.getValue();
+		versionNumber = builder.getVersionNumber();
 	}
 	
 	public static class Builder implements TermParameterDefinitionContract, ModelBuilder, Serializable {
@@ -93,6 +99,7 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 		private String termId;
 		private String name;
 		private String value;
+        private Long versionNumber;
 		
 		private static final String NON_NULL_NON_EMPTY_ERROR =  
 			" must be non-null and must contain non-whitespace chars";
@@ -129,10 +136,12 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 		 * @param termParameterDefinition
 		 */
 		public static Builder create(TermParameterDefinitionContract termParameterDefinition) {
-			return new Builder(termParameterDefinition.getId(), 
+			Builder builder = new Builder(termParameterDefinition.getId(), 
 					termParameterDefinition.getTermId(),
 					termParameterDefinition.getName(), 
 					termParameterDefinition.getValue());
+			builder.setVersionNumber(termParameterDefinition.getVersionNumber());
+			return builder;
 		}
 		
 		// Setters:
@@ -177,6 +186,13 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 			this.value = value;
 		}
 		
+		/**
+		 * @param versionNumber the versionNumber to set.  May be null.
+		 */
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
 		// Getters:
 		
 		/**
@@ -211,6 +227,14 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 			return this.value;
 		}		
 		
+		/**
+		 * @return the version number
+		 */
+        @Override
+        public Long getVersionNumber() {
+            return this.versionNumber;
+        }
+
 		/**
 		 * return a {@link TermParameterDefinition} instance constructed from this {@link Builder} 
 		 * @see org.kuali.rice.core.api.mo.ModelBuilder#build()
@@ -252,6 +276,14 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 		return this.value;
 	}
 	
+	/**
+	 * @see org.kuali.rice.core.api.mo.common.Versioned#getVersionNumber()
+	 */
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+    
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */

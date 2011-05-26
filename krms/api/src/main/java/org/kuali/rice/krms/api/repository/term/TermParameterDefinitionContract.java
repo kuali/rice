@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.api.repository.term;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 
@@ -23,7 +24,7 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface TermParameterDefinitionContract extends Identifiable {
+public interface TermParameterDefinitionContract extends Identifiable, Versioned {
 
 	String getTermId();
 	String getName();

@@ -40,6 +40,7 @@ public class TermBo extends PersistableBusinessObjectBase implements TermDefinit
 	   for (parm in im.parameters){
 		   bo.parameters.add ( TermParameterBo.from(parm) )
 	   }
+	   bo.versionNumber = im.versionNumber
 	   return bo
    }
  

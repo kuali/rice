@@ -35,7 +35,8 @@ public class TermParameterBo extends PersistableBusinessObjectBase implements Te
 	   bo.termId = im.termId
 	   bo.name = im.name
 	   bo.value = im.value
-
+	   bo.versionNumber = im.versionNumber
+	   
 	   return bo
    }
  

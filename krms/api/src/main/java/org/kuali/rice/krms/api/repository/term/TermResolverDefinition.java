@@ -55,6 +55,7 @@ import org.kuali.rice.krms.api.repository.BuilderUtils;
 		TermResolverDefinition.Elements.PREREQUISITES,
 		TermResolverDefinition.Elements.ATTRIBUTES,
 		TermResolverDefinition.Elements.PARAMETER_NAMES,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class TermResolverDefinition implements TermResolverDefinitionContract, ModelObjectComplete {
@@ -82,7 +83,8 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 	@XmlElementWrapper(name = Elements.PARAMETER_NAMES, required=false)
 	@XmlElement(name = "parameterName")
 	private final Set<String> parameterNames;
-	
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;	
 	
     @SuppressWarnings("unused")
 	@XmlAnyElement
@@ -101,6 +103,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		prerequisites = null;
 		attributes = null;
 		parameterNames = null;
+        versionNumber = null;
 	}
 	
 	private TermResolverDefinition(Builder builder) {
@@ -113,6 +116,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		this.prerequisites = BuilderUtils.convertFromBuilderSet(builder.getPrerequisites());
 		this.attributes = BuilderUtils.convertFromBuilderSet(builder.getAttributes());
 		this.parameterNames = Collections.unmodifiableSet(builder.getParameterNames());
+		this.versionNumber = builder.getVersionNumber();
 	}
 	
 	public static class Builder implements TermResolverDefinitionContract, ModelBuilder, 
@@ -129,6 +133,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		private Set<TermSpecificationDefinition.Builder> prerequisites;
 		private Set<TermResolverAttribute.Builder> attributes;
 		private Set<String> parameterNames;
+        private Long versionNumber;
 		
 		private Builder(String id,
 				String namespaceCode,
@@ -162,6 +167,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 			setPrerequisites(BuilderUtils.transform(termResolver.getPrerequisites(), TermSpecificationDefinition.Builder.toBuilder));
 			setAttributes(BuilderUtils.transform(termResolver.getAttributes(), TermResolverAttribute.Builder.toBuilder));
 			this.setParameterNames(termResolver.getParameterNames());
+			this.setVersionNumber(termResolver.getVersionNumber());
 		}
 		
 		public static Builder create(TermResolverDefinitionContract termResolver) {
@@ -262,7 +268,13 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 			this.parameterNames = parameterNames;
 		}		
 		
-		
+		/**
+		 * @param versionNumber the versionNumber to set.  May be null.
+		 */
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+        
 		// Builder getters:
 
 		/**
@@ -321,6 +333,14 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 			return (parameterNames == null) ? Collections.<String>emptySet() : parameterNames;
 		}
 		
+		/**
+		 * @return the version number
+		 */
+        @Override
+        public Long getVersionNumber() {
+            return this.versionNumber;
+        }
+
 		/**
 		 * This overridden method ...
 		 * 
@@ -403,6 +423,14 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		return this.parameterNames;
 	}
 	
+	/**
+	 * @see org.kuali.rice.core.api.mo.common.Versioned#getVersionNumber()
+	 */
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+    
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */

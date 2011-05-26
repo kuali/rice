@@ -36,6 +36,8 @@ abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implemen
     @Transient
     KimTypeBo kimType
 
+    abstract void setAssignedToId(String s);
+
     @Override
     KimAttributeBo getKimAttribute() {
         return kimAttribute
@@ -68,5 +70,19 @@ abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implemen
             return Attributes.fromMap(m)
         }
         return Attributes.empty();
+    }
+
+    /** creates a list of KimAttributeDataBos from attributes, kimTypeId, and assignedToId. */
+    static <T extends KimAttributeDataBo> List<T> createFrom(Class<T> type, Attributes attributes, String kimTypeId) {
+       return attributes.toMap().entrySet().collect {
+            KimTypeAttribute attr = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(it.getKey());
+            if (attr != null && StringUtils.isNotBlank(it.getValue())) {
+                T newDetail = type.newInstance();
+                newDetail.setKimAttributeId(attr.getKimAttribute().getId());
+                newDetail.setKimTypeId(kimTypeId);
+                newDetail.setAttributeValue(it.getValue());
+                return newDetail;
+            }
+        }
     }
 }

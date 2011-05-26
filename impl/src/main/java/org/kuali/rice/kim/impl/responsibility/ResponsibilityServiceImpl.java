@@ -26,6 +26,7 @@ import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -59,9 +60,11 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         if (StringUtils.isNotBlank(responsibility.getId()) && getResponsibility(responsibility.getId()) != null) {
             throw new RiceIllegalStateException("the responsibility to create already exists: " + responsibility);
-        }
-
-        businessObjectService.save(ResponsibilityBo.from(responsibility));
+        }                                                                                                                                        //FIXME: stick the template directly on the Resp object so I dont have to this
+        List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), getResponsibilityTemplate(responsibility.getTemplateId()).getKimTypeId());
+        ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
+        bo.setResponsibilityAttributes(attrBos);
+        businessObjectService.save(bo);
     }
 
     @Override
@@ -73,6 +76,11 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         if (StringUtils.isBlank(responsibility.getId()) || getResponsibility(responsibility.getId()) == null) {
             throw new RiceIllegalStateException("the responsibility does not exist: " + responsibility);
         }
+
+        List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), getResponsibilityTemplate(responsibility.getTemplateId()).getKimTypeId());
+        ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
+        bo.getResponsibilityAttributes().addAll(attrBos);
+        businessObjectService.save(bo);
     }
 
     @Override
@@ -198,13 +206,13 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         return results;
     }
 
-    private List<ResponsibilityAction> getActionsForResponsibilityRoles(Responsibility responsibility, List<String> roleIds, Attributes qualification ) {
-    	List<ResponsibilityAction> results = new ArrayList<ResponsibilityAction>();
-    	Collection<RoleMembership> roleMembers = roleService.getRoleMembers( roleIds, new AttributeSet(qualification.toMap()));
-    	for ( RoleMembership rm : roleMembers ) {
-    	    // only add them to the list if the member ID has been populated
-    	    if ( StringUtils.isNotBlank( rm.getMemberId() ) ) {
-        		final ResponsibilityAction.Builder rai = ResponsibilityAction.Builder.create();
+    private List<ResponsibilityAction> getActionsForResponsibilityRoles(Responsibility responsibility, List<String> roleIds, Attributes qualification) {
+        List<ResponsibilityAction> results = new ArrayList<ResponsibilityAction>();
+        Collection<RoleMembership> roleMembers = roleService.getRoleMembers(roleIds, new AttributeSet(qualification.toMap()));
+        for (RoleMembership rm : roleMembers) {
+            // only add them to the list if the member ID has been populated
+            if (StringUtils.isNotBlank(rm.getMemberId())) {
+                final ResponsibilityAction.Builder rai = ResponsibilityAction.Builder.create();
                 rai.setMemberRoleId(rm.getEmbeddedRoleId());
                 rai.setRoleId(rm.getRoleId());
                 rai.setQualifier(Attributes.fromMap(rm.getQualifier()));
@@ -213,61 +221,61 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
                     bs.add(Delegate.Builder.create(d));
                 }
                 rai.setDelegates(bs);
-        		rai.setResponsibilityId(responsibility.getId());
+                rai.setResponsibilityId(responsibility.getId());
                 rai.setResponsibilityName(responsibility.getName());
                 rai.setResponsibilityNamespaceCode(responsibility.getNamespaceCode());
 
-                if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
-        			rai.setPrincipalId(rm.getMemberId());
-        		} else {
-        			rai.setGroupId(rm.getMemberId());
-        		}
-        		// get associated resp resolution objects
-        		RoleResponsibilityAction action = getResponsibilityAction(rm.getRoleId(), responsibility.getId(), rm.getRoleMemberId());
-        		if ( action == null ) {
-        			LOG.error( "Unable to get responsibility action record for role/responsibility/roleMember: "
-        					+ rm.getRoleId() + "/" + responsibility.getId() + "/" + rm.getRoleMemberId() );
-        			LOG.error( "Skipping this role member in getActionsForResponsibilityRoles()");
-        			continue;
-        		}
-        		// add the data to the ResponsibilityActionInfo objects
-        		rai.setActionTypeCode( action.getActionTypeCode() );
-        		rai.setActionPolicyCode( action.getActionPolicyCode() );
-        		rai.setPriorityNumber(action.getPriorityNumber() == null ? DEFAULT_PRIORITY_NUMBER : action.getPriorityNumber());
-        		rai.setForceAction( action.isForceAction() );
-        		rai.setParallelRoutingGroupingCode( (rm.getRoleSortingCode()==null)?"":rm.getRoleSortingCode() );
-        		rai.setRoleResponsibilityActionId( action.getId() );
-        		results.add( rai.build() );
-    	    }
-    	}
-    	return results;
+                if (rm.getMemberTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE)) {
+                    rai.setPrincipalId(rm.getMemberId());
+                } else {
+                    rai.setGroupId(rm.getMemberId());
+                }
+                // get associated resp resolution objects
+                RoleResponsibilityAction action = getResponsibilityAction(rm.getRoleId(), responsibility.getId(), rm.getRoleMemberId());
+                if (action == null) {
+                    LOG.error("Unable to get responsibility action record for role/responsibility/roleMember: "
+                            + rm.getRoleId() + "/" + responsibility.getId() + "/" + rm.getRoleMemberId());
+                    LOG.error("Skipping this role member in getActionsForResponsibilityRoles()");
+                    continue;
+                }
+                // add the data to the ResponsibilityActionInfo objects
+                rai.setActionTypeCode(action.getActionTypeCode());
+                rai.setActionPolicyCode(action.getActionPolicyCode());
+                rai.setPriorityNumber(action.getPriorityNumber() == null ? DEFAULT_PRIORITY_NUMBER : action.getPriorityNumber());
+                rai.setForceAction(action.isForceAction());
+                rai.setParallelRoutingGroupingCode((rm.getRoleSortingCode() == null) ? "" : rm.getRoleSortingCode());
+                rai.setRoleResponsibilityActionId(action.getId());
+                results.add(rai.build());
+            }
+        }
+        return results;
     }
 
-    private RoleResponsibilityAction getResponsibilityAction(String roleId, String responsibilityId, String roleMemberId ) {
+    private RoleResponsibilityAction getResponsibilityAction(String roleId, String responsibilityId, String roleMemberId) {
         final Predicate p =
-        or(
-            and(
-                equal("roleResponsibility.responsibilityId", responsibilityId),
-                equal("roleResponsibility.roleId", roleId),
-                equal("roleResponsibility.active", "Y"),
                 or(
-                    equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId),
-                    equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, "*")
-                )
-            ),
-            and(
-                equal("roleResponsibilityId", "*"),
-                equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId)
-            )
-        );
+                        and(
+                                equal("roleResponsibility.responsibilityId", responsibilityId),
+                                equal("roleResponsibility.roleId", roleId),
+                                equal("roleResponsibility.active", "Y"),
+                                or(
+                                        equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId),
+                                        equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, "*")
+                                )
+                        ),
+                        and(
+                                equal("roleResponsibilityId", "*"),
+                                equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId)
+                        )
+                );
 
-		final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         builder.setPredicates(p);
         final GenericQueryResults<RoleResponsibilityActionBo> results = criteriaLookupService.lookup(RoleResponsibilityActionBo.class, builder.build());
         final List<RoleResponsibilityActionBo> bos = results.getResults();
         //seems a little dubious that we are just returning the first result...
         return !bos.isEmpty() ? RoleResponsibilityActionBo.to(bos.get(0)) : null;
-	}
+    }
 
     @Override
     public List<String> getRoleIdsForResponsibility(String id, Attributes qualification) {

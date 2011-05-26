@@ -44,7 +44,9 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
      *      java.lang.Object, java.util.Map)
      */
     public void evaluateObjectProperties(Object object, Object contextObject, Map<String, Object> evaluationParameters) {
-        evaluatePropertyReplacers(object, contextObject, evaluationParameters);
+        if (object instanceof Component) {
+            evaluatePropertyReplacers(object, contextObject, evaluationParameters);
+        }
         visitPropertiesAndEvaluateExpressions(object, contextObject, evaluationParameters);
     }
 

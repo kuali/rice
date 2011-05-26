@@ -10,16 +10,6 @@
  */
 package org.kuali.rice.kns.uif.service.impl;
 
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -34,11 +24,12 @@ import org.kuali.rice.kns.uif.authorization.PresentationController;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.core.PropertyReplacer;
 import org.kuali.rice.kns.uif.core.RequestParameter;
 import org.kuali.rice.kns.uif.field.AttributeField;
-import org.kuali.rice.kns.uif.field.GenericField;
 import org.kuali.rice.kns.uif.layout.LayoutManager;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
@@ -55,6 +46,16 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.util.MethodInvoker;
+
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Default Implementation of <code>ViewHelperService</code>
@@ -472,7 +473,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             return;
         }
 
-        // evaluate properties
+        // evaluate expressions on properties
         component.getContext().putAll(getCommonContext(view, component));
         getExpressionEvaluatorService().evaluateObjectProperties(component, model, component.getContext());
 
@@ -486,6 +487,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
                 getExpressionEvaluatorService().evaluateObjectProperties(layoutManager, model,
                         layoutManager.getContext());
             }
+        }
+
+        if (component instanceof DataBinding) {
+            BindingInfo bindingInfo = ((DataBinding) component).getBindingInfo();
+            getExpressionEvaluatorService().evaluateObjectProperties(bindingInfo, model, component.getContext());
         }
 
         // invoke component to perform its conditional logic

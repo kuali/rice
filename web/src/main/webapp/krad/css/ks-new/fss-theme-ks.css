@@ -68,4 +68,7 @@
 	background-color:#CCC;
 	text-shadow: none;
 }
-
+/* Data Table Styles */
+    th.sorting, th.sorting_asc, th.sorting_desc, th.sorting_disabled {
+        border-top: 3px solid #000;
+    }

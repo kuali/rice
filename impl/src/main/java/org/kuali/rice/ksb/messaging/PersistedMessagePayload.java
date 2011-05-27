@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import javax.persistence.*;

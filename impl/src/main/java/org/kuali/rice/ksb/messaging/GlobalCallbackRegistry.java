@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.kuali.rice.ksb.api.messaging.AsynchronousCallback;
+
 import java.util.ArrayList;
 import java.util.List;
 

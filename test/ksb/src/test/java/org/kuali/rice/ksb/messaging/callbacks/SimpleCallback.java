@@ -17,8 +17,8 @@ package org.kuali.rice.ksb.messaging.callbacks;
 
 import java.io.Serializable;
 
-import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.AsynchronousCallback;
+import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.api.messaging.AsynchronousCallback;
 
 
 /**

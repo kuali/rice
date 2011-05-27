@@ -14,12 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.messaging;
+package org.kuali.rice.ksb.api.messaging;
 
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.messaging.AsynchronousCallback;
 
 /**
  * Encapsulates an asynchronous call to a service.

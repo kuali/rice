@@ -1,5 +1,7 @@
 package org.kuali.rice.ksb.messaging;
 
+import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 

@@ -28,7 +28,7 @@ import org.apache.cxf.message.Message;
 import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.ksb.messaging.MessageHelper;
+import org.kuali.rice.ksb.api.messaging.MessageHelper;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingService;
 import org.kuali.rice.ksb.messaging.service.BusAdminService;

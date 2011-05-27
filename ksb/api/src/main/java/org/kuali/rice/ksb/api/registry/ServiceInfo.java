@@ -435,8 +435,8 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
      */
     static class Constants {
 
-        final static String ROOT_ELEMENT_NAME = "serviceHeader";
-        final static String TYPE_NAME = "ServiceHeaderType";
+        final static String ROOT_ELEMENT_NAME = "serviceInfo";
+        final static String TYPE_NAME = "ServiceInfoType";
         final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
 
     }

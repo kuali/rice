@@ -16,6 +16,7 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.junit.Test;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
@@ -55,7 +56,7 @@ public class DistributedQueueTest extends KSBTestCase {
     @Test
     public void testSuccessfullyCallingQueueOnce() throws Exception {
         QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
-        KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+        KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
         testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
         verifyServiceCalls(serviceName);
 
@@ -71,7 +72,7 @@ public class DistributedQueueTest extends KSBTestCase {
             LOG.info("testCallingQueueAsnyc, iteration: " + i);
             QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
             SimpleCallback callback = new SimpleCallback();
-            KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback);
+            KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback);
             synchronized (callback) {
                 testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
                 callback.waitForAsyncCall();

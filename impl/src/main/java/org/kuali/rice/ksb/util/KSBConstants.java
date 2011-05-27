@@ -92,7 +92,6 @@ public final class KSBConstants {
         public static final String JTA_TRANSACTION_MANAGER = "jtaTransactionManager";
         public static final String MESSAGE_DATASOURCE = "rice.ksb.messageDataSource";
         public static final String MESSAGE_ENTITY_MANAGER_FACTORY = "rice.ksb.messageEntityManagerFactory";
-        public static final String MESSAGE_HELPER = "rice.ksb.messageHelper";
         public static final String MESSAGE_QUEUE_SERVICE = "rice.ksb.messageQueueService";
         public static final String MESSAGE_NON_TRANSACTIONAL_DATASOURCE = "rice.ksb.messageNonTransactionalDataSource";
     	public static final String REGISTRY_DATASOURCE = "rice.ksb.registryDataSource";

@@ -121,7 +121,7 @@ import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 import javax.xml.namespace.QName;
 import java.sql.Timestamp;
@@ -239,7 +239,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		getBusinessObjectService().save(bos);
 
 		//KimApiServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
-		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+		IdentityManagementNotificationService service = (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
 		service.principalUpdated();
 
 		if (!blankRoleMemberAttrs.isEmpty()) {
@@ -2021,7 +2021,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			bos.addAll(getRoleDelegations(identityManagementRoleDocument, origRoleDelegations));
 		}
 		getBusinessObjectService().save(bos);
-		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+		IdentityManagementNotificationService service = (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
         service.roleUpdated();
 		KIMServiceLocatorInternal.getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(identityManagementRoleDocument, origRoleResponsibilities));
 		if(!kimRole.isActive()){
@@ -2614,7 +2614,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 		// Do an async update of the action list for the updated groups
 		KIMServiceLocatorInternal.getGroupInternalService().updateForWorkgroupChange(kimGroup.getId(), oldIds, newIds);
-		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+		IdentityManagementNotificationService service = (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
         service.groupUpdated();
 		if(!kimGroup.isActive()){
 			// when a group is inactivated, inactivate the memberships of principals in that group

@@ -38,7 +38,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
@@ -354,7 +354,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 	}
 
     protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
-        return (IdentityManagementNotificationService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+        return (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
     }
 	
 }

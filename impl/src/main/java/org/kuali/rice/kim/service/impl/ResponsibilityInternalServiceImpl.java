@@ -33,8 +33,8 @@ import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.
@@ -90,7 +90,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	 */
 	public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds) {
 
-		KSBXMLService responsibilityChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
+		KSBXMLService responsibilityChangeProcessor = (KSBXMLService) KsbApiServiceLocator.getMessageHelper()
         .getServiceAsynchronously(new QName(MessageServiceNames.RESPONSIBILITY_CHANGE_SERVICE));
         try {
         	responsibilityChangeProcessor.invoke(ResponsibilityChangeProcessor.getResponsibilityChangeContents(responsibilityIds));

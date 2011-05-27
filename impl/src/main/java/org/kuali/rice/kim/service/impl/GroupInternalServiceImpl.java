@@ -16,31 +16,25 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.group.GroupBo;
-import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.service.GroupInternalService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * Concrete Implementation of {@link GroupInternalService}
@@ -82,7 +76,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
         // first verify that the user is still a member of the workgroup
     	if(getGroupService().isMemberOfGroup(principalId, groupId))
     	{
-            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
+            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KsbApiServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(KEWConstants.KEW_MODULE_NAMESPACE, MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
             try {
                 workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
@@ -97,7 +91,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
         // first verify that the user is no longer a member of the workgroup
     	if(!getGroupService().isMemberOfGroup(principalId, groupId))
     	{
-            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KSBServiceLocator.getMessageHelper()
+            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KsbApiServiceLocator.getMessageHelper()
             .getServiceAsynchronously(new QName(KEWConstants.KEW_MODULE_NAMESPACE, MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
             try {
                 workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor

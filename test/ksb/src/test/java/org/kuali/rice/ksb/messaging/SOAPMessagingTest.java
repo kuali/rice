@@ -49,7 +49,7 @@ public class SOAPMessagingTest extends KSBTestCase {
 
 	QName serviceName = new QName("testNameSpace", "soap-repeatTopic");
 
-		SOAPService testJavaAsyncService = (SOAPService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+		SOAPService testJavaAsyncService = (SOAPService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 	testJavaAsyncService.doTheThing("The param");
 	verifyServiceCalls(serviceName);
 
@@ -64,7 +64,7 @@ public class SOAPMessagingTest extends KSBTestCase {
 	QName serviceName = new QName("testNameSpace", "soap-repeatTopic");
 
 	SimpleCallback callback = new SimpleCallback();
-	SOAPService testJavaAsyncService = (SOAPService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+	SOAPService testJavaAsyncService = (SOAPService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 	synchronized (callback) {
 	    testJavaAsyncService.doTheThing("The param");
 	    callback.waitForAsyncCall(3000);

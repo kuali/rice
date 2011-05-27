@@ -84,7 +84,6 @@ import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 public class RuleServiceImpl implements RuleService {
@@ -444,7 +443,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     private void queueDelegationRuleCache(Long responsibilityId) {
-        RuleDelegationCacheProcessor ruleDelegationCacheProcessor = (RuleDelegationCacheProcessor)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("RuleDelegationCacheProcessorService"), null, null, null, null);        
+        RuleDelegationCacheProcessor ruleDelegationCacheProcessor = (RuleDelegationCacheProcessor) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("RuleDelegationCacheProcessorService"), null, null, null, null);
         ruleDelegationCacheProcessor.clearRuleDelegationFromCache(responsibilityId);    	
     }
     

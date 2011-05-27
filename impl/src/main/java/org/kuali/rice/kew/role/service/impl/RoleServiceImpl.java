@@ -19,8 +19,6 @@ package org.kuali.rice.kew.role.service.impl;
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -37,8 +35,8 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import javax.xml.namespace.QName;
 import java.util.*;
@@ -65,7 +63,7 @@ public class RoleServiceImpl implements RoleService {
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
     		QName rolePokerName = new QName(documentType.getServiceNamespace(), MessageServiceNames.ROLE_POKER);
-    		RolePoker rolePoker = (RolePoker)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
+    		RolePoker rolePoker = (RolePoker) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName);
 		}
     }
@@ -84,7 +82,7 @@ public class RoleServiceImpl implements RoleService {
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
     		QName rolePokerName = new QName(documentType.getServiceNamespace(), MessageServiceNames.ROLE_POKER);
-    		RolePoker rolePoker = (RolePoker)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
+    		RolePoker rolePoker = (RolePoker) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName, qualifiedRoleNameLabel);
 		}
     }

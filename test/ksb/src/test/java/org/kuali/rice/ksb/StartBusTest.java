@@ -17,12 +17,10 @@ package org.kuali.rice.ksb;
 
 import javax.xml.namespace.QName;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.MessagingTestObject;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 //@Ignore
@@ -39,7 +37,7 @@ public class StartBusTest extends KSBTestCase {
 		
 		KsbApiServiceLocator.getServiceBus().synchronize();
 		
-		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+		KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new MessagingTestObject("message content"));
 		
 		// verifyServiceCalls(serviceName);

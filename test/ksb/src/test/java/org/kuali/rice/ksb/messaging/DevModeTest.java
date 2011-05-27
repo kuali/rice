@@ -32,7 +32,6 @@ import org.kuali.rice.ksb.messaging.remotedservices.TestServiceInterface;
 import org.kuali.rice.ksb.messaging.serviceconnectors.BusLocalConnector;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector;
 import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 /**
@@ -73,7 +72,7 @@ public class DevModeTest extends KSBTestCase {
 		assertTrue("Not BusLocalConnector", serviceConnector instanceof BusLocalConnector);
 		//assertNull("Service in service definition needs to be null for async communications serialization", ((BusLocalConnector)serviceConnector).getServiceConfiguration()().getServiceDefinition().getService());
 
-		service = (TestServiceInterface) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+		service = (TestServiceInterface) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		service.invoke();
 		assertTrue("No calls to dev defined service", GenericTestService.NUM_CALLS > 1);
 

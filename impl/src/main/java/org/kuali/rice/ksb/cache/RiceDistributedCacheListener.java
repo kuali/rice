@@ -27,7 +27,6 @@ import org.kuali.rice.ksb.api.bus.ServiceBus;
 import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import com.opensymphony.oscache.base.Cache;
 import com.opensymphony.oscache.base.Config;
@@ -91,7 +90,7 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 			LOG.debug("Sending cache notification " + notification);
 		}
 		try {
-			KSBJavaService oscacheNotificationService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(this.serviceName));
+			KSBJavaService oscacheNotificationService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(this.serviceName));
 			oscacheNotificationService.invoke(notification);
 		} catch (Exception e) {
 			throw new RiceRuntimeException(e);

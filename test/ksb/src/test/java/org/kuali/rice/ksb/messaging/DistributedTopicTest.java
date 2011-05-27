@@ -24,7 +24,6 @@ import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
 import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 
@@ -46,7 +45,7 @@ public class DistributedTopicTest extends KSBTestCase {
 		KsbApiServiceLocator.getServiceBus().synchronize();
 		QName serviceName = new QName("testAppsSharedTopic", "sharedTopic");
 		
-		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+		KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 		
 		assertTrue("Test harness topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
@@ -59,7 +58,7 @@ public class DistributedTopicTest extends KSBTestCase {
 		QName serviceName = new QName("testAppsSharedTopic", "sharedTopic");
 		
 		SimpleCallback simpleCallback = new SimpleCallback();
-		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, simpleCallback);
+		KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, simpleCallback);
 		synchronized (simpleCallback) {
 		    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 		    simpleCallback.waitForAsyncCall();

@@ -27,8 +27,8 @@ import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService
 import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.service.RuleCacheProcessor;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**
@@ -117,7 +117,7 @@ public class MessageServiceNames {
 	}
 
 	public static Object getServiceAsynchronously(QName serviceName, String documentId) {
-		return KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, null, (documentId == null ? null : documentId.toString()), null);
+		return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, null, (documentId == null ? null : documentId.toString()), null);
 	}
 
 	public static Object getDelayedServiceAsynchronously(QName serviceName, DocumentRouteHeaderValue document, long waitTime) {
@@ -125,7 +125,7 @@ public class MessageServiceNames {
 	}
 
 	public static Object getDelayedServiceAsynchronously(QName serviceName, String documentId, long waitTime) {
-		return KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, (documentId == null ? null : documentId.toString()), null, waitTime);
+		return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, (documentId == null ? null : documentId.toString()), null, waitTime);
 	}
 
 	private static String getDocId(DocumentRouteHeaderValue document) {

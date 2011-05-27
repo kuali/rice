@@ -439,7 +439,7 @@ public class MessageQueueAction extends KSBAction {
 	}
 	Object decodedPayload = null;
 	if (encodedPayload != null) {
-	    decodedPayload = KSBServiceLocator.getMessageHelper().deserializeObject(encodedPayload);
+	    decodedPayload = KsbApiServiceLocator.getMessageHelper().deserializeObject(encodedPayload);
 	}
 	// fail fast if its not the expected type of AsynchronousCall
 	if ((decodedPayload != null) && !(decodedPayload instanceof AsynchronousCall)) {

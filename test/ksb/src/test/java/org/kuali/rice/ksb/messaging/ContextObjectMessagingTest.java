@@ -13,9 +13,9 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.junit.Test;
+import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 import javax.xml.namespace.QName;
@@ -45,7 +45,7 @@ public class ContextObjectMessagingTest extends KSBTestCase {
 	String contextObject = "my_context_object";
 	SimpleCallback callback = new SimpleCallback();
 	
-		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback, contextObject);
+		KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback, contextObject);
 	    
 	synchronized (callback) {
 	    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
@@ -63,7 +63,7 @@ public class ContextObjectMessagingTest extends KSBTestCase {
 
 	SimpleCallback callback = new SimpleCallback();
 	String contextObject = "my_context_object";
-		KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback, contextObject);
+		KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback, contextObject);
 	
 	synchronized (callback) {
 	    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));

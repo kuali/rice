@@ -51,7 +51,6 @@ import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -1355,7 +1354,7 @@ public class RoleServiceBase {
 	}
 	
 	protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
-        return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+        return (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
     }
 	
 	/**

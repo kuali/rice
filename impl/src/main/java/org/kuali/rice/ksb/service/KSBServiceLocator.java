@@ -69,10 +69,6 @@ public class KSBServiceLocator {
         return (BAMService) getService(KSBConstants.ServiceNames.BAM_SERVICE);
     }
 
-    public static MessageHelper getMessageHelper() {
-        return (MessageHelper) getService(KSBConstants.ServiceNames.MESSAGE_HELPER);
-    }
-
     public static MessageQueueService getMessageQueueService() {
         return (MessageQueueService) getService(KSBConstants.ServiceNames.MESSAGE_QUEUE_SERVICE);
     }

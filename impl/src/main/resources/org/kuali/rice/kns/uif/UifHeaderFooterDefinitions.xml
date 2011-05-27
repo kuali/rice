@@ -112,7 +112,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
       </property> 
-      <property name="styleClasses" value="globalbuttons"/>
+      <property name="styleClasses" value="fl-theme-ks"/>
   </bean>  
   
   <!-- Common Footers -->
@@ -180,12 +180,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="Footer_SaveCloseCancel" parent="Footer">
       <property name="items">
+
         <list> 
-          <bean parent="NavigationActionField" p:clientSideJs="saveForm();" p:actionLabel="save"/>
-          <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="close"/>
-          <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="cancel"/>
+          <bean parent="NavigationActionField" p:clientSideJs="saveForm();" p:actionLabel="Save"/>
+          <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="Close"/>
+          <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="Cancel"/>
         </list>
-      </property>  
+
+      </property>
   </bean>  
 
 </beans>

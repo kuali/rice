@@ -3,7 +3,6 @@ package org.kuali.rice.ksb.impl.bus;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.io.SerializationUtils;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
@@ -65,7 +64,7 @@ public final class RemoteService {
 		} else if (StringUtils.isBlank(serviceDescriptor.getDescriptor())) {
 			throw new IllegalStateException("ServiceDescriptor descriptor value is blank or null for descriptor with serviceEndpointId=" + serviceInfo.getServiceId());
 		}
-		return (ServiceConfiguration)SerializationUtils.deserializeFromBase64(serviceDescriptor.getDescriptor());
+		return ServiceConfigurationSerializationHandler.unmarshallFromXml(serviceDescriptor.getDescriptor());
 	}
 	
 	@Override

@@ -80,7 +80,7 @@ public final class LocalService {
 	
 	static ServiceDescriptor.Builder constructDescriptor(ServiceConfiguration serviceConfiguration) {
 		ServiceDescriptor.Builder builder = ServiceDescriptor.Builder.create();
-		builder.setDescriptor(SerializationUtils.serializeToBase64(serviceConfiguration));
+		builder.setDescriptor(ServiceConfigurationSerializationHandler.marshallToXml(serviceConfiguration));
 		return builder;
 	}
 	

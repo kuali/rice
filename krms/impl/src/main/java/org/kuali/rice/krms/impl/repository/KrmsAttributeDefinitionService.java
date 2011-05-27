@@ -24,10 +24,6 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
 public interface KrmsAttributeDefinitionService {
 
-	Map<String,String> convertAttributeKeys(Map<String,String> attributesByName, String namespace);
-	String getKrmsAttributeId( String attributeName, String namespace);
-	void clearCache();
-	
     /**
      * This will create a {@link KrmsAttributeDefinition} exactly like the parameter passed in.
      *
@@ -35,7 +31,7 @@ public interface KrmsAttributeDefinitionService {
      * @throws IllegalArgumentException if the attribute definition is null
      * @throws IllegalStateException if the attribute definition already exists in the system
      */
-	KrmsAttributeDefinition createAttributeDefinition(KrmsAttributeDefinition attributeDefinition);
+	public KrmsAttributeDefinition createAttributeDefinition(KrmsAttributeDefinition attributeDefinition);
 
     /**
      * This will update a {@link KrmsAttributeDefinition}.
@@ -45,7 +41,7 @@ public interface KrmsAttributeDefinitionService {
      * @throws IllegalArgumentException if the attribute definition is null
      * @throws IllegalStateException if the attribute definition does not exist in the system
      */
-    void updateAttributeDefinition(KrmsAttributeDefinition attributeDefinition);
+	public void updateAttributeDefinition(KrmsAttributeDefinition attributeDefinition);
 
     /**
      * Lookup a KrmsAttributeDefinition based on the given id.
@@ -54,7 +50,7 @@ public interface KrmsAttributeDefinitionService {
      * @return a KrmsAttributeDefinition object with the given id.  A null reference is returned if an invalid or
      *         non-existant id is supplied.
      */
-    KrmsAttributeDefinition getAttributeDefinitionById(String id);
+	public KrmsAttributeDefinition getAttributeDefinitionById(String id);
 
     /**
      * Get a KrmsAttributeDefinition object based on name and namespace
@@ -65,19 +61,73 @@ public interface KrmsAttributeDefinitionService {
      *         exists.  Otherwise, null is returned.
      * @throws IllegalStateException if multiple KrmsAttributeDefinitions exist with the same name and namespace
      */
-    KrmsAttributeDefinition getAttributeDefinitionByNameAndNamespace(String name, String namespace);
+	public KrmsAttributeDefinition getAttributeDefinitionByNameAndNamespace(String name, String namespace);
 
    /**
      * Returns all KrmsAttributeDefinition that for a given namespace.
      *
      * @return all KrmsAttributeDefinition for a namespace
      */
-    List<KrmsAttributeDefinition> findAttributeDefinitionsByNamespace(String namespace);
+	public List<KrmsAttributeDefinition> findAttributeDefinitionsByNamespace(String namespace);
 
     /**
      * Returns all KrmsAttributeDefinitions
      *
      * @return all KrmsAttributeDefinitions
      */
-    List<KrmsAttributeDefinition> findAllAttributeDefinitions();
+	public List<KrmsAttributeDefinition> findAllAttributeDefinitions();
+
+	/**
+	 * This method converts a collection of name/value attribute pairs to
+	 * id/value attribute pairs.
+	 * <p>
+	 * At the api layer, attributes are represented as name/value pairs.
+	 * However, in the database, the names of the attribute and the values are
+	 * stored separately. The attribute definitions contain the attribute names.
+	 * All defined attributes(for the various krms entity types) are stored 
+	 * together in a single table. The attribute values themselves are stored 
+	 * in separate tables for each entity type, and then reference the attribute
+	 * definitions by the attribute definition id.
+	 * <p>
+	 * This method converts the name/value pairs to id/value pairs so they
+	 * can be searched from a single table. This simplifies the queries for 
+	 * attributes.
+	 * <p>
+	 * 
+	 * @param attributesByName - a Map<String/String> containing the name/value
+	 * 	pairs for the set of attributes.
+	 * @param namespace - the namespace code of the set of attributes
+	 * @return a Map<String,String> containing the id/value pairs for the set
+	 * of attributes.
+	 */
+	public Map<String,String> convertAttributeKeys(Map<String,String> attributesByName, String namespace);
+
+	/**
+	 * This method gets the attribute definition ID for a given attribute
+	 * 
+	 * @param attributeName - the name of the attribute
+	 * @param namespace - the namespace code of the attribute
+	 * @return - the attribute definition id 
+	 */
+	public String getKrmsAttributeId( String attributeName, String namespace);
+	
+	/**
+	 * This method gets a KrmsAttributeDefinitionBo object for a given attribute.
+	 * 
+	 * @param attributeName - the name of the attribute
+	 * @param namespace - the namespace code of the attribute
+	 * @return - the attribute definition id 
+	 */
+	public KrmsAttributeDefinitionBo getKrmsAttributeBo( String attributeName, String namespace);
+
+	/**
+	 * This method clears the cache of AttributeDefinitionBo objects.
+	 * <p>
+	 * Since searching for attribute definitions is a common operation,
+	 * the attribute definitions fetched from the database are cached to
+	 * improve performance.
+	 * <p>
+	 */
+	public void clearCache();
+	
 }

@@ -325,19 +325,18 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	   // build the set of agenda attribute BOs
 	   Set<AgendaAttributeBo> attributes = new HashSet<AgendaAttributeBo>();
-	   // convert the name/value pairs to attrDefinitionId/value pairs
-	   Map<String,String> attrMap = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService()
-	   		.convertAttributeKeys(im.getAttributes(), im.getNamespaceCode());
+
 	   // for each converted pair, build an AgendaAttributeBo and add it to the set
 	   AgendaAttributeBo attributeBo;
-	   for (Entry<String,String> entry  : attrMap.entrySet()){
+	   for (Entry<String,String> entry  : im.getAttributes().entrySet()){
+		   KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator
+		   		.getKrmsAttributeDefinitionService()
+		   		.getKrmsAttributeBo(entry.getKey(), im.getNamespaceCode());
 		   attributeBo = new AgendaAttributeBo();
 		   attributeBo.setAgendaId( im.getId() );
-		   attributeBo.setAttributeDefinitionId( entry.getKey() );
+		   attributeBo.setAttributeDefinitionId( attrDefBo.getId() );
 		   attributeBo.setValue( entry.getValue() );
-		   attributeBo.setAttributeDefinition(
-		           // TODO: didn't we just look this up to convert attrList?
-				   businessObjectService.findBySinglePrimaryKey(KrmsAttributeDefinitionBo.class, entry.getKey()));
+		   attributeBo.setAttributeDefinition( attrDefBo );
 		   attributes.add( attributeBo );
 	   }
 	   bo.setAttributeBos(attributes);

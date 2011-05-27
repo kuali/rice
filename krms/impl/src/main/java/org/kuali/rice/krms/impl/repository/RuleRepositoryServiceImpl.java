@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeRuleEntry;
@@ -20,7 +22,8 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 /**
  *
  */
-public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements RuleRepositoryService {
+public class RuleRepositoryServiceImpl implements RuleRepositoryService {
+    protected BusinessObjectService businessObjectService;
 	
 	/**
 	 * This overridden method ...
@@ -36,9 +39,9 @@ public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements 
     	if (StringUtils.isBlank(contextSelectionCriteria.getNamespaceCode())){
     		throw new IllegalArgumentException("selection criteria namespace code is null or blank");
     	}
-    	Map<String, String> attributesById = convertAttributeKeys(
-    			contextSelectionCriteria.getContextQualifiers(),
-    			contextSelectionCriteria.getNamespaceCode());
+    	Map<String, String> attributesById = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService()
+    		.convertAttributeKeys(contextSelectionCriteria.getContextQualifiers(),
+    							  contextSelectionCriteria.getNamespaceCode());
     	Map<String, String> contextQualifiers = new HashMap<String,String>();
     	
     	// TODO: use new criteria API so we can match multiple qualifiers at once.
@@ -166,5 +169,21 @@ public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements 
 			
 		}
 		return builder;
+	}
+
+	/**
+     * Sets the businessObjectService property.
+     *
+     * @param businessObjectService The businessObjectService to set.
+     */
+    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
+    }
+
+    protected BusinessObjectService getBusinessObjectService() {
+		if ( businessObjectService == null ) {
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+		}
+		return businessObjectService;
 	}
 }

@@ -30,39 +30,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 public class RepositoryServiceBase {
 
     protected BusinessObjectService businessObjectService;
-
-    private final static Map<String,String> krmsAttributeDefinitionIdCache = Collections.synchronizedMap( new HashMap<String,String>() );
-
-	protected Map<String,String> convertAttributeKeys(Map<String,String> attributesByName, String namespace) {
-		Map<String,String> attributesById = new HashMap<String,String>();
-		if(attributesByName != null && CollectionUtils.isNotEmpty(attributesByName.keySet())) { 
-			for(String attributeName : attributesByName.keySet()) {
-				String newKey = getKrmsAttributeId(attributeName, namespace);
-				if(StringUtils.isNotEmpty(newKey)) {
-					attributesById.put(newKey, attributesByName.get(attributeName));
-				}
-			}
-		}
-		return attributesById;
-	}
-   
-	protected String getKrmsAttributeId( String attributeName, String namespace) {
-		String key = namespace + ":" + attributeName;
-		if (krmsAttributeDefinitionIdCache.containsKey(key))
-			return krmsAttributeDefinitionIdCache.get(key);		
-
-		String result = null;
-		Map<String,String> criteria = new HashMap<String,String>( 2 );
-		criteria.put( "name", attributeName );
-		criteria.put( "namespace", namespace );
-		Collection<KrmsAttributeDefinitionBo> defs = getBusinessObjectService().findMatching( KrmsAttributeDefinitionBo.class, criteria );
-		if(CollectionUtils.isNotEmpty(defs)) {
-			result = defs.iterator().next().getId();
-			krmsAttributeDefinitionIdCache.put(key, result);
-		}
-		return result;
-	}
-    
+  
     /**
      * Sets the businessObjectService attribute value.
      *

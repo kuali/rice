@@ -20,7 +20,7 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.api.security.credentials.CredentialsSource.CredentialsType;
+import org.kuali.rice.core.api.security.credentials.CredentialsType;
 
 
 

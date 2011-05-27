@@ -1,13 +1,35 @@
 package org.kuali.rice.ksb.api.bus.support;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-
+@XmlRootElement(name = SoapServiceConfiguration.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = SoapServiceConfiguration.Constants.TYPE_NAME, propOrder = {
+		SoapServiceConfiguration.Elements.SERVICE_INTERFACE,
+		SoapServiceConfiguration.Elements.JAX_WS_SERVICE
+})
 public class SoapServiceConfiguration extends AbstractServiceConfiguration {
 
 	private static final long serialVersionUID = -4226512121638441108L;
 
-	private String serviceInterface;
-	private boolean jaxWsService = false;
+	@XmlElement(name = Elements.SERVICE_INTERFACE, required = true)
+	private final String serviceInterface;
+	
+	@XmlElement(name = Elements.JAX_WS_SERVICE, required = true)
+	private final boolean jaxWsService;
+	
+	/**
+     * Private constructor used only by JAXB.
+     */
+	private SoapServiceConfiguration() {
+		super();
+		this.serviceInterface = null;
+		this.jaxWsService = false;
+	}
 	
 	private SoapServiceConfiguration(Builder builder) {
 		super(builder);
@@ -70,5 +92,22 @@ public class SoapServiceConfiguration extends AbstractServiceConfiguration {
 		}
 		
 	}
+	
+	/**
+     * Defines some internal constants used on this class.
+     */
+    static class Constants {
+    	final static String ROOT_ELEMENT_NAME = "soapServiceConfiguration";
+        final static String TYPE_NAME = "SoapServiceConfigurationType";
+    }
+
+    /**
+     * A private class which exposes constants which define the XML element names to use
+     * when this object is marshalled to XML.
+     */
+     static class Elements {
+    	protected final static String SERVICE_INTERFACE = "serviceInterface";
+    	protected final static String JAX_WS_SERVICE = "jaxWsService";
+    }
 	
 }

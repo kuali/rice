@@ -20,6 +20,7 @@ import java.security.cert.X509Certificate;
 
 import org.kuali.rice.core.api.security.credentials.Credentials;
 import org.kuali.rice.core.api.security.credentials.CredentialsSource;
+import org.kuali.rice.core.api.security.credentials.CredentialsType;
 import org.springframework.util.Assert;
 
 /**

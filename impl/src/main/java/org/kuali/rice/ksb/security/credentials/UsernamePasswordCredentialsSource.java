@@ -18,6 +18,7 @@ package org.kuali.rice.ksb.security.credentials;
 
 import org.kuali.rice.core.api.security.credentials.Credentials;
 import org.kuali.rice.core.api.security.credentials.CredentialsSource;
+import org.kuali.rice.core.api.security.credentials.CredentialsType;
 import org.springframework.util.Assert;
 
 /**

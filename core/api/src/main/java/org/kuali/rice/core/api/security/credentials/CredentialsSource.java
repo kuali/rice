@@ -26,14 +26,6 @@ package org.kuali.rice.core.api.security.credentials;
 public interface CredentialsSource {
 
     /**
-     * Defines the types of Credentials that the system is willing to accept.
-     * These should coincide with what Acegi is willing to accept.
-     */
-    public static enum CredentialsType {
-        CAS, USERNAME_PASSWORD, JAAS, X509
-    }
-
-    /**
      * Returns the supported CredentialsType. This should never be null.
      * 
      * @return the supported credentials type.

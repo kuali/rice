@@ -15,7 +15,8 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.security.credentials.CredentialsSource.CredentialsType;
+import org.kuali.rice.core.api.security.credentials.CredentialsType;
+import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
 import org.kuali.rice.core.util.jaxb.QNameAsStringAdapter;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
@@ -75,8 +76,9 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 	@XmlElement(name = Elements.BUS_SECURITY, required = false)
 	private final Boolean busSecurity;
 	
+	@XmlJavaTypeAdapter(CredentialsTypeAdapter.class)
 	@XmlElement(name = Elements.CREDENTIALS_TYPE, required = false)
-	private final CredentialsType credentialsType;
+	private final String credentialsType;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -112,7 +114,8 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 		this.millisToLive = builder.getMillisToLive();
 		this.messageExceptionHandler = builder.getMessageExceptionHandler();
 		this.busSecurity = builder.getBusSecurity();
-		this.credentialsType = builder.getCredentialsType();
+		CredentialsType cred = builder.getCredentialsType();
+		this.credentialsType = cred == null ? null : cred.name();
 	}
 	
 	/**
@@ -191,7 +194,10 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 	}
 
 	public CredentialsType getCredentialsType() {
-		return credentialsType;
+		if (credentialsType == null) {
+			return null;
+		}
+		return CredentialsType.valueOf(credentialsType);
 	}
 		
 	protected static abstract class Builder<T> implements Serializable {
@@ -329,5 +335,13 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
     	protected final static String BUS_SECURITY = "busSecurity";
     	protected final static String CREDENTIALS_TYPE = "credentialsType";
     }
+    
+    static final class CredentialsTypeAdapter extends EnumStringAdapter<CredentialsType> {
+		
+		protected Class<CredentialsType> getEnumClass() {
+			return CredentialsType.class;
+		}
+		
+	}
 	
 }

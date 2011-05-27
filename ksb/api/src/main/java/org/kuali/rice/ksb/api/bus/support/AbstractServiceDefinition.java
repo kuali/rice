@@ -26,8 +26,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.security.credentials.CredentialsSource;
-import org.kuali.rice.core.api.security.credentials.CredentialsSource.CredentialsType;
+import org.kuali.rice.core.api.security.credentials.CredentialsType;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
@@ -139,11 +138,11 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 		this.endpointUrl = endpointUrl;
 	}
 	
-	public void setCredentialsType(CredentialsSource.CredentialsType credentialsType) {
+	public void setCredentialsType(CredentialsType credentialsType) {
 	    this.credentialsType = credentialsType;
 	}
 	
-	public CredentialsSource.CredentialsType getCredentialsType() {
+	public CredentialsType getCredentialsType() {
 	    return this.credentialsType;
 	}
 	

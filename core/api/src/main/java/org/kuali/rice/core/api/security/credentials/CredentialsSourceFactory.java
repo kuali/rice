@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.api.security.credentials.CredentialsSource.CredentialsType;
 import org.springframework.beans.factory.InitializingBean;
 
 /**

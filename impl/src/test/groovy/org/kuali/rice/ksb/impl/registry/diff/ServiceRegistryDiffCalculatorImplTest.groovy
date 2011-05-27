@@ -32,6 +32,7 @@ import org.kuali.rice.ksb.impl.bus.RemoteService
 import org.kuali.rice.ksb.impl.registry.ServiceRegistryImpl
 import org.kuali.rice.ksb.impl.test.util.SimpleConfig
 
+
 class ServiceRegistryDiffCalculatorImplTest {
 
 	private static final String LOCALHOST_IP = "localhost"

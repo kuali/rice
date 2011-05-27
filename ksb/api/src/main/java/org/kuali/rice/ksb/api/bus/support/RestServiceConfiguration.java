@@ -3,17 +3,49 @@ package org.kuali.rice.ksb.api.bus.support;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RestServiceConfiguration extends AbstractServiceConfiguration {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+
+@XmlRootElement(name = RestServiceConfiguration.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = RestServiceConfiguration.Constants.TYPE_NAME, propOrder = {
+		RestServiceConfiguration.Elements.RESOURCE_CLASS,
+		RestServiceConfiguration.Elements.RESOURCE_TO_CLASS_NAME_MAP
+})
+public final class RestServiceConfiguration extends AbstractServiceConfiguration {
 
 	private static final long serialVersionUID = -4226512121638441108L;
 
-	private String resourceClass;
-	private Map<String, String> resourceToClassNameMap;
+	@XmlElement(name = Elements.RESOURCE_CLASS, required = false)
+	private final String resourceClass;
+	
+	@XmlJavaTypeAdapter(MapStringStringAdapter.class)
+	@XmlElement(name = Elements.RESOURCE_TO_CLASS_NAME_MAP, required = false)
+	private final Map<String, String> resourceToClassNameMap;
+	
+	/**
+     * Private constructor used only by JAXB.
+     */
+	private RestServiceConfiguration() {
+		super();
+		this.resourceClass = null;
+		this.resourceToClassNameMap = null;
+	}
 	
 	private RestServiceConfiguration(Builder builder) {
 		super(builder);
 		this.resourceClass = builder.getResourceClass();
-		this.resourceToClassNameMap = new HashMap<String, String>(builder.getResourceToClassNameMap());
+		if (builder.getResourceToClassNameMap() != null) {
+			this.resourceToClassNameMap = new HashMap<String, String>(builder.getResourceToClassNameMap());
+		} else {
+			this.resourceToClassNameMap = null;
+		}
 	}
 	
 	public static RestServiceConfiguration fromServiceDefinition(RestServiceDefinition restServiceDefinition) {
@@ -24,6 +56,13 @@ public class RestServiceConfiguration extends AbstractServiceConfiguration {
 		return this.resourceClass;
 	}
 	
+	/**
+	 * Returns a map of resource names to resource classes.  Can be null if
+	 * there are no mapped resources on this service configuration.
+	 * 
+	 * @return the resource to class name map, or null if no resources have
+	 * been mapped
+	 */
 	public Map<String, String> getResourceToClassNameMap() {
 		return this.resourceToClassNameMap;
 	}
@@ -59,14 +98,10 @@ public class RestServiceConfiguration extends AbstractServiceConfiguration {
 		}
 
 		public void setResourceToClassNameMap(Map<String, String> resourceToClassNameMap) {
-			if (resourceToClassNameMap == null) {
-				throw new IllegalArgumentException("resourceToClassNameMap was null");
-			}
 			this.resourceToClassNameMap = resourceToClassNameMap;
 		}
 		
 		private Builder() {
-			setResourceToClassNameMap(new HashMap<String, String>());
 		}
 		
 		public static Builder create() {
@@ -89,5 +124,23 @@ public class RestServiceConfiguration extends AbstractServiceConfiguration {
 		}
 		
 	}
+	
+	/**
+     * Defines some internal constants used on this class.
+     */
+    static class Constants {
+    	final static String ROOT_ELEMENT_NAME = "restServiceConfiguration";
+        final static String TYPE_NAME = "RestServiceConfigurationType";
+    }
+
+    /**
+     * A private class which exposes constants which define the XML element names to use
+     * when this object is marshalled to XML.
+     */
+     static class Elements {
+    	protected final static String RESOURCE_CLASS = "resourceClass";
+    	protected final static String RESOURCE_TO_CLASS_NAME_MAP = "resourceToClassNameMap";
+    }
+
 	
 }

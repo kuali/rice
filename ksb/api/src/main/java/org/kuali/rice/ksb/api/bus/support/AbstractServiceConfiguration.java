@@ -2,31 +2,103 @@ package org.kuali.rice.ksb.api.bus.support;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.Collection;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.security.credentials.CredentialsSource.CredentialsType;
+import org.kuali.rice.core.util.jaxb.QNameAsStringAdapter;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
+import org.w3c.dom.Element;
 
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = AbstractServiceConfiguration.Constants.TYPE_NAME, propOrder = {
+		AbstractServiceConfiguration.Elements.SERVICE_NAME,
+		AbstractServiceConfiguration.Elements.ENDPOINT_URL,
+		AbstractServiceConfiguration.Elements.APPLICATION_NAMESPACE,
+		AbstractServiceConfiguration.Elements.SERVICE_VERSION,
+		AbstractServiceConfiguration.Elements.TYPE,
+		AbstractServiceConfiguration.Elements.QUEUE,
+		AbstractServiceConfiguration.Elements.PRIORITY,
+		AbstractServiceConfiguration.Elements.RETRY_ATTEMPTS,
+		AbstractServiceConfiguration.Elements.MILLIS_TO_LIVE,
+		AbstractServiceConfiguration.Elements.MESSAGE_EXCEPTION_HANDLER,
+		AbstractServiceConfiguration.Elements.BUS_SECURITY,
+		AbstractServiceConfiguration.Elements.CREDENTIALS_TYPE,
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public abstract class AbstractServiceConfiguration implements ServiceConfiguration {
 
 	private static final long serialVersionUID = 2681595879406587302L;
 
+	@XmlJavaTypeAdapter(QNameAsStringAdapter.class)
+	@XmlElement(name = Elements.SERVICE_NAME, required = true)
 	private final QName serviceName;
+	
+	@XmlElement(name = Elements.ENDPOINT_URL, required = true)
 	private final URL endpointUrl;
+	
+	@XmlElement(name = Elements.APPLICATION_NAMESPACE, required = true)
 	private final String applicationNamespace;
+	
+	@XmlElement(name = Elements.SERVICE_VERSION, required = true)
 	private final String serviceVersion;
+	
+	@XmlElement(name = Elements.TYPE, required = true)
 	private final String type;
+	
+	@XmlElement(name = Elements.QUEUE, required = false)
 	private final boolean queue;
+	
+	@XmlElement(name = Elements.PRIORITY, required = false)
 	private final Integer priority;
+	
+	@XmlElement(name = Elements.RETRY_ATTEMPTS, required = false)
 	private final Integer retryAttempts;
+	
+	@XmlElement(name = Elements.MILLIS_TO_LIVE, required = false)
 	private final Long millisToLive;
+	
+	@XmlElement(name = Elements.MESSAGE_EXCEPTION_HANDLER, required = false)
 	private final String messageExceptionHandler;
+	
+	@XmlElement(name = Elements.BUS_SECURITY, required = false)
 	private final Boolean busSecurity;
+	
+	@XmlElement(name = Elements.CREDENTIALS_TYPE, required = false)
 	private final CredentialsType credentialsType;
+	
+	@SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
+	/**
+     * Constructor intended for use only by JAXB.
+     */
+	protected AbstractServiceConfiguration() {
+		this.serviceName = null;
+		this.endpointUrl = null;
+		this.applicationNamespace = null;
+		this.serviceVersion = null;
+		this.type = null;
+		this.queue = false;
+		this.priority = null;
+		this.retryAttempts = null;
+		this.millisToLive = null;
+		this.messageExceptionHandler = null;
+		this.busSecurity = null;
+		this.credentialsType = null;
+	}
 	
 	protected AbstractServiceConfiguration(Builder<?> builder) {
 		this.serviceName = builder.getServiceName();
@@ -43,14 +115,35 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 		this.credentialsType = builder.getCredentialsType();
 	}
 	
+	/**
+	 * Compares this configuration with another service configuration to determine if
+	 * they are equal.  This method utilizes reflection to automatically compares all
+	 * fields of the service configuration (with the exception of the internal
+	 * {@link #_futureElements} field) so determine equality.  This includes private
+	 * fields declared on the subclass.
+	 * 
+	 * <p>Subclasses should generally not need to override this provided the default
+	 * reflection-based comparison will produce an accurate result for additional
+	 * fields that are introduced in the subclass.
+	 */
 	@Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this);
+    public boolean equals(Object object) {
+		return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
     }
 
+	/**
+	 * Produces a hash code value for this service configuration.  This method utilizes
+	 * reflection to automatically generate a hashcode using fields from the service
+	 * configuration.  This includes all fields (with the exception of the internal
+	 * {@link #_futureElements} field) including private fields declared on the subclass.
+	 * 
+	 * <p>Subclasses should generally not need to override this provded the default
+	 * reflect-based comparison will produce an accurate result for additional
+	 * fields that are introduced in the subclass.
+	 */
 	@Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
     }
 	
 	public QName getServiceName() {
@@ -209,5 +302,32 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 		}
 		
 	}
+	
+    /**
+     * Defines some internal constants used on this class.
+     */
+    protected static class Constants {
+        protected final static String TYPE_NAME = "ServiceConfigurationType";
+        private final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
+    }
+
+    /**
+     * A private class which exposes constants which define the XML element names to use
+     * when this object is marshalled to XML.
+     */
+    protected static class Elements {
+    	protected final static String SERVICE_NAME = "serviceName";
+    	protected final static String ENDPOINT_URL = "endpointUrl";
+    	protected final static String APPLICATION_NAMESPACE = "applicationNamespace";
+    	protected final static String SERVICE_VERSION = "serviceVersion";
+    	protected final static String TYPE = "type";
+    	protected final static String QUEUE = "queue";
+    	protected final static String PRIORITY = "priority";
+    	protected final static String RETRY_ATTEMPTS = "retryAttempts";
+    	protected final static String MILLIS_TO_LIVE = "millisToLive";
+    	protected final static String MESSAGE_EXCEPTION_HANDLER = "messageExceptionHandler";
+    	protected final static String BUS_SECURITY = "busSecurity";
+    	protected final static String CREDENTIALS_TYPE = "credentialsType";
+    }
 	
 }

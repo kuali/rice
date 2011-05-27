@@ -158,6 +158,10 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 	public String getApplicationNamespace() {
 		return applicationNamespace;
 	}
+	
+	public void setApplicationNamespace(String applicationNamespace) {
+		this.applicationNamespace = applicationNamespace;
+	}
 
 	@Override
 	public ClassLoader getServiceClassLoader() {
@@ -175,11 +179,13 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 			throw new ConfigurationException("Must give a serviceName or localServiceName");
 		}
 		
-		String applicationNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
-		if (applicationNamespace == null) {
-			throw new ConfigurationException("Must have an applicationNamespace");
+		if (this.applicationNamespace == null) {
+			String applicationNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
+			if (applicationNamespace == null) {
+				throw new ConfigurationException("Must have an applicationNamespace");
+			}	
+			this.applicationNamespace = applicationNamespace;
 		}
-		this.applicationNamespace = applicationNamespace;
 		
 		if (this.serviceName != null && this.localServiceName == null) {
 			this.localServiceName = this.getServiceName().getLocalPart();
@@ -203,10 +209,12 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 		
 		LOG.debug("Validating service " + this.serviceName);
 		
-		String endPointURL = ConfigContext.getCurrentContextConfig().getEndPointUrl();
-		if (this.endpointUrl == null && endPointURL == null) {
-			throw new ConfigurationException("Must provide a serviceEndPoint or serviceServletURL");
-		} else if (this.endpointUrl == null) {
+		
+		if (this.endpointUrl == null) {
+			String endPointURL = ConfigContext.getCurrentContextConfig().getEndPointUrl();
+			if (endPointURL == null) {
+				throw new ConfigurationException("Must provide a serviceEndPoint or serviceServletURL");
+			}
 			if (! endPointURL.endsWith("/")) {
 				endPointURL += servicePath;
 			} else {

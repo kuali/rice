@@ -16,19 +16,20 @@
 
 package org.kuali.rice.ksb.messaging.resourceloading;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Properties;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.test.config.SimpleConfig;
-
-import java.util.Properties;
-
-import static org.junit.Assert.*;
 
 
 public class KSBResourceLoaderFactoryTest {

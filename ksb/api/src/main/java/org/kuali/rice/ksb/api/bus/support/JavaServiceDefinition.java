@@ -63,4 +63,21 @@ public class JavaServiceDefinition extends AbstractServiceDefinition {
 		return JavaServiceConfiguration.fromServiceDefinition(this);
 	}
 	
+	/**
+     * Defines some internal constants used on this class.
+     */
+    static class Constants {
+    	final static String ROOT_ELEMENT_NAME = "javaServiceDefinition";
+        final static String TYPE_NAME = "JavaServiceDefinitionType";
+    }
+
+    /**
+     * A private class which exposes constants which define the XML element names to use
+     * when this object is marshalled to XML.
+     */
+    protected static class Elements {
+    	protected final static String SERVICE_INTERFACES = "serviceInterfaces";
+    	protected final static String SERVICE_INTERFACE = "serviceInterface";
+    }
+	
 }

@@ -62,8 +62,9 @@
   <util:list id="ks-new-css">
      <value>/krad/css/ks-new/fss-reset.css</value>
      <value>/krad/css/ks-new/fss-layout.css</value>
-     <value>/krad/css/ks-new/main.css</value>
+     <value>/krad/css/ks-new/fss-text.css</value>
      <value>/krad/css/ks-new/buttons.css</value>
+     <value>/krad/css/ks-new/fss-theme-ks.css</value>
   </util:list> 
   
   <!-- Widgets -->

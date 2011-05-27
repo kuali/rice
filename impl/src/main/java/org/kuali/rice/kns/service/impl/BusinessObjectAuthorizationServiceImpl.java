@@ -41,6 +41,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquiryCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
@@ -176,11 +177,11 @@ public class BusinessObjectAuthorizationServiceImpl implements
 			BusinessObject businessObject, Person user,
 			BusinessObjectRestrictions businessObjectRestrictions,
 			String propertyPrefix, Document document ) {
-		BusinessObjectEntry businessObjectEntry = getDataDictionaryService()
-				.getDataDictionary().getBusinessObjectEntry(
+		DataDictionaryEntryBase dictionaryEntry = (DataDictionaryEntryBase)getDataDictionaryService()
+				.getDataDictionary().getDictionaryObjectEntry(
 						businessObject.getClass().getName());
-		for (String attributeName : businessObjectEntry.getAttributeNames()) {
-			AttributeDefinition attributeDefinition = businessObjectEntry
+		for (String attributeName : dictionaryEntry.getAttributeNames()) {
+			AttributeDefinition attributeDefinition = dictionaryEntry
 					.getAttributeDefinition(attributeName);
 			if (attributeDefinition.getAttributeSecurity() != null) {
 				if (attributeDefinition.getAttributeSecurity().isMask()
@@ -203,7 +204,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	}
 
 	/**
-	 * @param businessObjectEntry if collectionItemBusinessObject is not null, then it is the DD entry for collectionItemBusinessObject.
+	 * @param dictionaryObjectEntry if collectionItemBusinessObject is not null, then it is the DD entry for collectionItemBusinessObject.
 	 * Otherwise, it is the entry for primaryBusinessObject
 	 * @param primaryBusinessObject the top-level BO that is being inquiried or maintained
 	 * @param collectionItemBusinessObject an element of a collection under the primaryBusinessObject that we are evaluating view auths for
@@ -213,15 +214,15 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	 * @param propertyPrefix
 	 */
 	protected void considerBusinessObjectFieldViewAuthorization(
-			BusinessObjectEntry businessObjectEntry,
+			DataDictionaryEntryBase dictionaryObjectEntry,
 			BusinessObject primaryBusinessObject,
 			BusinessObject collectionItemBusinessObject,
 			Person user,
 			BusinessObjectAuthorizer businessObjectAuthorizer,
 			InquiryOrMaintenanceDocumentRestrictions inquiryOrMaintenanceDocumentRestrictions,
 			String propertyPrefix) {
-		for (String attributeName : businessObjectEntry.getAttributeNames()) {
-			AttributeDefinition attributeDefinition = businessObjectEntry
+		for (String attributeName : dictionaryObjectEntry.getAttributeNames()) {
+			AttributeDefinition attributeDefinition = dictionaryObjectEntry
 					.getAttributeDefinition(attributeName);
 			if (attributeDefinition.getAttributeSecurity() != null) {
 				if (attributeDefinition.getAttributeSecurity().isHide()) {
@@ -429,8 +430,8 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		for (Object inquirableItemDefinition : sectionDefinitions) {
 			if (inquirableItemDefinition instanceof InquiryCollectionDefinition) {
 				InquiryCollectionDefinition inquiryCollectionDefinition = (InquiryCollectionDefinition) inquirableItemDefinition;
-				BusinessObjectEntry collectionBusinessObjectEntry = getDataDictionaryService()
-						.getDataDictionary().getBusinessObjectEntry(
+				DataDictionaryEntryBase collectionDictionaryEntry = (DataDictionaryEntryBase)getDataDictionaryService()
+						.getDataDictionary().getDictionaryObjectEntry(
 								inquiryCollectionDefinition.getBusinessObjectClass().getName());
 
 				try {
@@ -446,7 +447,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 								collectionItemBusinessObject, user, restrictions,
 								newPropertyPrefix, null);
 						considerBusinessObjectFieldViewAuthorization(
-								collectionBusinessObjectEntry, primaryBusinessObject, collectionItemBusinessObject,
+								collectionDictionaryEntry, primaryBusinessObject, collectionItemBusinessObject,
 								user, authorizer, restrictions, newPropertyPrefix);
 						addInquirableItemRestrictions(
 								inquiryCollectionDefinition

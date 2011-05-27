@@ -3,12 +3,14 @@ package org.kuali.rice.kns.uif.core;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.View;
 
+import java.io.Serializable;
+
 /**
  * Provides filtering on collection data within a <code>CollectionGroup</code>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface CollectionFilter {
+public interface CollectionFilter extends Serializable {
 
     /**
      * Invoked to filter the collection data before the collection group is

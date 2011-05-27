@@ -41,7 +41,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.core.Component;
-import org.kuali.rice.kns.uif.util.ComponentIdBeanPostProcessor;
+import org.kuali.rice.kns.uif.util.ComponentBeanPostProcessor;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -151,7 +151,7 @@ public class DataDictionary  {
 		// configure the bean factory, setup component decorator post processor
 		// and allow Spring EL
 		try {
-			BeanPostProcessor idPostProcessor = ComponentIdBeanPostProcessor.class.newInstance();
+			BeanPostProcessor idPostProcessor = ComponentBeanPostProcessor.class.newInstance();
 			ddBeans.addBeanPostProcessor(idPostProcessor);
 			
 			ddBeans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
@@ -683,17 +683,5 @@ public class DataDictionary  {
 			beanOverride.performOverride(bean);
 			LOG.info("DataDictionary.performOverrides(): Performing override on bean: " + bean.toString());
 		}
-    }
-
-    /**
-     * Returns a Component configured in the dictionary with the given
-     * id. Standard Spring scoping rules apply in terms of prototypes
-     * or singletons
-     *
-     * @param id - id of the component set in the dictionary of set by the framework
-     * @return Component found for id or null if no component was found
-     */
-    public Component getComponentById(String id) {
-        return uifIndex.getComponentById(id);
     }
 }

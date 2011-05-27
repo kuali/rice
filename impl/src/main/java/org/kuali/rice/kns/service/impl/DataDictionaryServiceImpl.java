@@ -880,13 +880,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return dataDictionary.getViewByTypeIndex(viewTypeName, indexKey);
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.DataDictionaryService#getComponentById(java.lang.String)
-     */
-    public Object getComponentById(String id) {
-        return dataDictionary.getComponentById(id);
-    }
-
     public void addDataDictionaryLocation(String location) throws IOException {
         dataDictionary.addConfigFileLocation(location);
     }

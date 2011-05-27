@@ -465,13 +465,4 @@ public interface DataDictionaryService {
 	 */
 	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey);
 	
-    /**
-     * Returns a Component configured in the dictionary with the given
-     * id. Standard Spring scoping rules apply in terms of prototypes
-     * or singletons
-     *
-     * @param id - id of the component set in the dictionary of set by the framework
-     * @return Component found for id or null if no component was found
-     */
-    public Object getComponentById(String id);
 }

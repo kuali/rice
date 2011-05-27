@@ -24,13 +24,14 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import java.awt.*;
 
 /**
- * Sets the unique Id for a <code>Component</code> if not set
+ * Spring <code>BeanPostProcessor</code> that processes configured <code>Component</code>
+ * instances in the dictionary
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
+public class ComponentBeanPostProcessor implements BeanPostProcessor {
 
-    public ComponentIdBeanPostProcessor() {
+    public ComponentBeanPostProcessor() {
     }
 
     /**
@@ -43,7 +44,8 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
     }
 
     /**
-     * Sets the unique Id for a <code>Component</code> if not set
+     * Sets the unique Id for a <code>Component</code> if not set and adds the definition
+     * to the <code>ComponentFactory</code>
      *
      * <p>
      * Will use the bean name (if not the spring generated) or generate a
@@ -52,7 +54,6 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
      *
      * @see org.springframework.beans.factory.config.BeanPostProcessor#postProcessAfterInitialization(java.lang.Object,
      *      java.lang.String)
-     * @see org.kuali.rice.kns.uif.core.Component#getDecorators
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -70,6 +71,9 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
             if (StringUtils.contains(component.getId(), "__")) {
                 throw new RuntimeException(("Component id is not allowed to have two underscores together"));
             }
+
+            // hold definition in component factory
+            ComponentFactory.addComponentDefinition(component.getId(), component);
         }
 
         return bean;

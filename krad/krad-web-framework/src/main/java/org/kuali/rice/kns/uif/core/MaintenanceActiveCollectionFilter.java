@@ -18,6 +18,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaintenanceActiveCollectionFilter implements CollectionFilter {
+    private static final long serialVersionUID = -6045332235106531456L;
 
     private String oldBindingObjectPath;
 

@@ -15,6 +15,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActiveCollectionFilter implements CollectionFilter {
+    private static final long serialVersionUID = 3273495753269940272L;
 
     /**
      * Iterates through the collection and if the collection line type implements <code>Inactivatable</code>,

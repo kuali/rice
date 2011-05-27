@@ -178,11 +178,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="ActionField" parent="ActionField-parentBean"/>
   <bean id="ActionField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.ActionField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
+      <property name="styleClasses" value="button-primary"/>
   </bean>  
   
   <bean id="ActionField_Secondary" parent="ActionField_Secondary-parentBean"/>
   <bean id="ActionField_Secondary-parentBean" abstract="true" parent="ActionField">
-      <property name="styleClasses" value="ui-priority-secondary"/>
+      <property name="styleClasses" value="button-secondary1"/>
   </bean>  
   
   <bean id="ActionField_Small" parent="ActionField_Small-parentBean"/>

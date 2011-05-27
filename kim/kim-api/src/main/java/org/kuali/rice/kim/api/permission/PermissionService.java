@@ -15,13 +15,12 @@
  */
 package org.kuali.rice.kim.api.permission;
 
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.template.Template;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;
@@ -30,6 +29,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,9 +89,9 @@ public interface PermissionService {
     boolean hasPermission( @WebParam(name="principalId") String principalId,
     					   @WebParam(name="namespaceCode") String namespaceCode,
     					   @WebParam(name="permissionName") String permissionName,
-    					   @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails );
+    					   @WebParam(name="permissionDetails") Attributes permissionDetails );
 
-    // TODO Deal with KimPermissionTypeService -> PermissionTypeService
+
     /**
      * Checks whether the given qualified permission is granted to the principal given
      * the passed roleQualification.  If no roleQualification is passed (null or empty)
@@ -105,15 +106,13 @@ public interface PermissionService {
      * is called for each permission with the given permissionName to see if the 
      * permissionDetails matches its details.
      */
-    // TODO Do AttributeSets still get passed in? Should PermissionAttributes be passed in instead?
-    // AttributeSet permissionDetails -> PermissionAttribute permissionAttributes
     @WebMethod(operationName = "isAuthorized")
     @WebResult(name = "isAuthorized")
     boolean isAuthorized( @WebParam(name="principalId") String principalId,
     					  @WebParam(name="namespaceCode") String namespaceCode,
     					  @WebParam(name="permissionName") String permissionName,
-    					  @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-    					  @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification  );
+    					  @WebParam(name="permissionDetails") Attributes permissionDetails,
+    					  @WebParam(name="qualification") Attributes qualification  );
 
     /**
      * Checks whether the principal has been granted a permission matching the given details
@@ -132,7 +131,7 @@ public interface PermissionService {
     boolean hasPermissionByTemplateName( @WebParam(name="principalId") String principalId,
     									 @WebParam(name="namespaceCode") String namespaceCode,
     									 @WebParam(name="permissionTemplateName") String permissionTemplateName,
-    									 @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails );
+    									 @WebParam(name="permissionDetails") Attributes permissionDetails );
     
     /**
      * Checks whether the given qualified permission is granted to the principal given
@@ -153,8 +152,8 @@ public interface PermissionService {
     boolean isAuthorizedByTemplateName( @WebParam(name="principalId") String principalId,
     									@WebParam(name="namespaceCode") String namespaceCode,
     									@WebParam(name="permissionTemplateName") String permissionTemplateName,
-    									@WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-    									@WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification  );
+    									@WebParam(name="permissionDetails") Attributes permissionDetails,
+    									@WebParam(name="qualification") Attributes qualification  );
     
     
     /**
@@ -171,11 +170,10 @@ public interface PermissionService {
 	@WebMethod(operationName = "getPermissionAssignees")
     @WebResult(name = "permissionAssignees")
     @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
-    // TODO Modelize PermissionAssigneeInfo
-    List<PermissionAssigneeInfo> getPermissionAssignees( @WebParam(name="namespaceCode") String namespaceCode,
+    List<Assignee> getPermissionAssignees( @WebParam(name="namespaceCode") String namespaceCode,
     													 @WebParam(name="permissionName") String permissionName,
-    													 @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-    													 @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
+    													 @WebParam(name="permissionDetails") Attributes permissionDetails,
+    													 @WebParam(name="qualification") Attributes qualification );
 
     /**
      * Get the list of principals/groups who have a given permission that match the given 
@@ -192,11 +190,10 @@ public interface PermissionService {
 	@WebMethod(operationName = "getPermissionAssigneesForTemplateName")
     @WebResult(name = "permissionAssigneesForTemplateName")
     @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
-    // TODO Modelize PermissionAssigneeInfo
-    List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
+    List<Assignee> getPermissionAssigneesForTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
     																	@WebParam(name="permissionTemplateName") String permissionTemplateName,
-    																	@WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-    																	@WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
+    																	@WebParam(name="permissionDetails") Attributes permissionDetails,
+    																	@WebParam(name="qualification") Attributes qualification );
     
     /**
      * Returns true if the given permission is defined on any Roles.
@@ -205,7 +202,7 @@ public interface PermissionService {
     @WebResult(name = "isPermissionDefined")
     boolean isPermissionDefined( @WebParam(name="namespaceCode") String namespaceCode,
     							 @WebParam(name="permissionName") String permissionName,
-    							 @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails );
+    							 @WebParam(name="permissionDetails") Attributes permissionDetails );
     
     /**
      * Returns true if the given permission template is defined on any Roles.
@@ -214,7 +211,7 @@ public interface PermissionService {
     @WebResult(name = "isPermissionDefinedForTemplateName")
     boolean isPermissionDefinedForTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
     											@WebParam(name="permissionTemplateName") String permissionTemplateName,
-    											@WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails );
+    											@WebParam(name="permissionDetails") Attributes permissionDetails );
     
     /**
      * Returns permissions (with their details) that are granted to the principal given
@@ -241,8 +238,8 @@ public interface PermissionService {
     List<Permission> getAuthorizedPermissions( @WebParam(name="principalId") String principalId,
     												  @WebParam(name="namespaceCode") String namespaceCode,
     												  @WebParam(name="permissionName") String permissionName,
-    												  @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-    												  @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
+    												  @WebParam(name="permissionDetails") Attributes permissionDetails,
+    												  @WebParam(name="qualification") Attributes qualification );
 
     /**
      * Returns permissions (with their details) that are granted to the principal given
@@ -269,8 +266,8 @@ public interface PermissionService {
     List<Permission> getAuthorizedPermissionsByTemplateName( @WebParam(name="principalId") String principalId,
     																@WebParam(name="namespaceCode") String namespaceCode,
     																@WebParam(name="permissionTemplateName") String permissionTemplateName,
-    																@WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-    																@WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
+    																@WebParam(name="permissionDetails") Attributes permissionDetails,
+    																@WebParam(name="qualification") Attributes qualification );
 
     // --------------------
     // Permission Data
@@ -358,7 +355,7 @@ public interface PermissionService {
     @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<String> getRoleIdsForPermission( @WebParam(name="namespaceCode") String namespaceCode,
     									  @WebParam(name="permissionName") String permissionName,
-    									  @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails);
+    									  @WebParam(name="permissionDetails") Attributes permissionDetails);
     
     /**
      * Get the role IDs for the given list of permissions.
@@ -366,8 +363,7 @@ public interface PermissionService {
 	@WebMethod(operationName = "getRoleIdsForPermissions")
     @WebResult(name = "roleIdsForPermissions")
     @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
-    // TODO Replace KimPermissionInfo with  List<Permission> as parameter?
-    List<String> getRoleIdsForPermissions( @WebParam(name="permissions") List<KimPermissionInfo> permissions );
+    List<String> getRoleIdsForPermissions( @WebParam(name="permissions") List<Permission> permissions );
     
     /**
      * Returns the label of the permission detail for the given permissionId, kimType and attributeName. 

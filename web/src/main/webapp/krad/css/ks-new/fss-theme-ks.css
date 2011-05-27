@@ -76,11 +76,18 @@
         border-top: 3px solid #000;
         text-align:left;
     }
-    th.sorting_asc {
-        background: url(../images/sort_asc.png) right no-repeat, url(../images/pattern_dotted.png);
+    th.sorting_asc, th.sorting_desc {
+        background-image: url(../images/pattern_dotted.png);
     }
-    th.sorting_desc {
-        background: url(../images/sort_desc.png) right no-repeat, url(../images/pattern_dotted.png);
+    th.sorting_asc label {
+        background-image:  url(../images/sort_asc.png);
+        background-repeat: no-repeat;
+        background-position: right;
+    }
+    th.sorting_desc label {
+        background-image: url(../images/sort_desc.png);
+        background-repeat: no-repeat;
+        background-position: right;
     }
 
     th.sorting label, th.sorting_asc label, th.sorting_desc label, th.sorting_disabled label {
@@ -107,4 +114,17 @@
     }
    input:focus, textarea:focus {
     background: none repeat scroll 0 0 #ECFCE8;
+}
+
+/* navigation panel styles */
+.navigation-div {width:219px;}
+#viewpage_div {
+    float: left;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 618px;
+}
+.navigation-div {
+    float: left;
+    width: 219px;
 }

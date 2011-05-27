@@ -119,7 +119,7 @@
      
    <%-- render cell and item template --%>
    <c:choose>
-     <c:when test="${renderHeaderRow || renderHeaderColumn || (item.class.simpleName eq 'HeaderField')}">
+     <c:when test="${renderHeaderRow || renderHeaderColumn || (item['class'].simpleName eq 'HeaderField')}">
        <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}"
           rowspan="${item.rowSpan}" ${style} ${styleClass}>
         <krad:template component="${item}"/>

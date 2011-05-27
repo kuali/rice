@@ -125,7 +125,6 @@ public class AttributeField extends FieldBase implements DataBinding {
      * The following initialization is performed:
      *
      * <ul>
-     * <li>Set ids for nested field components</li>
      * <li>Set defaults for binding</li>
      * <li>Default the model path if not set</li>
      * </ul>
@@ -135,8 +134,6 @@ public class AttributeField extends FieldBase implements DataBinding {
     @Override
     public void performInitialization(View view) {
         super.performInitialization(view);
-
-        setupIds();
 
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
@@ -148,8 +145,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * The following actions are performed:
      *
      * <ul>
-     * <li>Set the ids for the various attribute components, done again in finalize in
-     * case a nested component has been replaced</li>
+     * <li>Set the ids for the various attribute components</li>
      * <li>Sets up the client side validation for constraints on this field. In
      * addition, it sets up the messages applied to this field</li>
      * </ul>
@@ -260,28 +256,30 @@ public class AttributeField extends FieldBase implements DataBinding {
      */
     private void setupIds() {
         // update ids so they all match the attribute
-        String id = getId();
         if (getControl() != null) {
-            getControl().setId(id);
-        }
-        if (getErrorsField() != null) {
-            ComponentUtils.updateIdsWithSuffix(getErrorsField(), UifConstants.IdSuffixes.ERRORS);
-        }
-        if (getLabelField() != null) {
-            ComponentUtils.updateIdsWithSuffix(getLabelField(), UifConstants.IdSuffixes.LABEL);
-        }
-        if (getSummaryMessageField() != null) {
-            ComponentUtils.updateIdsWithSuffix(getSummaryMessageField(), UifConstants.IdSuffixes.SUMMARY);
-        }
-        if (getConstraintMessageField() != null) {
-            ComponentUtils.updateIdsWithSuffix(getConstraintMessageField(), UifConstants.IdSuffixes.CONSTRAINT);
-        }
-        if (getFieldLookup() != null) {
-            ComponentUtils.updateIdsWithSuffix(getFieldLookup(), UifConstants.IdSuffixes.QUICK_FINDER);
+            getControl().setId(getId());
         }
 
-        if (!StringUtils.contains(getId(), UifConstants.IdSuffixes.ATTRIBUTE)) {
-            ComponentUtils.updateIdsWithSuffix(this, UifConstants.IdSuffixes.ATTRIBUTE);
+        setNestedComponentIdAndSuffix(getErrorsField(), UifConstants.IdSuffixes.ERRORS);
+        setNestedComponentIdAndSuffix(getLabelField(), UifConstants.IdSuffixes.LABEL);
+        setNestedComponentIdAndSuffix(getSummaryMessageField(), UifConstants.IdSuffixes.SUMMARY);
+        setNestedComponentIdAndSuffix(getConstraintMessageField(), UifConstants.IdSuffixes.CONSTRAINT);
+        setNestedComponentIdAndSuffix(getFieldLookup(), UifConstants.IdSuffixes.QUICK_FINDER);
+
+        if (!StringUtils.contains(getId(), "__")) {
+            setId(getId() + "__");
+        }
+        setId(getId() + UifConstants.IdSuffixes.ATTRIBUTE);
+    }
+
+    private void setNestedComponentIdAndSuffix(Component component, String suffix) {
+        if (component != null) {
+            String fieldId = getId();
+            if (!StringUtils.contains(component.getId(), "__")) {
+                fieldId += "__";
+            }
+            fieldId += suffix;
+            component.setId(fieldId);
         }
     }
 

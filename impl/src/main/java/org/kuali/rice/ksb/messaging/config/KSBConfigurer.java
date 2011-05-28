@@ -17,6 +17,7 @@
 package org.kuali.rice.ksb.messaging.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -93,6 +94,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 	
 	public KSBConfigurer() {
 		super(KsbApiConstants.KSB_MODULE_NAME);
+		setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
 	}
 	
 	@Override
@@ -115,11 +117,13 @@ public class KSBConfigurer extends ModuleConfigurer {
 		}
 		
 		springFileLocations.add(SERVICE_BUS_CLIENT_SPRING);
-		springFileLocations.add(MESSAGE_CLIENT_SPRING);
-        springFileLocations.add(OJB_MESSAGE_CLIENT_SPRING);
+		
+		if (isMessagePersistenceEnabled()) {
+			springFileLocations.add(MESSAGE_CLIENT_SPRING);
+			springFileLocations.add(OJB_MESSAGE_CLIENT_SPRING);
+		}
         
-        boolean bamEnabled = ConfigContext.getCurrentContextConfig().getBooleanProperty(Config.BAM_ENABLED, false);
-        if (bamEnabled) {
+        if (isBamEnabled()) {
         	springFileLocations.add(BAM_SPRING);
         	springFileLocations.add(OJB_BAM_SPRING);
         }
@@ -205,6 +209,14 @@ public class KSBConfigurer extends ModuleConfigurer {
 		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
 		KSBServiceLocator.getThreadPool().execute(messageFetcher);
     }
+    
+    protected boolean isMessagePersistenceEnabled() {
+    	return ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.MESSAGE_PERSISTENCE, true);
+    }
+    
+    protected boolean isBamEnabled() {
+    	return ConfigContext.getCurrentContextConfig().getBooleanProperty(Config.BAM_ENABLED, false);
+    }
 
 	protected void configureScheduler() {
 		if (this.getExceptionMessagingScheduler() != null) {
@@ -214,24 +226,25 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 
 	protected void configureDataSource() {
-        if (getMessageDataSource() != null && getRegistryDataSource() == null) {
-            throw new ConfigurationException("A message data source was defined but a registry data source was not defined.  Both must be specified.");
+		if (isMessagePersistenceEnabled()) {
+			if (getMessageDataSource() != null) {
+				ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
+			}
+			if (getNonTransactionalMessageDataSource() != null) {
+	            ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE, getNonTransactionalMessageDataSource());
+			}
+		}
+        if (getRunMode().equals(RunMode.LOCAL)) {
+        	if (getRegistryDataSource() != null) {
+                ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
+            }
         }
-        if (getMessageDataSource() == null && getRegistryDataSource() != null) {
-            throw new ConfigurationException("A registry data source was defined but a message data source was not defined.  Both must be specified.");
-        }
-
-        if (getMessageDataSource() != null) {
-            ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
-        }
-        if (getNonTransactionalMessageDataSource() != null) {
-            ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE, getNonTransactionalMessageDataSource());
-        }
-        if (getRegistryDataSource() != null) {
-            ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
-        }
-        if (getBamDataSource() != null) {
-        	ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_BAM_DATASOURCE, getBamDataSource());
+        if (isBamEnabled()) {
+        	if (getBamDataSource() == null) {
+        		throw new ConfigurationException("BAM is enabled but no bamDataSource was configured.");
+        	} else {
+        		ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_BAM_DATASOURCE, getBamDataSource());
+        	}
         }
     }
 

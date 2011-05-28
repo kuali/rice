@@ -75,8 +75,23 @@
 	<bean id="rice.ksb.serviceRegistry" class="org.kuali.rice.ksb.impl.registry.ServiceRegistryImpl"
 		p:serviceRegistryDao-ref="rice.ksb.serviceRegistryDao" />
 		
+	<bean id="rice.ksb.serviceRegistryBootstrapResource" class="org.kuali.rice.ksb.impl.registry.ServiceRegistryBootstrapResourceImpl"
+		p:serviceRegistry-ref="rice.ksb.serviceRegistry" />
+		
+	<bean id="rice.ksb.serviceRegistryBootstrapResource.serviceDefinition" class="org.kuali.rice.ksb.api.bus.support.RestServiceDefinition">
+		<property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).KSB_NAMESPACE_2_0 }" />
+		<property name="localServiceName" value="serviceRegistryBootstrapResource" />
+		<property name="service" ref="rice.ksb.serviceRegistryBootstrapResource" />
+		<property name="resourceClass" value="org.kuali.rice.ksb.api.registry.ServiceRegistryBootstrapResource" />
+    </bean>
+    
+    <bean id="rice.ksb.serviceRegistryBootstrapResource.exporter" class="org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter"
+		p:serviceBus-ref="rice.ksb.serviceBus"
+		p:serviceDefinition-ref="rice.ksb.serviceRegistryBootstrapResource.serviceDefinition"
+		p:exportIf="rice.ksb.serviceRegistryBootstrapResource.expose" />
+                      		
 	<bean id="rice.ksb.serviceRegistrySoap.serviceDefinition" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
-		p:serviceNameSpaceURI="#{ T(org.kuali.rice.ksb.api.KsbConstants$Namespaces).KSB_NAMESPACE_2_0 }"
+		p:serviceNameSpaceURI="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).KSB_NAMESPACE_2_0 }"
 		p:localServiceName="serviceRegistrySoap"
 		p:jaxWsService="true"
 		p:busSecurity="${rice.ksb.serviceRegistrySoap.security}"

@@ -15,13 +15,13 @@
  */
 
 @javax.xml.bind.annotation.XmlSchema(
-                namespace = KsbConstants.Namespaces.KSB_NAMESPACE_2_0,
+                namespace = KsbApiConstants.Namespaces.KSB_NAMESPACE_2_0,
                 elementFormDefault=XmlNsForm.QUALIFIED)
 package org.kuali.rice.ksb.api.bus.support;
 
 import javax.xml.bind.annotation.XmlNsForm;
 
-import org.kuali.rice.ksb.api.KsbConstants;
+import org.kuali.rice.ksb.api.KsbApiConstants;
 
 
 

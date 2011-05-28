@@ -23,7 +23,7 @@ import org.junit.Before
 import org.junit.Test
 import org.kuali.rice.core.api.config.property.Config
 import org.kuali.rice.core.api.config.property.ConfigContext
-import org.kuali.rice.ksb.api.KsbConstants
+import org.kuali.rice.ksb.api.KsbApiConstants
 import org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition
 import org.kuali.rice.ksb.api.registry.ServiceEndpointStatus
 import org.kuali.rice.ksb.api.registry.ServiceInfo
@@ -342,7 +342,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 		builder.setServiceName(new QName("TEST", RandomStringUtils.randomAlphanumeric(20)))
 		builder.setServiceVersion("1.0")
 		builder.setStatus(ServiceEndpointStatus.ONLINE)
-		builder.setType(KsbConstants.SOAP_SERVICE_TYPE)
+		builder.setType(KsbApiConstants.SOAP_SERVICE_TYPE)
 		builder.setServiceId("" + nextServiceId++)
 		return builder
 	}

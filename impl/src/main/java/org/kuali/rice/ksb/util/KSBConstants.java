@@ -53,6 +53,7 @@ public final class KSBConstants {
         public static final String LOAD_KNS_MODULE_CONFIGURATION = "rice.ksb.loadKNSModuleConfiguration";
         public static final String RESTFUL_SERVICE_PATH = "rice.ksb.restfulServicePath";
         public static final String INSTANCE_ID = "rice.ksb.bus.instanceId";
+        public static final String REGISTRY_BOOTSTRAP_URL = "rice.ksb.registry.bootstrapUrl";
         
     	private Config() {
     		throw new UnsupportedOperationException("do not call");

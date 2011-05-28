@@ -17,7 +17,7 @@
 package org.kuali.rice.ksb.api.bus.support;
 
 import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.ksb.api.KsbConstants;
+import org.kuali.rice.ksb.api.KsbApiConstants;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 
 /**
@@ -33,7 +33,7 @@ public class SoapServiceDefinition extends AbstractServiceDefinition {
 
 	@Override
 	public String getType() {
-		return KsbConstants.SOAP_SERVICE_TYPE;
+		return KsbApiConstants.SOAP_SERVICE_TYPE;
 	}
 
 	

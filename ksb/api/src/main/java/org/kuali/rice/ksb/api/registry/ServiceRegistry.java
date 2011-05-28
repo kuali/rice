@@ -11,14 +11,14 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.ksb.api.KsbConstants;
+import org.kuali.rice.ksb.api.KsbApiConstants;
 
 /**
  * Defines the interface for a remotely accessible service registry.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = "serviceRegistrySoap", targetNamespace = KsbConstants.Namespaces.KSB_NAMESPACE_2_0)
+@WebService(name = "serviceRegistrySoap", targetNamespace = KsbApiConstants.Namespaces.KSB_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ServiceRegistry {
 	

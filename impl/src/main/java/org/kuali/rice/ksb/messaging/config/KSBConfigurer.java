@@ -39,7 +39,7 @@ import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
 import org.kuali.rice.core.impl.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.ksb.api.KsbConstants;
+import org.kuali.rice.ksb.api.KsbApiConstants;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.AlternateEndpoint;
@@ -92,7 +92,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 	private PlatformTransactionManager platformTransactionManager;
 	
 	public KSBConfigurer() {
-		super(KsbConstants.KSB_MODULE_NAME);
+		super(KsbApiConstants.KSB_MODULE_NAME);
 	}
 	
 	@Override

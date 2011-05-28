@@ -78,11 +78,11 @@ public class SoapServiceConfiguration extends AbstractServiceConfiguration {
 			return new Builder();
 		}
 		
-		public static Builder create(SoapServiceDefinition restServiceDefinition) {
+		public static Builder create(SoapServiceDefinition soapServiceDefinition) {
 			Builder builder = create();
-			builder.copyServiceDefinitionProperties(restServiceDefinition);
-			builder.setServiceInterface(restServiceDefinition.getServiceInterface());
-			builder.setJaxWsService(restServiceDefinition.isJaxWsService());
+			builder.copyServiceDefinitionProperties(soapServiceDefinition);
+			builder.setServiceInterface(soapServiceDefinition.getServiceInterface());
+			builder.setJaxWsService(soapServiceDefinition.isJaxWsService());
 			return builder;
 		}
 

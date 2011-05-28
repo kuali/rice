@@ -25,7 +25,7 @@ import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.ksb.api.KsbConstants;
+import org.kuali.rice.ksb.api.KsbApiConstants;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 
 /**
@@ -54,7 +54,7 @@ public class RestServiceDefinition extends AbstractServiceDefinition {
 	
 	@Override
 	public String getType() {
-		return KsbConstants.REST_SERVICE_TYPE;
+		return KsbApiConstants.REST_SERVICE_TYPE;
 	}
 
 	/**

@@ -2,7 +2,7 @@ package org.kuali.rice.ksb.api;
 
 import org.kuali.rice.core.api.CoreConstants;
 
-public final class KsbConstants {
+public final class KsbApiConstants {
 
 	public static final String KSB_MODULE_NAME = "KSB";
 	

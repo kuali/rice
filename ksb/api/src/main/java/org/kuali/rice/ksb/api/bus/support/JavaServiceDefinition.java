@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.ksb.api.KsbConstants;
+import org.kuali.rice.ksb.api.KsbApiConstants;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 
 /**
@@ -32,7 +32,7 @@ public class JavaServiceDefinition extends AbstractServiceDefinition {
 
 	@Override
 	public String getType() {
-		return KsbConstants.HTTP_INVOKER_SERVICE_TYPE;
+		return KsbApiConstants.HTTP_INVOKER_SERVICE_TYPE;
 	}
 	
 	public List<String> getServiceInterfaces() {

@@ -20,7 +20,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.kuali.rice.ksb.api.KsbConstants;
+import org.kuali.rice.ksb.api.KsbApiConstants;
 
 /**
  * A service for administrative functions for a node on the service bus.
@@ -28,7 +28,7 @@ import org.kuali.rice.ksb.api.KsbConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@WebService(name = "busAdminServiceSoap", targetNamespace = KsbConstants.Namespaces.KSB_NAMESPACE_2_0)
+@WebService(name = "busAdminServiceSoap", targetNamespace = KsbApiConstants.Namespaces.KSB_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface BusAdminService {
 

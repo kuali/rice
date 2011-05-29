@@ -60,7 +60,13 @@ public class RiceCacheAdministratorTest extends KSBTestCase {
 		
 		loadCaches();
 		assertCachesNotEmpty();
-		
+
+	}
+	
+	@Test public void testCacheRefreshPeriod() throws Exception {
+				
+		loadCaches();
+		assertCachesAreRefreshed();
 	}
 	
 	private void assertCachesNotEmpty() throws Exception {
@@ -70,7 +76,7 @@ public class RiceCacheAdministratorTest extends KSBTestCase {
 		assertEquals(this.value, cache.getFromCache(this.key));
 		assertEquals(this.value, client1Cache.getFromCache(this.key));
 	}
-	
+		
 	private void assertCachesEmpty() throws Exception {
 		RiceCacheAdministrator cache = (RiceCacheAdministrator)getSpringContextResourceLoader().getService(new QName("cache"));
 		RiceCacheAdministrator client1Cache = (RiceCacheAdministrator)getServiceFromTestClient1SpringContext("cache");
@@ -87,5 +93,18 @@ public class RiceCacheAdministratorTest extends KSBTestCase {
 		client1Cache.putInCache(this.key, this.value, this.group);
 	}
 	
+	private void assertCachesAreRefreshed() throws Exception {
+		int refreshSeconds = 10;
+		RiceCacheAdministrator cache = (RiceCacheAdministrator)getSpringContextResourceLoader().getService(new QName("cache"));
+		RiceCacheAdministrator client1Cache = (RiceCacheAdministrator)getServiceFromTestClient1SpringContext("cache");
+		
+		assertEquals(this.value, cache.getFromCache(this.key, refreshSeconds));
+		assertEquals(this.value, client1Cache.getFromCache(this.key, refreshSeconds));
+		
+		Thread.sleep(12000);
+		
+		assertNull(cache.getFromCache(this.key, refreshSeconds));
+		assertNull(client1Cache.getFromCache(this.key, refreshSeconds));
+	}
 }
 

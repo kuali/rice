@@ -102,6 +102,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		
 		// Ensure that modifications to role-related and delegation-related objects will clear out the appropriate caches.
 		roleServiceTestImpl.assertCachesAreClearedOnUpdatesAsExpected();
+		roleServiceTestImpl.assertCachesAreRefreshedAsExpected();
 	}
 	
 	/**
@@ -298,6 +299,29 @@ public class RoleServiceImplTest extends KIMTestCase {
 			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, "p10", oneGroupId, null, results[7], allResults[4]);
 			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, "p10", null, null, results[8], allResults[6]);
 			assertRoleMemberListCachingIsWorking(daoActions[4], oneRoleId2, "p5", groupIds, null, results[9], results[9]);
+		}
+		
+		/*
+		 * Test to verify a refresh period works and caches are cleared.
+		 */
+		private void assertCachesAreRefreshedAsExpected() throws Exception {
+			List<String> roleIds = Arrays.asList(new String[] {"r3"});
+			String[][] roleNames = {{"AUTH_SVC_TEST2","RoleThree"}};
+			
+			// Ensure that by-ID caching of individual roles is working properly.
+			assertKimObjectCachingByIdIsWorking(roleIds, roleIds, ROLE_IMPL_CHECKER);
+			
+			// Ensure that roles can be obtained properly from the cache by name.
+			Map<String,RoleImpl> firstRoleMap = getRoleImplMapByName(roleNames);
+			assertRolesAreCachedByNameAsExpected(roleNames, true);
+
+			// Sleep for 12 seconds, because roles should only be cached for 10 seconds in this situation.
+			Thread.sleep(12000);
+			
+			assertRolesAreCachedByNameAsExpected(roleNames, false);
+			
+			// Clean up the cache.
+			getIdentityManagementNotificationService().roleUpdated();
 		}
 		
 		/*

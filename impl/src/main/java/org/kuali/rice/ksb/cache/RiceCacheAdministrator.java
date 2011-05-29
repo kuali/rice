@@ -30,6 +30,10 @@ public interface RiceCacheAdministrator extends Lifecycle {
 	public static final String REMOTED_SERVICE_REGISTRY = "remotedServiceRegistry";
 
 	public Object getFromCache(String key);
+	
+	public Object getFromCache(String key, int refreshPeriod);
+	
+	public Object getFromCache(String key, int refreshPeriod,  String cronExpression);
 
 	public void putInCache(String key, Object content, String[] groups);
 

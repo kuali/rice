@@ -234,6 +234,11 @@ public class KimConstants {
 		public static final String KRIM_RSP_ID_S = "KRIM_RSP_ID_S";
 		public static final String KRIM_ATTR_DATA_ID_S = "KRIM_ATTR_DATA_ID_S";
 	}
+	
+	public static class CacheRefreshPeriodSeconds {
+		public static final String KIM_CACHE_PERMISSION_REFRESH_PERIOD_SECONDS = "kim.cache.permission.refresh.period.seconds";
+		public static final String KIM_CACHE_ROLE_REFRESH_PERIOD_SECONDS = "kim.cache.role.refresh.period.seconds";
+	}	
 
 	public static class ParameterKey {
 		public static final String SHOW_BLANK_QUALIFIERS = "KIM_SHOW_BLANK_QUALIFIERS";

@@ -135,8 +135,14 @@ public class BeanPropertyComparator implements Comparator, Serializable {
                 // compare the values
                 Object value1 = PropertyUtils.getProperty(o1, currentProperty);
                 Object value2 = PropertyUtils.getProperty(o2, currentProperty);
-                if ( value1 == null ) value1 = "";
-                if ( value2 == null ) value2 = "";
+                /* Fix for KULRICE-5170 : BeanPropertyComparator throws exception when a null value is found in sortable non-string data type column */
+                if ( value1 == null && value2 == null)
+                    return 0;
+                else if ( value1 == null)
+                    return -1;
+                else if ( value2 == null )
+                    return 1;
+                /* End KULRICE-5170 Fix*/
                 compared = currentComparator.compare(value1, value2);
             }
         }

@@ -15,15 +15,20 @@
  */
 package org.kuali.rice.kns.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.kns.util.BeanPropertyComparator.BeanComparisonException;
 import org.kuali.test.KNSTestCase;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the BeanPropertyComparator methods.
@@ -230,6 +235,75 @@ public class BeanPropertyComparatorTest extends KNSTestCase {
         int inequal = sensitive.compare(greater, lesser);
         assertTrue(inequal != 0);
     }
+    
+    @Test public void testCompare_differentDates() throws ParseException {
+    	List propertiesD = Arrays.asList(new String[] { "d" });
+    	
+    	DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
+    	
+    	BeanPropertyComparator comparator = new BeanPropertyComparator(propertiesD);
+    	
+    	D lesser = new D(dateFormat.parse("01/01/1990"));
+    	D greater = new D(dateFormat.parse("01/02/1990"));
+    	
+    	int result = comparator.compare(greater, lesser);
+    	assertEquals(1, result);
+    	
+    	result = comparator.compare(lesser, greater);
+    	assertEquals(-1, result);
+    	
+    	result = comparator.compare(lesser, lesser);
+    	assertEquals(0, result);
+    	
+    	result = comparator.compare(greater, greater);
+    	assertEquals(0, result);
+    }
+    
+    @Test public void testCompare_firstNullDates() throws ParseException {
+    	List propertiesD = Arrays.asList(new String[] { "d" });
+    	
+    	DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
+    	
+    	BeanPropertyComparator comparator = new BeanPropertyComparator(propertiesD);
+    	
+    	D lesser = new D(null);
+    	D greater = new D(dateFormat.parse("01/02/1990"));
+    	
+    	int result = comparator.compare(greater, lesser);
+    	assertEquals(1, result);
+    	
+    	result = comparator.compare(lesser, greater);
+    	assertEquals(-1, result);
+    	
+    	result = comparator.compare(lesser, lesser);
+    	assertEquals(0, result);
+    	
+    	result = comparator.compare(greater, greater);
+    	assertEquals(0, result);
+    }
+    
+    @Test public void testCompare_secondNullDates() throws ParseException {
+    	List propertiesD = Arrays.asList(new String[] { "d" });
+    	
+    	DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
+    	
+    	BeanPropertyComparator comparator = new BeanPropertyComparator(propertiesD);
+    	
+    	D lesser = new D(dateFormat.parse("01/02/1990"));
+    	D greater = new D(null);
+    	
+    	int result = comparator.compare(greater, lesser);
+    	assertEquals(-1, result);
+    	
+    	result = comparator.compare(lesser, greater);
+    	assertEquals(1, result);
+    	
+    	result = comparator.compare(lesser, lesser);
+    	assertEquals(0, result);
+    	
+    	result = comparator.compare(greater, greater);
+    	assertEquals(0, result);
+    }
 
     public static class A {
         private String s;
@@ -307,5 +381,17 @@ public class BeanPropertyComparatorTest extends KNSTestCase {
         public float getB() {
             return b;
         }
+    }
+    
+    public static class D {
+    	private Date d;
+    	
+    	public D(Date d) {
+    		this.d = d;
+    	}
+    	
+    	public Date getD() {
+    		return d;
+    	}
     }
 }

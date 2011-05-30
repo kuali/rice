@@ -73,6 +73,12 @@ public class RiceCacheAdministratorTest extends KSBTestCase {
 		
 	}
 	
+	@Test public void testCacheRefreshPeriod() throws Exception {
+		
+		loadCaches();
+		assertCachesAreRefreshed();
+	}
+	
 	private void assertCachesNotEmpty() throws Exception {
 		RiceCacheAdministrator cache = (RiceCacheAdministrator)getSpringContextResourceLoader().getService(new QName("cache"));
 		RiceCacheAdministrator client1Cache = (RiceCacheAdministrator)getServiceFromTestClient1SpringContext("cache");
@@ -115,6 +121,21 @@ public class RiceCacheAdministratorTest extends KSBTestCase {
         }
         throw new RiceRuntimeException("Couldn't find service " + serviceName + " in TestClient1 Spring Context");
     }
+    
+	private void assertCachesAreRefreshed() throws Exception {
+		int refreshSeconds = 10;
+		RiceCacheAdministrator cache = (RiceCacheAdministrator)getSpringContextResourceLoader().getService(new QName("cache"));
+		RiceCacheAdministrator client1Cache = (RiceCacheAdministrator)getServiceFromTestClient1SpringContext("cache");
+		
+		assertEquals(this.value, cache.getFromCache(this.key, refreshSeconds));
+		assertEquals(this.value, client1Cache.getFromCache(this.key, refreshSeconds));
+		
+		// Sleep for 12 seconds, because roles should only be cached for 10 seconds in this situation.
+		Thread.sleep(12000);
+		
+		assertNull(cache.getFromCache(this.key, refreshSeconds));
+		assertNull(client1Cache.getFromCache(this.key, refreshSeconds));
+	}
 	
 }
 

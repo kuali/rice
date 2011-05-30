@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -62,7 +63,7 @@ import java.util.Map;
 public class PermissionServiceImpl extends PermissionServiceBase implements PermissionService {
 	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
 
-	private RoleService roleService;
+   	private RoleService roleService;
 	private KimPermissionDao permissionDao;
     private KimPermissionTypeService defaultPermissionTypeService;
 	
@@ -414,7 +415,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     		return null;
     	}
     	String cacheKey = getPermissionImplByIdCacheKey(permissionId);
-    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey);
+    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
     	if ( permissions == null ) {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
 	    	pk.put( KimConstants.PrimaryKeyConstants.PERMISSION_ID, permissionId );
@@ -427,7 +428,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     @SuppressWarnings("unchecked")
 	protected List<KimPermissionImpl> getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ) {
     	String cacheKey = getPermissionImplByTemplateNameCacheKey(namespaceCode, permissionTemplateName);
-    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey);
+    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
     	if ( permissions == null ) {    	
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( "template.namespaceCode", namespaceCode );
@@ -442,7 +443,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     @SuppressWarnings("unchecked")
 	protected List<KimPermissionImpl> getPermissionImplsByName( String namespaceCode, String permissionName ) {
     	String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName);
-    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey);
+    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
     	if ( permissions == null ) {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
@@ -619,7 +620,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     @SuppressWarnings("unchecked")
     protected List<KimPermissionImpl> getPermissionImplsByNameIncludingInactive(String namespaceCode, String permissionName) {
         String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName + "inactive");
-        List<KimPermissionImpl> permissions = (List<KimPermissionImpl>) getCacheAdministrator().getFromCache(cacheKey);
+        List<KimPermissionImpl> permissions = (List<KimPermissionImpl>) getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
         if (permissions == null) {
             HashMap<String, Object> pk = new HashMap<String, Object>(2);
             pk.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
@@ -629,5 +630,13 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         }
         return permissions;
     }
-	
+    
+    public int getRefreshPeriodInSeconds() {
+        try {
+            return (int)(new Integer(ConfigContext.getCurrentContextConfig().getProperty(KimConstants.CacheRefreshPeriodSeconds.KIM_CACHE_PERMISSION_REFRESH_PERIOD_SECONDS)));
+        } catch (NumberFormatException e) {
+    		// The cache will never expire when refreshPeriod is set to -1
+    		return -1;        		
+        }
+    }
 }

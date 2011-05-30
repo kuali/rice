@@ -297,6 +297,9 @@
     <param name="kim.cache.responsibility.max.age.seconds" override="false">30</param>
     <param name="kim.cache.person.max.size" override="false">3000</param>
     <param name="kim.cache.person.max.age.seconds" override="false">3600</param>
+    
+    <param name="kim.cache.permission.refresh.period.seconds" override="false">3600</param>
+    <param name="kim.cache.role.refresh.period.seconds" override="false">3600</param
 
     <param name="kim.identityArchiveServiceImpl.executionIntervalSeconds" override="false">300</param>
     <param name="kim.identityArchiveServiceImpl.maxWriteQueueSize" override="false">300</param>

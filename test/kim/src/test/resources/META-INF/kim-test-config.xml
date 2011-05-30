@@ -32,5 +32,8 @@
 	
 	<param name="kim.test.port">9912</param>
 	<param name="kim.test.host">localhost</param>
+	
+	<param name="kim.cache.permission.refresh.period.seconds" override="true">10</param>
+    <param name="kim.cache.role.refresh.period.seconds" override="true">10</param>
 
 </config>

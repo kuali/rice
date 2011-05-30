@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -285,7 +286,7 @@ public class RoleServiceBase {
 		// Attempt to find any pre-cached role members.
 		for (RoleMemberCacheKeyHelper searchKey : searchKeys) {
 			if (!usedKeys.contains(searchKey.getCacheKey())) {
-				List<RoleMemberImpl> tempMembers = (List<RoleMemberImpl>) getCacheAdministrator().getFromCache(searchKey.getCacheKey());
+				List<RoleMemberImpl> tempMembers = (List<RoleMemberImpl>) getCacheAdministrator().getFromCache(searchKey.getCacheKey(), getRefreshPeriodInSeconds());
 				if (tempMembers != null) {
 					finalResults.addAll(tempMembers);
 				} else {
@@ -422,7 +423,7 @@ public class RoleServiceBase {
 	}
 	
 	protected RoleMemberImpl getRoleMemberFromCache(String roleMemberId) {
-		return (RoleMemberImpl)getCacheAdministrator().getFromCache(getRoleMemberCacheKey(roleMemberId));
+		return (RoleMemberImpl)getCacheAdministrator().getFromCache(getRoleMemberCacheKey(roleMemberId), getRefreshPeriodInSeconds());
 	}
 	
 	public void flushInternalRoleMemberCache() {
@@ -549,7 +550,7 @@ public class RoleServiceBase {
 		// Retrieve any existing results from the cache.
 		if (roleIds != null && !roleIds.isEmpty()) {
 			for (String roleId : roleIds) {
-				List<KimDelegationImpl> tempDelegations = (List<KimDelegationImpl>) getCacheAdministrator().getFromCache(getDelegationListCacheKey(roleId));
+				List<KimDelegationImpl> tempDelegations = (List<KimDelegationImpl>) getCacheAdministrator().getFromCache(getDelegationListCacheKey(roleId), getRefreshPeriodInSeconds());
 				if (tempDelegations != null) {
 					for (KimDelegationImpl tempDelegation : tempDelegations) {
 						delegationMap.put(tempDelegation.getDelegationId(), tempDelegation);
@@ -571,7 +572,7 @@ public class RoleServiceBase {
 	}
 	
 	protected KimDelegationImpl getDelegationFromCache(String delegationId) {
-		return (KimDelegationImpl)getCacheAdministrator().getFromCache(getDelegationCacheKey(delegationId));
+		return (KimDelegationImpl)getCacheAdministrator().getFromCache(getDelegationCacheKey(delegationId), getRefreshPeriodInSeconds());
 	}
 	
 	public void flushInternalDelegationCache() {
@@ -688,7 +689,7 @@ public class RoleServiceBase {
 				for (String delegationId : delegationIds) {
 					String tempKey = getDelegationMemberListCacheKey(daoActionToTake, delegationId, principalId, null);
 					if (!usedKeys.contains(tempKey)) {
-						List<KimDelegationMemberImpl> tempMembers = (List<KimDelegationMemberImpl>) getCacheAdministrator().getFromCache(tempKey);
+						List<KimDelegationMemberImpl> tempMembers = (List<KimDelegationMemberImpl>) getCacheAdministrator().getFromCache(tempKey, getRefreshPeriodInSeconds());
 						if (tempMembers != null) {
 							finalResults.addAll(tempMembers);
 						} else {
@@ -703,7 +704,7 @@ public class RoleServiceBase {
 					for (String groupId : groupIds) {
 						String tempKey = getDelegationMemberListCacheKey(daoActionToTake, delegationId, null, groupId);
 						if (!usedKeys.contains(tempKey)) {
-							List<KimDelegationMemberImpl> tempMembers = (List<KimDelegationMemberImpl>) getCacheAdministrator().getFromCache(tempKey);
+							List<KimDelegationMemberImpl> tempMembers = (List<KimDelegationMemberImpl>) getCacheAdministrator().getFromCache(tempKey, getRefreshPeriodInSeconds());
 							if (tempMembers != null) {
 								finalResults.addAll(tempMembers);
 							} else {
@@ -801,7 +802,7 @@ public class RoleServiceBase {
 		// Retrieve any existing Lists from the cache.
 		for (String delegationId : delegationIds) {
 			List<KimDelegationMemberImpl> tempMembers = (List<KimDelegationMemberImpl>) getCacheAdministrator().getFromCache(
-					getDelegationMemberListCacheKey(RoleDaoAction.DELEGATION_MEMBERS_FOR_DELEGATION_IDS, delegationId, null, null));
+					getDelegationMemberListCacheKey(RoleDaoAction.DELEGATION_MEMBERS_FOR_DELEGATION_IDS, delegationId, null, null), getRefreshPeriodInSeconds());
 			if (tempMembers != null) {
 				finalResults.put(delegationId, tempMembers);
 			} else {
@@ -855,16 +856,16 @@ public class RoleServiceBase {
 	}
 	
 	protected KimDelegationMemberImpl getDelegationMemberFromCache(String delegationMemberId) {
-		return (KimDelegationMemberImpl)getCacheAdministrator().getFromCache(getDelegationMemberCacheKey(delegationMemberId));
+		return (KimDelegationMemberImpl)getCacheAdministrator().getFromCache(getDelegationMemberCacheKey(delegationMemberId), getRefreshPeriodInSeconds());
 	}
 	
 	protected KimDelegationMemberImpl getDelegationMemberByDelegationAndIdFromCache(String delegationId, String delegationMemberId) {
-		return (KimDelegationMemberImpl)getCacheAdministrator().getFromCache(getDelegationMemberByDelegationAndIdCacheKey(delegationId,delegationMemberId));
+		return (KimDelegationMemberImpl)getCacheAdministrator().getFromCache(getDelegationMemberByDelegationAndIdCacheKey(delegationId,delegationMemberId), getRefreshPeriodInSeconds());
 	}
 	
 	protected List<KimDelegationMemberImpl> getDelegationMemberListByMemberAndDelegationIdFromCache(String memberId, String delegationId) {
 		return (List<KimDelegationMemberImpl>)
-				getCacheAdministrator().getFromCache(getDelegationMemberListByMemberAndDelegationIdCacheKey(memberId, delegationId));
+				getCacheAdministrator().getFromCache(getDelegationMemberListByMemberAndDelegationIdCacheKey(memberId, delegationId), getRefreshPeriodInSeconds());
 	}
 	
 	public void flushInternalDelegationMemberCache() {
@@ -1276,11 +1277,11 @@ public class RoleServiceBase {
     	}
 
     protected RoleImpl getRoleFromCache( String roleId ) {
-    	return (RoleImpl)getCacheAdministrator().getFromCache(getRoleCacheKey(roleId));
+    	return (RoleImpl)getCacheAdministrator().getFromCache(getRoleCacheKey(roleId), getRefreshPeriodInSeconds());
     }
 
     protected RoleImpl getRoleFromCache( String namespaceCode, String roleName ) {
-    	return (RoleImpl)getCacheAdministrator().getFromCache(getRoleByNameCacheKey(namespaceCode,roleName));
+    	return (RoleImpl)getCacheAdministrator().getFromCache(getRoleByNameCacheKey(namespaceCode,roleName), getRefreshPeriodInSeconds());
     }
     
     protected String getNewDelegationId(){
@@ -1398,4 +1399,13 @@ public class RoleServiceBase {
 	public void setRoleDao(KimRoleDao roleDao) {
 		this.roleDao = roleDao;
 	}
+	
+    public int getRefreshPeriodInSeconds() {
+        try {
+        	return (int)(new Integer(ConfigContext.getCurrentContextConfig().getProperty(KimConstants.CacheRefreshPeriodSeconds.KIM_CACHE_ROLE_REFRESH_PERIOD_SECONDS)));
+        } catch (NumberFormatException e) {
+    		// The cache will never expire when refreshPeriod is set to -1
+    		return -1;        		
+        }
+    }
 }

@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
 
 import com.opensymphony.oscache.base.AbstractCacheAdministrator;
+import com.opensymphony.oscache.base.CacheEntry;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
@@ -64,8 +65,16 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 	}
 
 	public Object getFromCache(String key) {
+		return getFromCache(key, CacheEntry.INDEFINITE_EXPIRY, null);
+	}
+	
+	public Object getFromCache(String key, int refreshPeriod) {
+		return getFromCache(key, refreshPeriod, null);
+	}
+
+	public Object getFromCache(String key, int refreshPeriod, String cronExpression ) {
 		try {
-			return getCacheAdministrator().getFromCache(key);
+			return getCacheAdministrator().getFromCache(key, refreshPeriod, cronExpression);
 		} catch (NeedsRefreshException e) {
 			getCacheAdministrator().cancelUpdate(key);
 			return null;

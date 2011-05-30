@@ -1505,12 +1505,10 @@ public class RoleServiceBase {
 	
     public int getRefreshPeriodInSeconds() {
         try {
-            return (int)(new Integer(ConfigContext.getCurrentContextConfig().getProperty(KimConstants.CacheRefreshPeriodSeconds.KIM_CACHE_ROLE_REFRESH_PERIOD_SECONDS)));
-
+        	return (int)(new Integer(ConfigContext.getCurrentContextConfig().getProperty(KimConstants.CacheRefreshPeriodSeconds.KIM_CACHE_ROLE_REFRESH_PERIOD_SECONDS)));
         } catch (NumberFormatException e) {
-            LOG.error("Constant '" + KimConstants.CacheRefreshPeriodSeconds.KIM_CACHE_ROLE_REFRESH_PERIOD_SECONDS + "' is not an Integer and will not be used " 
-            		+ "as the refresh period for role caches.  Default of " + DEFAULT_REFRESH_PERIOD_SECONDS + " will be used.");
-            return DEFAULT_REFRESH_PERIOD_SECONDS;
+    		// The cache will never expire when refreshPeriod is set to -1
+    		return -1;        		
         }
     }
 }

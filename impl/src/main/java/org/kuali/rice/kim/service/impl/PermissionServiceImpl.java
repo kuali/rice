@@ -637,9 +637,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         try {
             return (int)(new Integer(ConfigContext.getCurrentContextConfig().getProperty(KimConstants.CacheRefreshPeriodSeconds.KIM_CACHE_PERMISSION_REFRESH_PERIOD_SECONDS)));
         } catch (NumberFormatException e) {
-            LOG.error("Constant '" + KimConstants.CacheRefreshPeriodSeconds.KIM_CACHE_PERMISSION_REFRESH_PERIOD_SECONDS + "' is not an integer and will not be used " 
-            		+ "as the refresh period for permission caches.  Default of " + DEFAULT_REFRESH_PERIOD_SECONDS + " will be used.");
-            return DEFAULT_REFRESH_PERIOD_SECONDS;
+    		// The cache will never expire when refreshPeriod is set to -1
+    		return -1;        		
         }
     }
 }

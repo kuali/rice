@@ -19,7 +19,7 @@
 	<artifactId>rice</artifactId>
 	<packaging>pom</packaging>
 	<name>Kuali Rice</name>
-	<version>1.0.3.2-m2-SNAPSHOT</version>
+	<version>1.0.3.2-m2</version>
 	<description>The Kuali Rice effort provides an enterprise class
 		middleware suite of integrated products that allows both Kuali and
 		non-Kuali applications to be built in an agile fashion, such that
@@ -1049,9 +1049,9 @@
 		</plugins>
 	</reporting>
 	<scm>
-		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1.0.3.2-br</connection>
-		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1.0.3.2-br</developerConnection>
-		<url>https://test.kuali.org/svn/rice/branches/rice-release-1.0.3.2-br</url>
+		<connection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-1.0.3.2-m2</connection>
+		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-1.0.3.2-m2</developerConnection>
+		<url>https://test.kuali.org/svn/rice/tags/rice-1.0.3.2-m2</url>
 	</scm>
 	<distributionManagement>
                 <repository>

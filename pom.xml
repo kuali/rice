@@ -1042,9 +1042,9 @@
 		</plugins>
 	</reporting>
 	<scm>
-		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1.0.3.2-SNAPSHOT-br</connection>
-		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1.0.3.2-SNAPSHOT-br</developerConnection>
-		<url>https://test.kuali.org/svn/rice/branches/rice-release-1.0.3.2-SNAPSHOT-br</url>
+		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1.0.3.2-br</connection>
+		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1.0.3.2-br</developerConnection>
+		<url>https://test.kuali.org/svn/rice/branches/rice-release-1.0.3.2-br</url>
 	</scm>
 	<distributionManagement>
                 <repository>

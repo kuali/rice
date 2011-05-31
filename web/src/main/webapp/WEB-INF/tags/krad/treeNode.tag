@@ -23,11 +23,15 @@
    <a href="#">
        <krad:template component="${node.nodeLabel}"/>
    </a>
-    <krad:template component="${node.data}" />
+   <krad:template component="${node.data}" />
    <ul>
-      <c:forEach items="${node.children}" var="node" varStatus="itemVarStatus">
-         <krad:treeNode node="${node}" />
+      <c:forEach items="${node.children}" var="childNode" varStatus="itemVarStatus">
+         <%-- ran into recursive tag problem on Linux, see KULRICE-5161 --%>
+         <%-- krad:treeNode node="${childNode}" / --%>
+         <%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul2"%>
+         <kul2:containerTreeNode node="${childNode}"/>
       </c:forEach>
    </ul>
+
 </li>
 

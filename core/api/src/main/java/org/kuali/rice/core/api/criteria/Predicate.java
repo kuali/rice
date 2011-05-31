@@ -22,8 +22,6 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  * nature of an predicate and what it logically represents is defined
  * by the classes which implement the Predicate interface.
  * 
- * @see Criteria 
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Predicate extends ModelObjectComplete {

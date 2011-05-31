@@ -198,7 +198,7 @@ public final class QueryByCriteria implements ModelObjectComplete {
 		return ToStringBuilder.reflectionToString(this);
 	}
 
-	public static final class Builder<T> implements ModelBuilder, Serializable {
+	public static final class Builder implements ModelBuilder, Serializable {
 
 		private Predicate[] predicates;
 		private Integer startAtIndex;
@@ -209,8 +209,8 @@ public final class QueryByCriteria implements ModelObjectComplete {
 			this.countFlag = CountFlag.NONE;
 		}
 
-		public static <T> Builder<T> create() {
-            return new Builder<T>();
+		public static Builder create() {
+            return new Builder();
 		}
 
 		public Integer getStartAtIndex() {

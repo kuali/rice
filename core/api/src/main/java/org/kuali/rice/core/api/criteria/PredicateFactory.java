@@ -40,6 +40,12 @@ import java.util.Set;
  *         equal("name.first", "Eric"),
  *         equal("name.last", "Westfall")))
  *
+ * <p>
+ *     <strong>WARNING:</strong> this class does automatic reductions
+ *     such that you cannot assume the concrete {@link Predicate} type
+ *     returned from this factory.
+ * </p>
+ *
  * @see QueryByCriteria
  */
 public final class PredicateFactory {
@@ -48,7 +54,7 @@ public final class PredicateFactory {
     }
 
     /**
-	 * Creates an {@link EqualPredicate}.  Defines that the property
+	 * Creates an predicate representing equals comparison.  Defines that the property
      * represented by the given path should be equal to the specified value.
 	 *
 	 * <p>Supports the following types of values:
@@ -64,19 +70,17 @@ public final class PredicateFactory {
 	 * @param value the value to compare with the property value located at the
 	 * propertyPath
 	 *
-	 * @return an EqualPredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
 	 * @throws IllegalArgumentException if the value is null or of an invalid type
-	 *
-	 * @see EqualPredicate for more information
 	 */
 	public static Predicate equal(String propertyPath, Object value) {
 		return new EqualPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 	}
 
 	/**
-	 * Creates a {@link NotEqualPredicate}.  Defines that the property
+	 * Creates a predicate representing not equals comparison.  Defines that the property
      * represented by the given path should <strong>not</strong> be
 	 * equal to the specified value.
 	 *
@@ -93,19 +97,65 @@ public final class PredicateFactory {
 	 * @param value the value to compare with the property value located at the
 	 * propertyPath
 	 *
-	 * @return a NotEqualPredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
 	 * @throws IllegalArgumentException if the value is null or of an invalid type
-	 *
-	 * @see NotEqualPredicate for more information
 	 */
 	public static Predicate notEqual(String propertyPath, Object value) {
 		return new NotEqualPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 	}
 
+    /**
+	 * Creates an equals ignore case predicate.  Defines that the property
+     * represented by the given path should be equal to the specified value ignoring
+     * the case of the value.
+	 *
+	 * <p>Supports the following types of values:
+	 *
+	 * <ul>
+	 *   <li>character data</li>
+	 * </ul>
+	 *
+	 * @param propertyPath the path to the property which should be evaluated
+	 * @param value the value to compare with the property value located at the
+	 * propertyPath
+	 *
+	 * @return a predicate
+	 *
+	 * @throws IllegalArgumentException if the propertyPath is null
+	 * @throws IllegalArgumentException if the value is null or of an invalid type
+	 */
+	public static Predicate equalIgnoreCase(String propertyPath, CharSequence value) {
+		return new EqualIgnoreCasePredicate(propertyPath, new CriteriaStringValue(value));
+	}
+
 	/**
-	 * Creates a {@link LikePredicate}.  Defines that the property
+	 * Creates a not equals ignore case predicate.  Defines that the property
+     * represented by the given path should <strong>not</strong> be
+	 * equal to the specified value ignoring the case of the value.
+	 *
+	 * <p>Supports the following types of values:
+	 *
+	 * <ul>
+	 *   <li>character data</li>
+	 * </ul>
+	 *
+	 * @param propertyPath the path to the property which should be evaluated
+	 * @param value the value to compare with the property value located at the
+	 * propertyPath
+	 *
+	 * @return a predicate
+	 *
+	 * @throws IllegalArgumentException if the propertyPath is null
+	 * @throws IllegalArgumentException if the value is null or of an invalid type
+	 */
+	public static Predicate notEqualIgnoreCase(String propertyPath, CharSequence value) {
+		return new NotEqualIgnoreCasePredicate(propertyPath, new CriteriaStringValue(value));
+	}
+
+	/**
+	 * Creates a like predicate.  Defines that the property
      * represented by the given path should match the specified value,
 	 * but supports the use of wildcards in the given value.
 	 *
@@ -123,19 +173,17 @@ public final class PredicateFactory {
 	 * @param value the value to compare with the property value located at the
 	 * propertyPath
 	 *
-	 * @return a LikePredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
 	 * @throws IllegalArgumentException if the value is null
-	 *
-	 * @see LikePredicate for more information
 	 */
 	public static Predicate like(String propertyPath, CharSequence value) {
 		return new LikePredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 	}
 
     /**
-	 * Creates a {@link NotLikePredicate}.  Defines that the property
+	 * Creates a not like predicate.  Defines that the property
      * represented by the given path should <strong>not</strong> match the specified value,
 	 * but supports the use of wildcards in the given value.
 	 *
@@ -153,19 +201,17 @@ public final class PredicateFactory {
 	 * @param value the value to compare with the property value located at the
 	 * propertyPath
 	 *
-	 * @return a NotLikePredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
 	 * @throws IllegalArgumentException if the value is null
-	 *
-	 * @see LikePredicate for more information
 	 */
 	public static Predicate notLike(String propertyPath, CharSequence value) {
 		return new NotLikePredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 	}
 
 	/**
-	 * Create an {@link InPredicate}.  Defines that the property
+	 * Create an in predicate.  Defines that the property
      * represented by the given path should be contained within the
 	 * specified list of values.
 	 *
@@ -176,20 +222,18 @@ public final class PredicateFactory {
 	 * @param values the values to compare with the property value located at the
 	 * propertyPath
 	 *
-	 * @return an InPredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
 	 * @throws IllegalArgumentException if the values list is null, empty,
 	 * contains object of different types, or includes objects of an invalid type
-	 *
-	 * @see InPredicate for more information
 	 */
 	public static <T> Predicate in(String propertyPath, T... values) {
 		return new InPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValueList(values));
 	}
 
 	/**
-	 * Create a {@link NotInPredicate}.  Defines that the property
+	 * Create a not in predicate.  Defines that the property
      * represented by the given path should <strong>not</strong> be
 	 * contained within the specified list of values.
 	 *
@@ -200,20 +244,62 @@ public final class PredicateFactory {
 	 * @param values the values to compare with the property value located at the
 	 * propertyPath
 	 *
-	 * @return a NotInPredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
 	 * @throws IllegalArgumentException if the values list is null, empty,
 	 * contains object of different types, or includes objects of an invalid type
-	 *
-	 * @see NotInPredicate for more information
 	 */
 	public static <T> Predicate notIn(String propertyPath, T... values) {
 		return new NotInPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValueList(values));
 	}
 
+    /**
+	 * Create an in ignore case predicate.  Defines that the property
+     * represented by the given path should be contained within the
+	 * specified list of values ignoring the case of the values.
+	 *
+	 * <p>Supports any of CharSequence value in the value list, with the
+	 * restriction that all items in the list of values must be of the same type.
+	 *
+	 * @param propertyPath the path to the property which should be evaluated
+	 * @param values the values to compare with the property value located at the
+	 * propertyPath
+	 *
+	 * @return a predicate
+	 *
+	 * @throws IllegalArgumentException if the propertyPath is null
+	 * @throws IllegalArgumentException if the values list is null, empty,
+	 * contains object of different types, or includes objects of an invalid type
+	 */
+	public static <T extends CharSequence> Predicate inIgnoreCase(String propertyPath, T... values) {
+		return new InIgnoreCasePredicate(propertyPath, CriteriaSupportUtils.createCriteriaStringValueList(values));
+	}
+
 	/**
-	 * Creates a {@link GreaterThanPredicate}.  Defines that the property
+	 * Create a not in ignore case.  Defines that the property
+     * represented by the given path should <strong>not</strong> be
+	 * contained within the specified list of values ignoring the case of the values.
+	 *
+	 * <p>Supports any CharSequence value in the value list, with the
+	 * restriction that all items in the list of values must be of the same type.
+	 *
+	 * @param propertyPath the path to the property which should be evaluated
+	 * @param values the values to compare with the property value located at the
+	 * propertyPath
+	 *
+	 * @return a predicate
+	 *
+	 * @throws IllegalArgumentException if the propertyPath is null
+	 * @throws IllegalArgumentException if the values list is null, empty,
+	 * contains object of different types, or includes objects of an invalid type
+	 */
+	public static <T extends CharSequence> Predicate notInIgnoreCase(String propertyPath, T... values) {
+		return new NotInIgnoreCasePredicate(propertyPath, CriteriaSupportUtils.createCriteriaStringValueList(values));
+	}
+
+	/**
+	 * Creates a greater than predicate.  Defines that the property
      * represented by the given path should be greater than the specified value.
 	 *
 	 * <p>Supports the following types of values:
@@ -228,19 +314,17 @@ public final class PredicateFactory {
 	 * @param value the value to compare with the property value located at the
 	 * propertyPath
 	 *
-	 * @return a GreaterThanPredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
 	 * @throws IllegalArgumentException if the value is null or of an invalid type
-	 *
-	 * @see GreaterThanPredicate for more information
 	 */
 	public static Predicate greaterThan(String propertyPath, Object value) {
 		return new GreaterThanPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 	}
 
 	/**
-	 * Creates a {@link GreaterThanOrEqualPredicate}.  Defines that the
+	 * Creates a greater than or equal predicate.  Defines that the
      * property represented by the given path should be greater than
 	 * or equal to the specified value.
 	 *
@@ -256,19 +340,17 @@ public final class PredicateFactory {
 	 * @param value the value to compare with the property value located at the
 	 * propertyPath
 	 *
-	 * @return a GreaterThanOrEqualPredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
 	 * @throws IllegalArgumentException if the value is null or of an invalid type
-	 *
-	 * @see GreaterThanOrEqualPredicate for more information
 	 */
 	public static Predicate greaterThanOrEqual(String propertyPath, Object value) {
 		return new GreaterThanOrEqualPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 	}
 
 	/**
-	 * Creates a {@link LessThanPredicate}.  Defines that the property
+	 * Creates a less than predicate.  Defines that the property
      * represented by the given path should be less than the specified value.
 	 *
 	 * <p>Supports the following types of values:
@@ -283,19 +365,17 @@ public final class PredicateFactory {
 	 * @param value the value to compare with the property value located at the
 	 * propertyPath
 	 *
-	 * @return a LessThanPredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
 	 * @throws IllegalArgumentException if the value is null or of an invalid type
-	 *
-	 * @see LessThanPredicate for more information
 	 */
 	public static Predicate lessThan(String propertyPath, Object value) {
 		return new LessThanPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 	}
 
 	/**
-	 * Creates a {@link LessThanOrEqualPredicate}.  Defines that the
+	 * Creates a less than or equal predicate.  Defines that the
      * property represented by the given path should be less than
 	 * or equal to the specified value.
 	 *
@@ -311,52 +391,45 @@ public final class PredicateFactory {
 	 * @param value the value to compare with the property value located at the
 	 * propertyPath
 	 *
-	 * @return a LessThanOrEqualPredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
 	 * @throws IllegalArgumentException if the value is null or of an invalid type
-	 *
-	 * @see LessThanOrEqualPredicate for more information
 	 */
 	public static Predicate lessThanOrEqual(String propertyPath, Object value) {
 		return new LessThanOrEqualPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 	}
 
 	/**
-	 * Creates a {@link NullPredicate}.  Defines that the
+	 * Creates an is null predicate.  Defines that the
 	 * property represented by the given path should be null.
 	 *
 	 * @param propertyPath the path to the property which should be evaluated
 	 *
-	 * @return a NullPredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
-	 *
-	 * @see NullPredicate for more information
 	 */
 	public static Predicate isNull(String propertyPath) {
 		return new NullPredicate(propertyPath);
 	}
 
 	/**
-	 * Creates a {@link NotNullPredicate}.  Defines that the property
+	 * Creates an is not null predicate.  Defines that the property
      * represented by the given path should <strong>not</strong> be null.
 	 *
 	 * @param propertyPath the path to the property which should be evaluated
 	 *
-	 * @return a NotNullPredicate
+	 * @return a predicate
 	 *
 	 * @throws IllegalArgumentException if the propertyPath is null
-	 *
-	 * @see NotNullPredicate for more information
 	 */
 	public static Predicate isNotNull(String propertyPath) {
 		return new NotNullPredicate(propertyPath);
 	}
 
 	/**
-	 * Creates an {@link AndPredicate} that is used to define the
-	 * predicates contained within the "and" predicate.
+	 * Creates an and predicate that is used to "and" predicates together.
 	 *
 	 * <p>An "and" predicate will evaluate the truth value of of it's
 	 * internal predicates and, if all of them evaluate to true, then
@@ -364,16 +437,12 @@ public final class PredicateFactory {
      * of an and predicate may short-circuit.
      *
      * <p>
-     *     This factory method does automatic reductions such that
-     *     this method may return a different predicate than expected.
-     *     Do not assume the concrete return type of this method.
+     *     This factory method does automatic reductions.
      * </p>
 	 *
      * @param predicates to "and" together
      *
-	 * @return an AndPredicate
-	 *
-	 * @see AndPredicate for more information
+	 * @return a predicate
 	 */
 	public static Predicate and(Predicate... predicates) {
         //reduce single item compound
@@ -386,8 +455,7 @@ public final class PredicateFactory {
 	}
 
 	/**
-	 * Creates an  {@link OrPredicate} that is used to define the
-	 * predicates contained within the "or" predicate.
+	 * Creates an  or predicate that is used to "or" predicate together.
 	 *
 	 * <p>An "or" predicate will evaluate the truth value of of it's
 	 * internal predicates and, if any one of them evaluate to true, then
@@ -397,15 +465,11 @@ public final class PredicateFactory {
      * short-circuit.
 	 *
      * <p>
-     *     This factory method does automatic reductions such that
-     *     this method may return a different predicate than expected.
-     *     Do not assume the concrete return type of this method.
+     *     This factory method does automatic reductions.
      * </p>
      * @param predicates to "or" together
      *
-	 * @return an OrPredicate
-	 *
-	 * @see OrPredicate for more information
+	 * @return a predicate
 	 */
 	public static Predicate or(Predicate... predicates) {
         //reduce single item compound

@@ -8,16 +8,20 @@ import org.kuali.rice.core.api.criteria.CompositePredicate;
 import org.kuali.rice.core.api.criteria.CountFlag;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.CriteriaValue;
+import org.kuali.rice.core.api.criteria.EqualIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.EqualPredicate;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.GreaterThanOrEqualPredicate;
 import org.kuali.rice.core.api.criteria.GreaterThanPredicate;
+import org.kuali.rice.core.api.criteria.InIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.InPredicate;
 import org.kuali.rice.core.api.criteria.LessThanOrEqualPredicate;
 import org.kuali.rice.core.api.criteria.LessThanPredicate;
 import org.kuali.rice.core.api.criteria.LikePredicate;
 import org.kuali.rice.core.api.criteria.MultiValuedPredicate;
+import org.kuali.rice.core.api.criteria.NotEqualIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.NotEqualPredicate;
+import org.kuali.rice.core.api.criteria.NotInIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.NotInPredicate;
 import org.kuali.rice.core.api.criteria.NotLikePredicate;
 import org.kuali.rice.core.api.criteria.NotNullPredicate;
@@ -63,7 +67,7 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
         }
     }
 
-    /** gets results where the actual rows are requested.  Will return a mutable builder. */
+    /** gets results where the actual rows are requested. */
     private <T> GenericQueryResults<T> forRowResults(final Class<T> queryClass, final QueryByCriteria criteria, final Criteria ojbCriteria, CountFlag flag) {
         final Query ojbQuery = QueryFactory.newQuery(queryClass, ojbCriteria);
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
@@ -133,6 +137,8 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
         final String pp = p.getPropertyPath();
         if (p instanceof EqualPredicate) {
             parent.addEqualTo(pp, value);
+        } else if (p instanceof EqualIgnoreCasePredicate) {
+            parent.addEqualTo(genUpperFunc(pp), ((String) value).toUpperCase());
         } else if (p instanceof GreaterThanOrEqualPredicate) {
             parent.addGreaterOrEqualThan(pp, value);
         } else if (p instanceof GreaterThanPredicate) {
@@ -146,6 +152,8 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
             parent.addLike(pp, value);
         } else if (p instanceof NotEqualPredicate) {
             parent.addNotEqualTo(pp, value);
+        } else if (p instanceof NotEqualIgnoreCasePredicate) {
+            parent.addNotEqualTo(genUpperFunc(pp), ((String) value).toUpperCase());
         } else if (p instanceof NotLikePredicate) {
             parent.addNotLike(pp, value);
         } else {
@@ -155,15 +163,19 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
 
     /** adds a multi valued predicate to a Criteria. */
     private void addMultiValuePredicate(MultiValuedPredicate p, Criteria parent) {
-        final Set<Object> values = new HashSet<Object>();
-        for (CriteriaValue<?> value : p.getValues()) {
-            values.add(value.getValue());
-        }
         final String pp = p.getPropertyPath();
         if (p instanceof InPredicate) {
+            final Set<?> values = getValsUnsafe(p.getValues());
             parent.addIn(pp, values);
+        } else if (p instanceof InIgnoreCasePredicate) {
+            final Set<String> values = toUpper(getVals(((InIgnoreCasePredicate) p).getValues()));
+            parent.addIn(genUpperFunc(pp), values);
         } else if (p instanceof NotInPredicate) {
+            final Set<?> values = getValsUnsafe(p.getValues());
             parent.addNotIn(pp, values);
+        } else if (p instanceof NotInIgnoreCasePredicate) {
+            final Set<String> values = toUpper(getVals(((NotInIgnoreCasePredicate) p).getValues()));
+            parent.addNotIn(genUpperFunc(pp), values);
         } else {
             throw new UnsupportedPredicateException(p);
         }
@@ -182,6 +194,37 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
                 throw new UnsupportedPredicateException(p);
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T, U extends CriteriaValue<T>> Set<T> getVals(Set<? extends U> toConv) {
+        return (Set<T>) getValsUnsafe(toConv);
+    }
+
+    //FIXME: this method exists to make javac happy - to bad I didn't know how to fix this....
+    private static Set<?> getValsUnsafe(Set<? extends CriteriaValue<?>> toConv) {
+        final Set<Object> values = new HashSet<Object>();
+        for (CriteriaValue<?> value : toConv) {
+            values.add(value.getValue());
+        }
+        return values;
+    }
+
+    //eliding performance for function composition....
+    private static Set<String> toUpper(Set<String> strs) {
+        final Set<String> values = new HashSet<String>();
+        for (String value : strs) {
+            values.add(value.toUpperCase());
+        }
+        return values;
+    }
+
+    private String getUpperFunction() {
+        return getDbPlatform().getUpperCaseFunction();
+    }
+
+    private String genUpperFunc(String pp) {
+        return new StringBuilder(getUpperFunction()).append("(").append(pp).append(")").toString();
     }
 
     /** this is a fatal error since this implementation should support all known predicates. */

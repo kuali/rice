@@ -32,6 +32,6 @@ public interface MultiValuedPredicate extends PropertyPathPredicate {
 	 * 
 	 * @return the set of criteria values for this predicate
 	 */
-	Set<CriteriaValue<?>> getValues();
+	Set<? extends CriteriaValue<?>> getValues();
     
 }

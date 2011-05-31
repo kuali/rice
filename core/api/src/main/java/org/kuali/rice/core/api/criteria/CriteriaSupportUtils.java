@@ -184,6 +184,21 @@ final class CriteriaSupportUtils {
 		}
 		return criteriaValues;
 	}
+
+    static Set<CriteriaStringValue> createCriteriaStringValueList(CharSequence[] values) {
+		if (values == null) {
+			return null;
+		} else if (values.length == 0) {
+			return Collections.emptySet();
+		}
+		Set<CriteriaStringValue> criteriaValues = new HashSet<CriteriaStringValue>();
+		for (CharSequence value : values) {
+			if (value != null) {
+                criteriaValues.add(new CriteriaStringValue(value));
+            }
+		}
+		return criteriaValues;
+	}
 	
 	/**
      * Validates the incoming list of CriteriaValue to ensure they are valid for a

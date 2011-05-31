@@ -16,9 +16,11 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.ksb.messaging.service.MessageQueueService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
+import org.kuali.rice.ksb.util.KSBConstants.Config;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
@@ -44,12 +46,14 @@ public class MessageFetcher implements Runnable {
     }
 
     public void run() {
-	try {
-	    requeueDocument();
-	    requeueMessages();
-	} catch (Throwable t) {
-	    LOG.error("Failed to fetch messages.", t);
-	}
+    	if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.MESSAGE_PERSISTENCE, false)) {
+    		try {
+    			requeueDocument();
+    			requeueMessages();
+    		} catch (Throwable t) {
+    			LOG.error("Failed to fetch messages.", t);
+    		}
+    	}
     }
 
     private void requeueMessages() {

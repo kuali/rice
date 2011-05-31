@@ -19,7 +19,7 @@
 	<parent>
 		<groupId>org.kuali.rice</groupId>
 		<artifactId>rice</artifactId>
-		<version>1.0.3.2-m2-SNAPSHOT</version>
+		<version>1.0.3.2-m2</version>
 	</parent>
 	<artifactId>rice-impl</artifactId>
 

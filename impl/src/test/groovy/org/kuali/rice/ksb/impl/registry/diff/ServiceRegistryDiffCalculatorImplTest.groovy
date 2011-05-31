@@ -372,7 +372,10 @@ class ServiceRegistryDiffCalculatorImplTest {
 	}
 	
 	void doInConfig(Map<String, String> configProperties, Closure closure) {
-		Config currentConfig = ConfigContext.getCurrentContextConfig()
+		Config currentConfig = null;
+		if (ConfigContext.isInitialized()) {
+			currentConfig = ConfigContext.getCurrentContextConfig()
+		}
 		try {
 			SimpleConfig simpleConfig = new SimpleConfig(configProperties)
 			simpleConfig.parseConfig()
@@ -381,6 +384,8 @@ class ServiceRegistryDiffCalculatorImplTest {
 		} finally {
 			if (currentConfig != null) {
 				ConfigContext.init(currentConfig)
+			} else {
+				ConfigContext.destroy();
 			}
 		}
 	}

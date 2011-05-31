@@ -412,7 +412,9 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 		for (LocalService localService : localServicesDiff.getLocalServicesToPublish()) {
 			publishServiceEndpoints.add(localService.getServiceEndpoint());
 		}
-		this.serviceRegistry.removeAndPublish(removeServiceEndpointIds, publishServiceEndpoints);
+		if (!removeServiceEndpointIds.isEmpty() || !publishServiceEndpoints.isEmpty()) {
+			this.serviceRegistry.removeAndPublish(removeServiceEndpointIds, publishServiceEndpoints);
+		}
 	}
 
 	public void setServiceRegistry(ServiceRegistry serviceRegistry) {

@@ -1,4 +1,11 @@
-/*  -------------------  BUTTON STYLES  -------------------  */
+/*-- Base Styles ------ */
+a {
+    color:#3F7826;
+    font-weight:normal;
+    cursor: pointer;
+}
+
+}/*  -------------------  BUTTON STYLES  -------------------  */
 
 .fl-theme-ks .button-primary {
 	border-color:#469C3D;
@@ -115,6 +122,22 @@
    input:focus, textarea:focus {
     background: none repeat scroll 0 0 #ECFCE8;
 }
+    .field_attribute label {
+        margin: 0px 5px 0px 5px;
+    }
+    .field_attribute span {
+        clear:left;
+        float:left;
+    }
+    .field_attribute input {
+        float:left;
+    }
+    .field-attribute .summry {
+        line-height: 18px;
+    }
+    .constraint {
+        float:left;
+    }
 
 /* navigation panel styles  added by David*/
     .navigation-div {width:219px;}
@@ -135,7 +158,8 @@
         font-size:12px;
         float:right;
         padding-right:15px;
-        background: url(../images/icon_navCollapse.png) no-repeat right;
+        background-repeat: no-repeat;
+        background-image: url(../images/icon_navCollapse.jpg);
     }
 
     a.collapseLink:hover {
@@ -173,4 +197,9 @@
     }
     #viewnavigation_div #controlbtn {
         display:none; /*hiding the collapse control at the bottom of nav */
+    }
+    .animated-navigation .current {
+        background-image:none;
+        background-color:#000;
+        color:#fff;
     }

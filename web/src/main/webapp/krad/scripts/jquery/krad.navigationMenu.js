@@ -83,7 +83,7 @@
 						$(this).addClass("current");
 						});
 				
-						$(this).hover(
+						/*$(this).hover(
 						function()
 						{
 							if (!$(this).is(':animated')) {
@@ -98,7 +98,7 @@
 									paddingLeft: options.pad_in
 								}, 150);
 						});
-				
+
 						$(this).focus(
 						function()
 						{
@@ -109,7 +109,7 @@
 						function()
 						{
 							$(this).animate({ paddingLeft: options.pad_in }, 150);
-						});
+						});  */
 					});
 				}
 				else{

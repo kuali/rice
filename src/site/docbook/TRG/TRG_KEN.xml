@@ -1,73 +1,1022 @@
 <?xml version='1.0' encoding='UTF-8'?> 
-<chapter xml:id="TRG_KEN" xmlns="http://docbook.org/ns/docbook" version="5.0">
+<chapter xml:id="TRG_KEN" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>KEN</title>
     <sect1>
         <title>KEN Overview</title>
+        <sect2>
+            <title>What is KEN?</title>
+            <para>Kuali Enterprise Notification is a form of communication between distributed
+                systems that allows messages to be sent securely and consistently. These messages
+                act as notifications upon receipt and are processed asynchronously within the
+                service layer. The following architectural diagram represents the flow of messages
+                in a typical Rice Environment. </para>
+            <figure>
+                <title>KEN Message Flow</title>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KEN_message_flow.png"/>
+                    </imageobject>
+                </inlinemediaobject></figure>
+            <para>From a developer’s perspective the diagram below helps to represent the inner
+                workings of how KEN stores data from the Data Modeling Layer into the Persistence
+                Layer. </para>
+            <figure>
+                <title>KEN Message Storage</title>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KEN_message_storage.png"/>
+                    </imageobject>
+                </inlinemediaobject></figure>
+            <para>The following sections of documentation aim at describing the inner workings of
+                KEN as well as how those pieces interact with Rice, specifically KEW. KEN itself is
+                an interface that sits on top of KEW’s API. This allows for registration and
+                publishing of notifications, which then flow through KEW to result in a KEW action
+                request. See KEW Overview for more information. In addition to the action list, KEW
+                can be optionally configured to forward these requests to the Kuali Communications
+                Broker or KCB for short. This module is logically related to KEN and handles
+                dispatching messages based on the user preferences. Once messages are dispatched, a
+                response or acknowledgement can be created. </para>
+        </sect2>
     </sect1>
     <sect1>
         <title>KEN Configuration Parameters</title>
+        <para>
+            <table frame="none">
+                <title>KEN Core Parameters</title>
+                <tgroup cols="3">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                    <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                    <thead>
+                        <row>
+                            <entry>Configuration Parameter</entry>
+                            <entry>Description</entry>
+                            <entry>Default value</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <entry>ken.url</entry>
+                            <entry>The base URL of the KEN webapp; this should be changed when
+                                deploying for external access</entry>
+                            <entry>${application.url}/ken</entry>
+                        </row>
+                        <row>
+                            <entry>notification.resolveMessageDeliveriesJob.startDelayMS</entry>
+                            <entry>The start delay (in ms) of the job that resolves message
+                                deliveries</entry>
+                            <entry>5000</entry>
+                        </row>
+                        <row>
+                            <entry>notification.resolveMessageDeliveriesJob.intervalMS</entry>
+                            <entry>The interval (in ms) between runs of the message delivery
+                                resolution job</entry>
+                            <entry>10000</entry>
+                        </row>
+                        <row>
+                            <entry>notification.processAutoRemovalJob.startDelayMS</entry>
+                            <entry>The start delay (in ms) of the job that auto-removes
+                                messages</entry>
+                            <entry>60000</entry>
+                        </row>
+                        <row>
+                            <entry>notification.processAutoRemovalJob.intervalMS</entry>
+                            <entry>The interval (in ms) between runs of the message auto-removal
+                                job</entry>
+                            <entry>60000</entry>
+                        </row>
+                        <row>
+                            <entry>notification.quartz.autostartup</entry>
+                            <entry>Whether to automatically start the KEN Quartz jobs</entry>
+                            <entry>true</entry>
+                        </row>
+                        <row>
+                            <entry>notification.concurrent.jobs</entry>
+                            <entry>Whether the invocation of a KEN Quartz job can overlap another
+                                KEN Quartz job running concurrently</entry>
+                            <entry>true</entry>
+                        </row>
+                        <row>
+                            <entry>ken.system.user</entry>
+                            <entry>The principal name of the user that KEN should use when
+                                initiating KEN-originated documents</entry>
+                            <entry>notsys</entry>
+                        </row>
+                        <row>
+                            <entry>kcb.url</entry>
+                            <entry>The base URL of the KCB (notification broker) webapp</entry>
+                            <entry>${application.url}/kcb</entry>
+                        </row>
+                        <row>
+                            <entry>kcb.messaging.synchronous</entry>
+                            <entry>Whether notification messages are processed synchronously</entry>
+                            <entry>false</entry>
+                        </row>
+                        <row>
+                            <entry>kcb.messageprocessing.startDelayMS</entry>
+                            <entry>The start delay (in ms) of the job that processes notification
+                                messages</entry>
+                            <entry>50000</entry>
+                        </row>
+                        <row>
+                            <entry>kcb.messageprocessing.repeatIntervalMS</entry>
+                            <entry>The interval (in ms) between runs of the notification message
+                                processing job</entry>
+                            <entry>30000</entry>
+                        </row>
+                        <row>
+                            <entry>kcb.quartz.group</entry>
+                            <entry>Group name of the KCB Quartz job</entry>
+                            <entry>KCB-Delivery</entry>
+                        </row>
+                        <row>
+                            <entry>kcb.quartz.job.name</entry>
+                            <entry>Name of the KCB Quartz job</entry>
+                            <entry>MessageProcessingJobDetail</entry>
+                        </row>
+                        <row>
+                            <entry>kcb.maxProcessAttempts</entry>
+                            <entry>Maximum number of times that KCB will attempt to process a
+                                notification message</entry>
+                            <entry>3</entry>
+                        </row>
+                        <row>
+                            <entry>notification.processUndeliveredJob.intervalMS</entry>
+                            <entry>The elapsed time, in milliseconds, between runs of the KEN
+                                process undelivered notifications job.</entry>
+                            <entry>10000</entry>
+                        </row>
+                        <row>
+                            <entry>notification.processUndeliveredJob.startDelayMS</entry>
+                            <entry>The elapsed time, in milliseconds, between the start of the
+                                application and the first run of the KEN process undelivered
+                                notifications job.</entry>
+                            <entry>10000</entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table>
+        </para>
+        <note><para>As of Rice 1.0.1, The parameter <emphasis role="bold">kcb.smtp.host</emphasis> is no longer
+                used. The smtp server settings that are required for sending email notifications
+                with KEN are documented in the Kuali Enterprise Workflow (KEW) Technical Reference
+                Guide under <emphasis role="bold">Email Configuration.</emphasis></para></note>
     </sect1>
     <sect1>
         <title>KEN Channels</title>
+        <para>A KEN Channel is correlated to a specific type of notification. An example of a
+            Channel’s use may be to send out information about upcoming Library Events or broadcast
+            general announcements on upcoming concerts. Channels are subscribed to in the act of
+            receiving notifications from a publisher or producer. They can also be unsubscribed to
+            and removed from the data store from within the UI. The Channel Definitions are stored
+            in the database table KREN_CHNL_T. The columns are listed as follows:</para>
+        <para>
+            <table frame="none">
+                <title>KREN_CHNL_T</title>
+                <tgroup cols="2">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                    <thead>
+                        <row>
+                            <entry>Column</entry>
+                            <entry>Description</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <entry>CHNL_ID</entry>
+                            <entry>Identifier for the Channel</entry>
+                        </row>
+                        <row>
+                            <entry>NM</entry>
+                            <entry>Name of the Channel represented in the UI</entry>
+                        </row>
+                        <row>
+                            <entry>DESC_TXT</entry>
+                            <entry>Description of the Channel</entry>
+                        </row>
+                        <row>
+                            <entry>SUBSCRB_IND</entry>
+                            <entry>Determines if the Channel can or cannot be subscribed to from the
+                                UI. This also determines if the channel will be displayed in the
+                                UI</entry>
+                        </row>
+                        <row>
+                            <entry>VER_NBR</entry>
+                            <entry>Version Number for the Channel</entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table>
+        </para>
         <sect2>
             <title>Channel Subscription</title>
+            <para>Channels can be subscribed to through the UI and also through the direct access to
+                the data store. To add a channel that can be subscribed to simply run the following
+                SQL statement against the data store customizing value entries to your needs: </para>
+            <programlisting>INSERT INTO KREN_CHNL_T (CHNL_ID,DESC_TXT,NM,SUBSCRB_IND,VER_NBR)
+  VALUES (2,'This channel is used for sending out information about Library Events.','Library Events Channel','Y',
+1)</programlisting>
         </sect2>
     </sect1>
     <sect1>
         <title>KEN Producers</title>
+        <para>A KEN Producer submits notifications for processing through the system. An example of
+            a Producer would be a mailing daemon that represents messages sent from a University
+            Library System. </para>
+        <para>Characteristics of a Producer:<itemizedlist>
+                <listitem>
+                    <para>Producers create and send notifications to a specific destination through
+                        various Channels. </para>
+                </listitem>
+                <listitem>
+                    <para>Each Producer contains a list of Channels that it may send notifications
+                        to. </para>
+                </listitem>
+                <listitem>
+                    <para>Producer Definitions are stored in the database table KREN_PRODCR_T.
+                    </para>
+                </listitem>
+            </itemizedlist></para>
+        <para>
+            <table frame="none">
+                <title>KREN_PRODCR_T</title>
+                <tgroup cols="2">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                    <thead>
+                        <row>
+                            <entry>Column</entry>
+                            <entry>Description</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <entry>CNTCT_INFO</entry>
+                            <entry>The email address identifying the Producer of the
+                                Notification.</entry>
+                        </row>
+                        <row>
+                            <entry>DESC_TXT</entry>
+                            <entry>A Description of the Producer.</entry>
+                        </row>
+                        <row>
+                            <entry>NM</entry>
+                            <entry>Name of the Producer.</entry>
+                        </row>
+                        <row>
+                            <entry>PRODCR_ID</entry>
+                            <entry>The Producer’s Channel Identifier. See the KREN_CHNL_PRODCR_T
+                                table found in the database for more information on how Producers
+                                link to Channels.</entry>
+                        </row>
+                        <row>
+                            <entry>VER_NBR</entry>
+                            <entry>Version Number for the Producer.</entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table>
+        </para>
         <sect2>
             <title>Adding Producers</title>
+            <para>The Producer can be added through direct access to the data store. To add a
+                Producer run the following SQL statement against the data store customizing value
+                entries to your needs:</para>
+            <programlisting>INSERT INTO KREN_PRODCR_T (CNTCT_INFO,DESC_TXT,NM,PRODCR_ID,VER_NBR)
+  VALUES ('kuali-ken-testing@cornell.edu','This producer represents messages sent from the general message sending forms.','Notification System',1,1)
+</programlisting>
         </sect2>
     </sect1>
     <sect1>
         <title>KEN Content Types</title>
         <sect2>
+            <title>Overview</title>
+            <para>A Content Type is part of the message content of a notification that may be sent
+                using KEN. It can be as simple as a single message string, or something more
+                complex, such as an event that might have a date associated with it, start and stop
+                times, and other metadata you may want to associate with the notification.</para>
+            <para>KEN is distributed with two Content Types: Simple and Event. </para>
+            <warning><para>It is strongly recommended that you leave these two Content Types intact, but you
+                can use them as templates for creating new Content Types.</para></warning>
+            <para>Every notification sent through KEN must be associated with a <emphasis
+                    role="bold">registered</emphasis> Content Type. Registration of Content Types
+                requires administrative access to the system and is described in the KEN Content
+                Types section in the User Guide. The rest of this section describes the Content Type
+                attributes that are required for registration.</para>
+        </sect2>
+        <sect2>
             <title>Content Type Attributes</title>
+            <para>A Content Type is represented as a <emphasis role="italic"
+                    >NotificationContent</emphasis> business object and consists of several
+                attributes, described below:</para>
+            <para><emphasis role="bold">id</emphasis> - Unique identifier that KEN automatically
+                creates when you add a Content Type </para>
+            <para><emphasis role="bold">name</emphasis> - This is a unique string that identifies
+                the content. For example, <emphasis role="italic">ItemOverdue</emphasis> might be
+                the <emphasis role="italic">name</emphasis> used for a notification Content Type
+                about an item checked out from the campus library. </para>
+            <para><emphasis role="bold">description</emphasis> - This is a more verbose description
+                of the Content Type. For example, "Library item overdue notices" might be the
+                    <emphasis role="italic">description</emphasis> for <emphasis role="italic"
+                    >ItemOverdue</emphasis>. </para>
+            <para><emphasis role="bold">namespace</emphasis> - This is the string used in the XSD
+                schema and XML to provide validation of the content, for example, <emphasis
+                    role="italic">notification/ContentTypeItemOverdue</emphasis>. The XSD namespace
+                is typically the <emphasis role="italic">name</emphasis> attribute concatenated to
+                the <emphasis role="italic">notification/ContentType</emphasis> string. Note how it
+                is used in the <emphasis role="bold">XSD</emphasis> and <emphasis role="bold"
+                    >XSL</emphasis> examples below. </para>
+            <para><emphasis role="bold">xsd</emphasis> - The XSD attribute contains the complete
+                    <link xlink:href="http://www.w3.org/XML/Schema">W3C XML Schema</link> compliant
+                code. </para>
+            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;!-- This schema defines a generic event notification type in order for it to be accepted into the system. -->
+&lt;schema xmlns="http://www.w3.org/2001/XMLSchema"         
+        xmlns:c="ns:notification/common"         
+        xmlns:ce="ns:notification/ContentTypeItemOverdue"         
+        targetNamespace="ns:notification/ContentTypeItemOverdue"         
+        attributeFormDefault="unqualified"         
+        elementFormDefault="qualified">  
+    &lt;annotation>    
+        &lt;documentation xml:lang="en">Item Overdue Schema&lt;/documentation>  
+    &lt;/annotation>
+    &lt;import namespace="ns:notification/common" schemaLocation="resource:notification/notification-common" />
+ 
+    &lt;!-- The content element describes the content of the notification.  It contains a message (a simple String) and a message element -->  
+    &lt;element name="content">    
+        &lt;complexType>      
+            &lt;sequence>        
+                &lt;element name="message" type="c:LongStringType"/>        
+                &lt;element ref="ce:event"/>      
+            &lt;/sequence>    
+        &lt;/complexType>  
+    &lt;/element>
+
+    &lt;!-- This is the itemoverdue element.  It describes an item overdue notice containing a summary, description, location, due date, and the amount of the fine levied -->  
+    &lt;element name="itemoverdue">    
+        &lt;complexType>      
+            &lt;sequence>        
+                &lt;element name="summary" type="c:NonEmptyShortStringType" />        
+                &lt;element name="description" type="c:NonEmptyShortStringType" />        
+                &lt;element name="location" type="c:NonEmptyShortStringType" />        
+                &lt;element name="dueDate" type="dateTime" />        
+                &lt;element name="fine" type="decimal" />      
+            &lt;/sequence>    
+        &lt;/complexType>  
+    &lt;/element>
+&lt;/schema></programlisting>
+            <para><emphasis role="bold">xsl</emphasis> - The XSD attribute contains the complete XSL
+                code that will be used to transform a notification in XML to html for rendering in
+                an Action List. </para>
+            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;!-- style sheet declaration: be very careful editing the following, the
+ default namespace must be used otherwise elements will not match -->
+&lt;xsl:stylesheet
+ 
+    version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:n="ns:notification/ContentTypeEvent"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ns:notification/ContentTypeItemOverdue resource:notification/ContentTypeItemOverdue"
+    exclude-result-prefixes="n xsi">
+
+    
+
+    &lt;!-- output an html fragment -->
+    &lt;xsl:output method="html" indent="yes" />
+
+
+    &lt;!-- match everything -->
+    &lt;xsl:template match="/n:content" >
+        &lt;table class="bord-all">
+            &lt;xsl:apply-templates />
+        &lt;/table>
+    &lt;/xsl:template>
+
+
+    &lt;!--  match message element in the default namespace and render as strong -->
+    &lt;xsl:template match="n:message" >
+        &lt;caption>
+            &lt;strong>&lt;xsl:value-of select="." disable-output-escaping="yes"/>&lt;/strong>
+        &lt;/caption>
+    &lt;/xsl:template>
+
+
+    &lt;!-- match on itemoverdue in the default namespace and display all children -->
+    &lt;xsl:template match="n:itemoverdue">
+        &lt;tr>
+            &lt;td class="thnormal">&lt;strong>Summary: &lt;/strong>&lt;/td>
+            &lt;td class="thnormal">&lt;xsl:value-of select="n:summary" />&lt;/td>
+        &lt;/tr>
+        &lt;tr>
+            &lt;td class="thnormal">&lt;strong>Item Description: &lt;/strong>&lt;/td>
+            &lt;td class="thnormal">&lt;xsl:value-of select="n:description" />&lt;/td>
+        &lt;/tr>
+        &lt;tr>
+            &lt;td class="thnormal">&lt;strong>Library: &lt;/strong>&lt;/td>
+            &lt;td class="thnormal">&lt;xsl:value-of select="n:location" />&lt;/td>
+        &lt;/tr>
+        &lt;tr>
+            &lt;td class="thnormal">&lt;strong>Due Date: &lt;/strong>&lt;/td>
+            &lt;td class="thnormal">&lt;xsl:value-of select="n:startDateTime" />&lt;/td>
+        &lt;/tr>
+        &lt;tr>
+            &lt;td class="thnormal">&lt;strong>Fine: &lt;/strong>&lt;/td>
+            &lt;td class="thnormal">$&lt;xsl:value-of select="n:fine" />&lt;/td>
+        &lt;/tr>
+    &lt;/xsl:template>
+&lt;/xsl:stylesheet>
+</programlisting>
         </sect2>
     </sect1>
     <sect1>
         <title>KEN Notifications</title>
+        <para>This document provides information about the attributes of a Notification. These
+            attributes are elements such as message content, who is sending the notification, who
+            should receive it, etc. Kuali Enterprise Notification (KEN) supports an arbitrary number
+            of Content Types, such as a simple message or an event notification. Each Content Type
+            consists of a common set of attributes and a content attribute.</para>
         <sect2>
             <title>Common Notification Attributes</title>
+            <para>
+                <table frame="none">
+                    <title>Common Notification Attributes</title>
+                    <tgroup cols="5">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                        <colspec colname="c4" colnum="4" colwidth="1.0*"/>
+                        <colspec colname="c5" colnum="5" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Name </entry>
+                                <entry>Type </entry>
+                                <entry>Required</entry>
+                                <entry>Description </entry>
+                                <entry>Example </entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>channel </entry>
+                                <entry>string </entry>
+                                <entry>yes </entry>
+                                <entry>
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>Name of a channel </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>Must be registered </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                </entry>
+                                <entry>Library Events </entry>
+                            </row>
+                            <row>
+                                <entry>producer </entry>
+                                <entry>string </entry>
+                                <entry>yes </entry>
+                                <entry>
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>Name of the producing system</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>Must be registered and given authority to send
+                                                messages on behalf of the <emphasis role="italic"
+                                                  >&lt;Library Events></emphasis> channel </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                </entry>
+                                <entry>Library Calendar System </entry>
+                            </row>
+                            <row>
+                                <entry>senders </entry>
+                                <entry>a list of strings </entry>
+                                <entry>yes </entry>
+                                <entry>A list of the names of people on whose behalf the message is
+                                    being sent </entry>
+                                <entry>TestUser1, TestUser2 </entry>
+                            </row>
+                            <row>
+                                <entry>recipients </entry>
+                                <entry>a list of strings </entry>
+                                <entry>yes </entry>
+                                <entry>A list of the names of groups or users to whom the message is
+                                    being sent </entry>
+                                <entry>library-staff-group, TestUser1, TestUser2 </entry>
+                            </row>
+                            <row>
+                                <entry>deliveryType</entry>
+                                <entry>string</entry>
+                                <entry>yes </entry>
+                                <entry>fyi or ack </entry>
+                                <entry>fyi </entry>
+                            </row>
+                            <row>
+                                <entry>sendDateTime</entry>
+                                <entry>datetime </entry>
+                                <entry>no </entry>
+                                <entry>When to send the notification </entry>
+                                <entry>2006-01-01 00:00:00.0 </entry>
+                            </row>
+                            <row>
+                                <entry>autoRemoveDateTime</entry>
+                                <entry>datetime </entry>
+                                <entry>no </entry>
+                                <entry>When to remove the notification </entry>
+                                <entry>2006-01-02 00:00:00.0 </entry>
+                            </row>
+                            <row>
+                                <entry>priority</entry>
+                                <entry>string</entry>
+                                <entry>yes</entry>
+                                <entry>An arbitrary priority; these must be registered in KEN; the
+                                    system comes with defaults of <emphasis role="italic"
+                                        >normal</emphasis>, <emphasis role="italic">low</emphasis>,
+                                    and <emphasis role="italic">high</emphasis>
+                                </entry>
+                                <entry>normal </entry>
+                            </row>
+                            <row>
+                                <entry>contentType</entry>
+                                <entry>string</entry>
+                                <entry>yes</entry>
+                                <entry>Name for the content; KEN comes set up with <emphasis
+                                        role="italic">simple</emphasis> and <emphasis role="italic"
+                                        >event</emphasis>; new contentTypes must be registered in
+                                    KEN </entry>
+                                <entry>simple</entry>
+                            </row>
+                            <row>
+                                <entry>content </entry>
+                                <entry>see below </entry>
+                                <entry>yes</entry>
+                                <entry>The actual content </entry>
+                                <entry>see below</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
         </sect2>
         <sect2>
             <title>Message Content</title>
+            <para>Notifications are differentiated using the <emphasis role="italic"
+                    >contentType</emphasis> attribute and the contents of the <emphasis
+                    role="italic">content</emphasis> element. The <emphasis role="italic"
+                    >content</emphasis> element can be as simple as a message string or it may be a
+                complex structure. For example, a simple notification may only contain a message
+                string, whereas an <emphasis role="italic">Event</emphasis> Content Type might
+                contain a summary, description, location, and start and end dates and times.
+                Examples of the <emphasis role="italic">Simple</emphasis> and <emphasis
+                    role="italic">Event</emphasis> Content Types:</para>
             <sect3>
                 <title>Sample XML for a Simple Notification</title>
+                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;!-- A Simple Notification Message -->
+&lt;notification xmlns="ns:notification/NotificationRequest"
+    xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance
+    xsi:schemaLocation="ns:notification/NotificationRequest
+    resource:notification/NotificationRequest">
+    &lt;!-- this is the name of the notification channel -->
+    &lt;!-- that has been registered in the system -->
+    &lt;channel>Campus Status Announcements&lt;/channel>
+
+
+    &lt;!-- this is the name of the producing system -->
+    &lt;!-- the value must match a registered producer -->
+    &lt;producer>Campus Announcements System&lt;/producer>
+
+    &lt;!-- these are the people that the message is sent on -->
+    &lt;!-- behalf of -->
+    &lt;senders>
+        &lt;sender>John Fereira&lt;/sender>
+    &lt;/senders>
+
+
+    &lt;!-- who is the notification going to? -->
+    &lt;recipients>
+        &lt;group>Everyone&lt;/group>
+        &lt;user>jaf30&lt;/user>
+    &lt;/recipients>
+
+
+    &lt;!--  fyi or acknowledge -->
+    &lt;deliveryType>fyi&lt;/deliveryType>
+
+
+    &lt;!-- optional date and time that a notification should be sent -->
+    &lt;!-- use this for scheduling a single future notification to happen -->
+    &lt;sendDateTime>2006-01-01T00:00:00&lt;/sendDateTime>
+
+
+    &lt;!-- optional date and time that a notification should be removed -->
+    &lt;!-- from all recipients' lists, b/c the message no longer applies -->
+    &lt;autoRemoveDateTime>3000-01-01T00:00:00&lt;/autoRemoveDateTime>
+
+
+    &lt;!-- this is the name of the priority of the message -->
+    &lt;!-- priorities are registered in the system, so your value -->
+    &lt;!-- here must match one of the registered priorities -->
+    &lt;priority>Normal&lt;/priority>
+
+
+    &lt;title>School is Closed&lt;/title>
+
+
+    &lt;!-- this is the name of the content type for the message -->
+    &lt;!-- content types are registered in the system, so your value -->
+    &lt;!-- here must match one of the registered contents -->
+    &lt;contentType>Simple&lt;/contentType>
+
+
+    &lt;!-- actual content of the message -->
+    &lt;content xmlns="ns:notification/ContentTypeSimple"
+        xsi:schemaLocation="ns:notification/ContentTypeSimple
+        resource:notification/ContentTypeSimple">
+		
+        &lt;message>Snow Day! School is closed.&lt;/message>
+    &lt;/content>
+&lt;/notification>
+</programlisting>
             </sect3>
             <sect3>
                 <title>Sample XML for an Event Notification</title>
+                <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+
+
+&lt;notification xmlns="ns:notification/NotificationMessage"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="ns:notification/NotificationMessage
+    resource:notification/NotificationMessage">
+    &lt;!-- this is the name of the notification channel -->
+    &lt;!-- that has been registered in the system -->
+    &lt;channel>Concerts Coming to Campus&lt;/channel>
+
+
+    &lt;!-- this is the name of the producing system -->
+    &lt;!-- the value must match a registered producer -->
+    &lt;producer>Campus Events Office&lt;/producer>
+
+
+    &lt;!-- these are the people that the message is sent on -->
+    &lt;!-- behalf of -->
+    &lt;senders>
+        &lt;sender>ag266&lt;/sender>
+        &lt;sender>jaf30&lt;/sender>
+    &lt;/senders>
+
+
+    &lt;!-- who is the notification going to? -->
+        &lt;recipients>
+            &lt;group>Group X&lt;/group>
+            &lt;group>Group Z&lt;/group>
+            &lt;user>ag266&lt;/user>
+            &lt;user>jaf30&lt;/user>
+            &lt;user>arh14&lt;/user>
+        &lt;/recipients>
+
+
+    &lt;!--  fyi or acknowledge -->
+    &lt;deliveryType>fyi&lt;/deliveryType>
+
+
+    &lt;!-- optional date and time that a notification should be sent -->
+    &lt;!-- use this for scheduling a single future notification to happen -->
+    &lt;sendDateTime>2006-01-01 00:00:00.0&lt;/sendDateTime>
+
+
+    &lt;!-- optional date and time that a notification should be removed -->
+    &lt;!-- from all recipients' lists, b/c the message no longer applies -->
+    &lt;autoRemoveDateTime>2007-01-01 00:00:00.0&lt;/autoRemoveDateTime>
+
+
+    &lt;!-- this is the name of the priority of the message -->
+    &lt;!-- priorities are registered in the system, so your value -->
+    &lt;!-- here must match one of the registered priorities -->
+    &lt;priority>Normal&lt;/priority>
+
+
+    &lt;!-- this is the name of the content type for the message -->
+    &lt;!-- content types are registered in the system, so your value -->
+    &lt;!-- here must match one of the registered contents -->
+    &lt;contentType>Event&lt;/contentType>
+
+
+    &lt;!-- actual content of the message -->
+    &lt;content>
+        &lt;message>CCC presents The Strokes at Cornell&lt;/message>
+
+        
+        &lt;!-- an event that it happening on campus -->
+        &lt;event xmlns="ns:notification/ContentEvent" 
+            xsi:schemaLocation="ns:notification/ContentEvent
+            resource:notification/ContentEvent">
+            &lt;summary>CCC presents The Strokes at Cornell&lt;/summary>
+            &lt;description>blah blah blah&lt;/description>
+            &lt;location>Barton Hall&lt;/location>
+            &lt;startDateTime>2006-01-01T00:00:00&lt;/startDateTime>
+            &lt;stopDateTime>2007-01-01T00:00:00&lt;/stopDateTime>
+        &lt;/event>
+    &lt;/content>
+&lt;/notification>
+</programlisting>
             </sect3>
         </sect2>
         <sect2>
             <title>Notification Response</title>
+            <para>When KEN sends a notification, it always returns a response. This is an outline in
+            XML of that response:</para>
+            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;response>
+    &lt;status>success&lt;/status>
+&lt;/response>
+</programlisting>
         </sect2>
     </sect1>
     <sect1>
         <title>Enterprise Notification Priority</title>
+        <sect2>
+            <title>Managing Priorities</title>
+            <para>There is no user interface page to manage priorities so you must make changes to
+                the list of priorities in the <emphasis role="bold">kren_prio_t</emphasis> table
+                using SQL.</para>
+            <para>The table has these columns:</para>
+            <para>
+                <table frame="none">
+                    <title>KREN_PRIO_T</title>
+                    <tgroup cols="5">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                        <colspec colname="c4" colnum="4" colwidth="1.0*"/>
+                        <colspec colname="c5" colnum="5" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Name</entry>
+                                <entry>Type</entry>
+                                <entry>Max Size</entry>
+                                <entry>Required</entry>
+                                <entry>Attribute</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>PRIO_ID</entry>
+                                <entry>Numeric</entry>
+                                <entry>8</entry>
+                                <entry>Yes</entry>
+                                <entry>ID</entry>
+                            </row>
+                            <row>
+                                <entry>NM</entry>
+                                <entry>Text</entry>
+                                <entry>40</entry>
+                                <entry>Yes</entry>
+                                <entry>Name</entry>
+                            </row>
+                            <row>
+                                <entry>DESC_TXT</entry>
+                                <entry>Text</entry>
+                                <entry>500</entry>
+                                <entry>Yes</entry>
+                                <entry>Description</entry>
+                            </row>
+                            <row>
+                                <entry>PRIO_ORD</entry>
+                                <entry>Numeric</entry>
+                                <entry>4</entry>
+                                <entry>Yes</entry>
+                                <entry>Order</entry>
+                            </row>
+                            <row>
+                                <entry>VER_NBR</entry>
+                                <entry>Numeric</entry>
+                                <entry>8</entry>
+                                <entry>Yes</entry>
+                                <entry>Version</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+            <example>
+                <title>Example – This is an example of how to add a Priority into the table:</title>
+                <programlisting>INSERT INTO kren_prio_t (PRIO_ID, NM, DESC_TXT, PRIO_ORD, VER_NBR) VALUES (8, 'Bulk', 'Mass notifications', 6, 1);</programlisting>
+            </example>
+        </sect2>
     </sect1>
     <sect1>
         <title>KEN Delivery Types</title>
+        <para>This section describes Kuali Enterprise Notification (KEN) Delivery Types, or what are
+            sometimes called Message Deliverers. A Message Deliverer Plugin is the mechanism used to
+            deliver a notification to end users. All notifications sent through KEN appear in the
+            Action List for each recipient for which the notification is intended. This message also
+            contains an Email Delivery Type that allows you to send end users a notification summary
+            as an email message. Note that for a Delivery Type other than the default
+            (KEWActionList), the content of the notification is typically just a summary of the full
+            notification.  </para>
         <sect2>
             <title>Implementing the Java Interface</title>
+            <para>Creating a new Delivery Type primarily involves implementing a Java interface
+                called <emphasis role="bold"
+                    >org.kuali.rice.kew.deliverer.NotificationMessageDeliverer</emphasis>. The
+                source code of the interface: </para>
+            <programlisting>/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ 
+ */
+package org.kuali.rice.ken.deliverer;
+
+
+
+import java.util.HashMap;
+
+import java.util.LinkedHashMap;
+
+
+import org.kuali.rice.ken.bo.NotificationMessageDelivery;
+import org.kuali.rice.ken.exception.ErrorList;
+
+import org.kuali.rice.ken.exception.NotificationAutoRemoveException;
+import org.kuali.rice.ken.exception.NotificationMessageDeliveryException;
+import org.kuali.rice.ken.exception.NotificationMessageDismissalException;
+
+
+/**
+ * This class represents the different types of Notification Delivery Types that the system can handle.
+ * For example, an instance of delivery type could be "ActionList" or "Email" or "SMS".  Any deliverer implementation
+ * adhering to this interface can be plugged into the system and will be automatically available for use.
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+*/
+
+public interface NotificationMessageDeliverer {
+  /**
+   * This method is responsible for delivering the passed in messageDelivery record.
+   * @param messageDelivery The messageDelivery to process
+   * @throws NotificationMessageDeliveryException
+  */
+
+  public void deliverMessage(NotificationMessageDelivery messageDelivery) throws NotificationMessageDeliveryException;
+    /**
+     * This method handles auto removing a message delivery from a person's list of notifications.
+     * @param messageDelivery The messageDelivery to auto remove
+     * @throws NotificationAutoRemoveException
+     */
+
+  public void autoRemoveMessageDelivery(NotificationMessageDelivery messageDelivery) throws NotificationAutoRemoveException;
+    /**
+     * This method dismisses/removes the NotificationMessageDelivery so that it is no longer being presented to the user
+     * via this deliverer.  Note, whether this action is meaningful is dependent on the deliverer implementation.  If the
+     * deliverer cannot control the presentation of the message, then this method need not do anything.
+     * @param messageDelivery the messageDelivery to dismiss
+     * @param the user that caused the dismissal; in the case of end-user actions, this will most likely be the user to
+     *   which the message was delivered (user recipient in the NotificationMessageDelivery object)
+     * @param cause the reason the message was dismissed
+     */
+    
+
+  public void dismissMessageDelivery(NotificationMessageDelivery messageDelivery, String user, String cause) throws NotificationMessageDismissalException;
+</programlisting>
         </sect2>
     </sect1>
     <sect1>
         <title>KEN: Sending a Notification</title>
+        <para>The Kuali Enterprise Notification system (KEN) provides for a way to programmatically
+            send a notification. An application may construct a notification using the KEN web
+            service API.</para>
         <sect2>
             <title>Send a Notification Using the Web Service API</title>
+            <para>To send a notification using the web service API, the notification must be
+                constructed as an XML document that validates against a schema for a specific
+                Content Type. For more detail, see the Notifications documentation. </para>
+            <para>To validate your notification XML, you must construct the XSD schema filename. To
+                construct this file name, append the Content Type value to <emphasis role="italic"
+                    >ContentType</emphasis>. </para>
+            <para>For example, if you create a new Content Type for a library book overdue
+                notification, then the <emphasis role="italic">contentType</emphasis> element value
+                should be <emphasis role="italic">OverdueNotice</emphasis> and the schema file you
+                created for validation of the notification XML should be <emphasis role="bold"
+                    >ContentTypeOverdueNotice.xsd</emphasis>. This XML schema should be declared as
+                a namespace in the <emphasis role="bold">content</emphasis> element of the
+                notification XML. Out of the box, KEN comes with <emphasis role="italic"
+                    >Simple</emphasis> and <emphasis role="italic">Event</emphasis> Content
+                Types.</para>
         </sect2>
         <sect2>
             <title>Web Service URL</title>
+            <para>By default, the Notification Web Service API may be accessed at: <link
+                    xlink:href="http://yourlocalip:8080/notification/services/Notification"
+                    >http://yourlocalip:8080/notification/services/Notification</link></para>
+            <para>A WSDL may be obtained using the following URL: <link
+                    xlink:href="http://yourlocalip:8080/notification/services/Notification?wsdl"
+                    >http://yourlocalip:8080/notification/services/Notification?wsdl</link></para>
+            <note><para>In the URLs above, replace yourlocalip with the hostname where KEN is deployed.</para></note>
         </sect2>
         <sect2>
             <title>Exposed Web Services</title>
+            <para>Initially, KEN exposes a web service method to send a notification. The <emphasis
+                    role="italic">sendNotification</emphasis> method is a simple String In/String
+                Out method. It accepts one parameter (<emphasis role="italic"
+                    >notificationMessageAsXml</emphasis>) and returns a notificationResponse as a
+                String. For the format of the response, see the <emphasis role="italic">Notification
+                    Response</emphasis> document in the TRG for KEN.</para>
             <sect3>
-                <title>Calling the sendNotification Service from JAVA</title>
+                <title>Calling the <emphasis role="italic">sendNotification</emphasis> Service from
+                    JAVA</title>
+                <para>First, create a String that includes the XML content for the notification, as
+                    described in the Notification Message document of the TRG for KEN. In the
+                    following example code, the XML representation of the notification is read as a
+                    file from the file system in the main method, and the code calls the <emphasis
+                        role="italic">MySendNotification</emphasis> method to invoke the
+                    Notification web service. </para>
+                <para>A SOAP style web services binding stub is available in the <emphasis
+                        role="bold">notification.jar</emphasis> file, as described above in the
+                        <emphasis role="bold">Dependencies</emphasis> section. </para>
+                <para>You may use this code as a template for sending a notification using the web
+                    service:</para>
+                <programlisting>package edu.cornell.library.notification;
+
+
+import org.apache.commons.io.IOUtils;
+import org.kuali.notification.client.ws.stubs.NotificationWebServiceSoapBindingStub;
+
+
+import java.io.IOException;
+
+import java.io.InputStream;
+import java.net.URL;
+
+
+public class MyNotificationWebServiceClient   {
+  private final  static String WEB_SERVICE_URL = "http://localhost:8080/notification/services/Notification";
+
+  public static void MySendNotification(String notificationMessageAsXml) throws Exception {
+    URL url = new URL(WEB_SERVICE_URL);
+    NotificationWebServiceSoapBindingStub stub = new NotificationWebServiceSoapBindingStub(url, null);
+    String responseAsXml = stub.sendNotification(notificationMessageAsXml);
+    // do something useful with the response
+    System.out.println(responseAsXml);
+  }
+
+  public static void main(String[] args) {
+    InputStream notificationXML = MyNotificationWebServiceClient.class.getResourceAsStream("webservice_notification.xml");
+    String notificationMessageAsXml = "";
+    try {
+      notificationMessageAsXml = IOUtils.toString(notificationXML);
+    } catch (IOException ioe) {
+      throw new RuntimeException("Error loading webservice_notification.xml");
+    }
+
+    try {
+      MySendNotification(notificationMessageAsXml);
+    } catch (Exception ioe) {
+      throw new RuntimeException("Error running webservice");
+    }
+  }
+
+}
+</programlisting>
             </sect3>
         </sect2>
     </sect1>
     <sect1>
         <title>KEN Authentication</title>
+        <sect2>
+            <title>Web</title>
+            <para>KEN can support any Web Sign On technology that results in the population of the
+                HttpServletRequest remote user variable, exposed via the getRemoteUser accessor. </para>
+            <para><emphasis role="bold">public java.lang.String getRemoteUser()</emphasis></para>
+            <para>Returns the login of the user making this request, if the user has been
+                authenticated, or null if the user has not been authenticated. Whether the user name
+                is sent with each subsequent request depends on the browser and type of
+                authentication. </para>
+            <para><emphasis role="bold">Returns</emphasis>: A <emphasis role="italic"
+                    >String</emphasis> specifying the login of the user making this request, or
+                    <emphasis role="italic">null</emphasis>
+            </para>
+            <para>The generic KEN release comes configured with CAS.</para>
+        </sect2>
+        <sect2>
+            <title>Web Services</title>
+            <para>Web service authentication is part of the development process and is not
+                implemented by the standalone release of Rice. The notification web service is
+                Axis-based.</para>
+        </sect2>
     </sect1>
 </chapter>

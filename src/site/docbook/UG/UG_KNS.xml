@@ -2,6 +2,730 @@
 <chapter xml:id="UG_KNS" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KNS</title>
     <sect1>
-        <title>Introductory Topics</title>
+        <title>KNS Overview</title>
+        <para>The Kuali Nervous System (KNS) is the core of the Kuali Rice system. It embraces a
+            document- (business process) centric model that uses workflow as a core concept. </para>
+        <sect2>
+            <title>What is KNS?</title>
+            <itemizedlist>
+                <listitem>
+                    <para>It’s a framework to enforce consistency. </para>
+                </listitem>
+                <listitem>
+                    <para>It adheres to development standards and architectural principles. </para>
+                </listitem>
+                <listitem>
+                    <para>It’s a stable core for efficient development. </para>
+                </listitem>
+                <listitem>
+                    <para>It reduces the amount of code you need to write and supports code reuse.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </sect2>
+        <sect2>
+            <title>KNS Conceptual View</title>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/kns_conceptual_view.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>KNS is the core technical module in Rice. It has reusable code components to
+                provide functionality. </para>
+        </sect2>
+        <sect2>
+            <title>KNS Relational View</title>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/kns_relational_view.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Essentially, KNS is a common set of service methods you can use to take actions on
+                a document. It’s very similar to a business object service, for example, one that
+                persists documents and integrates with a workflow. One of the ways the KNS subsystem
+                accomplishes this is by using Spring’s transaction management features:<itemizedlist>
+                    <listitem>
+                        <para>documentService.save(document); </para>
+                    </listitem>
+                    <listitem>
+                        <para>documentService.approve(document); </para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Parameter</title>
+        <sect2>
+            <title>Parameter Lookup</title>
+            <para>KNS parameters are used throughout Rice. They reside in special system tables that
+                are used for configuring the system during runtime. Parameters control whether
+                certain features are turned on or off. They also establish default values within the
+                Rice system or by a process such as validation.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/select_parameter_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>To access the Parameter Lookup screen:<orderedlist>
+                    <listitem>
+                        <para>Go to the Rice<emphasis role="bold"> Main Menu</emphasis> screen
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>Locate the KNS Maintenance Documents section of the page </para>
+                    </listitem>
+                    <listitem>
+                        <para>Click <emphasis role="bold">Parameter Lookup</emphasis>
+                        </para>
+                    </listitem>
+                </orderedlist></para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>There are two ways to search for information on specific parameters:<itemizedlist>
+                    <listitem>
+                        <para>Enter information about the parameter in one or more fields on the
+                                <emphasis role="bold">Parameter Lookup</emphasis> screen, then click
+                            the <emphasis role="bold">Search</emphasis> button. This displays a list
+                            of parameters that match the information you entered, similar to the
+                            list in the screen print below. </para>
+                    </listitem>
+                    <listitem>
+                        <para>Leave the fields on the <emphasis role="bold">Parameter
+                                Lookup</emphasis> screen blank and click the <emphasis role="bold"
+                                >Search</emphasis> button. This displays a list of all available KNS
+                            parameters, similar to this: </para>
+                    </listitem>
+                </itemizedlist></para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_lookup_results.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>You can sort the list of parameters in ascending or descending order by one column
+                by clicking the appropriate column heading. If you want to save the list, you can
+                export the entire list in CSV, spreadsheet, or XML format. </para>
+            <para>Click a Namespace Code in the list of parameters to display more information about
+                that code.</para>
+        </sect2>
+        <sect2>
+            <title>Parameter Inquiry</title>
+            <para>You arrive at this screen by clicking a<emphasis role="bold"> Parameter
+                    Name</emphasis> on the <emphasis role="bold">Parameter Lookup</emphasis>
+                list.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_inquiry.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+        </sect2>
+        <sect2>
+            <title>Parameter Maintenance</title>
+            <para>In Rice, Parameters control key aspects of how the system operates.</para>
+            <sect3>
+                <title>Finding the Parameter Maintenance Screen</title>
+                <para>Getting to the <emphasis role="bold">Parameter Maintenance</emphasis> screen
+                    requires that you have permission to use the Administration screens in KRice.
+                    You can go directly to the <emphasis role="bold">Parameter
+                        Maintenance</emphasis> screen by:<orderedlist>
+                        <listitem>
+                            <para>Click the <emphasis role="bold">Administration</emphasis> tab
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>Look under <emphasis role="bold">Configuration</emphasis>
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>Click <emphasis role="bold">Parameter</emphasis>
+                            </para>
+                        </listitem>
+                    </orderedlist></para>
+            </sect3>
+            <sect3>
+                <title>Parameter Maintenance Screen</title>
+                <para>KNS Parameters can be created and edited by selecting the Parameter option on
+                    the Rice Administration screen.</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/select_parameter.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>After selection you will be presented with the <emphasis role="bold">Parameter
+                        Maintenance Document </emphasis>screen. The picture below is the complete
+                    screen with all tabs hidden. By default the Document Overview and Edit Parameter
+                    tabs are shown (i.e. open) when this screen is first accessed. </para>
+                <para>The system will automatically assign a new document number every time this
+                    screen is accessed. The Initiator, Status and Created information will also
+                    automatically be filled in.</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/parameter_maintenance_document.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>The Notes and Attachments tab, the Ad Hoc Recipients tab, the Route Log tab,
+                    and the buttons at the bottom of this screen perform standard functionality as
+                    described in the Common Features and Functionality document found in the Global
+                    section of the User Guide.</para>
+                <para>The following descriptions apply to the fields in the upper right hand corner
+                    of the screen.</para>
+                <para/>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field Name</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Doc Nbr</entry>
+                                    <entry>The document id is generated by the workflow environment
+                                        and is unique to each installation of Kuali. It is system
+                                        generated.</entry>
+                                </row>
+                                <row>
+                                    <entry>Initiator</entry>
+                                    <entry>The user name of the person who created the
+                                        document.</entry>
+                                </row>
+                                <row>
+                                    <entry>Status</entry>
+                                    <entry>This represents the status of this document. (Initiated,
+                                        Enroute, Final)</entry>
+                                </row>
+                                <row>
+                                    <entry>Created</entry>
+                                    <entry>The date and time that this document was created. It is
+                                        system generated.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+            <sect3>
+                <title>Document Overview Tab</title>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/parameter_overview.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field Name</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Description</entry>
+                                    <entry>Required. A description of the request itself, not the
+                                        parameter. This text should briefly describe why the request
+                                        is being made.</entry>
+                                </row>
+                                <row>
+                                    <entry>Org Doc #</entry>
+                                    <entry>Also sometimes simply referred to as document number. A
+                                        unique system assigned number used to identify each
+                                        document.</entry>
+                                </row>
+                                <row>
+                                    <entry>Explanation</entry>
+                                    <entry>Free form text which provides a detailed description of
+                                        the request.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+            <sect3>
+                <title>Edit Parameter Tab</title>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/edit_parameter.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field Name</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Namespace Code</entry>
+                                    <entry>Required. This value is used to categorize parameters by
+                                        namespace.</entry>
+                                </row>
+                                <row>
+                                    <entry>Parameter Component</entry>
+                                    <entry>Required. Code identifying the parameter
+                                        Component.</entry>
+                                </row>
+                                <row>
+                                    <entry>Parameter Name</entry>
+                                    <entry>Required. This will be used as the identifier for the
+                                        parameter. Parameter values will be accessed using this
+                                        field and the namespace as the key. Note – spaces are not
+                                        allowed in this field</entry>
+                                </row>
+                                <row>
+                                    <entry>Parameter Value</entry>
+                                    <entry>Required. This field houses the actual value associated
+                                        with the parameter. This is what's returned by the
+                                        KualiConfigurationService.</entry>
+                                </row>
+                                <row>
+                                    <entry>Parameter Description</entry>
+                                    <entry>Required. This field houses the purpose of this
+                                        parameter.</entry>
+                                </row>
+                                <row>
+                                    <entry>Parameter Type code</entry>
+                                    <entry>Required. Code identifying the parameter type. Parameter
+                                        Type Code is the primary key for its table.</entry>
+                                </row>
+                                <row>
+                                    <entry>Parameter Constraint Code</entry>
+                                    <entry>Required. Code identify the constraints that
+                                        apply.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Process to create a new Parameter</title>
+            <para>There are eight mandatory fields on the Document Overview and Edit Parameter tabs
+                that must be filled in before pressing the submit button. If the system finds any
+                errors it will return the screen with the fields in error identified, otherwise the
+                system will respond with the Parameter Maintenance Document screen showing that the:<itemizedlist>
+                    <listitem>
+                        <para>document was successfully submitted </para>
+                    </listitem>
+                    <listitem>
+                        <para>new document number for the document </para>
+                    </listitem>
+                    <listitem>
+                        <para>status is now ENROUTE </para>
+                    </listitem>
+                    <listitem>
+                        <para>actual creation date and time </para>
+                    </listitem>
+                </itemizedlist></para>
+                <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_maintenance_document2.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>You’ll also notice that the screen has changed and now has different buttons at
+                the bottom. Click the close button to close the current screen and return to your
+                starting point.</para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Parameter Detail</title>
+        <sect2>
+            <title>Parameter Component Lookup</title>
+            <para>Use the Parameter Component Lookup screen to get information on what <emphasis
+                    role="italic">Namespace</emphasis> a <emphasis role="italic">Parameter
+                    Component</emphasis> is associated with, and whether it is active or not.</para>
+            <para>To get to the <emphasis role="bold">Parameter Component Lookup</emphasis> screen
+                click that option in the <emphasis role="bold">KNS Maintenance Documents</emphasis>
+                section on the <emphasis role="bold">Main Menu</emphasis>.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/select_parameter_component_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>This leads you to the <emphasis role="bold">Parameter Component Lookup</emphasis>
+                screen.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_component_lookup.png"/>
+                    </imageobject>
+            </inlinemediaobject></para>
+            <para>Performing a search from this screen returns a list of one or more Parameter
+                Components which looks similar to the following example.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_component_lookup_results.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>To limit the number of items returned you simply provide criteria which is then
+                used to limit the search.</para>
+            <para>
+                <table frame="none">
+                    <title/>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Field Name</entry>
+                                <entry>Description</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Parameter Component Name</entry>
+                                <entry>The name by which the Parameter Component is commonly
+                                    known.</entry>
+                            </row>
+                            <row>
+                                <entry>Namespace</entry>
+                                <entry>The Namespace Code and Namespace Name associated with the
+                                    Parameter Component.</entry>
+                            </row>
+                            <row>
+                                <entry>Namespace Code</entry>
+                                <entry>The code associated with the namespace.</entry>
+                            </row>
+                            <row>
+                                <entry>Active Indicator</entry>
+                                <entry>Indicator for whether the Parameter Component is active in
+                                    Rice or not.</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Parameter Component Inquiry</title>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_component_inquiry.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>You arrive at this screen by clicking on a <emphasis role="bold">Parameter
+                    Component</emphasis> on the <emphasis role="bold">Parameter Lookup</emphasis>
+                list.</para>
+            <para>
+                <table frame="none">
+                    <title/>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Field Name</entry>
+                                <entry>Description</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Parameter Component</entry>
+                                <entry>A code identifying the component utilizing the
+                                    parameter</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Parameter Namespace</title>
+        <sect2>
+            <title>Namespace Lookup</title>
+            <para>Kuali uses Namespaces in all Kuali applications. A Namespace is a set of
+                information about the system and groups of information in the system. Everything is
+                tied to a Namespace in some way in Rice. A Namespace provides a way to set
+                boundaries around both Permissions and Entity Attributes. Each Namespace instance is
+                one level of scoping and is one record in that Kuali module.</para>
+            <para>Use the <emphasis role="bold">System Namespace Lookup</emphasis> function to
+                quickly find basic information about a Namespace in Rice. </para>
+            <para>When you click <emphasis role="bold">System Namespace Lookup</emphasis> in the
+                    <emphasis role="bold">KNS Maintenance Documents</emphasis> section on the
+                    <emphasis role="bold">Main Menu</emphasis>, Rice displays a screen titled
+                    <emphasis role="bold">Namespace Lookup</emphasis>, like this:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/namespace_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>There are two ways to search for information on a specific Namespace:<itemizedlist>
+                    <listitem>
+                        <para>Enter information about the Namespace you want to find in one or more
+                            fields on the <emphasis role="bold">Namespace Lookup</emphasis> screen,
+                            then click the <emphasis role="bold">Search</emphasis> button. This
+                            displays a list of Namespaces that match the information you entered,
+                            similar to the list in the screen print below. </para>
+                    </listitem>
+                    <listitem>
+                        <para>Leave the fields on the <emphasis role="bold">Namespace
+                                Lookup</emphasis> screen blank and click the <emphasis role="bold"
+                                >Search</emphasis> button. This displays a list of all available
+                            Namespaces, similar to this: </para>
+                    </listitem>
+                </itemizedlist></para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/namespace_lookup_results.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>You can sort the search results in ascending or descending order by one column by
+                clicking that column’s heading. If you want to save the search results, you can
+                export the entire list in CSV, spreadsheet, or XML format. </para>
+            <para>Click a Namespace Code in the search results list to display more information
+                about that code.</para>
+        </sect2>
+        <sect2>
+            <title>Namespace Inquiry</title>
+            <para>Use the <emphasis role="bold">Namespace Inquiry</emphasis> screen to find key
+                information about Namespaces.</para>
+            <para>You can go to the <emphasis role="bold">Namespace Inquiry</emphasis> screen from
+                several places in Rice:<itemizedlist>
+                    <listitem>
+                        <para>On the Rice Main Menu, click <emphasis role="bold">System Namespace
+                                Lookup</emphasis>. </para>
+                    </listitem>
+                    <listitem>
+                        <para>On the <emphasis role="bold">Parameter Lookup</emphasis> screen, click
+                            the book icon after selecting a valid <emphasis role="bold">Namespace
+                                Code</emphasis> from the dropdown list. </para>
+                    </listitem>
+                    <listitem>
+                        <para>On the <emphasis role="bold">Parameter Component Lookup</emphasis>
+                            screen, select a valid <emphasis role="bold">Namespace Code</emphasis>
+                            from the dropdown list, then click the book icon. </para>
+                    </listitem>
+                    <listitem>
+                        <para>When you do a <emphasis role="bold">Parameter Lookup</emphasis>, click
+                            the <emphasis role="bold">Namespace Code</emphasis> for one of your
+                            search results. </para>
+                    </listitem>
+                    <listitem>
+                        <para>On the <emphasis role="bold">Permission Inquiry</emphasis> screen,
+                            click the <emphasis role="bold">Template Namespace</emphasis> or the
+                                <emphasis role="bold">Permission Namespace</emphasis> date field.
+                        </para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>The Namespace Inquiry screen and information you see will be similar to
+                this:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/namespace_inquiry.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Parameter Type</title>
+        <sect2>
+            <title>Parameter Type Lookup</title>
+            <para>The <emphasis role="bold">Parameter Type Lookup</emphasis> function provides a
+                convenient way to obtain key information about the Parameter Types defined in your
+                Rice system.</para>
+            <para>To get to this screen, click <emphasis role="bold">Parameter Type
+                    Lookup</emphasis> on the <emphasis role="bold">Main Menu</emphasis>. </para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/select_parameter_type_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>You can also get to this screen by clicking the field lookup button on any screen
+                where it appears next to the <emphasis role="bold">Parameter Type Code</emphasis>
+                field.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_type_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Performing a search from the <emphasis role="bold">Parameter Type
+                    Lookup</emphasis> screen displays a table of Parameter Types that looks similar
+                to this:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_type_lookup_results.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>The fields on this screen are described in the <emphasis role="bold">Parameter
+                    Type Maintenance</emphasis> section of this document.</para>
+            <para>You can sort the search results in ascending or descending order by clicking the
+                appropriate column title. In addition to the online list of search results, you can
+                also export the entire list in CSV, spreadsheet, or XML format. If you get too many
+                Parameter Types from your search, please enter more information in the search fields
+                and click the <emphasis role="bold">Search</emphasis> button again.</para>
+        </sect2>
+        <sect2>
+            <title>Parameter Type Inquiry</title>
+            <para>The <emphasis role="bold">Parameter Type Inquiry</emphasis> screen gives you
+                information about a parameter type. On the <emphasis role="bold">Parameter
+                    Lookup</emphasis> screen, select a valid <emphasis role="bold">Parameter Type
+                    Code</emphasis> from the dropdown list. Then, click the inquiry button to
+                display the Parameter Type Inquiry screen with the information for that
+                parameter:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_type_inquiry.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>The fields on this screen are described in the <emphasis role="bold">Parameter
+                    Type Maintenance</emphasis> section of this document.</para>
+        </sect2>
+        <sect2>
+            <title>Parameter Type Maintenance</title>
+            <para>The Parameter Type Maintenance function allows you to define new Parameter Types
+                or edit information related to <emphasis role="bold">Parameter
+                Types</emphasis>.</para>
+            <para>You get to the <emphasis role="bold">Parameter Type Maintenance</emphasis> screen
+                by clicking <emphasis role="bold">Parameter Type</emphasis> in the <emphasis
+                    role="bold">Configuration</emphasis> section on the Rice <emphasis role="bold"
+                    >Administration</emphasis> menu:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/select_parameter_type.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>This takes you to the <emphasis role="bold">Parameter Type Maintenance
+                    Document</emphasis> screen:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/parameter_type_maintenance_document.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <sect3>
+                <title>Document Layout</title>
+                <para>The Parameter Type Maintenance screen has five main tabs:<itemizedlist>
+                        <listitem>
+                            <para>Document Overview</para>
+                        </listitem>
+                        <listitem>
+                            <para>Edit Parameter Type </para>
+                        </listitem>
+                        <listitem>
+                            <para>Notes and Attachments </para>
+                        </listitem>
+                        <listitem>
+                            <para>Ad Hoc Recipients </para>
+                        </listitem>
+                        <listitem>
+                            <para>Route Log </para>
+                        </listitem>
+                    </itemizedlist></para>
+                <para>All of these except the Edit Parameter Type tab are described in the Common
+                    Features and Functions section of this User Guide.</para>
+            </sect3>
+            <sect3>
+                <title>Edit Parameter Type tab</title>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/edit_parameter_type.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>
+                    <table frame="none">
+                        <title/>
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Field</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>Parameter Type Code</entry>
+                                    <entry>Required. Code identifying the parameter type. </entry>
+                                </row>
+                                <row>
+                                    <entry>Parameter Type Name</entry>
+                                    <entry>Required. The name by which the Parameter Type Code is
+                                        commonly known.</entry>
+                                </row>
+                                <row>
+                                    <entry>Active Indicator</entry>
+                                    <entry>An indicator specifying whether an entity in the system
+                                        is active or not.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </sect3>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Pessimistic Lock</title>
+        <sect2>
+            <title>Pessimistic Lock Lookup</title>
+            <para>The <emphasis role="bold">Pessimistic Lock Lookup</emphasis> screen lets you
+                review existing locks and manually release them.</para>
+            <para>You get to this screen by clicking the <emphasis role="bold">Pessimistic Lock
+                    Lookup</emphasis> option on the <emphasis role="bold">Main
+                Menu</emphasis>.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/pessimistic_lock_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>
+                <table frame="none">
+                    <title>Pessimistic Lock Lookup Fields</title>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Field Name</entry>
+                                <entry>Description</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Lock Owner Principle Name</entry>
+                                <entry>The name of the person who placed the lock on the
+                                    document</entry>
+                            </row>
+                            <row>
+                                <entry>Lock Descriptor</entry>
+                                <entry>A specification for the type of lock placed on the
+                                    document</entry>
+                            </row>
+                            <row>
+                                <entry>Generated Time From</entry>
+                                <entry>The date and time the lock was put in place</entry>
+                            </row>
+                            <row>
+                                <entry>Generated Time To</entry>
+                                <entry>The date and time when the lock expires</entry>
+                            </row>
+                            <row>
+                                <entry>Document Number</entry>
+                                <entry>The document ID for the locked document</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+        </sect2>
     </sect1>
 </chapter>

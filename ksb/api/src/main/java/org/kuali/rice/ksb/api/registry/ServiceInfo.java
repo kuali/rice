@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.util.jaxb.QNameAsStringAdapter;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = ServiceInfo.Constants.ROOT_ELEMENT_NAME)
@@ -46,6 +47,7 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
 	@XmlElement(name = Elements.SERVICE_ID, required = false)
     private final String serviceId;
 	
+	@XmlJavaTypeAdapter(QNameAsStringAdapter.class)
     @XmlElement(name = Elements.SERVICE_NAME, required = true)
     private final QName serviceName;
     

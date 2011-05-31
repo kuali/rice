@@ -65,7 +65,7 @@
 
 	<bean id="rice.ksb.instanceId" class="org.kuali.rice.ksb.impl.bus.InstanceIdFactoryBean"/>
 
-	<bean id="rice.ksb.serviceRegistry" class="org.kuali.rice.ksb.impl.registry.ServiceRegistryConnector"/>
+	<bean id="rice.ksb.serviceRegistry" class="org.kuali.rice.ksb.impl.registry.LazyRemoteServiceRegistryConnector" lazy-init="true" />
 	
 	<bean id="rice.ksb.diffCalculator" class="org.kuali.rice.ksb.impl.registry.diff.ServiceRegistryDiffCalculatorImpl"
 		p:serviceRegistry-ref="rice.ksb.serviceRegistry" />

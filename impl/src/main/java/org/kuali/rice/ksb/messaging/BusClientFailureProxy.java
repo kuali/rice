@@ -77,11 +77,10 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 
 	protected Object invokeInternal(Object proxyObject, Method method, Object[] params) throws Throwable {
 		Set<ServiceConfiguration> servicesTried = null;
-		Object service = getTarget();
 		
 		do {
 			try {
-				return method.invoke(service, params);
+				return method.invoke(getTarget(), params);
 			} catch (Throwable throwable) {			
 				if (isServiceRemovalException(throwable)) {
 					synchronized (failoverLock) {
@@ -132,4 +131,5 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 		}
 		return false;
 	}
+
 }

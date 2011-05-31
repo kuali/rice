@@ -29,6 +29,7 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.module.Configurer;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -99,7 +100,11 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	
 	public RunMode getRunMode() {
 		String propertyName = getModuleName().toLowerCase() + ".mode";
-		return RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(propertyName));
+		String runMode = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
+		if (StringUtils.isBlank(runMode)) {
+			throw new ConfigurationException("Failed to determine run mode for module '" + getModuleName() + "'.  Please be sure to set configuration parameter '" + propertyName + "'");
+		}
+		return RunMode.valueOf(runMode.toUpperCase());
 	}
 	
 	public String getWebModuleConfigName() {
@@ -208,6 +213,11 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 		if (CollectionUtils.isEmpty(this.validRunModes)) {
 			throw new IllegalStateException("the valid run modes for this module has not been set");
 		}
+		
+		// ConfigContext must be initialized...
+		if (!ConfigContext.isInitialized()) {
+    		throw new ConfigurationException("ConfigContext has not yet been initialized, please initialize prior to using.");
+    	}
 		
 		validateRunMode();
 		

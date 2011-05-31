@@ -155,26 +155,33 @@
 				</testResources>
                                 <pluginManagement>
                                         <plugins>
-                                                <plugin>
-                                                        <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-                                                        <artifactId>maven-svn-revision-number-plugin</artifactId>
-                                                        <version>1.5</version>
-                                                        <executions>
-                                                                <execution>
-                                                                        <goals>
-                                                                                <goal>revision</goal>
-                                                                        </goals>
-                                                                        <phase>initialize</phase>
-                                                                </execution>
-                                                        </executions>
-                                                        <configuration>
-                                                                <entries>
-                                                                        <entry>
-                                                                                <prefix>prefix</prefix>
-                                                                        </entry>
-                                                                </entries>
-                                                        </configuration>
-                                                </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.3.1</version>
+          <configuration>
+            <archive>
+              <manifestEntries>
+                <Bundle-Version>${project.version}</Bundle-Version>
+                <Bundle-Name>${project.name}</Bundle-Name>
+                <Bundle-Description>${project.description}</Bundle-Description>
+                <Bundle-License>${kuali.ecl.license.url}</Bundle-License>
+                <Bundle-Vendor>${project.organization.name}</Bundle-Vendor>
+                <Bundle-DocURL>${project.organization.url}</Bundle-DocURL>
+                <Bundle-Timestamp>${maven.build.timestamp}</Bundle-Timestamp>
+                <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                <Bundle-BuildNumber>${env.BUILD_NUMBER}</Bundle-BuildNumber>
+                <SVN-Repository>${svn.repository}</SVN-Repository>
+                <SVN-Path>${svn.path}</SVN-Path>
+                <SVN-Revision>${svn.revision}</SVN-Revision>
+              </manifestEntries>
+              <manifest>
+                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
                                                 <plugin>
                                                         <groupId>org.apache.maven.plugins</groupId>
                                                         <artifactId>maven-war-plugin</artifactId>
@@ -245,24 +252,28 @@
 							<buildNumberPropertyName>current.timestamp</buildNumberPropertyName>
 						</configuration>
 					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-jar-plugin</artifactId>
-						<version>2.2</version>
-						<configuration>
-							<archive>
-								<manifest>
-									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-								</manifest>
-								<manifestEntries>
-                                                                        <SVN-Repository>${prefix.repository}</SVN-Repository>
-                                                                        <SVN-Path>${prefix.path}</SVN-Path>
-                                                                        <SVN-Revision>${prefix.revision}</SVN-Revision>
-									<Build-Time>${current.timestamp}</Build-Time>
-								</manifestEntries>
-							</archive>
-						</configuration>
-					</plugin>
+        <plugin>
+          <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+          <artifactId>maven-svn-revision-number-plugin</artifactId>
+          <version>1.6</version>
+          <configuration>
+            <entries>
+              <entry>
+                <prefix>svn</prefix>
+                <depth>empty</depth>
+              </entry>
+            </entries>
+          </configuration>
+            <executions>
+              <execution>
+                <id>generate-svn-info</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>revision</goal>
+                </goals>
+              </execution>
+            </executions>
+        </plugin>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>cobertura-maven-plugin</artifactId>
@@ -316,11 +327,6 @@
                                         <plugin>
                                                 <groupId>org.apache.maven.plugins</groupId>
                                                 <artifactId>maven-war-plugin</artifactId>
-                                        </plugin>
-
-                                        <plugin>
-                                                <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-                                                <artifactId>maven-svn-revision-number-plugin</artifactId>
                                         </plugin>
 				</plugins>
 			</build>
@@ -376,7 +382,7 @@
 					</plugins>
 				</pluginManagement>
 
-				<plugins>
+  				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>

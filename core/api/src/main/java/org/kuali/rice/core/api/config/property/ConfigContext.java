@@ -17,6 +17,7 @@
 package org.kuali.rice.core.api.config.property;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 
 import java.util.ArrayList;
@@ -51,22 +52,26 @@ public class ConfigContext {
      * implementation.
      * @param rootCfg the root config
      */
-    public static void init(Config rootCfg) {
+    public synchronized static void init(Config rootCfg) {
     	init(Thread.currentThread().getContextClassLoader(), rootCfg);
     }
 
     /**
      * Initializes the ConfigContext with the given Config and binds it to the given ClassLoader.
      */
-    public static void init(ClassLoader classLoader, Config config) {
+    public synchronized static void init(ClassLoader classLoader, Config config) {
     	CONFIGS.put(classLoader, config);
     	initialized.fire();
     }
 
+    public synchronized static boolean isInitialized() {
+    	return initialized.hasFired();
+    }
+    
     /**
      * Destroy method (mostly to aid testing, as core needs to be torn down appropriately).
      */
-    public static void destroy() {
+    public synchronized static void destroy() {
         if (!initialized.hasFired()) {
             LOG.warn("Destroy on un-initialized ConfigContext was ignored.");
             return;

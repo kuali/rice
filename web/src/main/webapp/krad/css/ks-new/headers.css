@@ -1,34 +1,33 @@
 /*  -------------------  HEADER STYLES  -------------------  */
 
 
-h1.header-object-title {
-
-	border-bottom: 1px solid #000;
+h1.page-title-header {
+	/* [disabled]border-bottom: 1px solid #000; */
 	margin:0em;
-
 	
 }
-h2.header-page-title {
+h2.page-action {
+	/* [disabled]border-bottom: 1px solid #000; */
+	font-weight: normal;
+	margin:0em;
+}
+h3.page-section-title {
+	font-weight: bold;
+		margin:0em;
+		border-bottom: 2px solid #000;
+		
+	
+}
+h4.section-subhead {
+	
 	border-bottom: 1px solid #000;
-	font-weight: normal;
-		margin:0em;
-}
-h3.header-page-action {
-	font-weight: normal;
-		margin:0em;
-		font-size:2.1em
-	
-}
-h4.header-page-subsection {
-	
-	border-bottom: 1px dotted #000;
 	padding-bottom: 0.3em;
 		margin:0em;
 	
 }
-h5.header-page-subhead {
-	font-family:Arial, Helvetica, sans-serif;
-	font-size: 1em;
-	font-weight: bold;
+h4.section-subhead-no-border {
+	
+	border-bottom:none;
+	padding-bottom: 0.3em;
 		margin:0em;
 }

@@ -84,18 +84,20 @@ a {
         text-align:left;
     }
     th.sorting_asc, th.sorting_desc {
-        background-image: url(../images/pattern_dotted.png);
+        background-image: url(../../images/pattern_dotted.png);
     }
     th.sorting_asc label {
-        background-image:  url(../images/sort_asc.png);
+        background-image:  url(../../images/sort_asc.png);
         background-repeat: no-repeat;
         background-position: right;
     }
     th.sorting_desc label {
-        background-image: url(../images/sort_desc.png);
+        background-image: url(../../images/sort_desc.png);
         background-repeat: no-repeat;
         background-position: right;
     }
+
+
 
     th.sorting label, th.sorting_asc label, th.sorting_desc label, th.sorting_disabled label {
         color:#3F7826;

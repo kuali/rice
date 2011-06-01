@@ -18,25 +18,22 @@ package org.kuali.rice.ksb.impl.registry;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.StringUtils;
+import org.apache.cxf.Bus;
+import org.apache.cxf.frontend.ClientProxyFactoryBean;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.ksb.api.registry.RegistryConfigurations;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
 import org.kuali.rice.ksb.api.registry.ServiceEndpoint;
 import org.kuali.rice.ksb.api.registry.ServiceEndpointStatus;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.api.registry.ServiceRegistry;
-import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector;
-import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;
+import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
+import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
@@ -49,6 +46,13 @@ public class LazyRemoteServiceRegistryConnector implements ServiceRegistry {
 
 	private final Object initLock = new Object();
 	private volatile ServiceRegistry delegate;
+	
+	// injected
+	private Bus cxfBus;
+	
+	public void setCxfBus(Bus cxfBus) {
+		this.cxfBus = cxfBus;
+	}
 	
 	@Override
 	public List<ServiceInfo> getOnlineServicesByName(QName serviceName)
@@ -142,42 +146,24 @@ public class LazyRemoteServiceRegistryConnector implements ServiceRegistry {
 	}
 	
 	protected ServiceRegistry initializeRemoteServiceRegistry() {
-		String registryBootstrapUrl = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.REGISTRY_BOOTSTRAP_URL);
+		String registryBootstrapUrl = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.REGISTRY_SERVICE_URL);
 		if (StringUtils.isBlank(registryBootstrapUrl)) {
 			throw new RiceRuntimeException("Failed to load registry bootstrap service from url: " + registryBootstrapUrl);
 		}
-		RegistryConfigurations registryConfigurations = null;
-		HttpClient client = new HttpClient();
-		GetMethod method = new GetMethod(registryBootstrapUrl);
-		try {
-			int statusCode = client.executeMethod(method);
-			if (statusCode == HttpStatus.SC_OK) {
-				JAXBContext jaxbContext = JAXBContext.newInstance(RegistryConfigurations.class);
-			    Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			    Object unmarshalled = unmarshaller.unmarshal(method.getResponseBodyAsStream());
-			    if (unmarshalled == null) {
-			    	throw new RiceRuntimeException("Failed to unmarshal registry configurations from bootstrap url '" + registryBootstrapUrl + "'");
-			    } else if (!(unmarshalled instanceof RegistryConfigurations)) {
-			    	throw new RiceRuntimeException("Unmarshaled object from service registry bootstrap url '" + registryBootstrapUrl + "' was not a valid instance of " + RegistryConfigurations.class.getName() + ": " + unmarshalled.getClass());
-			    }
-			    registryConfigurations = (RegistryConfigurations)unmarshalled;
-			} else {
-				throw new RiceRuntimeException("Attmpt to connect to service registry bootstrap url was unsuccessful.  HTTP status code was " + statusCode + " and page response was:\n" + method.getResponseBodyAsString());
-			}
-		} catch (Exception e) {
-			throw new RiceRuntimeException("Failed to connect to service registry bootstrap url: " + registryBootstrapUrl, e);
-		} finally {
-			method.releaseConnection();
-		}
-		if (registryConfigurations.getSoapServiceConfigurations().isEmpty()) {
-			throw new RiceRuntimeException("Failed to locate a registry configuration from bootstrap service at url: " + registryBootstrapUrl);
-		}
-		ServiceConnector connector = ServiceConnectorFactory.getServiceConnector(registryConfigurations.getSoapServiceConfigurations().get(0));
-		Object service = connector.getService();
+		ClientProxyFactoryBean clientFactory = new JaxWsProxyFactoryBean();
+		clientFactory.setServiceClass(ServiceRegistry.class);
+		clientFactory.setBus(cxfBus);
+		clientFactory.setAddress(registryBootstrapUrl);
+		
+		// Set security interceptors
+		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(true));
+		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(true));
+		
+		Object service = clientFactory.create();
 		if (!(service instanceof ServiceRegistry)) {
-			throw new RiceRuntimeException("Connected service is not an instance of ServiceRegistry! " + service);
+			throw new RiceRuntimeException("Endpoint to service registry at URL '" + registryBootstrapUrl + "' was not an instance of ServiceRegistry, instead was: " + service);
 		}
 		return (ServiceRegistry)service;
 	}
-
+	
 }

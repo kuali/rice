@@ -227,7 +227,7 @@
 
     <!-- KSB -->
 
-	<param name="rice.ksb.registry.bootstrapUrl" override="false">${rice.server.url}/remoting/serviceRegistryBootstrapResource</param>
+	<param name="rice.ksb.registry.serviceUrl" override="false">${rice.server.url}/remoting/serviceRegistrySoap</param>
 	<param name="rice.ksb.serviceRegistrySoap.security" override="false">true</param>
     <param name="rice.ksb.config.allowSelfSignedSSL" override="false">false</param>
 	<param name="rice.ksb.loadKNSModuleConfiguration" override="false">true</param>

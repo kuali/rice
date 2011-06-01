@@ -554,7 +554,7 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
  * @param lightBoxOptions -
  *          map of option settings (option name/value pairs) for the lightbox plugin                  
  */
-function directInquiry(url, paramMap, showLightBox, lightBoxOptions) {
+function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
 	parameterPairs = paramMap.split(",");
 	queryString="&showHome=false";
 	  for (i in parameterPairs) {	  

@@ -147,7 +147,7 @@ public class DirectInquiry extends Inquiry {
 		paramMapString.deleteCharAt(paramMapString.length() - 1);
 		// Create onlick script to open the inquiry window on the click event
 		// of the direct inquiry
-		StringBuilder onClickScript = new StringBuilder("directInquiry(\"");
+		StringBuilder onClickScript = new StringBuilder("showDirectInquiry(\"");
 		onClickScript.append(inquiryUrl);
 		onClickScript.append("\", \"");
 		onClickScript.append(paramMapString);

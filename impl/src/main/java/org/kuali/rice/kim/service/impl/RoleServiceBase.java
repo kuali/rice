@@ -155,28 +155,46 @@ public class RoleServiceBase {
 	 * @return A cache key for the RoleMemberImpl list whose members share the given roleId, principalId, groupId, and memberTypeCode.
 	 * @throws IllegalArgumentException if the RoleDaoAction parameter does not refer to a role-member-related enumeration value.
 	 */
-	protected String getRoleMemberListCacheKey(RoleDaoAction roleDaoAction, String roleId, String principalId, String groupId, String memberTypeCode) {
+	protected String getRoleMemberListCacheKey(RoleDaoAction roleDaoAction, String roleId, String principalId, String groupId, String memberTypeCode, AttributeSet qualifiersForExactMatch) {
+		StringBuilder cacheKeyBuilder = null;
+		
 		switch (roleDaoAction) {
 			case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS : // Search for principal role members only.
-				return new StringBuilder(ROLE_MEMBER_IMPL_LIST_CACHE_PREFIX).append(roleDaoAction.DAO_ACTION_CACHE_PREFIX).append(
-						StringUtils.isBlank(roleId) ? "" : roleId).append('-').append(StringUtils.isBlank(principalId) ? "" : principalId).toString();
+				cacheKeyBuilder = new StringBuilder(ROLE_MEMBER_IMPL_LIST_CACHE_PREFIX).append(roleDaoAction.DAO_ACTION_CACHE_PREFIX).append(
+						StringUtils.isBlank(roleId) ? "" : roleId).append('-').append(StringUtils.isBlank(principalId) ? "" : principalId);
+				break;
 			case ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS : // Search for group role members only.
-				return new StringBuilder(ROLE_MEMBER_IMPL_LIST_CACHE_PREFIX).append(roleDaoAction.DAO_ACTION_CACHE_PREFIX).append(
-						StringUtils.isBlank(roleId) ? "" : roleId).append('-').append(StringUtils.isBlank(groupId) ? "" : groupId).toString();
+				cacheKeyBuilder = new StringBuilder(ROLE_MEMBER_IMPL_LIST_CACHE_PREFIX).append(roleDaoAction.DAO_ACTION_CACHE_PREFIX).append(
+						StringUtils.isBlank(roleId) ? "" : roleId).append('-').append(StringUtils.isBlank(groupId) ? "" : groupId);
+				break;
 			case ROLE_MEMBERS_FOR_ROLE_IDS : // Search for role members with the given member type code.
-				return new StringBuilder(ROLE_MEMBER_IMPL_LIST_CACHE_PREFIX).append(roleDaoAction.DAO_ACTION_CACHE_PREFIX).append(
-						StringUtils.isBlank(roleId) ? "" : roleId).append('-').append(StringUtils.isBlank(memberTypeCode) ? "" : memberTypeCode).toString();
+				cacheKeyBuilder = new StringBuilder(ROLE_MEMBER_IMPL_LIST_CACHE_PREFIX).append(roleDaoAction.DAO_ACTION_CACHE_PREFIX).append(
+						StringUtils.isBlank(roleId) ? "" : roleId).append('-').append(StringUtils.isBlank(memberTypeCode) ? "" : memberTypeCode);
+				break;
 			case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS : // Search for role members who are also roles.
-				return new StringBuilder(ROLE_MEMBER_IMPL_LIST_CACHE_PREFIX).append(roleDaoAction.DAO_ACTION_CACHE_PREFIX).append(
-						StringUtils.isBlank(roleId) ? "" : roleId).toString();
+				cacheKeyBuilder = new StringBuilder(ROLE_MEMBER_IMPL_LIST_CACHE_PREFIX).append(roleDaoAction.DAO_ACTION_CACHE_PREFIX).append(
+						StringUtils.isBlank(roleId) ? "" : roleId);
+				break;
 			case ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS : // Search for role members that might be roles, principals, or groups.
-				return new StringBuilder(ROLE_MEMBER_IMPL_LIST_CACHE_PREFIX).append(roleDaoAction.DAO_ACTION_CACHE_PREFIX).append(
+				cacheKeyBuilder = new StringBuilder(ROLE_MEMBER_IMPL_LIST_CACHE_PREFIX).append(roleDaoAction.DAO_ACTION_CACHE_PREFIX).append(
 						StringUtils.isBlank(roleId) ? "" : roleId).append('-').append(StringUtils.isBlank(principalId) ? "" : principalId).append(
 								'-').append(StringUtils.isBlank(groupId) ? "" : groupId).append('-').append(
-										StringUtils.isBlank(memberTypeCode) ? "" : memberTypeCode).toString();
+										StringUtils.isBlank(memberTypeCode) ? "" : memberTypeCode);
+				break;
 			default : // The daoActionToTake parameter is invalid; throw an exception.
 				throw new IllegalArgumentException("The 'roleDaoAction' parameter cannot refer to a non-role-member-related value!");
+			
 		}
+		 
+		if ( qualifiersForExactMatch == null || qualifiersForExactMatch.isEmpty() ) {
+			cacheKeyBuilder.append( "[null]" );
+		} else {
+			for (Map.Entry<String, String> entry : qualifiersForExactMatch.entrySet()) {
+				cacheKeyBuilder.append( entry.getKey() ).append( '=' ).append( entry.getValue() ).append( '|' );
+			}
+		}
+		
+		return cacheKeyBuilder.toString();
 	}
 	
     /**
@@ -279,7 +297,7 @@ public class RoleServiceBase {
     	return parentRoleIds;
     }
     
-	/**
+ 	/**
 	 * Retrieves a list of RoleMemberImpl instances from the cache and/or the KimRoleDao as appropriate.
 	 * 
 	 * @param daoActionToTake An indicator for which KimRoleDao method should be used to get the results if the desired RoleMemberImpls are not cached.
@@ -306,32 +324,32 @@ public class RoleServiceBase {
 		switch (daoActionToTake) {
 			case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS : // Search for principal role members only.
 				for (String roleId : roleIds) {
-					searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, principalId, null, Role.PRINCIPAL_MEMBER_TYPE));
+					searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, principalId, null, Role.PRINCIPAL_MEMBER_TYPE, qualification));
 				}
 				break;
 			case ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS : // Search for group role members only.
 				for (String roleId : roleIds) {
 					for (String groupId : groupIds) {
-						searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, null, groupId, Role.GROUP_MEMBER_TYPE));
+						searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, null, groupId, Role.GROUP_MEMBER_TYPE, qualification));
 					}
 				}
 				break;
 			case ROLE_MEMBERS_FOR_ROLE_IDS : // Search for role members with the given member type code.
 				for (String roleId : roleIds) {
-					searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, null, null, memberTypeCode));
+					searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, null, null, memberTypeCode, qualification));
 				}
 				break;
 			case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS : // Search for role members who are also roles.
 				for (String roleId : roleIds) {
-					searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, null, null, Role.ROLE_MEMBER_TYPE));
+					searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, null, null, Role.ROLE_MEMBER_TYPE, qualification));
 				}
 				break;
 			case ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS : // Search for role members that might be roles, principals, or groups.
 				for (String roleId : roleIds) {
-					searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, null, null, Role.ROLE_MEMBER_TYPE));
-					searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, principalId, null, Role.PRINCIPAL_MEMBER_TYPE));
+					searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, null, null, Role.ROLE_MEMBER_TYPE, qualification));
+					searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, principalId, null, Role.PRINCIPAL_MEMBER_TYPE, qualification));
 					for (String groupId : groupIds) {
-						searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, null, groupId, Role.GROUP_MEMBER_TYPE));
+						searchKeys.add(new RoleMemberCacheKeyHelper(daoActionToTake, roleId, null, groupId, Role.GROUP_MEMBER_TYPE, qualification));
 					}
 				}
 				break;
@@ -343,20 +361,12 @@ public class RoleServiceBase {
 		for (RoleMemberCacheKeyHelper searchKey : searchKeys) {
 			if (!usedKeys.contains(searchKey.getCacheKey())) {
 				List<RoleMemberImpl> tempMembers = (List<RoleMemberImpl>) getCacheAdministrator().getFromCache(searchKey.getCacheKey(), getRefreshPeriodInSeconds());
-				if (CollectionUtils.isNotEmpty(tempMembers)) { 
-					if(qualification != null && !qualification.isEmpty()) {
-						KimRoleTypeService roleTypeService = getRoleTypeService(searchKey.ROLE_ID);
-						for(RoleMemberImpl roleMember : tempMembers) {
-							if(roleTypeService.doesRoleQualifierMatchQualification(qualification, roleMember.getQualifier())) {
-								finalResults.add(roleMember); 
-							}
-						} 
-					} else {
-						finalResults.addAll(tempMembers);
-					}
+				if (CollectionUtils.isNotEmpty(tempMembers)) {
+					finalResults.addAll(tempMembers);
 				} else {
 					uncachedKeys.add(searchKey);
 				}
+
 				usedKeys.add(searchKey.getCacheKey());
 			}
 		}
@@ -1472,19 +1482,21 @@ public class RoleServiceBase {
 		private final String PRINCIPAL_ID;
 		private final String GROUP_ID;
 		private final String MEMBER_TYPE_CODE;
+		private final AttributeSet QUALIFIERS_EXACT_MATCH;
 		private String cacheKey;
 		
-		private RoleMemberCacheKeyHelper(RoleDaoAction roleDaoAction, String roleId, String principalId, String groupId, String memberTypeCode) {
+		private RoleMemberCacheKeyHelper(RoleDaoAction roleDaoAction, String roleId, String principalId, String groupId, String memberTypeCode, AttributeSet qualifiersForExactMatch) {
 			this.ROLE_DAO_ACTION = roleDaoAction;
 			this.ROLE_ID = roleId;
 			this.PRINCIPAL_ID = principalId;
 			this.GROUP_ID = groupId;
 			this.MEMBER_TYPE_CODE = memberTypeCode;
+			this.QUALIFIERS_EXACT_MATCH = qualifiersForExactMatch;
 		}
 		
 		private String getCacheKey() {
 			if (this.cacheKey == null) {
-				this.cacheKey = getRoleMemberListCacheKey(ROLE_DAO_ACTION, ROLE_ID, PRINCIPAL_ID, GROUP_ID, MEMBER_TYPE_CODE);
+				this.cacheKey = getRoleMemberListCacheKey(ROLE_DAO_ACTION, ROLE_ID, PRINCIPAL_ID, GROUP_ID, MEMBER_TYPE_CODE, QUALIFIERS_EXACT_MATCH);
 			}
 			return this.cacheKey;
 		}

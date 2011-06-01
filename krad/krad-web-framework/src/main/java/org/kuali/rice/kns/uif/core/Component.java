@@ -635,5 +635,55 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
      * @param renderOutput
      */
     public void setRenderOutput(String renderOutput);
+    
 
+    /**
+     * @return the progressiveRender
+     */
+    public String getProgressiveRender();
+
+    /**
+     * @param progressiveRender the progressiveRender to set
+     */
+    public void setProgressiveRender(String progressiveRender);
+
+    /**
+     * @return the conditionalRefresh
+     */
+    public String getConditionalRefresh();
+
+    /**
+     * @param conditionalRefresh the conditionalRefresh to set
+     */
+    public void setConditionalRefresh(String conditionalRefresh);
+
+    /**
+     * @return the progressiveDisclosureControlNames
+     */
+    public List<String> getProgressiveDisclosureControlNames();
+
+    /**
+     * @return the progressiveDisclosureConditionJs
+     */
+    public String getProgressiveDisclosureConditionJs();
+
+    /**
+     * @return the conditionalRefreshConditionJs
+     */
+    public String getConditionalRefreshConditionJs();
+
+    /**
+     * @return the conditionalRefreshControlNames
+     */
+    public List<String> getConditionalRefreshControlNames();
+    
+    /**
+     * @return the progressiveRenderViaAJAX
+     */
+    public boolean isProgressiveRenderViaAJAX();
+
+    /**
+     * @param progressiveRenderViaAJAX the progressiveRenderViaAJAX to set
+     */
+    public void setProgressiveRenderViaAJAX(boolean progressiveRenderViaAJAX);
 }

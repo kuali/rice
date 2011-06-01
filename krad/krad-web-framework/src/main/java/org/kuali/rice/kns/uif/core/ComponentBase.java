@@ -1,17 +1,12 @@
 /*
- * Copyright 2007 The Kuali Foundation
- * 
- * Licensed under the Educational Community License, Version 1.0 (the
- * "License"); you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Copyright 2007 The Kuali Foundation Licensed under the Educational Community
+ * License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.opensource.org/licenses/ecl1.php Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package org.kuali.rice.kns.uif.core;
 
@@ -29,18 +24,17 @@ import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
+import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.springframework.util.MethodInvoker;
 
 /**
  * Base implementation of <code>Component</code> which other component
  * implementations should extend
- * 
  * <p>
  * Provides base component properties such as id and template. Also provides
  * default implementation for the <code>ScriptEventSupport</code> and
  * <code>Ordered</code> interfaces. By default no script events are supported.
  * </p>
- * 
  * <p>
  * <code>ComponentBase</code> also provides properties for a
  * <code>ComponentDecorator</code> and a List of
@@ -58,6 +52,15 @@ public abstract class ComponentBase implements Component {
 
     private boolean render;
     private String conditionalRender;
+
+    private String progressiveRender;
+    private boolean progressiveRenderViaAJAX;
+    private List<String> progressiveDisclosureControlNames;
+    private String progressiveDisclosureConditionJs;
+
+    private String conditionalRefresh;
+    private String conditionalRefreshConditionJs;
+    private List<String> conditionalRefreshControlNames;
 
     private boolean hidden;
 
@@ -81,7 +84,7 @@ public abstract class ComponentBase implements Component {
     private List<String> styleClasses;
 
     private int order;
-    
+
     private String finalizeMethodToCall;
     private MethodInvoker finalizeMethodInvoker;
     private boolean selfRendered;
@@ -123,6 +126,7 @@ public abstract class ComponentBase implements Component {
 
         render = true;
         selfRendered = false;
+        progressiveRenderViaAJAX = false;
 
         styleClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
@@ -133,20 +137,36 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * The following initialization is performed:
-     * 
+     * The following initialization is performed: progressiveRender and
+     * conditionalRefresh variables are processed if set.
      * <ul>
      * </ul>
      * 
      * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
      */
     public void performInitialization(View view) {
+        if (StringUtils.isNotEmpty(progressiveRender)) {
+            // progressive anded with conditional render, will not render at
+            // least one of the two are false.
+            if (StringUtils.isNotEmpty(conditionalRender)) {
+                conditionalRender = "(" + conditionalRender + ") and (" + progressiveRender + ")";
+            } else {
+                conditionalRender = progressiveRender;
+            }
+            progressiveDisclosureControlNames = new ArrayList<String>();
+            progressiveDisclosureConditionJs = ComponentUtils.parseExpression(progressiveRender,
+                    progressiveDisclosureControlNames);
+        }
 
+        if (StringUtils.isNotEmpty(conditionalRefresh)) {
+            conditionalRefreshControlNames = new ArrayList<String>();
+            conditionalRefreshConditionJs = ComponentUtils.parseExpression(conditionalRefresh,
+                    conditionalRefreshControlNames);
+        }
     }
 
     /**
      * The following updates are done here:
-     * 
      * <ul>
      * <li></li>
      * </ul>
@@ -160,7 +180,6 @@ public abstract class ComponentBase implements Component {
 
     /**
      * The following finalization is done here:
-     * 
      * <ul>
      * <li>If any of the style properties were given, sets the style string on
      * the style property</li>
@@ -346,7 +365,7 @@ public abstract class ComponentBase implements Component {
     }
 
     public void setRender(String render) {
-      this.propertyExpressions.put("render", render);
+        this.propertyExpressions.put("render", render);
     }
 
     /**
@@ -429,7 +448,6 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Horizontal alignment of the component within its container
-     * 
      * <p>
      * All components belong to a <code>Container</code> and are placed using a
      * <code>LayoutManager</code>. This property specifies how the component
@@ -455,7 +473,6 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Vertical alignment of the component within its container
-     * 
      * <p>
      * All components belong to a <code>Container</code> and are placed using a
      * <code>LayoutManager</code>. This property specifies how the component
@@ -482,7 +499,6 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Width the component should take up in the container
-     * 
      * <p>
      * All components belong to a <code>Container</code> and are placed using a
      * <code>LayoutManager</code>. This property specifies a width the component
@@ -490,7 +506,6 @@ public abstract class ComponentBase implements Component {
      * managers. During the finalize phase the CSS width style will be created
      * for the width setting.
      * </p>
-     * 
      * <p>
      * e.g. '30%', '55px'
      * </p>
@@ -1177,16 +1192,15 @@ public abstract class ComponentBase implements Component {
 
             sb.append(optionKey);
             sb.append(":");
-            
+
             boolean isNumber = false;
-            if(StringUtils.isNotBlank(optionValue) && 
-                    (StringUtils.isNumeric(optionValue.trim().substring(0,1)) 
-                    || optionValue.trim().substring(0,1).equals("-"))){
-                try{
+            if (StringUtils.isNotBlank(optionValue)
+                    && (StringUtils.isNumeric(optionValue.trim().substring(0, 1)) || optionValue.trim().substring(0, 1)
+                            .equals("-"))) {
+                try {
                     Double.parseDouble(optionValue.trim());
                     isNumber = true;
-                }
-                catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     isNumber = false;
                 }
             }
@@ -1195,15 +1209,15 @@ public abstract class ComponentBase implements Component {
             if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[")) {
                 sb.append(optionValue);
             }
-            //need to be the base boolean value "false" is true in js - a non empty string
-            else if(optionValue.equalsIgnoreCase("false") || optionValue.equalsIgnoreCase("true")){
+            // need to be the base boolean value "false" is true in js - a non
+            // empty string
+            else if (optionValue.equalsIgnoreCase("false") || optionValue.equalsIgnoreCase("true")) {
                 sb.append(optionValue);
             }
-            //for numerics
-            else if(isNumber){
-                sb.append(optionValue);   
-            }
-            else {
+            // for numerics
+            else if (isNumber) {
+                sb.append(optionValue);
+            } else {
                 sb.append("\"" + optionValue + "\"");
             }
         }
@@ -1212,11 +1226,117 @@ public abstract class ComponentBase implements Component {
 
         return sb.toString();
     }
-    
+
     public String getEventCode() {
         String eventCode = "";
-        
+
         return eventCode;
+    }
+
+    /**
+     * When set if the condition is satisfied, the component will be displayed.
+     * The component MUST BE a container or field type. progressiveRender is
+     * defined in a limited Spring EL syntax. Only valid form property names,
+     * and, or, logical comparison operators (non-arithmetic), and the matches
+     * clause are allowed. String and regex values must use single quotes ('),
+     * booleans must be either true or false, numbers must be a valid double,
+     * either negative or positive.
+     * 
+     * @return the progressiveRender
+     */
+    public String getProgressiveRender() {
+        return this.progressiveRender;
+    }
+
+    /**
+     * @param progressiveRender
+     *            the progressiveRender to set
+     */
+    public void setProgressiveRender(String progressiveRender) {
+        this.progressiveRender = progressiveRender;
+    }
+
+    /**
+     * When set if the condition is satisfied, the component will be refreshed.
+     * The component MUST BE a container or field type. conditionalRefresh is
+     * defined in a limited Spring EL syntax. Only valid form property names,
+     * and, or, logical comparison operators (non-arithmetic), and the matches
+     * clause are allowed. String and regex values must use single quotes ('),
+     * booleans must be either true or false, numbers must be a valid double
+     * either negative or positive.
+     * 
+     * @return the conditionalRefresh
+     */
+    public String getConditionalRefresh() {
+        return this.conditionalRefresh;
+    }
+
+    /**
+     * @param conditionalRefresh
+     *            the conditionalRefresh to set
+     */
+    public void setConditionalRefresh(String conditionalRefresh) {
+        this.conditionalRefresh = conditionalRefresh;
+    }
+
+    /**
+     * Control names used to control progressive disclosure, set internally
+     * cannot be set.
+     * 
+     * @return the progressiveDisclosureControlNames
+     */
+    public List<String> getProgressiveDisclosureControlNames() {
+        return this.progressiveDisclosureControlNames;
+    }
+
+    /**
+     * The condition to show this component progressively converted to a js
+     * expression, set internally cannot be set.
+     * 
+     * @return the progressiveDisclosureConditionJs
+     */
+    public String getProgressiveDisclosureConditionJs() {
+        return this.progressiveDisclosureConditionJs;
+    }
+
+    /**
+     * The condition to refresh this component converted to a js expression, set
+     * internally cannot be set.
+     * 
+     * @return the conditionalRefreshConditionJs
+     */
+    public String getConditionalRefreshConditionJs() {
+        return this.conditionalRefreshConditionJs;
+    }
+
+    /**
+     * Control names used to control conditional refresh, set internally cannot
+     * be set.
+     * 
+     * @return the conditionalRefreshControlNames
+     */
+    public List<String> getConditionalRefreshControlNames() {
+        return this.conditionalRefreshControlNames;
+    }
+
+    /**
+     * When progressiveRenderViaAJAX is true, this component will be retrieved
+     * from the server when it first satisfies its progressive render condition.
+     * After the first retrieval, it is hidden/shown in the html by the js when
+     * its progressive condition result changes.
+     * 
+     * @return the progressiveRenderViaAJAX
+     */
+    public boolean isProgressiveRenderViaAJAX() {
+        return this.progressiveRenderViaAJAX;
+    }
+
+    /**
+     * @param progressiveRenderViaAJAX
+     *            the progressiveRenderViaAJAX to set
+     */
+    public void setProgressiveRenderViaAJAX(boolean progressiveRenderViaAJAX) {
+        this.progressiveRenderViaAJAX = progressiveRenderViaAJAX;
     }
 
 }

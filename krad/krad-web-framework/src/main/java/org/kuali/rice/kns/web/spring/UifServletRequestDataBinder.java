@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.DataDictionaryException;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
@@ -103,74 +104,76 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     public void bind(ServletRequest request) {
         super.bind(request);
         UifFormBase form = (UifFormBase) this.getTarget();
+        
+        if(StringUtils.isNotBlank(request.getParameter(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME))
+                && !request.getParameter(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME).equals(UifConstants.MethodToCallNames.UPDATE_COMP)){
+            // back up previous view instance
+            View previousView = form.getView();
+            form.setPreviousView(previousView);
 
-        // back up previous view instance
-        View previousView = form.getView();
-        form.setPreviousView(previousView);
-
-        Map<String, String> viewRequestParameters = new HashMap<String, String>();
-        // TODO: this should get from form not previous view, test
-        if (previousView != null) {
-            viewRequestParameters = previousView.getViewRequestParameters();
-        }
-
-        // initialize new view for request
-        View view = null;
-
-        // we are going to need this no matter how we get the view, so do it
-        // once
-        Map<String, String> parameterMap = WebUtils.translateRequestParameterMap(request.getParameterMap());
-
-        // determine whether full view should be rendered or just page
-        // if not specified on the request and previous is not null, default to
-        // just page
-        // TODO: revisit and see if we can have a general pattern
-        // if ((previousView != null) &&
-        // !parameterMap.containsKey(UifParameters.RENDER_FULL_VIEW)) {
-        // form.setRenderFullView(false);
-        // }
-
-        // add/override view request parameters
-        parameterMap.putAll(viewRequestParameters);
-
-        String viewId = request.getParameter(UifParameters.VIEW_ID);
-        if (viewId != null) {
-            view = getViewService().getView(viewId, parameterMap);
-        } else {
-            String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
-            if (viewTypeName == null) {
-                viewTypeName = form.getViewTypeName();
+            Map<String, String> viewRequestParameters = new HashMap<String, String>();
+            // TODO: this should get from form not previous view, test
+            if (previousView != null) {
+                viewRequestParameters = previousView.getViewRequestParameters();
             }
 
-            if (StringUtils.isBlank(viewTypeName)) {
-                view = getViewFromPreviousModel(form, parameterMap);
-                if (view == null) {
-                    throw new RuntimeException(
-                            "Could not find enough information to fetch the required view. Checked the model retrieved from session for both viewTypeName and viewId");
-                }
+            // initialize new view for request
+            View view = null;
+
+            // we are going to need this no matter how we get the view, so do it
+            // once
+            Map<String, String> parameterMap = WebUtils.translateRequestParameterMap(request.getParameterMap());
+
+            // determine whether full view should be rendered or just page
+            // if not specified on the request and previous is not null, default to
+            // just page
+            // TODO: revisit and see if we can have a general pattern
+            // if ((previousView != null) &&
+            // !parameterMap.containsKey(UifParameters.RENDER_FULL_VIEW)) {
+            // form.setRenderFullView(false);
+            // }
+
+            // add/override view request parameters
+            parameterMap.putAll(viewRequestParameters);
+
+            String viewId = request.getParameter(UifParameters.VIEW_ID);
+            if (viewId != null) {
+                view = getViewService().getView(viewId, parameterMap);
             } else {
-                try {
-                    view = getViewService().getViewByType(viewTypeName, parameterMap);
-                } catch (DataDictionaryException ddex) {
+                String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
+                if (viewTypeName == null) {
+                    viewTypeName = form.getViewTypeName();
+                }
+
+                if (StringUtils.isBlank(viewTypeName)) {
                     view = getViewFromPreviousModel(form, parameterMap);
-                    // if we didn't find one, just re-throw
                     if (view == null) {
-                        throw ddex;
+                        throw new RuntimeException(
+                                "Could not find enough information to fetch the required view. Checked the model retrieved from session for both viewTypeName and viewId");
                     }
-                    LOG.warn("Obtained viewId from cached form, this may not be safe!");
+                } else {
+                    try {
+                        view = getViewService().getViewByType(viewTypeName, parameterMap);
+                    } catch (DataDictionaryException ddex) {
+                        view = getViewFromPreviousModel(form, parameterMap);
+                        // if we didn't find one, just re-throw
+                        if (view == null) {
+                            throw ddex;
+                        }
+                        LOG.warn("Obtained viewId from cached form, this may not be safe!");
+                    }
                 }
             }
+
+            // apply default values to form if needed
+            if (!form.isDefaultsApplied()) {
+                view.getViewHelperService().applyDefaultValues(view, form);
+            }
+
+            form.setViewRequestParameters(view.getViewRequestParameters());
+            form.setViewId(view.getId());
+            form.setView(view);
         }
-
-        // apply default values to form if needed
-        if (!form.isDefaultsApplied()) {
-            view.getViewHelperService().applyDefaultValues(view, form);
-        }
-
-        form.setViewRequestParameters(view.getViewRequestParameters());
-        form.setViewId(view.getId());
-        form.setView(view);
-
         form.postBind((HttpServletRequest) request);
     }
 

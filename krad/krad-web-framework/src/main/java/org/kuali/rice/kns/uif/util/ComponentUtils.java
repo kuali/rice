@@ -49,7 +49,7 @@ public class ComponentUtils {
         return copy;
     }
 
-    protected static <T extends Object> T copyObject(T object) {
+    public static <T extends Object> T copyObject(T object) {
         if (object == null) {
             return null;
         }
@@ -250,10 +250,6 @@ public class ComponentUtils {
 
     public static void updateIdsWithSuffix(Component component, String idSuffix) {
         // make sure id has two underscore delimiter so we can pick off original dictionary id
-        if (!StringUtils.contains(component.getId(), "__")) {
-            component.setId(component.getId() + "__");
-        }
-
         component.setId(component.getId() + idSuffix);
     }
 
@@ -429,6 +425,124 @@ public class ComponentUtils {
         Collections.sort(orderedItems, new OrderComparator());
 
         return orderedItems;
+    }
+    
+    /**
+     * This method takes in an expression and a list to be filled in with names(property names)
+     * of controls found in the expression. This method returns a js expression which can
+     * be executed on the client to determine if the original exp was satisfied before
+     * interacting with the server - ie, this js expression is equivalent to the one passed in.
+     * 
+     * There are limitations on the Spring expression language that can be used as this method.
+     * It is only used to parse expressions which are valid case statements for determining if
+     * some action/processing should be performed.  ONLY Properties, comparison operators, booleans,
+     * strings, matches expression, and boolean logic are supported.  Properties must
+     * be a valid property on the form, and should have a visible control within the view.
+     * 
+     * Example valid exp: account.name == 'Account Name'
+     * 
+     * @param exp
+     * @param controlNames
+     * @return
+     */
+    public static String parseExpression(String exp, List<String> controlNames){
+        //Clean up expression to ease parsing
+        exp = StringUtils.replace(exp, "!=", " != ");
+        exp = StringUtils.replace(exp, "==", " == ");
+        exp = StringUtils.replace(exp, ">", " > ");
+        exp = StringUtils.replace(exp, "<", " < ");
+        exp = StringUtils.replace(exp, "<=", " <= ");
+        exp = StringUtils.replace(exp, ">=", " >= ");
+        exp = exp.trim();
+
+        String conditionJs = exp;
+        String stack = "";
+        boolean expectingSingleQuote = false;
+        boolean ignoreNext = false;
+        for(int i = 0; i < exp.length(); i++) { 
+            char c = exp.charAt(i);
+            if(!expectingSingleQuote && !ignoreNext && (c == '(' || c == ' ' || c == ')')){
+                evaluateCurrentStack(stack.trim(), controlNames);
+                //reset stack
+                stack = "";
+                continue;
+            }
+            else if(!ignoreNext && c == '\''){
+                stack = stack + c;
+                expectingSingleQuote = !expectingSingleQuote;
+            }
+            else if(c == '\\'){
+                stack = stack + c;
+                ignoreNext = !ignoreNext;
+            }
+            else{
+                stack = stack + c;
+                ignoreNext = false;
+            }
+        }
+        
+        conditionJs = conditionJs
+        .replaceAll("\\s(?i:ne)\\s", " != ")
+        .replaceAll("\\s(?i:eq)\\s", " == ")
+        .replaceAll("\\s(?i:gt)\\s", " > ")
+        .replaceAll("\\s(?i:lt)\\s", " < ")
+        .replaceAll("\\s(?i:lte)\\s", " <= ")
+        .replaceAll("\\s(?i:gte)\\s", " >= ")
+        .replaceAll("\\s(?i:and)\\s", " && ")
+        .replaceAll("\\s(?i:or)\\s", " || ")
+        .replaceAll("\\s+(?i:matches)\\s+'.*'", ".match(" 
+                + "$0".replaceAll("\\s+(?i:matches)\\s+", "") + ").length > 0 ");
+        
+        for(String propertyName: controlNames){
+            conditionJs = conditionJs.replaceAll(propertyName, 
+                    "coerceValue('"+ propertyName +"')");
+        }
+        return conditionJs;
+    }
+    
+    /**
+     * Used internally by parseExpression to evalute if the current stack is a property
+     * name (ie, will be a control on the form)
+     * 
+     * @param stack
+     * @param controlNames
+     */
+    private static void evaluateCurrentStack(String stack, List<String> controlNames){
+       if(StringUtils.isNotBlank(stack)){
+           if(!(stack.equals("==") 
+                   || stack.equals("!=")
+                   || stack.equals(">")
+                   || stack.equals("<")
+                   || stack.equals(">=")
+                   || stack.equals("<=")
+                   || stack.equalsIgnoreCase("ne")
+                   || stack.equalsIgnoreCase("eq")
+                   || stack.equalsIgnoreCase("gt")
+                   || stack.equalsIgnoreCase("lt")
+                   || stack.equalsIgnoreCase("lte")
+                   || stack.equalsIgnoreCase("gte")
+                   || stack.equalsIgnoreCase("matches"))){
+               
+               boolean isNumber = false;
+               if((StringUtils.isNumeric(stack.substring(0,1)) 
+                       || stack.substring(0,1).equals("-"))){
+                   try{
+                       Double.parseDouble(stack);
+                       isNumber = true;
+                   }
+                   catch(NumberFormatException e){
+                       isNumber = false;
+                   }
+               }
+               
+               if(!(stack.equalsIgnoreCase("false") || stack.equalsIgnoreCase("true") || isNumber
+                       || stack.startsWith("'") || stack.endsWith("'"))){
+                   if(!controlNames.contains(stack)){
+                       controlNames.add(stack);
+                   }
+               }
+           }
+       }
     }
 
 }

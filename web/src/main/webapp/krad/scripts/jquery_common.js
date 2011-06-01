@@ -59,14 +59,9 @@ window.onerror = errorHandler;
 
 function errorHandler(msg,url,lno)
 {
-  if (top == self) {
-	  jq.unblockUI();
-	  jq.jGrowl('A javascript error occured: <br/>'  + msg);
-  }
-  else{
-	  top.$.unblockUI(); 
-	  top.$.jGrowl('A javascript error occured: <br/>'  + msg);
-  }
+  var context = getContext();
+  context.unblockUI(); 
+  showGrowl(msg + '<br/>' + url + '<br/>' + lno, 'Javascript Error', 'errorGrowl');
   return false;
 }
 
@@ -85,6 +80,10 @@ jq(document).ready(function() {
 		  },
 		  complete: function(){
 			 createLoading(false);
+		  },
+		  error: function(jqXHR, textStatus, errorThrown){
+			 createLoading(false);
+			 showGrowl('Status: ' + textStatus + '<br/>' + errorThrown, 'Server Response Error', 'errorGrowl');
 		  }
 	});
 	
@@ -740,8 +739,8 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 		
 		//check to see if the option to highlight fields is on
 		if(div.length > 0 && !div.hasClass("noHighlight")){
-			if (div.parent().is("td")) {
-				highlightLine = div.parent();
+			if (div.parent().is("td") || (div.parent().is("span.refreshWrapper") && div.parent().parent().is("td"))) {
+				highlightLine = div.closest("td");
 			}
 			else{
 				highlightLine = div.closest(".fieldLine");

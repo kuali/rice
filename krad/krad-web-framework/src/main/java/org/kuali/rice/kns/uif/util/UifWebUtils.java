@@ -21,6 +21,7 @@ import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.history.History;
 import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -98,6 +99,16 @@ public class UifWebUtils {
 
         return modelAndView;
     }
+    
+    public static ModelAndView getComponentModelAndView(Component component, Object model) {
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject(UifConstants.DEFAULT_MODEL_NAME, model);
+        modelAndView.addObject("Component", component);
+        modelAndView.setViewName("ComponentUpdate");
+
+        return modelAndView;
+    }
 
     /**
      * After the controller logic is executed, the form is placed into session
@@ -108,52 +119,54 @@ public class UifWebUtils {
         if (handler instanceof UifControllerBase) {
             UifControllerBase controller = (UifControllerBase) handler;
             UifFormBase form = null;
-
-            Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
-            if (model instanceof UifFormBase) {
-                form = (UifFormBase) model;
-                
-                
-                View view = form.getView();
-                
-                //Determining the property name to use as part of the breadcrumb/title
-                view.determineViewLabelPropertyName();
-                
-                //Main history/breadcrumb tracking support
-                History history = form.getFormHistory();
-                if(history == null){
-                    history = new History();
-                    history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
-                    history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());
-                    history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
+            //Check to see if this is a full view request
+            if(modelAndView.getViewName().equals(UifConstants.SPRING_VIEW_ID)){
+                Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
+                if (model instanceof UifFormBase) {
+                    form = (UifFormBase) model;
                     
-                    //Passed settings ALWAYS override the defaults
-                    if(StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HOME))){
-                        history.setAppendHomewardPath(Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HOME)));
+                    
+                    View view = form.getView();
+                    
+                    //Determining the property name to use as part of the breadcrumb/title
+                    view.determineViewLabelPropertyName();
+                    
+                    //Main history/breadcrumb tracking support
+                    History history = form.getFormHistory();
+                    if(history == null || request.getMethod().equals("GET")){
+                        history = new History();
+                        history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
+                        history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());
+                        history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
+                        
+                        //Passed settings ALWAYS override the defaults
+                        if(StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HOME))){
+                            history.setAppendHomewardPath(Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HOME)));
+                        }
+                        if(StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY))){
+                            history.setAppendPassedHistory(Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY)));
+                        }
+                        history.setCurrent(form, request);
+                        history.buildHistoryFromParameterString(request.getParameter(UifConstants.UrlParams.HISTORY));
+                        form.setFormHistory(history);
                     }
-                    if(StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY))){
-                        history.setAppendPassedHistory(Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY)));
+                    
+                    form.setPreviousView(null);
+    
+                    //Store form to session and persist document form to db as well
+                    request.getSession().setAttribute(form.getFormKey(), model);
+                    if (form instanceof DocumentFormBase){
+                        UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);            
+                        getSessionDocumentService().setDocumentForm((DocumentFormBase)form, userSession, request.getRemoteAddr());
                     }
-                    history.setCurrent(form, request);
-                    history.buildHistoryFromParameterString(request.getParameter(UifConstants.UrlParams.HISTORY));
-                    form.setFormHistory(history);
+    
+                    // perform authorization of controller method
+                    checkMethodToCallAuthorization(request, controller, form);
+    
+                    // prepare view contained in form
+                    prepareViewForRendering(form);
                 }
             }
-
-            form.setPreviousView(null);
-
-            //Store form to session and persist document form to db as well
-            request.getSession().setAttribute(form.getFormKey(), model);
-            if (form instanceof DocumentFormBase){
-                UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);            
-                getSessionDocumentService().setDocumentForm((DocumentFormBase)form, userSession, request.getRemoteAddr());
-            }
-
-            // perform authorization of controller method
-            checkMethodToCallAuthorization(request, controller, form);
-
-            // prepare view contained in form
-            prepareViewForRendering(form);
         }
     }
 

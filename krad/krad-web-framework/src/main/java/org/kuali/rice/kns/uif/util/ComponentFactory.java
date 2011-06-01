@@ -10,10 +10,12 @@
  */
 package org.kuali.rice.kns.uif.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.MessageField;
+import org.kuali.rice.kns.web.spring.form.UifFormBase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +37,7 @@ public class ComponentFactory {
      * @param component - component instance to add
      */
     public static void addComponentDefinition(String componentDictionaryId, Component component) {
-       componentDefinitions.put(componentDictionaryId, component);
+       componentDefinitions.put(componentDictionaryId, ComponentUtils.copyObject(component));
     }
 
     /**
@@ -63,6 +65,19 @@ public class ComponentFactory {
 
     protected static DataDictionaryService getDataDictionaryService() {
         return KNSServiceLocatorWeb.getDataDictionaryService();
+    }
+    
+    public static Component getComponentById(UifFormBase form, String id){
+        String origId = id;
+        
+        if(id.contains("_")){
+            id = StringUtils.substringBefore(id, "_");
+        }
+        Component component = getNewComponentInstance(id);
+        
+        form.getView().getViewHelperService().performComponentLifecycle(form, component, origId);
+        form.getView().getViewIndex().indexComponent(component);
+        return component;
     }
 
 }

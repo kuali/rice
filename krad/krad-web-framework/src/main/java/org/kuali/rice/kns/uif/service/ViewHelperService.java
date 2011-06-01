@@ -222,5 +222,12 @@ public interface ViewHelperService {
      */
     public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             Object line);
-
+    
+    /**
+     * Performs the complete component lifecycle on the component passed in
+     * 
+     * @param form
+     * @param component
+     */
+    public void performComponentLifecycle(UifFormBase form, Component component, String origId);
 }

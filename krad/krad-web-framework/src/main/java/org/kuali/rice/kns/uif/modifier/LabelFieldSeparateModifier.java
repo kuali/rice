@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.core.Component;
@@ -68,8 +69,17 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
 
 				// pull out label field
 				if (field.getLabelField() != null && field.getLabelField().isRender()) {
-                    if (!field.isRender()) {
+                    if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
                        field.getLabelField().setRender(false);
+                    }
+                    else if(!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())){
+                       field.getLabelField().setRender(true);
+                       String prefixStyle = "";
+                       if(StringUtils.isNotBlank(field.getLabelField().getStyle())){
+                           prefixStyle = field.getLabelField().getStyle();
+                       }
+                       field.getLabelField().setStyle(prefixStyle + ";" + "display: none;");
+                       field.getLabelField().addStyleClass("displayWith-" + field.getId());
                     }
 
 					groupFields.add(field.getLabelField());

@@ -66,7 +66,7 @@
 <c:set var="tmpCarryOverColCount" value="0"/>
 
 <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
-  <c:if test="${item.render}">
+<%--   <c:if test="${item.render}"> --%>
    <c:set var="colCount" value="${colCount + 1}"/> 
      
    <%-- begin table row --%>
@@ -150,5 +150,5 @@
      <c:set var="carryOverColCount" value="${carryOverColCount + tmpCarryOverColCount}"/>
      <c:set var="tmpCarryOverColCount" value="0"/>
    </c:if> 
- </c:if>   
+<%--  </c:if>  --%>  
 </c:forEach>             

@@ -266,18 +266,12 @@ public class AttributeField extends FieldBase implements DataBinding {
         setNestedComponentIdAndSuffix(getConstraintMessageField(), UifConstants.IdSuffixes.CONSTRAINT);
         setNestedComponentIdAndSuffix(getFieldLookup(), UifConstants.IdSuffixes.QUICK_FINDER);
 
-        if (!StringUtils.contains(getId(), "__")) {
-            setId(getId() + "__");
-        }
         setId(getId() + UifConstants.IdSuffixes.ATTRIBUTE);
     }
 
     private void setNestedComponentIdAndSuffix(Component component, String suffix) {
         if (component != null) {
             String fieldId = getId();
-            if (!StringUtils.contains(component.getId(), "__")) {
-                fieldId += "__";
-            }
             fieldId += suffix;
             component.setId(fieldId);
         }

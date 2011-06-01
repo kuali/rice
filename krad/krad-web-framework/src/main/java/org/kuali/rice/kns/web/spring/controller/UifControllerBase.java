@@ -35,7 +35,9 @@ import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.service.ViewService;
+import org.kuali.rice.kns.uif.util.ComponentFactory;
 import org.kuali.rice.kns.uif.util.LookupInquiryUtils;
 import org.kuali.rice.kns.uif.util.UifWebUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -302,6 +304,15 @@ public abstract class UifControllerBase {
         // TODO: this code still needs ported with whatever we are supposed
         // to do on refresh
         return getUIFModelAndView(form);
+    }
+    
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=updateComponent")
+    public ModelAndView updateComponent(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        
+        Component comp = ComponentFactory.getComponentById(form, request.getParameter("reqComponentId"));
+        
+        return UifWebUtils.getComponentModelAndView(comp, form);
     }
 
     /**

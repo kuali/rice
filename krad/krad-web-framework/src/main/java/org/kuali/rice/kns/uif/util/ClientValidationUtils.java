@@ -31,6 +31,7 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.container.PageGroup;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.control.TextControl;
@@ -282,7 +283,7 @@ public class ClientValidationUtils {
 		}
 
 		if (StringUtils.isNotEmpty(ruleString)) {
-			addScriptToPage(view, ruleString);
+			addScriptToPage(view, field, ruleString);
 		}
 	}
 	
@@ -294,14 +295,13 @@ public class ClientValidationUtils {
 	 * @param view
 	 * @param script
 	 */
-	public static void addScriptToPage(View view, String script) {
-		String prefixScript = "";
-		PageGroup page = view.getCurrentPage();
-		if (page.getOnDocumentReadyScript() != null) {
-			prefixScript = page.getOnDocumentReadyScript();
-		}
-
-		page.setOnDocumentReadyScript(prefixScript + "\n" + script);
+	public static void addScriptToPage(View view, AttributeField field, String script) {
+        String prefixScript = "";
+        
+        if (field.getOnDocumentReadyScript() != null) {
+            prefixScript = field.getOnDocumentReadyScript();
+        }
+        field.setOnDocumentReadyScript(prefixScript + "\n" + "runValidationScript(function(){" + script + "});");
 	}
 
 	/**
@@ -424,7 +424,7 @@ public class ClientValidationUtils {
 	 */
 	public static void processPrerequisiteConstraint(AttributeField field, PrerequisiteConstraint constraint, View view, String booleanStatement) {
 		if (constraint != null && constraint.getApplyClientSide().booleanValue()) {
-			addScriptToPage(view, getPrerequisiteStatement(field, view, constraint, booleanStatement)
+			addScriptToPage(view, field, getPrerequisiteStatement(field, view, constraint, booleanStatement)
 					+ getPostrequisiteStatement(field, constraint, booleanStatement));
 		}
 	}
@@ -543,7 +543,7 @@ public class ClientValidationUtils {
 		" if(" + booleanStatement + "){return (this.optional(element) || ("+ getMustOccurStatement(field, mc) + "));}else{return true;}" +
 		"}, \"" + getMustOccursMessage(view, mc) +"\");";
 		String rule = method + "jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').rules(\"add\", {\n\"" + methodName + "\": function(element){return (" + booleanStatement + ");}\n});";
-		addScriptToPage(view, rule);
+		addScriptToPage(view, field, rule);
 	}
 
 	/**
@@ -720,7 +720,7 @@ public class ClientValidationUtils {
 			}
 			else{
 				String rule = "jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').rules(\"add\", {\n minExclusive: ["+ field.getExclusiveMin() + "]});";
-				addScriptToPage(view, rule);
+				addScriptToPage(view, field, rule);
 			}
 		}
 
@@ -730,14 +730,14 @@ public class ClientValidationUtils {
 			}
 			else{
 				String rule = "jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').rules(\"add\", {\n maxInclusive: ["+ field.getInclusiveMax() + "]});";
-				addScriptToPage(view, rule);
+				addScriptToPage(view, field, rule);
 			}
 		}
 
 		if (field.getValidCharactersConstraint() != null && field.getValidCharactersConstraint().getApplyClientSide()) {
 			if(StringUtils.isNotEmpty(field.getValidCharactersConstraint().getJsValue())) {
 				// set jsValue takes precedence
-				addScriptToPage(view, ClientValidationUtils.getRegexMethod(field, field.getValidCharactersConstraint()));
+				addScriptToPage(view, field, ClientValidationUtils.getRegexMethod(field, field.getValidCharactersConstraint()));
 				field.getControl().addStyleClass("validChar-" + field.getBindingInfo().getBindingPath()+ methodKey);
 				methodKey++;
 			}

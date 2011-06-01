@@ -207,10 +207,10 @@ public class History implements Serializable{
                 
                 String url = "";
                 if(breadcrumb.getUrl().contains("?")){
-                    url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + historyParam;
+                    url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + "=" + historyParam;
                 }
                 else{
-                    url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + historyParam;
+                    url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + "=" + historyParam;
                 }
                 breadcrumb.setUrl(url);
                 breadcrumbs.add(breadcrumb);
@@ -241,10 +241,10 @@ public class History implements Serializable{
         
         String url = "";
         if(breadcrumb.getUrl().contains("?")){
-            url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + historyParam;
+            url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + "=" + historyParam;
         }
         else{
-            url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + historyParam;
+            url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + "=" + historyParam;
         }
         breadcrumb.setUrl(url);
         return breadcrumb;
@@ -349,10 +349,10 @@ public class History implements Serializable{
            
            //add formKey and pageId to url
            if(StringUtils.isNotBlank(form.getFormKey()) && !formKeyValue){
-               queryString = queryString + "&" + UifConstants.UrlParams.FORM_KEY  + form.getFormKey();
+               queryString = queryString + "&" + UifConstants.UrlParams.FORM_KEY + "=" + form.getFormKey();
            }
            if(StringUtils.isNotBlank(form.getPageId()) && !pageIdValue){
-               queryString = queryString + "&" + UifConstants.UrlParams.PAGE_ID +  form.getPageId();
+               queryString = queryString + "&" + UifConstants.UrlParams.PAGE_ID + "=" + form.getPageId();
            }
            if(!showHomeValue){
                queryString = queryString + "&" + UifConstants.UrlParams.SHOW_HOME + "=false";

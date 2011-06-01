@@ -16,6 +16,8 @@
 // Toggles a tab to show / hide and changes the source image to properly reflect this
 // change. Returns false to avoid post. Example usage:
 // onclick="javascript: return toggleTab(document, this, ${currentTabIndex}) }
+var pageValidatorReady = false;
+
 function toggleTab(doc, tabKey) {
 	if (doc.forms[0].elements['tabStates(' + tabKey + ')'].value == 'CLOSE') {
         showTab(doc, tabKey);
@@ -165,11 +167,15 @@ function submitForm() {
 		success: function(response){
 			var tempDiv = document.createElement('div');
 			tempDiv.innerHTML = response;
-			var page = jq("#viewpage_div", tempDiv);
-			jq("#viewpage_div").replaceWith(page);
-			jq("#formComplete").html("");
-			setPageBreadcrumb();
-			runHiddenScripts("viewpage_div");
+			var hasError = handleIncidentReport(tempDiv);
+			if(!hasError){
+				var page = jq("#viewpage_div", tempDiv);
+				jq("#viewpage_div").replaceWith(page);
+				jq("#formComplete").html("");
+				setPageBreadcrumb();
+				pageValidatorReady = false;
+				runHiddenScripts("viewpage_div");
+			}
 		}
 	});
 }
@@ -660,7 +666,7 @@ function coerceValue(name){
 function getAttributeId(elementId, elementType){
 	var id = elementId;
 	if(elementType == "radio" || elementType == "checkbox"){
-		id = elementId.replace(/_attribute\S*/, "");
+		id = elementId.replace(/___attribute\S*/, "");
 	}
 	return id;
 }
@@ -695,6 +701,94 @@ function checkDirty(event){
 	return false;
 }
 
+function setupRefreshCheck(controlName, refreshId, condition){
+	jq("[name='"+ controlName +"']").change(function() {
+		//visible check because a component must logically be visible to refresh
+		var refreshComp = jq("span:visible#" + refreshId + "_refreshWrapper");
+		if(refreshComp.length){
+			if(condition()){
+				retrieveComponent(refreshId);
+			}
+		}
+	});
+}
+
+function setupProgressiveCheck(controlName, disclosureId, condition){
+	var actualId = retrieveOriginalId(disclosureId);
+	jq("[name='"+ controlName +"']").change(function() {
+		var refreshDisclosure = jq("span#" + disclosureId + "_refreshWrapper");
+		if(refreshDisclosure.length){
+			if(condition()){
+				if(refreshDisclosure.hasClass("unrendered")){
+					retrieveComponent(disclosureId);
+				}
+				else{
+					refreshDisclosure.show();
+					jq(".displayWith-" + actualId).show();
+				}
+			}
+			else{
+				refreshDisclosure.hide();
+				jq(".displayWith-" + actualId).hide();
+			}
+		}
+	});
+}
+
+function retrieveComponent(id){
+	var actualId = retrieveOriginalId(id);
+	writeHiddenToForm("methodToCall", "updateComponent");
+	writeHiddenToForm("reqComponentId", id);
+	jq("#kualiForm").ajaxSubmit({
+		success: function(response){
+			jq("#formComplete").html("");
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = response;
+			var hasError = handleIncidentReport(tempDiv);
+			if(!hasError){
+				var component = jq("span#" + id + "_refreshWrapper", tempDiv);
+				//special label handling, if any
+				var theLabel = jq("span#" + actualId + "_label_span", tempDiv);
+				if(jq(".displayWith-" + actualId).length && theLabel.length){
+					theLabel.addClass("displayWith-" + actualId);
+					jq("span.displayWith-" + actualId).replaceWith(theLabel);
+					component.remove("#" + actualId + "_label_span");
+				}
+				
+				//replace component
+				if(jq("#" + id + "_refreshWrapper").length){
+					jq("#" + id + "_refreshWrapper").replaceWith(component);
+				}
+
+				jq(".displayWith-" + actualId).show();
+				runHiddenScripts(id + "_refreshWrapper");
+			}
+		}
+	});
+}
+
+function retrieveOriginalId(idString){
+	var index = idString.indexOf("_");
+	var id = idString;
+	if(index){
+		id = idString.substr(0,index);
+	}
+	
+	return id;
+}
+
+function handleIncidentReport(content){
+	var viewId = jq("#viewId", content);
+	if(viewId.length && viewId.val() === "Incident-Report"){
+		jq("html").replaceWith(content);
+		runHiddenScripts("Incident-Report_div");
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
 //sets up the validator with the necessary default settings and methods
 //note the use of onClick and onFocusout for on the fly validation client side
 function setupValidator(){
@@ -711,7 +805,7 @@ function setupValidator(){
 			var methodToCall = jq("[name='methodToCall']").val();
 			if (dirty.length > 0 && methodToCall == null)
 			{
-				return "Frm has unsaved data. Do you want to leave anyway?";
+				return "Form has unsaved data. Do you want to leave anyway?";
 			}
 		}
 	});
@@ -759,7 +853,21 @@ function setupValidator(){
 			error.appendTo(errorList);
 		}
 	});
+	jq(document).trigger('validationSetup');
+	pageValidatorReady = true;
 	jq.watermark.showAll();
+}
+
+function runValidationScript(scriptFunction){
+	if(pageValidatorReady){ 
+		scriptFunction(); 
+	}
+	else{
+		jq(document).bind('validationSetup', function(event){
+			jq(this).unbind(event); 
+			scriptFunction();
+		}); 
+	}
 }
 
 //gets the the label for field with the corresponding id
@@ -817,8 +925,8 @@ function mustOccurCheck(total, min, max){
 
 //returns true if the field with name of name1 occurs before field with name2
 function occursBefore(name1, name2){
-	var field1 = jq("[name=" + name1 + "]");
-	var field2 = jq("[name=" + name2 + "]");
+	var field1 = jq("[name='" + name1 + "']");
+	var field2 = jq("[name='" + name2 + "']");
 	
 	field1.addClass("prereqcheck");
 	field2.addClass("prereqcheck");

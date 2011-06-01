@@ -37,6 +37,7 @@ import org.kuali.rice.kns.uif.service.ViewDictionaryService;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.util.BooleanMap;
 import org.kuali.rice.kns.uif.util.CloneUtils;
+import org.kuali.rice.kns.uif.util.ComponentFactory;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
@@ -154,6 +155,29 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         ComponentUtils.processIds(view, new HashMap<String, Integer>());
 
         performComponentInitialization(view, view);
+    }
+    
+    /**
+     * Performs the complete component lifecycle on the component passed in, in this order:
+     * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
+     * 
+     * @see {@link #performComponentInitialization(View, Component)}
+     * @see {@link #performComponentApplyModel(View, Component, Object)}
+     * @see {@link #performComponentFinalize(View, Component, Object, Component)}
+     * @param form
+     * @param component
+     */
+    public void performComponentLifecycle(UifFormBase form, Component component, String origId){
+        Component origComponent = form.getView().getViewIndex().getComponentById(origId);
+        
+        Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
+        component.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, parent);
+        
+        performComponentInitialization(form.getView(), component);
+        performComponentApplyModel(form.getView(), component, form);
+        performComponentFinalize(form.getView(), component, form, parent);
+        
+        component.setId(origId);
     }
 
     /**

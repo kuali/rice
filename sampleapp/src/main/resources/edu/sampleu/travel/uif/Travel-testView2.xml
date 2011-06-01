@@ -94,7 +94,7 @@ limitations under the License.
     </property>
 </bean>
 
-<bean id="tabTest" parent="TabGroup">
+<bean id="tabTest" parent="TabGroup" p:progressiveRenderViaAJAX="true" p:progressiveRender="field2 eq 'lizard_pet'">
     <property name="title" value="Tab Test"/>   
     <property name="items">
         <list>
@@ -273,7 +273,7 @@ limitations under the License.
                 </property>
                 
             </bean>
-            <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Whisker Length (in)" p:maxLength="3" p:constraint="Required when cat is selected (also adds exclusive min 1 and max 50, Digits only">
+            <bean parent="AttributeField_Form" id="id3" p:propertyName="field3" p:progressiveRender="field2 eq 'cat_pet'" p:label="Whisker Length (in)" p:maxLength="3" p:constraint="Required when cat is selected (also adds exclusive min 1 and max 50, Digits only">
                 <property name="control">
                     <bean parent="TextControl" p:size="3" p:watermarkText="#"/>
                 </property>
@@ -300,7 +300,7 @@ limitations under the License.
                     </bean>
                 </property>
             </bean>
-            <bean parent="AttributeField_Form" p:propertyName="field4" p:label="Breed" p:maxLength="10" p:constraint="Required when dog is selected, only letters">
+            <bean parent="AttributeField_Form" id="id4" p:propertyName="field4" p:progressiveRenderViaAJAX="true" p:progressiveRender="field2 eq 'dog_pet'" p:label="Breed" p:maxLength="10" p:constraint="Required when dog is selected, only letters">
                 <property name="control">
                     <bean parent="TextControl" p:size="8" p:watermarkText="Beagle"/>
                 </property>
@@ -324,7 +324,7 @@ limitations under the License.
                     </bean>
                 </property>
             </bean>
-            <bean parent="AttributeField_Form" p:propertyName="field13" p:label="Weight" p:maxLength="10" p:inclusiveMax="500" p:constraint="Only numbers, max value 500">
+            <bean parent="AttributeField_Form" p:propertyName="travelAccount4.name" p:label="Weight" p:maxLength="10" p:inclusiveMax="500" p:constraint="Only numbers, max value 500">
                 <property name="control">
                     <bean parent="TextControl" p:size="4" p:watermarkText="25"/>
                 </property>
@@ -333,17 +333,17 @@ limitations under the License.
                 </property>
                 <property name="dependencyConstraints">
                     <list>
-                        <bean parent="PrerequisiteConstraint" p:attributePath="field14"/>
+                        <bean parent="PrerequisiteConstraint" p:attributePath="travelAccount4.subAccountName"/>
                     </list>
                 </property>
             </bean>
-            <bean parent="AttributeField_Form" p:propertyName="field14" p:label="Units" p:constraint="Required when weight is filled out AND Units requires weight is filled out">
+            <bean parent="AttributeField_Form" p:propertyName="travelAccount4.subAccountName" p:label="Units" p:constraint="Required when weight is filled out AND Units requires weight is filled out">
                 <property name="control">
                     <bean parent="TextControl" p:size="4" p:watermarkText="lbs"/>
                 </property>
                 <property name="dependencyConstraints">
                     <list>
-                        <bean parent="PrerequisiteConstraint" p:attributePath="field13"/>
+                        <bean parent="PrerequisiteConstraint" p:attributePath="travelAccount4.name"/>
                     </list>
                 </property>
             </bean>

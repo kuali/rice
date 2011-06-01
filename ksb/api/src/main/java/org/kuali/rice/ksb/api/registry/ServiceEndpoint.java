@@ -16,8 +16,18 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.w3c.dom.Element;
 
+/**
+ * Immutable implementation of the {@link ServiceEndpointContract} interface.
+ * Represents a service endpoint that has been published to the service registry.
+ * Includes both a {@link ServiceInfo} and {@link ServiceDescriptor} which
+ * compose the two different pieces of information about a service endpoint.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 @XmlRootElement(name = ServiceEndpoint.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ServiceEndpoint.Constants.TYPE_NAME, propOrder = {

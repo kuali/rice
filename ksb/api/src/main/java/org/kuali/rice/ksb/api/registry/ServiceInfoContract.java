@@ -6,6 +6,15 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 
+/**
+ * Defines the contract for information about a service that is published in
+ * the {@link ServiceRegistry}.
+ * 
+ * @see ServiceRegistry
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public interface ServiceInfoContract extends Versioned {
 
 	/**

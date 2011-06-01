@@ -16,7 +16,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.w3c.dom.Element;
 
 /**

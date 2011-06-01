@@ -250,7 +250,7 @@
       <property name="displayHomewardPath" value="true"/>
       <property name="displayPassedHistory" value="true"/>
       <property name="displayBreadcrumbsWhenOne" value="false"/>
-      <property name="styleClasses" value="breadcrumbs"/>
+      <property name="styleClasses" value="breadcrumbs fl-font-size-100 fl-font-arial"/>
       <property name="homewardPathList">
 	      <list>
 	      	<bean parent="HistoryEntry" p:title="Home" p:url="/kr-dev/portal.do"/>

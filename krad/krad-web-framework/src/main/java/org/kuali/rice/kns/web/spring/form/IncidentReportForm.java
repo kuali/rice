@@ -71,7 +71,7 @@ public class IncidentReportForm extends UifFormBase {
     public String createEmailSubject() {
         String env = KNSServiceLocator.getKualiConfigurationService().getPropertyString("environment");
         String format = "%s:%s:%s";
-        String subject = String.format(format, env, (viewId == null) ? "" : viewId,
+        String subject = String.format(format, env, (incidentViewId == null) ? "" : incidentViewId,
                 truncateString(exceptionMessage, 180));
         return subject;
     }

@@ -1009,12 +1009,23 @@
 			this.aoColumns = [];
 			
 			/*
+			 * Begin Kuali Customization
+			 * 4/15/11 - Venkat
+			 * KULRICE-5181
+			 * Created this variable to skip some of the rows during table sorting.
+			 */
+			
+			/*
 			 * Variable: aiSortingSkipRows
 			 * Purpose:  Skip these rows from col sorting
 			 * Scope:    jQuery.dataTable.classSettings 
 			 * Project: KRAD
 			 */
 			this.aiSortingSkipRows = [];
+			
+			/*
+			 * End Kuali Customization
+			 */
 			
 			/*
 			 * Variable: iNextId
@@ -4420,14 +4431,20 @@
 				 */
 				var iSortLen = aaSort.length;
 				
-				/* KRAD - Temp array to sort the rows */
+				/*
+				 * Begin Kuali Customization
+				 * 4/15/11 - Venkat
+				 * KULRICE-5181
+				 */
+				
+				/* Temp array to sort the rows */
 				var aiRowIndex = [];
 				for ( i=0, iLen=oSettings.aiDisplayMaster.length ; i<iLen ; i++ )
 				{
 					aiRowIndex[i] = oSettings.aiDisplayMaster[i];
 				}
 				
-				/* KRAD - Remove the rows to be skipped in sorting prior to sorting */
+				/* Remove the rows to be skipped in sorting prior to sorting */
 				for ( i=0, iLen=oSettings.aiSortingSkipRows.length ; i<iLen ; i++ )
 				{
 					var iaddRowIndex = aiRowIndex.indexOf(oSettings.aiSortingSkipRows[i]); // Find the index
@@ -4455,7 +4472,7 @@
 				} );
 			}
 			
-			/* KRAD - Once sorted, populate the sorted rows into aiDisplayMaster */
+			/* Once sorted, populate the sorted rows into aiDisplayMaster */
 			oSettings.aiDisplayMaster = [];
 			
 			for ( i=0, iLen=aiRowIndex.length ; i<iLen ; i++ )
@@ -4463,11 +4480,15 @@
 				oSettings.aiDisplayMaster[i] = aiRowIndex[i];
 			}
 			
-			/* KRAD - Insert back the rows skipped in sorting in to the exact pos */ 
+			/* Insert back the rows skipped in sorting in to the exact pos */ 
 			for ( i=0, iLen=oSettings.aiSortingSkipRows.length ; i<iLen ; i++ )
 			{
 				oSettings.aiDisplayMaster.splice(oSettings.aiSortingSkipRows[i],0,oSettings.aiSortingSkipRows[i]);
 			}
+			
+			/*
+			 * End Kuali Customization
+			 */
 			
 			/* Alter the sorting classes to take account of the changes */
 			if ( typeof bApplyClasses == 'undefined' || bApplyClasses )

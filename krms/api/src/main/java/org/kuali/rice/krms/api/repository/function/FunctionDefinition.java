@@ -51,7 +51,7 @@ import org.w3c.dom.Element;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = FunctionDefinition.Constants.TYPE_NAME, propOrder = {
 		FunctionDefinition.Elements.ID,
-		FunctionDefinition.Elements.NAMESPACE_CODE,
+		FunctionDefinition.Elements.NAMESPACE,
 		FunctionDefinition.Elements.NAME,
 		FunctionParameterDefinition.Elements.DESCRIPTION,
 		FunctionDefinition.Elements.RETURN_TYPE,
@@ -68,8 +68,8 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
 	@XmlElement(name = Elements.ID, required = false)
 	private final String id;
 	
-	@XmlElement(name = Elements.NAMESPACE_CODE, required = true)
-	private final String namespaceCode;
+	@XmlElement(name = Elements.NAMESPACE, required = true)
+	private final String namespace;
 	
 	@XmlElement(name = Elements.NAME, required = true)
 	private final String name;
@@ -102,7 +102,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
      */
     private FunctionDefinition() {
     	this.id = null;
-    	this.namespaceCode = null;
+    	this.namespace = null;
     	this.name = null;
     	this.description = null;
     	this.returnType = null;
@@ -114,7 +114,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
     
     private FunctionDefinition(Builder builder) {
     	this.id = builder.getId();
-    	this.namespaceCode = builder.getNamespaceCode();
+    	this.namespace = builder.getNamespace();
     	this.name = builder.getName();
     	this.description = builder.getDescription();
     	this.returnType = builder.getReturnType();
@@ -133,8 +133,8 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
 	}
 
 	@Override
-	public String getNamespaceCode() {
-		return namespaceCode;
+	public String getNamespace() {
+		return namespace;
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
     	private static final long serialVersionUID = -4470376239998290245L;
     	
 		private String id;
-    	private String namespaceCode;
+    	private String namespace;
     	private String name;
     	private String description;
     	private String returnType;
@@ -193,8 +193,8 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
     	private Long versionNumber;
     	private List<FunctionParameterDefinition.Builder> parameters;
     	
-        private Builder(String namespaceCode, String name, String returnType, String typeId) {
-        	setNamespaceCode(namespaceCode);
+        private Builder(String namespace, String name, String returnType, String typeId) {
+        	setNamespace(namespace);
         	setName(name);
         	setReturnType(returnType);
         	setTypeId(typeId);
@@ -208,7 +208,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
          * 
          * <p>Will default the active flag to true.
          * 
-         * @param namespaceCode the namespaceCode of the function definition to create, must not be null or blank
+         * @param namespace the namespace of the function definition to create, must not be null or blank
          * @param name the name of the function definition to create, must not be null or blank
          * @param returnType the return type of the function definition to create, must not be null or blank
          * @param typeId the return type id of the function definition to create, must not be null or blank
@@ -217,8 +217,8 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
          * 
          * @throws IllegalArgumentException if any of the given arguments is null or blank
          */
-        public static Builder create(String namespaceCode, String name, String returnType, String typeId) {
-        	return new Builder(namespaceCode, name, returnType, typeId);
+        public static Builder create(String namespace, String name, String returnType, String typeId) {
+        	return new Builder(namespace, name, returnType, typeId);
         }
         
         /**
@@ -236,7 +236,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
         	if (contract == null) {
         		throw new IllegalArgumentException("contract was null");
         	}
-        	Builder builder = create(contract.getNamespaceCode(), contract.getName(), contract.getReturnType(), contract.getTypeId());
+        	Builder builder = create(contract.getNamespace(), contract.getName(), contract.getReturnType(), contract.getTypeId());
         	builder.setId(contract.getId());
         	builder.setDescription(contract.getDescription());
         	builder.setActive(contract.isActive());
@@ -267,23 +267,23 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
 		}
 
 		@Override
-		public String getNamespaceCode() {
-			return this.namespaceCode;
+		public String getNamespace() {
+			return this.namespace;
 		}
 
         /**
          * Sets the namespace code for the function definition that will be returned by this builder.
-         * The namespaceCode must not be null or blank.
+         * The namespace must not be null or blank.
          * 
-         * @param namespaceCode the namespace code to set on this builder, must not be null or blank
+         * @param namespace the namespace code to set on this builder, must not be null or blank
          * 
-         * @throws IllegalArgumentException if the given namespaceCode is null or blank
+         * @throws IllegalArgumentException if the given namespace is null or blank
          */
-		public void setNamespaceCode(String namespaceCode) {
-			if (StringUtils.isBlank(namespaceCode)) {
-				throw new IllegalArgumentException("namespaceCode was blank");
+		public void setNamespace(String namespace) {
+			if (StringUtils.isBlank(namespace)) {
+				throw new IllegalArgumentException("namespace was blank");
 			}
-			this.namespaceCode = namespaceCode;
+			this.namespace = namespace;
 		}
 
 		@Override
@@ -451,7 +451,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
      */
     static class Elements {
         final static String ID = "id";
-        final static String NAMESPACE_CODE = "namespaceCode";
+        final static String NAMESPACE = "namespace";
         final static String NAME = "name";
         final static String DESCRIPTION = "description";
         final static String RETURN_TYPE = "returnType";

@@ -100,7 +100,7 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 				// TODO throw an exception if function is null?
 				List<FunctionParameterDefinition> parameters = functionDefinition.getParameters();
 				if (stack.size() < parameters.size()) {
-					throw new RepositoryDataException("Failed to initialize custom function '" + functionDefinition.getNamespaceCode() + " " + functionDefinition.getName() +
+					throw new RepositoryDataException("Failed to initialize custom function '" + functionDefinition.getNamespace() + " " + functionDefinition.getName() +
 							"'.  There were only " + stack.size() + " values on the stack but function requires at least " + parameters.size());
 				}
 				List<Expression<? extends Object>> arguments = new ArrayList<Expression<? extends Object>>();

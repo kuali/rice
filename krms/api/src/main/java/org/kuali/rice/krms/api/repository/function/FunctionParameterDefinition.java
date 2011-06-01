@@ -32,6 +32,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter.Elements;
 import org.w3c.dom.Element;
 
 /**
@@ -48,7 +49,9 @@ import org.w3c.dom.Element;
 		FunctionParameterDefinition.Elements.ID,
 		FunctionParameterDefinition.Elements.NAME,
 		FunctionParameterDefinition.Elements.DESCRIPTION,
-		FunctionParameterDefinition.Elements.TYPE,
+		FunctionParameterDefinition.Elements.PARAMETER_TYPE,
+		FunctionParameterDefinition.Elements.SEQUENCE,
+		FunctionParameterDefinition.Elements.FUNCTION_ID,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
@@ -66,8 +69,14 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
 	private final String description;
 	
 	@XmlElement(name = Elements.TYPE, required = true)
-	private final String type;
-		
+	private final String parameterType;
+	
+	@XmlElement(name = Elements.FUNCTION_ID, required = true)
+	private final String functionId;
+	
+	@XmlElement(name = Elements.SEQUENCE, required=true)
+	private Integer sequenceNumber;
+
 	@XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
 	private final Long versionNumber;
 	
@@ -82,7 +91,9 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
     	this.id = null;
     	this.name = null;
     	this.description = null;
-    	this.type = null;
+    	this.parameterType = null;
+    	this.functionId = null;
+    	this.sequenceNumber = null;
     	this.versionNumber = null;
     }
     
@@ -90,7 +101,9 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
     	this.id = builder.getId();
     	this.name = builder.getName();
     	this.description = builder.getDescription();
-    	this.type = builder.getType();
+    	this.parameterType = builder.getParameterType();
+    	this.functionId = builder.getFunctionId();
+    	this.sequenceNumber = builder.getSequenceNumber();
     	this.versionNumber = builder.getVersionNumber();
     }
     
@@ -110,13 +123,23 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
 	}
 	
 	@Override
-	public String getType() {
-		return type;
+	public String getParameterType() {
+		return parameterType;
+	}
+	
+	@Override
+	public String getFunctionId() {
+		return functionId;
 	}
 	
 	@Override
 	public Long getVersionNumber() {
 		return versionNumber;
+	}
+
+	@Override
+	public Integer getSequenceNumber() {
+		return sequenceNumber;
 	}
 
 	/**
@@ -133,12 +156,15 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
 		private String id;
     	private String name;
     	private String description;
-    	private String type;
+    	private String functionId;
+    	private String parameterType;
+    	private Integer sequenceNumber;
     	private Long versionNumber;
     	
-        private Builder(String name, String type) {
+        private Builder(String name, String type, Integer sequenceNumber) {
         	setName(name);
-        	setType(type);
+        	setParameterType(type);
+        	setSequenceNumber(sequenceNumber);
         }
         
         /**
@@ -152,8 +178,8 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
          * 
          * @throws IllegalArgumentException if any of the given arguments is null or blank
          */
-        public static Builder create(String name, String type) {
-        	return new Builder(name, type);
+        public static Builder create(String name, String type, Integer sequenceNumber) {
+        	return new Builder(name, type, sequenceNumber);
         }
         
         /**
@@ -171,9 +197,11 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
         	if (contract == null) {
         		throw new IllegalArgumentException("contract was null");
         	}
-        	Builder builder = create(contract.getName(), contract.getType());
+        	Builder builder = create(contract.getName(), contract.getParameterType(), contract.getSequenceNumber());
         	builder.setId(contract.getId());
         	builder.setDescription(contract.getDescription());
+        	builder.setParameterType(contract.getParameterType());
+        	builder.setFunctionId(contract.getFunctionId());
         	builder.setVersionNumber(contract.getVersionNumber());
         	return builder;
         }
@@ -230,8 +258,8 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
 		}
 
 		@Override
-		public String getType() {
-			return this.type;
+		public String getParameterType() {
+			return this.parameterType;
 		}
 
 		/**
@@ -242,11 +270,46 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
          * 
          * @param type the type to set on this builder, must not be null or blank
          */
-		public void setType(String type) {
+		public void setParameterType(String type) {
 			if (StringUtils.isBlank(type)) {
 				throw new IllegalArgumentException("type was blank");
 			}
-			this.type = type;
+			this.parameterType = type;
+		}
+
+		@Override
+		public String getFunctionId() {
+			return this.functionId;
+		}
+
+		/**
+         * Sets the type for the function id
+         * If provided, the function id must be non-blank.
+         * Must allow id to be null, to prevent chicken/egg problems.
+         * 
+         * @param type the type to set on this builder, must be either null or non-blank
+         */
+		public void setFunctionId(String functionId) {
+			if (functionId != null && StringUtils.isBlank(functionId)) {
+				throw new IllegalArgumentException("functionId must be null or non-blank");
+			}
+			this.functionId = functionId;
+		}
+
+		@Override
+		public Integer getSequenceNumber() {
+			return this.sequenceNumber;
+		}
+
+		/**
+         * Sets the sequence number for the function parameter definition that
+         * will be returned by this builder. This is the position in the functions
+         * parameter list.
+         * 
+         * @param sequenceNumber the position of the parameter in the function parameter list
+         */
+		public void setSequenceNumber(Integer sequenceNumber) {
+			this.sequenceNumber = sequenceNumber;
 		}
 
 		@Override
@@ -302,7 +365,10 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
         final static String ID = "id";
         final static String NAME = "name";
         final static String DESCRIPTION = "description";
+        final static String PARAMETER_TYPE = "parameterType";
         final static String TYPE = "type";
+        final static String FUNCTION_ID = "functionId";
+		final static String SEQUENCE = "sequenceNumber";
     }
     
 }

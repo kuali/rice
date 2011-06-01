@@ -46,7 +46,7 @@ public interface FunctionDefinitionContract extends Versioned, Identifiable, Ina
 	 * 
 	 * @return the namespace code of this function definition
 	 */
-	String getNamespaceCode();
+	String getNamespace();
 	
 	/**
 	 * Returns the name of this function definition.  All functions have a name

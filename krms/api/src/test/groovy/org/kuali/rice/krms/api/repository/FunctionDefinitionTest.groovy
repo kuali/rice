@@ -41,17 +41,19 @@ class FunctionDefinitionTest {
 	private static final String PARM1_DESCRIPTION = "parameter1";
 	private static final String PARM1_TYPE = "string";
 	private static final Long PARM1_VERSION_NUMBER = 1;
+	private static final Integer PARM1_SEQUENCE_NUMBER = 1;
 	
 	private static final String PARM2_ID = "3";
 	private static final String PARM2_NAME = "parameter2";
 	private static final String PARM2_DESCRIPTION = "parameter2";
 	private static final String PARM2_TYPE = "integer";
 	private static final Long PARM2_VERSION_NUMBER = 1;
-
+	private static final Integer PARM2_SEQUENCE_NUMBER = 2;
+	
 	private static final String XML = """
 <function xmlns="http://rice.kuali.org/krms/repository/v2_0">
 	<id>1</id>
-	<namespaceCode>KRMS</namespaceCode>
+	<namespace>KRMS</namespace>
 	<name>myFunction</name>
 	<description>This is my function, it's rad.</description>
 	<returnType>boolean</returnType>
@@ -64,20 +66,24 @@ class FunctionDefinitionTest {
 			<name>parameter1</name>
 			<description>parameter1</description>
 			<type>string</type>
+			<sequenceNumber>1</sequenceNumber>
 			<versionNumber>1</versionNumber>
+			<functionId>1</functionId>
 		</parameter>
 		<parameter>
 			<id>3</id>
 			<name>parameter2</name>
 			<description>parameter2</description>
 			<type>integer</type>
+			<sequenceNumber>2</sequenceNumber>
 			<versionNumber>1</versionNumber>
+			<functionId>1</functionId>
 		</parameter>
 	</parameters>
 </function>
 """;
 
-	def checkNamespaceCode = { namespaceCode -> FunctionDefinition.Builder.create(namespaceCode, NAME, RETURN_TYPE, TYPE_ID) } 
+	def checkNamespaceCode = { namespace -> FunctionDefinition.Builder.create(namespace, NAME, RETURN_TYPE, TYPE_ID) } 
 	
     @Test(expected=IllegalArgumentException.class)
     void testBuilderCreate_fail_null_namespaceCode() {
@@ -149,7 +155,7 @@ class FunctionDefinitionTest {
 	void testBuilderCreate_minimal() {
 		def builder = FunctionDefinition.Builder.create(NAMESPACE_CODE, NAME, RETURN_TYPE, TYPE_ID);
 		def functionDef = builder.build();
-		assert functionDef.namespaceCode == NAMESPACE_CODE;
+		assert functionDef.namespace == NAMESPACE_CODE;
 		assert functionDef.name == NAME;
 		assert functionDef.returnType == RETURN_TYPE;
 		assert functionDef.typeId == TYPE_ID;
@@ -164,7 +170,7 @@ class FunctionDefinitionTest {
 	void testBuilder_fullCreate() {
 		FunctionDefinition functionDef = create();
 		assert functionDef.id == ID;
-		assert functionDef.namespaceCode == NAMESPACE_CODE;
+		assert functionDef.namespace == NAMESPACE_CODE;
 		assert functionDef.name == NAME;
 		assert functionDef.description == DESCRIPTION;
 		assert functionDef.returnType == RETURN_TYPE;
@@ -177,14 +183,14 @@ class FunctionDefinitionTest {
 		assert parameter1.id == PARM1_ID;
 		assert parameter1.name == PARM1_NAME;
 		assert parameter1.description == PARM1_DESCRIPTION;
-		assert parameter1.type == PARM1_TYPE;
+		assert parameter1.parameterType == PARM1_TYPE;
 		assert parameter1.versionNumber == PARM1_VERSION_NUMBER;
 		
 		FunctionParameterDefinition parameter2 = functionDef.getParameters().get(1);
 		assert parameter2.id == PARM2_ID;
 		assert parameter2.name == PARM2_NAME;
 		assert parameter2.description == PARM2_DESCRIPTION;
-		assert parameter2.type == PARM2_TYPE;
+		assert parameter2.parameterType == PARM2_TYPE;
 		assert parameter2.versionNumber == PARM2_VERSION_NUMBER;
 	}
 
@@ -207,7 +213,7 @@ class FunctionDefinitionTest {
     private FunctionDefinition.Builder createBuilder() {
 		return FunctionDefinition.Builder.create(new FunctionDefinitionContract() {
 				String id = FunctionDefinitionTest.ID;
-				String namespaceCode = FunctionDefinitionTest.NAMESPACE_CODE;
+				String namespace = FunctionDefinitionTest.NAMESPACE_CODE;
 				String name = FunctionDefinitionTest.NAME;
                 String description = FunctionDefinitionTest.DESCRIPTION;
 				String returnType = FunctionDefinitionTest.RETURN_TYPE;
@@ -219,15 +225,19 @@ class FunctionDefinitionTest {
 						String id = FunctionDefinitionTest.PARM1_ID;
 						String name = FunctionDefinitionTest.PARM1_NAME;
 						String description = FunctionDefinitionTest.PARM1_DESCRIPTION;
-						String type = FunctionDefinitionTest.PARM1_TYPE;
+						String parameterType = FunctionDefinitionTest.PARM1_TYPE;
+						Integer sequenceNumber = FunctionDefinitionTest.PARM1_SEQUENCE_NUMBER;
 						Long versionNumber = FunctionDefinitionTest.PARM1_VERSION_NUMBER;
+						String functionId = FunctionDefinitionTest.ID;
 					}),
 					FunctionParameterDefinition.Builder.create(new FunctionParameterDefinitionContract() {
 						String id = FunctionDefinitionTest.PARM2_ID;
 						String name = FunctionDefinitionTest.PARM2_NAME;
 						String description = FunctionDefinitionTest.PARM2_DESCRIPTION;
-						String type = FunctionDefinitionTest.PARM2_TYPE;
+						String parameterType = FunctionDefinitionTest.PARM2_TYPE;
+						Integer sequenceNumber = FunctionDefinitionTest.PARM2_SEQUENCE_NUMBER;
 						Long versionNumber = FunctionDefinitionTest.PARM2_VERSION_NUMBER;
+						String functionId = FunctionDefinitionTest.ID;
 					})
 				]
 			});

@@ -57,6 +57,21 @@ public interface FunctionParameterDefinitionContract extends Versioned, Identifi
 	 * 
 	 * @return the type of this function parameter definition
 	 */
-	String getType();
+	String getParameterType();
+	
+	/**
+	 * Returns the ID of the function to which this parameter is associated.
+	 * 
+	 * @return the ID of the corresponding function
+	 */
+	String getFunctionId();
 
+	/**
+	 * This is the sequence number of the function parameter.
+	 * The sequence number identifies the position of the 
+	 * parameter in the function list.
+	 * 
+	 * @return the sequence number of the function parameter
+	 */
+	public Integer getSequenceNumber();
 }

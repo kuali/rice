@@ -61,7 +61,8 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
      */
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
-            Exception ex) {        
+            Exception ex) {    
+        LOG.error("The following error was caught by the UifHandlerExceptionResolver : ", ex);        
         String incidentDocId = request.getParameter(KNSConstants.DOCUMENT_DOCUMENT_NUMBER);
         String incidentViewId = "";
         UifFormBase form = UifWebUtils.getFormFromRequest(request);

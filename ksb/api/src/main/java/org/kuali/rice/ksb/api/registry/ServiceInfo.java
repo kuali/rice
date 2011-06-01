@@ -22,6 +22,13 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.util.jaxb.QNameAsStringAdapter;
 import org.w3c.dom.Element;
 
+/**
+ * Includes standard configuration information about a service that has been
+ * published to the service registry.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 @XmlRootElement(name = ServiceInfo.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ServiceInfo.Constants.TYPE_NAME, propOrder = {
@@ -39,8 +46,7 @@ import org.w3c.dom.Element;
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContract
-{
+public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContract {
 
 	private static final long serialVersionUID = 4793306414624564991L;
 	
@@ -197,8 +203,8 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
     }
 
     /**
-     * A builder which can be used to construct {@link ServiceInfo} instances.  Enforces the constraints of the {@link ServiceInfoContract}.
-     * 
+     * A builder which can be used to construct {@link ServiceInfo} instances.
+     * Enforces the constraints of the {@link ServiceInfoContract}.
      */
     public final static class Builder
         implements Serializable, ModelBuilder, ServiceInfoContract

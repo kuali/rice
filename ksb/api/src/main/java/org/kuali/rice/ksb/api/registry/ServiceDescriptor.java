@@ -16,8 +16,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.w3c.dom.Element;
 
+/**
+ * Immutable implementation of the {@link ServiceDescriptorContract} interface.
+ * Includes a serialized XML representation of the {@link ServiceConfiguration}
+ * for the service.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 @XmlRootElement(name = ServiceDescriptor.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ServiceDescriptor.Constants.TYPE_NAME, propOrder = {

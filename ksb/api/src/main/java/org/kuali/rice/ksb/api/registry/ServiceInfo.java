@@ -23,6 +23,7 @@ import org.kuali.rice.core.util.jaxb.QNameAsStringAdapter;
 import org.w3c.dom.Element;
 
 /**
+ * Immutable implementation of the {@link ServiceInfoContract} interface.
  * Includes standard configuration information about a service that has been
  * published to the service registry.
  * 

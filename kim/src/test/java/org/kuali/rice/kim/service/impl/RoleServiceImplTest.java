@@ -232,6 +232,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 			String[][] roleNames = { {"AUTH_SVC_TEST2","RoleThree"}, {"AUTH_SVC_TEST2","RoleFour"},
 					{"AUTH_SVC_TEST2","RoleFive"},{"AUTH_SVC_TEST2","RoleSix"} };
 			
+			AttributeSet exactQualifiersForMatch = null;
 			// Ensure that by-ID caching of individual roles is working properly.
 			assertKimObjectCachingByIdIsWorking(roleIds, roleIds, ROLE_IMPL_CHECKER);
 			
@@ -274,31 +275,31 @@ public class RoleServiceImplTest extends KIMTestCase {
 			
 			// Ensure that lists of role members can be cached properly. Note that the role members "r6p9" and "r6r4" will never be cached
 			// because this class intentionally blocks the members of role "r6" from being cached; however, they should still be in the search results.
-			assertRoleMemberListCachingIsWorking(daoActions[0], roleIds, "p5", null, null, results[0], results[0]);
-			assertRoleMemberListCachingIsWorking(daoActions[0], roleIds, "p6", null, null, results[1], results[1]);
-			assertRoleMemberListCachingIsWorking(daoActions[0], oneRoleId3, "p9", null, null, new String[]{}, allResults[0]);
-			assertRoleMemberListCachingIsWorking(daoActions[0], roleIds, null, null, null, results[2], allResults[1]);
-			assertRoleMemberListCachingIsWorking(daoActions[0], oneRoleId2, null, null, null, results[1], results[1]);
-			assertRoleMemberListCachingIsWorking(daoActions[0], null, "p5", null, null, results[0], results[0]);
-			assertRoleMemberListCachingIsWorking(daoActions[1], roleIds, null, groupIds, null, results[3], results[3]);
-			assertRoleMemberListCachingIsWorking(daoActions[1], roleIds, null, oneGroupId, null, results[4], results[4]);
-			assertRoleMemberListCachingIsWorking(daoActions[1], null, null, groupIds, null, results[3], results[3]);
-			assertRoleMemberListCachingIsWorking(daoActions[1], null, null, oneGroupId, null, results[4], results[4]);
-			assertRoleMemberListCachingIsWorking(daoActions[1], roleIds, null, null, null, results[3], results[3]);
-			assertRoleMemberListCachingIsWorking(daoActions[1], oneRoleId, null, null, null, new String[]{}, new String[]{});
-			assertRoleMemberListCachingIsWorking(daoActions[1], oneRoleId2, null, null, null, results[5], results[5]);
-			assertRoleMemberListCachingIsWorking(daoActions[2], roleIds, null, null, null, results[6], allResults[2]);
-			assertRoleMemberListCachingIsWorking(daoActions[2], oneRoleId, null, null, null, results[6], results[6]);
-			assertRoleMemberListCachingIsWorking(daoActions[2], oneRoleId2, null, null, null, new String[]{}, new String[]{});
-			assertRoleMemberListCachingIsWorking(daoActions[2], oneRoleId4, null, null, null, new String[]{}, allResults[3]);
-			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, Role.PRINCIPAL_MEMBER_TYPE, results[2], allResults[1]);
-			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, Role.GROUP_MEMBER_TYPE, results[3], results[3]);
-			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, Role.ROLE_MEMBER_TYPE, results[6], allResults[2]);
-			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, null, cachedRoleMemberIdsArray, allRoleMemberIdsArray);
-			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, null, groupIds, null, cachedRoleMemberIdsArray2, allRoleMemberIdsArray2);
-			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, "p10", oneGroupId, null, results[7], allResults[4]);
-			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, "p10", null, null, results[8], allResults[6]);
-			assertRoleMemberListCachingIsWorking(daoActions[4], oneRoleId2, "p5", groupIds, null, results[9], results[9]);
+			assertRoleMemberListCachingIsWorking(daoActions[0], roleIds, "p5", null, null, results[0], results[0], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[0], roleIds, "p6", null, null, results[1], results[1], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[0], oneRoleId3, "p9", null, null, new String[]{}, allResults[0], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[0], roleIds, null, null, null, results[2], allResults[1], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[0], oneRoleId2, null, null, null, results[1], results[1], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[0], null, "p5", null, null, results[0], results[0], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[1], roleIds, null, groupIds, null, results[3], results[3], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[1], roleIds, null, oneGroupId, null, results[4], results[4], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[1], null, null, groupIds, null, results[3], results[3], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[1], null, null, oneGroupId, null, results[4], results[4], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[1], roleIds, null, null, null, results[3], results[3], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[1], oneRoleId, null, null, null, new String[]{}, new String[]{}, exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[1], oneRoleId2, null, null, null, results[5], results[5], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[2], roleIds, null, null, null, results[6], allResults[2], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[2], oneRoleId, null, null, null, results[6], results[6], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[2], oneRoleId2, null, null, null, new String[]{}, new String[]{}, exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[2], oneRoleId4, null, null, null, new String[]{}, allResults[3], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, Role.PRINCIPAL_MEMBER_TYPE, results[2], allResults[1], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, Role.GROUP_MEMBER_TYPE, results[3], results[3], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, Role.ROLE_MEMBER_TYPE, results[6], allResults[2], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[3], roleIds, null, null, null, cachedRoleMemberIdsArray, allRoleMemberIdsArray, exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, null, groupIds, null, cachedRoleMemberIdsArray2, allRoleMemberIdsArray2, exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, "p10", oneGroupId, null, results[7], allResults[4], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[4], roleIds, "p10", null, null, results[8], allResults[6], exactQualifiersForMatch);
+			assertRoleMemberListCachingIsWorking(daoActions[4], oneRoleId2, "p5", groupIds, null, results[9], results[9], exactQualifiersForMatch);
 		}
 		
 		/*
@@ -835,7 +836,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 * A convenience method for checking whether or not certain RoleMemberImpl Lists are being cached.
 		 */
 		private void assertRoleMemberListCachingIsWorking(RoleDaoAction daoAction, List<String> roleIds, String principalId,
-				List<String> groupIds, String memberTypeCode, String[] expectedCachedMembersArray, String[] expectedMembersArray) throws Exception {
+				List<String> groupIds, String memberTypeCode, String[] expectedCachedMembersArray, String[] expectedMembersArray, AttributeSet exactQualifiersForMatch) throws Exception {
 			List<String> expectedCachedMembers = Arrays.asList(expectedCachedMembersArray);
 			List<String> expectedMembers = Arrays.asList(expectedMembersArray);
 			// Ensure that the RoleMemberImpl lists are getting cached as expected.
@@ -844,21 +845,21 @@ public class RoleServiceImplTest extends KIMTestCase {
 			for (String expectedMember : expectedMembers) {
 				assertNotNull("The retrieved role members should have included the member with ID " + expectedMember, firstMemberMap.get(expectedMember));
 			}
-			assertRoleMemberListsAreCachedAsExpected(daoAction, roleIds, principalId, groupIds, memberTypeCode, expectedCachedMembers, true);
+			assertRoleMemberListsAreCachedAsExpected(daoAction, roleIds, principalId, groupIds, memberTypeCode, expectedCachedMembers, true, exactQualifiersForMatch);
 			Map<String,RoleMemberImpl> secondMemberMap = convertKimObjectListToMap(
 					getCorrectRoleMemberImplList(daoAction, roleIds, principalId, groupIds, memberTypeCode), ROLE_MEMBER_IMPL_CHECKER);
 			assertKimObjectResultsAreEqual(expectedMembers.size(), firstMemberMap, secondMemberMap, ROLE_MEMBER_IMPL_CHECKER);
 			
 			// Ensure that the RoleMemberImpl lists can be cleared from the cache properly.
 			getIdentityManagementNotificationService().roleUpdated();
-			assertRoleMemberListsAreCachedAsExpected(daoAction, roleIds, principalId, groupIds, memberTypeCode, expectedCachedMembers, false);
+			assertRoleMemberListsAreCachedAsExpected(daoAction, roleIds, principalId, groupIds, memberTypeCode, expectedCachedMembers, false, exactQualifiersForMatch);
 			firstMemberMap = convertKimObjectListToMap(
 					getCorrectRoleMemberImplList(daoAction, roleIds, principalId, groupIds, memberTypeCode), ROLE_MEMBER_IMPL_CHECKER);
 			assertKimObjectResultsAreEqual(expectedMembers.size(), secondMemberMap, firstMemberMap, ROLE_MEMBER_IMPL_CHECKER);
 			
 			// Ensure that clearing the delegation caches does not end up emptying the role member list or by-ID caches.
 			getIdentityManagementNotificationService().delegationUpdated();
-			assertRoleMemberListsAreCachedAsExpected(daoAction, roleIds, principalId, groupIds, memberTypeCode, expectedCachedMembers, true);
+			assertRoleMemberListsAreCachedAsExpected(daoAction, roleIds, principalId, groupIds, memberTypeCode, expectedCachedMembers, true, exactQualifiersForMatch);
 			secondMemberMap = convertKimObjectListToMap(
 					getCorrectRoleMemberImplList(daoAction, roleIds, principalId, groupIds, memberTypeCode), ROLE_MEMBER_IMPL_CHECKER);
 			assertKimObjectResultsAreEqual(expectedMembers.size(), firstMemberMap, secondMemberMap, ROLE_MEMBER_IMPL_CHECKER);
@@ -872,7 +873,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 * the cached lists are also cached individually.
 		 */
 		private void assertRoleMemberListsAreCachedAsExpected(RoleDaoAction daoAction, List<String> roleIds, String principalId,
-				List<String> groupIds, String memberTypeCode, List<String> expectedMembers, boolean shouldBeInCache) {
+				List<String> groupIds, String memberTypeCode, List<String> expectedMembers, boolean shouldBeInCache, AttributeSet exactQualifiersForMatch) {
 			Map<String,RoleMemberImpl> cachedMembers = new HashMap<String,RoleMemberImpl>();
 			// Generate the cache keys to use.
 			List<String[]> cacheKeyHelp = new ArrayList<String[]>();
@@ -881,32 +882,32 @@ public class RoleServiceImplTest extends KIMTestCase {
 			switch (daoAction) {
 				case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS : // Search for principal role members only.
 					for (String roleId : roleIds) {
-						cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, principalId, null, null)} );
+						cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, principalId, null, null, exactQualifiersForMatch)} );
 					}
 					break;
 				case ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS : // Search for group role members only.
 					for (String roleId : roleIds) {
 						for (String groupId : groupIds) {
-							cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, null, groupId, null)} );
+							cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, null, groupId, null, exactQualifiersForMatch)} );
 						}
 					}
 					break;
 				case ROLE_MEMBERS_FOR_ROLE_IDS : // Search for role members with the given member type code.
 					for (String roleId : roleIds) {
-						cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, null, null, memberTypeCode)} );
+						cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, null, null, memberTypeCode, exactQualifiersForMatch)} );
 					}
 					break;
 				case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS : // Search for role members who are also roles.
 					for (String roleId : roleIds) {
-						cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, null, null, null)} );
+						cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, null, null, null, exactQualifiersForMatch)} );
 					}
 					break;
 				case ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS : // Search for role members that might be roles, principals, or groups.
 					for (String roleId : roleIds) {
-						cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, null, null, Role.ROLE_MEMBER_TYPE)} );
-						cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, principalId, null,Role.PRINCIPAL_MEMBER_TYPE)});
+						cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, null, null, Role.ROLE_MEMBER_TYPE, exactQualifiersForMatch)} );
+						cacheKeyHelp.add(new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, principalId, null,Role.PRINCIPAL_MEMBER_TYPE, exactQualifiersForMatch)});
 						for (String groupId : groupIds) {
-							cacheKeyHelp.add( new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, null, groupId, Role.GROUP_MEMBER_TYPE)} );
+							cacheKeyHelp.add( new String[] {roleId, getRoleMemberListCacheKey(daoAction, roleId, null, groupId, Role.GROUP_MEMBER_TYPE, exactQualifiersForMatch)} );
 						}
 					}
 					break;

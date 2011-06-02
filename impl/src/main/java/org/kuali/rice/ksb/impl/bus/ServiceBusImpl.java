@@ -16,6 +16,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.ksb.api.bus.Endpoint;
@@ -412,7 +413,8 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 		for (LocalService localService : localServicesDiff.getLocalServicesToPublish()) {
 			publishServiceEndpoints.add(localService.getServiceEndpoint());
 		}
-		if (!removeServiceEndpointIds.isEmpty() || !publishServiceEndpoints.isEmpty()) {
+		boolean batchMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(Config.BATCH_MODE, false);
+		if (!batchMode && (!removeServiceEndpointIds.isEmpty() || !publishServiceEndpoints.isEmpty())) {
 			this.serviceRegistry.removeAndPublish(removeServiceEndpointIds, publishServiceEndpoints);
 		}
 	}

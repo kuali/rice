@@ -5,16 +5,19 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaAttribute;
 import org.kuali.rice.krms.api.repository.agenda.AgendaAttributeContract;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
-public class AgendaAttributeBo extends PersistableBusinessObjectBase implements AgendaAttributeContract{
+/**
+ * This class represents an AgendaAttribute business object.
+ * The agenda attributes are used to associate an agenda with an event and to 
+ * distinguish agendas from each other.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
+public class AgendaAttributeBo extends BaseAttributeBo implements AgendaAttributeContract{
 
-	def String id
+	// reference to the agenda associated with this attribute
 	def String agendaId
-	def String attributeDefinitionId
-	def String value
-	
-	def KrmsAttributeDefinitionBo attributeDefinition
-	
-	
+
 	/**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object
@@ -41,10 +44,5 @@ public class AgendaAttributeBo extends PersistableBusinessObjectBase implements 
 	   bo.attributeDefinition = KrmsAttributeDefinitionBo.from( im.attributeDefinition )
 
 	   return bo
-   }
-
-   @Override
-   KrmsAttributeDefinitionBo getAttributeDefinition() {
-	   return attributeDefinition
    }
 } 

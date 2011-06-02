@@ -321,6 +321,7 @@ class AgendaBoServiceImplTest {
 		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_AGENDA_BO}
 		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB1] }
 		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB2] }
+		mockBusinessObjectService.demand.deleteMatching(1) { Class clazz, Map map -> }
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
 
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()

@@ -12,6 +12,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.KrmsTypeBo;
 import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 public class TestBoService implements BusinessObjectService {
@@ -189,10 +190,11 @@ public class TestBoService implements BusinessObjectService {
 	/* (non-Javadoc)
 	 * @see org.kuali.rice.kns.service.BusinessObjectService#deleteMatching(java.lang.Class, java.util.Map)
 	 */
-	@Override
-	public void deleteMatching(Class clazz, Map<String, ?> fieldValues) {
-		throw new UnsupportedOperationException();			
-	}
+    @Override
+    @Transactional
+    public void deleteMatching(Class clazz, Map<String, ?> fieldValues) {
+        dao.deleteMatching(clazz, fieldValues);
+    }
 
 	/* (non-Javadoc)
 	 * @see org.kuali.rice.kns.service.BusinessObjectService#getReferenceIfExists(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)

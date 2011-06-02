@@ -301,8 +301,10 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 	    krmsGenericTypeDefnBuilder.setAttributes(Collections.singletonList(genericTypeAttrBuilder));
 	    KrmsTypeDefinition krmsGenericTypeDefinition = krmsTypeRepository.createKrmsType(krmsGenericTypeDefnBuilder.build());
 
-	    AgendaDefinition agendaDef = 
-	        AgendaDefinition.Builder.create(null, "testAgenda", "KRMS_TEST", krmsGenericTypeDefinition.getId(), contextDefinition.getId()).build();
+	    AgendaDefinition.Builder  agendaDefBuilder = AgendaDefinition.Builder.create(null, "testAgenda", "KRMS_TEST", krmsGenericTypeDefinition.getId(), contextDefinition.getId());
+	    agendaDefBuilder.setAttributes(Collections.singletonMap("Event", "Earthquake"));
+	    
+	    AgendaDefinition agendaDef = agendaDefBuilder.build(); 
 	    agendaDef = agendaBoService.createAgenda(agendaDef);
 	    
 	    AgendaItem.Builder agendaItemBuilder = AgendaItem.Builder.create(null, agendaDef.getId());
@@ -310,8 +312,8 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 	    
 	    AgendaItem agendaItem = agendaBoService.createAgendaItem(agendaItemBuilder.build());
 	    
-	    AgendaDefinition.Builder agendaDefBuilder = AgendaDefinition.Builder.create(agendaDef);
-	    agendaDefBuilder.setAttributes(Collections.singletonMap("Event", "Earthquake"));
+	    agendaDefBuilder = AgendaDefinition.Builder.create(agendaDef);
+//	    agendaDefBuilder.setAttributes(Collections.singletonMap("Event", "Earthquake"));
 	    agendaDefBuilder.setFirstItemId(agendaItem.getId());
 	    agendaDef = agendaDefBuilder.build();
 	    

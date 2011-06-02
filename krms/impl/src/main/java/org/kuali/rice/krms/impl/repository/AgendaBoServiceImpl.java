@@ -31,6 +31,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
+import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 
 public final class AgendaBoServiceImpl implements AgendaBoService {
 	
@@ -88,6 +89,12 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 		AgendaBo boToUpdate = from(toUpdate);
 		boToUpdate.setVersionNumber(existing.getVersionNumber());
 		
+		// delete any old, existing attributes
+		Map<String,String> fields = new HashMap<String,String>(1);
+		fields.put(KRMSPropertyConstants.Agenda.AGENDA_ID, toUpdate.getId());
+		businessObjectService.deleteMatching(AgendaAttributeBo.class, fields);
+		
+		// update new agenda and create new attributes
 		businessObjectService.save(boToUpdate);
 	}
 

@@ -24,6 +24,26 @@
 	</parent>
 	<artifactId>rice-impl</artifactId>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/common-config-defaults.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/common-config-defaults.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+    </build>
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

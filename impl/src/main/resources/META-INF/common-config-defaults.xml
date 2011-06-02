@@ -26,6 +26,9 @@
     <param name="application.http.scheme" override="false">http</param>
     <param name="rice.custom.ojb.properties" override="false">org/kuali/rice/core/ojb/RiceOJB.properties</param>
 
+    <!-- This value is filtered by the Maven build based on project.version maven property -->
+    <param name="rice.version" override="false">${project.version}</param>
+
 	<!-- Database Config -->
 
 	<!-- below used by atomikos data sources -->

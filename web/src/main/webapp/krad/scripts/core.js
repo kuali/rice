@@ -167,7 +167,7 @@ function submitForm() {
 		success: function(response){
 			var tempDiv = document.createElement('div');
 			tempDiv.innerHTML = response;
-			var hasError = handleIncidentReport(tempDiv);
+			var hasError = handleIncidentReport(response);
 			if(!hasError){
 				var page = jq("#viewpage_div", tempDiv);
 				jq("#viewpage_div").replaceWith(page);
@@ -663,10 +663,18 @@ function coerceValue(name){
 	return value;
 }
 
+/**
+ * Gets the actual attribute id to use element manipulation related to this attribute.
+ * This method is necessary due to radio/checkboxes appending an additional suffix to the
+ * id, and the hook being the base id without this suffix.
+ * @param elementId
+ * @param elementType
+ * @returns
+ */
 function getAttributeId(elementId, elementType){
 	var id = elementId;
 	if(elementType == "radio" || elementType == "checkbox"){
-		id = elementId.replace(/___attribute\S*/, "");
+		id = elementId.replace(/_attribute\S*/, "");
 	}
 	return id;
 }
@@ -701,10 +709,29 @@ function checkDirty(event){
 	return false;
 }
 
+/**
+ * Same as setupRefreshCheck except the condition will alwasy be true (always refresh when
+ * value changed on control).
+ * @param controlName
+ * @param refreshId
+ */
+function setupOnChangeRefresh(controlName, refreshId){
+	setupRefreshCheck(controlName, refreshId, function(){return true;});
+}
+
+/**
+ * Sets up the conditional refresh mechanism in js by adding a change handler to the control
+ * which may satisfy the conditional refresh condition passed in.  When the condition is satisfied,
+ * refresh the necessary content specified by id by making a server call to retrieve a new instance
+ * of that component.
+ * @param controlName
+ * @param disclosureId
+ * @param condition - function which returns true to refresh, false otherwise
+ */
 function setupRefreshCheck(controlName, refreshId, condition){
 	jq("[name='"+ controlName +"']").change(function() {
 		//visible check because a component must logically be visible to refresh
-		var refreshComp = jq("span:visible#" + refreshId + "_refreshWrapper");
+		var refreshComp = jq("span#" + refreshId + "_refreshWrapper");
 		if(refreshComp.length){
 			if(condition()){
 				retrieveComponent(refreshId);
@@ -713,28 +740,76 @@ function setupRefreshCheck(controlName, refreshId, condition){
 	});
 }
 
-function setupProgressiveCheck(controlName, disclosureId, condition){
+/**
+ * Sets up the progressive disclosure mechanism in js by adding a change handler to the control
+ * which may satisfy the progressive disclosure condition passed in.  When the condition is satisfied,
+ * show the necessary content, otherwise hide it.  If the content has not yet been rendered then a server
+ * call is made to retrieve the content to be shown.  If alwaysRetrieve is true, the component
+ * is always retrieved from the server when disclosed.
+ * @param controlName
+ * @param disclosureId
+ * @param condition - function which returns true to disclose, false otherwise
+ */
+function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetrieve){
 	var actualId = retrieveOriginalId(disclosureId);
+
 	jq("[name='"+ controlName +"']").change(function() {
 		var refreshDisclosure = jq("span#" + disclosureId + "_refreshWrapper");
 		if(refreshDisclosure.length){
 			if(condition()){
-				if(refreshDisclosure.hasClass("unrendered")){
+				if(refreshDisclosure.hasClass("unrendered") || alwaysRetrieve){
 					retrieveComponent(disclosureId);
 				}
 				else{
 					refreshDisclosure.show();
+					//re-enable validation on now shown inputs
+					hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
 					jq(".displayWith-" + actualId).show();
 				}
 			}
 			else{
 				refreshDisclosure.hide();
+				//ignore validation on hidden inputs
+				hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
 				jq(".displayWith-" + actualId).hide();
 			}
 		}
 	});
+	
+
 }
 
+/**
+ * Disables clientside validation on any inputs within the element(by id) passed in , if
+ * that element is hidden.  Otherwise, it turns input validation back on if the element and
+ * its children are visible.
+ * @param id
+ */
+function hiddenInputValidationToggle(id){
+	var element = jq("#" + id);
+	if(element.length){
+		if(element.css("display") == "none"){
+			jq(":input:hidden", element).each(function(){
+				jq(this).addClass("ignoreValid");
+			});
+		}
+		else{
+			jq(":input:visible", element).each(function(){
+				jq(this).removeClass("ignoreValid");
+			});
+		}
+	}
+}
+
+/**
+ * Calls the updateComponent method on the controller with component id passed in.  This id is
+ * the component id with any/all suffixes on it not the dictionary id.
+ * Retrieves the component with the matching id from the server and replaces a matching
+ * _refreshWrapper marker span with the same id with the result.  In addition, if the result contains a label
+ * and a displayWith marker span has a matching id, that span will be replaced with the label content
+ * and removed from the component.  This allows for label and component content seperation on fields.
+ * @param id
+ */
 function retrieveComponent(id){
 	var actualId = retrieveOriginalId(id);
 	writeHiddenToForm("methodToCall", "updateComponent");
@@ -744,7 +819,7 @@ function retrieveComponent(id){
 			jq("#formComplete").html("");
 			var tempDiv = document.createElement('div');
 			tempDiv.innerHTML = response;
-			var hasError = handleIncidentReport(tempDiv);
+			var hasError = handleIncidentReport(response);
 			if(!hasError){
 				var component = jq("span#" + id + "_refreshWrapper", tempDiv);
 				//special label handling, if any
@@ -767,6 +842,12 @@ function retrieveComponent(id){
 	});
 }
 
+/**
+ * Retrieves the original dictionary based id that was used to generate this component and/or its
+ * children/parent.  Basically removes everything after the first "_" in the idString passed in. 
+ * @param idString
+ * @returns
+ */
 function retrieveOriginalId(idString){
 	var index = idString.indexOf("_");
 	var id = idString;
@@ -777,11 +858,18 @@ function retrieveOriginalId(idString){
 	return id;
 }
 
+/**
+ * If the content is an incident report view, replaces the current view with the incident report and
+ * returns true, otherwise returns false.
+ * @param content
+ * @returns {Boolean} true if there was an incident, false otherwise
+ */
 function handleIncidentReport(content){
 	var viewId = jq("#viewId", content);
 	if(viewId.length && viewId.val() === "Incident-Report"){
-		jq("html").replaceWith(content);
-		runHiddenScripts("Incident-Report_div");
+		jq('#view_div').replaceWith(jq('#view_div', content));
+
+		runHiddenScripts("view_div");
 		return true;
 	}
 	else{
@@ -858,6 +946,11 @@ function setupValidator(){
 	jq.watermark.showAll();
 }
 
+/**
+ * Runs the validation script if the validator is already setup, otherwise adds a handler
+ * to the document which will run once when the 'validationSetup' event is fired
+ * @param scriptFunction
+ */
 function runValidationScript(scriptFunction){
 	if(pageValidatorReady){ 
 		scriptFunction(); 

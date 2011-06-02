@@ -171,7 +171,7 @@ function setPageBreadcrumb(){
 		else if(pageId){
 			pageTitle = jq("a[name='"+ pageId + "']").text();
 			if(pageTitle){
-				jq("#breadcrumbs").append("<span id='page_breadcrumb'> � <span class='current'>" + pageTitle + "</span></span>");
+				jq("#breadcrumbs").append("<span id='page_breadcrumb'> &raquo; <span class='current'>" + pageTitle + "</span></span>");
 				jq("#current_breadcrumb_span").hide();
 				jq("#current_breadcrumb_anchor").show();
 				bcSet=true;

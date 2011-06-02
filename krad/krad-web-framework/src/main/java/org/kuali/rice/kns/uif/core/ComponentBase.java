@@ -51,16 +51,21 @@ public abstract class ComponentBase implements Component {
     private String title;
 
     private boolean render;
+    private boolean refresh;
     private String conditionalRender;
 
     private String progressiveRender;
     private boolean progressiveRenderViaAJAX;
+    private boolean progressiveRenderAndRefresh;
     private List<String> progressiveDisclosureControlNames;
     private String progressiveDisclosureConditionJs;
 
     private String conditionalRefresh;
     private String conditionalRefreshConditionJs;
     private List<String> conditionalRefreshControlNames;
+
+    private String refreshWhenChanged;
+    private List<String> refreshWhenChangedControlNames;
 
     private boolean hidden;
 
@@ -127,6 +132,7 @@ public abstract class ComponentBase implements Component {
         render = true;
         selfRendered = false;
         progressiveRenderViaAJAX = false;
+        progressiveRenderAndRefresh = false;
 
         styleClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
@@ -162,6 +168,14 @@ public abstract class ComponentBase implements Component {
             conditionalRefreshControlNames = new ArrayList<String>();
             conditionalRefreshConditionJs = ComponentUtils.parseExpression(conditionalRefresh,
                     conditionalRefreshControlNames);
+        }
+
+        if (StringUtils.isNotEmpty(refreshWhenChanged)) {
+            refreshWhenChangedControlNames = new ArrayList<String>();
+            String[] names = StringUtils.split(refreshWhenChanged, ",");
+            for (String name : names) {
+                refreshWhenChangedControlNames.add(name.trim());
+            }
         }
     }
 
@@ -1240,7 +1254,13 @@ public abstract class ComponentBase implements Component {
      * and, or, logical comparison operators (non-arithmetic), and the matches
      * clause are allowed. String and regex values must use single quotes ('),
      * booleans must be either true or false, numbers must be a valid double,
-     * either negative or positive.
+     * either negative or positive. <br>
+     * DO NOT use progressiveRender and conditionalRefresh on the same component
+     * unless it is known that the component will always be visible in all cases
+     * when a conditionalRefresh happens (ie conditionalRefresh has
+     * progressiveRender's condition anded with its own condition). <b>If a
+     * component should be refreshed every time it is shown, use the
+     * progressiveRenderAndRefresh option with this property instead.</b>
      * 
      * @return the progressiveRender
      */
@@ -1263,7 +1283,13 @@ public abstract class ComponentBase implements Component {
      * and, or, logical comparison operators (non-arithmetic), and the matches
      * clause are allowed. String and regex values must use single quotes ('),
      * booleans must be either true or false, numbers must be a valid double
-     * either negative or positive.
+     * either negative or positive. <br>
+     * DO NOT use progressiveRender and conditionalRefresh on the same component
+     * unless it is known that the component will always be visible in all cases
+     * when a conditionalRefresh happens (ie conditionalRefresh has
+     * progressiveRender's condition anded with its own condition). <b>If a
+     * component should be refreshed every time it is shown, use the
+     * progressiveRenderAndRefresh option with this property instead.</b>
      * 
      * @return the conditionalRefresh
      */
@@ -1323,7 +1349,9 @@ public abstract class ComponentBase implements Component {
      * When progressiveRenderViaAJAX is true, this component will be retrieved
      * from the server when it first satisfies its progressive render condition.
      * After the first retrieval, it is hidden/shown in the html by the js when
-     * its progressive condition result changes.
+     * its progressive condition result changes. <b>By default, this is false,
+     * so components with progressive render capabilities will always be already
+     * within the client html and toggled to be hidden or visible.</b>
      * 
      * @return the progressiveRenderViaAJAX
      */
@@ -1339,4 +1367,61 @@ public abstract class ComponentBase implements Component {
         this.progressiveRenderViaAJAX = progressiveRenderViaAJAX;
     }
 
+    /**
+     * If true, when the progressiveRender condition is satisfied, the component
+     * will always be retrieved from the server and shown(as opposed to being
+     * stored on the client, but hidden, after the first retrieval as is the
+     * case with the progressiveRenderViaAJAX option). <b>By default, this is
+     * false, so components with progressive render capabilities will always be
+     * already within the client html and toggled to be hidden or visible.</b>
+     * 
+     * @return the progressiveRenderAndRefresh
+     */
+    public boolean isProgressiveRenderAndRefresh() {
+        return this.progressiveRenderAndRefresh;
+    }
+
+    /**
+     * @param progressiveRenderAndRefresh
+     *            the progressiveRenderAndRefresh to set
+     */
+    public void setProgressiveRenderAndRefresh(boolean progressiveRenderAndRefresh) {
+        this.progressiveRenderAndRefresh = progressiveRenderAndRefresh;
+    }
+
+    /**
+     * Specifies a property by name that when it value changes will
+     * automatically perform a refresh on this component. This can be a comma
+     * separated list of multiple properties that require this component to be
+     * refreshed when any of them change. <Br>DO NOT use with progressiveRender
+     * unless it is know that progressiveRender condition will always be
+     * satisfied before one of these fields can be changed.
+     * 
+     * @return the refreshWhenChanged
+     */
+    public String getRefreshWhenChanged() {
+        return this.refreshWhenChanged;
+    }
+
+    /**
+     * @param refreshWhenChanged
+     *            the refreshWhenChanged to set
+     */
+    public void setRefreshWhenChanged(String refreshWhenChanged) {
+        this.refreshWhenChanged = refreshWhenChanged;
+    }
+
+    /**
+     * @return the refresh
+     */
+    public boolean isRefresh() {
+        return this.refresh;
+    }
+
+    /**
+     * @param refresh the refresh to set
+     */
+    public void setRefresh(boolean refresh) {
+        this.refresh = refresh;
+    }
 }

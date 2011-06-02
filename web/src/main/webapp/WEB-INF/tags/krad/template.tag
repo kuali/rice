@@ -35,7 +35,7 @@ still render, but render in a hidden span --%>
 		</c:when>
 		<c:otherwise>
 			<c:if
-				test="${!empty component.progressiveRender || !empty component.conditionalRefresh}">
+				test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged}">
 				<span id="${component.id}_refreshWrapper" class="refreshWrapper">
 			</c:if>
 		</c:otherwise>
@@ -70,14 +70,23 @@ still render, but render in a hidden span --%>
 			setupRefreshCheck('${cName}', '${component.id}', condition);" />
 		</c:forEach>
 	</c:if>
-
+	
+		<%-- Conditional Refresh setup --%>
+	<c:if test="${!empty component.refreshWhenChanged}">
+		<c:forEach items="${component.refreshWhenChangedControlNames}"
+			var="cName">
+			<krad:script
+				value="
+			setupOnChangeRefresh('${cName}', '${component.id}');" />
+		</c:forEach>
+	</c:if>
 
 
 	<%-- generate event code for component --%>
 	<krad:eventScript component="${component}" />
 	
 	<c:if
-		test="${!empty component.progressiveRender || !empty component.conditionalRefresh}">
+		test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged}">
 		</span>
 	</c:if>
 </c:if>
@@ -85,7 +94,7 @@ still render, but render in a hidden span --%>
 <c:if
 	test="${(!empty component) && (!empty component.progressiveRender)}">
 	<%-- For progressive rendering requiring an ajax call, put in place holder span --%>
-	<c:if test="${!component.render && component.progressiveRenderViaAJAX}">
+	<c:if test="${!component.render && (component.progressiveRenderViaAJAX || component.progressiveRenderAndRefresh)}">
 		<span id="${component.id}_refreshWrapper" class="unrendered refreshWrapper"
 			style="display: none;"></span>
 	</c:if>
@@ -96,8 +105,11 @@ still render, but render in a hidden span --%>
 		<krad:script
 			value="
 			var condition = function(){return (${component.progressiveDisclosureConditionJs});};
-			setupProgressiveCheck('${cName}', '${component.id}', condition);" />
+			setupProgressiveCheck('${cName}', '${component.id}', condition, ${component.progressiveRenderAndRefresh});" />
 	</c:forEach>
+	<krad:script
+			value="
+			hiddenInputValidationToggle('${component.id}_refreshWrapper');" />
 
 </c:if>
 

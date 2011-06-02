@@ -490,8 +490,8 @@ public class ComponentUtils {
         .replaceAll("\\s(?i:gte)\\s", " >= ")
         .replaceAll("\\s(?i:and)\\s", " && ")
         .replaceAll("\\s(?i:or)\\s", " || ")
-        .replaceAll("\\s+(?i:matches)\\s+'.*'", ".match(" 
-                + "$0".replaceAll("\\s+(?i:matches)\\s+", "") + ").length > 0 ");
+        .replaceAll("\\s+(?i:matches)\\s+'.*'", ".match(/" 
+                + "$0".replaceAll("\\s+(?i:matches)\\s+", "") + "/).length > 0 ");
         
         for(String propertyName: controlNames){
             conditionJs = conditionJs.replaceAll(propertyName, 

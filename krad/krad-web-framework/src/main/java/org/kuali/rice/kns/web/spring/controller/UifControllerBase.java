@@ -306,6 +306,16 @@ public abstract class UifControllerBase {
         return getUIFModelAndView(form);
     }
     
+    /**
+     * This method updates the current component by retrieving a fresh copy from the dictionary,
+     * running its component lifecycle, and returning it.
+     * 
+     * @param form
+     * @param result
+     * @param request - the request must contain reqComponentId that specifies the component to retrieve.
+     * @param response
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=updateComponent")
     public ModelAndView updateComponent(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

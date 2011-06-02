@@ -67,6 +67,14 @@ public class ComponentFactory {
         return KNSServiceLocatorWeb.getDataDictionaryService();
     }
     
+    /**
+     * Gets a fresh copy of the component by the id passed in with its lifecycle performed upon it,
+     * using the form data passed in.
+     * 
+     * @param form
+     * @param id
+     * @return
+     */
     public static Component getComponentById(UifFormBase form, String id){
         String origId = id;
         

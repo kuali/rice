@@ -69,6 +69,7 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
 
 				// pull out label field
 				if (field.getLabelField() != null && field.getLabelField().isRender()) {
+				    field.getLabelField().addStyleClass("displayWith-" + field.getId());
                     if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
                        field.getLabelField().setRender(false);
                     }
@@ -79,7 +80,6 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
                            prefixStyle = field.getLabelField().getStyle();
                        }
                        field.getLabelField().setStyle(prefixStyle + ";" + "display: none;");
-                       field.getLabelField().addStyleClass("displayWith-" + field.getId());
                     }
 
 					groupFields.add(field.getLabelField());

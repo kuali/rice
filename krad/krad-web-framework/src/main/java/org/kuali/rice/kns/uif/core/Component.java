@@ -686,4 +686,52 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
      * @param progressiveRenderViaAJAX the progressiveRenderViaAJAX to set
      */
     public void setProgressiveRenderViaAJAX(boolean progressiveRenderViaAJAX);
+    
+    /**
+     * If true, when the progressiveRender condition is satisfied, the component
+     * will always be retrieved from the server and shown(as opposed to being
+     * stored on the client, but hidden, after the first retrieval as is the
+     * case with the progressiveRenderViaAJAX option). <b>By default, this is
+     * false, so components with progressive render capabilities will always be
+     * already within the client html and toggled to be hidden or visible.</b>
+     * 
+     * @return the progressiveRenderAndRefresh
+     */
+    public boolean isProgressiveRenderAndRefresh();
+
+    /**
+     * @param progressiveRenderAndRefresh
+     *            the progressiveRenderAndRefresh to set
+     */
+    public void setProgressiveRenderAndRefresh(boolean progressiveRenderAndRefresh);
+
+    /**
+     * Specifies a property by name that when it value changes will
+     * automatically perform a refresh on this component. This can be a comma
+     * separated list of multiple properties that require this component to be
+     * refreshed when any of them change. <Br>DO NOT use with progressiveRender
+     * unless it is know that progressiveRender condition will always be
+     * satisfied before one of these fields can be changed.
+     * 
+     * @return the refreshWhenChanged
+     */
+    public String getRefreshWhenChanged();
+
+    /**
+     * @param refreshWhenChanged
+     *            the refreshWhenChanged to set
+     */
+    public void setRefreshWhenChanged(String refreshWhenChanged);
+    
+    /**
+     * Result of the conditionalRefresh expression, true if satisfied, otherwise false.
+     * Note: not currently used for any processing, required by the expression evaluator.
+     * @return the refresh
+     */
+    public boolean isRefresh();
+
+    /**
+     * @param refresh the refresh to set
+     */
+    public void setRefresh(boolean refresh);
 }

@@ -29,5 +29,5 @@ public interface SingleValuedPredicate extends PropertyPathPredicate {
 	 * @return the criteria value for this predicate
 	 */
 	CriteriaValue<?> getValue();
-    
+
 }

@@ -1,8 +1,13 @@
 package org.kuali.rice.core.api.criteria;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -481,4 +486,49 @@ public final class PredicateFactory {
         CollectionUtils.addAll(predicateSet, predicates);
 		return new OrPredicate(predicateSet);
 	}
+
+    /**
+     * This method will construct a predicate based on the predicate name.
+     *
+     * ex: "or", Or, "OrPredicate" passing the arguments to the construction method.
+     *
+     * @param name the name of the predicate to create.
+     * @param args the args required to construct the predicate
+     * @return the Predicate
+     */
+    public static Predicate dynConstruct(String name, Object... args) {
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException("name is blank");
+        }
+
+        String correctedName = StringUtils.uncapitalize(name).replace("Predicate", "");
+
+        for (Method m : PredicateFactory.class.getMethods()) {
+
+            //currently this class does NOT overload therefore this method doesn't have to worry about
+            //overload resolution - just get the Method handle based on the passed in name
+            if (m.getName().equals(correctedName)) {
+                try {
+                    return (Predicate) m.invoke(null, args);
+                } catch (InvocationTargetException e) {
+                    throw new DynPredicateException(e);
+                } catch (IllegalAccessException e) {
+                    throw new DynPredicateException(e);
+                }
+            }
+        }
+
+        throw new DynPredicateException("predicate: " + name + "doesn't exist");
+    }
+
+    //this is really a fatal error and therefore is just a private exception not really meant to be caught
+    private static class DynPredicateException extends RuntimeException {
+        DynPredicateException(Throwable t) {
+            super(t);
+        }
+
+        DynPredicateException(String s) {
+            super(s);
+        }
+    }
 }

@@ -4,6 +4,18 @@ a {
     font-weight:normal;
     cursor: pointer;
 }
+a:hover {
+    text-decoration:underline;
+}
+}
+table td, table th {
+    vertical-align:top;
+    text-align:left;
+}
+    #testValidationGroup1_layout td, #testValidationGroup1_layout th {              /* not sure this style will be carried forward */
+        margin: 0;
+        padding: 0;
+    }
 
 /*  -------------------  BUTTON STYLES  -------------------  */
 
@@ -84,6 +96,9 @@ a {
         text-align:left;
     }
     th.sorting_asc, th.sorting_desc {
+        background-color:transparent;
+    }
+    /*th.sorting_asc, th.sorting_desc {
         background-image: url(../../images/pattern_dotted.png);
     }
     th.sorting_asc label {
@@ -97,7 +112,16 @@ a {
         background-position: right;
     }
 
-
+            */
+    .datatable thead tr {
+        background-image: url(../../images/pattern_dotted.png);
+    }
+    .datatable thead tr th.sorting, .datatable thead tr th.sorting_disabled {
+        background-color:#fff;
+    }
+    .datatable thead tr th.sorting label, .datatable thead tr th.sorting_desc label, .datatable thead tr th.sorting_asc label {
+        cursor:pointer;
+    }
 
     th.sorting label, th.sorting_asc label, th.sorting_desc label, th.sorting_disabled label {
         color:#3F7826;
@@ -140,6 +164,13 @@ a {
     .constraint {
         float:left;
     }
+    .errorMessages {
+        background-color: #FFE0EC;
+        padding: 6px;
+    }
+    .page-action h2 {
+        clear:left;
+    }
 
 /* navigation panel styles  added by David*/
     .navigation-div {width:219px;}
@@ -159,9 +190,8 @@ a {
         color:#555555;
         font-size:12px;
         float:right;
-        padding-right:15px;
-        background-repeat: no-repeat;
-        background-image: url(../images/icon_navCollapse.jpg);
+        padding-right:25px;
+        background: url(../../images/icon_navCollapse.jpg) right no-repeat;
     }
 
     a.collapseLink:hover {
@@ -171,15 +201,18 @@ a {
         clear:both;
         border-top: 2px solid #000;
     }
-    .animated-navigation .header h2 {
+    .animated-navigation .fl-font-serif h2 {
         margin: 0;
-        padding: 10px 0 10px 3px;
+        padding: 5px 0 5px 3px;
         font-size: 12px;
         text-transform:uppercase;
+        font-family:arial, sans-serif;
+        border-top: 2px solid #000;
     }
     .animated-navigation li {
         list-style: none;
         border-bottom: 1px solid #bbbbbb;
+        clear:both;
     }
 
     .animated-navigation li a {

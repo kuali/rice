@@ -52,6 +52,7 @@
 		<property name="retryAttempts" value="0" />
 		<property name="busSecurity"
 			value="${secure.workflowdocument.javaservice.endpoint}" />
+		<property name="serviceVersion" value="${rice.version}" />
 	</bean>
 
 	<bean id="kewSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
@@ -62,6 +63,7 @@
 		<property name="retryAttempts" value="0" />
 		<property name="busSecurity"
 			value="${secure.workflowdocument.javaservice.endpoint}" />
+		<property name="serviceVersion" value="${rice.version}" />
 	</bean>
 	
 	<bean id="kewServiceNamespaceSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
@@ -71,6 +73,7 @@
 		<property name="retryAttempts" value="0" />
 		<property name="busSecurity"
 			value="${secure.workflowdocument.javaservice.endpoint}" />
+		<property name="serviceVersion" value="${rice.version}" />
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">

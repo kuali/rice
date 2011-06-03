@@ -80,7 +80,8 @@
 		p:localServiceName="serviceRegistrySoap"
 		p:jaxWsService="true"
 		p:busSecurity="${rice.ksb.serviceRegistrySoap.security}"
-		p:service-ref="rice.ksb.serviceRegistry" />	
+		p:service-ref="rice.ksb.serviceRegistry"
+		p:serviceVersion="${rice.version}" />	
 	
 	<bean id="rice.ksb.serviceRegistrySoap.exporter" class="org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter"
 		p:serviceBus-ref="rice.ksb.serviceBus"

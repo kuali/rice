@@ -41,6 +41,7 @@
        <property name="priority" value="3" />
        <property name="retryAttempts" value="0" />
        <property name="busSecurity" value="true"/>
+       <property name="serviceVersion" value="${rice.version}" />
     </bean>
 
     <bean id="kimJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
@@ -49,6 +50,7 @@
        <property name="priority" value="3" />
        <property name="retryAttempts" value="0" />
        <property name="busSecurity" value="${kim.soapExposedService.jaxws.security}"/>
+       <property name="serviceVersion" value="${rice.version}" />
     </bean>
 
     <bean id="kimService" class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition" abstract="true">

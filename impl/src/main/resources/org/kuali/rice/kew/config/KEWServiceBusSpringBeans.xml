@@ -74,6 +74,7 @@
        <property name="jaxWsService" value="true"/>
        <property name="priority" value="3" />
        <property name="retryAttempts" value="0" />
+       <property name="serviceVersion" value="${rice.version}" />
     </bean>
 	
 	<bean parent="kewEmbeddedServiceExporter">

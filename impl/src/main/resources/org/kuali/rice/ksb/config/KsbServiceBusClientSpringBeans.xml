@@ -94,7 +94,8 @@
   		p:service-ref="rice.ksb.busAdminService"
     	p:localServiceName="busAdminService"
     	p:priority="3"
-    	p:retryAttempts="0" />
+    	p:retryAttempts="0"
+    	p:serviceVersion="${rice.version}" />
     	
     <bean id="rice.ksb.busAdminServiceExporter" class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter"
     	p:serviceDefinition-ref="rice.ksb.busAdminServiceDefinition"

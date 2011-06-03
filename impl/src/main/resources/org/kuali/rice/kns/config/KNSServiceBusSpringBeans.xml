@@ -54,6 +54,10 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" value="#{T(org.kuali.rice.core.api.config.property.ConfigContext).getCurrentContextConfig().getProperties()}" />
+	</bean>
+
 	<bean id="riceApplicationConfigurationService"
 		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="riceApplicationConfigurationService" />
@@ -74,7 +78,8 @@
 	  <property name="serviceDefinition">
 	    <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition"
 	      p:service-ref="riceApplicationConfigurationService"
-	      p:localServiceName="riceApplicationConfigurationService" />
+	      p:localServiceName="riceApplicationConfigurationService"
+	      p:serviceVersion="${rice.version}" />
 	  </property>
 	</bean>
 

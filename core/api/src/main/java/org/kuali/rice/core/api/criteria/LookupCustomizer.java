@@ -87,7 +87,7 @@ public class LookupCustomizer<T> {
     }
 
     /**
-     * ƒ: X ? X.  This function just returns the passed in parameter.
+     * f: x -> x.  This function just returns the passed in parameter.
      *
      * @param <I> the type the function acts on.
      */

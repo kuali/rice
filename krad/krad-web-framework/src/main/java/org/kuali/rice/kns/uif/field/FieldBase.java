@@ -94,7 +94,12 @@ public class FieldBase extends ComponentBase implements Field {
 			}
 			else {
 				setRequired(new Boolean(false));
-				labelField.getRequiredMessageField().setRender(false);
+				labelField.getRequiredMessageField().setRender(true);
+				String prefixStyle = "";
+				if(StringUtils.isNotBlank(labelField.getRequiredMessageField().getStyle())){
+                    prefixStyle = labelField.getRequiredMessageField().getStyle();
+                }
+				labelField.getRequiredMessageField().setStyle(prefixStyle + ";" + "display: none;");
 			}
 
 			if (StringUtils.equals(labelPlacement, Position.RIGHT)) {

@@ -1013,6 +1013,7 @@ function getLabel(id){
 //Note: with the way that validation work the field must have been previously validated (ie validated)
 function dependsOnCheck(element){
 	var name = jq(element).attr('name');
+	name = name.replace(/\./, "\\.");
 	jq(".dependsOn-" + name).each(function(){
 		if (jq(this).hasClass("valid") || jq(this).hasClass("error")) {
 			jq.watermark.hide(this);
@@ -1020,6 +1021,38 @@ function dependsOnCheck(element){
 			jq.watermark.show(this);
 		}
 	});
+}
+
+/**
+ * Sets up a req indicator check for the controlName, when it changes, checks to see if it satisfies
+ * some booleanFunction and then shows an indicator on the now required field (identified by requiredName).
+ * If not satisfied, removes the indicator.
+ * @param controlName
+ * @param requiredName
+ * @param booleanFunction
+ */
+function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction){
+	if(jq("[name='"+ controlName + "']").length){
+		jq("[name='"+ controlName + "']").change(function(){
+			var id = jq("[name='"+ requiredName + "']").attr("id");
+			var indicator;
+			if(id){
+				var label = jq("#" + id + "_label_span");
+				if(label.length){
+					indicator = label.find(".required");
+				}
+			}
+			
+			if(indicator != null && indicator.length){
+				if(booleanFunction()){
+					indicator.show();
+				}
+				else{
+					indicator.hide();
+				}
+			}
+		});
+	}
 }
 
 //checks to see if the fields with names specified in the name array contain a value

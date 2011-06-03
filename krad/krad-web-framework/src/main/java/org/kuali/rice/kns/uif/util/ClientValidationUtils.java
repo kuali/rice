@@ -303,6 +303,23 @@ public class ClientValidationUtils {
         }
         field.setOnDocumentReadyScript(prefixScript + "\n" + "runValidationScript(function(){" + script + "});");
 	}
+	
+	/**
+	 * Determines which fields are being evaluated in a boolean statement, so handlers can be
+	 * attached to them if needed, returns these names in a list.
+	 * 
+	 * @param statement
+	 * @return
+	 */
+	private static List<String> parseOutFields(String statement){
+	    List<String> fieldNames = new ArrayList<String>();
+	    String[] splits = StringUtils.splitByWholeSeparator(statement, "coerceValue('");
+	    for(String s: splits){
+	        String fieldName = StringUtils.substringBefore(s, "'");
+	        fieldNames.add(fieldName);
+	    }
+	    return fieldNames;
+	}
 
 	/**
 	 * This method takes in a constraint to apply only when the passed in
@@ -331,6 +348,14 @@ public class ClientValidationUtils {
 			if (constraint instanceof SimpleConstraint) {
 				if (((SimpleConstraint) constraint).getRequired()) {
 					rule = rule + "required: function(element){\nreturn (" + booleanStatement + ");}";
+					//special requiredness indicator handling
+					String showIndicatorScript = "";
+					for(String checkedField: parseOutFields(booleanStatement)){
+					    showIndicatorScript = showIndicatorScript + 
+					        "setupShowReqIndicatorCheck('"+ checkedField +"', '" + field.getBindingInfo().getBindingPath() + "', " + "function(){\nreturn (" + booleanStatement + ");});\n";
+					}
+					addScriptToPage(view, field, showIndicatorScript);
+					
 					constraintCount++;
 				}
 				if (((SimpleConstraint) constraint).getMinLength() != null) {
@@ -426,6 +451,9 @@ public class ClientValidationUtils {
 		if (constraint != null && constraint.getApplyClientSide().booleanValue()) {
 			addScriptToPage(view, field, getPrerequisiteStatement(field, view, constraint, booleanStatement)
 					+ getPostrequisiteStatement(field, constraint, booleanStatement));
+	        //special requiredness indicator handling
+	        String showIndicatorScript = "setupShowReqIndicatorCheck('"+ field.getBindingInfo().getBindingPath() +"', '" + constraint.getAttributePath() + "', " + "function(){\nreturn (coerceValue('" + field.getBindingInfo().getBindingPath() + "') && " + booleanStatement + ");});\n";
+	        addScriptToPage(view, field, showIndicatorScript);
 		}
 	}
 
@@ -464,6 +492,7 @@ public class ClientValidationUtils {
 				message = MessageFormat.format(message, configService.getPropertyString(GENERIC_FIELD_MSG_KEY));
 			}
 		}
+		
 		// field occurs before case
 		String dependsClass = "dependsOn-" + constraint.getAttributePath();
 		String methodName = "prConstraint-" + field.getBindingInfo().getBindingPath()+ methodKey;

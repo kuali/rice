@@ -354,9 +354,14 @@ Tab menu
 
 .action {
 	text-decoration:underline;
+	font-size: .7em;
 }
 
 input.amount
 {
 	text-align: right;
+}
+
+ #viewfooter_div  {
+	text-align:center;
 }

@@ -31,6 +31,8 @@
      <value>/krad/css/kns/fonts.css</value>
      <value>/krad/css/kns/headers.css</value>
      <value>/krad/css/kns/tables.css</value>
+     <value>/krad/css/kns/buttons.css</value>
+     <value>/krad/css/kns/theme-kns.css</value>
      <value>/krad/css/kuali-stacked.css</value>
   </util:list>
   
@@ -51,7 +53,9 @@
      <value>/krad/css/ks-new/breadcrumb.css</value>
      <value>/krad/css/ks-new/tabs.css</value>
      <value>/krad/css/ks-new/tables.css</value>
-     <!--   <value>/krad/css/kuali-stacked.css</value>  -->
+     <value>/krad/css/ks-new/leftpanel-nav.css</value>
+     <value>/krad/css/ks-new/navigationMenu.css</value>
+     <value>/krad/css/kuali-stacked.css</value>
      <value>/krad/css/ks-new/fss-theme-ks.css</value>
   </util:list>   
   

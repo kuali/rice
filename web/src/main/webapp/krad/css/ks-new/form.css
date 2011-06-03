@@ -1,0 +1,250 @@
+
+}
+/* ----- ERRORS ----- */
+
+#errorLi {
+	width:99%;
+	margin:15px auto 15px auto;
+	background:#fff !important;
+	border:1px solid red;
+	text-align:center;
+	padding:1em 0 1em 0;
+	-webkit-border-radius:20px;
+	-moz-border-radius:20px;
+	border-radius:20px;
+}
+#errorMsgLbl {
+	margin:0 0 5px 0;
+	padding:0;
+	font-size:125%;
+	color:#DF0000 !important;
+}
+#errorMsg {
+	margin:0 0 2px 0;
+	color:#000 !important;
+	font-size:100%;
+}
+#errorMsg strong {
+	padding:2px 8px;
+	background-color: #FFDFDF !important;
+	color:red !important;
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+	border-radius:10px;
+}
+form li.error {
+	display:block !important;
+	background-color: #FFDFDF !important;
+	margin-bottom:3px !important;
+}
+form li label.error, form li input.error {
+	color:#DF0000 !important;
+	font-weight:bold !important;
+}
+form li input.error {
+	background:#fff !important;
+	border:2px solid #DF0000 !important;
+}
+form li.error label, form li.error span.symbol {
+	color:#000 !important;
+}
+form li.error label.desc {
+	color:#DF0000 !important;
+}
+form p.error {
+	display:none;
+	margin:0 !important;
+	padding:7px 0 0 0 !important;
+	line-height:10px !important;
+	font-weight:bold;
+	font-size:11px;
+	color:#DF0000 !important;
+	clear:both;
+}
+form li.error p.error {
+	display:block;
+}
+form li.complex p.error {
+	padding:0 0 9px 0 !important;
+}
+
+/* 
+ * ErrorsField
+*/
+.errorsField{
+    padding-left: 10px;
+	overflow: hidden;
+	*zoom: 1;
+}
+
+.errorsFieldForContainer{
+	float: none;
+	padding-left: 10px;
+	display:inline-block;
+	zoom:1;
+	*display:inline;
+}
+
+.errorMessages{
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
+}
+
+.warningMessages{
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
+}
+
+.infoMessages{
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll left top transparent;
+}
+
+.errorsFieldForContainer .errorMessages{
+
+	border: 1px solid red;
+	background-color: #FFE0E9;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+
+.errorsFieldForContainer .warningMessages{
+	border: 1px solid goldenrod;
+	background-color: #F4E271;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+
+.errorsFieldForContainer .infoMessages{
+	border: 1px solid #82CAFA;
+	background-color: #AFDCEC;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+
+.errorsField ul{
+	list-style: none outside none;
+	margin: 0;
+}
+
+.errorsField li{
+	list-style: none outside none;
+	margin-left: 0;
+    padding: 1px 0;
+	line-height: 1.3em;
+}
+
+.errorsField .errorMessages{
+	color: #DF0000;
+	font-weight: bold;
+}
+
+span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError{
+	background-color: #FFE0E9 !important;
+}
+
+span.information, div.information, td.information{
+	background-color: #AFDCEC;
+}
+
+span.warning, div.warning, td.warning{
+	background-color: #F4E271;
+}
+
+label.clientError, a.clientError, label.serverError{
+	color: #DF0000 !important;
+}
+
+li label.error{
+	display: inline !important;
+}
+
+.clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+/* IE specific */
+* html .clearfix {height: 1%;}
+
+.boxLayoutHorizontalItem{
+	margin-right: 15px;
+}
+
+.boxLayoutVerticalItem{
+	padding-bottom: 20px;
+	display: block;
+}
+
+.fieldContainerVerticalItem{
+	padding-bottom: 5px;
+	display: block;
+}
+/*
+Tab menu
+*/
+.tab-navigation-block{
+	padding: 0 !important;
+	padding-left: 20px !important;
+	
+}
+
+.tab-navigation-block, .tab-navigation-block li{
+	border-bottom: 1px solid #C7C7C7;
+}
+
+.tab-navigation-block li{
+    float: left;
+    list-style: none outside none;
+    margin: 0 0.2em 1px 0;
+    padding: 0;
+    position: relative;
+    top: 2px;
+	*top: 1px;
+    white-space: nowrap;
+	clear: none;
+}
+
+.ui-tabs li{
+	clear: none;
+}
+
+.tab-navigation-block li a{
+	float: left;
+    padding: 0.5em 1em;
+    text-decoration: none;
+}
+
+.tab-navigation-block li.ui-state-active{
+	border-bottom: 1px solid #F6F6F6;
+	background: none;
+}
+
+.tab-navigation-block li.ui-state-active a{
+	color: black !important;
+}
+
+.ui-datepicker-trigger{ 
+	cursor: pointer;
+}
+
+/*	
+*	Watermark plugin for jQuery
+*	Version: 3.0.6
+*	Dual licensed under the MIT or GPL Version 2 licenses.
+*/
+/* Water mark text color. If it's not set, textarea displays in black instead of default gray watermark color. 
+*/
+.watermark {color:#999}

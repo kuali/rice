@@ -5,9 +5,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -501,8 +499,7 @@ public final class PredicateFactory {
             throw new IllegalArgumentException("name is blank");
         }
 
-        String correctedName = StringUtils.uncapitalize(name).replace("Predicate", "");
-
+        final String correctedName = findDynName(name);
         for (Method m : PredicateFactory.class.getMethods()) {
 
             //currently this class does NOT overload therefore this method doesn't have to worry about
@@ -518,7 +515,18 @@ public final class PredicateFactory {
             }
         }
 
-        throw new DynPredicateException("predicate: " + name + "doesn't exist");
+        throw new DynPredicateException("predicate: " + name + " doesn't exist");
+    }
+
+    private static String findDynName(String name) {
+        String correctedName = StringUtils.uncapitalize(name).replace("Predicate", "");
+        //null is a keyword therefore they are called isNull & isNotNull
+        if (correctedName.equals("null")) {
+            correctedName = "isNull";
+        } else if (correctedName.equals("notNull")) {
+            correctedName = "isNotNull";
+        }
+        return correctedName;
     }
 
     //this is really a fatal error and therefore is just a private exception not really meant to be caught

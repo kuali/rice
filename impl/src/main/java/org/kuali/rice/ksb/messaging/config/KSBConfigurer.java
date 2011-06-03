@@ -32,6 +32,7 @@ import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
@@ -92,9 +93,12 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	private PlatformTransactionManager platformTransactionManager;
 	
+	private List<Lifecycle> internalLifecycles;
+	
 	public KSBConfigurer() {
 		super(KsbApiConstants.KSB_MODULE_NAME);
 		setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
+		this.internalLifecycles = new ArrayList<Lifecycle>();
 	}
 	
 	@Override
@@ -162,7 +166,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 	@Override
 	public List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-
 		// this validation of our service list needs to happen after we've
 		// loaded our configs so it's a lifecycle
 		lifecycles.add(new BaseLifecycle() {
@@ -177,13 +180,11 @@ public class KSBConfigurer extends ModuleConfigurer {
 				super.start();
 			}
 		});
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.THREAD_POOL_SERVICE));
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.SCHEDULED_THREAD_POOL_SERVICE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.BUS_ADMIN_SERVICE));
-		lifecycles.add(new ServiceDelegatingLifecycle(KsbApiServiceLocator.SERVICE_BUS));
-		lifecycles.add(new ServicePublisher(getServices()));
 		return lifecycles;
 	}
+	
+	
 
     @Override
     public void doAdditonalConfigurerValidations() {
@@ -194,7 +195,35 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	@Override
 	public void doAdditionalContextStartedLogic() {
+		ServicePublisher servicePublisher = new ServicePublisher(getServices());
+		Lifecycle serviceBus = new ServiceDelegatingLifecycle(KsbApiServiceLocator.SERVICE_BUS);
+		Lifecycle threadPool = new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.THREAD_POOL_SERVICE);
+		Lifecycle scheduledThreadPool = new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.SCHEDULED_THREAD_POOL_SERVICE);
+		
+		try {
+			servicePublisher.start();
+			internalLifecycles.add(servicePublisher);
+			serviceBus.start();
+			internalLifecycles.add(serviceBus);
+			threadPool.start();
+			internalLifecycles.add(threadPool);
+			scheduledThreadPool.start();
+			internalLifecycles.add(scheduledThreadPool);
+		} catch (Exception e) {
+			if (e instanceof RuntimeException) {
+				throw (RuntimeException)e;
+			}
+			throw new RiceRuntimeException("Failed to initialize KSB on context startup");
+		}
+
 		requeueMessages();
+	}
+
+	@Override
+	protected void doAdditionalModuleStopLogic() throws Exception {
+		for (int index = internalLifecycles.size(); index > 0; index--) {
+			internalLifecycles.get(index).stop();
+		}
 	}
 
 	/**

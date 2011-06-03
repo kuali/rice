@@ -35,6 +35,8 @@ public interface ServiceRegistryDao {
 	
 	List<ServiceInfoBo> getAllServiceInfos();
 	
+	List<ServiceInfoBo> getAllServiceInfosForInstance(String instanceId);
+	
 	ServiceDescriptorBo getServiceDescriptor(String serviceDescriptorId);
 	
 	ServiceDescriptorBo saveServiceDescriptor(ServiceDescriptorBo serviceDescriptor);

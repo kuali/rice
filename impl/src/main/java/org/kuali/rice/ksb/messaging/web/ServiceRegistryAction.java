@@ -18,10 +18,8 @@ package org.kuali.rice.ksb.messaging.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,8 +36,8 @@ import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
-import org.kuali.rice.ksb.api.registry.ServiceRegistry;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
+import org.kuali.rice.ksb.api.registry.ServiceRegistry;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 
@@ -69,7 +67,7 @@ public class ServiceRegistryAction extends KSBAction {
         	HttpServletResponse response) throws IOException, ServletException {
     	ServiceRegistry serviceRegistry = KsbApiServiceLocator.getServiceRegistry();
     	List<ServiceInfo> serviceInfos = serviceRegistry.getAllOnlineServices();
-    	Set<String> serviceEndpointsToDelete = new HashSet<String>();
+    	List<String> serviceEndpointsToDelete = new ArrayList<String>();
     	for (ServiceInfo serviceInfo : serviceInfos) {
     		if (serviceInfo.getServerIpAddress().equals("localhost")) {
     			serviceEndpointsToDelete.add(serviceInfo.getServiceId());

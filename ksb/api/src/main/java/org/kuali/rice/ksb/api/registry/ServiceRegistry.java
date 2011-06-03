@@ -1,7 +1,6 @@
 package org.kuali.rice.ksb.api.registry;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -34,6 +33,10 @@ public interface ServiceRegistry {
 	@WebResult(name = "serviceInfo")
 	List<ServiceInfo> getAllServices();
 	
+	@WebMethod(operationName = "getAllServicesForInstance")
+	@WebResult(name = "serviceInfo")
+	List<ServiceInfo> getAllServicesForInstance(@WebParam(name = "instanceId") String instanceId) throws RiceIllegalArgumentException;
+	
 	@WebMethod(operationName = "getServiceDescriptor")
 	@WebResult(name = "serviceDescriptor")
 	ServiceDescriptor getServiceDescriptor(@WebParam(name = "serviceDescriptorId") String serviceDescriptorId) throws RiceIllegalArgumentException;
@@ -43,26 +46,31 @@ public interface ServiceRegistry {
 	List<ServiceDescriptor> getServiceDescriptors(@WebParam(name = "serviceDescriptorId") List<String> serviceDescriptorIds) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "publishService")
-	void publishService(@WebParam(name = "serviceEndpoint") ServiceEndpoint serviceEndpoint) throws RiceIllegalArgumentException;
+	@WebResult(name = "serviceEndpoint")
+	ServiceEndpoint publishService(@WebParam(name = "serviceEndpoint") ServiceEndpoint serviceEndpoint) throws RiceIllegalArgumentException;
 
 	@WebMethod(operationName = "publishServices")
-	void publishServices(@WebParam(name = "serviceEndpoint") Set<ServiceEndpoint> serviceEndpoints) throws RiceIllegalArgumentException;
+	@WebResult(name = "serviceEndpoint")
+	List<ServiceEndpoint> publishServices(@WebParam(name = "serviceEndpoint") List<ServiceEndpoint> serviceEndpoints) throws RiceIllegalArgumentException;
 		
 	@WebMethod(operationName = "removeServiceEndpoint")
-	void removeServiceEndpoint(@WebParam(name = "serviceId") String serviceId) throws RiceIllegalArgumentException;
+	@WebResult(name = "serviceEndpoint")
+	ServiceEndpoint removeServiceEndpoint(@WebParam(name = "serviceId") String serviceId) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "removeServiceEndpoints")
-	void removeServiceEndpoints(@WebParam(name = "serviceId") Set<String> serviceIds) throws RiceIllegalArgumentException;
+	@WebResult(name = "serviceEndpoint")
+	List<ServiceEndpoint> removeServiceEndpoints(@WebParam(name = "serviceId") List<String> serviceIds) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "removeAndPublish")
-	void removeAndPublish(@WebParam(name = "removeServiceId") Set<String> removeServiceIds,
-			@WebParam(name = "publishServiceEndpoint") Set<ServiceEndpoint> publishServiceEndpoints);
+	@WebResult(name = "removeAndPublishResult")
+	RemoveAndPublishResult removeAndPublish(@WebParam(name = "removeServiceId") List<String> removeServiceIds,
+			@WebParam(name = "publishServiceEndpoint") List<ServiceEndpoint> publishServiceEndpoints);
 	
 	@WebMethod(operationName = "updateStatus")
 	void updateStatus(@WebParam(name = "serviceId") String serviceId, @WebParam(name = "status") ServiceEndpointStatus status) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "updateStatuses")
-	void updateStatuses(@WebParam(name = "serviceId") Set<String> serviceIds, @WebParam(name = "status") ServiceEndpointStatus status) throws RiceIllegalArgumentException;
+	void updateStatuses(@WebParam(name = "serviceId") List<String> serviceIds, @WebParam(name = "status") ServiceEndpointStatus status) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "takeInstanceOffline")
 	void takeInstanceOffline(@WebParam(name = "instanceId") String instanceId) throws RiceIllegalArgumentException;

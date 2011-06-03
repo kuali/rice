@@ -130,6 +130,7 @@ public class ServiceInfoBo implements ServiceInfoContract, Serializable {
 		bo.statusCode = im.getStatus().getCode();
 		bo.serviceDescriptorId = im.getServiceDescriptorId();
 		bo.checksum = im.getChecksum();
+		bo.versionNumber = im.getVersionNumber();
 		return bo;
 	}
 	

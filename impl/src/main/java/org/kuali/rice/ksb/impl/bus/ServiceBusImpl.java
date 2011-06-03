@@ -23,6 +23,7 @@ import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
+import org.kuali.rice.ksb.api.registry.RemoveAndPublishResult;
 import org.kuali.rice.ksb.api.registry.ServiceEndpoint;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.api.registry.ServiceRegistry;
@@ -101,7 +102,11 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 				int refreshRate = ConfigContext.getCurrentContextConfig().getRefreshRate();
 				Runnable runnable = new Runnable() {
 					public void run() {
-						synchronize();
+						try {
+							synchronize();
+						} catch (Throwable t) {
+							LOG.error("Failed to execute background service bus synchronization.", t);
+						}
 					}
 				};
 				this.registrySyncFuture = scheduledPool.scheduleWithFixedDelay(runnable, 30, refreshRate, TimeUnit.SECONDS);
@@ -354,7 +359,7 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 
 	@Override
 	public void synchronize() {
-		if (!isDevMode()) {
+		if (!isDevMode() && isStarted()) {
 			synchronized (synchronizeLock) {
 				List<LocalService> localServicesList;
 				List<RemoteService> clientRegistryCacheList;
@@ -405,17 +410,47 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 	}
 	
 	protected void processLocalServiceDiff(LocalServicesDiff localServicesDiff) {
-		Set<String> removeServiceEndpointIds = new HashSet<String>();
-		Set<ServiceEndpoint> publishServiceEndpoints = new HashSet<ServiceEndpoint>();
+		List<String> removeServiceEndpointIds = new ArrayList<String>();
+		List<ServiceEndpoint> publishServiceEndpoints = new ArrayList<ServiceEndpoint>();
 		for (ServiceInfo serviceToRemove : localServicesDiff.getServicesToRemoveFromRegistry()) {
 			removeServiceEndpointIds.add(serviceToRemove.getServiceId());
 		}
 		for (LocalService localService : localServicesDiff.getLocalServicesToPublish()) {
 			publishServiceEndpoints.add(localService.getServiceEndpoint());
 		}
+		for (LocalService localService : localServicesDiff.getLocalServicesToUpdate().keySet()) {
+			ServiceInfo registryServiceInfo = localServicesDiff.getLocalServicesToUpdate().get(localService);
+			publishServiceEndpoints.add(rebuildServiceEndpointForUpdate(localService.getServiceEndpoint(), registryServiceInfo));
+		}
 		boolean batchMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(Config.BATCH_MODE, false);
 		if (!batchMode && (!removeServiceEndpointIds.isEmpty() || !publishServiceEndpoints.isEmpty())) {
-			this.serviceRegistry.removeAndPublish(removeServiceEndpointIds, publishServiceEndpoints);
+			RemoveAndPublishResult result = this.serviceRegistry.removeAndPublish(removeServiceEndpointIds, publishServiceEndpoints);
+			// now update the ServiceEndpoints for our local services so we can get the proper id for them
+			if (!result.getServicesPublished().isEmpty()) {
+				synchronized (serviceLock) {
+					for (ServiceEndpoint publishedService : result.getServicesPublished()) {
+						rebuildLocalServiceEndpointAfterPublishing(publishedService);
+					}
+				}
+			}
+		}
+	}
+	
+	protected ServiceEndpoint rebuildServiceEndpointForUpdate(ServiceEndpoint originalEndpoint, ServiceInfo registryServiceInfo) {
+		ServiceEndpoint.Builder builder = ServiceEndpoint.Builder.create(originalEndpoint);
+		builder.getInfo().setServiceId(registryServiceInfo.getServiceId());
+		builder.getInfo().setServiceDescriptorId(registryServiceInfo.getServiceDescriptorId());
+		builder.getInfo().setVersionNumber(registryServiceInfo.getVersionNumber());
+		builder.getDescriptor().setId(registryServiceInfo.getServiceDescriptorId());
+		return builder.build();
+	}
+	
+	protected void rebuildLocalServiceEndpointAfterPublishing(ServiceEndpoint publishedService) {
+		// verify the service is still published
+		QName serviceName = publishedService.getInfo().getServiceName();
+		if (localServices.containsKey(serviceName)) {
+			LocalService newLocalService = new LocalService(localServices.get(serviceName), publishedService);
+			localServices.put(serviceName, newLocalService);
 		}
 	}
 

@@ -18,17 +18,17 @@ package org.kuali.rice.ksb.impl.registry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.ksb.api.registry.ServiceRegistry;
+import org.kuali.rice.ksb.api.registry.RemoveAndPublishResult;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
 import org.kuali.rice.ksb.api.registry.ServiceEndpoint;
 import org.kuali.rice.ksb.api.registry.ServiceEndpointStatus;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
+import org.kuali.rice.ksb.api.registry.ServiceRegistry;
 
 /**
  * TODO... 
@@ -61,6 +61,15 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		List<ServiceInfoBo> serviceInfoBos = serviceRegistryDao.getAllServiceInfos();
 		return convertServiceInfoBoList(serviceInfoBos);
 	}
+	
+	@Override
+	public List<ServiceInfo> getAllServicesForInstance(String instanceId) throws RiceIllegalArgumentException {
+		if (StringUtils.isBlank(instanceId)) {
+			throw new RiceIllegalArgumentException("instanceId cannot be blank");
+		}
+		List<ServiceInfoBo> serviceInfoBos = serviceRegistryDao.getAllServiceInfosForInstance(instanceId);
+		return convertServiceInfoBoList(serviceInfoBos);
+	}
 
 	@Override
 	public ServiceDescriptor getServiceDescriptor(String serviceDescriptorId)
@@ -87,7 +96,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	}
 
 	@Override
-	public void publishService(ServiceEndpoint serviceEndpoint)
+	public ServiceEndpoint publishService(ServiceEndpoint serviceEndpoint)
 			throws RiceIllegalArgumentException {
 		if (serviceEndpoint == null) {
 			throw new RiceIllegalArgumentException("serviceEndpoint cannot be null");
@@ -99,52 +108,68 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		serviceDescriptorBo = serviceRegistryDao.saveServiceDescriptor(serviceDescriptorBo);
 		serviceInfoBo.setServiceDescriptorId(serviceDescriptorBo.getId());
 		serviceRegistryDao.saveServiceInfo(serviceInfoBo);
+		
+		
+		return ServiceEndpoint.Builder.create(ServiceInfo.Builder.create(serviceInfoBo),
+				ServiceDescriptor.Builder.create(serviceDescriptorBo)).build();
 	}
 
 	@Override
-	public void publishServices(Set<ServiceEndpoint> serviceEndpoints)
+	public List<ServiceEndpoint> publishServices(List<ServiceEndpoint> serviceEndpoints)
 			throws RiceIllegalArgumentException {
 		if (serviceEndpoints == null) {
 			throw new RiceIllegalArgumentException("serviceEndpoints cannot be null");
 		}
+		List<ServiceEndpoint> publishedEndpoints = new ArrayList<ServiceEndpoint>();
 		for (ServiceEndpoint serviceEndpoint : serviceEndpoints) {
-			publishService(serviceEndpoint);
+			publishedEndpoints.add(publishService(serviceEndpoint));
 		}
+		return publishedEndpoints;
 	}
 
 	@Override
-	public void removeServiceEndpoint(String serviceId)
+	public ServiceEndpoint removeServiceEndpoint(String serviceId)
 			throws RiceIllegalArgumentException {
 		if (StringUtils.isBlank(serviceId)) {
 			throw new RiceIllegalArgumentException("serviceId cannot be blank");
 		}
 		ServiceInfoBo serviceInfoBo = serviceRegistryDao.getServiceInfo(serviceId);
 		if (serviceInfoBo != null) {
+			ServiceDescriptorBo serviceDescriptorBo = serviceRegistryDao.getServiceDescriptor(serviceInfoBo.getServiceDescriptorId());
+			ServiceEndpoint endpointPriorRemoval = ServiceEndpoint.Builder.create(ServiceInfo.Builder.create(serviceInfoBo),
+					ServiceDescriptor.Builder.create(serviceDescriptorBo)).build();
 			serviceRegistryDao.removeServiceInfo(serviceInfoBo.getServiceId());
 			serviceRegistryDao.removeServiceDescriptor(serviceInfoBo.getServiceDescriptorId());
+			return endpointPriorRemoval;
 		}
+		return null;
 	}
 
 	@Override
-	public void removeServiceEndpoints(Set<String> serviceIds)
+	public List<ServiceEndpoint> removeServiceEndpoints(List<String> serviceIds)
 			throws RiceIllegalArgumentException {
 		if (serviceIds == null) {
 			throw new RiceIllegalArgumentException("serviceIds canot be null");
 		}
+		List<ServiceEndpoint> servicesRemoved = new ArrayList<ServiceEndpoint>();
 		for (String serviceId : serviceIds) {
-			removeServiceEndpoint(serviceId);
+			servicesRemoved.add(removeServiceEndpoint(serviceId));
 		}
+		return servicesRemoved;
 	}
 
 	@Override
-	public void removeAndPublish(Set<String> removeServiceIds,
-			Set<ServiceEndpoint> publishServiceEndpoints) {
+	public RemoveAndPublishResult removeAndPublish(List<String> removeServiceIds,
+			List<ServiceEndpoint> publishServiceEndpoints) {
+		List<ServiceEndpoint> servicesRemoved = new ArrayList<ServiceEndpoint>();
+		List<ServiceEndpoint> servicesPublished = new ArrayList<ServiceEndpoint>();
 		if (removeServiceIds != null) {
-			removeServiceEndpoints(removeServiceIds);
+			servicesRemoved = removeServiceEndpoints(removeServiceIds);
 		}
 		if (publishServiceEndpoints != null) {
-			publishServices(publishServiceEndpoints);
+			servicesPublished = publishServices(publishServiceEndpoints);
 		}
+		return RemoveAndPublishResult.create(servicesRemoved, servicesPublished);
 	}
 
 	@Override
@@ -160,7 +185,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	}
 
 	@Override
-	public void updateStatuses(Set<String> serviceIds,
+	public void updateStatuses(List<String> serviceIds,
 			ServiceEndpointStatus status) throws RiceIllegalArgumentException {
 		if (serviceIds == null) {
 			throw new RiceIllegalArgumentException("serviceIds canot be null");

@@ -29,6 +29,10 @@ public final class LocalService {
 	private final ServiceEndpoint serviceEndpoint;
 	
 	LocalService(String instanceId, ServiceDefinition serviceDefinition) {
+		this(instanceId, serviceDefinition, null);
+	}
+	
+	LocalService(String instanceId, ServiceDefinition serviceDefinition, ServiceEndpoint serviceEndpoint) {
 		if (StringUtils.isBlank(instanceId)) {
 			throw new IllegalArgumentException("instanceId was blank or null");
 		}
@@ -37,7 +41,15 @@ public final class LocalService {
 		}
 		this.serviceDefinition = serviceDefinition;
 		this.endpoint = serviceDefinition.establishEndpoint();
-		this.serviceEndpoint = constructServiceEndpoint(instanceId, this.endpoint);
+		if (serviceEndpoint != null) {
+			this.serviceEndpoint = serviceEndpoint;
+		} else {
+			this.serviceEndpoint = constructServiceEndpoint(instanceId, this.endpoint);
+		}
+	}
+	
+	LocalService(LocalService currentLocalService, ServiceEndpoint newServiceEndpoint) {
+		this(newServiceEndpoint.getInfo().getInstanceId(), currentLocalService.getServiceDefinition(), newServiceEndpoint);
 	}
 	
 	public QName getServiceName() {

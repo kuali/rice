@@ -17,6 +17,7 @@ package org.kuali.rice.ksb.impl.registry.diff;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.impl.bus.LocalService;
@@ -31,11 +32,14 @@ public class LocalServicesDiff {
 
 	private final List<ServiceInfo> servicesToRemoveFromRegistry;
 	private final List<LocalService> localServicesToPublish;
+	private final Map<LocalService, ServiceInfo> localServicesToUpdate;
 		
 	public LocalServicesDiff(List<ServiceInfo> servicesToRemoveFromRegistry,
-			List<LocalService> localServicesToPublish) {
+			List<LocalService> localServicesToPublish,
+			Map<LocalService, ServiceInfo> localServicesToUpdate) {
 		this.servicesToRemoveFromRegistry = servicesToRemoveFromRegistry == null ? Collections.<ServiceInfo>emptyList() : servicesToRemoveFromRegistry;
 		this.localServicesToPublish = localServicesToPublish == null ? Collections.<LocalService>emptyList() : localServicesToPublish;
+		this.localServicesToUpdate = localServicesToUpdate == null ? Collections.<LocalService, ServiceInfo>emptyMap() : localServicesToUpdate;
 	}
 
 	public List<ServiceInfo> getServicesToRemoveFromRegistry() {
@@ -44,6 +48,10 @@ public class LocalServicesDiff {
 
 	public List<LocalService> getLocalServicesToPublish() {
 		return this.localServicesToPublish;
+	}
+	
+	public Map<LocalService, ServiceInfo> getLocalServicesToUpdate() {
+		return this.localServicesToUpdate;
 	}
 
 }

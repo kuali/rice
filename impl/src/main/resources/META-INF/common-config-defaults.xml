@@ -347,7 +347,7 @@
 
 	<param name="title.inquiry.url.value.prependtext" override="false"></param>
 
-	<param name="bus.refresh.rate" override="false">30</param>
+	<param name="bus.refresh.rate" override="false">60</param>
 	<param name="threadPool.size" override="false">5</param>
 
 	<!-- Default Option for Action List User Preferences. -->

@@ -47,30 +47,36 @@ public class ServiceRegistryDiffCalculatorImpl implements ServiceRegistryDiffCal
 	
 	@Override
 	public CompleteServiceDiff diffServices(String instanceId, List<LocalService> localServices, List<RemoteService> clientRegistryCache) {
+		List<ServiceInfo> allRegistryServicesForInstance = serviceRegistry.getAllServicesForInstance(instanceId);
+		LocalServicesDiff localServicesDiff = calculateLocalServicesDiff(allRegistryServicesForInstance, instanceId, localServices);
 		List<ServiceInfo> allRegistryServices = serviceRegistry.getAllOnlineServices();
-		LocalServicesDiff localServicesDiff = calculateLocalServicesDiff(allRegistryServices, instanceId, localServices);
 		RemoteServicesDiff remoteServicesDiff = calculateRemoteServicesDiff(allRegistryServices, clientRegistryCache);
 		return new CompleteServiceDiff(localServicesDiff, remoteServicesDiff);
 	}
 	
-	protected LocalServicesDiff calculateLocalServicesDiff(List<ServiceInfo> allRegistryServices, String instanceId, List<LocalService> localServices) {
+	protected LocalServicesDiff calculateLocalServicesDiff(List<ServiceInfo> allRegistryServicesForInstance, String instanceId, List<LocalService> localServices) {
 		
 		List<ServiceInfo> servicesToRemoveFromRegistry = new ArrayList<ServiceInfo>();
 		List<LocalService> localServicesToPublish = new ArrayList<LocalService>();
+		Map<LocalService, ServiceInfo> localServicesToUpdate = new HashMap<LocalService, ServiceInfo>();
 		
-		List<ServiceInfo> registryServicesForThisInstance = filterServicesForInstance(instanceId, allRegistryServices);
 		Map<QName, LocalService> localServiceIndex = indexLocalServices(instanceId, localServices);
-		for (ServiceInfo serviceInfo : registryServicesForThisInstance) {
+		for (ServiceInfo serviceInfo : allRegistryServicesForInstance) {
+			// first validate that the service has a valid instance id
+			if (!instanceId.equals(serviceInfo.getInstanceId())) {
+				throw new IllegalArgumentException("ServiceInfo given for local service diff does not have a valid instance id.  Should have been '" + instanceId + "' but was '" + serviceInfo.getInstanceId() + "'");
+			}
 			LocalService localService = localServiceIndex.get(serviceInfo.getServiceName());
 			if (localService == null) {
 				// this means the registry has the service but there is no local service, it has been unregistered
 				servicesToRemoveFromRegistry.add(serviceInfo);
 			} else {
-				// if the LocalService is not null, that means that it exists but it may have changed
-				if (!localService.getServiceEndpoint().getInfo().getChecksum().equals(serviceInfo.getChecksum())) {
+				// if the LocalService is not null, that means that it exists but it may have changed, or this may be the first time the service
+				// is being published upon startup in which case it's service id will be null
+				if (!localService.getServiceEndpoint().getInfo().getChecksum().equals(serviceInfo.getChecksum()) ||
+						localService.getServiceEndpoint().getInfo().getServiceId() == null) {
 					// the checksums don't match, that means we need to re-publish our current copy of the local service
-					localServicesToPublish.add(localService);
-					servicesToRemoveFromRegistry.add(serviceInfo);
+					localServicesToUpdate.put(localService, serviceInfo);
 				}
 				// whether or not it matches, remove it from the index
 				localServiceIndex.remove(serviceInfo.getServiceName());
@@ -84,7 +90,7 @@ public class ServiceRegistryDiffCalculatorImpl implements ServiceRegistryDiffCal
 				localServicesToPublish.size() + " local services to publish");
 		}
 		
-		return new LocalServicesDiff(servicesToRemoveFromRegistry, localServicesToPublish);
+		return new LocalServicesDiff(servicesToRemoveFromRegistry, localServicesToPublish, localServicesToUpdate);
 				
 	}
 	

@@ -196,6 +196,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 		LocalServicesDiff localServicesDiff = diffCalculatorImpl.calculateLocalServicesDiff([], TEST1_INSTANCE_ID, [])
 		assert localServicesDiff != null
 		assert localServicesDiff.getLocalServicesToPublish().isEmpty()
+		assert localServicesDiff.getLocalServicesToUpdate().isEmpty()
 		assert localServicesDiff.getServicesToRemoveFromRegistry().isEmpty()
 	}
 	
@@ -213,21 +214,24 @@ class ServiceRegistryDiffCalculatorImplTest {
 			newServiceInfoPrototype(TEST2_INSTANCE_ID).build()
 		]
 		
-		LocalServicesDiff localServicesDiff = diffCalculatorImpl.calculateLocalServicesDiff(allRegistryServices, TEST3_INSTANCE_ID, [])
+		LocalServicesDiff localServicesDiff = diffCalculatorImpl.calculateLocalServicesDiff(filterForInstance(allRegistryServices, TEST3_INSTANCE_ID), TEST3_INSTANCE_ID, [])
 		assert localServicesDiff != null
 		assert localServicesDiff.getLocalServicesToPublish().isEmpty()
+		assert localServicesDiff.getLocalServicesToUpdate().isEmpty()
 		assert localServicesDiff.getServicesToRemoveFromRegistry().isEmpty()
 		
 		// now check with TEST1_INSTANCE_ID
-		localServicesDiff = diffCalculatorImpl.calculateLocalServicesDiff(allRegistryServices, TEST1_INSTANCE_ID, [])
+		localServicesDiff = diffCalculatorImpl.calculateLocalServicesDiff(filterForInstance(allRegistryServices, TEST1_INSTANCE_ID), TEST1_INSTANCE_ID, [])
 		assert localServicesDiff != null
 		assert localServicesDiff.getLocalServicesToPublish().isEmpty()
+		assert localServicesDiff.getLocalServicesToUpdate().isEmpty()
 		assert localServicesDiff.getServicesToRemoveFromRegistry().size() == 2
 		
 		// now check with TEST2_INSTANCE_ID
-		localServicesDiff = diffCalculatorImpl.calculateLocalServicesDiff(allRegistryServices, TEST2_INSTANCE_ID, [])
+		localServicesDiff = diffCalculatorImpl.calculateLocalServicesDiff(filterForInstance(allRegistryServices, TEST2_INSTANCE_ID), TEST2_INSTANCE_ID, [])
 		assert localServicesDiff != null
 		assert localServicesDiff.getLocalServicesToPublish().isEmpty()
+		assert localServicesDiff.getLocalServicesToUpdate().isEmpty()
 		assert localServicesDiff.getServicesToRemoveFromRegistry().size() == 3
 	}
 	
@@ -292,34 +296,28 @@ class ServiceRegistryDiffCalculatorImplTest {
 		]
 		// in the above set of registry services, services for instance TEST2 and TEST3 should be ignored since they don't match the instance id we are using (TEST1)
 		
-		LocalServicesDiff localServicesDiff = diffCalculatorImpl.calculateLocalServicesDiff(allRegistryServices, TEST1_INSTANCE_ID, localServices)
+		LocalServicesDiff localServicesDiff = diffCalculatorImpl.calculateLocalServicesDiff(filterForInstance(allRegistryServices, TEST1_INSTANCE_ID), TEST1_INSTANCE_ID, localServices)
 		assert localServicesDiff != null
 		
-		assert localServicesDiff.getLocalServicesToPublish().size() == 3
-		boolean[] found = [false, false, false]
+		assert localServicesDiff.getLocalServicesToPublish().size() == 1
+		boolean[] found = [false]
 		for (LocalService localService : localServicesDiff.getLocalServicesToPublish()) {
-			if (localService.is(localServices[2])) {
+			if (localService.is(localServices[4])) {
 				found[0] = true
-			} else if (localService.is(localServices[3])) {
-				found[1] = true
-			} else if (localService.is(localServices[4])) {
-				found[2] = true
 			}
 		}
 		assert found[0]
-		assert found[1]
-		assert found[2]
-		
-		assert localServicesDiff.getServicesToRemoveFromRegistry().size() == 4
+				
+		assert localServicesDiff.getLocalServicesToUpdate().size() == 4
 		found = [false, false, false, false]
-		for (ServiceInfo serviceInfo : localServicesDiff.getServicesToRemoveFromRegistry()) {
-			if (serviceInfo.is(allRegistryServices[2])) {
+		for (ServiceInfo serviceInfo : localServicesDiff.getLocalServicesToUpdate().values()) {
+			if (serviceInfo.is(allRegistryServices[0])) {
 				found[0] = true
-			} else if (serviceInfo.is(allRegistryServices[3])) {
+			} else if (serviceInfo.is(allRegistryServices[1])) {
 				found[1] = true
-			} else if (serviceInfo.is(allRegistryServices[4])) {
+			} else if (serviceInfo.is(allRegistryServices[2])) {
 				found[2] = true
-			} else if (serviceInfo.is(allRegistryServices[5])) {
+			} else if (serviceInfo.is(allRegistryServices[3])) {
 				found[3] = true
 			}
 		}
@@ -327,6 +325,19 @@ class ServiceRegistryDiffCalculatorImplTest {
 		assert found[1]
 		assert found[2]
 		assert found[3]
+
+		
+		assert localServicesDiff.getServicesToRemoveFromRegistry().size() == 2
+		found = [false, false]
+		for (ServiceInfo serviceInfo : localServicesDiff.getServicesToRemoveFromRegistry()) {
+			if (serviceInfo.is(allRegistryServices[4])) {
+				found[0] = true
+			} else if (serviceInfo.is(allRegistryServices[5])) {
+				found[1] = true
+			}
+		}
+		assert found[0]
+		assert found[1]
 	}
 	
 	ServiceInfo.Builder newServiceInfoPrototype(String instanceId) {
@@ -388,6 +399,16 @@ class ServiceRegistryDiffCalculatorImplTest {
 				ConfigContext.destroy();
 			}
 		}
+	}
+	
+	List<ServiceInfo> filterForInstance(List<ServiceInfo> allRegistryServices, String instanceId) {
+		List<ServiceInfo> filtered = [];
+		for (ServiceInfo serviceInfo : allRegistryServices) {
+			if (instanceId.equals(serviceInfo.getInstanceId())) {
+				filtered.add(serviceInfo);
+			}
+		}
+		return filtered;
 	}
 	
 }

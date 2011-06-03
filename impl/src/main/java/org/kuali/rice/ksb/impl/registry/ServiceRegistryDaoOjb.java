@@ -64,6 +64,13 @@ public class ServiceRegistryDaoOjb extends PersistenceBrokerDaoSupport implement
 	}
 
 	@Override
+	public List<ServiceInfoBo> getAllServiceInfosForInstance(String instanceId) {
+		Criteria crit = new Criteria();
+		crit.addEqualTo("instanceId", instanceId);
+		return (List<ServiceInfoBo>)getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ServiceInfoBo.class, crit));
+	}
+	
+	@Override
 	public ServiceDescriptorBo getServiceDescriptor(String serviceDescriptorId) {
 		return (ServiceDescriptorBo)getPersistenceBrokerTemplate().getObjectById(ServiceDescriptorBo.class, serviceDescriptorId);
 	}

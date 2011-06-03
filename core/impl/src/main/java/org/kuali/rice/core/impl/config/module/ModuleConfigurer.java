@@ -70,6 +70,11 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	@Override
 	public final void start() throws Exception {
 		super.start();
+		doAdditionalModuleStartLogic();
+	}
+	
+	protected void doAdditionalModuleStartLogic() throws Exception {
+		// subclass can override if needed
 	}
 	
 	@Override
@@ -82,7 +87,15 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	
 	@Override
 	public final void stop() throws Exception {
-		super.stop();
+		try {
+			doAdditionalModuleStopLogic();
+		} finally {
+			super.stop();
+		}
+	}
+	
+	protected void doAdditionalModuleStopLogic() throws Exception {
+		// subclass can override if needed
 	}
 	
 	@Override

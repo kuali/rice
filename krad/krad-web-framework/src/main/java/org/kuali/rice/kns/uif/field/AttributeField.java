@@ -37,7 +37,6 @@ import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
-import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.widget.DirectInquiry;
 import org.kuali.rice.kns.uif.widget.Inquiry;
@@ -199,8 +198,8 @@ public class AttributeField extends FieldBase implements DataBinding {
                 multiValueControl.setOptions(optionsFinder.getKeyValues());
             }
         }
-
-        ClientValidationUtils.processAndApplyConstraints(this, view);
+        
+        ClientValidationUtils.processAndApplyConstraints(this, view);            
         
     }
 
@@ -1086,16 +1085,29 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param fieldDirectInquiry the fieldDirectInquiry to set
+	 * Setter for the direct inquiry widget
+	 * 
+	 * @param the <code>DirectInquiry</code> field DirectInquiry to set
 	 */
 	public void setFieldDirectInquiry(DirectInquiry fieldDirectInquiry) {
 		this.fieldDirectInquiry = fieldDirectInquiry;
 	}
 
-	/**
-	 * @return the fieldDirectInquiry
-	 */
-	public DirectInquiry getFieldDirectInquiry() {
-		return fieldDirectInquiry;
-	}
+    /**
+     * DirectInquiry widget for the field
+     * <p>
+     * The direct inquiry widget will render a button for the field value when
+     * that field is editable. It points to the associated inquiry view for the
+     * field. The inquiry can be configured to point to a certain
+     * <code>InquiryView</code>, or the framework will attempt to associate the
+     * field with a inquiry based on its metadata (in particular its
+     * relationships in the model)
+     * </p>
+     * 
+     * @return the <code>DirectInquiry</code> field DirectInquiry
+     */
+    public DirectInquiry getFieldDirectInquiry() {
+        return fieldDirectInquiry;
+    }
+
 }

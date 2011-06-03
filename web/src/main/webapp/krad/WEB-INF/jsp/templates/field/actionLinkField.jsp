@@ -15,23 +15,27 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.ActionField"/>
+<tiles:useAttribute name="field"
+	classname="org.kuali.rice.kns.uif.field.ActionField" />
 
 <%--
     HTML Link to Submit Form Via JavaScript
     
  --%>
- 
- <krad:attributeBuilder component="${field}"/>
- <c:set var="pound" value="#"/>
- <c:if test="${!empty field.navigateToPageId}">
-   <c:set var="name" value="name=\"${field.navigateToPageId}\""/>
-   <c:set var="href" value="href=\"${pound}${field.navigateToPageId}\""/>
- </c:if>
- 
- <a id="${field.id}" ${href} onclick="return false" ${name} ${style} ${styleClass}>
-   <c:if test="${(field.actionImageField != null) && field.actionImageField.render}">
-      <krad:template component="${field.actionImageField}"/>
-   </c:if>
-   ${field.actionLabel}
- </a>
+
+<krad:attributeBuilder component="${field}" />
+<c:set var="pound" value="#" />
+<c:if test="${!empty field.navigateToPageId}">
+	<c:set var="name" value="name=\" ${field.navigateToPageId}\""/>
+	<c:set var="href" value="href=\" ${pound}${field.navigateToPageId}\""/>
+</c:if>
+
+<c:if test="${field.skipInTabOrder}">
+	<c:set var="tabindex" value="tabindex=-1" />
+</c:if>
+
+<a id="${field.id}" ${href} onclick="return false"${name} ${style} ${styleClass} ${tabindex} >
+	<c:if
+		test="${(field.actionImageField != null) && field.actionImageField.render}">
+		<krad:template component="${field.actionImageField}" />
+	</c:if> ${field.actionLabel} </a>

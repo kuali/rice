@@ -15,17 +15,21 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.LinkField"/>
+<tiles:useAttribute name="field"
+	classname="org.kuali.rice.kns.uif.field.LinkField" />
 
 <%--
     Standard HTML Link     
  --%>
- 
- <krad:attributeBuilder component="${field}"/>
- 
- <c:if test="${(field.lightBox != null)}">
- 	<krad:template component="${field.lightBox}" componentId="${field.id}"/>
- </c:if>	
- 
- <a id="${field.id}" href="${field.hrefText}" target="${field.target}"
-    ${style} ${styleClass}>${field.linkLabel}</a>
+
+<krad:attributeBuilder component="${field}" />
+
+<c:if test="${(field.lightBox != null)}">
+	<krad:template component="${field.lightBox}" componentId="${field.id}" />
+</c:if>
+
+<c:if test="${field.skipInTabOrder}">
+	<c:set var="tabindex" value="tabindex=-1" />
+</c:if>
+
+<a id="${field.id}" href="${field.hrefText}" target="${field.target}"${style} ${styleClass}  ${tabindex} >${field.linkLabel}</a>

@@ -10,18 +10,11 @@
  */
 package org.kuali.rice.kns.uif.widget;
 
-import java.security.GeneralSecurityException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
-import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
@@ -29,10 +22,6 @@ import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.AttributeField;
-import org.kuali.rice.kns.uif.field.LinkField;
-import org.kuali.rice.kns.uif.util.LookupInquiryUtils;
-import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.kns.uif.util.ViewModelUtils;
 import org.kuali.rice.kns.util.UrlFactory;
 
 /**
@@ -43,14 +32,8 @@ import org.kuali.rice.kns.util.UrlFactory;
 public class DirectInquiry extends Inquiry {
     
     private static final long serialVersionUID = -2490979579285984314L;
-
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DirectInquiry.class);
     
     private ActionField directInquiryActionField;
-    
-    private String conditionalReadOnly;
-    
-    private boolean readOnly;
     
     // Binding Info fields used by direct inquiry to access html fields
     private String bindingPrefix;
@@ -186,34 +169,6 @@ public class DirectInquiry extends Inquiry {
 	 */
 	public void setDirectInquiryActionField(ActionField directInquiryActionField) {
 		this.directInquiryActionField = directInquiryActionField;
-	}
-
-	/**
-	 * @return the conditionalReadOnly
-	 */
-	public String getConditionalReadOnly() {
-		return this.conditionalReadOnly;
-	}
-
-	/**
-	 * @param conditionalReadOnly the conditionalReadOnly to set
-	 */
-	public void setConditionalReadOnly(String conditionalReadOnly) {
-		this.conditionalReadOnly = conditionalReadOnly;
-	}
-
-	/**
-	 * @return the readOnly
-	 */
-	public boolean isReadOnly() {
-		return this.readOnly;
-	}
-
-	/**
-	 * @param readOnly the readOnly to set
-	 */
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
 	}
 
 	/**

@@ -23,6 +23,7 @@ import org.kuali.rice.kns.uif.CssConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.control.ControlBase;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.springframework.util.MethodInvoker;
@@ -89,6 +90,8 @@ public abstract class ComponentBase implements Component {
     private List<String> styleClasses;
 
     private int order;
+    
+    private boolean skipInTabOrder;
 
     private String finalizeMethodToCall;
     private MethodInvoker finalizeMethodInvoker;
@@ -199,6 +202,7 @@ public abstract class ComponentBase implements Component {
      * the style property</li>
      * <li>Setup the decorator chain (if component has decorators) for rendering
      * </li>
+     * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
      * 
      * @see org.kuali.rice.kns.uif.core.Component#performFinalize(org.kuali.rice.kns.uif.container.View,
@@ -218,6 +222,17 @@ public abstract class ComponentBase implements Component {
             if (StringUtils.isNotBlank(getWidth()) && !StringUtils.contains(getStyle(), CssConstants.WIDTH)) {
                 appendToStyle(CssConstants.WIDTH + getWidth() + ";");
             }
+        }
+        // Set the skipInTabOrder flag on all nested components
+        // Set the tabIndex on controls to -1 in order to be skipped on tabbing
+        for (Component component : getNestedComponents()) {
+            if (component != null && component instanceof ComponentBase && skipInTabOrder) {
+                ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
+                if (component instanceof ControlBase) {
+                    ((ControlBase) component).setTabIndex(-1);
+                }
+            }
+
         }
     }
 
@@ -1432,5 +1447,23 @@ public abstract class ComponentBase implements Component {
      */
     public void setRefresh(boolean refresh) {
         this.refresh = refresh;
+    }
+
+    /**
+     * @param setter
+     *            for the skipInTabOrder flag
+     */
+    public void setSkipInTabOrder(boolean skipInTabOrder) {
+        this.skipInTabOrder = skipInTabOrder;
+    }
+
+    /**
+     * Flag indicating that this component and its nested components must be
+     * skipped when keyboard tabbing.
+     * 
+     * @return the skipInTabOrder flag
+     */
+    public boolean isSkipInTabOrder() {
+        return skipInTabOrder;
     }
 }

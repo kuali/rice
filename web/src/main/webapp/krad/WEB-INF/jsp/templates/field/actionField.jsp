@@ -15,28 +15,36 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.ActionField"/>
+<tiles:useAttribute name="field"
+	classname="org.kuali.rice.kns.uif.field.ActionField" />
 
 <%--
     Standard HTML Input Submit - will create an input of type submit or type image if the action
     image field is configured
     
  --%>
+<c:if test="${field.skipInTabOrder}">
+	<c:set var="tabindex" value="tabindex=-1" />
+</c:if>
 
 <c:choose>
-  <c:when test="${(field.actionImageField != null) && field.actionImageField.render}">
-     <krad:attributeBuilder component="${field.actionImageField}"/>
-  
-     <input type="image" id="${field.id}" src="${field.actionImageField.source}" 
-            alt="${field.actionImageField.altText}" ${style} ${styleClass} ${title}/>
-  </c:when>
-  <c:otherwise>
-     <krad:attributeBuilder component="${field}"/>
-   
-     <input type="submit" id="${field.id}" value="${field.actionLabel}" ${style} ${styleClass} ${title}/>
-  </c:otherwise>
+
+	<c:when
+		test="${(field.actionImageField != null) && field.actionImageField.render}">
+		<krad:attributeBuilder component="${field.actionImageField}" />
+
+		<input type="image" id="${field.id}"
+			src="${field.actionImageField.source}"
+			alt="${field.actionImageField.altText}" ${style} ${styleClass} ${title} ${tabindex} />
+	</c:when>
+	<c:otherwise>
+		<krad:attributeBuilder component="${field}" />
+
+		<input type="submit" id="${field.id}" value="${field.actionLabel}" ${style} ${styleClass} ${title}/>
+	</c:otherwise>
 </c:choose>
 
 <c:if test="${(field.lightBoxLookup != null)}">
-		<krad:template component="${field.lightBoxLookup}" componentId="${field.id}"/>
-</c:if>	
+	<krad:template component="${field.lightBoxLookup}"
+		componentId="${field.id}" />
+</c:if>

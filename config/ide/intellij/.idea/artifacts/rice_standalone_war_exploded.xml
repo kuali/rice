@@ -52,7 +52,7 @@
             <element id="module-output" name="rice-shareddata-api" />
           </element>
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:3.6.4.Final" />
           <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" />
           <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
@@ -63,11 +63,11 @@
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.0.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springmodules:spring-modules-ojb:0.8a" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-entitymanager:3.6.3.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-entitymanager:3.6.4.Final" />
           <element id="library" level="project" name="Maven: xapool:xapool:1.5.0-patch3" />
           <element id="library" level="project" name="Maven: org.ow2.jotm:jotm-core:2.1.9" />
           <element id="library" level="project" name="Maven: org.ow2.carol:carol:3.0.6" />
@@ -126,6 +126,7 @@
           <element id="library" level="project" name="Maven: wsdl4j:wsdl4j:1.6.2" />
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-common-schemas:2.3.4" />
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-core:2.3.4" />
+          <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.1.13" />
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-bindings-soap:2.3.4" />
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-tools-common:2.3.4" />
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.3.4" />
@@ -177,10 +178,10 @@
           <element id="archive" name="rice-edl-framework-2.0.0-m5-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-framework" />
           </element>
+          <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.2.0" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.8" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.8" />
-          <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.2.0" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-cas-client:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:3.0.5.RELEASE" />
           <element id="archive" name="rice-edl-impl-2.0.0-m5-SNAPSHOT.jar">

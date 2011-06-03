@@ -48,7 +48,7 @@ import org.kuali.rice.kim.rule.ui.AddRoleRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
-import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.RoleService;

@@ -26,7 +26,7 @@ import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.rules.ui.GroupDocumentMemberRule;
-import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;

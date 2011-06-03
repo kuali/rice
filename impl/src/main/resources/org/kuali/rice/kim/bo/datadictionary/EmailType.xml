@@ -17,7 +17,7 @@
 
   <bean id="EmailType" parent="EmailType-parentBean"/>
   <bean id="EmailType-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo"/>
     <property name="inquiryDefinition">
       <ref bean="EmailType-inquiryDefinition"/>
     </property>
@@ -71,7 +71,7 @@
 
   <bean id="EmailType-displaySortCode" parent="EmailType-displaySortCode-parentBean"/>
   <bean id="EmailType-displaySortCode-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="displaySortCode"/>
+    <property name="name" value="sortCode"/>
     <property name="label" value="Display Sort Code"/>
     <property name="shortLabel" value="Sort"/>
     <property name="maxLength" value="10"/>
@@ -121,7 +121,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="code"/>
         <bean parent="FieldDefinition" p:attributeName="name"/>
-        <bean parent="FieldDefinition" p:attributeName="displaySortCode"/>
+        <bean parent="FieldDefinition" p:attributeName="sortCode"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>

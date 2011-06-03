@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.bo;
 
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+
 /**
  * Helper interface (for use by generics) when objects are both Defaultable and Inactivateable.
  * 
@@ -23,6 +25,6 @@ package org.kuali.rice.kns.bo;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface DefaultableInactivateable extends Defaultable, Inactivateable {
+public interface DefaultableInactivateable extends org.kuali.rice.core.api.mo.common.Defaultable, Inactivatable {
 
 }

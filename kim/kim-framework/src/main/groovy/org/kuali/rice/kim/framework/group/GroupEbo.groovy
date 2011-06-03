@@ -67,9 +67,6 @@ class GroupEbo implements GroupContract, ExternalizableBusinessObject {
         bo.description = im.description
         bo.active = im.active
         bo.kimTypeId = im.kimTypeId
-
-        //todo: members???
-
         bo.attributes = im.attributes
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;

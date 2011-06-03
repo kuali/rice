@@ -132,6 +132,9 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
          * creates a GroupMember from an existing {@link org.kuali.rice.kim.api.group.GroupMemberContract}.
          */
         public static Builder create(GroupMemberContract contract) {
+            if (contract == null) {
+                throw new IllegalArgumentException("contract was null");
+            }
             Builder builder = new Builder(contract.getGroupId(), contract.getMemberId(), contract.getTypeCode());
             builder.setId(contract.getId());
             builder.setActiveFromDate(contract.getActiveFromDate());

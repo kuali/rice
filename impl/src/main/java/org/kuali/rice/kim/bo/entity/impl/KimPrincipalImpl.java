@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo.entity.impl;
 
 import org.hibernate.annotations.Type;
+
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 

@@ -33,9 +33,9 @@
   <!-- ******************************************************************* -->
 
 
-  <class-descriptor class="org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl" table="KRIM_ADDR_TYP_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo" table="KRIM_ADDR_TYP_T">
     <field-descriptor name="code" column="ADDR_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="displaySortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="sortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
@@ -61,9 +61,9 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl" table="KRIM_EMAIL_TYP_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo" table="KRIM_EMAIL_TYP_T">
     <field-descriptor name="code" column="EMAIL_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="displaySortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="sortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
@@ -97,9 +97,9 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl" table="KRIM_ENT_TYP_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.entity.EntityTypeBo" table="KRIM_ENT_TYP_T">
     <field-descriptor name="code" column="ENT_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="displaySortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="sortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
@@ -116,9 +116,9 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl" table="KRIM_PHONE_TYP_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo" table="KRIM_PHONE_TYP_T">
     <field-descriptor name="code" column="PHONE_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="displaySortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="sortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="name" column="PHONE_TYP_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
@@ -200,7 +200,7 @@
     <collection-descriptor name="names" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
-    <collection-descriptor name="entityTypes" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="entityTypes" element-class-ref="org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
     <collection-descriptor name="principals" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
@@ -372,31 +372,31 @@
   <!-- Entity Type Tables -->
   <!-- ******************************************************************* -->
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl" table="KRIM_ENTITY_ENT_TYP_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo" table="KRIM_ENTITY_ENT_TYP_T">
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
-    <reference-descriptor name="entityType" class-ref="org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="entityType" class-ref="org.kuali.rice.kim.impl.entity.EntityTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="entityTypeCode" />
     </reference-descriptor>
-    <collection-descriptor name="emailAddresses" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="emailAddresses" element-class-ref="org.kuali.rice.kim.impl.entity.email.EntityEmailBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
       <inverse-foreignkey field-ref="entityTypeCode" />
     </collection-descriptor>
-    <collection-descriptor name="phoneNumbers" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="phoneNumbers" element-class-ref="org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
       <inverse-foreignkey field-ref="entityTypeCode" />
     </collection-descriptor>
-    <collection-descriptor name="addresses" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="addresses" element-class-ref="org.kuali.rice.kim.impl.entity.address.EntityAddressBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
       <inverse-foreignkey field-ref="entityTypeCode" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl" table="KRIM_ENTITY_ADDR_T">
-    <field-descriptor name="entityAddressId" column="ENTITY_ADDR_ID" jdbc-type="VARCHAR" primarykey="true"  />
+  <class-descriptor class="org.kuali.rice.kim.impl.entity.address.EntityAddressBo" table="KRIM_ENTITY_ADDR_T">
+    <field-descriptor name="id" column="ENTITY_ADDR_ID" jdbc-type="VARCHAR" primarykey="true"  />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="addressTypeCode" column="ADDR_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
@@ -411,13 +411,13 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
-    <reference-descriptor name="addressType" class-ref="org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="addressTypeCode" />
+    <reference-descriptor name="addressType" class-ref="org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="addressTypeCode" target-field-ref="code"/>
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl" table="KRIM_ENTITY_EMAIL_T">
-    <field-descriptor name="entityEmailId" column="ENTITY_EMAIL_ID" jdbc-type="VARCHAR" primarykey="true"  />
+  <class-descriptor class="org.kuali.rice.kim.impl.entity.email.EntityEmailBo" table="KRIM_ENTITY_EMAIL_T">
+    <field-descriptor name="id" column="ENTITY_EMAIL_ID" jdbc-type="VARCHAR" primarykey="true"  />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="emailTypeCode" column="EMAIL_TYP_CD" jdbc-type="VARCHAR"  />
@@ -426,14 +426,14 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
-    <reference-descriptor name="emailType" class-ref="org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="emailTypeCode" />
+    <reference-descriptor name="emailType" class-ref="org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="emailTypeCode" target-field-ref="code"/>
     </reference-descriptor>
   </class-descriptor>
 
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl" table="KRIM_ENTITY_PHONE_T">
-    <field-descriptor name="entityPhoneId" column="ENTITY_PHONE_ID" jdbc-type="VARCHAR" primarykey="true"  />
+  <class-descriptor class="org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo" table="KRIM_ENTITY_PHONE_T">
+    <field-descriptor name="id" column="ENTITY_PHONE_ID" jdbc-type="VARCHAR" primarykey="true"  />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="phoneTypeCode" column="PHONE_TYP_CD" jdbc-type="VARCHAR"  />
@@ -444,7 +444,7 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
-    <reference-descriptor name="phoneType" class-ref="org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="phoneType" class-ref="org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="phoneTypeCode" />
     </reference-descriptor>
   </class-descriptor>
@@ -468,7 +468,7 @@
       <inverse-foreignkey field-ref="groupId" />
     </collection-descriptor>
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.impl.group.GroupAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="assignedToId" />
+      <inverse-foreignkey field-ref="assignedToId" target-field-ref="id" />
     </collection-descriptor>
   </class-descriptor>
 
@@ -816,7 +816,7 @@
     <field-descriptor name="entityEmploymentId" column="ENTITY_EMP_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ENTITY_EMP_ID_S"  />
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="entityAffiliationId" column="ENTITY_AFLTN_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="employeeStatusCode" column="EMP_STAT_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="employmentStatusCode" column="EMP_STAT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="employmentTypeCode" column="EMP_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="primaryDepartmentCode" column="PRMRY_DEPT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="baseSalaryAmount" column="BASE_SLRY_AMT" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion" />
@@ -831,7 +831,7 @@
       <foreignkey field-ref="employmentTypeCode" />
     </reference-descriptor>
     <reference-descriptor name="employmentStatus" class-ref="org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="employeeStatusCode" />
+      <foreignkey field-ref="employmentStatusCode" />
     </reference-descriptor>
   </class-descriptor>
 
@@ -884,8 +884,8 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
     <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
-    <reference-descriptor name="addressType" class-ref="org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="addressTypeCode" />
+    <reference-descriptor name="addressType" class-ref="org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="addressTypeCode" target-field-ref="code"/>
     </reference-descriptor>
   </class-descriptor>
 
@@ -900,8 +900,8 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
     <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
-    <reference-descriptor name="emailType" class-ref="org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="emailTypeCode" />
+    <reference-descriptor name="emailType" class-ref="org.kuali.rice.kim.impl.entity.email.EntityEmailBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="emailTypeCode" target-field-ref="code"/>
     </reference-descriptor>
   </class-descriptor>
 
@@ -919,8 +919,8 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
     <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
-    <reference-descriptor name="phoneType" class-ref="org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="phoneTypeCode" />
+    <reference-descriptor name="phoneType" class-ref="org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="phoneTypeCode" target-field-ref="code" />
     </reference-descriptor>
   </class-descriptor>
 

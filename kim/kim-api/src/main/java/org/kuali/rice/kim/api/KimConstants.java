@@ -31,4 +31,11 @@ public final class KimConstants {
 		    throw new UnsupportedOperationException("do not call");
 	    }
     }
+
+    public static final class RestrictedMasks {
+        public static final String RESTRICTED_DATA_MASK = "Xxxxxx";
+        public static final String RESTRICTED_DATA_MASK_CODE = "XX";
+        public static final String RESTRICTED_DATA_MASK_ZIP = "00000";
+        public static final String RESTRICTED_DATA_MASK_PHONE = "000-000-0000";
+    }
 }

@@ -19,7 +19,7 @@ package org.kuali.rice.kim.test.service;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 
-import org.kuali.rice.kim.service.IdentityArchiveService;
+import org.kuali.rice.kim.api.entity.services.IdentityArchiveService;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;

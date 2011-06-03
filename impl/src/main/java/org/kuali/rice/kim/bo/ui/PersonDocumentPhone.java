@@ -18,10 +18,18 @@ package org.kuali.rice.kim.bo.ui;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.bo.reference.PhoneType;
-import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
+import org.kuali.rice.kim.api.entity.TypeContract;
+import org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -57,9 +65,9 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 	@Column(name = "POSTAL_CNTRY_CD")
 	protected String countryCode;
 	
-	@ManyToOne(targetEntity=PhoneTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EntityPhoneTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "PHONE_TYP_CD", insertable = false, updatable = false)
-	protected PhoneType phoneType;
+	protected TypeContract phoneType;
 
 	// Waiting until we pull in from KFS
 	// protected Country country;
@@ -144,11 +152,11 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 		this.entityTypeCode = entityTypeCode;
 	}
 
-	public PhoneType getPhoneType() {
+	public TypeContract getPhoneType() {
 		return this.phoneType;
 	}
 
-	public void setPhoneType(PhoneType phoneType) {
+	public void setPhoneType(TypeContract phoneType) {
 		this.phoneType = phoneType;
 	}
 

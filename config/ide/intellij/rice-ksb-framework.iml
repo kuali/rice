@@ -4,23 +4,40 @@
     <output url="file://$MODULE_DIR$/../../../ksb/framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../ksb/framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../ksb/framework">
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/test/resources" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/target/generated-sources/annotations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/framework/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ksb/framework/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ksb/framework/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/framework/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/framework/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ksb/framework/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
+    <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
+    <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
+    <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.5.6" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" name="Maven: commons-transaction:commons-transaction:1.1" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.5" level="project" />
+    <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
+    <orderEntry type="library" name="Maven: hsqldb:hsqldb:1.8.0.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: xerces:xercesImpl:2.9.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" level="project" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />

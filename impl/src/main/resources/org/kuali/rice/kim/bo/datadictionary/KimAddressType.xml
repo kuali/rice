@@ -17,7 +17,7 @@
 
   <bean id="KimAddressType" parent="KimAddressType-parentBean"/>
   <bean id="KimAddressType-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo"/>
     <property name="inquiryDefinition">
       <ref bean="KimAddressType-inquiryDefinition"/>
     </property>
@@ -27,18 +27,18 @@
     <property name="objectLabel" value="Address Type"/>
     <property name="attributes">
       <list>
-        <ref bean="KimAddressType-addressTypeCode"/>
-        <ref bean="KimAddressType-addressTypeName"/>
+        <ref bean="KimAddressType-code"/>
+        <ref bean="KimAddressType-name"/>
         <ref bean="KimAddressType-active"/>
-        <ref bean="KimAddressType-displaySortCode"/>
+        <ref bean="KimAddressType-sortCode"/>
       </list>
     </property>
   </bean>
 
 <!-- Attribute Definitions -->
 
-  <bean id="KimAddressType-addressTypeCode" parent="KimAddressType-addressTypeCode-parentBean"/>
-  <bean id="KimAddressType-addressTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="KimAddressType-code" parent="KimAddressType-code-parentBean"/>
+  <bean id="KimAddressType-code-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true"/>  
     <property name="name" value="code"/>
     <property name="label" value="Address Type Code"/>
@@ -51,8 +51,8 @@
     <property name="description" value="The address type code."/>
   </bean>
 
-  <bean id="KimAddressType-addressTypeName" parent="KimAddressType-addressTypeName-parentBean"/>
-  <bean id="KimAddressType-addressTypeName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="KimAddressType-name" parent="KimAddressType-name-parentBean"/>
+  <bean id="KimAddressType-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="name"/>
     <property name="label" value="Address Type Name"/>
     <property name="shortLabel" value="Name"/>
@@ -69,9 +69,9 @@
     <property name="name" value="active"/>
   </bean>
 
-  <bean id="KimAddressType-displaySortCode" parent="KimAddressType-displaySortCode-parentBean"/>
-  <bean id="KimAddressType-displaySortCode-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="displaySortCode"/>
+  <bean id="KimAddressType-sortCode" parent="KimAddressType-sortCode-parentBean"/>
+  <bean id="KimAddressType-sortCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="sortCode"/>
     <property name="label" value="Display Sort Code"/>
     <property name="shortLabel" value="Sort"/>
     <property name="maxLength" value="10"/>
@@ -121,7 +121,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="code"/>
         <bean parent="FieldDefinition" p:attributeName="name"/>
-        <bean parent="FieldDefinition" p:attributeName="displaySortCode"/>
+        <bean parent="FieldDefinition" p:attributeName="sortCode"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>

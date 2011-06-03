@@ -25,8 +25,8 @@
        		<th><div align="left">&nbsp</div></th>  
        		<kim:cell inquiry="${inquiry}" isLabel="true" attributeEntry="${docEmploymentInfoAttributes.employeeId}" noColon="true" />
        		<kim:cell inquiry="${inquiry}" isLabel="true" attributeEntry="${docEmploymentInfoAttributes.primary}" noColon="true" />
-       		<kim:cell inquiry="${inquiry}" isLabel="true" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}" noColon="true" />
-       		<kim:cell inquiry="${inquiry}" isLabel="true" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" noColon="true" />
+       		<kim:cell inquiry="${inquiry}" isLabel="true" attributeEntry="${docEmploymentInfoAttributes.employmentStatusCode}" noColon="true" />
+       		<kim:cell inquiry="${inquiry}" isLabel="true" attributeEntry="${docEmploymentInfoAttributes.employmentTypeCode}" noColon="true" />
        		<kim:cell inquiry="${inquiry}" isLabel="true" attributeEntry="${docEmploymentInfoAttributes.baseSalaryAmount}" noColon="true" />
        		<kim:cell inquiry="${inquiry}" isLabel="true" attributeEntry="${docEmploymentInfoAttributes.primaryDepartmentCode}" noColon="true" />
 	        <c:if test="${not inquiry}">	
@@ -39,8 +39,8 @@
 				
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].newEmpInfo.employeeId" attributeEntry="${docEmploymentInfoAttributes.employeeId}" readOnly="${readOnlyEntity}" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].newEmpInfo.primary" attributeEntry="${docEmploymentInfoAttributes.primary}" readOnly="${readOnlyEntity}" /> 
-                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].newEmpInfo.employeeStatusCode" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}" readOnly="${readOnlyEntity}" />              
-                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].newEmpInfo.employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" readOnly="${readOnlyEntity}" />
+                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].newEmpInfo.employmentStatusCode" attributeEntry="${docEmploymentInfoAttributes.employmentStatusCode}" readOnly="${readOnlyEntity}" />
+                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].newEmpInfo.employmentTypeCode" attributeEntry="${docEmploymentInfoAttributes.employmentTypeCode}" readOnly="${readOnlyEntity}" />
                 <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].newEmpInfo.baseSalaryAmount" attributeEntry="${docEmploymentInfoAttributes.baseSalaryAmount}" readOnly="${readOnlyEntity}" />
                 <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].newEmpInfo.primaryDepartmentCode" attributeEntry="${docEmploymentInfoAttributes.primaryDepartmentCode}" readOnly="${readOnlyEntity}" />              
                 <td class="infoline">
@@ -58,8 +58,8 @@
 				</th>
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeId"  attributeEntry="${docEmploymentInfoAttributes.employeeId}" readOnly="${readOnlyEntity}" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].empInfos[${status.index}].primary" attributeEntry="${docEmploymentInfoAttributes.primary}" readOnly="${readOnlyEntity}" />
-                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeStatusCode" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}"  readOnlyAlternateDisplay="${fn:escapeXml(empInfo.employmentStatus.employmentStatusName)}" readOnly="${readOnlyEntity}" />                 
-                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(empInfo.employmentType.employmentTypeName)}" readOnly="${readOnlyEntity}" />
+                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employmentStatusCode" attributeEntry="${docEmploymentInfoAttributes.employmentStatusCode}"  readOnlyAlternateDisplay="${fn:escapeXml(empInfo.employmentStatus.employmentStatusName)}" readOnly="${readOnlyEntity}" />
+                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employmentTypeCode" attributeEntry="${docEmploymentInfoAttributes.employmentTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(empInfo.employmentType.employmentTypeName)}" readOnly="${readOnlyEntity}" />
                 <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].empInfos[${status.index}].baseSalaryAmount" attributeEntry="${docEmploymentInfoAttributes.baseSalaryAmount}" readOnly="${readOnlyEntity}" />
                 <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${afflnIdx}].empInfos[${status.index}].primaryDepartmentCode" attributeEntry="${docEmploymentInfoAttributes.primaryDepartmentCode}" readOnly="${readOnlyEntity}" />
            			<c:if test="${not inquiry}">						

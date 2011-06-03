@@ -21,35 +21,36 @@ import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.api.group.GroupUpdateService;
+import org.kuali.rice.kim.api.entity.Type;
+import org.kuali.rice.kim.api.entity.TypeContract;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
+import org.kuali.rice.kim.api.entity.services.IdentityService;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.group.GroupUpdateService;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
-import org.kuali.rice.kim.bo.reference.dto.EmailTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
-import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.KimCodeInfoBase;
-import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-
+import org.kuali.rice.kim.impl.entity.EntityTypeBo;
+import org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo;
+import org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo;
+import org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.kim.service.AuthenticationService;
-import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.PermissionService;
 
@@ -108,6 +109,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     protected Map<String,MaxAgeSoftReference<Boolean>> isPermissionDefinedForTemplateNameCache;
 
     protected HashMap<String,KimCodeInfoBase> kimReferenceTypeCache = new HashMap<String, KimCodeInfoBase>();
+    protected HashMap<String,TypeContract> kimReferenceTypeCacheMap = new HashMap<String, TypeContract>();
 
 	public void afterPropertiesSet() throws Exception {
 		entityDefaultInfoCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimEntityDefaultInfo>>( entityPrincipalCacheMaxSize ) );
@@ -386,7 +388,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	protected void addGroupIdsForPrincipalToCache( String principalId, List<String> ids ) {
 		if ( ids != null ) {
-			groupIdsForPrincipalCache.put( principalId, new MaxAgeSoftReference<List<String>>( groupCacheMaxAgeSeconds, ids ) );
+			groupIdsForPrincipalCache.put(principalId, new MaxAgeSoftReference<List<String>>(groupCacheMaxAgeSeconds, ids));
 		}
 	}
 
@@ -440,12 +442,12 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	}
     	StringBuffer cacheKey = new StringBuffer();
     	cacheKey.append( principalId ).append(  '/' );
-    	cacheKey.append( namespaceCode ).append( '-' ).append( permissionName ).append( '/' );
-    	addAttributeSetToKey( permissionDetails, cacheKey );
+    	cacheKey.append( namespaceCode ).append( '-' ).append(permissionName).append( '/' );
+    	addAttributeSetToKey(permissionDetails, cacheKey);
     	String key = cacheKey.toString();
     	Boolean hasPerm = getHasPermissionCache(key);
 		if (hasPerm == null) {
-			hasPerm = getPermissionService().hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
+			hasPerm = getPermissionService().hasPermission(principalId, namespaceCode, permissionName, permissionDetails);
 	    	addHasPermissionToCache(key, hasPerm);
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Result: " + hasPerm );
@@ -466,16 +468,16 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     		logAuthorizationCheck("Permission", principalId, namespaceCode, permissionName, permissionDetails, qualification);
     	}
     	StringBuffer cacheKey = new StringBuffer();
-    	cacheKey.append( principalId ).append(  '/' );
-    	cacheKey.append( namespaceCode ).append( '-' ).append( permissionName ).append( '/' );
+    	cacheKey.append(principalId).append(  '/' );
+    	cacheKey.append( namespaceCode ).append( '-' ).append( permissionName ).append('/');
     	addAttributeSetToKey( permissionDetails, cacheKey );
     	cacheKey.append( '/' );
     	addAttributeSetToKey( qualification, cacheKey );
     	String key = cacheKey.toString();
     	Boolean isAuthorized = getIsAuthorizedFromCache( key );
     	if ( isAuthorized == null ) {
-    		isAuthorized = getPermissionService().isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, qualification );
-    		addIsAuthorizedToCache( key, isAuthorized );
+    		isAuthorized = getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails, qualification);
+    		addIsAuthorizedToCache(key, isAuthorized);
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Result: " + isAuthorized );
     		}
@@ -493,12 +495,12 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	}
     	StringBuffer cacheKey = new StringBuffer();
     	cacheKey.append( principalId ).append(  '/' );
-    	cacheKey.append( namespaceCode ).append( '-' ).append( permissionTemplateName ).append( '/' );
-    	addAttributeSetToKey( permissionDetails, cacheKey );
+    	cacheKey.append( namespaceCode ).append( '-' ).append(permissionTemplateName).append( '/' );
+    	addAttributeSetToKey(permissionDetails, cacheKey);
     	String key = cacheKey.toString();
     	Boolean hasPerm = getHasPermissionByTemplateCache(key);
 		if (hasPerm == null) {
-			hasPerm = getPermissionService().hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
+			hasPerm = getPermissionService().hasPermissionByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails);
 	    	addHasPermissionByTemplateToCache(key, hasPerm);
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Result: " + hasPerm );
@@ -555,7 +557,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
      */
     public List<? extends KimPermissionInfo> getAuthorizedPermissions(String principalId,
     		String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
-    	return getPermissionService().getAuthorizedPermissions( principalId, namespaceCode, permissionName, permissionDetails, qualification );
+    	return getPermissionService().getAuthorizedPermissions(principalId, namespaceCode, permissionName, permissionDetails, qualification);
     }
 
     public List<? extends KimPermissionInfo> getAuthorizedPermissionsByTemplateName(String principalId,
@@ -582,8 +584,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	public List<PermissionAssigneeInfo> getPermissionAssignees(String namespaceCode,
 			String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
-		return this.permissionService.getPermissionAssignees( namespaceCode, permissionName,
-				permissionDetails, qualification );
+		return this.permissionService.getPermissionAssignees(namespaceCode, permissionName,
+                permissionDetails, qualification);
 	}
 
 	public List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(String namespaceCode,
@@ -705,7 +707,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     }
 
     public List<String> getParentGroupIds(String groupId) {
-		return getGroupService().getParentGroupIds( groupId );
+		return getGroupService().getParentGroupIds(groupId);
 	}
 
     public List<String> getDirectParentGroupIds(String groupId) {
@@ -828,7 +830,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
      * @see org.kuali.rice.kim.api.services.IdentityManagementService#getEntityDefaultInfo(java.lang.String)
      */
     public KimEntityDefaultInfo getEntityDefaultInfo(String entityId) {
-    	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCache( entityId );
+    	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCache(entityId);
     	if ( entity == null ) {
     		entity = getIdentityService().getEntityDefaultInfo(entityId);
     		addEntityDefaultInfoToCache( entity );
@@ -843,7 +845,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
      */
     public KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId(
     		String principalId) {
-    	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCacheByPrincipalId( principalId );
+    	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCacheByPrincipalId(principalId);
     	if ( entity == null ) {
 	    	entity = getIdentityService().getEntityDefaultInfoByPrincipalId(principalId);
 			addEntityDefaultInfoToCache( entity );
@@ -881,7 +883,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	 * @see org.kuali.rice.kim.api.services.IdentityManagementService#getEntityInfo(java.lang.String)
 	 */
 	public KimEntityInfo getEntityInfo(String entityId) {
-    	KimEntityInfo entity = getEntityInfoFromCache( entityId );
+    	KimEntityInfo entity = getEntityInfoFromCache(entityId);
     	if ( entity == null ) {
     		entity = getIdentityService().getEntityInfo(entityId);
     		addEntityInfoToCache( entity );
@@ -893,7 +895,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	 * @see org.kuali.rice.kim.api.services.IdentityManagementService#getEntityInfoByPrincipalId(java.lang.String)
 	 */
 	public KimEntityInfo getEntityInfoByPrincipalId(String principalId) {
-    	KimEntityInfo entity = getEntityInfoFromCacheByPrincipalId( principalId );
+    	KimEntityInfo entity = getEntityInfoFromCacheByPrincipalId(principalId);
     	if ( entity == null ) {
 	    	entity = getIdentityService().getEntityInfoByPrincipalId(principalId);
 			addEntityInfoToCache( entity );
@@ -930,11 +932,19 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	return getIdentityService().getMatchingEntityCount( searchCriteria );
     }
 
-	public AddressTypeInfo getAddressType( String code ) {
-		AddressTypeInfo type = (AddressTypeInfo)kimReferenceTypeCache.get(AddressTypeInfo.class.getSimpleName()+"-"+code);
+	public Type getAddressType( String code ) {
+		Type type = (Type)kimReferenceTypeCacheMap.get(EntityAddressTypeBo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
 			type = getIdentityService().getAddressType(code);
-			kimReferenceTypeCache.put(AddressTypeInfo.class.getSimpleName()+"-"+code, type);
+			kimReferenceTypeCacheMap.put(EntityAddressTypeBo.class.getSimpleName()+"-"+code, type);
+		}
+		return type;
+	}
+    public Type getEmailType( String code ) {
+		Type type = (Type)kimReferenceTypeCacheMap.get(EntityEmailTypeBo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getEmailType(code);
+			kimReferenceTypeCacheMap.put(EntityEmailTypeBo.class.getSimpleName()+"-"+code, type);
 		}
 		return type;
 	}
@@ -942,7 +952,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		AffiliationTypeInfo type = (AffiliationTypeInfo)kimReferenceTypeCache.get(AffiliationTypeInfo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
 			type = getIdentityService().getAffiliationType(code);
-			kimReferenceTypeCache.put(AddressTypeInfo.class.getSimpleName()+"-"+code, type);
+			kimReferenceTypeCache.put(AffiliationTypeInfo.class.getSimpleName()+"-"+code, type);
 		}
 		return type;
 	}
@@ -954,14 +964,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return type;
 	}
-	public EmailTypeInfo getEmailType( String code ) {
-		EmailTypeInfo type = (EmailTypeInfo)kimReferenceTypeCache.get(EmailTypeInfo.class.getSimpleName()+"-"+code);
-		if ( type == null ) {
-			type = getIdentityService().getEmailType(code);
-			kimReferenceTypeCache.put(EmailTypeInfo.class.getSimpleName()+"-"+code, type);
-		}
-		return type;
-	}
+
 	public EmploymentStatusInfo getEmploymentStatus( String code ) {
 		EmploymentStatusInfo type = (EmploymentStatusInfo)kimReferenceTypeCache.get(EmploymentStatusInfo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
@@ -986,11 +989,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return type;
 	}
-	public EntityTypeInfo getEntityType( String code ) {
-		EntityTypeInfo type = (EntityTypeInfo)kimReferenceTypeCache.get(EntityTypeInfo.class.getSimpleName()+"-"+code);
+	public Type getEntityType( String code ) {
+		Type type = (Type)kimReferenceTypeCacheMap.get(EntityTypeBo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
 			type = getIdentityService().getEntityType(code);
-			kimReferenceTypeCache.put(EntityTypeInfo.class.getSimpleName()+"-"+code, type);
+			kimReferenceTypeCacheMap.put(EntityTypeBo.class.getSimpleName()+"-"+code, type);
 		}
 		return type;
 	}
@@ -1002,13 +1005,13 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return type;
 	}
-	public PhoneTypeInfo getPhoneType( String code ) {
-		PhoneTypeInfo type = (PhoneTypeInfo)kimReferenceTypeCache.get(PhoneTypeInfo.class.getSimpleName()+"-"+code);
+	public Type getPhoneType( String code ) {
+		TypeContract type = kimReferenceTypeCacheMap.get(EntityPhoneTypeBo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
 			type = getIdentityService().getPhoneType(code);
-			kimReferenceTypeCache.put(PhoneTypeInfo.class.getSimpleName()+"-"+code, type);
+			kimReferenceTypeCacheMap.put(EntityPhoneTypeBo.class.getSimpleName()+"-"+code, type);
 		}
-		return type;
+		return Type.Builder.create(type).build();
 	}
 
 	// OTHER METHODS

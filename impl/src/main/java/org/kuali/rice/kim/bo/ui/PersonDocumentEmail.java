@@ -17,8 +17,9 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.bo.reference.EmailType;
-import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
+import org.kuali.rice.kim.api.entity.TypeContract;
+import org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo;
+
 
 import javax.persistence.*;
 
@@ -50,44 +51,44 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 	@Column(name = "EMAIL_ADDR")
 	protected String emailAddress;
 
-	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EntityEmailTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMAIL_TYP_CD", insertable = false, updatable = false)
-	protected EmailType emailType;
+	protected TypeContract emailType;
 	
 	public PersonDocumentEmail() {
 		this.active = true;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddress()
+	 * @see org.kuali.rice.kim.api.entity.email.EntityEmailContract#getEmailAddress()
 	 */
 	public String getEmailAddress() {
 		return emailAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailTypeCode()
+	 * @see org.kuali.rice.kim.api.entity.email.EntityEmailContract#getEmailType()
 	 */
 	public String getEmailTypeCode() {
 		return emailTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEntityEmailId()
+	 * @see org.kuali.rice.kim.api.entity.email.EntityEmailContract#getId()
 	 */
 	public String getEntityEmailId() {
 		return entityEmailId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#setEmailAddress(java.lang.String)
+	 * @see org.kuali.rice.kim.api.entity.email.EntityEmailContract#setEmailAddress(java.lang.String)
 	 */
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#setEmailTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.api.entity.email.EntityEmailContract#setEmailType(java.lang.String)
 	 */
 	public void setEmailTypeCode(String emailTypeCode) {
 		this.emailTypeCode = emailTypeCode;
@@ -111,11 +112,11 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 		this.entityEmailId = entityEmailId;
 	}
 
-	public EmailType getEmailType() {
+	public TypeContract getEmailType() {
 		return this.emailType;
 	}
 
-	public void setEmailType(EmailType emailType) {
+	public void setEmailType(TypeContract emailType) {
 		this.emailType = emailType;
 	}
 

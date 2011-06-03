@@ -75,7 +75,7 @@ public interface GroupUpdateService {
      * @param parentId  Id of the Group object to remove the member from
      * @return true if the member was removed successfully.
      */
-    @WebMethod(operationName = "removeGroupToGroup")
+    @WebMethod(operationName = "removeGroupFromGroup")
     @WebResult(name = "removedFromGroup")
     boolean removeGroupFromGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws UnsupportedOperationException;
 
@@ -97,7 +97,7 @@ public interface GroupUpdateService {
      * @param groupId  Id of the Group object to remove the member from
      * @return true if the member was removed successfully.
      */
-    @WebMethod(operationName = "removePrincipalToGroup")
+    @WebMethod(operationName = "removePrincipalFromGroup")
     @WebResult(name = "removedFromGroup")
     boolean removePrincipalFromGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws UnsupportedOperationException;
 

@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.entity.impl;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.util.AutoPopulatingList;
 
@@ -71,7 +72,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityEntityTypeImpl> entityTypes = new AutoPopulatingList(KimEntityEntityTypeImpl.class);
+	protected List<EntityTypeDataBo> entityTypes = new AutoPopulatingList(EntityTypeDataBo.class);
 	
 	@OneToOne(targetEntity=KimEntityPrivacyPreferencesImpl.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
@@ -119,7 +120,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @return the entityTypes
 	 */
-	public List<KimEntityEntityTypeImpl> getEntityTypes() {
+	public List<EntityTypeDataBo> getEntityTypes() {
 		return this.entityTypes;
 	}
 
@@ -127,7 +128,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @param entityTypes
 	 *            the entityTypes to set
 	 */
-	public void setEntityTypes(List<KimEntityEntityTypeImpl> entityTypes) {
+	public void setEntityTypes(List<EntityTypeDataBo> entityTypes) {
 		this.entityTypes = entityTypes;
 	}
 
@@ -226,8 +227,8 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEntityType(java.lang.String)
 	 */
-	public KimEntityEntityTypeImpl getEntityType(String entityTypeCode) {
-		for ( KimEntityEntityTypeImpl entType : entityTypes ) {
+	public EntityTypeDataBo getEntityType(String entityTypeCode) {
+		for ( EntityTypeDataBo entType : entityTypes ) {
 			if ( entType.getEntityTypeCode().equals( entityTypeCode ) ) {
 				return entType;
 			}

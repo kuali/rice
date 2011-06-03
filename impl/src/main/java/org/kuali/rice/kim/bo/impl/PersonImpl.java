@@ -15,26 +15,21 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.api.entity.address.EntityAddressContract;
+import org.kuali.rice.kim.api.entity.email.EntityEmailContract;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
+import org.kuali.rice.kim.api.entity.phone.EntityPhoneContract;
+import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
@@ -42,6 +37,11 @@ import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 //import org.kuali.rice.shareddata.api.campus.Campus;
 
 /**
@@ -159,12 +159,12 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected void populateEntityInfo( KimEntityDefaultInfo entity, KimPrincipal principal, String personEntityTypeCode ) {
 		if(entity!=null){
 		    populatePrivacyInfo (entity );
-			KimEntityEntityTypeDefaultInfo entityEntityType = entity.getEntityType( personEntityTypeCode );  
+			EntityTypeDataDefault entityTypeDataDefault = entity.getEntityType( personEntityTypeCode );
 			entityTypeCode = personEntityTypeCode;
 			populateNameInfo( personEntityTypeCode, entity, principal );
-			populateAddressInfo( entityEntityType );
-			populateEmailInfo( entityEntityType );
-			populatePhoneInfo( entityEntityType );
+			populateAddressInfo( entityTypeDataDefault );
+			populateEmailInfo( entityTypeDataDefault );
+			populatePhoneInfo( entityTypeDataDefault );
 			populateAffiliationInfo( entity );
 			populateEmploymentInfo( entity );
 			populateExternalIdentifiers( entity );
@@ -212,9 +212,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	    }
 	}
 	
-	protected void populateAddressInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
-		if(entityEntityType!=null){
-			KimEntityAddress defaultAddress = entityEntityType.getDefaultAddress();
+	protected void populateAddressInfo( EntityTypeDataDefault entityTypeData ) {
+		if(entityTypeData!=null){
+			EntityAddressContract defaultAddress = entityTypeData.getDefaultAddress();
 			if ( defaultAddress != null ) {			
 				addressLine1 = unNullify( defaultAddress.getLine1Unmasked() );
 				addressLine2 = unNullify( defaultAddress.getLine2Unmasked() );
@@ -235,9 +235,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateEmailInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
-		if(entityEntityType!=null){
-			KimEntityEmail entityEmail = entityEntityType.getDefaultEmailAddress();
+	protected void populateEmailInfo( EntityTypeDataDefault entityTypeData ) {
+		if(entityTypeData!=null){
+			EntityEmailContract entityEmail = entityTypeData.getDefaultEmailAddress();
 			if ( entityEmail != null ) {
 				emailAddress = unNullify( entityEmail.getEmailAddressUnmasked() );
 			} else {
@@ -246,9 +246,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populatePhoneInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
-		if(entityEntityType!=null){
-			KimEntityPhone entityPhone = entityEntityType.getDefaultPhoneNumber();
+	protected void populatePhoneInfo( EntityTypeDataDefault entityTypeData ) {
+		if(entityTypeData!=null){
+			EntityPhoneContract entityPhone = entityTypeData.getDefaultPhoneNumber();
 			if ( entityPhone != null ) {
 				phoneNumber = unNullify( entityPhone.getFormattedPhoneNumberUnmasked() );
 			} else {

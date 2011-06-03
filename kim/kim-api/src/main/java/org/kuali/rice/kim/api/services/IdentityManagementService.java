@@ -18,22 +18,19 @@ package org.kuali.rice.kim.api.services;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.entity.Type;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
-import org.kuali.rice.kim.bo.reference.dto.EmailTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
-import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
-import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
@@ -104,16 +101,16 @@ public interface IdentityManagementService {
             @WebParam(name = "unbounded") boolean unbounded
     );
 
-	AddressTypeInfo getAddressType(@WebParam(name = "code") String code);
+	Type getAddressType(@WebParam(name = "code") String code);
 	AffiliationTypeInfo getAffiliationType(@WebParam(name = "code") String code);
 	CitizenshipStatusInfo getCitizenshipStatus(@WebParam(name = "code") String code);
-	EmailTypeInfo getEmailType(@WebParam(name = "code") String code);
+	Type getEmailType(@WebParam(name = "code") String code);
 	EmploymentStatusInfo getEmploymentStatus(@WebParam(name = "code") String code);
 	EmploymentTypeInfo getEmploymentType(@WebParam(name = "code") String code);
 	EntityNameTypeInfo getEntityNameType(@WebParam(name = "code") String code);
-	EntityTypeInfo getEntityType(@WebParam(name = "code") String code);
+	Type getEntityType(@WebParam(name = "code") String code);
 	ExternalIdentifierTypeInfo getExternalIdentifierType(@WebParam(name = "code") String code);
-	PhoneTypeInfo getPhoneType(@WebParam(name = "code") String code);
+	Type getPhoneType(@WebParam(name = "code") String code);
 
 	// *******************************
 	// GroupService

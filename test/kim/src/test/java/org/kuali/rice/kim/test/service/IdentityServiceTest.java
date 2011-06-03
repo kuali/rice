@@ -18,7 +18,8 @@ package org.kuali.rice.kim.test.service;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
-import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.api.entity.services.IdentityService;
+import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.*;
@@ -158,7 +159,7 @@ public class IdentityServiceTest extends KIMTestCase {
 		
 		KimEntityDefaultInfo entity = identityService.getEntityDefaultInfo( principal.getEntityId() );
 		assertNotNull( "Entity Must not be null", entity );
-		KimEntityEntityTypeDefaultInfo eet = entity.getEntityType( "PERSON" );
+		EntityTypeDataDefault eet = entity.getEntityType( "PERSON" );
 		assertNotNull( "PERSON EntityEntityType must not be null", eet );
 		assertNotNull( "EntityEntityType's default email address must not be null", eet.getDefaultEmailAddress() );
 		assertEquals( "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );

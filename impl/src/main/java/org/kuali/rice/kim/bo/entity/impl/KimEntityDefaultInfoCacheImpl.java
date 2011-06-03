@@ -15,10 +15,23 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import org.kuali.rice.kim.bo.entity.dto.*;
+import org.kuali.rice.kim.api.entity.address.EntityAddress;
+import org.kuali.rice.kim.api.entity.email.EntityEmail;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.api.entity.phone.EntityPhone;
+import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -127,14 +140,12 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 		info.setDefaultName(nameInfo);
 
 		// entity type information
-		ArrayList<KimEntityEntityTypeDefaultInfo> entityTypesInfo = new ArrayList<KimEntityEntityTypeDefaultInfo>( 1 );
+		ArrayList<EntityTypeDataDefault> entityTypesInfo = new ArrayList<EntityTypeDataDefault>( 1 );
 		info.setEntityTypes( entityTypesInfo );
-		KimEntityEntityTypeDefaultInfo entityTypeInfo = new KimEntityEntityTypeDefaultInfo();
-		entityTypeInfo.setEntityTypeCode( this.getEntityTypeCode() );
-		entityTypeInfo.setDefaultAddress( new KimEntityAddressInfo() );
-		entityTypeInfo.setDefaultEmailAddress( new KimEntityEmailInfo() );
-//		((KimEntityEmailInfo)entityTypeInfo.getDefaultEmailAddress()).setEmailAddress(entity.get)
-		entityTypeInfo.setDefaultPhoneNumber( new KimEntityPhoneInfo() );
+		EntityTypeDataDefault entityTypeInfo = new EntityTypeDataDefault(this.getEntityTypeCode(),
+                EntityAddress.Builder.create().build(),
+                EntityEmail.Builder.create().build(),
+                EntityPhone.Builder.create().build());
 		entityTypesInfo.add(entityTypeInfo);
 		info.setEntityTypes(entityTypesInfo);
 

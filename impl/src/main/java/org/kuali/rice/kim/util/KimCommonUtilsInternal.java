@@ -26,11 +26,8 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
-import sun.security.acl.GroupImpl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill

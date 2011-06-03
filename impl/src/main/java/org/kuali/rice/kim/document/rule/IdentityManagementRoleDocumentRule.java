@@ -18,6 +18,7 @@ package org.kuali.rice.kim.document.rule;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -50,7 +51,6 @@ import org.kuali.rice.kim.rules.ui.KimDocumentPermissionRule;
 import org.kuali.rice.kim.rules.ui.KimDocumentResponsibilityRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationRule;
-import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.ResponsibilityInternalService;
@@ -62,7 +62,6 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -197,8 +196,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	boolean valid = true;
 		int i = 0;
     	for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
-   			valid &= validateActiveDate("document.delegationMembers["+i+"].activeToDate", 
-   					delegationMember.getActiveFromDate(), delegationMember.getActiveToDate());
+   			valid &= validateActiveDate("document.delegationMembers[" + i + "].activeToDate",
+                       delegationMember.getActiveFromDate(), delegationMember.getActiveToDate());
     		i++;
     	}
     	return valid;

@@ -17,9 +17,8 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
 import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-
+import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
@@ -60,7 +59,7 @@ public class IdentityServiceImplTest extends KIMTestCase {
 		
 		KimEntity entity = identityService.getEntityImpl( principal.getEntityId() );
 		assertNotNull( "Entity Must not be null", entity );
-		KimEntityEntityType eet = entity.getEntityType( "PERSON" );
+		EntityTypeDataContract eet = entity.getEntityType( "PERSON" );
 		assertNotNull( "PERSON EntityEntityType Must not be null", eet );
 		assertEquals( "there should be 1 email address", 1, eet.getEmailAddresses().size() );
 		assertEquals( "email address does not match", "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );

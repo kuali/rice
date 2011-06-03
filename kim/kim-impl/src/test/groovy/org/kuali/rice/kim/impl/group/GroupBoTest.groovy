@@ -20,13 +20,6 @@ import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.kim.api.group.Group
 
-/**
- * Created by IntelliJ IDEA.
- * User: jjhanso
- * Date: 4/7/11
- * Time: 10:18 AM
- * To change this template use File | Settings | File Templates.
- */
 class GroupBoTest {
   @Test
   public void testNotEqualsWithGroup() {

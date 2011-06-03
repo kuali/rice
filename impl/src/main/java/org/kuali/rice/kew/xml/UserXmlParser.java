@@ -22,8 +22,14 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.kim.bo.entity.KimEntityEmail;
-import org.kuali.rice.kim.bo.entity.impl.*;
+import org.kuali.rice.kim.api.entity.Type;
+import org.kuali.rice.kim.api.entity.email.EntityEmail;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
+import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.xml.sax.SAXException;
@@ -123,7 +129,7 @@ public class UserXmlParser {
 		}
 		entity.setEmploymentInformation(emplInfos);
 		
-		KimEntityEntityTypeImpl entityType = new KimEntityEntityTypeImpl();
+		EntityTypeDataBo entityType = new EntityTypeDataBo();
 		//entity.getEntityTypes().add(entityType);
 		entityType.setEntityTypeCode(entityTypeCode);
 		entityType.setEntityId(entity.getEntityId());
@@ -132,23 +138,23 @@ public class UserXmlParser {
 		String emailAddress = userElement.getChildTextTrim(EMAIL_ELEMENT, NAMESPACE);
 		if (!StringUtils.isBlank(emailAddress)) {
 			Long emailId = sas.getNextAvailableSequenceNumber(
-					"KRIM_ENTITY_EMAIL_ID_S", KimEntityEmailImpl.class);
-			KimEntityEmailImpl email = new KimEntityEmailImpl();
+					"KRIM_ENTITY_EMAIL_ID_S", EntityEmailBo.class);
+			EntityEmail.Builder email = EntityEmail.Builder.create();
 			email.setActive(true);
-			email.setEntityEmailId("" + emailId);
+			email.setId("" + emailId);
 			email.setEntityTypeCode(entityTypeCode);
 			// must be in krim_email_typ_t.email_typ_cd:
-			email.setEmailTypeCode("WRK");
+			email.setEmailType(Type.Builder.create("WRK"));
 			email.setVersionNumber(new Long(1));
 			email.setEmailAddress(emailAddress);
 			email.setDefaultValue(true);
 			email.setEntityId(entity.getEntityId());
-			List<KimEntityEmail> emailAddresses = new ArrayList<KimEntityEmail>(1);
-			emailAddresses.add(email);
+			List<EntityEmailBo> emailAddresses = new ArrayList<EntityEmailBo>(1);
+			emailAddresses.add(EntityEmailBo.from(email.build()));
 			entityType.setEmailAddresses(emailAddresses);
 			//email = (KimEntityEmailImpl)KNSServiceLocatorInternal.getBusinessObjectService().save(email);
 		}
-		List<KimEntityEntityTypeImpl> entityTypes = new ArrayList<KimEntityEntityTypeImpl>(1);
+		List<EntityTypeDataBo> entityTypes = new ArrayList<EntityTypeDataBo>(1);
 		entityTypes.add(entityType);
 		entity.setEntityTypes(entityTypes);
 		

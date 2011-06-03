@@ -15,27 +15,17 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.lang.ref.SoftReference;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.service.PersonService;
@@ -51,6 +41,16 @@ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import java.lang.ref.SoftReference;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -169,7 +169,7 @@ public class PersonServiceImpl implements PersonService {
 		try {
 			// get the EntityEntityType for the EntityType corresponding to a Person
 			for ( String entityTypeCode : personEntityTypeCodes ) {
-				KimEntityEntityTypeDefaultInfo entType = entity.getEntityType( entityTypeCode );
+				EntityTypeDataDefault entType = entity.getEntityType( entityTypeCode );
 				// if no "person" entity type present for the given principal, skip to the next type in the list
 				if ( entType == null ) {
 					continue;

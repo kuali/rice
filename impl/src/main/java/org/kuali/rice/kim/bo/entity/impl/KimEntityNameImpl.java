@@ -24,9 +24,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.reference.EntityNameType;
 import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
 import org.kuali.rice.kim.util.KimConstants;

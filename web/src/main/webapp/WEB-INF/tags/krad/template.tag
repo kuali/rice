@@ -24,19 +24,19 @@
 <%-- verify the component is not null and should be rendered --%>
 
 <%-- check to see if the component should render, if this has progressiveDisclosure and not getting disclosed via ajax
-still render, but render in a hidden span --%>
+still render, but render in a hidden container --%>
 <c:if
 	test="${!empty component && (component.render || (!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender))}">
 
 	<c:choose>
 		<c:when
 			test="${!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender}">
-			<span style="display: none;" id="${component.id}_refreshWrapper" class="refreshWrapper">
+			<div style="display: none;" id="${component.id}_refreshWrapper" class="refreshWrapper">
 		</c:when>
 		<c:otherwise>
 			<c:if
 				test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged}">
-				<span id="${component.id}_refreshWrapper" class="refreshWrapper">
+				<div id="${component.id}_refreshWrapper" class="refreshWrapper">
 			</c:if>
 		</c:otherwise>
 	</c:choose>
@@ -60,43 +60,20 @@ still render, but render in a hidden span --%>
 		</c:otherwise>
 	</c:choose>
 
-	<%-- Conditional Refresh setup --%>
-	<c:if test="${!empty component.conditionalRefresh}">
-		<c:forEach items="${component.conditionalRefreshControlNames}"
-			var="cName">
-			<krad:script
-				value="
-			var condition = function(){return (${component.conditionalRefreshConditionJs});};
-			setupRefreshCheck('${cName}', '${component.id}', condition);" />
-		</c:forEach>
-	</c:if>
-	
-		<%-- Conditional Refresh setup --%>
-	<c:if test="${!empty component.refreshWhenChanged}">
-		<c:forEach items="${component.refreshWhenChangedControlNames}"
-			var="cName">
-			<krad:script
-				value="
-			setupOnChangeRefresh('${cName}', '${component.id}');" />
-		</c:forEach>
-	</c:if>
-
-
 	<%-- generate event code for component --%>
 	<krad:eventScript component="${component}" />
 	
 	<c:if
 		test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged}">
-		</span>
+		</div>
 	</c:if>
 </c:if>
 
-<c:if
-	test="${(!empty component) && (!empty component.progressiveRender)}">
+<c:if test="${(!empty component) && (!empty component.progressiveRender)}">
 	<%-- For progressive rendering requiring an ajax call, put in place holder span --%>
 	<c:if test="${!component.render && (component.progressiveRenderViaAJAX || component.progressiveRenderAndRefresh)}">
-		<span id="${component.id}_refreshWrapper" class="unrendered refreshWrapper"
-			style="display: none;"></span>
+		<div id="${component.id}_refreshWrapper" class="unrendered refreshWrapper"
+			style="display: none;"></div>
 	</c:if>
 
 	<%-- setup progressive handlers for each control which may satisfy a disclosure condition --%>
@@ -111,5 +88,26 @@ still render, but render in a hidden span --%>
 			value="
 			hiddenInputValidationToggle('${component.id}_refreshWrapper');" />
 
+</c:if>
+
+<%-- Conditional Refresh setup --%>
+<c:if test="${!empty component.conditionalRefresh}">
+	<c:forEach items="${component.conditionalRefreshControlNames}"
+		var="cName">
+		<krad:script
+			value="
+		var condition = function(){return (${component.conditionalRefreshConditionJs});};
+		setupRefreshCheck('${cName}', '${component.id}', condition);" />
+	</c:forEach>
+</c:if>
+
+<%-- Refresh when changed setup --%>
+<c:if test="${!empty component.refreshWhenChanged}">
+	<c:forEach items="${component.refreshWhenChangedControlNames}"
+		var="cName">
+		<krad:script
+			value="
+		setupOnChangeRefresh('${cName}', '${component.id}');" />
+	</c:forEach>
 </c:if>
 

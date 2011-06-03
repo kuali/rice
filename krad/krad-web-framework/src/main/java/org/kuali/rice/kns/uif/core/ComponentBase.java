@@ -1412,6 +1412,15 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
+     * Control names which will refresh this component when they are changed, added
+     * internally
+     * @return the refreshWhenChangedControlNames
+     */
+    public List<String> getRefreshWhenChangedControlNames() {
+        return this.refreshWhenChangedControlNames;
+    }
+
+    /**
      * @return the refresh
      */
     public boolean isRefresh() {

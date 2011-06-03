@@ -734,4 +734,11 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
      * @param refresh the refresh to set
      */
     public void setRefresh(boolean refresh);
+    
+    /**
+     * Control names which will refresh this component when they are changed, added
+     * internally
+     * @return the refreshWhenChangedControlNames
+     */
+    public List<String> getRefreshWhenChangedControlNames();
 }

@@ -731,7 +731,7 @@ function setupOnChangeRefresh(controlName, refreshId){
 function setupRefreshCheck(controlName, refreshId, condition){
 	jq("[name='"+ controlName +"']").change(function() {
 		//visible check because a component must logically be visible to refresh
-		var refreshComp = jq("span#" + refreshId + "_refreshWrapper");
+		var refreshComp = jq("#" + refreshId + "_refreshWrapper");
 		if(refreshComp.length){
 			if(condition()){
 				retrieveComponent(refreshId);
@@ -754,14 +754,14 @@ function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetri
 	var actualId = retrieveOriginalId(disclosureId);
 
 	jq("[name='"+ controlName +"']").change(function() {
-		var refreshDisclosure = jq("span#" + disclosureId + "_refreshWrapper");
+		var refreshDisclosure = jq("#" + disclosureId + "_refreshWrapper");
 		if(refreshDisclosure.length){
 			if(condition()){
 				if(refreshDisclosure.hasClass("unrendered") || alwaysRetrieve){
 					retrieveComponent(disclosureId);
 				}
 				else{
-					refreshDisclosure.show();
+					refreshDisclosure.fadeIn("slow");
 					//re-enable validation on now shown inputs
 					hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
 					jq(".displayWith-" + actualId).show();
@@ -812,31 +812,64 @@ function hiddenInputValidationToggle(id){
  */
 function retrieveComponent(id){
 	var actualId = retrieveOriginalId(id);
-	writeHiddenToForm("methodToCall", "updateComponent");
-	writeHiddenToForm("reqComponentId", id);
+	var elementToBlock = jq("#" + id + "_refreshWrapper");
+	if(elementToBlock.find("#" + actualId + "_attribute_span").length){
+		elementToBlock = jq("#" + actualId +"_attribute_span");
+	}
+
 	jq("#kualiForm").ajaxSubmit({
+		data: {methodToCall: "updateComponent", reqComponentId: id},
+		beforeSend: function() {
+			if(elementToBlock.hasClass("unrendered")){
+				elementToBlock.append('<img src="/kr-dev/krad/images/loader.gif" alt="working..." /> Loading...');
+				elementToBlock.show();
+			}
+			else{
+				elementToBlock.block({ 
+	                message: '<img src="/kr-dev/krad/images/loader.gif" alt="working..." /> Updating...',
+	                fadeIn:  400,
+	                fadeOut:  800,
+	                overlayCSS:  {  
+	                    opacity: 0.3
+	                }
+	            });
+			}
+		},
+		complete: null,
+		error: function(){
+			if(elementToBlock.hasClass("unrendered")){
+				elementToBlock.hide();
+			}
+			else{
+				elementToBlock.unblock();
+			}
+		},
 		success: function(response){
 			jq("#formComplete").html("");
 			var tempDiv = document.createElement('div');
 			tempDiv.innerHTML = response;
 			var hasError = handleIncidentReport(response);
 			if(!hasError){
-				var component = jq("span#" + id + "_refreshWrapper", tempDiv);
+				var component = jq("#" + id + "_refreshWrapper", tempDiv);
 				//special label handling, if any
-				var theLabel = jq("span#" + actualId + "_label_span", tempDiv);
+				var theLabel = jq("#" + actualId + "_label_span", tempDiv);
 				if(jq(".displayWith-" + actualId).length && theLabel.length){
 					theLabel.addClass("displayWith-" + actualId);
 					jq("span.displayWith-" + actualId).replaceWith(theLabel);
 					component.remove("#" + actualId + "_label_span");
 				}
 				
-				//replace component
-				if(jq("#" + id + "_refreshWrapper").length){
-					jq("#" + id + "_refreshWrapper").replaceWith(component);
-				}
-
+				elementToBlock.unblock({onUnblock: function(){
+						//replace component
+						if(jq("#" + id + "_refreshWrapper").length){
+							jq("#" + id + "_refreshWrapper").replaceWith(component);
+						}
+						runHiddenScripts(id + "_refreshWrapper");
+						
+					}
+				});
+				
 				jq(".displayWith-" + actualId).show();
-				runHiddenScripts(id + "_refreshWrapper");
 			}
 		}
 	});

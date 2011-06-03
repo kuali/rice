@@ -739,7 +739,7 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 		
 		//check to see if the option to highlight fields is on
 		if(div.length > 0 && !div.hasClass("noHighlight")){
-			if (div.parent().is("td") || (div.parent().is("span.refreshWrapper") && div.parent().parent().is("td"))) {
+			if (div.parent().is("td") || (div.parent().is(".refreshWrapper") && div.parent().parent().is("td"))) {
 				highlightLine = div.closest("td");
 			}
 			else{

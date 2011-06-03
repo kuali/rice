@@ -529,7 +529,8 @@ public final class PredicateFactory {
         return correctedName;
     }
 
-    //this is really a fatal error and therefore is just a private exception not really meant to be caught
+    //this is really a fatal error (programming error)
+    //and therefore is just a private exception not really meant to be caught
     private static class DynPredicateException extends RuntimeException {
         DynPredicateException(Throwable t) {
             super(t);

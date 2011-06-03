@@ -342,7 +342,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 		builder.setServiceName(new QName("TEST", RandomStringUtils.randomAlphanumeric(20)))
 		builder.setServiceVersion("1.0")
 		builder.setStatus(ServiceEndpointStatus.ONLINE)
-		builder.setType(KsbApiConstants.SOAP_SERVICE_TYPE)
+		builder.setType(KsbApiConstants.ServiceTypes.SOAP)
 		builder.setServiceId("" + nextServiceId++)
 		return builder
 	}

@@ -33,7 +33,7 @@ public class SoapServiceDefinition extends AbstractServiceDefinition {
 
 	@Override
 	public String getType() {
-		return KsbApiConstants.SOAP_SERVICE_TYPE;
+		return KsbApiConstants.ServiceTypes.SOAP;
 	}
 
 	

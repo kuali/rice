@@ -54,7 +54,7 @@ public class RestServiceDefinition extends AbstractServiceDefinition {
 	
 	@Override
 	public String getType() {
-		return KsbApiConstants.REST_SERVICE_TYPE;
+		return KsbApiConstants.ServiceTypes.REST;
 	}
 
 	/**

@@ -32,7 +32,7 @@ public class JavaServiceDefinition extends AbstractServiceDefinition {
 
 	@Override
 	public String getType() {
-		return KsbApiConstants.HTTP_INVOKER_SERVICE_TYPE;
+		return KsbApiConstants.ServiceTypes.HTTP_INVOKER;
 	}
 	
 	public List<String> getServiceInterfaces() {

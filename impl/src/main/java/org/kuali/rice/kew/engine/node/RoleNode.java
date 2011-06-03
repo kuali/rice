@@ -24,6 +24,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -39,10 +41,13 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.ClassDumper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * A node implementation which provides integration with KIM Roles for routing.
@@ -88,7 +93,7 @@ public class RoleNode extends RequestsNode {
 //				}
 			// for mandatory routes, requests must be generated
 			if ( requests.isEmpty() && !suppressPolicyErrors) {
-				KimResponsibilityInfo resp = getFirstResponsibilityWithMandatoryRouteFlag( document, node );
+				Responsibility resp = getFirstResponsibilityWithMandatoryRouteFlag( document, node );
 				if ( resp != null ) {
 					throw new RouteManagerException( "No requests generated for KIM Responsibility-based mandatory route.\n" +
 							"Document Id:    " + document.getDocumentId() + "\n" +
@@ -112,47 +117,37 @@ public class RoleNode extends RequestsNode {
 	 * 
 	 * Stops once it finds a responsibility for the document and node.
 	 */	
-	protected KimResponsibilityInfo getFirstResponsibilityWithMandatoryRouteFlag( DocumentRouteHeaderValue document, RouteNode node ) {
+	protected Responsibility getFirstResponsibilityWithMandatoryRouteFlag( DocumentRouteHeaderValue document, RouteNode node ) {
 		// iterate over the document hierarchy
 		// gather responsibilities - merge based on route level
-		//Map<String,Boolean>
-		Map<String,String> searchCriteria = new HashMap<String,String>();
-		searchCriteria.put("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
-		searchCriteria.put("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
-		searchCriteria.put("active", "Y");
 		DocumentType docType = document.getDocumentType();
 		while ( docType != null ) {
-			searchCriteria.put("detailCriteria", getDetailCriteriaString( docType.getName(), node.getRouteNodeName() ) );
-			try {
-				List<? extends KimResponsibilityInfo> responsibilities = KimApiServiceLocator.getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
-				// once we find a responsibility, stop, since this overrides any parent 
-				// responsibilities for this node
-				if ( !responsibilities.isEmpty() ) {
-					// if any has required=true - return true
-					for ( KimResponsibilityInfo resp : responsibilities ) {
-						if ( Boolean.parseBoolean( resp.getDetails().get( KimConstants.AttributeConstants.REQUIRED ) ) ) {
-							return resp;
-						}
-					}
-					return null;
-				}
-			} catch ( Exception ex ) {
-				LOG.error( "Problem looking up responsibilities to check mandatory route.  Criteria: " +searchCriteria, ex );
-				return null;
-			}
+			QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+            Predicate p = and(
+                equal("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
+                equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
+                equal("active", "Y"),
+                equal("attributes[documentTypeName]", docType.getName()),
+                equal("attributes[routeNodeName]", node.getRouteNodeName())
+            );
+            builder.setPredicates(p);
+
+            List<Responsibility> responsibilities = KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build()).getResults();
+            // once we find a responsibility, stop, since this overrides any parent
+            // responsibilities for this node
+            if ( !responsibilities.isEmpty() ) {
+                // if any has required=true - return true
+                for ( Responsibility resp : responsibilities ) {
+                    if ( Boolean.parseBoolean( resp.getAttributes().get( KimConstants.AttributeConstants.REQUIRED ) ) ) {
+                        return resp;
+                    }
+                }
+                return null;
+            }
 			docType = docType.getParentDocType();
 		}
 
 		return null;
-	}
-
-	protected String getDetailCriteriaString( String documentTypeName, String routeNodeName ) {
-		return KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+documentTypeName
-				+ ","
-				+ KimConstants.AttributeConstants.ROUTE_NODE_NAME+"="+routeNodeName
-//				+ ","
-//				+ KimAttributes.REQUIRED+"=true"
-				;
 	}
 	
 	/**

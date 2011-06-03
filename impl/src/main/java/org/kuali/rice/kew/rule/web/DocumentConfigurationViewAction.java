@@ -20,6 +20,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -28,16 +30,18 @@ import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.ResponsibilityService;
+
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -57,6 +61,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -182,20 +189,20 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	}
 	
 	protected void populateRoutingExceptionResponsibility( DocumentConfigurationViewForm form ) {	
-		Map<String,String> searchCriteria = new HashMap<String,String>();
-		searchCriteria.put("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
-		searchCriteria.put("template.name", KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
-		searchCriteria.put("active", "Y");
 		DocumentType docType = form.getDocumentType();
 		List<ResponsibilityForDisplay> responsibilities = new ArrayList<ResponsibilityForDisplay>();
 		while ( docType != null) {
-			// pull the responsibilities for this node
-			searchCriteria.put("detailCriteria",
-					KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+docType.getName()
-					);		
-			List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, true );
+            QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+            Predicate p = and(
+                equal("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
+                equal("template.name", KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME),
+                equal("active", "Y"),
+                equal("attributes[documentTypeName]", docType.getName())
+            );
+            builder.setPredicates(p);
+			List<Responsibility> resps = getResponsibilityService().findResponsibilities(builder.build()).getResults();
 			
-			for ( KimResponsibilityInfo r : resps ) {
+			for ( Responsibility r : resps ) {
 				if ( responsibilities.isEmpty() ) {
 					responsibilities.add( new ResponsibilityForDisplay( r, false ) );
 				} else {
@@ -206,7 +213,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		}
 		form.setExceptionResponsibilities( responsibilities );
 		for ( ResponsibilityForDisplay responsibility : responsibilities ) {
-			List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getResp(), null);
+			List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getResp().getId(), null);
 			form.getResponsibilityRoles().put( responsibility.getResponsibilityId(), getRoleService().getRoles(roleIds) );
 		}
 	}
@@ -283,22 +290,22 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		
 		// FILTER TO THE "Review" template only
 		// pull responsibility roles
-		Map<String,String> searchCriteria = new HashMap<String,String>();
-		searchCriteria.put("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
-		searchCriteria.put("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
-		searchCriteria.put("active", "Y");
 		DocumentType docType = form.getDocumentType();
-		Set<KimResponsibilityInfo> responsibilities = new HashSet<KimResponsibilityInfo>();
+		Set<Responsibility> responsibilities = new HashSet<Responsibility>();
 		Map<String,List<ResponsibilityForDisplay>> nodeToRespMap = new LinkedHashMap<String, List<ResponsibilityForDisplay>>();
 		while ( docType != null) {
-			// pull the responsibilities for this node
-			searchCriteria.put("detailCriteria",
-					KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+docType.getName()
-					);		
-			List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, true );
+            QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+            Predicate p = and(
+                equal("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
+                equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
+                equal("active", "Y"),
+                equal("attributes[documentTypeName]", docType.getName())
+            );
+            builder.setPredicates(p);
+			List<Responsibility> resps = getResponsibilityService().findResponsibilities(builder.build()).getResults();
 			
-			for ( KimResponsibilityInfo r : resps ) {
-				String routeNodeName = r.getDetails().get(KimConstants.AttributeConstants.ROUTE_NODE_NAME);
+			for ( Responsibility r : resps ) {
+				String routeNodeName = r.getAttributes().get(KimConstants.AttributeConstants.ROUTE_NODE_NAME);
 				if ( StringUtils.isNotBlank(routeNodeName) ) {
 					if ( !nodeToRespMap.containsKey( routeNodeName ) ) {
 						nodeToRespMap.put(routeNodeName, new ArrayList<ResponsibilityForDisplay>() );
@@ -321,9 +328,9 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		form.setResponsibilityMap( nodeToRespMap );
 		
 		Map<String,List<KimRoleInfo>> respToRoleMap = new HashMap<String, List<KimRoleInfo>>();
-		for ( KimResponsibilityInfo responsibility : responsibilities ) {
-			List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility, null);
-			respToRoleMap.put( responsibility.getResponsibilityId(), getRoleService().getRoles(roleIds) );
+		for (Responsibility responsibility : responsibilities ) {
+			List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getId(), null);
+			respToRoleMap.put( responsibility.getId(), getRoleService().getRoles(roleIds) );
 		}
 		form.setResponsibilityRoles( respToRoleMap );
 	}
@@ -344,10 +351,10 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	public static class ResponsibilityForDisplay {
 
-		private KimResponsibilityInfo resp;
+		private Responsibility resp;
 		private boolean overridden = false;
 		
-		public ResponsibilityForDisplay( KimResponsibilityInfo resp, boolean overridden ) {
+		public ResponsibilityForDisplay( Responsibility resp, boolean overridden ) {
 			this.resp = resp;
 			this.overridden = overridden;
 		}
@@ -355,7 +362,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		/**
 		 * @return the resp
 		 */
-		KimResponsibilityInfo getResp() {
+		Responsibility getResp() {
 			return this.resp;
 		}
 		
@@ -368,7 +375,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		}
 
 		public AttributeSet getDetails() {
-			return this.resp.getDetails();
+			return new AttributeSet(this.resp.getAttributes().toMap());
 		}
 
 		public String getName() {
@@ -380,7 +387,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		}
 
 		public String getResponsibilityId() {
-			return this.resp.getResponsibilityId();
+			return this.resp.getId();
 		}
 	}
 

@@ -17,7 +17,7 @@ package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
@@ -55,7 +55,7 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
 
 		IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addResponsibilityEvent.getDocument();		
 	    boolean rulePassed = true;
-		if (!hasPermissionToGrantResponsibility(kimResponsibilityImpl.toSimpleInfo(), document)) {
+		if (!hasPermissionToGrantResponsibility(ResponsibilityBo.to(kimResponsibilityImpl), document)) {
             GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_RESPONSIBILITY, 
             		new String[] {kimResponsibilityImpl.getNamespaceCode(), kimResponsibilityImpl.getTemplate().getName()});
             return false;
@@ -77,7 +77,7 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
 		return rulePassed;
 	} 
 
-	public boolean hasPermissionToGrantResponsibility(KimResponsibilityInfo kimResponsibilityInfo, IdentityManagementRoleDocument document){
+	public boolean hasPermissionToGrantResponsibility(Responsibility kimResponsibilityInfo, IdentityManagementRoleDocument document){
 		Map<String,String> responsibilityDetails = new HashMap<String,String>();
 		responsibilityDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, kimResponsibilityInfo.getNamespaceCode());
 		responsibilityDetails.put(KimConstants.AttributeConstants.RESPONSIBILITY_NAME, kimResponsibilityInfo.getName());

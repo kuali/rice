@@ -17,12 +17,16 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimEntity;
@@ -42,14 +46,13 @@ import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.KimCodeInfoBase;
 import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.ResponsibilityService;
+
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -1045,7 +1048,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	/**
 	 * @see org.kuali.rice.kim.api.services.IdentityManagementService#getResponsibility(java.lang.String)
 	 */
-	public KimResponsibilityInfo getResponsibility(String responsibilityId) {
+	public Responsibility getResponsibility(String responsibilityId) {
 		return getResponsibilityService().getResponsibility( responsibilityId );
 	}
 
@@ -1055,16 +1058,16 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	public boolean hasResponsibility(String principalId, String namespaceCode,
 			String responsibilityName, AttributeSet qualification,
 			AttributeSet responsibilityDetails) {
-		return getResponsibilityService().hasResponsibility( principalId, namespaceCode, responsibilityName, qualification, responsibilityDetails );
+		return getResponsibilityService().hasResponsibility( principalId, namespaceCode, responsibilityName, Attributes.fromMap(qualification), Attributes.fromMap(responsibilityDetails) );
 	}
 
-	public List<? extends KimResponsibilityInfo> getResponsibilitiesByName( String namespaceCode, String responsibilityName) {
-		return getResponsibilityService().getResponsibilitiesByName( namespaceCode, responsibilityName );
+	public List<Responsibility> getResponsibilitiesByName( String namespaceCode, String responsibilityName) {
+		return getResponsibilityService().findRespsByNamespaceCodeAndName(namespaceCode, responsibilityName);
 	}
 
-	public List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName,
+	public List<ResponsibilityAction> getResponsibilityActions( String namespaceCode, String responsibilityName,
     		AttributeSet qualification, AttributeSet responsibilityDetails) {
-		return getResponsibilityService().getResponsibilityActions( namespaceCode, responsibilityName, qualification, responsibilityDetails );
+		return getResponsibilityService().getResponsibilityActions( namespaceCode, responsibilityName, Attributes.fromMap(qualification), Attributes.fromMap(responsibilityDetails) );
 	}
 
 	/**
@@ -1072,10 +1075,10 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	 *
 	 * @see org.kuali.rice.kim.api.services.IdentityManagementService#getResponsibilityActionsByTemplateName(java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet, org.kuali.rice.core.util.AttributeSet)
 	 */
-	public List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName(
+	public List<ResponsibilityAction> getResponsibilityActionsByTemplateName(
 			String namespaceCode, String responsibilityTemplateName,
 			AttributeSet qualification, AttributeSet responsibilityDetails) {
-		return getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualification, responsibilityDetails);
+		return getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, Attributes.fromMap(qualification), Attributes.fromMap(responsibilityDetails));
 	}
 
 	/**
@@ -1086,7 +1089,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	public boolean hasResponsibilityByTemplateName(String principalId,
 			String namespaceCode, String responsibilityTemplateName,
 			AttributeSet qualification, AttributeSet responsibilityDetails) {
-		return getResponsibilityService().hasResponsibilityByTemplateName(principalId, namespaceCode, responsibilityTemplateName, qualification, responsibilityDetails);
+		return getResponsibilityService().hasResponsibilityByTemplateName(principalId, namespaceCode, responsibilityTemplateName, Attributes.fromMap(qualification), Attributes.fromMap(responsibilityDetails));
 	}
 
 	public void setEntityPrincipalCacheMaxSize(int entityPrincipalCacheMaxSize) {

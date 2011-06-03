@@ -183,15 +183,19 @@
   <!--
         Responsibility Service
   -->
- 
-  <bean id="kimResponsibilityService" class="org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl"
-  	p:responsibilityDao-ref="kimResponsibilityDao"
-  />
+  	<bean id="criteriaLookupService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="criteriaLookupService" />
+	</bean>
 
-  <bean id="kimResponsibilityUpdateService" class="org.kuali.rice.kim.service.impl.ResponsibilityUpdateServiceImpl" />
-  <!--
-    IdentityManagementNotificationService 
-  -->
+
+  <bean id="kimResponsibilityService" class="org.kuali.rice.kim.impl.responsibility.ResponsibilityServiceImpl"
+  	p:businessObjectService-ref="businessObjectService"
+    p:criteriaLookupService-ref="criteriaLookupService"
+    p:defaultResponsibilityTypeService-ref="defaultResponsibilityTypeService"
+    p:kimTypeInfoService-ref="kimTypeInfoService"
+    p:roleService-ref="kimRoleService"
+  />
 
   <bean id="kimIdentityManagementNotificationService" class="org.kuali.rice.kim.service.impl.IdentityManagementNotificationServiceImpl"/>
   

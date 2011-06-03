@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+
 import java.io.Serializable;
 
 /**
@@ -27,18 +29,18 @@ public class RoleResponsibilityInfo implements Serializable {
 	protected String roleResponsibilityId;
 	protected String roleId;
 	protected String responsibilityId;
-	protected KimResponsibilityInfo kimResponsibilityInfo;
+	protected Responsibility kimResponsibilityInfo;
 	/**
-	 * @return the kimResponsibility
+	 * @return the responsibility
 	 */
-	public KimResponsibilityInfo getKimResponsibilityInfo() {
+	public Responsibility getKimResponsibilityInfo() {
 		return this.kimResponsibilityInfo;
 	}
 	/**
-	 * @param kimResponsibility the kimResponsibility to set
+	 * @param responsibility the kimResponsibility to set
 	 */
-	public void setKimResponsibilityInfo(KimResponsibilityInfo kimResponsibilityInfo) {
-		this.kimResponsibilityInfo = kimResponsibilityInfo;
+	public void setKimResponsibilityInfo(Responsibility responsibility) {
+		this.kimResponsibilityInfo = responsibility;
 	}
 	/**
 	 * @return the responsibilityId

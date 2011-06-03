@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.kim.api.common.template.Template;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -48,7 +49,7 @@ import java.util.Collection;
 		Responsibility.Elements.NAMESPACE_CODE,
 		Responsibility.Elements.NAME,
 		Responsibility.Elements.DESCRIPTION,
-		Responsibility.Elements.TEMPLATE_ID,
+		Responsibility.Elements.TEMPLATE,
         Responsibility.Elements.ACTIVE,
         Responsibility.Elements.ATTRIBUTES,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -71,8 +72,8 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
     @XmlElement(name = Responsibility.Elements.DESCRIPTION, required = false)
     private final String description;
 
-    @XmlElement(name = Responsibility.Elements.TEMPLATE_ID, required = true)
-    private final String templateId;
+    @XmlElement(name = Responsibility.Elements.TEMPLATE, required = true)
+    private final Template template;
 
     @XmlElement(name = Elements.ATTRIBUTES, required = false)
     private final Attributes attributes;
@@ -99,7 +100,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         this.namespaceCode = null;
         this.name = null;
         this.description = null;
-        this.templateId = null;
+        this.template = null;
         this.attributes = null;
         this.active = false;
         this.versionNumber = Long.valueOf(1L);
@@ -116,7 +117,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         this.namespaceCode = builder.getNamespaceCode();
         this.name = builder.getName();
         this.description = builder.getDescription();
-        this.templateId = builder.getTemplateId();
+        this.template = builder.getTemplate().build();
         this.attributes = builder.getAttributes();
         this.active = builder.isActive();
         this.versionNumber = builder.getVersionNumber();
@@ -156,11 +157,11 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
 	}
 
 	/**
-	 * @see ResponsibilityContract#getTemplateId()
+	 * @see ResponsibilityContract#getTemplate()
 	 */
 	@Override
-	public String getTemplateId() {
-		return templateId;
+	public Template getTemplate() {
+		return template;
 	}
 
 	/**
@@ -220,31 +221,31 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         private String namespaceCode;
         private String name;
         private String description;
-        private String templateId;
+        private Template.Builder template;
         private Attributes attributes;
         private Long versionNumber = 1L;
         private String objectId;
         private boolean active;
 
-        private Builder(String id, String namespaceCode, String name, String templateId) {
+        private Builder(String id, String namespaceCode, String name, Template.Builder template) {
             setId(id);
             setNamespaceCode(namespaceCode);
             setName(name);
-            setTemplateId(templateId);
+            setTemplate(template);
         }
 
         /**
          * Creates a Responsibility with the required fields.
          */
-        public static Builder create(String id, String namespaceCode, String name, String templateId) {
-            return new Builder(id, namespaceCode, name, templateId);
+        public static Builder create(String id, String namespaceCode, String name, Template.Builder template) {
+            return new Builder(id, namespaceCode, name, template);
         }
 
         /**
          * Creates a Responsibility from an existing {@link ResponsibilityContract}.
          */
         public static Builder create(ResponsibilityContract contract) {
-            Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), contract.getTemplateId());
+            Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), Template.Builder.create(contract.getTemplate()));
             builder.setDescription(contract.getDescription());
             builder.setAttributes(contract.getAttributes());
             builder.setActive(contract.isActive());
@@ -300,15 +301,15 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
 		}
 
 		@Override
-		public String getTemplateId() {
-			if (StringUtils.isBlank(templateId)) {
-                throw new IllegalArgumentException("templateId is blank");
+		public Template.Builder getTemplate() {
+			if (template == null) {
+                throw new IllegalArgumentException("template is null");
             }
-			return templateId;
+			return template;
 		}
 		
-		public void setTemplateId(final String templateId) {
-			this.templateId = templateId;
+		public void setTemplate(final Template.Builder template) {
+			this.template = template;
 		}
 		
 		@Override
@@ -374,7 +375,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         static final String NAMESPACE_CODE = "namespaceCode";
         static final String NAME = "name";
         static final String DESCRIPTION = "description";
-        static final String TEMPLATE_ID = "templateId"; 
+        static final String TEMPLATE = "template";
         static final String ATTRIBUTES = "attributes";
         static final String ACTIVE = "active";
     }

@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
@@ -36,9 +37,9 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -83,7 +84,7 @@ public class RoleRouteModule implements RouteModule {
 				} else {
 					responsibilityDetails.remove( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER );
 				}
-				List<ResponsibilityActionInfo> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
+				List<ResponsibilityAction> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, Attributes.fromMap(qualifier), Attributes.fromMap(responsibilityDetails));
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("Found " + responsibilities.size() + " responsibilities from ResponsibilityService");
 				}
@@ -96,7 +97,7 @@ public class RoleRouteModule implements RouteModule {
 					String approvePolicy = responsibilitySet.getApprovePolicy();
 					// if all must approve, add the responsibilities individually so that the each get their own approval graph
 					if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(approvePolicy)) {
-						for (ResponsibilityActionInfo responsibility : responsibilitySet.getResponsibilities()) {
+						for (ResponsibilityAction responsibility : responsibilitySet.getResponsibilities()) {
 							arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
 						}
 					} else {
@@ -216,9 +217,9 @@ public class RoleRouteModule implements RouteModule {
     	return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
     }
     
-    protected List<ResponsibilitySet> partitionResponsibilities(List<ResponsibilityActionInfo> responsibilities) {
+    protected List<ResponsibilitySet> partitionResponsibilities(List<ResponsibilityAction> responsibilities) {
     	List<ResponsibilitySet> responsibilitySets = new ArrayList<ResponsibilitySet>();
-    	for (ResponsibilityActionInfo responsibility : responsibilities) {
+    	for (ResponsibilityAction responsibility : responsibilities) {
     		ResponsibilitySet targetResponsibilitySet = null;
     		for (ResponsibilitySet responsibiliySet : responsibilitySets) {
     			if (responsibiliySet.matches(responsibility)) {
@@ -252,9 +253,9 @@ public class RoleRouteModule implements RouteModule {
 		private Integer priorityNumber;
 		private String parallelRoutingGroupingCode;
 		private String roleResponsibilityActionId;
-		private List<ResponsibilityActionInfo> responsibilities = new ArrayList<ResponsibilityActionInfo>();
+		private List<ResponsibilityAction> responsibilities = new ArrayList<ResponsibilityAction>();
 
-		public ResponsibilitySet(ResponsibilityActionInfo responsibility) {
+		public ResponsibilitySet(ResponsibilityAction responsibility) {
 			this.actionRequestCode = responsibility.getActionTypeCode();
 			this.approvePolicy = responsibility.getActionPolicyCode();
 			this.priorityNumber = responsibility.getPriorityNumber();
@@ -262,7 +263,7 @@ public class RoleRouteModule implements RouteModule {
 			this.roleResponsibilityActionId = responsibility.getRoleResponsibilityActionId();
 		}
 		
-		public boolean matches(ResponsibilityActionInfo responsibility) {
+		public boolean matches(ResponsibilityAction responsibility) {
 			return responsibility.getActionTypeCode().equals(actionRequestCode) &&
 				responsibility.getActionPolicyCode().equals(approvePolicy) && 
 				responsibility.getPriorityNumber().equals( priorityNumber ) &&
@@ -282,7 +283,7 @@ public class RoleRouteModule implements RouteModule {
 			return priorityNumber;
 		}
 
-		public List<ResponsibilityActionInfo> getResponsibilities() {
+		public List<ResponsibilityAction> getResponsibilities() {
 			return this.responsibilities;
 		}
 

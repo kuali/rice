@@ -29,6 +29,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This service provides operations for determining what responsibility actions

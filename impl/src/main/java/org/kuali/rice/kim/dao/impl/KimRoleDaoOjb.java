@@ -15,28 +15,24 @@
  */
 package org.kuali.rice.kim.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
@@ -46,7 +42,14 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill
@@ -106,10 +109,6 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		return results;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
-	 *      java.lang.String)
-	 */
 	public List<GroupMember> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId) {
 	    List<String> groupIdValues = new ArrayList<String>();
 	    List<GroupMember> groupPrincipals = new ArrayList<GroupMember>();
@@ -137,10 +136,6 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	    return groupPrincipals;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
-	 *      java.lang.String)
-	 */
 	public List<GroupMember> getGroupMembers(Collection<String> groupIds) {
 	    List<String> groupIdValues = new ArrayList<String>();
 	    List<GroupMember> groupMembers = new ArrayList<GroupMember>();
@@ -628,38 +623,37 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
     private ReportQueryByCriteria setupRespCriteria(Map<String,String> respCrit) {
 
-    	try{
-    	//this.loadTestData();
-    	}catch(Exception ex){
-    		ex.printStackTrace();
-    	}
-    	Map<String,String> searchCrit = new HashMap<String, String>();
 
+        List<Predicate> inner = new ArrayList<Predicate>();
         for (Entry<String, String> entry : respCrit.entrySet()) {
-        	if (entry.getKey().equals("respTmplName") || entry.getKey().equals("respTmplNamespaceCode")) {
-        		if (entry.getKey().equals("respTmplName")) {
-        			searchCrit.put("template." + KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME,entry.getValue());
-
+            if (entry.getKey().equals("respTmplName") || entry.getKey().equals("respTmplNamespaceCode")) {
+        		final Predicate tmpl;
+                if (entry.getKey().equals("respTmplName")) {
+        			tmpl = equal("template." + KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, entry.getValue());
         		} else {
-        			searchCrit.put("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE,entry.getValue());
+        			tmpl = equal("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue());
         		}
+                inner.add(tmpl);
         	}
 
         	if (entry.getKey().equals("respName") || entry.getKey().equals("respNamespaceCode")) {
-        		if (entry.getKey().equals("respName")) {
-        			searchCrit.put(KimConstants.UniqueKeyConstants.RESPONSIBILITY_NAME, entry.getValue());
+        		final Predicate other;
+                if (entry.getKey().equals("respName")) {
+        			other = equal(KimConstants.UniqueKeyConstants.RESPONSIBILITY_NAME, entry.getValue());
         		} else {
-        			searchCrit.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE,entry.getValue());
-
+        			other = equal(KimConstants.UniqueKeyConstants.NAMESPACE_CODE,entry.getValue());
         		}
+                inner.add(other);
         	}
         }
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(inner.toArray(new Predicate[] {}));
 
-        List<? extends KimResponsibilityInfo> kriList = KimApiServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCrit, true);
+        List<Responsibility> kriList = KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build()).getResults();
         List<String> roleIds = new ArrayList<String>();
 
-        for(KimResponsibilityInfo kri : kriList){
-        	roleIds.addAll(KimApiServiceLocator.getResponsibilityService().getRoleIdsForResponsibility(kri, null));
+        for(Responsibility kri : kriList){
+        	roleIds.addAll(KimApiServiceLocator.getResponsibilityService().getRoleIdsForResponsibility(kri.getId(), null));
         }
 
         if(roleIds == null || roleIds.isEmpty()){

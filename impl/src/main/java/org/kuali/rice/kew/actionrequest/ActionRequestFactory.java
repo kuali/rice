@@ -19,6 +19,7 @@ package org.kuali.rice.kew.actionrequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
@@ -36,6 +37,8 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.api.common.delegate.Delegate;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
@@ -44,7 +47,6 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -346,7 +348,7 @@ public class ActionRequestFactory {
      * @param responsibilities
      * @param approvePolicy
      */
-    public void addRoleResponsibilityRequest(List<ResponsibilityActionInfo> responsibilities, String approvePolicy) {
+    public void addRoleResponsibilityRequest(List<ResponsibilityAction> responsibilities, String approvePolicy) {
     	if (responsibilities == null || responsibilities.isEmpty()) {
     		LOG.warn("Didn't create action requests for action request description because no responsibilities were defined.");
     		return;
@@ -378,7 +380,7 @@ public class ActionRequestFactory {
 	    	uniqueChildAnnotations = new HashSet<String>( responsibilities.size() );
     	}
     	StringBuffer annotation = new StringBuffer();
-    	for (ResponsibilityActionInfo responsibility : responsibilities) {
+    	for (ResponsibilityAction responsibility : responsibilities) {
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Processing Responsibility for action request: " + responsibility );
     		}
@@ -386,9 +388,9 @@ public class ActionRequestFactory {
     		annotation.setLength( 0 );
     		KimRoleInfo role = getRoleManagementService().getRole(responsibility.getRoleId());
     		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getRoleName() ).append( ' ' );
-    		AttributeSet qualifier = responsibility.getQualifier();
+    		Attributes qualifier = responsibility.getQualifier();
     		if ( qualifier != null ) {
-	    		for ( String key : qualifier.keySet() ) {	    		    
+	    		for ( String key : qualifier.toMap().keySet() ) {
 	        		annotation.append( qualifier.get( key ) ).append( ' ' );
 	    		}
     		}
@@ -432,9 +434,9 @@ public class ActionRequestFactory {
     	}
     }
 
-    private void generateRoleResponsibilityDelegationRequests(ResponsibilityActionInfo responsibility, ActionRequestValue parentRequest) {
-    	List<DelegateInfo> delegates = responsibility.getDelegates();
-    	for (DelegateInfo delegate : delegates) {
+    private void generateRoleResponsibilityDelegationRequests(ResponsibilityAction responsibility, ActionRequestValue parentRequest) {
+    	List<Delegate> delegates = responsibility.getDelegates();
+    	for (Delegate delegate : delegates) {
     		Recipient recipient = null;
     		boolean isPrincipal = delegate.getMemberTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE);
             boolean isGroup = delegate.getMemberTypeCode().equals(Role.GROUP_MEMBER_TYPE);
@@ -450,7 +452,7 @@ public class ActionRequestFactory {
     	}
     }
 
-    private String generateRoleResponsibilityDelegateAnnotation(DelegateInfo delegate, boolean isPrincipal, boolean isGroup, ActionRequestValue parentRequest) {
+    private String generateRoleResponsibilityDelegateAnnotation(Delegate delegate, boolean isPrincipal, boolean isGroup, ActionRequestValue parentRequest) {
     	StringBuffer annotation = new StringBuffer( "Delegation of: " );
     	annotation.append( parentRequest.getAnnotation() );
     	annotation.append( " to " );

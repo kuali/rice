@@ -23,7 +23,7 @@ import java.util.Map;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
@@ -42,32 +42,32 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 	}
 	
 	@Override
-	protected List<KimResponsibilityInfo> performResponsibilityMatches(
+	protected List<Responsibility> performResponsibilityMatches(
 			AttributeSet requestedDetails,
-			List<KimResponsibilityInfo> responsibilitiesList) {
-		Map<String, List<KimResponsibilityInfo>> potentialDocumentTypeMatches = new HashMap<String, List<KimResponsibilityInfo>>();
-		for (KimResponsibilityInfo responsibility : responsibilitiesList) {
+			List<Responsibility> responsibilitiesList) {
+		Map<String, List<Responsibility>> potentialDocumentTypeMatches = new HashMap<String, List<Responsibility>>();
+		for (Responsibility responsibility : responsibilitiesList) {
 			if ((exactMatchStringAttributeName == null)
 					|| responsibility
-							.getDetails()
+							.getAttributes()
 							.get(exactMatchStringAttributeName)
 							.equals(
 									requestedDetails
 											.get(exactMatchStringAttributeName))) {
 				if (!potentialDocumentTypeMatches.containsKey(responsibility
-						.getDetails().get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME))) {
+						.getAttributes().get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME))) {
 					potentialDocumentTypeMatches.put(
-							responsibility.getDetails().get(
+							responsibility.getAttributes().get(
 									KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME),
-							new ArrayList<KimResponsibilityInfo>());
+							new ArrayList<Responsibility>());
 				}
 				potentialDocumentTypeMatches.get(
-						responsibility.getDetails().get(
+						responsibility.getAttributes().get(
 								KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME)).add(
 						responsibility);
 			}
 		}
-		List<KimResponsibilityInfo> matchingResponsibilities = new ArrayList<KimResponsibilityInfo>();
+		List<Responsibility> matchingResponsibilities = new ArrayList<Responsibility>();
 		if (potentialDocumentTypeMatches.containsKey(requestedDetails
 				.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME))) {
 			matchingResponsibilities

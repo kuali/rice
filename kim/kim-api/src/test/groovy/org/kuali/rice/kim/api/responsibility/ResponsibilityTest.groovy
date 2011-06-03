@@ -23,6 +23,8 @@ import org.junit.Test
 import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.common.attribute.KimAttribute
 import org.kuali.rice.kim.api.type.KimType
+import org.kuali.rice.kim.api.common.template.Template
+import org.kuali.rice.kim.api.common.template.TemplateTest
 
 class ResponsibilityTest {
 
@@ -34,7 +36,7 @@ class ResponsibilityTest {
 	private static final String NAMESPACE_CODE = "KUALI"
 	private static final String NAME = "PermissionName"
 	private static final String DESCRIPTION = "Some Permission Description"
-	private static final String TEMPLATE_ID = "7317791873"
+	private static final Template.Builder TEMPLATE = Template.Builder.create(TemplateTest.create());
 
 	private static final String ATTRIBUTES_1_ID = "1"
 	private static final String ATTRIBUTES_1_PERMISSION_ID = "50"
@@ -71,7 +73,16 @@ class ResponsibilityTest {
           <ns2:namespaceCode>${NAMESPACE_CODE}</ns2:namespaceCode>
           <ns2:name>${NAME}</ns2:name>
           <ns2:description>${DESCRIPTION}</ns2:description>
-          <ns2:templateId>${TEMPLATE_ID}</ns2:templateId>
+          <ns2:template>
+            <ns2:id>${TemplateTest.ID}</ns2:id>
+            <ns2:namespaceCode>${TemplateTest.NAMESPACE_CODE}</ns2:namespaceCode>
+            <ns2:name>${TemplateTest.NAME}</ns2:name>
+            <ns2:description>${TemplateTest.DESCRIPTION}</ns2:description>
+            <ns2:kimTypeId>${TemplateTest.KIM_TYPE_ID}</ns2:kimTypeId>
+            <ns2:active>${TemplateTest.ACTIVE}</ns2:active>
+            <ns2:versionNumber>${TemplateTest.VERSION_NUMBER}</ns2:versionNumber>
+            <ns2:objectId>${TemplateTest.OBJECT_ID}</ns2:objectId>
+        </ns2:template>
           <ns2:active>${ACTIVE}</ns2:active>
           <ns2:attributes>
             <item xmlns="" xmlns:ns3="http://rice.kuali.org/core/v2_0">
@@ -86,22 +97,22 @@ class ResponsibilityTest {
 	
     @Test
     void happy_path() {
-        Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID)
+        Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE)
     }
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_null() {
-		Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).setVersionNumber(null);
+		Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_less_than_1() {
-		Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).setVersionNumber(-1);
+		Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(-1);
 	}
 	
 	@Test
 	void test_copy() {
-		def o1b = Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID)
+		def o1b = Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE)
 		o1b.description = DESCRIPTION
 
 		def o1 = o1b.build()
@@ -120,8 +131,6 @@ class ResponsibilityTest {
 	  Responsibility responsibility = this.create()
 	  marshaller.marshal(responsibility,sw)
 	  String xml = sw.toString()
-      println(responsibility)
-      println(xml)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
 	  Object actual = unmarshaller.unmarshal(new StringReader(xml))
 	  Object expected = unmarshaller.unmarshal(new StringReader(XML))
@@ -134,7 +143,7 @@ class ResponsibilityTest {
 			String getNamespaceCode() {ResponsibilityTest.NAMESPACE_CODE}
 			String getName() {ResponsibilityTest.NAME}
 			String getDescription() {ResponsibilityTest.DESCRIPTION}
-			String getTemplateId() {ResponsibilityTest.TEMPLATE_ID}
+			Template getTemplate() {ResponsibilityTest.TEMPLATE.build()}
 			Attributes getAttributes() { Attributes.fromStrings(ResponsibilityTest.KIM_ATTRIBUTE_1_NAME, ResponsibilityTest.ATTRIBUTES_1_VALUE)}
 			boolean isActive() {ResponsibilityTest.ACTIVE.toBoolean()}
 			Long getVersionNumber() {ResponsibilityTest.VERSION_NUMBER}

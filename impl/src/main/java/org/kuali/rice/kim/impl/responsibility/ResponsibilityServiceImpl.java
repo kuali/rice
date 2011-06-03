@@ -4,9 +4,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.CriteriaValue;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.LookupCustomizer;
+import org.kuali.rice.core.api.criteria.MultiValuedPredicate;
 import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.PropertyPathPredicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.SingleValuedPredicate;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.mo.common.Attributes;
@@ -19,16 +24,17 @@ import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
-import org.kuali.rice.kim.api.responsibility.ResponsibilityTypeService;
 import org.kuali.rice.kim.api.role.Role;
-import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
-import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
+import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
+import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 
@@ -38,8 +44,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+
+//import org.kuali.rice.kim.api.role.RoleService;
 
 public class ResponsibilityServiceImpl implements ResponsibilityService {
 
@@ -48,7 +59,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     private BusinessObjectService businessObjectService;
     private CriteriaLookupService criteriaLookupService;
-    private ResponsibilityTypeService defaultResponsibilityTypeService;
+    private KimResponsibilityTypeService defaultResponsibilityTypeService;
     private KimTypeInfoService kimTypeInfoService;
     private RoleService roleService;
 
@@ -60,8 +71,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         if (StringUtils.isNotBlank(responsibility.getId()) && getResponsibility(responsibility.getId()) != null) {
             throw new RiceIllegalStateException("the responsibility to create already exists: " + responsibility);
-        }                                                                                                                                        //FIXME: stick the template directly on the Resp object so I dont have to this
-        List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), getResponsibilityTemplate(responsibility.getTemplateId()).getKimTypeId());
+        }
+        List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
         bo.setResponsibilityAttributes(attrBos);
         businessObjectService.save(bo);
@@ -77,7 +88,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             throw new RiceIllegalStateException("the responsibility does not exist: " + responsibility);
         }
 
-        List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), getResponsibilityTemplate(responsibility.getTemplateId()).getKimTypeId());
+        List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
         bo.getResponsibilityAttributes().addAll(attrBos);
         businessObjectService.save(bo);
@@ -208,8 +219,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     private List<ResponsibilityAction> getActionsForResponsibilityRoles(Responsibility responsibility, List<String> roleIds, Attributes qualification) {
         List<ResponsibilityAction> results = new ArrayList<ResponsibilityAction>();
-        Collection<RoleMembership> roleMembers = roleService.getRoleMembers(roleIds, new AttributeSet(qualification.toMap()));
-        for (RoleMembership rm : roleMembers) {
+        Collection<RoleMembershipInfo> roleMembers = roleService.getRoleMembers(roleIds, new AttributeSet(qualification.toMap()));
+        for (RoleMembershipInfo rm : roleMembers) {
             // only add them to the list if the member ID has been populated
             if (StringUtils.isNotBlank(rm.getMemberId())) {
                 final ResponsibilityAction.Builder rai = ResponsibilityAction.Builder.create();
@@ -217,8 +228,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
                 rai.setRoleId(rm.getRoleId());
                 rai.setQualifier(Attributes.fromMap(rm.getQualifier()));
                 final List<Delegate.Builder> bs = new ArrayList<Delegate.Builder>();
-                for (Delegate d : rm.getDelegates()) {
-                    bs.add(Delegate.Builder.create(d));
+                for (DelegateInfo d : rm.getDelegates()) {
+                    Delegate.Builder newD = Delegate.Builder.create(d.getDelegationId(), d.getDelegationTypeCode(), d.getMemberId(), d.getMemberTypeCode(), d.getRoleMemberId(), d.getQualifier());
+                    bs.add(newD);
                 }
                 rai.setDelegates(bs);
                 rai.setResponsibilityId(responsibility.getId());
@@ -299,7 +311,10 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             throw new RiceIllegalArgumentException("queryByCriteria is null");
         }
 
-        GenericQueryResults<ResponsibilityBo> results = criteriaLookupService.lookup(ResponsibilityBo.class, queryByCriteria);
+        LookupCustomizer.Builder<ResponsibilityBo> lc = LookupCustomizer.Builder.create();
+        lc.setPredicateTransform(RespAttributeTransform.INSTANCE);
+
+        GenericQueryResults<ResponsibilityBo> results = criteriaLookupService.lookup(ResponsibilityBo.class, queryByCriteria, lc.build());
 
         ResponsibilityQueryResults.Builder builder = ResponsibilityQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -312,6 +327,46 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         builder.setResults(ims);
         return builder.build();
+    }
+
+    private static class RespAttributeTransform implements LookupCustomizer.Transform<Predicate, Predicate> {
+
+        private static final LookupCustomizer.Transform<Predicate, Predicate> INSTANCE = new RespAttributeTransform();
+
+        @Override
+        public Predicate apply(final Predicate input) {
+            if (input instanceof PropertyPathPredicate) {
+                String pp = ((PropertyPathPredicate) input).getPropertyPath();
+                if (isAttributesPredicate(pp)) {
+                    final String attributeName = pp.substring(pp.indexOf('[') + 1, pp.indexOf(']'));
+
+                    final Predicate attrValue;
+                    if (input instanceof SingleValuedPredicate) {
+                        final CriteriaValue<?> value = ((SingleValuedPredicate) input).getValue();
+                        attrValue = dynConstruct(input.getClass().getSimpleName(), "responsibilityAttributes.attributeValue", value.getValue());
+                    } else if (input instanceof MultiValuedPredicate) {
+                        final Set<? extends CriteriaValue<?>> values = ((MultiValuedPredicate) input).getValues();
+                        List<Object> l = new ArrayList<Object>();
+                        for (CriteriaValue<?> v : values) {
+                            l.add(v.getValue());
+                        }
+
+                        attrValue = dynConstruct(input.getClass().getSimpleName(), "responsibilityAttributes.attributeValue", l.toArray());
+                    } else {
+                        attrValue = dynConstruct(input.getClass().getSimpleName(), "responsibilityAttributes.attributeValue");
+                    }
+                    return and(equal("responsibilityAttributes.kimAttribute.attributeName", attributeName), attrValue);
+                }
+            }
+
+            return input;
+        }
+
+        private boolean isAttributesPredicate(String pp) {
+            Pattern pattern = Pattern.compile("^attributes\\[\\w*\\]$");
+            Matcher matcher = pattern.matcher(pp);
+            return matcher.matches();
+        }
     }
 
     @Override
@@ -348,35 +403,35 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         final List<Responsibility> applicableResponsibilities = new ArrayList<Responsibility>();
         // otherwise, attempt to match the permission details
         // build a map of the template IDs to the type services
-        Map<String, ResponsibilityTypeService> responsibilityTypeServices = getResponsibilityTypeServicesByTemplateId(responsibilities);
+        Map<String, KimResponsibilityTypeService> responsibilityTypeServices = getResponsibilityTypeServicesByTemplateId(responsibilities);
         // build a map of permissions by template ID
         Map<String, List<Responsibility>> responsibilityMap = groupResponsibilitiesByTemplate(responsibilities);
         // loop over the different templates, matching all of the same template against the type
         // service at once
         for (Map.Entry<String, List<Responsibility>> respEntry : responsibilityMap.entrySet()) {
-            ResponsibilityTypeService responsibilityTypeService = responsibilityTypeServices.get(respEntry.getKey());
+            KimResponsibilityTypeService responsibilityTypeService = responsibilityTypeServices.get(respEntry.getKey());
             List<Responsibility> responsibilityInfos = respEntry.getValue();
             if (responsibilityTypeService == null) {
                 responsibilityTypeService = defaultResponsibilityTypeService;
             }
-            applicableResponsibilities.addAll(responsibilityTypeService.getMatchingResponsibilities(responsibilityDetails, responsibilityInfos));
+            applicableResponsibilities.addAll(responsibilityTypeService.getMatchingResponsibilities(new AttributeSet(responsibilityDetails.toMap()), responsibilityInfos));
         }
         return applicableResponsibilities;
     }
 
-    private Map<String, ResponsibilityTypeService> getResponsibilityTypeServicesByTemplateId(Collection<Responsibility> responsibilities) {
-        Map<String, ResponsibilityTypeService> responsibilityTypeServices = new HashMap<String, ResponsibilityTypeService>(responsibilities.size());
+    private Map<String, KimResponsibilityTypeService> getResponsibilityTypeServicesByTemplateId(Collection<Responsibility> responsibilities) {
+        Map<String, KimResponsibilityTypeService> responsibilityTypeServices = new HashMap<String, KimResponsibilityTypeService>(responsibilities.size());
         for (Responsibility responsibility : responsibilities) {
-            final Template t = getResponsibilityTemplate(responsibility.getTemplateId());
+            final Template t = responsibility.getTemplate();
             final KimType type = kimTypeInfoService.getKimType(t.getKimTypeId());
 
             final String serviceName = type.getServiceName();
             if (serviceName != null) {
-                ResponsibilityTypeService responsibiltyTypeService = GlobalResourceLoader.getService(serviceName);
+                KimResponsibilityTypeService responsibiltyTypeService = GlobalResourceLoader.getService(serviceName);
                 if (responsibiltyTypeService != null) {
-                    responsibilityTypeServices.put(responsibility.getTemplateId(), responsibiltyTypeService);
+                    responsibilityTypeServices.put(responsibility.getTemplate().getId(), responsibiltyTypeService);
                 } else {
-                    responsibilityTypeServices.put(responsibility.getTemplateId(), defaultResponsibilityTypeService);
+                    responsibilityTypeServices.put(responsibility.getTemplate().getId(), defaultResponsibilityTypeService);
                 }
             }
         }
@@ -386,10 +441,10 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     private Map<String, List<Responsibility>> groupResponsibilitiesByTemplate(Collection<Responsibility> responsibilities) {
         final Map<String, List<Responsibility>> results = new HashMap<String, List<Responsibility>>();
         for (Responsibility responsibility : responsibilities) {
-            List<Responsibility> responsibilityInfos = results.get(responsibility.getTemplateId());
+            List<Responsibility> responsibilityInfos = results.get(responsibility.getTemplate().getId());
             if (responsibilityInfos == null) {
                 responsibilityInfos = new ArrayList<Responsibility>();
-                results.put(responsibility.getTemplateId(), responsibilityInfos);
+                results.put(responsibility.getTemplate().getId(), responsibilityInfos);
             }
             responsibilityInfos.add(responsibility);
         }
@@ -450,7 +505,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         this.criteriaLookupService = criteriaLookupService;
     }
 
-    public void setDefaultResponsibilityTypeService(final ResponsibilityTypeService defaultResponsibilityTypeService) {
+    public void setDefaultResponsibilityTypeService(final KimResponsibilityTypeService defaultResponsibilityTypeService) {
         this.defaultResponsibilityTypeService = defaultResponsibilityTypeService;
     }
 

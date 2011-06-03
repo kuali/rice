@@ -86,7 +86,7 @@ class TemplateTest {
 	  Assert.assertEquals(expected,actual)
 	}
 	
-	private create() {
+	public static create() {
 		return Template.Builder.create(new TemplateContract() {
 			String id = TemplateTest.ID
 			String namespaceCode = TemplateTest.NAMESPACE_CODE

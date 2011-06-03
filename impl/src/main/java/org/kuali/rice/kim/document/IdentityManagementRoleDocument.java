@@ -17,6 +17,7 @@ package org.kuali.rice.kim.document;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -28,7 +29,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -70,7 +71,8 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	private List<RoleDocumentDelegation> delegations = new AutoPopulatingList(RoleDocumentDelegation.class);
 	
 	transient private ResponsibilityService responsibilityService;
-	
+	transient private ResponsibilityInternalService responsibilityInternalService;
+
 	public IdentityManagementRoleDocument() {
 	}
 
@@ -307,7 +309,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	}
 
 	public void addResponsibility(KimDocumentRoleResponsibility roleResponsibility){
-		if(!getResponsibilityService().areActionsAtAssignmentLevelById(roleResponsibility.getResponsibilityId())) {
+		if(!getResponsibilityInternalService().areActionsAtAssignmentLevelById(roleResponsibility.getResponsibilityId())) {
 			roleResponsibility.getRoleRspActions().add(getNewRespAction(roleResponsibility));
 		}
        	getResponsibilities().add(roleResponsibility);
@@ -368,7 +370,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     public void setupMemberRspActions(KimDocumentRoleMember member) {
     	member.getRoleRspActions().clear();
         for (KimDocumentRoleResponsibility roleResp: getResponsibilities()) {
-        	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
+        	if (getResponsibilityInternalService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
         		KimDocumentRoleResponsibilityAction action = new KimDocumentRoleResponsibilityAction();
         		action.setRoleResponsibilityId("*");
         		action.setRoleMemberId(member.getRoleMemberId());
@@ -391,7 +393,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     }
     
     public void setupMemberRspActions(KimDocumentRoleResponsibility roleResp, KimDocumentRoleMember member) {
-    	if ((member.getRoleRspActions()==null || member.getRoleRspActions().size()<1) && getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
+    	if ((member.getRoleRspActions()==null || member.getRoleRspActions().size()<1) && getResponsibilityInternalService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
     		KimDocumentRoleResponsibilityAction action = new KimDocumentRoleResponsibilityAction();
     		action.setRoleResponsibilityId("*");
     		action.setRoleMemberId(member.getRoleMemberId());
@@ -479,7 +481,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 					responsibility.setRoleResponsibilityId(roleResponsibilityId);
 				}
 				responsibility.setRoleId(roleId);
-				if(!getResponsibilityService().areActionsAtAssignmentLevelById(responsibility.getResponsibilityId())){
+				if(!getResponsibilityInternalService().areActionsAtAssignmentLevelById(responsibility.getResponsibilityId())){
 					if(StringUtils.isBlank(responsibility.getRoleRspActions().get(0).getRoleResponsibilityActionId())){
 						Long nextSeq = sas.getNextAvailableSequenceNumber(
 								KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S,
@@ -550,6 +552,13 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     		responsibilityService = KimApiServiceLocator.getResponsibilityService();
     	}
 		return responsibilityService;
+	}
+
+    public ResponsibilityInternalService getResponsibilityInternalService() {
+    	if ( responsibilityInternalService == null ) {
+    		responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
+    	}
+		return responsibilityInternalService;
 	}
 
 	/**

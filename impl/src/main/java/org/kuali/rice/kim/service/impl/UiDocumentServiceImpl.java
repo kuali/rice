@@ -25,6 +25,7 @@ import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -99,7 +100,7 @@ import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.UiDocumentService;
@@ -152,6 +153,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	private IdentityManagementService identityManagementService;
 	private GroupService groupService;
 	private ResponsibilityService responsibilityService;
+    private ResponsibilityInternalService responsibilityInternalService;
 	private KimTypeInfoService kimTypeInfoService;
     private DocumentHelperService documentHelperService;
 
@@ -2096,7 +2098,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		// loop over the responsibilities assigned to the role
 			for(KimDocumentRoleResponsibility roleResponsibility : identityManagementRoleDocument.getResponsibilities()){
 				// only process if the actions are not assigned at the role member level
-				if(!getResponsibilityService().areActionsAtAssignmentLevelById(roleResponsibility.getResponsibilityId())){
+				if(!getResponsibilityInternalService().areActionsAtAssignmentLevelById(roleResponsibility.getResponsibilityId())){
 					List<KimDocumentRoleResponsibilityAction> documentRoleResponsibilityActions = roleResponsibility.getRoleRspActions();
 					if( ObjectUtils.isNotNull(documentRoleResponsibilityActions)
 							&& !documentRoleResponsibilityActions.isEmpty()
@@ -2818,4 +2820,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	}
     	return qualifiers;
     }
+
+   public ResponsibilityInternalService getResponsibilityInternalService() {
+    	if ( responsibilityInternalService == null ) {
+    		responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
+    	}
+		return responsibilityInternalService;
+	}
 }

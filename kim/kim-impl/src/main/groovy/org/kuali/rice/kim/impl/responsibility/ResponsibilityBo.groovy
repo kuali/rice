@@ -36,7 +36,6 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.type.KimType
 import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.api.type.KimTypeInfoService
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
@@ -119,7 +118,8 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
         bo.name = im.name
         bo.description = im.description
         bo.active = im.active
-        bo.templateId = im.templateId
+        bo.template = ResponsibilityTemplateBo.from(im.template);
+        bo.templateId = im.template.id;
         bo.attributes = im.attributes
         bo.versionNumber = im.versionNumber
         bo.objectId = im.objectId;
@@ -127,20 +127,11 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
         return bo
     }
 
+    ResponsibilityTemplateBo getTemplate() {
+        return template;
+    }
+
     //FIXME: temporary methods
-    KimResponsibilityInfo toSimpleInfo() {
-		KimResponsibilityInfo dto = new KimResponsibilityInfo();
-
-		dto.setResponsibilityId( getId() );
-		dto.setNamespaceCode( getNamespaceCode() );
-		dto.setName( getName() );
-		dto.setDescription( getDescription() );
-		dto.setActive( isActive() );
-		dto.setDetails( new AttributeSet(getAttributes().toMap()) );
-
-		return dto;
-	}
-
     String getDetailObjectsValues(){
 		return responsibilityAttributes.collect {it.attributeValue}.join(",")
 	}

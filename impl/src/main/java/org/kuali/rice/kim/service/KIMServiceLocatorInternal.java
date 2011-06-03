@@ -84,10 +84,6 @@ public final class KIMServiceLocatorInternal {
     	return (PermissionUpdateService)getService(KIM_PERMISSION_UPDATE_SERVICE);
     }
 
-    public static ResponsibilityUpdateService getResponsibilityUpdateService() {
-    	return (ResponsibilityUpdateService)getService(KIM_RESPONSIBILITY_UPDATE_SERVICE);
-    }
-
     public static AuthenticationService getAuthenticationService() {
     	if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + KIM_AUTHENTICATION_SERVICE);

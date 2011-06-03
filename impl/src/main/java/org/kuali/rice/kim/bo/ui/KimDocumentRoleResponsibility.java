@@ -17,9 +17,8 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.springframework.util.AutoPopulatingList;
 
@@ -85,16 +84,8 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 			//TODO: this needs to be changed to use the KimResponsibilityInfo object
 			// but the changes are involved in the UiDocumentService based on the copyProperties method used
 			// to move the data to/from the document/real objects
-            KimResponsibilityInfo info = KimApiServiceLocator.getResponsibilityService().getResponsibility(getResponsibilityId());
-			ResponsibilityBo bo = new ResponsibilityBo();
-            bo.setActive(info.isActive());
-            bo.setAttributes(Attributes.fromMap(info.getDetails()));
-            bo.setDescription(info.getDescription());
-            bo.setId(info.getResponsibilityId());
-            bo.setName(info.getName());
-            bo.setNamespaceCode(info.getNamespaceCode());
-
-            kimResponsibility = bo;
+            Responsibility info = KimApiServiceLocator.getResponsibilityService().getResponsibility(getResponsibilityId());
+            kimResponsibility = ResponsibilityBo.from(info);
 		}
 		return this.kimResponsibility;
 	}

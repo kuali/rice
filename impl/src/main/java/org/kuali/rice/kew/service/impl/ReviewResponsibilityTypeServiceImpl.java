@@ -17,10 +17,11 @@ package org.kuali.rice.kew.service.impl;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -39,19 +40,19 @@ public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibil
 	 * @see org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl#performResponsibilityMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
 	@Override
-	protected List<KimResponsibilityInfo> performResponsibilityMatches(
+	protected List<Responsibility> performResponsibilityMatches(
 			AttributeSet requestedDetails,
-			List<KimResponsibilityInfo> responsibilitiesList) {
+			List<Responsibility> responsibilitiesList) {
 		// get the base responsibility matches based on the route level and document type
-		List<KimResponsibilityInfo> baseMatches = super.performResponsibilityMatches(requestedDetails,
+		List<Responsibility> baseMatches = super.performResponsibilityMatches(requestedDetails,
 				responsibilitiesList);
 		// now, if any of the responsibilities have the "qualifierResolverProvidedIdentifier" detail property
 		// perform an exact match on the property with the requested details
 		// if the property does not match or does not exist in the requestedDetails, remove
 		// the responsibility from the list
-		Iterator<KimResponsibilityInfo> respIter = baseMatches.iterator();
+		Iterator<Responsibility> respIter = baseMatches.iterator();
 		while ( respIter.hasNext() ) {
-			AttributeSet respDetails = respIter.next().getDetails();
+			Map<String, String> respDetails = respIter.next().getAttributes().toMap();
 			if ( respDetails.containsKey( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) && StringUtils.isNotBlank( respDetails.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER) ) ) {
 				if ( !requestedDetails.containsKey( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER )
 						|| !StringUtils.equals( respDetails.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER)

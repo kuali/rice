@@ -29,7 +29,7 @@
         <ref bean="Responsibility-detailObjectsValues"/>
       </list>
     </property>
-	<property name="relationships">
+	<!--<property name="relationships">
       <list>
         <bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="template"/>
@@ -46,7 +46,7 @@
           </property>
         </bean>
       </list>
-    </property>
+    </property>-->
   </bean>
 
   <bean id="Responsibility-template.namespaceCode" parent="Responsibility-template.namespaceCode-parentBean"/>

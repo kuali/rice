@@ -55,6 +55,7 @@ import org.kuali.rice.kim.rule.event.ui.AddPersonDocumentRoleQualifierEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
@@ -83,6 +84,8 @@ import java.util.Properties;
  *
  */
 public class IdentityManagementPersonDocumentAction extends IdentityManagementDocumentActionBase {
+
+    protected ResponsibilityInternalService responsibilityInternalService;
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -392,7 +395,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 
     protected void setupRoleRspActions(PersonDocumentRole role, KimDocumentRoleMember rolePrncpl) {
         for (RoleResponsibilityImpl roleResp : role.getAssignedResponsibilities()) {
-        	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
+        	if (getResponsibilityInternalService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
         		KimDocumentRoleResponsibilityAction roleRspAction = new KimDocumentRoleResponsibilityAction();
         		roleRspAction.setRoleResponsibilityId("*");        		
         		roleRspAction.refreshReferenceObject("roleResponsibility");
@@ -620,4 +623,11 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	    roleImpl.setActive(roleInfo.isActive());
 	    return roleImpl;
     }
+
+    public ResponsibilityInternalService getResponsibilityInternalService() {
+    	if ( responsibilityInternalService == null ) {
+    		responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
+    	}
+		return responsibilityInternalService;
+	}
 }

@@ -224,30 +224,11 @@
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimResponsibilityService"
         p:localServiceName="kimResponsibilityServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.ResponsibilityUpdateService" />
+        p:serviceInterface="org.kuali.rice.kim.api.responsibility.ResponsibilityService" />
     </property>
     <property name="exportIf" value="kimResponsibilityServiceSOAP.expose"/>
   </bean>
 
-  <bean parent="kimLocalServiceExporter">
-  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimResponsibilityUpdateService"
-        p:localServiceName="kimResponsibilityUpdateService" />
-    </property>
-  </bean>
-
-    <bean parent="kimLocalServiceExporter">
-  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimResponsibilityUpdateService"
-        p:localServiceName="kimResponsibilityUpdateServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.ResponsibilityUpdateService" />
-    </property>
-    <property name="exportIf" value="kimResponsibilityUpdateServiceSOAP.expose"/>
-  </bean>
 
   <bean parent="kimLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus"/>

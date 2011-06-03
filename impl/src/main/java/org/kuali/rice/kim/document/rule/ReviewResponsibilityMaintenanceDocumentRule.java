@@ -20,16 +20,20 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -57,10 +61,10 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
 			ReviewResponsibility resp = (ReviewResponsibility)document.getNewMaintainableObject().getBusinessObject();
 			// check the route level exists on the document or a child
 			HashSet<String> routeNodeNames = getAllPossibleRouteNodeNames( resp.getDocumentTypeName() );
-			if ( !routeNodeNames.contains( resp.getRouteNodeName() ) ) {
-				GlobalVariables.getMessageMap().putError( "routeNodeName", ERROR_INVALID_ROUTE_NODE, resp.getRouteNodeName() );
-				rulesPassed = false;
-			}
+			//if ( !routeNodeNames.contains( resp.getRouteNodeName() ) ) {
+			//	GlobalVariables.getMessageMap().putError( "routeNodeName", ERROR_INVALID_ROUTE_NODE, resp.getRouteNodeName() );
+			//	rulesPassed = false;
+			//}
 			// check for creation of a duplicate node
 			if ( !checkForDuplicateResponsibility( resp ) ) {
 				GlobalVariables.getMessageMap().putError( "documentTypeName", ERROR_DUPLICATE_RESPONSIBILITY );
@@ -103,11 +107,15 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
 		}
 	}
 	protected boolean checkForDuplicateResponsibility( ReviewResponsibility resp ) {
-		HashMap<String,String> criteria = new HashMap<String,String>();
-		criteria.put( "template.namespaceCode", KEWConstants.KEW_NAMESPACE );
-		criteria.put( "template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME );
-		criteria.put( "detailCriteria", "documentTypeName="+resp.getDocumentTypeName()+",routeNodeName="+resp.getRouteNodeName() );
-		List<? extends KimResponsibilityInfo> results = KimApiServiceLocator.getResponsibilityService().lookupResponsibilityInfo( criteria, true );
-		return results.isEmpty() || results.get(0).getResponsibilityId().equals( resp.getResponsibilityId() );
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        Predicate p = and(
+            equal("template.namespaceCode", KEWConstants.KEW_NAMESPACE ),
+            equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
+            equal("attributes[documentTypeName]", resp.getDocumentTypeName()),
+            equal("attributes[routeNodeName]", resp.getRouteNodeName())
+        );
+        builder.setPredicates(p);
+        ResponsibilityQueryResults results = KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build());
+		return results.getResults().isEmpty() || results.getResults().get(0).getId().equals( resp.getResponsibilityId() );
 	}
 }

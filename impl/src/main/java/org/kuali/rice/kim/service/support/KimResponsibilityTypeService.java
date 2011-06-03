@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.service.support;
 
-import java.util.List;
-
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+
+import java.util.List;
 
 
 /**
@@ -29,5 +29,5 @@ import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
  */
 public interface KimResponsibilityTypeService extends KimTypeService {
 
-    List<KimResponsibilityInfo> getMatchingResponsibilities( AttributeSet requestedDetails, List<KimResponsibilityInfo> responsibilitiesList );
+    List<Responsibility> getMatchingResponsibilities( AttributeSet requestedDetails, List<Responsibility> responsibilitiesList );
 }

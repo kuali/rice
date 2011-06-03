@@ -23,12 +23,17 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -45,6 +50,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 public class ResponsibilityInternalServiceImpl implements ResponsibilityInternalService {
 
 	private BusinessObjectService businessObjectService;
+    private ResponsibilityService responsibilityService;
 
 	public void saveRoleMember(RoleMemberImpl roleMember){
 
@@ -143,5 +149,22 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 		}
 		return businessObjectService;
 	}
+
+    public boolean areActionsAtAssignmentLevel(Responsibility responsibility ) {
+    	Attributes details = responsibility.getAttributes();
+    	if ( details == null ) {
+    		return false;
+    	}
+    	String actionDetailsAtRoleMemberLevel = details.get( KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL );
+    	return Boolean.valueOf(actionDetailsAtRoleMemberLevel);
+    }
+
+    public boolean areActionsAtAssignmentLevelById( String responsibilityId ) {
+    	Responsibility responsibility = responsibilityService.getResponsibility(responsibilityId);
+    	if ( responsibility == null ) {
+    		return false;
+    	}
+    	return areActionsAtAssignmentLevel(responsibility);
+    }
 
 }

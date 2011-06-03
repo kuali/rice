@@ -22,6 +22,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.BranchPrototype;
@@ -33,10 +35,10 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
@@ -51,6 +53,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 
 /**
@@ -318,19 +323,20 @@ public class RuleQuickLinksAction extends KewKualiAction {
 			return this.baseNode.toString();
 		}
 		
-		private List<? extends KimResponsibilityInfo> responsibilities = null;
+		private List<Responsibility> responsibilities = null;
 		
-		public List<? extends KimResponsibilityInfo> getResponsibilities() {
+		public List<Responsibility> getResponsibilities() {
 			if ( responsibilities == null ) {
-				Map<String,String> searchCriteria = new HashMap<String,String>();
-				searchCriteria.put("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
-				searchCriteria.put("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
-				searchCriteria.put("active", "Y");
-				searchCriteria.put("detailCriteria",
-						KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
-						+ ","
-						+ KimConstants.AttributeConstants.ROUTE_NODE_NAME+"="+getRouteNodeName() );
-				responsibilities = KimApiServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true);
+				QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+                Predicate p = and(
+                    equal("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
+                    equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
+                    equal("active", "Y"),
+                    equal("attributes[documentTypeName]", getDocumentType().getName()),
+                    equal("attributes[routeNodeName]", getRouteNodeName())
+                );
+                builder.setPredicates(p);
+ 				responsibilities = KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build()).getResults();
 			}
 			return responsibilities;
 		}

@@ -3,14 +3,13 @@ package org.kuali.rice.kim.api.services;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.service.ResponsibilityUpdateService;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.RoleUpdateService;
@@ -97,9 +96,4 @@ public class KimApiServiceLocator {
     public static PermissionUpdateService getPermissionUpdateService() {
     	return getService(KIM_PERMISSION_UPDATE_SERVICE);
     }
-
-    public static ResponsibilityUpdateService getResponsibilityUpdateService() {
-    	return getService(KIM_RESPONSIBILITY_UPDATE_SERVICE);
-    }
-    
 }

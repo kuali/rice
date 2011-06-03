@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 
 /**
@@ -34,7 +34,7 @@ public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimResponsibilityTypeService#getMatchingResponsibilities(AttributeSet, List)
 	 */
-	public final List<KimResponsibilityInfo> getMatchingResponsibilities( AttributeSet requestedDetails, List<KimResponsibilityInfo> responsibilitiesList ) {
+	public final List<Responsibility> getMatchingResponsibilities( AttributeSet requestedDetails, List<Responsibility> responsibilitiesList ) {
 		requestedDetails = translateInputAttributeSet(requestedDetails);
 		validateRequiredAttributesAgainstReceived(requestedDetails);
 		return performResponsibilityMatches(requestedDetails, responsibilitiesList);
@@ -46,11 +46,11 @@ public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 	 * This base implementation uses the {@link #performMatch(AttributeSet, AttributeSet)} method
 	 * to perform an exact match on the Responsibility details and return all that are equal.
 	 */
-	protected List<KimResponsibilityInfo> performResponsibilityMatches(AttributeSet requestedDetails, List<KimResponsibilityInfo> responsibilitiesList) {
-		List<KimResponsibilityInfo> matchingResponsibilities = new ArrayList<KimResponsibilityInfo>();
-		for (KimResponsibilityInfo Responsibility : responsibilitiesList) {
-			if ( performMatch(requestedDetails, Responsibility.getDetails()) ) {
-				matchingResponsibilities.add( Responsibility );
+	protected List<Responsibility> performResponsibilityMatches(AttributeSet requestedDetails, List<Responsibility> responsibilitiesList) {
+		List<Responsibility> matchingResponsibilities = new ArrayList<Responsibility>();
+		for (Responsibility responsibility : responsibilitiesList) {
+			if ( performMatch(requestedDetails, new AttributeSet(responsibility.getAttributes().toMap())) ) {
+				matchingResponsibilities.add( responsibility );
 			}
 		}
 		return matchingResponsibilities;

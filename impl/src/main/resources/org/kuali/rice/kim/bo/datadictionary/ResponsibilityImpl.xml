@@ -56,7 +56,7 @@
     </property>
     <property name="relationships">
       <list>
-        <bean parent="RelationshipDefinition">
+        <!--<bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="template"/>
           <property name="primitiveAttributes">
             <list>
@@ -68,7 +68,7 @@
               <bean parent="SupportAttributeDefinition" p:sourceName="template.name" p:targetName="name"/>
             </list>
           </property>
-        </bean>
+        </bean>-->
         <bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="assignedToRole"/>
           <property name="primitiveAttributes">

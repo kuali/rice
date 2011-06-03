@@ -19,6 +19,8 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
@@ -33,9 +35,9 @@ import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 import javax.jws.WebMethod;
@@ -281,13 +283,13 @@ public interface IdentityManagementService {
     /**
      * Get the responsibility object with the given ID.
      */
-    KimResponsibilityInfo getResponsibility(@WebParam(name = "responsibilityId") String responsibilityId);
+    Responsibility getResponsibility(@WebParam(name = "responsibilityId") String responsibilityId);
 
  	/**
  	 * Return the responsibility object for the given unique combination of namespace,
  	 * component and responsibility name.
  	 */
-    List<? extends KimResponsibilityInfo> getResponsibilitiesByName(
+    List<? extends Responsibility> getResponsibilitiesByName(
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "responsibilityName") String responsibilityName
     );
@@ -314,14 +316,14 @@ public interface IdentityManagementService {
             @WebParam(name = "responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails
     );
 
-    List<ResponsibilityActionInfo> getResponsibilityActions(
+    List<ResponsibilityAction> getResponsibilityActions(
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "responsibilityName") String responsibilityName,
             @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification,
             @WebParam(name = "responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails
     );
 
-    List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName(
+    List<ResponsibilityAction> getResponsibilityActionsByTemplateName(
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "responsibilityTemplateName") String responsibilityTemplateName,
             @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification,

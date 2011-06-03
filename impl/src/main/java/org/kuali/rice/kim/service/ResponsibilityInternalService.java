@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service;
 
 import java.util.Set;
 
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 
 /**
@@ -32,5 +33,18 @@ public interface ResponsibilityInternalService {
 	void saveRoleMember(RoleMemberImpl roleMember);
 	void removeRoleMember(RoleMemberImpl roleMember);
 	void updateActionRequestsForRoleChange(String roleId);
-	
+
+    /**
+     * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
+     * records to be given at the assignment level or are global to the responsibility.  (I.e., they apply
+     * to any member assigned to the responsibility.)
+     */
+   	boolean areActionsAtAssignmentLevelById(String responsibilityId );
+
+    /**
+     * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
+     * records to be given at the assignment level or are global to the responsibility.  (I.e., they apply
+     * to any member assigned to the responsibility.)
+     */
+   	boolean areActionsAtAssignmentLevel(Responsibility responsibility );
 }

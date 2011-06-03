@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kew.role;
 
-import java.util.List;
-
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
+
+import java.util.List;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -28,14 +28,14 @@ import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
  */
 public class KimRoleRecipient implements Recipient {
 
-	private List<ResponsibilityActionInfo> responsibilities;
+	private List<ResponsibilityAction> responsibilities;
 	private Recipient target;
 	
-	public KimRoleRecipient(List<ResponsibilityActionInfo> responsibilities) {
+	public KimRoleRecipient(List<ResponsibilityAction> responsibilities) {
 		this.responsibilities = responsibilities;
 	}
 	
-	public List<ResponsibilityActionInfo> getResponsibilities() {
+	public List<ResponsibilityAction> getResponsibilities() {
 		return this.responsibilities;
 	}
 

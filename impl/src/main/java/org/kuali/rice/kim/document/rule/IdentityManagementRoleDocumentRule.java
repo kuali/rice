@@ -18,11 +18,12 @@ package org.kuali.rice.kim.document.rule;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
@@ -50,8 +51,9 @@ import org.kuali.rice.kim.rules.ui.KimDocumentResponsibilityRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationRule;
 import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.impl.RoleServiceBase;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -60,6 +62,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -95,7 +98,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	protected Class<? extends AddDelegationMemberRule> addDelegationMemberRuleClass = RoleDocumentDelegationMemberRule.class;
 
 	protected IdentityService identityService;
-	
+	private static ResponsibilityInternalService responsibilityInternalService;
+
 	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
 	// KULRICE-4153
@@ -222,7 +226,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	int i = 0;
     	for(KimDocumentRoleResponsibility responsibility: document.getResponsibilities()){
     		kimResponsibilityImpl = responsibility.getKimResponsibility();
-    		if(!responsibility.isActive() && !hasPermissionToGrantResponsibility(responsibility.getKimResponsibility().toSimpleInfo(), document)){
+    		if(!responsibility.isActive() && !hasPermissionToGrantResponsibility(ResponsibilityBo.to(responsibility.getKimResponsibility()), document)){
     	        GlobalVariables.getMessageMap().putError("responsibilities["+i+"].active", RiceKeyConstants.ERROR_ASSIGN_RESPONSIBILITY, 
     	        		new String[] {kimResponsibilityImpl.getNamespaceCode(), kimResponsibilityImpl.getTemplate().getName()});
     	        valid = false;
@@ -236,7 +240,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         int i = 0;
         boolean rulePassed = true;
     	for(KimDocumentRoleResponsibility roleResponsibility: roleResponsibilities){
-    		if(!getResponsibilityService().areActionsAtAssignmentLevelById(roleResponsibility.getResponsibilityId()))
+    		if(!getResponsibilityInternalService().areActionsAtAssignmentLevelById(roleResponsibility.getResponsibilityId()))
     			validateRoleResponsibilityAction("document.responsibilities["+i+"].roleRspActions[0].priorityNumber", roleResponsibility.getRoleRspActions().get(0));
         	i++;
     	}
@@ -355,9 +359,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     /**
      * Checks all the qualifiers for the given membership, so that all qualifiers which should be unique are guaranteed to be unique
      * 
-     * @param membership the membership to check
-     * @param attributeDefinitions the Map of attribute definitions used by the role
-     * @param memberIndex the index of the person's membership in the role (for error reporting purposes)
+     * @param membershipToCheck the membership to check
+     * @param membershipToCheckIndex the index of the person's membership in the role (for error reporting purposes)
      * @param validationErrors AttributeSet of errors to report
      * @return true if all unique values are indeed unique, false otherwise
      */
@@ -513,9 +516,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     /**
      * Checks all the qualifiers for the given membership, so that all qualifiers which should be unique are guaranteed to be unique
      * 
-     * @param membership the membership to check
-     * @param attributeDefinitions the Map of attribute definitions used by the role
-     * @param memberIndex the index of the person's membership in the role (for error reporting purposes)
+     * @param delegationMembershipToCheck the membership to check
+     * @param membershipToCheckIndex the index of the person's membership in the role (for error reporting purposes)
      * @param validationErrors AttributeSet of errors to report
      * @return true if all unique values are indeed unique, false otherwise
      */
@@ -711,7 +713,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         return getAddResponsibilityRule().processAddResponsibility(addResponsibilityEvent);    
     }
 
-    public boolean hasPermissionToGrantResponsibility(KimResponsibilityInfo kimResponsibilityInfo, IdentityManagementRoleDocument document) {
+    public boolean hasPermissionToGrantResponsibility(Responsibility kimResponsibilityInfo, IdentityManagementRoleDocument document) {
         return getAddResponsibilityRule().hasPermissionToGrantResponsibility(kimResponsibilityInfo, document);    
     }
     
@@ -738,6 +740,13 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			responsibilityService = KimApiServiceLocator.getResponsibilityService();
 		}
 		return responsibilityService;
+	}
+
+    public ResponsibilityInternalService getResponsibilityInternalService() {
+    	if ( responsibilityInternalService == null ) {
+    		responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
+    	}
+		return responsibilityInternalService;
 	}
 
 

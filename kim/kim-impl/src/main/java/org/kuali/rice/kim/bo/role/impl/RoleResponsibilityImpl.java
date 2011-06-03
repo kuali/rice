@@ -106,7 +106,7 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 		roleResponsibilityInfo.setRoleId(getRoleId());
 		roleResponsibilityInfo.setResponsibilityId(getResponsibilityId());
 		roleResponsibilityInfo.setRoleResponsibilityId(getRoleResponsibilityId());
-		roleResponsibilityInfo.setKimResponsibilityInfo(getKimResponsibility().toSimpleInfo());
+		roleResponsibilityInfo.setKimResponsibilityInfo(ResponsibilityBo.to(getKimResponsibility()));
 		return roleResponsibilityInfo;
 	}
 

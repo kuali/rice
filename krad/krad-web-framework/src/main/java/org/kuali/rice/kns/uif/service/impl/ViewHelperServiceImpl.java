@@ -35,6 +35,7 @@ import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.kns.uif.service.ViewDictionaryService;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
+import org.kuali.rice.kns.uif.control.TextControl;
 import org.kuali.rice.kns.uif.util.BooleanMap;
 import org.kuali.rice.kns.uif.util.CloneUtils;
 import org.kuali.rice.kns.uif.util.ComponentFactory;
@@ -287,6 +288,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         // if a definition was found, initialize field from definition
         if (attributeDefinition != null) {
             field.copyFromAttributeDefinition(attributeDefinition);
+        }
+
+        if (field.getControl() == null) {
+            field.setControl(ComponentFactory.getTextControl());
         }
     }
     

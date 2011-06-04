@@ -13,6 +13,7 @@ package org.kuali.rice.kns.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.uif.control.TextControl;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.MessageField;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
@@ -57,10 +58,16 @@ public class ComponentFactory {
 
         return null;
     }
-
+    
     protected static final String MESSAGE_FIELD = "MessageField";
+    protected static final String TEXT_CONTROL = "TextControl";
+
     public static MessageField getMessageField() {
         return (MessageField) getNewComponentInstance(MESSAGE_FIELD);
+    }
+
+    public static TextControl getTextControl() {
+        return (TextControl) getNewComponentInstance(TEXT_CONTROL);
     }
 
     protected static DataDictionaryService getDataDictionaryService() {

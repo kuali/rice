@@ -28,7 +28,6 @@ import javax.sql.DataSource;
 import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
-import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.Config;
@@ -270,9 +269,7 @@ public class KSBConfigurer extends ModuleConfigurer {
             }
         }
         if (isBamEnabled()) {
-        	if (getBamDataSource() == null) {
-        		throw new ConfigurationException("BAM is enabled but no bamDataSource was configured.");
-        	} else {
+        	if (getBamDataSource() != null) {
         		ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_BAM_DATASOURCE, getBamDataSource());
         	}
         }

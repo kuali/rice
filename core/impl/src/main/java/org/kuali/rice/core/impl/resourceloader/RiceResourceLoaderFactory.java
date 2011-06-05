@@ -16,18 +16,18 @@
 
 package org.kuali.rice.core.impl.resourceloader;
 
-import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.api.config.property.Config;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.xml.namespace.QName;
+
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
-
-import javax.servlet.ServletContext;
-import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 
 
@@ -49,17 +49,14 @@ public class RiceResourceLoaderFactory {
 			prefix = "K~S~B";
 		}
 		
-		final Config config = ConfigContext.getCurrentContextConfig();
-		if (config.getServiceNamespace() == null) {
-			throw new ConfigurationException("No service namespace available at this time");
-		}
-		final QName root = new QName(config.getServiceNamespace(), prefix.toUpperCase() + "_" + RICE_ROOT_RESOURCE_LOADER_NAME);
+		String applicationId = CoreConfigHelper.getApplicationId();
+		final QName root = new QName(applicationId, prefix.toUpperCase() + "_" + RICE_ROOT_RESOURCE_LOADER_NAME);
 		
 		if (getRootResourceLoaderNames() == null || !getRootResourceLoaderNames().contains(root)) {
 			addRootResourceLoaderName(root);
 		}
 		
-		final QName spring = new QName(config.getServiceNamespace(), prefix.toUpperCase() + "_" + RICE_SPRING_RESOURCE_LOADER_NAME);
+		final QName spring = new QName(applicationId, prefix.toUpperCase() + "_" + RICE_SPRING_RESOURCE_LOADER_NAME);
 		if (getSpringResourceLoaderNames() == null || !getSpringResourceLoaderNames().contains(root)) {
 			addSpringResourceLoaderName(spring);
 		}

@@ -96,7 +96,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         assertWorkgroupsEqual(oldDocType.getSuperUserWorkgroup(), newDocType.getSuperUserWorkgroup());
         assertWorkgroupsEqual(oldDocType.getSuperUserWorkgroupNoInheritence(), newDocType.getSuperUserWorkgroupNoInheritence());
         assertEquals(oldDocType.getActualNotificationFromAddress(), newDocType.getActualNotificationFromAddress());
-        assertEquals(oldDocType.getActualServiceNamespace(), newDocType.getActualServiceNamespace());
+        assertEquals(oldDocType.getActualApplicationId(), newDocType.getActualApplicationId());
         assertRoutePath(oldDocType, newDocType);
         assertPolicies(oldDocType, newDocType);
     }

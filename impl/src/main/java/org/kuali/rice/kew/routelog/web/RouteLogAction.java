@@ -16,18 +16,36 @@
  */
 package org.kuali.rice.kew.routelog.web;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
-import org.kuali.rice.kew.dto.*;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
+import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.dto.StateDTO;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -43,11 +61,6 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-import java.util.*;
 
 
 /**
@@ -203,9 +216,9 @@ public class RouteLogAction extends KewKualiAction {
     public void populateRouteLogFutureRequests(RouteLogForm rlForm, DocumentRouteHeaderValue document) throws Exception {
 
         ReportCriteriaDTO reportCriteria = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
-        String serviceNamespace = document.getDocumentType().getServiceNamespace();
+        String applicationId = document.getDocumentType().getApplicationId();
         WorkflowUtility workflowUtility = 
-        	(WorkflowUtility) GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowUtilityService"));
+        	(WorkflowUtility) GlobalResourceLoader.getService(new QName(applicationId, "WorkflowUtilityService"));
 
         // gather the IDs for action requests that predate the simulation
 		Set<Long> preexistingActionRequestIds = getActionRequestIds(document);

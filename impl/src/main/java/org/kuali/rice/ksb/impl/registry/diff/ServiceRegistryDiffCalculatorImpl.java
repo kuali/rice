@@ -73,9 +73,8 @@ public class ServiceRegistryDiffCalculatorImpl implements ServiceRegistryDiffCal
 			} else {
 				// if the LocalService is not null, that means that it exists but it may have changed, or this may be the first time the service
 				// is being published upon startup in which case it's service id will be null
-				if (!localService.getServiceEndpoint().getInfo().getChecksum().equals(serviceInfo.getChecksum()) ||
-						localService.getServiceEndpoint().getInfo().getServiceId() == null) {
-					// the checksums don't match, that means we need to re-publish our current copy of the local service
+				if (!localService.getServiceEndpoint().getInfo().equals(serviceInfo)) {
+					// if the service infos don't match, that means we need to re-publish our current copy of the local service
 					localServicesToUpdate.put(localService, serviceInfo);
 				}
 				// whether or not it matches, remove it from the index

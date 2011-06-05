@@ -58,7 +58,7 @@ public class BAMDAOOjbImpl extends PersistenceBrokerDaoSupport implements BAMDAO
 	@SuppressWarnings("unchecked")
 	public List<BAMTargetEntry> getCallsForRemotedClasses(ObjectDefinition objDef) {
 		Criteria crit = new Criteria();
-		QName qname = new QName(objDef.getServiceNamespace(), objDef.getClassName());
+		QName qname = new QName(objDef.getApplicationId(), objDef.getClassName());
 		crit.addLike("serviceName", qname.toString() + "%");
 		return (List<BAMTargetEntry>)getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(BAMTargetEntry.class, crit));
 	}
@@ -66,7 +66,7 @@ public class BAMDAOOjbImpl extends PersistenceBrokerDaoSupport implements BAMDAO
 	@SuppressWarnings("unchecked")
 	public List<BAMTargetEntry> getCallsForRemotedClasses(ObjectDefinition objDef, String methodName) {
 		Criteria crit = new Criteria();
-		QName qname = new QName(objDef.getServiceNamespace(), objDef.getClassName());
+		QName qname = new QName(objDef.getApplicationId(), objDef.getClassName());
 		crit.addLike("serviceName", qname.toString() + "%");
 		crit.addEqualTo("methodName", methodName);
 		return (List<BAMTargetEntry>)getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(BAMTargetEntry.class, crit));

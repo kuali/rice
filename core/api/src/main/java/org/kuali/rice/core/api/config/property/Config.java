@@ -77,8 +77,6 @@ public interface Config {
 
 	public static final String EDL_CONFIG_LOCATION = "edl.config.loc";
 
-	public static final String SERVICE_NAMESPACE = "service.namespace";
-
 	public static final String THREAD_POOL_SIZE = "threadPool.size";
 	
 	public static final String BAM_ENABLED = "bam.enabled";
@@ -209,8 +207,6 @@ public interface Config {
 	public String getEnvironment();
 
 	public String getEDLConfigLocation();
-
-	public String getServiceNamespace();
 
     public String getDefaultKewNoteClass();
 

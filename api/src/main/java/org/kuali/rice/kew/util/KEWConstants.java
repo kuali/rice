@@ -829,7 +829,6 @@ public final class KEWConstants {
 
     public static final String DEFAULT_CONFIG_LOCATION_PARAM = "default.config.location";
     public static final String DEFAULT_APPLICATION_CONFIG_LOCATION = "classpath:META-INF/workflow.xml";
-    public static final String DEFAULT_SERVER_CONFIG_LOCATION = "classpath:META-INF/server-workflow.xml";
     public static final String DEFAULT_GLOBAL_CONFIG_LOCATION = "classpath:META-INF/kew-config-defaults.xml";
     public static final String ADDITIONAL_CONFIG_LOCATIONS_PARAM = "additional.config.locations";
 

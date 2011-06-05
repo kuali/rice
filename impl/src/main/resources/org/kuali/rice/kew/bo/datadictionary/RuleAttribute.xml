@@ -37,7 +37,7 @@
         <ref bean="RuleAttribute-type"/>
         <ref bean="RuleAttribute-className"/>
         <ref bean="RuleAttribute-xmlConfigData"/>
-        <ref bean="RuleAttribute-serviceNamespace"/>
+        <ref bean="RuleAttribute-applicationId"/>
       </list>
     </property>
   </bean>
@@ -138,15 +138,15 @@
     <property name="label" value="XML Configuration"/>
   </bean>
   
-  <bean id="RuleAttribute-serviceNamespace" parent="RuleAttribute-serviceNamespace-parentBean"/>
+  <bean id="RuleAttribute-applicationId" parent="RuleAttribute-applicationId-parentBean"/>
 
-  <bean id="RuleAttribute-serviceNamespace-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Service Namespace"/>
+  <bean id="RuleAttribute-applicationId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="Application ID"/>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
-    <property name="name" value="serviceNamespace"/>
-    <property name="label" value="Service Namespace"/>
+    <property name="name" value="applicationId"/>
+    <property name="label" value="Application ID"/>
   </bean>
   
   <!-- Business Object Inquiry Definition -->
@@ -166,7 +166,7 @@
               <bean parent="FieldDefinition" p:attributeName="label"/>
               <bean parent="FieldDefinition" p:attributeName="description"/>
               <bean parent="FieldDefinition" p:attributeName="className"/>
-              <bean parent="FieldDefinition" p:attributeName="serviceNamespace"/>
+              <bean parent="FieldDefinition" p:attributeName="applicationId"/>
               <bean parent="FieldDefinition" p:attributeName="type"/>
               <bean parent="FieldDefinition" p:attributeName="xmlConfigData"/>                  
             </list>
@@ -191,7 +191,7 @@
         <bean parent="FieldDefinition" p:attributeName="name" p:forceLookup="true"/>
         <bean parent="FieldDefinition" p:attributeName="ruleAttributeId" p:forceLookup="true"/>
         <bean parent="FieldDefinition" p:attributeName="className" p:forceLookup="true"/>
-        <bean parent="FieldDefinition" p:attributeName="serviceNamespace" p:forceLookup="true"/>
+        <bean parent="FieldDefinition" p:attributeName="applicationId" p:forceLookup="true"/>
         <bean parent="FieldDefinition" p:attributeName="type" p:forceLookup="true"/>
       </list>
     </property>
@@ -201,7 +201,7 @@
         <bean parent="FieldDefinition" p:attributeName="name"/>
         <bean parent="FieldDefinition" p:attributeName="className"/>
         <bean parent="FieldDefinition" p:attributeName="type"/>
-        <bean parent="FieldDefinition" p:attributeName="serviceNamespace"/>
+        <bean parent="FieldDefinition" p:attributeName="applicationId"/>
       </list>
     </property>
     <property name="title" value="Rule Attribute Lookup"/>

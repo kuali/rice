@@ -2,7 +2,7 @@
 <config>
     <param name="environment" override="false">${environment}</param>
     <param name="module.name">ken</param>
-    <param name="service.namespace">KEN</param>
+    <param name="application.id">KEN</param>
 
     <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
     <param name="transaction.timeout">36000</param>

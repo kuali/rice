@@ -40,6 +40,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.RiceConstants;
@@ -61,8 +62,6 @@ import org.kuali.rice.ksb.util.KSBConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageQueueAction extends KSBAction {
-
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MessageQueueAction.class);
 
     @Override
 	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
@@ -159,7 +158,7 @@ public class MessageQueueAction extends KSBAction {
 	existingMessage.setQueuePriority(message.getQueuePriority());
 	existingMessage.setIpNumber(message.getIpNumber());
 	existingMessage.setLockVerNbr(message.getLockVerNbr());
-	existingMessage.setServiceNamespace(message.getServiceNamespace());
+	existingMessage.setApplicationId(message.getApplicationId());
 	existingMessage.setMethodName(message.getMethodName());
 	existingMessage.setQueueStatus(message.getQueueStatus());
 	existingMessage.setRetryCount(message.getRetryCount());
@@ -272,7 +271,7 @@ public class MessageQueueAction extends KSBAction {
 	routeQueueForm.getMessageQueueFromForm().setRetryCount(null);
 	routeQueueForm.getMessageQueueFromForm().setIpNumber(null);
 	routeQueueForm.getMessageQueueFromForm().setServiceName(null);
-	routeQueueForm.getMessageQueueFromForm().setServiceNamespace(null);
+	routeQueueForm.getMessageQueueFromForm().setApplicationId(null);
 	routeQueueForm.getMessageQueueFromForm().setMethodName(null);
 	routeQueueForm.getMessageQueueFromForm().setPayload(null);
 	routeQueueForm.getMessageQueueFromForm().setMethodCall(null);
@@ -323,7 +322,7 @@ public class MessageQueueAction extends KSBAction {
 	request.setAttribute("ksb_constant", getServlet().getServletContext().getAttribute("KSBConstants"));
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	routeQueueForm.setMyIpAddress(RiceUtilities.getIpNumber());
-	routeQueueForm.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.SERVICE_NAMESPACE));
+	routeQueueForm.setMyApplicationId(CoreConfigHelper.getApplicationId());
 	routeQueueForm.setMessagePersistence(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_PERSISTENCE));
 	routeQueueForm.setMessageDelivery(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_DELIVERY));
 	routeQueueForm.setMessageOff(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGING_OFF));

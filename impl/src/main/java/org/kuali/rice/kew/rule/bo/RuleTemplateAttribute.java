@@ -93,7 +93,7 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
 
     public Object getAttribute() {
 	try {
-	    ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getClassName(), getRuleAttribute().getServiceNamespace());
+	    ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getClassName(), getRuleAttribute().getApplicationId());
 	    Object attribute = GlobalResourceLoader.getObject(objectDefinition);
 	    if (attribute == null) {
 		throw new WorkflowRuntimeException("Could not find attribute " + objectDefinition);
@@ -132,7 +132,7 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
      */
     public WorkflowAttribute getWorkflowAttribute() {
 	try {
-	    ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getClassName(), getRuleAttribute().getServiceNamespace());
+	    ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getClassName(), getRuleAttribute().getApplicationId());
 	    WorkflowAttribute workflowAttribute = (WorkflowAttribute) GlobalResourceLoader.getResourceLoader().getObject(objectDefinition);
 	    if (workflowAttribute == null) {
 		throw new WorkflowRuntimeException("Could not find workflow attribute " + objectDefinition);

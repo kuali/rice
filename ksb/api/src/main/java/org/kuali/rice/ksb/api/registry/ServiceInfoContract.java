@@ -48,11 +48,11 @@ public interface ServiceInfoContract extends Versioned {
 	public String getInstanceId();
 	
 	/**
-	 * Returns the namespace of the application that published and owns the service.
+	 * Returns the id of the application that published and owns the service.
 	 * 
-	 * @return the application namespace of this service, should never be null or blank
+	 * @return the application id of this service, should never be null or blank
 	 */
-	public String getApplicationNamespace();
+	public String getApplicationId();
 
 	/**
 	 * Return the IP address of the server on which the application is running which

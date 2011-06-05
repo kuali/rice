@@ -17,6 +17,16 @@
 package org.kuali.rice.kew.config;
 
 
+import java.io.IOException;
+import java.net.SocketException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
@@ -29,26 +39,18 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.params.HttpParams;
 import org.apache.commons.httpclient.util.IdleConnectionTimeoutThread;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.entity.services.IdentityService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
-
-import javax.xml.namespace.QName;
-import java.io.IOException;
-import java.net.SocketException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
 
 
 /**
@@ -88,7 +90,7 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
     	private IdleConnectionTimeoutThread ictt;
     	
 	public ThinClientResourceLoader() {
-		super(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), "ThinClientResourceLoader"));
+		super(new QName(CoreConfigHelper.getApplicationId(), "ThinClientResourceLoader"));
 		ictt = new IdleConnectionTimeoutThread();
 	}
 

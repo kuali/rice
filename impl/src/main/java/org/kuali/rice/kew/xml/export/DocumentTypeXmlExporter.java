@@ -55,7 +55,7 @@ import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROUTING_VERSION;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_TEMPLATE;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SERVICE_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.APPLICATION_ID;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPER_USER_GROUP_NAME;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.TYPE;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.VALUE;
@@ -136,8 +136,8 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         }
         renderer.renderTextElement(docTypeElement, DESCRIPTION, documentType.getDescription());
         renderer.renderTextElement(docTypeElement, LABEL, documentType.getLabel());
-        if (!StringUtils.isBlank(documentType.getActualServiceNamespace())) {
-            renderer.renderTextElement(docTypeElement, SERVICE_NAMESPACE, documentType.getActualServiceNamespace());
+        if (!StringUtils.isBlank(documentType.getActualApplicationId())) {
+            renderer.renderTextElement(docTypeElement, APPLICATION_ID, documentType.getActualApplicationId());
         }
         renderer.renderTextElement(docTypeElement, POST_PROCESSOR_NAME, documentType.getPostProcessorName());
         Group superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();

@@ -20,7 +20,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.springframework.beans.BeansException;
@@ -51,7 +51,7 @@ public class RiceSpringResourceLoaderConfigurer implements BeanFactoryAware, Ini
 	public void afterPropertiesSet() throws Exception {
 		if (this.name == null) {
 			if (this.getServiceNameSpaceURI() == null) {
-				this.setServiceNameSpaceURI(ConfigContext.getCurrentContextConfig().getServiceNamespace());
+				this.setServiceNameSpaceURI(CoreConfigHelper.getApplicationId());
 			}
 			if (this.getLocalServiceName() == null) {
 				throw new ConfigurationException("Need to give " + this.getClass().getName() + " a LocalServiceName");

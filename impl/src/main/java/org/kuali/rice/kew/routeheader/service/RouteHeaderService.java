@@ -65,9 +65,9 @@ public interface RouteHeaderService {
     public void updateRouteHeaderSearchValues(String documentId, List<SearchableAttributeValue> searchAttributes);
     
     /**
-     * Returns the Service Namespace of the {@link DocumentType} for the Document with the given ID.
+     * Returns the application id of the {@link DocumentType} for the Document with the given ID.
      */
-    public String getServiceNamespaceByDocumentId(String documentId);
+    public String getApplicationIdByDocumentId(String documentId);
 
     public DocumentRouteHeaderValueContent getContent(String documentId);
 

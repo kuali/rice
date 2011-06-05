@@ -16,16 +16,20 @@
 
 package org.kuali.rice.kew.plugin;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Test;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtilities;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import javax.xml.namespace.QName;
 import java.io.File;
 
-import static org.junit.Assert.*;
+import javax.xml.namespace.QName;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtilities;
 
 
 /**
@@ -96,7 +100,7 @@ public class HotDeployTest extends KEWTestCase {
 		// verify that the resource loading and the registry are sane and properly set up with the new plugin
 		assertEquals("Resource loader should have 1 plugin child.", 1, registry.getResourceLoaders().size());
 		Plugin plugin = (Plugin)registry.getResourceLoaders().get(0);
-		assertEquals("Plugin has wrong name.", new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), "ziptest"), plugin.getName());
+		assertEquals("Plugin has wrong name.", new QName(CoreConfigHelper.getApplicationId(), "ziptest"), plugin.getName());
 		assertTrue("Plugin should be started.", plugin.isStarted());
 		assertEquals("Plugin in resource loader and environment should be the same.", plugin, registry.getPluginEnvironment(plugin.getName().getLocalPart()).getPlugin());
 		

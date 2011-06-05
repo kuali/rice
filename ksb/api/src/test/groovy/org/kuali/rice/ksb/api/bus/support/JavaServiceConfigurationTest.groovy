@@ -13,8 +13,8 @@ import org.kuali.rice.ksb.test.JAXBAssert
 
 class JavaServiceConfigurationTest {
 
-	private static final QName SERVICE_NAME = new QName(APPLICATION_NAMESPACE, "myRadService");
-	private static final String APPLICATION_NAMESPACE = "TEST";
+	private static final QName SERVICE_NAME = new QName(APPLICATION_ID, "myRadService");
+	private static final String APPLICATION_ID = "TEST";
 	private static final URL ENDPOINT_URL = new URL("http://this.is.my.url");
 	private static final String SERVICE_VERSION = "1.0";
 	
@@ -22,7 +22,7 @@ class JavaServiceConfigurationTest {
 <javaServiceConfiguration xmlns="http://rice.kuali.org/ksb/v2_0">
 	<serviceName>{TEST}myRadService</serviceName>
 	<endpointUrl>http://this.is.my.url</endpointUrl>
-	<applicationNamespace>TEST</applicationNamespace>
+	<applicationId>TEST</applicationId>
 	<serviceVersion>1.0</serviceVersion>
 	<type>httpInvoker</type>
 	<queue>true</queue>
@@ -34,7 +34,7 @@ class JavaServiceConfigurationTest {
 <javaServiceConfiguration xmlns="http://rice.kuali.org/ksb/v2_0">
 	<serviceName>{TEST}myRadService</serviceName>
 	<endpointUrl>http://this.is.my.url</endpointUrl>
-	<applicationNamespace>TEST</applicationNamespace>
+	<applicationId>TEST</applicationId>
 	<serviceVersion>1.0</serviceVersion>
 	<type>httpInvoker</type>
 	<queue>true</queue>
@@ -50,7 +50,7 @@ class JavaServiceConfigurationTest {
 	<javaServiceConfiguration xmlns="http://rice.kuali.org/ksb/v2_0">
 		<serviceName>{TEST}myRadService</serviceName>
 		<endpointUrl>http://this.is.my.url</endpointUrl>
-		<applicationNamespace>TEST</applicationNamespace>
+		<applicationId>TEST</applicationId>
 		<serviceVersion>1.0</serviceVersion>
 		<type>httpInvoker</type>
 		<queue>true</queue>
@@ -70,7 +70,7 @@ class JavaServiceConfigurationTest {
 		JavaServiceDefinition definition = new JavaServiceDefinition();
 		definition.setServiceName(SERVICE_NAME)
 		definition.setEndpointUrl(ENDPOINT_URL);
-		definition.setApplicationNamespace(APPLICATION_NAMESPACE);
+		definition.setApplicationId(APPLICATION_ID);
 		definition.setServiceVersion(SERVICE_VERSION);
 		return JavaServiceConfiguration.fromServiceDefinition(definition);
 	}
@@ -79,7 +79,7 @@ class JavaServiceConfigurationTest {
 		JavaServiceDefinition definition = new JavaServiceDefinition();
 		definition.setServiceName(SERVICE_NAME)
 		definition.setEndpointUrl(ENDPOINT_URL);
-		definition.setApplicationNamespace(APPLICATION_NAMESPACE);
+		definition.setApplicationId(APPLICATION_ID);
 		definition.setServiceVersion(SERVICE_VERSION);
 		List<String> serviceInterfaces = new ArrayList<String>();
 		serviceInterfaces.add(ServiceRegistry.class.getName());
@@ -106,7 +106,7 @@ class JavaServiceConfigurationTest {
 		assert configuration != null;
 			
 		assert configuration.getServiceName() == SERVICE_NAME;
-		assert configuration.getApplicationNamespace() == APPLICATION_NAMESPACE;
+		assert configuration.getApplicationId() == APPLICATION_ID;
 		assert configuration.getEndpointUrl() == ENDPOINT_URL;
 		assert configuration.getServiceVersion() == SERVICE_VERSION;
 		

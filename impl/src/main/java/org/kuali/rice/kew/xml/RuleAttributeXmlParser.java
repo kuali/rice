@@ -16,6 +16,19 @@
  */
 package org.kuali.rice.kew.xml;
 
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.APPLICATION_ID;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.util.xml.XmlException;
@@ -28,16 +41,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -103,7 +106,7 @@ public class RuleAttributeXmlParser {
 		String label = "";
 		String description = "";
 		String type = "";
-		String serviceNamespace = null;
+		String applicationId = null;
 		Node xmlConfig = null;
 		for (int i = 0; i < ruleAttributeNode.getChildNodes().getLength(); i++) {
 			Node childNode = ruleAttributeNode.getChildNodes().item(i);
@@ -122,7 +125,10 @@ public class RuleAttributeXmlParser {
 					CONFIG.equals(childNode.getNodeName())){
 				xmlConfig = childNode;
 			} else if (XmlConstants.SERVICE_NAMESPACE.equals(childNode.getNodeName())) {
-				serviceNamespace = childNode.getFirstChild().getNodeValue();
+				applicationId = childNode.getFirstChild().getNodeValue();
+				LOG.warn(XmlConstants.SERVICE_NAMESPACE + " element was set on rule attribute type XML but is deprecated and will be removed in a future version, please use " + APPLICATION_ID + " instead.");
+			} else if (XmlConstants.APPLICATION_ID.equals(childNode.getNodeName())) {
+				applicationId = childNode.getFirstChild().getNodeValue();
 			}
 		}
 		if (org.apache.commons.lang.StringUtils.isEmpty(name)) {
@@ -150,11 +156,11 @@ public class RuleAttributeXmlParser {
             description = label;
         }
 		ruleAttribute.setDescription(description.trim());
-		if (serviceNamespace != null)
+		if (applicationId != null)
 		{
-			serviceNamespace = serviceNamespace.trim();
+			applicationId = applicationId.trim();
 		}
-		ruleAttribute.setServiceNamespace(serviceNamespace);
+		ruleAttribute.setApplicationId(applicationId);
 		
 		if(xmlConfig != null){
 		    ruleAttribute.setXmlConfigData(XmlJotter.jotNode(xmlConfig));

@@ -16,10 +16,20 @@
 
 package org.kuali.rice.kew.actionrequest.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.AttributeSet;
@@ -49,16 +59,6 @@ import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.util.KNSConstants;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -581,18 +581,18 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         {
             String documentId = (String) aDocumentsAffected;
 
-             String serviceNamespace = null;
+             String applicationId = null;
              DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
                     
              if (documentType != null) {
-                serviceNamespace = documentType.getServiceNamespace();
+                applicationId = documentType.getApplicationId();
              }
 
-            if (serviceNamespace == null)
+            if (applicationId == null)
             {
-                serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
+                applicationId = CoreConfigHelper.getApplicationId();
             }
-            DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(serviceNamespace,
+            DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(applicationId,
                     documentId, cacheWait);
             documentRequeuer.requeueDocument(documentId);
         }

@@ -21,6 +21,7 @@ import javax.xml.namespace.QName
 import org.apache.commons.lang.RandomStringUtils
 import org.junit.Before
 import org.junit.Test
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.Config
 import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.ksb.api.KsbApiConstants
@@ -43,7 +44,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 	private static final String TEST3_NAMESPACE = "TEST3"
 	private static final String TEST3_INSTANCE_ID = "${TEST3_NAMESPACE}-${LOCALHOST_IP}";
 	
-	private static final def CONFIG_MAP = [(Config.SERVICE_NAMESPACE) : "TEST"]
+	private static final def CONFIG_MAP = [(CoreConstants.Config.APPLICATION_ID) : "TEST"]
 	
 	int nextServiceId = 1
     ServiceRegistryDiffCalculatorImpl diffCalculatorImpl
@@ -283,10 +284,10 @@ class ServiceRegistryDiffCalculatorImplTest {
 		
 		// create 5 services for the central registry
 		List<ServiceInfo> allRegistryServices = [
-			localServices[0].getServiceEndpoint().getInfo(),
-			localServices[1].getServiceEndpoint().getInfo(),
-			modified1,
-			modified2,
+			assignServiceId(localServices[0].getServiceEndpoint().getInfo()),
+			assignServiceId(localServices[1].getServiceEndpoint().getInfo()),
+			assignServiceId(modified1),
+			assignServiceId(modified2),
 			newServiceInfoPrototype(TEST1_INSTANCE_ID).build(),
 			newServiceInfoPrototype(TEST1_INSTANCE_ID).build(),
 			newServiceInfoPrototype(TEST2_INSTANCE_ID).build(),
@@ -345,7 +346,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 			instanceId = TEST1_INSTANCE_ID
 		}
 		ServiceInfo.Builder builder = ServiceInfo.Builder.create()
-		builder.setApplicationNamespace(TEST1_NAMESPACE)
+		builder.setApplicationId(TEST1_NAMESPACE)
 		builder.setChecksum(RandomStringUtils.randomAlphanumeric(30))
 		builder.setEndpointUrl("http://localhost/remoting/" + RandomStringUtils.randomAlphanumeric(10))
 		builder.setInstanceId(instanceId)
@@ -355,6 +356,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 		builder.setStatus(ServiceEndpointStatus.ONLINE)
 		builder.setType(KsbApiConstants.ServiceTypes.SOAP)
 		builder.setServiceId("" + nextServiceId++)
+		builder.setServiceDescriptorId("" + nextServiceId)
 		return builder
 	}
 	
@@ -409,6 +411,13 @@ class ServiceRegistryDiffCalculatorImplTest {
 			}
 		}
 		return filtered;
+	}
+	
+	ServiceInfo assignServiceId(ServiceInfo service) {
+		ServiceInfo.Builder builder = ServiceInfo.Builder.create(service);
+		builder.setServiceId("" + nextServiceId++);
+		builder.setServiceDescriptorId("" + nextServiceId);
+		return builder.build();
 	}
 	
 }

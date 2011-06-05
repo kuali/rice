@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 @XmlType(name = AbstractServiceConfiguration.Constants.TYPE_NAME, propOrder = {
 		AbstractServiceConfiguration.Elements.SERVICE_NAME,
 		AbstractServiceConfiguration.Elements.ENDPOINT_URL,
-		AbstractServiceConfiguration.Elements.APPLICATION_NAMESPACE,
+		AbstractServiceConfiguration.Elements.APPLICATION_ID,
 		AbstractServiceConfiguration.Elements.SERVICE_VERSION,
 		AbstractServiceConfiguration.Elements.TYPE,
 		AbstractServiceConfiguration.Elements.QUEUE,
@@ -49,8 +49,8 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 	@XmlElement(name = Elements.ENDPOINT_URL, required = true)
 	private final URL endpointUrl;
 	
-	@XmlElement(name = Elements.APPLICATION_NAMESPACE, required = true)
-	private final String applicationNamespace;
+	@XmlElement(name = Elements.APPLICATION_ID, required = true)
+	private final String applicationId;
 	
 	@XmlElement(name = Elements.SERVICE_VERSION, required = true)
 	private final String serviceVersion;
@@ -90,7 +90,7 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 	protected AbstractServiceConfiguration() {
 		this.serviceName = null;
 		this.endpointUrl = null;
-		this.applicationNamespace = null;
+		this.applicationId = null;
 		this.serviceVersion = null;
 		this.type = null;
 		this.queue = false;
@@ -105,7 +105,7 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 	protected AbstractServiceConfiguration(Builder<?> builder) {
 		this.serviceName = builder.getServiceName();
 		this.endpointUrl = builder.getEndpointUrl();
-		this.applicationNamespace = builder.getApplicationNamespace();
+		this.applicationId = builder.getApplicationId();
 		this.serviceVersion = builder.getServiceVersion();
 		this.type = builder.getType();
 		this.queue = builder.isQueue();
@@ -157,8 +157,8 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 		return endpointUrl;
 	}
 	
-	public String getApplicationNamespace() {
-		return applicationNamespace;
+	public String getApplicationId() {
+		return applicationId;
 	}
 	
 	public String getServiceVersion() {
@@ -206,7 +206,7 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 
 		private QName serviceName;
 		private URL endpointUrl;
-		private String applicationNamespace;
+		private String applicationId;
 		private String serviceVersion;
 		private String type;
 		private boolean queue;
@@ -222,7 +222,7 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 		protected void copyServiceDefinitionProperties(ServiceDefinition serviceDefinition) {
 			setServiceName(serviceDefinition.getServiceName());
 			setEndpointUrl(serviceDefinition.getEndpointUrl());
-			setApplicationNamespace(serviceDefinition.getApplicationNamespace());
+			setApplicationId(serviceDefinition.getApplicationId());
 			setServiceVersion(serviceDefinition.getServiceVersion());
 			setType(serviceDefinition.getType());
 			setQueue(serviceDefinition.isQueue());
@@ -246,11 +246,11 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 		public void setEndpointUrl(URL endpointUrl) {
 			this.endpointUrl = endpointUrl;
 		}
-		public String getApplicationNamespace() {
-			return applicationNamespace;
+		public String getApplicationId() {
+			return applicationId;
 		}
-		public void setApplicationNamespace(String applicationNamespace) {
-			this.applicationNamespace = applicationNamespace;
+		public void setApplicationId(String applicationId) {
+			this.applicationId = applicationId;
 		}
 		public String getServiceVersion() {
 			return serviceVersion;
@@ -324,7 +324,7 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
     protected static class Elements {
     	protected final static String SERVICE_NAME = "serviceName";
     	protected final static String ENDPOINT_URL = "endpointUrl";
-    	protected final static String APPLICATION_NAMESPACE = "applicationNamespace";
+    	protected final static String APPLICATION_ID = "applicationId";
     	protected final static String SERVICE_VERSION = "serviceVersion";
     	protected final static String TYPE = "type";
     	protected final static String QUEUE = "queue";

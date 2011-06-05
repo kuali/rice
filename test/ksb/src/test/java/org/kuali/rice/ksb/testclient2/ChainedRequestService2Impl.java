@@ -16,7 +16,7 @@
 
 package org.kuali.rice.ksb.testclient2;
 
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.ksb.messaging.remotedservices.ChainedRequestService;
 
 
@@ -24,7 +24,7 @@ public class ChainedRequestService2Impl implements ChainedRequestService {
 
 	public String sendRequest(String value) {
 		StringBuffer buffer = new StringBuffer(value);
-		buffer.append(ConfigContext.getCurrentContextConfig().getServiceNamespace());
+		buffer.append(CoreConfigHelper.getApplicationId());
 		return buffer.toString();
 	}
 

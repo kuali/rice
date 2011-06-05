@@ -46,13 +46,13 @@ public final class Utilities {
     /**
      * Performs variable substitution on the specified string, replacing variables specified like ${name}
      * with the value of the corresponding config parameter obtained from the current context Config object.
-     * This version of the method also takes a namespace to qualify the parameter.
-     * @param namespace the namespace to use for qualifying the parameter
+     * This version of the method also takes an application id to qualify the parameter.
+     * @param applicationId the application id to use for qualifying the parameter
      * @param string the string on which to perform variable substitution
      * @return a string with any variables substituted with configuration parameter values
      */
-    public static String substituteConfigParameters(String namespace, String string) {
-    	StrSubstitutor sub = new StrSubstitutor(new ConfigStringLookup(namespace));
+    public static String substituteConfigParameters(String applicationId, String string) {
+    	StrSubstitutor sub = new StrSubstitutor(new ConfigStringLookup(applicationId));
         return sub.replace(string);
     }
         

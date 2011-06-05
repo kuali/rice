@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.doctype;
 
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.Person;
 
@@ -35,11 +34,11 @@ public class LazyLoadSecurityAttribute implements SecurityAttribute {
 	private static final long serialVersionUID = 8194757786570696656L;
 
 	private String className;
-	private String serviceNamespace;
+	private String applicationId;
 	
-	public LazyLoadSecurityAttribute(String className, String serviceNamespace) {
+	public LazyLoadSecurityAttribute(String className, String applicationId) {
 		this.className = className;
-		this.serviceNamespace = serviceNamespace;
+		this.applicationId = applicationId;
 	}
 
 	public Boolean docSearchAuthorized(Person currentUser, String docTypeName,
@@ -53,7 +52,7 @@ public class LazyLoadSecurityAttribute implements SecurityAttribute {
 	}
 	
 	protected SecurityAttribute getSecurityAttribute() {
-		ObjectDefinition objDef = new ObjectDefinition(className, serviceNamespace);
+		ObjectDefinition objDef = new ObjectDefinition(className, applicationId);
 		return (SecurityAttribute)GlobalResourceLoader.getObject(objDef);
 	}
 

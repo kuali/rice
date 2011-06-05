@@ -19,6 +19,7 @@ package org.kuali.rice.kew.plugin;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -91,7 +92,7 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
 	if (config == null) {
 	    // because of previously running tests, the config might already be initialized
 	    config = new SimpleConfig();
-	    config.putProperty(Config.SERVICE_NAMESPACE, "KEW");
+	    config.putProperty(CoreConstants.Config.APPLICATION_ID, "KEW");
 	    ConfigContext.init(config);
 	}
 

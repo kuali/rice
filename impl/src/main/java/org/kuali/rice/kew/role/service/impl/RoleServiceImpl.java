@@ -62,7 +62,7 @@ public class RoleServiceImpl implements RoleService {
     	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
-    		QName rolePokerName = new QName(documentType.getServiceNamespace(), MessageServiceNames.ROLE_POKER);
+    		QName rolePokerName = new QName(documentType.getApplicationId(), MessageServiceNames.ROLE_POKER);
     		RolePoker rolePoker = (RolePoker) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName);
 		}
@@ -81,7 +81,7 @@ public class RoleServiceImpl implements RoleService {
     	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
-    		QName rolePokerName = new QName(documentType.getServiceNamespace(), MessageServiceNames.ROLE_POKER);
+    		QName rolePokerName = new QName(documentType.getApplicationId(), MessageServiceNames.ROLE_POKER);
     		RolePoker rolePoker = (RolePoker) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName, qualifiedRoleNameLabel);
 		}
@@ -239,7 +239,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     protected void requeueDocument(DocumentRouteHeaderValue document) {
-    	QName documentServiceName = new QName(document.getDocumentType().getServiceNamespace(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
+    	QName documentServiceName = new QName(document.getDocumentType().getApplicationId(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
     	KSBXMLService documentRoutingService = (KSBXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, document);
     	try {
 			documentRoutingService.invoke(document.getDocumentId());

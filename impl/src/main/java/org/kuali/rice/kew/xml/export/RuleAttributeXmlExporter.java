@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.xml.export;
 
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.APPLICATION_ID;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.CLASS_NAME;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.LABEL;
@@ -26,7 +27,6 @@ import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_ATTRIBUTE_NAME
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_ATTRIBUTE_SCHEMA_LOCATION;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SERVICE_NAMESPACE;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.TYPE;
 
 import java.io.StringReader;
@@ -82,7 +82,7 @@ public class RuleAttributeXmlExporter implements XmlExporter {
         renderer.renderTextElement(attributeElement, LABEL, ruleAttribute.getLabel());
         renderer.renderTextElement(attributeElement, DESCRIPTION, ruleAttribute.getDescription());
         renderer.renderTextElement(attributeElement, TYPE, ruleAttribute.getType());
-        renderer.renderTextElement(attributeElement, SERVICE_NAMESPACE, ruleAttribute.getServiceNamespace());
+        renderer.renderTextElement(attributeElement, APPLICATION_ID, ruleAttribute.getApplicationId());
         if (!org.apache.commons.lang.StringUtils.isEmpty(ruleAttribute.getXmlConfigData())) {
             try {
                 Document configDoc = new SAXBuilder().build(new StringReader(ruleAttribute.getXmlConfigData()));

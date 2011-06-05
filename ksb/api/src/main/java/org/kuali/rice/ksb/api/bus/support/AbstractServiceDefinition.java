@@ -25,6 +25,7 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.security.credentials.CredentialsType;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -58,7 +59,7 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 	private Boolean busSecurity;
 	private CredentialsType credentialsType;
 	private String serviceVersion;
-	private String applicationNamespace;
+	private String applicationId;
 	// if the service is exported from a plugin, we need to ensure it's invoked within the proper classloading context!
 	private ClassLoader serviceClassLoader;
 			
@@ -118,7 +119,7 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 	public QName getServiceName() {
 		if (this.serviceName == null) {
 			if (this.serviceNameSpaceURI == null) {
-			    return new QName(this.applicationNamespace, this.localServiceName);	
+			    return new QName(this.applicationId, this.localServiceName);	
 			} else {
 			    return new QName(this.serviceNameSpaceURI, this.localServiceName);
 			}
@@ -154,12 +155,12 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 		this.serviceVersion = serviceVersion;
 	}
 
-	public String getApplicationNamespace() {
-		return applicationNamespace;
+	public String getApplicationId() {
+		return applicationId;
 	}
 	
-	public void setApplicationNamespace(String applicationNamespace) {
-		this.applicationNamespace = applicationNamespace;
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
 	}
 
 	@Override
@@ -178,12 +179,12 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 			throw new ConfigurationException("Must give a serviceName or localServiceName");
 		}
 		
-		if (this.applicationNamespace == null) {
-			String applicationNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
-			if (applicationNamespace == null) {
-				throw new ConfigurationException("Must have an applicationNamespace");
+		if (this.applicationId == null) {
+			String applicationId = CoreConfigHelper.getApplicationId();
+			if (applicationId == null) {
+				throw new ConfigurationException("Must have an applicationId");
 			}	
-			this.applicationNamespace = applicationNamespace;
+			this.applicationId = applicationId;
 		}
 		
 		if (this.serviceName != null && this.localServiceName == null) {

@@ -16,11 +16,35 @@
 
 package org.kuali.rice.kew.doctype.bo;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
@@ -62,31 +86,9 @@ import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.ObjectUtils;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that
- * can construct {@link ObjectDefinition} objects correctly to account for ServiceNamespace inheritance.
+ * can construct {@link ObjectDefinition} objects correctly to account for application id inheritance.
  * Can also navigate parent hierarchy when getting data/components.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -152,7 +154,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     @Column(name = "RPT_GRP_ID")
     private String reportingWorkgroupId;
     @Column(name = "SVC_NMSPC")
-    private String actualServiceNamespace;
+    private String actualApplicationId;
 
 
     /* these two fields are for the web tier lookupable
@@ -519,7 +521,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     public void setDocumentTypeSecurityXml(String documentTypeSecurityXml) {
         this.documentTypeSecurityXml = documentTypeSecurityXml;
         if (!org.apache.commons.lang.StringUtils.isEmpty(documentTypeSecurityXml.trim())) {
-            this.documentTypeSecurity = new DocumentTypeSecurity(this.getServiceNamespace(), documentTypeSecurityXml);
+            this.documentTypeSecurity = new DocumentTypeSecurity(this.getApplicationId(), documentTypeSecurityXml);
         } else {
             this.documentTypeSecurity = null;
         }
@@ -529,7 +531,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         if (this.documentTypeSecurity == null &&
                 this.documentTypeSecurityXml != null &&
                 !org.apache.commons.lang.StringUtils.isEmpty(documentTypeSecurityXml.trim())) {
-            this.documentTypeSecurity = new DocumentTypeSecurity(this.getServiceNamespace(), documentTypeSecurityXml);
+            this.documentTypeSecurity = new DocumentTypeSecurity(this.getApplicationId(), documentTypeSecurityXml);
         }
         if ((this.documentTypeSecurity == null) && (getParentDocType() != null)) {
             return getParentDocType().getDocumentTypeSecurity();
@@ -669,7 +671,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         if (StringUtils.isBlank(docHandlerUrl)) {
             return "";
         }
-        return Utilities.substituteConfigParameters(getServiceNamespace(), docHandlerUrl);
+        return Utilities.substituteConfigParameters(getApplicationId(), docHandlerUrl);
     }
 
     /**
@@ -770,7 +772,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         Object postProcessor = GlobalResourceLoader.getObject(objDef);
 
         if (postProcessor == null) {
-            throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + pname);
+            throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at application id " + getApplicationId() + ": " + pname);
         }
         if (postProcessor instanceof PostProcessorRemote) {
             postProcessor = new PostProcessorRemoteAdapter((PostProcessorRemote) postProcessor);
@@ -1084,7 +1086,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         }
 
         if (searchGenerator == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
+            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at application id " + getApplicationId() + ": " + objDef.getClassName());
         }
 
         return (DocumentSearchGenerator) searchGenerator;
@@ -1101,7 +1103,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         }
         Object criteriaProcessor = GlobalResourceLoader.getObject(objDef);
         if (criteriaProcessor == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentSearchCriteriaProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
+            throw new WorkflowRuntimeException("Could not locate DocumentSearchCriteriaProcessor in this JVM or at application id " + getApplicationId() + ": " + objDef.getClassName());
         }
         return (DocumentSearchCriteriaProcessor) criteriaProcessor;
     }
@@ -1170,10 +1172,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public ObjectDefinition getAttributeObjectDefinition(RuleAttribute ruleAttribute) {
-        if (ruleAttribute.getServiceNamespace() == null) {
-            return new ObjectDefinition(ruleAttribute.getClassName(), this.getServiceNamespace());
+        if (ruleAttribute.getApplicationId() == null) {
+            return new ObjectDefinition(ruleAttribute.getClassName(), this.getApplicationId());
         } else {
-            return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
+            return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getApplicationId());
         }
     }
 
@@ -1194,7 +1196,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public ObjectDefinition getObjectDefinition(String objectName) {
-        return new ObjectDefinition(objectName, getServiceNamespace());
+        return new ObjectDefinition(objectName, getApplicationId());
     }
 
     /**
@@ -1444,49 +1446,49 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     /**
-     * @return the actualServiceNamespace
+     * @return the actual application id
      */
-    public String getActualServiceNamespace() {
-        return this.actualServiceNamespace;
+    public String getActualApplicationId() {
+        return this.actualApplicationId;
     }
 
     /**
-     * @param actualServiceNamespace the actualServiceNamespace to set
+     * @param actionalApplicationId the actionalApplicationId to set
      */
-    public void setActualServiceNamespace(String actualServiceNamespace) {
-        this.actualServiceNamespace = actualServiceNamespace;
+    public void setActualApplicationId(String actualApplicationId) {
+        this.actualApplicationId = actualApplicationId;
     }
 
     /**
-     * Returns the service namespace for this DocumentType which can be specified on the document type itself,
-     * inherited from the parent, or defaulted to the configured service namespace of the application.
+     * Returns the application id for this DocumentType which can be specified on the document type itself,
+     * inherited from the parent, or defaulted to the configured application id of the application.
      */
-    public String getServiceNamespace() {
-        return getServiceNamespace(false);
+    public String getApplicationId() {
+        return getApplicationId(false);
     }
 
     /**
-     * This method gets the string for the service namespace value. If the forDisplayPurposes value is true
-     * the service namespace value will be invalid for system use.
+     * This method gets the string for the application id value. If the forDisplayPurposes value is true
+     * the application id value will be invalid for system use.
      * <p/>
-     * This method will first call the {@link #getActualServiceNamespace()} method to check for a value on this object. If
+     * This method will first call the {@link #getActualApplicationId()} method to check for a value on this object. If
      * none is found a parent document type is used.  If a valid parent type exists for this document type then the system
      * will use inheritance from that parent document type as long as at least one document type in the hierarchy has a
      * value set.  If no value is set on any parent document type or if no parent document type exists for this object the
-     * system default is used: {@link ConfigContext#getCurrentContextConfig()#getServiceNamespace()}
+     * system default is used: {@link CoreConfigHelper#getApplicationId()}
      *
      * @param forDisplayPurposes - if true then the string returned will have a label explaining where the value came from
-     * @return the service namespace value or a displayable value with sourcing information
+     * @return the application id value or a displayable value with sourcing information
      */
-    protected String getServiceNamespace(boolean forDisplayPurposes) {
-        if (StringUtils.isNotBlank(getActualServiceNamespace())) {
-            // this object has a service namespace set, so return it
-            return getActualServiceNamespace();
+    protected String getApplicationId(boolean forDisplayPurposes) {
+        if (StringUtils.isNotBlank(getActualApplicationId())) {
+            // this object has a application id set, so return it
+            return getActualApplicationId();
         }
-        // this object has no service namespace... check for a parent document type
+        // this object has no application id... check for a parent document type
         if (ObjectUtils.isNotNull(getParentDocType())) {
             // direct parent document type exists
-            String parentValue = getParentDocType().getActualServiceNamespace();
+            String parentValue = getParentDocType().getActualApplicationId();
             if (StringUtils.isNotBlank(parentValue)) {
                 // found a parent value set on the immediate parent object so return it
                 if (forDisplayPurposes) {
@@ -1494,40 +1496,22 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
                 }
                 return parentValue;
             }
-            // no valid service namespace on direct parent, so use hierarchy to find correct value
-            return getParentDocType().getServiceNamespace(forDisplayPurposes);
+            // no valid application id on direct parent, so use hierarchy to find correct value
+            return getParentDocType().getApplicationId(forDisplayPurposes);
         }
-        String defaultValue = ConfigContext.getCurrentContextConfig().getServiceNamespace();
-        if (forDisplayPurposes && StringUtils.isNotBlank(defaultValue)) {
+        String defaultValue = CoreConfigHelper.getApplicationId();
+        if (forDisplayPurposes) {
             defaultValue += " " + KEWConstants.DOCUMENT_TYPE_SYSTEM_DEFAULT_INDICATOR;
         }
         return defaultValue;
     }
 
     /**
-     * Use {@link #setActualServiceNamespace(String)} instead.
-     *
-     * @deprecated
+     * Returns the same value as the {@link #getApplicationId()} method but will also have label information about
+     * where the application id came from (ie: inherited from the parent document type)
      */
-    public void setServiceNamespace(String serviceNamespace) {
-        setActualServiceNamespace(serviceNamespace);
-    }
-
-    /**
-     * Returns the same value as the {@link #getServiceNamespace()} method but will also have label information about
-     * where the service namespace came from (ie: inherited from the parent document type)
-     */
-    public String getDisplayableServiceNamespace() {
-        return getServiceNamespace(true);
-    }
-
-    /**
-     * EMPTY METHOD. Use {@link #setServiceNamespace(String)} to set a namespace on this object
-     *
-     * @deprecated
-     */
-    public void setDisplayableServiceNamespace(String displayableServiceNamespace) {
-        // do nothing
+    public String getDisplayableApplicationId() {
+        return getApplicationId(true);
     }
 
     /**

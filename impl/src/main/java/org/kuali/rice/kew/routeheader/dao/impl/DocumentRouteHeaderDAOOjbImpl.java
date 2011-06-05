@@ -274,11 +274,11 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         return false;
     }
 
-    public String getServiceNamespaceByDocumentId(String documentId) {
+    public String getApplicationIdByDocumentId(String documentId) {
     	if (documentId == null) {
     		throw new IllegalArgumentException("Encountered a null document ID.");
     	}
-    	String serviceNamespace = null;
+    	String applicationId = null;
         PersistenceBroker broker = null;
         Connection conn = null;
         PreparedStatement statement = null;
@@ -293,9 +293,9 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             statement.setString(1, documentId);
             rs = statement.executeQuery();
             if (rs.next()) {
-                serviceNamespace = rs.getString(1);
+            	applicationId = rs.getString(1);
                 if (rs.wasNull()) {
-                	serviceNamespace = null;
+                	applicationId = null;
                 }
             }
         } catch (SQLException sqle) {
@@ -327,7 +327,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
                 LOG.error("Failed closing connection: " + e.getMessage(), e);
             }
         }
-        return serviceNamespace;
+        return applicationId;
     }
 
     public String getDocumentStatus(String documentId) {

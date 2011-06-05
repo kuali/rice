@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
     ServiceInfo.Elements.SERVICE_NAME,
     ServiceInfo.Elements.ENDPOINT_URL,
     ServiceInfo.Elements.INSTANCE_ID,
-    ServiceInfo.Elements.APPLICATION_NAMESPACE,
+    ServiceInfo.Elements.APPLICATION_ID,
     ServiceInfo.Elements.SERVER_IP_ADDRESS,
     ServiceInfo.Elements.TYPE,
     ServiceInfo.Elements.SERVICE_VERSION,
@@ -64,8 +64,8 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
     @XmlElement(name = Elements.INSTANCE_ID, required = true)
     private final String instanceId;
     
-    @XmlElement(name = Elements.APPLICATION_NAMESPACE, required = true)
-    private final String applicationNamespace;
+    @XmlElement(name = Elements.APPLICATION_ID, required = true)
+    private final String applicationId;
     
     @XmlElement(name = Elements.SERVER_IP_ADDRESS, required = true)
     private final String serverIpAddress;
@@ -102,7 +102,7 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
         this.serviceName = null;
         this.endpointUrl = null;
         this.instanceId = null;
-        this.applicationNamespace = null;
+        this.applicationId = null;
         this.serverIpAddress = null;
         this.type = null;
         this.serviceVersion = null;
@@ -117,7 +117,7 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
         this.serviceName = builder.getServiceName();
         this.endpointUrl = builder.getEndpointUrl();
         this.instanceId = builder.getInstanceId();
-        this.applicationNamespace = builder.getApplicationNamespace();
+        this.applicationId = builder.getApplicationId();
         this.serverIpAddress = builder.getServerIpAddress();
         this.type = builder.getType();
         this.serviceVersion = builder.getServiceVersion();
@@ -149,8 +149,8 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
     }
 
     @Override
-    public String getApplicationNamespace() {
-        return this.applicationNamespace;
+    public String getApplicationId() {
+        return this.applicationId;
     }
 
     @Override
@@ -217,7 +217,7 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
         private QName serviceName;
         private String endpointUrl;
         private String instanceId;
-        private String applicationNamespace;
+        private String applicationId;
         private String serverIpAddress;
         private String type;
         private String serviceVersion;
@@ -241,7 +241,7 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
             builder.setServiceName(contract.getServiceName());
             builder.setEndpointUrl(contract.getEndpointUrl());
             builder.setInstanceId(contract.getInstanceId());
-            builder.setApplicationNamespace(contract.getApplicationNamespace());
+            builder.setApplicationId(contract.getApplicationId());
             builder.setServerIpAddress(contract.getServerIpAddress());
             builder.setType(contract.getType());
             builder.setServiceVersion(contract.getServiceVersion());
@@ -278,8 +278,8 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
         }
 
         @Override
-        public String getApplicationNamespace() {
-            return this.applicationNamespace;
+        public String getApplicationId() {
+            return this.applicationId;
         }
 
         @Override
@@ -336,9 +336,9 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
             this.instanceId = instanceId;
         }
 
-        public void setApplicationNamespace(String applicationNamespace) {
-            validateApplicationNamespace(applicationNamespace);
-            this.applicationNamespace = applicationNamespace;
+        public void setApplicationId(String applicationId) {
+            validateApplicationId(applicationId);
+            this.applicationId = applicationId;
         }
 
         public void setServerIpAddress(String serverIpAddress) {
@@ -399,8 +399,8 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
         	assertNotBlank("instanceId", instanceId);
         }
         
-        private void validateApplicationNamespace(String applicationNamespace) {
-        	assertNotBlank("applicationNamespace", applicationNamespace);
+        private void validateApplicationId(String applicationId) {
+        	assertNotBlank("applicationId", applicationId);
         }
         
         private void validateServerIpAddress(String serverIpAddress) {
@@ -427,7 +427,7 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
         	validateServiceName(serviceName);
             validateEndpointUrl(endpointUrl);
             validateInstanceId(instanceId);
-            validateApplicationNamespace(applicationNamespace);
+            validateApplicationId(applicationId);
             validateServerIpAddress(serverIpAddress);
             validateType(type);
             validateServiceVersion(serviceVersion);
@@ -461,7 +461,7 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
         final static String SERVICE_NAME = "serviceName";
         final static String ENDPOINT_URL = "endpointUrl";
         final static String INSTANCE_ID = "instanceId";
-        final static String APPLICATION_NAMESPACE = "applicationNamespace";
+        final static String APPLICATION_ID = "applicationId";
         final static String SERVER_IP_ADDRESS = "serverIpAddress";
         final static String TYPE = "type";
         final static String SERVICE_VERSION = "serviceVersion";

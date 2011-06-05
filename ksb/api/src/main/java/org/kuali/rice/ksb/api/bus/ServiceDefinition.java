@@ -45,7 +45,7 @@ public interface ServiceDefinition {
 	
 	String getServicePath();
 	
-	String getApplicationNamespace();
+	String getApplicationId();
 
 	String getServiceVersion();
 	

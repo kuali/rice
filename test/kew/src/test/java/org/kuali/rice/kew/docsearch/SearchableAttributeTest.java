@@ -601,7 +601,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     	assert(trimAttribute.getLabel().equals("Unit111"));
     	assert(trimAttribute.getType().equals("SearchableXmlAttribute"));
     	assert(trimAttribute.getDescription().equals("Unit111"));
-    	assert(trimAttribute.getServiceNamespace().equals("NSTrimSearchableTest"));
+    	assert(trimAttribute.getApplicationId().equals("NSTrimSearchableTest"));
     	//System.out.println(trimAttribute.getName());
     }
 }

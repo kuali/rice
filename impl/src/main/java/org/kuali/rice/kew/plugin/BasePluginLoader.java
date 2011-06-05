@@ -16,19 +16,23 @@
 
 package org.kuali.rice.kew.plugin;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.ContextClassLoaderBinder;
-import org.kuali.rice.core.util.xml.XmlException;
-
-import javax.xml.namespace.QName;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.xml.namespace.QName;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ContextClassLoaderBinder;
+import org.kuali.rice.core.util.xml.XmlException;
 
 
 /**
@@ -163,12 +167,12 @@ public abstract class BasePluginLoader implements PluginLoader {
 
 
     protected QName getPluginName(PluginConfig pluginConfig) {
-    	String serviceNamespace = pluginConfig.getServiceNamespace();
+    	String applicationId = pluginConfig.getProperty(CoreConstants.Config.APPLICATION_ID);
     	QName qPluginName = null;
-        if (serviceNamespace == null) {
-        	qPluginName = new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), simplePluginName);
+        if (StringUtils.isBlank(applicationId)) {
+        	qPluginName = new QName(CoreConfigHelper.getApplicationId(), simplePluginName);
         } else {
-        	qPluginName = new QName(serviceNamespace, simplePluginName);
+        	qPluginName = new QName(applicationId, simplePluginName);
         }
     	return qPluginName;
     }

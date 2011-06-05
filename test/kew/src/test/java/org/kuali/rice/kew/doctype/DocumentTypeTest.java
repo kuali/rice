@@ -610,7 +610,7 @@ public class DocumentTypeTest extends KEWTestCase {
         	    	docType.getUnresolvedDocHandlerUrl(), docType.getUnresolvedHelpDefinitionUrl(),
         	    	docType.getUnresolvedDocSearchHelpUrl(),
         	    	docType.getNotificationFromAddress(), docType.getCustomEmailStylesheet(),
-        	    	docType.getServiceNamespace(), docType.getActive().toString()  			
+        	    	docType.getApplicationId(), docType.getActive().toString()  			
         	};
         	// Compare the expected field values with the actual ones.
     		for (int j = 0; j < expectedValues[i].length; j++) {

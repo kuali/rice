@@ -265,7 +265,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
     	assertFalse("Should not have transitioned out of exception routing yet.", ExceptionRoutingTestPostProcessor.TRANSITIONED_OUT_OF_EXCEPTION_ROUTING);
     	// the requeue here should happen synchronously because we are using the SynchronousRouteQueue
     	DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
-    	QName documentServiceName = new QName(routeHeaderValue.getDocumentType().getServiceNamespace(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
+    	QName documentServiceName = new QName(routeHeaderValue.getDocumentType().getApplicationId(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
     	KSBXMLService routeDocumentMessageService = (KSBXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, routeHeaderValue);
     	routeDocumentMessageService.invoke(String.valueOf(document.getDocumentId()));
 

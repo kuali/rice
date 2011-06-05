@@ -59,12 +59,12 @@ public class BAMDaoJpaImpl implements BAMDAO {
     }
 
     public List<BAMTargetEntry> getCallsForRemotedClasses(ObjectDefinition objDef) {
-        QName qname = new QName(objDef.getServiceNamespace(), objDef.getClassName());
+        QName qname = new QName(objDef.getApplicationId(), objDef.getClassName());
         return (List<BAMTargetEntry>) entityManager.createQuery("select bte from BAMTargetEntry bte where bte.serviceName like :serviceName%").setParameter("serviceName", qname.toString()).getResultList();
     }
 
     public List<BAMTargetEntry> getCallsForRemotedClasses(ObjectDefinition objDef, String methodName) {
-        QName qname = new QName(objDef.getServiceNamespace(), objDef.getClassName());
+        QName qname = new QName(objDef.getApplicationId(), objDef.getClassName());
         return (List<BAMTargetEntry>) entityManager.createQuery("select bte from BAMTargetEntry bte where bte.serviceName like :serviceName% and bte.methodName = :methodName").setParameter("serviceName", qname.toString()).setParameter("methodName", methodName).getResultList();
     }
 

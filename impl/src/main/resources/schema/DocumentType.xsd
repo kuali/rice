@@ -221,10 +221,18 @@
       	</annotation>
       </element>
 
+	  <element name="applicationId" type="c:ShortStringType" minOccurs="0">
+      	<annotation>
+      		<documentation>
+        	 Sets the id of the application which contains the workflow engine instance used to process documents of this type.
+      		</documentation>
+      	</annotation>
+      </element>
+
       <element name="serviceNamespace" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
-        	 To set the messaging entity. defaults to 'KEW' (or workflow server if not included).
+        	 DEPRECATED: use applicationId instead
       		</documentation>
       	</annotation>
       </element>

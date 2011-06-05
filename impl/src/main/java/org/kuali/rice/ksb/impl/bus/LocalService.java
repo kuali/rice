@@ -78,7 +78,7 @@ public final class LocalService {
 	static ServiceInfo.Builder constructServiceInfo(String instanceId, ServiceConfiguration serviceConfiguration) {
 		ServiceInfo.Builder builder = ServiceInfo.Builder.create();
 		builder.setInstanceId(instanceId);
-		builder.setApplicationNamespace(serviceConfiguration.getApplicationNamespace());
+		builder.setApplicationId(serviceConfiguration.getApplicationId());
 		builder.setChecksum(calculateChecksum(serviceConfiguration));
 		builder.setEndpointUrl(serviceConfiguration.getEndpointUrl().toExternalForm());
 		builder.setServerIpAddress(RiceUtilities.getIpNumber());

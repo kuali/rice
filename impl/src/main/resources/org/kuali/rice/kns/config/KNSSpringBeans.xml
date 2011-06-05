@@ -854,7 +854,7 @@
 	<bean id="parameterService" class="org.kuali.rice.core.impl.parameter.ParameterServiceImpl">
 		<property name="parameterRepositoryService" ref="parameterRepositoryService" />
 		<property name="kualiModuleService" ref="kualiModuleService" />
-		<property name="applicationCode" value="${app.namespace}" />
+		<property name="applicationCode" value="${application.id}" />
 	</bean>
 
     <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
@@ -1278,7 +1278,7 @@
       p:nonDatabaseComponentsCacheMaxSize="${kns.cache.nonDatabaseComponent.max.size}"
       p:nonDatabaseComponentsCacheMaxAgeSeconds="${kns.cache.nonDatabaseComponent.max.age.seconds}"/>
 
-	<!-- RiceApplicationConfigurationService needs to be published using the serviceNamespace as its namespace and not KNS -->
+	<!-- RiceApplicationConfigurationService needs to be published using the applicationId as its namespace and not KNS -->
 	<bean id="riceApplicationConfigurationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationServiceImpl">
         <property name="packagePrefixes">
             <list>

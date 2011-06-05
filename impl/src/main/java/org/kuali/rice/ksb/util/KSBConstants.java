@@ -27,7 +27,6 @@ public final class KSBConstants {
      * Configuration Parameters
      */
     public static final class Config {
-    	public static final String SERVICE_NAMESPACE = "service.namespace";
         public static final String MESSAGE_PERSISTENCE = "message.persistence";
         public static final String MESSAGING_OFF = "message.off";
         public static final String MESSAGE_DELIVERY = "message.delivery";

@@ -33,18 +33,18 @@ public class ObjectDefinition implements Serializable {
 	private static final long serialVersionUID = 835423601196288352L;
 
 	private String className;
-	private String serviceNamespace;
+	private String applicationId;
 	private boolean atRemotingLayer;
 	private final List<DataDefinition> constructorParameters = new ArrayList<DataDefinition>();
 	private final Map<String, PropertyDefinition> properties = new HashMap<String, PropertyDefinition>();
 
-	public ObjectDefinition(Class objectClass) {
+	public ObjectDefinition(Class<?> objectClass) {
 		this(objectClass.getName());
 	}
 	
-	public ObjectDefinition(String className, String serviceNamespace) {
+	public ObjectDefinition(String className, String applicationId) {
 		this.className = className;
-		this.serviceNamespace = serviceNamespace;
+		this.applicationId = applicationId;
 	}
 	
 	public ObjectDefinition(String className) {
@@ -105,7 +105,7 @@ public class ObjectDefinition implements Serializable {
 
     public String toString() {
         return "[ObjectDefinition: className: " + getClassName()
-               + ", serviceNamespace: " + getServiceNamespace()
+               + ", applicationId: " + getApplicationId()
                + "]";
     }
 
@@ -117,11 +117,11 @@ public class ObjectDefinition implements Serializable {
 		this.atRemotingLayer = atRemotingLayer;
 	}
 
-	public String getServiceNamespace() {
-		return this.serviceNamespace;
+	public String getApplicationId() {
+		return this.applicationId;
 	}
 
-	public void setServiceNamespace(String serviceNamespace) {
-		this.serviceNamespace = serviceNamespace;
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
 	}
 }

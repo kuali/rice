@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public interface PersistedMessage extends Serializable {
-    String getServiceNamespace();
+    String getApplicationId();
 
     String getIpNumber();
 

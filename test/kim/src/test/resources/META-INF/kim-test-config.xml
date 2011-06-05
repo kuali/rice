@@ -15,12 +15,11 @@
 -->
 <config>
 	<param name="module.name">kim</param>
-	<param name="service.namespace">KIM</param>
 
     <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
 
 	<param name="transaction.timeout">3600</param>
-	<param name="service.namespace">TEST</param>
+	<param name="application.id">TEST</param>
 	<param name="serviceServletUrl">http://localhost:9912/${app.context.name}/remoting/</param>
 	
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>

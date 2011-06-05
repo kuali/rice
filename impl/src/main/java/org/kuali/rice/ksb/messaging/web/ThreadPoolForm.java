@@ -17,9 +17,8 @@
 package org.kuali.rice.ksb.messaging.web;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
-import org.kuali.rice.ksb.util.KSBConstants;
 
 
 /**
@@ -71,8 +70,8 @@ public class ThreadPoolForm extends ActionForm {
     public void setAllServers(boolean allServers) {
         this.allServers = allServers;
     }
-    public String getServiceNamespace() {
-	return ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.SERVICE_NAMESPACE);
+    public String getApplicationId() {
+    	return CoreConfigHelper.getApplicationId();
     }
     public Long getMaxRetryAttempts() {
         return this.maxRetryAttempts;

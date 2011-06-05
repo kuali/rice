@@ -154,7 +154,7 @@
 		<property name="properties">
 			<props>
 				<prop key="plugin.registry.enabled">true</prop>
-				<prop key="service.namespace">TestCl1</prop>
+				<prop key="application.id">TestCl1</prop>
 				<prop key="serviceServletUrl">http://localhost:${ksb.client1.port}/TestClient1/remoting</prop>
 			</props>
 		</property>

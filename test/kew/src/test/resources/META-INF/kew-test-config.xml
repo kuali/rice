@@ -10,7 +10,7 @@
 	<param name="environment">dev</param>
 	<param name="client.protocol">LOCAL</param>
 	<param name="bam.enabled">true</param>
-	<param name="service.namespace">KEW</param>
+	<param name="application.id">KEW</param>
 	<param name="findServicesLocally">true</param>
 	<param name="http.service.port" override="false" random="true" system="true">10000-10099</param>
 	<param name="kew.server.context">/en-test</param>

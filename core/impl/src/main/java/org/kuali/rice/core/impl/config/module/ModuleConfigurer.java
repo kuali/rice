@@ -30,6 +30,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.module.Configurer;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -316,8 +317,8 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	}
 	
 	private ResourceLoader createRootResourceLoader() throws Exception {
-		final ResourceLoaderContainer container = new ResourceLoaderContainer(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), RiceConstants.ROOT_RESOURCE_LOADER_CONTAINER_NAME));
-		ResourceLoader rootResourceLoader = new BaseResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), RiceConstants.DEFAULT_ROOT_RESOURCE_LOADER_NAME));
+		final ResourceLoaderContainer container = new ResourceLoaderContainer(new QName(CoreConfigHelper.getApplicationId(), RiceConstants.ROOT_RESOURCE_LOADER_CONTAINER_NAME));
+		ResourceLoader rootResourceLoader = new BaseResourceLoader(new QName(CoreConfigHelper.getApplicationId(), RiceConstants.DEFAULT_ROOT_RESOURCE_LOADER_NAME));
 		
 		container.addResourceLoader(rootResourceLoader);
 		GlobalResourceLoader.addResourceLoader(container);

@@ -169,10 +169,10 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
     private WorkflowAttribute materializeRuleAttribute(RuleAttribute ruleAttribute) {
         if (ruleAttribute != null) {
             if (KEWConstants.RULE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
+                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getApplicationId());
                 return (WorkflowAttribute) GlobalResourceLoader.getObject(objDef);
             } else if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
+                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getApplicationId());
                 WorkflowAttribute workflowAttribute = (WorkflowAttribute) GlobalResourceLoader.getObject(objDef);
                 //required to make it work because ruleAttribute XML is required to construct custom columns
                 ((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);

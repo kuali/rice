@@ -54,13 +54,13 @@ public class KimCommonUtilsTest extends KIMTestCase {
 		
 		// test resolving a custom kim type service name with a namespace
 		
-		String serviceNamespace2 = "TestNamespace";
+		String serviceNamespaceUri2 = "TestNamespace";
 		String serviceLocalPart2 = "customKimTypeServiceName";
-		String serviceName2 = "{" + serviceNamespace2 + "}" + serviceLocalPart2;
+		String serviceName2 = "{" + serviceNamespaceUri2 + "}" + serviceLocalPart2;
 		QName serviceQName2 = KimCommonUtils.resolveKimTypeServiceName(serviceName2);
 		assertNotNull("Service name was not successfully resolved", serviceName2);
 		assertEquals("Incorrect local part", serviceLocalPart2, serviceQName2.getLocalPart());
-		assertEquals("Incorrect namespace uri", serviceNamespace2, serviceQName2.getNamespaceURI());
+		assertEquals("Incorrect namespace uri", serviceNamespaceUri2, serviceQName2.getNamespaceURI());
 		assertEquals("Incorrect full service name", serviceName2, serviceQName2.toString());
 	}
 	

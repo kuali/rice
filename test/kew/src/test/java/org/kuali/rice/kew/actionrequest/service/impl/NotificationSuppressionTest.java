@@ -16,12 +16,21 @@
 
 package org.kuali.rice.kew.actionrequest.service.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import mocks.MockDocumentRequeuerImpl;
 import mocks.MockEmailNotificationService;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -36,11 +45,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 
@@ -202,8 +206,8 @@ public class NotificationSuppressionTest extends KEWTestCase {
 
 		// now if we requeue, nobody should get notified
 		MockDocumentRequeuerImpl.clearRequeuedDocumentIds();
-		String serviceNamespace = KEWServiceLocator.getRouteHeaderService().getServiceNamespaceByDocumentId(document.getDocumentId());
-		MessageServiceNames.getDocumentRequeuerService((serviceNamespace != null) ? serviceNamespace : ConfigContext.getCurrentContextConfig().getServiceNamespace(),
+		String applicationId = KEWServiceLocator.getRouteHeaderService().getApplicationIdByDocumentId(document.getDocumentId());
+		MessageServiceNames.getDocumentRequeuerService((applicationId != null) ? applicationId : CoreConfigHelper.getApplicationId(),
 				document.getDocumentId(), 0).requeueDocument(document.getDocumentId());
 		//new DocumentRequeuerImpl().requeueDocument(document.getDocumentId());
 		

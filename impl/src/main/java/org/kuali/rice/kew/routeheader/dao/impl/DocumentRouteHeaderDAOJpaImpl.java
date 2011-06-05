@@ -34,7 +34,6 @@ import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -257,12 +256,12 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         return false;    	
     }
 
-    public String getServiceNamespaceByDocumentId(String documentId) {
+    public String getApplicationIdByDocumentId(String documentId) {
     	if (documentId == null) {
     		throw new IllegalArgumentException("Encountered a null document ID.");
     	}
     	
-    	String serviceNamespace = null;
+    	String applicationId = null;
     	
     	try {
             String sql = "SELECT DT.SVC_NMSPC FROM KREW_DOC_TYP_T DT, KREW_DOC_HDR_T DH "+
@@ -272,12 +271,12 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
             Query query = entityManager.createNativeQuery(sql);
             query.setParameter(1, documentId);
             
-            serviceNamespace = (String)query.getSingleResult();
+            applicationId = (String)query.getSingleResult();
     	} catch (EntityNotFoundException enfe) {
     		throw new WorkflowRuntimeException(enfe.getMessage());
 		}
     	
-    	return serviceNamespace;
+    	return applicationId;
     }
 
     public String getDocumentStatus(String documentId) {

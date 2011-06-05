@@ -60,11 +60,11 @@ public class BaseResourceLoader extends ResourceLoaderContainer implements Resou
 	}
 
 	public Object getObject(ObjectDefinition objectDefinition) {
-		// if this resource locator has no NameSpaceURI(serviceNamespace) or the
-		// objectDefinition has no serviceNamespace just try to find the class here
-		// or if the serviceNamespace of the object is the same as the serviceNamespace of the locator
-		if (getName().getNamespaceURI() == null || getName().getNamespaceURI().equals(objectDefinition.getServiceNamespace()) ||
-				objectDefinition.getServiceNamespace() == null) {
+		// if this resource locator has no NameSpaceURI(applicationId) or the
+		// objectDefinition has no applicationId just try to find the class here
+		// or if the applicationId of the object is the same as the applicationId of the locator
+		if (getName().getNamespaceURI() == null || getName().getNamespaceURI().equals(objectDefinition.getApplicationId()) ||
+				objectDefinition.getApplicationId() == null) {
 			Object object = ObjectDefinitionResolver.createObject(objectDefinition, this.classLoader, true);
 			if (object != null) {
 				return postProcessObject(objectDefinition, object);

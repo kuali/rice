@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 import java.util.Properties;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -56,7 +57,7 @@ public class KSBResourceLoaderFactoryTest {
 	protected void createKSBResourceLoaderImpl(String configType) throws Exception {
 		String me = "TestME";
 		Properties props = new Properties();
-		props.put(Config.SERVICE_NAMESPACE, me);
+		props.put(CoreConstants.Config.APPLICATION_ID, me);
 		Config config = getConfigObject(configType, props);
 		config.parseConfig();
 		ConfigContext.init(config);
@@ -65,13 +66,13 @@ public class KSBResourceLoaderFactoryTest {
 		assertNotNull(rl.getResourceLoader(KSBResourceLoaderFactory.getRemoteResourceLoaderName()));
 	}
 	
-	@Test public void testCreateKSBResourceLoaderNoserviceNamespace() throws Exception {
-		createKSBResourceLoaderNoserviceNamespaceImpl(simpleConfig);
-		createKSBResourceLoaderNoserviceNamespaceImpl(jaxbConfig);
+	@Test public void testCreateKSBResourceLoaderNoApplicationId() throws Exception {
+		createKSBResourceLoaderNoApplicationIdImpl(simpleConfig);
+		createKSBResourceLoaderNoApplicationIdImpl(jaxbConfig);
 		
 	}
 	
-	protected void createKSBResourceLoaderNoserviceNamespaceImpl(String configType) throws Exception {
+	protected void createKSBResourceLoaderNoApplicationIdImpl(String configType) throws Exception {
 		
 		Properties props = new Properties();
 		Config config = getConfigObject(configType,props);
@@ -81,7 +82,7 @@ public class KSBResourceLoaderFactoryTest {
 		boolean errorThrown = false;
 		try {
 			KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader();
-			fail("should have thrown configuration exception with no service namespace present");
+			fail("should have thrown configuration exception with no applicationId present");
 		} catch (ConfigurationException ce) {
 			errorThrown = true;
 		}

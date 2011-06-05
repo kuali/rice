@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kew.doctype;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -23,8 +29,6 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 import org.kuali.rice.kns.util.KNSConstants;
-
-import java.util.*;
 
 /**
  * This is a description of what this class does - chb don't forget to fill this in.
@@ -81,7 +85,7 @@ public class DocumentTypeLookupableHelperServiceImpl extends
         String docTypeLabel = (String) fieldValues.get(KEWPropertyConstants.DOC_TYP_LABEL);
         String documentTypeId = (String) fieldValues.get(KEWPropertyConstants.DOCUMENT_TYPE_ID);
         String docTypeName = (String) fieldValues.get(KEWPropertyConstants.NAME);
-        String serviceNamespace = (String) fieldValues.get(KEWPropertyConstants.SERVICE_NAMESPACE);
+        String applicationId = (String) fieldValues.get(KEWPropertyConstants.APPLICATION_ID);
 
         if ("Y".equals(activeIndicator)) {
             documentType.setActive(Boolean.TRUE);
@@ -106,8 +110,8 @@ public class DocumentTypeLookupableHelperServiceImpl extends
                 documentType.setDocumentTypeId(new Long(-1));
             }
         }
-        if (!StringUtils.isBlank(serviceNamespace)) {
-            documentType.setActualServiceNamespace(serviceNamespace);
+        if (!StringUtils.isBlank(applicationId)) {
+            documentType.setActualApplicationId(applicationId);
         }
 
         return documentType;

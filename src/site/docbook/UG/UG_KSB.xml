@@ -170,7 +170,7 @@
             <itemizedlist>
                 <listitem>
                     <para><emphasis role="bold">IP Address</emphasis>: This value equals the IP
-                        address of the machine Service Namespace: Rice</para>
+                        address of the machine: Rice</para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">message.persistence</emphasis>: If true, then
@@ -233,7 +233,7 @@
                                 <entry>The name of the service</entry>
                             </row>
                             <row>
-                                <entry>Service Namespace</entry>
+                                <entry>Application ID</entry>
                                 <entry>The service container's identifier</entry>
                             </row>
                             <row>
@@ -415,7 +415,7 @@
                                     </thead>
                                     <tbody>
                                         <row>
-                                            <entry>Service Namespace: </entry>
+                                            <entry>Application ID: </entry>
                                             <entry>The service container's identifier</entry>
                                         </row>
                                         <row>
@@ -726,7 +726,7 @@
                             <entry>Number of tasks that have completed execution</entry>
                         </row>
                         <row>
-                            <entry>Execute Across All Servers with Service Namespace RICE</entry>
+                            <entry>Execute Across All Servers with Application ID RICE</entry>
                             <entry>When you click this checkbox, then click the <emphasis
                                     role="bold">Update</emphasis> button, the update is applied
                                 across all servers.</entry>

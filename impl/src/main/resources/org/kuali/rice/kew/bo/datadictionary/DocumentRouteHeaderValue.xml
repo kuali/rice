@@ -217,7 +217,7 @@
               <bean parent="FieldDefinition"
                     p:attributeName="description" />
               <bean parent="FieldDefinition"
-                    p:attributeName="serviceNamespace" />            
+                    p:attributeName="applicationId" />            
             </list>
           </property>
         </bean>

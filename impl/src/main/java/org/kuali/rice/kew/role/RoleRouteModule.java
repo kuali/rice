@@ -214,7 +214,7 @@ public class RoleRouteModule implements RouteModule {
 	}
 	
     protected ObjectDefinition getAttributeObjectDefinition(RuleAttribute ruleAttribute) {
-    	return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
+    	return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getApplicationId());
     }
     
     protected List<ResponsibilitySet> partitionResponsibilities(List<ResponsibilityAction> responsibilities) {

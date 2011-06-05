@@ -130,7 +130,7 @@ public class ServiceUpdateAndRemovalTest extends KSBTestCase {
 		assertTrue("The ServiceInfo instances for the service should satisy the non-ServiceDefinition part of an isSame() check",
 				regularInfo.getStatus().equals(newRegularInfo.getStatus()) && regularInfo.getServiceName().equals(newRegularInfo.getServiceName()) &&
 						regularInfo.getServerIpAddress().equals(newRegularInfo.getServerIpAddress()) &&
-								regularInfo.getApplicationNamespace().equals(newRegularInfo.getApplicationNamespace()));
+								regularInfo.getApplicationId().equals(newRegularInfo.getApplicationId()));
 		// Perform the appropriate assertions based on whether or not any updates are expected.
 		if (serviceDefinitionsShouldDiffer) {
 			assertNotSame("The checksum for the configured service should have been modified after refreshing the registry.",

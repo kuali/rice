@@ -80,6 +80,10 @@ public final class CoreConstants {
     public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
     public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME";
     
+    public static final class Config {
+    	public static final String APPLICATION_ID = "application.id";
+    }
+    
 	private CoreConstants() {
 		throw new UnsupportedOperationException("do not call");
 	}

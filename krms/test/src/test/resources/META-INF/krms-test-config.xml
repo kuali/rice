@@ -3,7 +3,7 @@
 	
 	<param name="krms.mode">LOCAL</param>
 	
-	<param name="service.namespace">RICE</param>
+	<param name="application.id">RICE</param>
 
 	<param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
 	<param name="filtermapping.login.1">/*</param>

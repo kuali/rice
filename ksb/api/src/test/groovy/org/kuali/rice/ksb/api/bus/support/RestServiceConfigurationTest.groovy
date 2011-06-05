@@ -12,8 +12,8 @@ import org.kuali.rice.ksb.test.JAXBAssert
 
 class RestServiceConfigurationTest {
 
-	private static final QName SERVICE_NAME = new QName(APPLICATION_NAMESPACE, "myRadService");
-	private static final String APPLICATION_NAMESPACE = "TEST";
+	private static final QName SERVICE_NAME = new QName(APPLICATION_ID, "myRadService");
+	private static final String APPLICATION_ID = "TEST";
 	private static final URL ENDPOINT_URL = new URL("http://this.is.my.url");
 	private static final String SERVICE_VERSION = "1.0";
 	
@@ -21,7 +21,7 @@ class RestServiceConfigurationTest {
 <restServiceConfiguration xmlns="http://rice.kuali.org/ksb/v2_0">
 	<serviceName>{TEST}myRadService</serviceName>
 	<endpointUrl>http://this.is.my.url</endpointUrl>
-	<applicationNamespace>TEST</applicationNamespace>
+	<applicationId>TEST</applicationId>
 	<serviceVersion>1.0</serviceVersion>
 	<type>REST</type>
 	<queue>true</queue>
@@ -33,7 +33,7 @@ class RestServiceConfigurationTest {
 <ns2:restServiceConfiguration xmlns:ns2="http://rice.kuali.org/ksb/v2_0">
 	<ns2:serviceName>{TEST}myRadService</ns2:serviceName>
 	<ns2:endpointUrl>http://this.is.my.url</ns2:endpointUrl>
-	<ns2:applicationNamespace>TEST</ns2:applicationNamespace>
+	<ns2:applicationId>TEST</ns2:applicationId>
 	<ns2:serviceVersion>1.0</ns2:serviceVersion>
 	<ns2:type>REST</ns2:type>
 	<ns2:queue>true</ns2:queue>
@@ -46,7 +46,7 @@ class RestServiceConfigurationTest {
 <ns2:restServiceConfiguration xmlns:ns2="http://rice.kuali.org/ksb/v2_0">
 	<ns2:serviceName>{TEST}myRadService</ns2:serviceName>
 	<ns2:endpointUrl>http://this.is.my.url</ns2:endpointUrl>
-	<ns2:applicationNamespace>TEST</ns2:applicationNamespace>
+	<ns2:applicationId>TEST</ns2:applicationId>
 	<ns2:serviceVersion>1.0</ns2:serviceVersion>
 	<ns2:type>REST</ns2:type>
 	<ns2:queue>true</ns2:queue>
@@ -70,7 +70,7 @@ class RestServiceConfigurationTest {
 <ns2:restServiceConfiguration xmlns:ns2="http://rice.kuali.org/ksb/v2_0">
 	<ns2:serviceName>{TEST}myRadService</ns2:serviceName>
 	<ns2:endpointUrl>http://this.is.my.url</ns2:endpointUrl>
-	<ns2:applicationNamespace>TEST</ns2:applicationNamespace>
+	<ns2:applicationId>TEST</ns2:applicationId>
 	<ns2:serviceVersion>1.0</ns2:serviceVersion>
 	<ns2:type>REST</ns2:type>
 	<ns2:queue>true</ns2:queue>
@@ -99,7 +99,7 @@ class RestServiceConfigurationTest {
 		RestServiceDefinition definition = new RestServiceDefinition();
 		definition.setServiceName(SERVICE_NAME)
 		definition.setEndpointUrl(ENDPOINT_URL);
-		definition.setApplicationNamespace(APPLICATION_NAMESPACE);
+		definition.setApplicationId(APPLICATION_ID);
 		definition.setServiceVersion(SERVICE_VERSION);
 		return definition;
 	}
@@ -148,7 +148,7 @@ class RestServiceConfigurationTest {
 		assert configuration != null;
 			
 		assert configuration.getServiceName() == SERVICE_NAME;
-		assert configuration.getApplicationNamespace() == APPLICATION_NAMESPACE;
+		assert configuration.getApplicationId() == APPLICATION_ID;
 		assert configuration.getEndpointUrl() == ENDPOINT_URL;
 		assert configuration.getServiceVersion() == SERVICE_VERSION;
 		

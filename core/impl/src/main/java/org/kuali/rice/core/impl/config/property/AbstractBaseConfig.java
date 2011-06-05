@@ -182,10 +182,6 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
         return refreshRate;
     }
 
-    public String getServiceNamespace() {
-        return getProperty(org.kuali.rice.core.api.config.property.Config.SERVICE_NAMESPACE);
-    }
-
     public String getTransactionTimeout() {
         return getProperty(org.kuali.rice.core.api.config.property.Config.TRANSACTION_TIMEOUT);
     }

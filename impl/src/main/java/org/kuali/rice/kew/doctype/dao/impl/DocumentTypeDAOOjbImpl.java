@@ -156,8 +156,8 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		if (documentType != null && documentType.getDocumentTypeId() != null) {
 			crit.addEqualTo("documentTypeId", documentType.getDocumentTypeId());
 		}
-		if (documentType != null && documentType.getActualServiceNamespace() != null){
-			crit.addEqualTo("actualServiceNamespace", documentType.getActualServiceNamespace());
+		if (documentType != null && documentType.getActualApplicationId() != null){
+			crit.addEqualTo("actualApplicationIde", documentType.getActualApplicationId());
 		}
 		if (docTypeParent != null) {
 			if (!"".equals(docTypeParent.getName()) && docTypeParent.getName() != null) {

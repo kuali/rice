@@ -16,6 +16,7 @@
 package org.kuali.rice.ksb.impl.bus;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
@@ -33,8 +34,8 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
  *   <li>If none of the above, the instance id will be a combination of this application's namespace plus ip address.</li>
  * </ol>
  * 
- * <p>In the case that the instance id is generated, the application namespace will be pulled
- * from the configuration context using the {@link Config#SERVICE_NAMESPACE} configuration parameter which
+ * <p>In the case that the instance id is generated, the application id will be pulled
+ * from the configuration context using the {@link Config#APPLICATION_ID} configuration parameter which
  * should always have a value.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -54,12 +55,9 @@ public class InstanceIdFactoryBean extends AbstractFactoryBean<String> {
 			this.instanceId = loadInstanceIdFromConfig();
 		}
 		if (StringUtils.isBlank(instanceId)) {
-			String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
-			if (StringUtils.isBlank(serviceNamespace)) {
-				throw new IllegalStateException("The '" + Config.SERVICE_NAMESPACE + "' configuration parameter was not defined.");
-			}
+			String applicationId = CoreConfigHelper.getApplicationId();
 			String ipNumber = RiceUtilities.getIpNumber();
-			this.instanceId = serviceNamespace + "-" + ipNumber;
+			this.instanceId = applicationId + "-" + ipNumber;
 		}
 		return this.instanceId;
 	}

@@ -42,7 +42,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 @NamedQueries({
   @NamedQuery(name="PersistedMessage.FindAll", query="select pm from PersistedMessageBO pm"),
   @NamedQuery(name="PersistedMessage.FindByServiceName", query="select pm from PersistedMessage pm where pm.serviceName = :serviceName and pm.methodName = :methodName"),
-  @NamedQuery(name="PersistedMessage.GetNextDocuments", query="select pm from PersistedMessage pm where pm.serviceNamespace = :serviceNamespace and pm.queueStatus <> :queueStatus and pm.ipNumber = :ipNumber order by queuePriority asc, routeQueueId asc, queueDate asc")
+  @NamedQuery(name="PersistedMessage.GetNextDocuments", query="select pm from PersistedMessage pm where pm.applicationId = :applicationId and pm.queueStatus <> :queueStatus and pm.ipNumber = :ipNumber order by queuePriority asc, routeQueueId asc, queueDate asc")
 })
 public class PersistedMessageBO implements PersistedMessage {
 
@@ -74,7 +74,7 @@ public class PersistedMessageBO implements PersistedMessage {
     @Column(name="SVC_NM")
 	private String serviceName;
     @Column(name="SVC_NMSPC")
-	private String serviceNamespace;
+	private String applicationId;
     @Column(name="SVC_MTHD_NM")
 	private String methodName;
     @Transient
@@ -96,12 +96,12 @@ public class PersistedMessageBO implements PersistedMessage {
     }
     
 	@Override
-    public String getServiceNamespace() {
-		return this.serviceNamespace;
+    public String getApplicationId() {
+		return this.applicationId;
 	}
 
-	public void setServiceNamespace(String ServiceNamespace) {
-		this.serviceNamespace = ServiceNamespace;
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
 	}
 
     @Override
@@ -179,7 +179,7 @@ public class PersistedMessageBO implements PersistedMessage {
 
     public String toString() {
 	return "[RouteQueue: " + ", routeQueueId=" + this.routeQueueId + ", ipNumber=" + this.ipNumber 
-		+ "serviceNamespace=" + this.serviceNamespace + ", serviceName=" + this.serviceName + ", methodName=" + methodName 
+		+ "applicationId=" + this.applicationId + ", serviceName=" + this.serviceName + ", methodName=" + methodName 
 		+ ", queueStatus=" + this.queueStatus + ", queuePriority=" + this.queuePriority
 		+ ", queueDate=" + this.queueDate + "]";
     }

@@ -22,7 +22,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
@@ -102,7 +102,7 @@ public class GlobalResourceLoader {
 	protected static synchronized void initialize() {
 		if (getResourceLoader(ClassLoaderUtils.getDefaultClassLoader()) == null) {
 			LOG.info("Creating CompositeResourceLoader in GlobalResourceLoader");
-			rootResourceLoaders.put(ClassLoaderUtils.getDefaultClassLoader(), new ResourceLoaderContainer(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), ResourceLoader.ROOT_RESOURCE_LOADER_NAME)));
+			rootResourceLoaders.put(ClassLoaderUtils.getDefaultClassLoader(), new ResourceLoaderContainer(new QName(CoreConfigHelper.getApplicationId(), ResourceLoader.ROOT_RESOURCE_LOADER_NAME)));
 		}
 	}
 

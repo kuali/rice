@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
@@ -113,7 +114,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
         if (serviceConfiguration.getMillisToLive() > 0) {
             message.setExpirationDate(new Timestamp(System.currentTimeMillis() + serviceConfiguration.getMillisToLive()));
         }
-        message.setServiceNamespace(ConfigContext.getCurrentContextConfig().getServiceNamespace());
+        message.setApplicationId(CoreConfigHelper.getApplicationId());
         message.setMethodName(methodCall.getMethodName());
         return message;
     }

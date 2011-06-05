@@ -32,15 +32,15 @@ import java.util.List;
 public interface RiceApplicationConfigurationMediationService {
 
 	/**
-	 * Returns the configuration parameter value for the given namespaceCode and parameterName.
-	 * The namespaceCode is used to determine which RiceApplicationConfigurationService to
-	 * call by looking up the applicationNamespaceCode associated with it's namespace.
+	 * Returns the configuration parameter value for the given applicationId and parameterName.
+	 * The applicationId is used to determine which RiceApplicationConfigurationService to
+	 * call by looking up the applicationNamespaceCode associated with it's applicationId.
 	 * 
-	 * @param namespaceCode
+	 * @param applicationId
 	 * @param parameterName
 	 * @return
 	 */
-	String getConfigurationParameter(String namespaceCode, String parameterName);
+	String getConfigurationParameter(String applicationId, String parameterName);
 
 	/**
 	 * Returns the non-database components that have been published by all Rice client applications.

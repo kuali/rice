@@ -16,7 +16,7 @@
     <!-- KSB -->
 
     <!-- the following param is not defined in common-config-defaults.xml -->
-    <param name="service.namespace">RICE</param>
+    <param name="application.id">RICE</param>
     <!-- the following param is not defined in common-config-defaults.xml -->
     <param name="module.name">rice</param>
     <!-- the following param is not used in RICE?? -->

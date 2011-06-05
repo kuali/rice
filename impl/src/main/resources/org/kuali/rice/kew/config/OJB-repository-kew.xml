@@ -377,7 +377,7 @@
     <field-descriptor column="NOTIFY_ADDR" name="actualNotificationFromAddress" jdbc-type="VARCHAR"/>
     <field-descriptor column="SEC_XML" name="documentTypeSecurityXml" jdbc-type="CLOB"/>
     <field-descriptor column="EMAIL_XSL" name="customEmailStylesheet" jdbc-type="VARCHAR"/>
-    <field-descriptor column="SVC_NMSPC" name="actualServiceNamespace" jdbc-type="VARCHAR"/>
+    <field-descriptor column="SVC_NMSPC" name="actualApplicationId" jdbc-type="VARCHAR"/>
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
     <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
@@ -516,7 +516,7 @@
     <field-descriptor column="LBL" name="label" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_ATTR_TYP_CD" name="type" jdbc-type="VARCHAR" />
     <field-descriptor column="CLS_NM" name="className" jdbc-type="VARCHAR" />
-    <field-descriptor column="SVC_NMSPC" name="serviceNamespace" jdbc-type="VARCHAR"/>
+    <field-descriptor column="SVC_NMSPC" name="applicationId" jdbc-type="VARCHAR"/>
     <field-descriptor column="DESC_TXT" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="XML" name="xmlConfigData" jdbc-type="CLOB" />
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />

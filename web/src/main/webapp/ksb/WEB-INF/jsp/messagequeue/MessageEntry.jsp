@@ -247,21 +247,21 @@
 				  		    </tr>
 
 				  		    <tr>
-				  		    	<td class="thnormal" align="right" width="20%">Service Namespace:&nbsp;</td>
+				  		    	<td class="thnormal" align="right" width="20%">Application ID:&nbsp;</td>
 				  		    	<c:if test="${showOld}">
 					  		    	<td class="datacell">
-					  		    		<c:out value="${MessageQueueForm.messageQueueFromDatabase.serviceNamespace}" />
+					  		    		<c:out value="${MessageQueueForm.messageQueueFromDatabase.applicationId}" />
 					  		    	</td>
 				  		    	</c:if>
 				  		    	<td class="datacell">
 				  		    		<c:choose>
 				  		    			<c:when test="${inEditMode}">
-													<html-el:text property="messageQueueFromForm.serviceNamespace" size="35" maxlength="50" />
+													<html-el:text property="messageQueueFromForm.applicationId" size="35" maxlength="50" />
 													&nbsp;
-													<bean-el:message key="messagequeue.help.serviceNamespace"/>
+													<bean-el:message key="messagequeue.help.applicationId"/>
 				  		    			</c:when>
 				  		    			<c:otherwise>
-				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.serviceNamespace}" />
+				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.applicationId}" />
 				  		    			</c:otherwise>
 				  		    		</c:choose>
 				  		    	</td>

@@ -16,18 +16,17 @@
 
 package org.kuali.rice.kew.resourceloader;
 
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.impl.resourceloader.BaseWrappingResourceLoader;
-import org.kuali.rice.core.impl.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ServiceLocator;
+import org.kuali.rice.core.impl.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import javax.xml.namespace.QName;
 
 
 /**
@@ -37,10 +36,7 @@ import javax.xml.namespace.QName;
  */
 public class CoreResourceLoader extends BaseWrappingResourceLoader {
 
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-			.getLogger(CoreResourceLoader.class);
-
-	public static final QName NAME = new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), "KEW_SPRING+PLUGIN_REGISTRY_CONTAINER_RESOURCE_LOADER");
+	public static final QName NAME = new QName(CoreConfigHelper.getApplicationId(), "KEW_SPRING+PLUGIN_REGISTRY_CONTAINER_RESOURCE_LOADER");
 
 	private final PluginRegistry registry;
 

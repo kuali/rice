@@ -152,8 +152,8 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		if (documentType != null && documentType.getDocumentTypeId() != null) {
 			crit.eq("documentTypeId", documentType.getDocumentTypeId());
 		}
-		if (documentType != null && documentType.getActualServiceNamespace() != null){
-			crit.eq("serviceNamespace", documentType.getActualServiceNamespace());
+		if (documentType != null && documentType.getActualApplicationId() != null){
+			crit.eq("applicationId", documentType.getActualApplicationId());
 		}
 		if (docTypeParent != null) {
 			if (!"".equals(docTypeParent.getName()) && docTypeParent.getName() != null) {

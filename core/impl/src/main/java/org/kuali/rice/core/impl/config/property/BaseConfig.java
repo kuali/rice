@@ -242,10 +242,6 @@ public abstract class BaseConfig implements Config {
         return getProperty(EDL_CONFIG_LOCATION);
     }
 
-    public String getServiceNamespace() {
-        return getProperty(SERVICE_NAMESPACE);
-    }
-
     public String getDefaultKewNoteClass() {
         return getProperty(DEFAULT_KEW_NOTE_CLASS);
     }

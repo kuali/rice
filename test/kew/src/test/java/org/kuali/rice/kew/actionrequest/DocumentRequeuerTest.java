@@ -58,7 +58,7 @@ public class DocumentRequeuerTest extends KEWTestCase {
         }
 
        DocumentRouteHeaderValue documentH = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
-       DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(documentH.getDocumentType().getServiceNamespace(), documentH.getDocumentId(), 0);
+       DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(documentH.getDocumentType().getApplicationId(), documentH.getDocumentId(), 0);
        documentRequeuer.requeueDocument(document.getDocumentId());
 
        // initiate a requeue of the document

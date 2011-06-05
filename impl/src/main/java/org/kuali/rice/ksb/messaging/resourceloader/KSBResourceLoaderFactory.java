@@ -18,8 +18,7 @@ package org.kuali.rice.ksb.messaging.resourceloader;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
@@ -41,23 +40,17 @@ import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
  *
  */
 public class KSBResourceLoaderFactory {
-
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-			.getLogger(KSBResourceLoaderFactory.class);
 	
 	private static final String KSB_ROOT_RESOURCE_LOACER_NAME = "KSB_ROOT_RESOURCE_LOADER";
 	private static final String KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME = "KSB_REMOTE_RESOURCE_LOADER";
 
 	private static void initialize() {
-		Config config = ConfigContext.getCurrentContextConfig();
-		if (config.getServiceNamespace() == null) {
-			throw new ConfigurationException("No service namespace available at this time");
-		}
+		String applicationId = CoreConfigHelper.getApplicationId();
 		if (getRootResourceLoaderName() == null) {
-			setRootResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KSB_ROOT_RESOURCE_LOACER_NAME));
+			setRootResourceLoaderName(new QName(applicationId, KSB_ROOT_RESOURCE_LOACER_NAME));
 		}
 		if (getRemoteResourceLoaderName() == null) {
-			setRemoteResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME));
+			setRemoteResourceLoaderName(new QName(applicationId, KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME));
 		}
 	}
 

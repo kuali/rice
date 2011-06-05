@@ -349,7 +349,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //		dailyMessage.setQueueStatus("Q");
 //		dailyMessage.setRetryCount(1);
 //		dailyMessage.setIpNumber(Utilities.getIpNumber());
-//		dailyMessage.setServiceNamespace("KEW");
+//		dailyMessage.setApplicationId("KEW");
 //		dailyMessage.setPayload(KSBServiceLocator.getMessageHelper().serializeObject("payload"));
 //		return dailyMessage;
 //	}
@@ -363,7 +363,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //		weeklyMessage.setQueueStatus("Q");
 //		weeklyMessage.setRetryCount(1);
 //		weeklyMessage.setIpNumber(Utilities.getIpNumber());
-//		weeklyMessage.setServiceNamespace("KEW");
+//		weeklyMessage.setApplicationId("KEW");
 //		weeklyMessage.setPayload(KSBServiceLocator.getMessageHelper().serializeObject("payload"));
 //		return weeklyMessage;
 //	}

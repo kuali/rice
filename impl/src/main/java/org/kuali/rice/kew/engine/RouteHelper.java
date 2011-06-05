@@ -82,6 +82,6 @@ public class RouteHelper {
     }
 
     public Node getNode(RouteNode routeNode) {
-    	return (Node) GlobalResourceLoader.getObject(new ObjectDefinition(routeNode.getNodeType(), routeNode.getDocumentType().getServiceNamespace()));
+    	return (Node) GlobalResourceLoader.getObject(new ObjectDefinition(routeNode.getNodeType(), routeNode.getDocumentType().getApplicationId()));
     }
 }

@@ -2,7 +2,7 @@
 <config>
     <param name="environment" override="false">${environment}</param>
     <param name="module.name">kcb</param>
-    <param name="service.namespace">KCB</param>
+    <param name="application.id">KCB</param>
 
     <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
 

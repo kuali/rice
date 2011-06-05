@@ -1,6 +1,6 @@
 <config>
 	<!-- App specific parameters -->
-	<param name="app.namespace">KUALI</param>
+	<param name="application.id">${PROJECT_NAME}</param>
 	<param name="app.code">${PROJECT_NAME}</param>
 	<param name="app.context.name">${app.code}-${environment}</param>
 	<param name="production.environment.code">PRD</param>

@@ -39,8 +39,8 @@ import org.kuali.rice.ksb.api.registry.ServiceInfoContract
 //	@NamedQuery(name="ServiceInfo.FetchAll", query="select s from ServiceInfo s"),
 //	@NamedQuery(name="ServiceInfo.FetchAllActive",query="select s from ServiceInfo s where s.alive = true"),
 //	@NamedQuery(name="ServiceInfo.FetchActiveByName",query="select s from ServiceInfo s where s.alive = true AND s.serviceName LIKE :serviceName"),
-//	@NamedQuery(name="ServiceInfo.FindLocallyPublishedServices",query="select s from ServiceInfo s where s.serverIp = :serverIp AND s.serviceNamespace = :serviceNamespace"),
-//	@NamedQuery(name="ServiceInfo.DeleteLocallyPublishedServices",query="delete from ServiceInfo s WHERE s.serverIp = :serverIp AND s.serviceNamespace = :serviceNamespace"),
+//	@NamedQuery(name="ServiceInfo.FindLocallyPublishedServices",query="select s from ServiceInfo s where s.serverIp = :serverIp AND s.applicationId = :applicationId"),
+//	@NamedQuery(name="ServiceInfo.DeleteLocallyPublishedServices",query="delete from ServiceInfo s WHERE s.serverIp = :serverIp AND s.applicationId = :applicationId"),
 //	@NamedQuery(name="ServiceInfo.DeleteByEntry",query="delete from ServiceInfo s where s.messageEntryId = :messageEntryId")			
 //])
 public class ServiceInfoBo implements ServiceInfoContract, Serializable {
@@ -67,7 +67,7 @@ public class ServiceInfoBo implements ServiceInfoContract, Serializable {
 	String instanceId;
 
 	@Column(name="APPL_NMSPC")
-	String applicationNamespace;
+	String applicationId;
 
 	@Column(name="SRVR_IP")
 	String serverIpAddress;
@@ -123,7 +123,7 @@ public class ServiceInfoBo implements ServiceInfoContract, Serializable {
 		bo.serviceName = im.getServiceName().toString();
 		bo.endpointUrl = im.getEndpointUrl();
 		bo.instanceId = im.getInstanceId();
-		bo.applicationNamespace = im.getApplicationNamespace();
+		bo.applicationId = im.getApplicationId();
 		bo.serverIpAddress = im.getServerIpAddress();
 		bo.type = im.getType();
 		bo.serviceVersion = im.getServiceVersion();

@@ -204,12 +204,9 @@
                         <entry>kr</entry>
                     </row>
                     <row>
-                        <entry>app.namespace</entry>
-                        <entry>The namespace of the application. Currently used to determine which
-                            namespace a parameter is in. The default is "KUALI". If this parameter
-                            has been set to something different from "KUALI" then parameters with
-                            that namespace are used before "KUALI" parameters.</entry>
-                        <entry>KUALI</entry>
+                        <entry>application.id</entry>
+                        <entry>The unique ID for the application. A value should be chosen which will be unique within the scope of Kuali Rice deployment and integration.  There is no default for this value but it must be defined in order for portions of Kuali Rice to function properly.</entry>
+                        <entry/>
                     </row>
                     <row>
                         <entry>application.host</entry>

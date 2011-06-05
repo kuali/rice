@@ -114,8 +114,8 @@
 						  		  <td class="datacell"><c:out value="${MessageQueueForm.messageQueueFromForm.serviceName}" />&nbsp;</td>
 					  		  </tr>
 					  		  <tr>
-								<td class="thnormal" align="right" width="20%">Service Namespace:</td>
-						  		  <td class="datacell"><c:out value="${MessageQueueForm.messageQueueFromForm.serviceNamespace}" />&nbsp;</td>
+								<td class="thnormal" align="right" width="20%">Application ID:</td>
+						  		  <td class="datacell"><c:out value="${MessageQueueForm.messageQueueFromForm.applicationId}" />&nbsp;</td>
 					  		  </tr>
 					  		  <tr>
 								<td class="thnormal" align="right" width="20%">Method Name:</td>
@@ -158,13 +158,13 @@
 										</c:choose>
 					  		  </tr>
 					  		  <tr>
-										<td class="thnormal" align="right" width="20%">ServiceInfo.serviceNamespace:</td>
+										<td class="thnormal" align="right" width="20%">ServiceInfo.applicationId:</td>
 										<c:choose>
 											<c:when test="${methodCall.serviceInfo == null}">
 								  		  <td class="datacell">ServiceInfo is null&nbsp;</td>
 											</c:when>
 											<c:otherwise>
-								  		  <td class="datacell"><c:out value="${methodCall.serviceInfo.serviceNamespace}" />&nbsp;</td>
+								  		  <td class="datacell"><c:out value="${methodCall.serviceInfo.applicationId}" />&nbsp;</td>
 											</c:otherwise>
 										</c:choose>
 					  		  </tr>

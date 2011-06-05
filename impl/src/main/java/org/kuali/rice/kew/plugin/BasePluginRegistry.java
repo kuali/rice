@@ -16,14 +16,15 @@
 
 package org.kuali.rice.kew.plugin;
 
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
-import org.kuali.rice.core.api.resourceloader.ResourceLoaderContainer;
-
-import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import org.kuali.rice.core.api.config.CoreConfigHelper;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ResourceLoaderContainer;
 
 /**
  * A base class for {@link PluginRegistry} implementations.  Is essentially a ResourceLoader 
@@ -40,7 +41,7 @@ public abstract class BasePluginRegistry extends ResourceLoaderContainer impleme
 	private List<PluginEnvironment> pluginEnvironments = Collections.synchronizedList(new ArrayList<PluginEnvironment>());
 	
 	public BasePluginRegistry() {
-		super(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
+		super(new QName(CoreConfigHelper.getApplicationId(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
 	}
 	
 	public BasePluginRegistry(QName name) {

@@ -15,8 +15,8 @@
   -->
 
 <config>
+
     <!--  NOTE: This environment parameter must be defined early -->
-    <param name="app.namespace" override="false">KUALI</param>
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>
@@ -379,7 +379,6 @@
 	<!-- additonal params extracted from Configurers -->
 	
 	<!-- Rice (common) -->
-	<param name="service.namespace" override="false">RICE</param>
 	<param name="datasource.jndi.location" override="false"></param>
 	<param name="nonTransactional.datasource.jndi.location" override="false"></param>
 	<param name="serverDatasource.jndi.location" override="false"></param>

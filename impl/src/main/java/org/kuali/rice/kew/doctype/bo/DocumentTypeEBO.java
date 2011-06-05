@@ -42,13 +42,13 @@ public interface DocumentTypeEBO extends ExternalizableBusinessObject{
 	public Long getDocumentTypeId();
 
 	/**
-	 * Returns the service namespace for this DocumentType which can be specified on the document type itself,
-	 * inherited from the parent, or defaults to the configured service namespace of the application.
+	 * Returns the application id for this DocumentType which can be specified on the document type itself,
+	 * inherited from the parent, or defaults to the configured application id of the application.
 	 *
 	 * chb:12Nov2008: seems like the accessor should return the field and the auxiliary method "getActualFoo" should
 	 * be the one to do more elaborate checking
 	 */
-	public String getServiceNamespace();
+	public String getApplicationId();
 
 	/**
 	 * In order to make this object Inactivateable. Not sure if I

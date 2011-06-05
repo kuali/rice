@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.api.bus.Endpoint;
@@ -38,7 +39,6 @@ import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.api.registry.ServiceRegistry;
-import org.kuali.rice.ksb.util.KSBConstants;
 
 
 /**
@@ -82,7 +82,7 @@ public class ServiceRegistryAction extends KSBAction {
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm actionForm) throws Exception {
 	ServiceRegistryForm form = (ServiceRegistryForm)actionForm;
 	form.setMyIpAddress(RiceUtilities.getIpNumber());
-	form.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.SERVICE_NAMESPACE));
+	form.setMyApplicationId(CoreConfigHelper.getApplicationId());
 	form.setDevMode(ConfigContext.getCurrentContextConfig().getDevMode());
 	ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
 	form.setMyInstanceId(serviceBus.getInstanceId());

@@ -70,7 +70,7 @@
    			</tr>
 		  <tr>
         <td class="datacell">IP Address: <c:out value="${MessageQueueForm.myIpAddress}"/><br>
-        	Service Namespace: <c:out value="${MessageQueueForm.myServiceNamespace}"/>
+        	Application ID: <c:out value="${MessageQueueForm.myApplicationId}"/>
         </td>
         </tr>
         <tr>
@@ -101,10 +101,10 @@
    			</tr>
    			<tr>
   				<td class="thnormal" align="right" width="20%">
-   					Service Namespace:&nbsp;
+   					Application ID:&nbsp;
   				</td>
   				<td class="datacell">
-   					<html-el:text property="serviceNamespace${ksb_constant.ROUTE_QUEUE_FILTER_SUFFIX}" />
+   					<html-el:text property="applicationId${ksb_constant.ROUTE_QUEUE_FILTER_SUFFIX}" />
    				</td>
    			</tr>
    			<tr>
@@ -196,7 +196,7 @@
     <td width="20" height="20">&nbsp;</td>
     <td>
 
-		  <display:table excludedParams="*" pagesize="${MessageQueueForm.pageSize}" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${MessageQueueForm.messageQueueRows}" export="true" id="result" requestURI="MessageQueue.do?methodToCall=start&filterApplied=${filterApplied}&queueStatusFilter=${queueStatusFilter}&ipNumberFilter=${ipNumberFilter}&serviceNameFilter=${serviceNameFilter}&serviceNamespaceFilter=${serviceNamespaceFilter}" defaultsort="1" defaultorder="descending"
+		  <display:table excludedParams="*" pagesize="${MessageQueueForm.pageSize}" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${MessageQueueForm.messageQueueRows}" export="true" id="result" requestURI="MessageQueue.do?methodToCall=start&filterApplied=${filterApplied}&queueStatusFilter=${queueStatusFilter}&ipNumberFilter=${ipNumberFilter}&serviceNameFilter=${serviceNameFilter}&applicationIdFilter=${applicationIdFilter}" defaultsort="1" defaultorder="descending"
 				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
 		    <display:setProperty name="paging.banner.placement" value="both" />
 		    <display:setProperty name="export.banner" value="" />
@@ -206,8 +206,8 @@
 		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service<br />Name</div>" >
 		    	<c:out value="${result.serviceName}"/>&nbsp;
 		    </display:column>
-		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service<br />Namespace</div>" >
-		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Application<br />ID</div>" >
+		    	<c:out value="${result.applicationId}"/>&nbsp;
 		    </display:column>
 		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
 		    	<c:out value="${result.ipNumber}"/>&nbsp;

@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.xml;
 
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTIVE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.APPLICATION_ID;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.APP_DOC_STATUSES;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.BLANKET_APPROVE_GROUP_NAME;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.BLANKET_APPROVE_POLICY;
@@ -601,18 +602,21 @@ public class DocumentTypeXmlParser {
             documentType.setUnresolvedDocSearchHelpUrl(docSearchHelpUrl);
         }
 
-        // set the service namespace on the document type
+        // set the application id on the document type
         try {
             /*
              * - if the element tag is ingested... take whatever value is given, even if it's empty 
              * - we disregard the isOverwrite because if the element tag does not exist in the ingestion
              * then the documentType should already carry the value from the previous document type
              */
-            if (XmlHelper.pathExists(xpath, "./" + SERVICE_NAMESPACE, documentTypeNode)) {
-                documentType.setActualServiceNamespace((String) getXPath().evaluate("./" + SERVICE_NAMESPACE, documentTypeNode, XPathConstants.STRING));
+        	if (XmlHelper.pathExists(xpath, "./" + APPLICATION_ID, documentTypeNode)) {
+        		documentType.setActualApplicationId((String) getXPath().evaluate("./" + APPLICATION_ID, documentTypeNode, XPathConstants.STRING));
+        	} else if (XmlHelper.pathExists(xpath, "./" + SERVICE_NAMESPACE, documentTypeNode)) {
+                documentType.setActualApplicationId((String) getXPath().evaluate("./" + SERVICE_NAMESPACE, documentTypeNode, XPathConstants.STRING));
+                LOG.warn(SERVICE_NAMESPACE + " element was set on document type XML but is deprecated and will be removed in a future version, please use " + APPLICATION_ID + " instead.");
             }
         } catch (XPathExpressionException xpee) {
-            LOG.error("Error obtaining document type ServiceNamespace", xpee);
+            LOG.error("Error obtaining document type applicationId", xpee);
             throw xpee;
         }
 

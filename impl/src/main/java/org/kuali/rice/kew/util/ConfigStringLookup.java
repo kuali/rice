@@ -29,14 +29,15 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConfigStringLookup extends StrLookup {
-	private String namespace;
+	
+	private String applicationId;
 	
 	public ConfigStringLookup() {
 		
 	}
 	
-	public ConfigStringLookup(String namespace) {
-		this.namespace = namespace;
+	public ConfigStringLookup(String applicationId) {
+		this.applicationId = applicationId;
 	}
 	
 	@Override
@@ -48,8 +49,8 @@ public class ConfigStringLookup extends StrLookup {
 		String paramValue = null;
 		
 		// TODO temporarily disabling configuration parameter resolution against the racms because it's been causing some issues
-		if ( namespace != null ) {
-			paramValue = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getConfigurationParameter(namespace, propertyName);
+		if ( applicationId != null ) {
+			paramValue = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getConfigurationParameter(applicationId, propertyName);
 		}
 		
 		// check system parameters first

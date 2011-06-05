@@ -63,7 +63,7 @@ public class ThreadPoolAction extends KSBAction {
 	}
 	if (form.isAllServers()) {
 	    // if it's all servers, we need to find all of the BusAdmin services
-	    QName serviceName = new QName(form.getServiceNamespace(), "busAdminService");
+	    QName serviceName = new QName(form.getApplicationId(), "busAdminService");
 	    ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
 	    List<Endpoint> adminServices = serviceBus.getEndpoints(serviceName);
 	    for (Endpoint adminEndpoint : adminServices) {

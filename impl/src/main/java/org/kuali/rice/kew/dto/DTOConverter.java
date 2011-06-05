@@ -842,12 +842,12 @@ public class DTOConverter {
         }
 
         // this is likely from an EDL validate call and ME may needed to be added to the AttDefinitionVO.
-        if (ruleAttribute.getServiceNamespace() != null) {
-            definition.setServiceNamespace(ruleAttribute.getServiceNamespace());
+        if (ruleAttribute.getApplicationId() != null) {
+            definition.setApplicationId(ruleAttribute.getApplicationId());
         } else {
             // get the me from the document type if it's been passed in - the document is having action taken on it.
             if (documentType != null) {
-                definition.setServiceNamespace(documentType.getServiceNamespace());
+                definition.setApplicationId(documentType.getApplicationId());
             }
         }
 

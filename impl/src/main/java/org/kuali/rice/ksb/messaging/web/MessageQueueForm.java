@@ -16,17 +16,17 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.struts.action.ActionForm;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.SqlTimestampConverter;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.util.CodeTranslator;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 
 /**
@@ -56,7 +56,7 @@ public class MessageQueueForm extends ActionForm {
     //  filter stuff
     private String routeQueueIdFilter;
     private String serviceNameFilter;
-    private String serviceNamespaceFilter;
+    private String applicationIdFilter;
     private String queueStatusFilter;
     private String ipNumberFilter;
     private String value1Filter;
@@ -66,7 +66,7 @@ public class MessageQueueForm extends ActionForm {
     private Integer maxMessageFetcherMessages = Integer.valueOf(50);
 
     private String myIpAddress;
-    private String myServiceNamespace;
+    private String myApplicationId;
     private String messagePersistence;
     private String messageDelivery;
     private String messageOff;
@@ -196,17 +196,17 @@ public class MessageQueueForm extends ActionForm {
     }
 
     /**
-     * @return the serviceNamespaceFilter
+     * @return the applicationIdFilter
      */
-    public String getServiceNamespaceFilter() {
-      return serviceNamespaceFilter;
+    public String getApplicationIdFilter() {
+      return applicationIdFilter;
     }
 
     /**
-     * @param serviceNamespaceFilter the serviceNamespaceFilter to set
+     * @param applicationIdFilter the applicationIdFilter to set
      */
-    public void setServiceNamespaceFilter(String ServiceNamespaceFilter) {
-      this.serviceNamespaceFilter = ServiceNamespaceFilter;
+    public void setApplicationIdFilter(String applicationIdFilter) {
+      this.applicationIdFilter = applicationIdFilter;
     }
 
     /**
@@ -307,12 +307,12 @@ public class MessageQueueForm extends ActionForm {
         this.myIpAddress = myIpAddress;
     }
 
-    public String getMyServiceNamespace() {
-        return this.myServiceNamespace;
+    public String getMyApplicationId() {
+        return this.myApplicationId;
     }
 
-    public void setMyServiceNamespace(String myServiceNamespace) {
-        this.myServiceNamespace = myServiceNamespace;
+    public void setMyApplicationId(String myApplicationId) {
+        this.myApplicationId = myApplicationId;
     }
 
     public String getMessageDelivery() {

@@ -100,7 +100,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 		// TODO I think the code that's below here will actually pull in more than
 		// one reference to a particular application's config service if it is deployed
 		// in a cluster, it needs to only pull a single RiceApplicationConfigurationService
-		// implementation per service namespace.  Also, may want to consider load balancing
+		// implementation per application id.  Also, may want to consider load balancing
 		// and failover in those cases?  It might be best to try and utilize the client-side
 		// KSB proxies that handle a lot of this stuff for us
     	

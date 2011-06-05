@@ -16,7 +16,15 @@
 
 package org.kuali.rice.ksb.messaging.dao.impl;
 
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.xml.namespace.QName;
+
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
@@ -25,13 +33,6 @@ import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
 import org.kuali.rice.ksb.util.KSBConstants;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.xml.namespace.QName;
-import java.util.List;
-import java.util.Map;
 
 
 public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
@@ -100,10 +101,10 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
 
     @SuppressWarnings("unchecked")
     public List<PersistedMessageBO> getNextDocuments(Integer maxDocuments) {
-        String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
+        String applicationId = CoreConfigHelper.getApplicationId();
         
         Query query = entityManager.createNamedQuery("PersistedMessageBO.GetNextDocuments");
-        query.setParameter("serviceNamespace", serviceNamespace);
+        query.setParameter("applicationId", applicationId);
         query.setParameter("queueStatus", KSBConstants.ROUTE_QUEUE_EXCEPTION);
         query.setParameter("ipNumber", RiceUtilities.getIpNumber());
         

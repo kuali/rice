@@ -43,7 +43,7 @@ public interface DocumentRouteHeaderDAO {
   public String getNextDocumentId();
   public Collection findPendingByResponsibilityIds(Set responsibilityIds);
   public void clearRouteHeaderSearchValues(String documentId);
-  public String getServiceNamespaceByDocumentId(String documentId);
+  public String getApplicationIdByDocumentId(String documentId);
   public DocumentRouteHeaderValueContent getContent(String documentId);
   public boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey, String searchableAttributeValue);
   public String getDocumentStatus(String documentId);

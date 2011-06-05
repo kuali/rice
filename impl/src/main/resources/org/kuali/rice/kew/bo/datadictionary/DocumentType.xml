@@ -51,7 +51,7 @@
                -->
 
         <!-- BELOW USED FOR INQUIRY AND LOOKUP ONLY -->
-        <ref bean="DocumentType-displayableServiceNamespace"/>
+        <ref bean="DocumentType-displayableApplicationId"/>
 
         <!-- BELOW USED FOR INQUIRY ONLY -->
         <ref bean="DocumentType-displayableUnresolvedDocHandlerUrl"/>
@@ -219,9 +219,9 @@
   </bean>
 -->
 
-  <bean id="DocumentType-serviceNamespace" parent="DocumentType-serviceNamespace-parentBean"/>
+  <bean id="DocumentType-applicationId" parent="DocumentType-applicationId-parentBean"/>
 
-  <bean id="DocumentType-serviceNamespace-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentType-applicationId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Svc Nmspc"/>
     <property name="maxLength" value="255"/>
     <property name="validationPattern">
@@ -230,14 +230,14 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="50"/>
     </property>
-    <property name="name" value="serviceNamespace"/>
-    <property name="label" value="Service Namespace"/>
+    <property name="name" value="applicationId"/>
+    <property name="label" value="Application ID"/>
   </bean>
   
-  <bean id="DocumentType-displayableServiceNamespace" parent="DocumentType-displayableServiceNamespace-parentBean"/>
+  <bean id="DocumentType-displayableApplicationId" parent="DocumentType-displayableApplicationId-parentBean"/>
 
-  <bean id="DocumentType-displayableServiceNamespace-parentBean" abstract="true" parent="DocumentType-serviceNamespace">
-    <property name="name" value="displayableServiceNamespace"/>
+  <bean id="DocumentType-displayableApplicationId-parentBean" abstract="true" parent="DocumentType-applicationId">
+    <property name="name" value="displayableApplicationId"/>
     <property name="validationPattern">
       <null/>
     </property>
@@ -443,7 +443,7 @@
               <bean parent="FieldDefinition" p:attributeName="unresolvedDocSearchHelpUrl"/>
               <bean parent="FieldDefinition" p:attributeName="displayablePostProcessorName"/>
               <bean parent="FieldDefinition" p:attributeName="displayableNotificationFromAddress"/>
-              <bean parent="FieldDefinition" p:attributeName="displayableServiceNamespace"/>    
+              <bean parent="FieldDefinition" p:attributeName="displayableApplicationId"/>    
               <bean parent="FieldDefinition" p:attributeName="active"/>
               <!-- Policies -->                            
             </list>
@@ -480,7 +480,7 @@
         <bean parent="FieldDefinition" p:attributeName="parentDocType.name"/>
         <bean parent="FieldDefinition" p:attributeName="label"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
-        <bean parent="FieldDefinition" p:attributeName="displayableServiceNamespace"/>
+        <bean parent="FieldDefinition" p:attributeName="displayableApplicationId"/>
       </list>
     </property>
     <property name="title" value="Document Type Lookup"/>

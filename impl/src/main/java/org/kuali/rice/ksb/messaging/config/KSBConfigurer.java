@@ -29,6 +29,7 @@ import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -393,7 +394,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		@Override
 		public void start() throws Exception {
 			if (serviceDefinitions != null && !serviceDefinitions.isEmpty()) {
-				LOG.debug("Configuring " + serviceDefinitions.size() + " services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
+				LOG.debug("Configuring " + serviceDefinitions.size() + " services for application id " + CoreConfigHelper.getApplicationId() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
 				KsbApiServiceLocator.getServiceBus().publishServices(serviceDefinitions, true);
 				super.start();
 			}

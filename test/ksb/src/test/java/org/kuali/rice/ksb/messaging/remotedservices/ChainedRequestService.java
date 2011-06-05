@@ -23,7 +23,7 @@ package org.kuali.rice.ksb.messaging.remotedservices;
 public interface ChainedRequestService {
 
 	/**
-	 * Should take the given String value and append the service namespace of the current server onto the end
+	 * Should take the given String value and append the application id of the current server onto the end
 	 * with a comma in between.  Then it should forward the call of to another server.
 	 */
 	public String sendRequest(String value);

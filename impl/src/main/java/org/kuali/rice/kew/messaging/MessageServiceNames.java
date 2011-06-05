@@ -64,14 +64,14 @@ public class MessageServiceNames {
 
 	private static QName getQName(String baseServiceName, DocumentRouteHeaderValue document) {
 		if (document != null) {
-			return new QName(document.getDocumentType().getServiceNamespace(), baseServiceName);
+			return new QName(document.getDocumentType().getApplicationId(), baseServiceName);
 		}
 		return new QName(baseServiceName);
 	}
 
-	private static QName getQName(String baseServiceName, String serviceNamespace) {
-		if (!StringUtils.isEmpty(serviceNamespace)) {
-			return new QName(serviceNamespace, baseServiceName);
+	private static QName getQName(String baseServiceName, String applicationId) {
+		if (!StringUtils.isEmpty(applicationId)) {
+			return new QName(applicationId, baseServiceName);
 		}
 		return new QName(baseServiceName);
 	}
@@ -104,8 +104,8 @@ public class MessageServiceNames {
 		return (RuleCacheProcessor) getServiceAsynchronously(new QName(MessageServiceNames.RULE_CACHE_PROCESSOR_SERVICE), (String)null);
 	}
 
-	public static DocumentRequeuerService getDocumentRequeuerService(String serviceNamespace, String documentId, long waitTime) {
-		QName serviceName = getQName(DOCUMENT_REQUEUE_PROCESSING_SERVICE, serviceNamespace);
+	public static DocumentRequeuerService getDocumentRequeuerService(String applicationId, String documentId, long waitTime) {
+		QName serviceName = getQName(DOCUMENT_REQUEUE_PROCESSING_SERVICE, applicationId);
 		if (waitTime > 0) {
 			return (DocumentRequeuerService) getDelayedServiceAsynchronously(serviceName, documentId, waitTime);
 		}

@@ -61,7 +61,7 @@
   				</td>
    			</tr>
 		  <tr>
-        <td class="datacell">Service Namespace: <c:out value="${ServiceRegistryForm.myServiceNamespace}"/><br>
+        <td class="datacell">Application ID: <c:out value="${ServiceRegistryForm.myApplicationId}"/><br>
         	IP Address: <c:out value="${ServiceRegistryForm.myIpAddress}"/><br>
         	Instance ID: <c:out value="${ServiceRegistryForm.myInstanceId}"/>
         </td>
@@ -115,8 +115,8 @@
 				</c:otherwise>
 				</c:choose>
 		    </display:column>
-		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Application Namespace</div>" >
-		    	<c:out value="${result.applicationNamespace}"/>&nbsp;
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Application ID</div>" >
+		    	<c:out value="${result.applicationId}"/>&nbsp;
 		    </display:column>
 		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Version</div>" >
 		    	<c:out value="${result.serviceVersion}"/>&nbsp;
@@ -152,11 +152,11 @@
 		    <display:column class="datacell" sortable="true" title="<div>Instance ID</div>" >
 		    	<c:out value="${result.instanceId}"/>&nbsp;
 		    </display:column>
-		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Application Namespace</div>" >
-		    	<c:out value="${result.applicationNamespace}"/>&nbsp;
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Application ID</div>" >
+		    	<c:out value="${result.applicationId}"/>&nbsp;
 		    </display:column>
-		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Application Namespace</div>" >
-		    	<c:out value="${result.applicationNamespace}"/>&nbsp;
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Application ID</div>" >
+		    	<c:out value="${result.applicationId}"/>&nbsp;
 		    </display:column>
 		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Version</div>" >
 		    	<c:out value="${result.serviceVersion}"/>&nbsp;

@@ -10,7 +10,7 @@
 
 	<param name="kr.incident.mailing.list"></param>
 	<!-- App specific parameters -->
-	<param name="app.namespace">KUALI</param>
+	<param name="application.id">TRAVEL</param>
 	<param name="app.code">kr</param>
 	<param name="app.context.name">${app.code}-${environment}</param>
 	<param name="application.url">http://localhost:8080/${app.context.name}</param>

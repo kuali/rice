@@ -65,7 +65,7 @@ Completed Task Count: <c:out value="${ThreadPoolForm.threadPool.completedTaskCou
 RouteQueue.TimeIncrement: <html-el:text property="timeIncrement"/><br>
 RouteQueue.maxRetryAttempts: <html-el:text property="maxRetryAttempts"/><br>
 <br>
-<html-el:checkbox property="allServers"/> Execute Across All Servers with Service Namespace <c:out value="${ThreadPoolForm.serviceNamespace}"/><br/>
+<html-el:checkbox property="allServers"/> Execute Across All Servers with Application ID <c:out value="${ThreadPoolForm.applicationId}"/><br/>
 <input type="button" value="Update" onclick="setMethodToCallAndSubmit('update')"/>
 </td>
 </tr>

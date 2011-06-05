@@ -11,7 +11,7 @@ public interface ServiceConfiguration extends Serializable {
 
 	QName getServiceName();
 	URL getEndpointUrl();
-	String getApplicationNamespace();
+	String getApplicationId();
 	String getServiceVersion();
 	String getType();
 	

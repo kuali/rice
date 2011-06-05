@@ -15,7 +15,7 @@
   -->
 <config>
 	<param name="module.name">sample-app</param>
-	<param name="service.namespace">TRAVEL</param>
+	<param name="application.id">TRAVEL</param>
 	
 	<param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
 	<param name="filtermapping.login.1">/*</param>

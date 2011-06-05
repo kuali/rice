@@ -17,6 +17,7 @@
 package org.kuali.rice.ksb.messaging.threadpool;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -99,10 +100,10 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
          * A simple ThreadFactory which names the thread as follows:<br>
          * <br>
          *
-         * <i>serviceNamespace</i>/KSB-pool-<i>m</i>-thread-<i>n</i><br>
+         * <i>applicationId</i>/KSB-pool-<i>m</i>-thread-<i>n</i><br>
          * <br>
          *
-         * Where <i>serviceNamespace</i> is the service namespace of the application running the thread pool, <i>m</i> is the
+         * Where <i>applicationId</i> is the id of the application running the thread pool, <i>m</i> is the
          * sequence number of the factory and <i>n</i> is the sequence number of the thread within the factory.
          *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -128,7 +129,7 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
 	    // if the thread ends up getting spawned by an action inside of a workflow plugin or something along those lines, it will inherit the plugin's
 	    // classloader as it's ContextClassLoader.  Let's make sure it's set to the same ClassLoader that loaded the KSBConfigurer
 	    thread.setContextClassLoader(contextClassLoader);
-	    thread.setName(ConfigContext.getCurrentContextConfig().getServiceNamespace() + "/KSB-pool-" + factorySequence + "-thread-"
+	    thread.setName(CoreConfigHelper.getApplicationId() + "/KSB-pool-" + factorySequence + "-thread-"
 		    + threadSequence);
 	    return thread;
 	}

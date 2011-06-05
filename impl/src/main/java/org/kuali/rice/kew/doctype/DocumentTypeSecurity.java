@@ -72,7 +72,7 @@ public class DocumentTypeSecurity implements Serializable {
    * @throws ParserConfigurationException
    * @throws IOException
    * @throws SAXException */
-  public DocumentTypeSecurity(String standardServiceNamespace, String documentTypeSecurityXml)
+  public DocumentTypeSecurity(String standardApplicationId, String documentTypeSecurityXml)
   {
     try {
       if (org.apache.commons.lang.StringUtils.isEmpty(documentTypeSecurityXml)) {
@@ -244,7 +244,7 @@ public class DocumentTypeSecurity implements Serializable {
             Element attributeElement = (Element)attributeNodes.item(i);
             NamedNodeMap elemAttributes = attributeElement.getAttributes();
             String className = null;
-            String serviceNamespace = standardServiceNamespace;
+            String applicationId = standardApplicationId;
             if (elemAttributes.getNamedItem("name") != null) {
                 // found a name attribute so find the class name
                 String ruleAttributeName = elemAttributes.getNamedItem("name").getNodeValue().trim();
@@ -252,7 +252,7 @@ public class DocumentTypeSecurity implements Serializable {
                 if (ruleAttribute == null) {
                     throw new WorkflowException("Could not find rule attribute: " + ruleAttributeName);
                 }
-                serviceNamespace = ruleAttribute.getServiceNamespace();
+                applicationId = ruleAttribute.getApplicationId();
                 className = ruleAttribute.getClassName();
             } else if (elemAttributes.getNamedItem("class") != null) {
                 // class name defined
@@ -261,7 +261,7 @@ public class DocumentTypeSecurity implements Serializable {
                 throw new WorkflowException("Cannot find attribute 'name' or attribute 'class' for securityAttribute Node");
             }
           
-            this.securityAttributes.add(new LazyLoadSecurityAttribute(className, serviceNamespace));
+            this.securityAttributes.add(new LazyLoadSecurityAttribute(className, applicationId));
             
           }
         }

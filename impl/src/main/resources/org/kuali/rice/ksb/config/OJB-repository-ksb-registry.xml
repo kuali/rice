@@ -34,7 +34,7 @@
 		<field-descriptor column="SVC_NM" name="serviceName" jdbc-type="VARCHAR"/>
 		<field-descriptor column="SVC_URL" name="endpointUrl" jdbc-type="VARCHAR"/>
 		<field-descriptor column="INSTN_ID" name="instanceId" jdbc-type="VARCHAR"/>
-		<field-descriptor column="APPL_NMSPC" name="applicationNamespace" jdbc-type="VARCHAR" />
+		<field-descriptor column="APPL_NMSPC" name="applicationId" jdbc-type="VARCHAR" />
 		<field-descriptor column="SRVR_IP" name="serverIpAddress" jdbc-type="VARCHAR" />
 		<field-descriptor column="TYP_CD" name="type" jdbc-type="VARCHAR" />
 		<field-descriptor column="SVC_VER" name="serviceVersion" jdbc-type="VARCHAR" />

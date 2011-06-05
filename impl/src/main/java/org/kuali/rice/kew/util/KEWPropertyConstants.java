@@ -44,7 +44,7 @@ public final class KEWPropertyConstants {
     public static final String PARENT_DOC_TYPE_NAME = "parentDocType.name";
     public static final String ACTIVE = "active";
     public static final String BACK_LOCATION = "backLocation";
-    public static final String SERVICE_NAMESPACE = "serviceNamespace";
+    public static final String APPLICATION_ID = "applicationId";
     public static final String DOC_FORM_KEY = "docFormKey";
 
     //Constants used by RouteNode

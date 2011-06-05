@@ -38,7 +38,7 @@ public class ServiceRegistryForm extends ActionForm {
     private List<ServiceInfo> globalRegistryServices = new ArrayList<ServiceInfo>();
 
     private String myIpAddress;
-    private String myServiceNamespace;
+    private String myApplicationId;
     private String myInstanceId;
     private Boolean devMode;
 
@@ -66,11 +66,11 @@ public class ServiceRegistryForm extends ActionForm {
     public void setMyIpAddress(String myIpAddress) {
         this.myIpAddress = myIpAddress;
     }
-    public String getMyServiceNamespace() {
-        return this.myServiceNamespace;
+    public String getMyApplicationId() {
+        return this.myApplicationId;
     }
-    public void setMyServiceNamespace(String myServiceNamespace) {
-        this.myServiceNamespace = myServiceNamespace;
+    public void setMyApplicationId(String myApplicationId) {
+        this.myApplicationId = myApplicationId;
     }
     public String getMyInstanceId() {
 		return this.myInstanceId;

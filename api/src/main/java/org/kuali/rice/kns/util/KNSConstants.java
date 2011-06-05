@@ -276,7 +276,6 @@ public final class KNSConstants {
 
     public static final String DEFAULT_APPLICATION_CODE = "KUALI";
     public static final String DEFAULT_NAMESPACE = "KUALI";
-    public static final String APPLICATION_CODE = "app.namespace";
     public static final String LOOKUP_ACTION = "lookup.do";
     public static final String MULTIPLE_VALUE_LOOKUP_ACTION = "multipleValueLookup.do";
     public static final String LOOKUP_RESULTS_SEQUENCE_NUMBER = "lookupResultsSequenceNumber";

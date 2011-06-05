@@ -115,7 +115,7 @@
 		<property name="nonTransactionalDataSource" ref="dataSource" />
 		<property name="properties">
 			<props>
-				<prop key="service.namespace">KEW</prop>
+				<prop key="application.id">KEW</prop>
 				<prop key="serviceServletUrl">http://localhost:${ksb.testharness.port}/en-test/remoting/</prop>
 			</props>
 		</property>

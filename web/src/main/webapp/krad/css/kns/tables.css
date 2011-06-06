@@ -69,6 +69,13 @@ table.datatable th[scope="row"] {
 	background: url(../../images/th-back.gif); padding:.5em;
 }
 
+table.datatable th[colspan="2"] {
+	text-align:left;
+	background-image:none;
+	background-color:#CCC	
+}
+
+
 .collection-header th[scope="row"] { 
 	text-align: left;
 	vertical-align: middle;

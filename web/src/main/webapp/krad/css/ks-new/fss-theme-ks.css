@@ -7,7 +7,6 @@ a {
 a:hover {
     text-decoration:underline;
 }
-}
 table td, table th {
     vertical-align:top;
     text-align:left;
@@ -98,21 +97,7 @@ table td, table th {
     th.sorting_asc, th.sorting_desc {
         background-color:transparent;
     }
-    /*th.sorting_asc, th.sorting_desc {
-        background-image: url(../../images/pattern_dotted.png);
-    }
-    th.sorting_asc label {
-        background-image:  url(../../images/sort_asc.png);
-        background-repeat: no-repeat;
-        background-position: right;
-    }
-    th.sorting_desc label {
-        background-image: url(../../images/sort_desc.png);
-        background-repeat: no-repeat;
-        background-position: right;
-    }
 
-            */
     .datatable thead tr {
         background-image: url(../../images/pattern_dotted.png);
     }
@@ -137,7 +122,17 @@ table td, table th {
    .display tr.odd td.sorting_1, .display tr.even td.sorting_1, table.display tr.odd, table.display tr.even {
         background-color:#ffffff;
     }
-
+    /* display table */
+    .collection-header h2 {
+        font-family: georgia, serif;
+        font-size: 1.0em;
+    }
+    .wrap {
+        background-color: #fff;
+        border: none;
+        margin-bottom: 12px;
+        padding: 0 12px 4px;
+    }
 /* form attributes */
     .constraint {
         font-size:11px;
@@ -201,7 +196,7 @@ table td, table th {
         clear:both;
         border-top: 2px solid #000;
     }
-    .animated-navigation .fl-font-serif h2 {
+    .animated-navigation .fl-font-serif h2  {
         margin: 0;
         padding: 5px 0 5px 3px;
         font-size: 12px;

@@ -222,8 +222,6 @@ public final class KimConstants {
 		public static final String RESPONSIBILITY_ID = "id";
 		public static final String PERMISSION_ID = "permissionId";
 		public static final String DELEGATION_ID = "delegationId";
-		public static final String RESPONSIBILITY_TEMPLATE_ID = "responsibilityTemplateId";
-		public static final String PERMISSION_TEMPLATE_ID = "permissionTemplateId";
 		public static final String MEMBER_ID = "memberId";
 		public static final String DELEGATION_MEMBER_ID = "delegationMemberId";
 		public static final String ROLE_MEMBER_ID = "roleMemberId";

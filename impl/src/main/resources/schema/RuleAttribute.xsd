@@ -110,12 +110,18 @@
       	</annotation>
       </element>
 
-      <!-- tells the rule system how to draw the rule data collection screen and routing report screens -->
-      <!-- To set the messaging entity.  defaults to 'KEW' (or workflow server if not included) -->
+	  <element name="applicationId" type="c:ShortStringType" minOccurs="0">
+      	<annotation>
+      		<documentation>
+        	 Sets the id of the application which contains the implementation of this rule attribute (in cases where the rule attribute represents a service)
+      		</documentation>
+      	</annotation>
+      </element>
+
       <element name="serviceNamespace" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
-      		 To set the messaging entity.
+      		 DEPRECATED: use applicationId instead
       		</documentation>
       	</annotation>
       </element>

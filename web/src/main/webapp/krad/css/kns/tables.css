@@ -94,6 +94,13 @@ tr .field_attribute.group_docnotes-addField {
  tr .collection-header {
 	color:#000;
 	background-image:none;
-	background-color:#999;
+	background-color:#C3C3C3;
 	padding:0.5em
+}
+#viewpage_div  h3 {
+	background-color:#666;
+	font-weight: bold;
+	color: #FFF;
+	padding: 0.3em 0.5em;
+	border-bottom: 1px solid #999;
 }

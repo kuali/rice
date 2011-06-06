@@ -38,7 +38,7 @@
 	border: 1px solid #610000;
 	background-color:#900;
 	background-image:none;
-	font-weight: bold;
+	/* [disabled]font-weight: bold; */
 	color: #ffffff;
 	text-shadow: none;
 	filter:none;

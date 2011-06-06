@@ -25,6 +25,7 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
+import org.kuali.rice.kim.api.common.template.Template;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -54,7 +55,7 @@ import java.util.List;
 		Permission.Elements.NAMESPACE_CODE,
 		Permission.Elements.NAME,
 		Permission.Elements.DESCRIPTION,
-		Permission.Elements.TEMPLATE_ID,
+		Permission.Elements.TEMPLATE,
         Permission.Elements.ACTIVE,
         Permission.Elements.ATTRIBUTES,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -77,8 +78,8 @@ public final class Permission implements PermissionContract, ModelObjectComplete
     @XmlElement(name = Permission.Elements.DESCRIPTION, required = false)
     private final String description;
 
-    @XmlElement(name = Permission.Elements.TEMPLATE_ID, required = true)
-    private final String templateId;
+    @XmlElement(name = Permission.Elements.TEMPLATE, required = true)
+    private final Template template;
     
     @XmlElementWrapper(name = Elements.ATTRIBUTES, required = false)
     @XmlElement(name = Elements.ATTRIBUTE, required = false)
@@ -106,7 +107,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         this.namespaceCode = null;
         this.name = null;
         this.description = null;
-        this.templateId = null;
+        this.template = null;
         this.attributes = null;
         this.active = false;
         this.versionNumber = Long.valueOf(1L);
@@ -123,7 +124,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         this.namespaceCode = builder.getNamespaceCode();
         this.name = builder.getName();
         this.description = builder.getDescription();
-        this.templateId = builder.getTemplateId(); 
+        this.template = builder.getTemplate().build();
         final List<KimAttributeData> temp = new ArrayList<KimAttributeData>();
         if (!CollectionUtils.isEmpty(builder.getAttributes())) {
             for (KimAttributeData.Builder attribute : builder.getAttributes()) {
@@ -169,11 +170,11 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionContract#getTemplateId()
+	 * @see org.kuali.rice.kim.api.permission.PermissionContract#getTemplate()
 	 */
 	@Override
-	public String getTemplateId() {
-		return templateId;
+	public Template getTemplate() {
+		return template;
 	}
 	
 	/**
@@ -233,31 +234,31 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         private String namespaceCode;
         private String name;
         private String description;
-        private String templateId;
+        private Template.Builder template;
         private List<KimAttributeData.Builder> attributes;
         private Long versionNumber = 1L;
         private String objectId;
         private boolean active;
         
-        private Builder(String id, String namespaceCode, String name, String templateId) {
+        private Builder(String id, String namespaceCode, String name, Template.Builder template) {
             setId(id);
             setNamespaceCode(namespaceCode);
             setName(name);
-            setTemplateId(templateId);
+            setTemplate(template);
         }
 
         /**
          * Creates a Permission with the required fields.
          */
-        public static Builder create(String id, String namespaceCode, String name, String templateId) {
-            return new Builder(id, namespaceCode, name, templateId);
+        public static Builder create(String id, String namespaceCode, String name, Template.Builder template) {
+            return new Builder(id, namespaceCode, name, template);
         }
 
         /**
          * Creates a Permission from an existing {@link PermissionContract}.
          */
         public static Builder create(PermissionContract contract) {
-            Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), contract.getTemplateId());
+            Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), Template.Builder.create(contract.getTemplate()));
             builder.setDescription(contract.getDescription());
             List<KimAttributeData.Builder> attributeBuilders = new ArrayList<KimAttributeData.Builder>();
             if (!CollectionUtils.isEmpty(contract.getAttributes())) {
@@ -320,15 +321,15 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 		}
 
 		@Override
-		public String getTemplateId() {
-			if (StringUtils.isBlank(templateId)) {
-                throw new IllegalArgumentException("templateId is blank");
-            }
-			return templateId;
+		public Template.Builder getTemplate() {
+			return template;
 		}
 		
-		public void setTemplateId(final String templateId) {
-			this.templateId = templateId;
+		public void setTemplate(final Template.Builder template) {
+		    if (template == null) {
+                throw new IllegalArgumentException("template is null");
+            }
+            this.template = template;
 		}
 		
 		@Override
@@ -394,7 +395,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         static final String NAMESPACE_CODE = "namespaceCode";
         static final String NAME = "name";
         static final String DESCRIPTION = "description";
-        static final String TEMPLATE_ID = "templateId"; 
+        static final String TEMPLATE = "template";
         static final String ATTRIBUTES = "attributes";
         static final String ATTRIBUTE = "attribute";
         static final String ACTIVE = "active";

@@ -20,17 +20,18 @@ import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.kim.api.permission.Permission
 import org.kuali.rice.kim.api.type.KimType
+import org.kuali.rice.kim.api.common.template.Template
 
 class PermissionBoTest {
 	
 	private static final String ID = "50"
 	private static final String NAMESPACE_CODE = "KUALI"
 	private static final String NAME = "PermissionName"
-	private static final String TEMPLATE_ID = "7317791973"
+	private static final Template.Builder TEMPLATE = PermissionTemplateBoTest.create()
 	
 	@Test
 	public void testNotEqualsWithPermission() {
-    Permission immutable = Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).build()
+    Permission immutable = Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE).build()
     PermissionBo bo = PermissionBo.from(immutable)
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

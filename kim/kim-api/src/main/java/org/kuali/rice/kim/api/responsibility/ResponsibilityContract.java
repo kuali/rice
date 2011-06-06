@@ -62,7 +62,7 @@ public interface ResponsibilityContract extends Versioned, GloballyUnique, Inact
    /** 
 	 * Attributes for a Permission.
 	 * 
-	 * @ return attributes
+	 * @return attributes
 	 */
     Attributes getAttributes();
 }

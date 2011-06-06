@@ -29,10 +29,14 @@ class PermissionTemplateBoTest {
 		
 	@Test
 	public void testNotEqualsWithKimPermissionTemplate() {
-    Template immutable = Template.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID).build()
+    Template immutable = create().build()
     PermissionTemplateBo bo = PermissionTemplateBo.from(immutable)
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))
     Assert.assertEquals(immutable, PermissionTemplateBo.to(bo))
+    }
+
+    static Template.Builder create() {
+        return Template.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID)
     }
 }

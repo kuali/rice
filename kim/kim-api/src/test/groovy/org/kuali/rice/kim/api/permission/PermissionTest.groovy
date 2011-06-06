@@ -24,6 +24,8 @@ import org.kuali.rice.kim.api.common.attribute.KimAttribute
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.api.type.KimType
+import org.kuali.rice.kim.api.common.template.Template
+import org.kuali.rice.kim.api.common.template.TemplateTest
 
 class PermissionTest {
 
@@ -35,7 +37,7 @@ class PermissionTest {
 	private static final String NAMESPACE_CODE = "KUALI"
 	private static final String NAME = "PermissionName"
 	private static final String DESCRIPTION = "Some Permission Description"
-	private static final String TEMPLATE_ID = "7317791873"
+	private static final Template.Builder TEMPLATE = Template.Builder.create(TemplateTest.create());
 
 	private static final String ATTRIBUTES_1_ID = "1"
 	private static final String ATTRIBUTES_1_PERMISSION_ID = "50"
@@ -72,7 +74,16 @@ class PermissionTest {
 			<namespaceCode>${NAMESPACE_CODE}</namespaceCode>
 			<name>${NAME}</name>
 			<description>${DESCRIPTION}</description>
-			<templateId>${TEMPLATE_ID}</templateId>
+			<template>
+			    <id>${TemplateTest.ID}</id>
+			    <namespaceCode>${TemplateTest.NAMESPACE_CODE}</namespaceCode>
+			    <name>${TemplateTest.NAME}</name>
+			    <description>${TemplateTest.DESCRIPTION}</description>
+			    <kimTypeId>${TemplateTest.KIM_TYPE_ID}</kimTypeId>
+			    <active>${TemplateTest.ACTIVE}</active>
+			    <versionNumber>${TemplateTest.VERSION_NUMBER}</versionNumber>
+			    <objectId>${TemplateTest.OBJECT_ID}</objectId>
+			</template>
 			<attributes>
 			    <attribute>
 	                <id>${ATTRIBUTES_1_ID}</id>
@@ -105,22 +116,22 @@ class PermissionTest {
 	
     @Test
     void happy_path() {
-        Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID)
+        Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE)
     }
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_null() {
-		Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).setVersionNumber(null);
+		Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_less_than_1() {
-		Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).setVersionNumber(-1);
+		Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(-1);
 	}
 	
 	@Test
 	void test_copy() {
-		def o1b = Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID)
+		def o1b = Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE)
 		o1b.description = DESCRIPTION
 
 		def o1 = o1b.build()
@@ -139,7 +150,7 @@ class PermissionTest {
 	  Permission permission = this.create()
 	  marshaller.marshal(permission,sw)
 	  String xml = sw.toString()
-
+      println(xml)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
 	  Object actual = unmarshaller.unmarshal(new StringReader(xml))
 	  Object expected = unmarshaller.unmarshal(new StringReader(XML))
@@ -152,7 +163,7 @@ class PermissionTest {
 			String getNamespaceCode() {PermissionTest.NAMESPACE_CODE}
 			String getName() {PermissionTest.NAME}
 			String getDescription() {PermissionTest.DESCRIPTION}
-			String getTemplateId() {PermissionTest.TEMPLATE_ID}
+			Template getTemplate() {PermissionTest.TEMPLATE.build()}
 			List<KimAttributeData> getAttributes() {[
 				KimAttributeData.Builder.create(new KimAttributeDataContract() {
 					 String getId() {PermissionTest.ATTRIBUTES_1_ID}

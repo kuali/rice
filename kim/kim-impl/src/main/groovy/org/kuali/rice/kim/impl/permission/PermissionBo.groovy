@@ -69,7 +69,11 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
 	@OneToMany(targetEntity=RolePermissionBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
 	List<RolePermissionBo> rolePermissions
-		
+
+    PermissionTemplateBo getTemplate() {
+        return template;
+    }
+
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
@@ -99,7 +103,8 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         bo.name = im.name
         bo.description = im.description
         bo.active = im.active
-        bo.templateId = im.templateId
+        bo.templateId = im.template.getId()
+        bo.template = PermissionTemplateBo.from(im.template)
         bo.attributes = im.attributes.collect {
             PermissionAttributeBo.from(it)
         }

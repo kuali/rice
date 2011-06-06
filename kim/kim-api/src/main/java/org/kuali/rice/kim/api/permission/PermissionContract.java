@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
+import org.kuali.rice.kim.api.common.template.TemplateContract;
 
 import java.util.List;
 
@@ -54,11 +55,11 @@ public interface PermissionContract extends Versioned, GloballyUnique, Inactivat
 	String getDescription();
 
     /**
-     * The Template ID referenced by the Permission.
-     * 
+     * The Template referenced by the Permission.
+     *
      * @return templateId
      */
-	String getTemplateId();   
+	TemplateContract getTemplate();
 	
    /** 
 	 * List of Attributes for a Permission. 

@@ -29,7 +29,6 @@ import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
 import org.kuali.rice.core.api.mo.common.Attributes
-import org.kuali.rice.core.util.AttributeSet
 import org.kuali.rice.kim.api.responsibility.Responsibility
 import org.kuali.rice.kim.api.responsibility.ResponsibilityContract
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
@@ -77,7 +76,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 
     @OneToMany(targetEntity=ResponsibilityAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
-    List<ResponsibilityAttributeBo> responsibilityAttributes
+    List<ResponsibilityAttributeBo> attributeDetails
 
     @OneToMany(targetEntity=RoleResponsibilityBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
@@ -86,7 +85,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
     Attributes attributes
 
     Attributes getAttributes() {
-        return responsibilityAttributes != null ? KimAttributeDataBo.toAttributes(responsibilityAttributes) : attributes
+        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 
     /**
@@ -133,13 +132,13 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 
     //FIXME: temporary methods
     String getDetailObjectsValues(){
-		return responsibilityAttributes.collect {it.attributeValue}.join(",")
+		return attributeDetails.collect {it.attributeValue}.join(",")
 	}
 
     public String getDetailObjectsToDisplay() {
 		final KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 
-        return responsibilityAttributes.collect {
+        return attributeDetails.collect {
             getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(it.kimAttributeId)) + ":" + it.attributeValue
         }.join(",")
 	}

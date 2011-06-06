@@ -4,19 +4,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.CriteriaValue;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
-import org.kuali.rice.core.api.criteria.MultiValuedPredicate;
 import org.kuali.rice.core.api.criteria.Predicate;
-import org.kuali.rice.core.api.criteria.PropertyPathPredicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.criteria.SingleValuedPredicate;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.api.common.delegate.Delegate;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
@@ -44,9 +41,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
@@ -74,7 +68,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         }
         List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
-        bo.setResponsibilityAttributes(attrBos);
+        bo.setAttributeDetails(attrBos);
         businessObjectService.save(bo);
     }
 
@@ -90,7 +84,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
-        bo.getResponsibilityAttributes().addAll(attrBos);
+        bo.getAttributeDetails().addAll(attrBos);
         businessObjectService.save(bo);
     }
 
@@ -312,7 +306,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         }
 
         LookupCustomizer.Builder<ResponsibilityBo> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(RespAttributeTransform.INSTANCE);
+        lc.setPredicateTransform(AttributeTransform.getInstance());
 
         GenericQueryResults<ResponsibilityBo> results = criteriaLookupService.lookup(ResponsibilityBo.class, queryByCriteria, lc.build());
 
@@ -327,46 +321,6 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         builder.setResults(ims);
         return builder.build();
-    }
-
-    private static class RespAttributeTransform implements LookupCustomizer.Transform<Predicate, Predicate> {
-
-        private static final LookupCustomizer.Transform<Predicate, Predicate> INSTANCE = new RespAttributeTransform();
-
-        @Override
-        public Predicate apply(final Predicate input) {
-            if (input instanceof PropertyPathPredicate) {
-                String pp = ((PropertyPathPredicate) input).getPropertyPath();
-                if (isAttributesPredicate(pp)) {
-                    final String attributeName = pp.substring(pp.indexOf('[') + 1, pp.indexOf(']'));
-
-                    final Predicate attrValue;
-                    if (input instanceof SingleValuedPredicate) {
-                        final CriteriaValue<?> value = ((SingleValuedPredicate) input).getValue();
-                        attrValue = dynConstruct(input.getClass().getSimpleName(), "responsibilityAttributes.attributeValue", value.getValue());
-                    } else if (input instanceof MultiValuedPredicate) {
-                        final Set<? extends CriteriaValue<?>> values = ((MultiValuedPredicate) input).getValues();
-                        List<Object> l = new ArrayList<Object>();
-                        for (CriteriaValue<?> v : values) {
-                            l.add(v.getValue());
-                        }
-
-                        attrValue = dynConstruct(input.getClass().getSimpleName(), "responsibilityAttributes.attributeValue", l.toArray());
-                    } else {
-                        attrValue = dynConstruct(input.getClass().getSimpleName(), "responsibilityAttributes.attributeValue");
-                    }
-                    return and(equal("responsibilityAttributes.kimAttribute.attributeName", attributeName), attrValue);
-                }
-            }
-
-            return input;
-        }
-
-        private boolean isAttributesPredicate(String pp) {
-            Pattern pattern = Pattern.compile("^attributes\\[\\w*\\]$");
-            Matcher matcher = pattern.matcher(pp);
-            return matcher.matches();
-        }
     }
 
     @Override

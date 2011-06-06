@@ -173,7 +173,7 @@ public class ClientValidationUtils {
 		
 		return "\njQuery.validator.addMethod(\"" + key
 				+ "\", function(value, element) {\n" + " return this.optional(element) || "
-				+ validCharactersConstraint.getJsValue() + ".test(value); " + "}, \""
+				+ "/" + validCharactersConstraint.getValue() + "/.test(value); " + "}, \""
 				+ message + "\");";
 	}
 	
@@ -394,7 +394,7 @@ public class ClientValidationUtils {
 			else if (constraint instanceof ValidCharactersConstraint) {
 				String regexMethod = "";
 				String methodName = "";
-				if(StringUtils.isNotEmpty(((ValidCharactersConstraint)constraint).getJsValue())) {
+				if(StringUtils.isNotEmpty(((ValidCharactersConstraint)constraint).getValue())) {
 					regexMethod = ClientValidationUtils.getRegexMethod(field, (ValidCharactersConstraint) constraint) + "\n";
 					methodName = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
 					methodKey++;
@@ -764,14 +764,14 @@ public class ClientValidationUtils {
 		}
 
 		if (field.getValidCharactersConstraint() != null && field.getValidCharactersConstraint().getApplyClientSide()) {
-			if(StringUtils.isNotEmpty(field.getValidCharactersConstraint().getJsValue())) {
-				// set jsValue takes precedence
+			if(StringUtils.isNotEmpty(field.getValidCharactersConstraint().getValue())) {
+				// set regex value takes precedence
 				addScriptToPage(view, field, ClientValidationUtils.getRegexMethod(field, field.getValidCharactersConstraint()));
 				field.getControl().addStyleClass("validChar-" + field.getBindingInfo().getBindingPath()+ methodKey);
 				methodKey++;
 			}
 			else {
-				//blindly assume that if there is no js value defined that there must be a method by this name
+				//blindly assume that if there is no regex value defined that there must be a method by this name
 				if(StringUtils.isNotEmpty(field.getValidCharactersConstraint().getLabelKey())){
 					field.getControl().addStyleClass(field.getValidCharactersConstraint().getLabelKey());
 				}

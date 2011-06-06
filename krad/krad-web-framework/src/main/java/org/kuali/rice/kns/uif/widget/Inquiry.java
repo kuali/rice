@@ -25,9 +25,7 @@ import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.core.Component;
-import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.LinkField;
 import org.kuali.rice.kns.uif.util.LookupInquiryUtils;
@@ -114,17 +112,17 @@ public class Inquiry extends WidgetBase {
         String propertyName = field.getBindingInfo().getBindingName();
 
         // if class and parameters configured, build link from those
-        if (StringUtils.isNotBlank(dataObjectClassName) && (inquiryParameters != null) && !inquiryParameters.isEmpty()) {
+        if (StringUtils.isNotBlank(getDataObjectClassName()) && (getInquiryParameters() != null) && !getInquiryParameters().isEmpty()) {
             Class<?> inquiryObjectClass = null;
             try {
-                inquiryObjectClass = Class.forName(dataObjectClassName);
+                inquiryObjectClass = Class.forName(getDataObjectClassName());
             }
             catch (ClassNotFoundException e) {
-                LOG.error("Unable to get class for: " + dataObjectClassName);
+                LOG.error("Unable to get class for: " + getDataObjectClassName());
                 throw new RuntimeException(e);
             }
 
-            buildInquiryLink(parentObject, propertyName, inquiryObjectClass, inquiryParameters);
+            buildInquiryLink(parentObject, propertyName, inquiryObjectClass, getInquiryParameters());
         }
         // get inquiry class and parameters from view helper
         else {
@@ -190,21 +188,21 @@ public class Inquiry extends WidgetBase {
             urlParameters.put(inquiryParameter.getValue(), parameterValue);
         }
         
-        String inquiryUrl = UrlFactory.parameterizeUrl(baseInquiryUrl, urlParameters);
-        inquiryLinkField.setHrefText(inquiryUrl);
+        String inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
+        getInquiryLinkField().setHrefText(inquiryUrl);
         	        
         // get inquiry link text
         // TODO: should we really put the link label here or just wrap the
         // written value?
         Object fieldValue = ObjectPropertyUtils.getPropertyValue(dataObject, propertyName);
         if (fieldValue != null) {
-            inquiryLinkField.setLinkLabel(fieldValue.toString());
+        	getInquiryLinkField().setLinkLabel(fieldValue.toString());
         }
 
         // set inquiry title
         String linkTitle = createTitleText(inquiryObjectClass);
-        linkTitle = LookupInquiryUtils.getTitleText(linkTitle, inquiryObjectClass, inquiryParameters);
-        inquiryLinkField.setTitle(linkTitle);
+        linkTitle = LookupInquiryUtils.getTitleText(linkTitle, inquiryObjectClass, getInquiryParameters());
+        getInquiryLinkField().setTitle(linkTitle);
 
         setRender(true);
     }
@@ -241,7 +239,7 @@ public class Inquiry extends WidgetBase {
     public List<Component> getNestedComponents() {
         List<Component> components = super.getNestedComponents();
 
-        components.add(inquiryLinkField);
+        components.add(getInquiryLinkField());
 
         return components;
     }

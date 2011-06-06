@@ -91,8 +91,8 @@ public class MaintenanceView extends DocumentView {
                     + getDataObjectClassName().getName());
         }
 
-        getAbstractTypeClasses().put(getDefaultBindingObjectPath(), dataObjectClassName);
-        getAbstractTypeClasses().put(getOldObjectBindingPath(), dataObjectClassName);
+        getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
+        getAbstractTypeClasses().put(getOldObjectBindingPath(), getDataObjectClassName());
     }
 
     /**

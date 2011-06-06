@@ -394,7 +394,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 				validCharactersConstraint = new ValidCharactersConstraint();
 			}
 			
-			validCharactersConstraint.setValue(new StringBuilder().append("regex:").append(validationPattern.getRegexPattern()).toString());
+			validCharactersConstraint.setValue(new StringBuilder().append(validationPattern.getRegexPattern()).toString());
 		}
 	}
 

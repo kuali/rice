@@ -119,15 +119,6 @@ public class AlphaNumericPatternConstraint extends ValidCharactersPatternConstra
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersPatternConstraint#getJsRegexString()
-	 */
-	@Override
-	protected String getJsRegexString() {
-		//regex is the same in js for this one
-		return getRegexString();
-	}
- 
-	/**
 	 * @return the allowWhitespace
 	 */
 	public boolean isAllowWhitespace() {

@@ -33,39 +33,17 @@ public abstract class ValidCharactersPatternConstraint extends ValidCharactersCo
     public void setValue(String value) {
     	super.setValue(value);
     }
-    /**
-     * Warning: This value should NOT be set on ValidCharactersPatternConstraints as the value is built dynamically from the
-     * flags set on the constraint - if this value IS set it will override any automatic generation and only
-     * use that which was set through this method for client side validation
-     * 
-     * @see org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint#setJsValue(java.lang.String)
-     */
-    @Override
-    public void setJsValue(String jsValue) {
-    	super.setJsValue(jsValue);
-    }
-    
+
     /**
      * @see org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint#getValue()
      */
     @Override
     public String getValue() {
     	if(StringUtils.isEmpty(value)){
-    		return "regex:^" + getRegexString() + "*$";
+    		return "^" + getRegexString() + "*$";
     	}
     	return value;
 
-    }
-    
-    /**
-     * @see org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint#getJsValue()
-     */
-    @Override
-	public String getJsValue() {
-    	if(StringUtils.isEmpty(jsValue)){
-	        return "/^" + getJsRegexString() + "*$/";
-    	}
-    	return jsValue;
     }
     
 	/**
@@ -76,13 +54,4 @@ public abstract class ValidCharactersPatternConstraint extends ValidCharactersCo
 	 */
 	abstract protected String getRegexString();
 	
-	/**
-	 * This method returns a string representing a <b>js</b> regex with characters to match, this string should not
-	 * include the start(/^) and end($/) symbols or any length related symbols (*, {0,}, etc).
-	 * 
-	 * This may be the same value as getRegexString()
-	 * 
-	 * @return
-	 */
-	abstract protected String getJsRegexString();
 }

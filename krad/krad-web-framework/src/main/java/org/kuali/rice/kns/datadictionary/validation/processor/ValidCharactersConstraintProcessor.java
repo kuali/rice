@@ -172,16 +172,16 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 
         fieldValue.append(ValidationUtils.getString(value));
 
-        int typIdx = validChars.indexOf(":");
-        String processorType = "regex";
-        if (-1 == typIdx) {
-            validChars = "[" + validChars + "]*";
-        } else {
-            processorType = validChars.substring(0, typIdx);
-            validChars = validChars.substring(typIdx + 1);
-        }
+//        int typIdx = validChars.indexOf(":");
+//        String processorType = "regex";
+//        if (-1 == typIdx) {
+//            validChars = "[" + validChars + "]*";
+//        } else {
+//            processorType = validChars.substring(0, typIdx);
+//            validChars = validChars.substring(typIdx + 1);
+//        }
 
-        if ("regex".equalsIgnoreCase(processorType) && !validChars.equals(".*")) {
+//        if ("regex".equalsIgnoreCase(processorType) && !validChars.equals(".*")) {
             if (!fieldValue.toString().matches(validChars)) {
             	ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
             	if (validCharsConstraint.getLabelKey() != null) {
@@ -193,7 +193,7 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
             	constraintValidationResult.setError(RiceKeyConstants.ERROR_INVALID_FORMAT, fieldValue.toString());
             	return constraintValidationResult;
             }
-        }
+//        }
         
         return null;
     }

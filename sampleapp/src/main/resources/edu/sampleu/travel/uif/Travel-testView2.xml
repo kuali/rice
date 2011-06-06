@@ -441,7 +441,7 @@
                         <bean parent="TextControl"/>
                     </property>
                     <property name="validCharactersConstraint">
-                        <bean parent="ValidCharactersConstraint" p:labelKey="yOrN" p:jsValue="/^[ynYN]$/"/>
+                        <bean parent="ValidCharactersConstraint" p:labelKey="yOrN" p:value="^[ynYN]$"/>
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">

@@ -63,7 +63,7 @@ public class InquiryView extends FormView {
     public void performInitialization(View view) {
         super.performInitialization(view);
 
-        getAbstractTypeClasses().put(getDefaultBindingObjectPath(), dataObjectClassName);
+        getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
     }
 
     /**

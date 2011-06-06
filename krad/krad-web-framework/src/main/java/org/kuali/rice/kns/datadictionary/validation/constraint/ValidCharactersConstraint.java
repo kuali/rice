@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlElement;
  * This is a constraint that limits attribute values to some subset of valid characters or to match a particular regular expression.
  * 
  * For example: 
- * - To limit to both upper and lower-case letters, value can be set to "regex:[A-Za-z]*"
- * - To limit to any character except carriage returns and line feeds, value can be set to "regex:[^\n\r]*"
+ * - To limit to both upper and lower-case letters, value can be set to "[A-Za-z]*"
+ * - To limit to any character except carriage returns and line feeds, value can be set to "[^\n\r]*"
  * 
  * Alternative processors can be specified, though the current implementation (1.1) does not handle any processor but regex. 
- * 
+ * TODO delyea: remove jsValue from docs here
  * Note that if jsValue has any value it will always <b>override</b> the following...<b>
  * If the labelKey matches one of the following values:<br>
  * 		email<br>
@@ -38,12 +38,9 @@ import javax.xml.bind.annotation.XmlElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ValidCharactersConstraint extends BaseConstraint {
-	    
+
     @XmlElement
     protected String value;
-    
-    @XmlElement
-    protected String jsValue;
 
     /**
      * The Java based regex for valid characters
@@ -61,27 +58,4 @@ public class ValidCharactersConstraint extends BaseConstraint {
         this.value = value;
     }
 
-	/**
-	 * Javascript version of the regex defined in value.  This does not have to be set if this constraint's
-	 * key maps to one of the default valid character methods contained in jQuery.
-	 * This must be set if there is NO default method that matches the label key and applyClientSide is true.
-	 * 
-	 * This is completely ignored if applyClientSide is set to false.<br>
-	 * This value should include /^ and $/ symbols in the regex, there is no prefix used, unlike the java value.
-	 * 
-	 * @return the jsValue
-	 */
-	public String getJsValue() {
-		return this.jsValue;
-	}
-
-	/**
-	 * @param jsValue the jsValue to set
-	 */
-	public void setJsValue(String jsValue) {
-		this.jsValue = jsValue;
-	}
-    
-    
-    
 }

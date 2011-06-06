@@ -80,7 +80,7 @@
   </bean>
 
   <bean id="Responsibility-detailObjects" parent="Responsibility-detailObjects-parentBean"/>
-  <bean id="Responsibility-detailObjects-parentBean" parent="AttributeDefinition" abstract="true" p:name="responsibilityAttributes" p:label="Responsibility Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
+  <bean id="Responsibility-detailObjects-parentBean" parent="AttributeDefinition" abstract="true" p:name="attributeDetails" p:label="Responsibility Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>

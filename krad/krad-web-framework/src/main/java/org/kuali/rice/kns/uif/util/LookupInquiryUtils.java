@@ -16,13 +16,19 @@
 package org.kuali.rice.kns.uif.util;
 
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.mapping.Component;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
@@ -104,16 +110,21 @@ public class LookupInquiryUtils {
 		}
 		
 		if (CheckboxControl.class.isAssignableFrom(attributeDefinition.getControlField().getClass())) {
-			newControl = generateCustomLookupControlFromExisting(RadioGroupControl.class,
-					attributeDefinition.getControlField());
+			newControl = ComponentFactory.getRadioGroupControl();
+            List<KeyValue> options = new ArrayList<KeyValue>();
+            options.add(new ConcreteKeyValue("Y", "Yes"));
+            options.add(new ConcreteKeyValue("N", "No"));
+            options.add(new ConcreteKeyValue("", "Both"));
+
+            ((RadioGroupControl) newControl).setOptions(options);
 		}
 		else if (TextAreaControl.class.isAssignableFrom(attributeDefinition.getControlField().getClass())) {
-			newControl = generateCustomLookupControlFromExisting(TextControl.class,
-					attributeDefinition.getControlField());
+			newControl = ComponentFactory.getTextControl();
 		}
 		else {
 			newControl = ComponentUtils.copy(attributeDefinition.getControlField(), "");
 		}
+
 		return newControl;
 	}
 

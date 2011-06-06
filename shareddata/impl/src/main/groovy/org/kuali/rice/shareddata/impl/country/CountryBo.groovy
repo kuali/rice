@@ -32,7 +32,7 @@ import javax.persistence.Entity
 import javax.persistence.Table
 
 @Entity
-@Table(name="KR_COUNTRY_T")
+@Table(name="KRLC_CNTRY_T")
 class CountryBo extends PersistableBusinessObjectBase implements Inactivateable, CountryContract, ExternalizableBusinessObject {
 
   @Id

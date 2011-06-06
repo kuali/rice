@@ -157,7 +157,7 @@ delete from krew_usr_optn_t
 -- # KNS Tables #
 -- ##############
 
-delete from krns_campus_t
+delete from KRLC_CMP_T
 /
 
 -- ##############

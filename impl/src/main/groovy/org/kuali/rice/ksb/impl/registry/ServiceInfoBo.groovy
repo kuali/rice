@@ -66,7 +66,7 @@ public class ServiceInfoBo implements ServiceInfoContract, Serializable {
 	@Column(name="INSTN_ID")
 	String instanceId;
 
-	@Column(name="APPL_NMSPC")
+	@Column(name="APPL_ID")
 	String applicationId;
 
 	@Column(name="SRVR_IP")

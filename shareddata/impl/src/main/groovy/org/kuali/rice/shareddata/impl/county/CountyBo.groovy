@@ -34,7 +34,7 @@ import org.kuali.rice.shareddata.impl.state.StateBo
 
 @IdClass(CountyId.class)
 @Entity
-@Table(name = "KR_COUNTY_T")
+@Table(name = "KRLC_CNTY_T")
 class CountyBo extends PersistableBusinessObjectBase implements CountyContract, Inactivateable {
 
     @Id

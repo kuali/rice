@@ -27,12 +27,12 @@ import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 @Entity
-@Table(name="KRNS_NMSPC_T")
+@Table(name="KRCR_NMSPC_T")
 class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceContract, Inactivateable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name="APPL_NMSPC_CD")
+    @Column(name="APPL_ID")
 	def String applicationId;
 
     @Id

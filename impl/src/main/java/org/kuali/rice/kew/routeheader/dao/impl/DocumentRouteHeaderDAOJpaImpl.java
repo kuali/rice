@@ -264,7 +264,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     	String applicationId = null;
     	
     	try {
-            String sql = "SELECT DT.SVC_NMSPC FROM KREW_DOC_TYP_T DT, KREW_DOC_HDR_T DH "+
+            String sql = "SELECT DT.APPL_ID FROM KREW_DOC_TYP_T DT, KREW_DOC_HDR_T DH "+
             	"WHERE DH.DOC_TYP_ID=DT.DOC_TYP_ID AND "+
             	"DH.DOC_HDR_ID=?";
         	

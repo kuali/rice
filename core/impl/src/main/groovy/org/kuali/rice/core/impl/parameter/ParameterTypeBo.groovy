@@ -27,7 +27,7 @@ import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 @Entity
-@Table(name="KRNS_PARM_TYP_T")
+@Table(name="KRCR_PARM_TYP_T")
 public class ParameterTypeBo extends PersistableBusinessObjectBase implements ParameterTypeContract, Inactivateable {
 
     private static final long serialVersionUID = 1L;

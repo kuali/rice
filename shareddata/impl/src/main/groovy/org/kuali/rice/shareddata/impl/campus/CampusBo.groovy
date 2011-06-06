@@ -29,7 +29,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.campus.CampusContract
 
 @Entity
-@Table(name="KRNS_CAMPUS_T")
+@Table(name="KRLC_CMP_T")
 public class CampusBo extends PersistableBusinessObjectBase implements Inactivateable, CampusContract {
 	private static final long serialVersionUID = 787567094298971223L;
 	@Id

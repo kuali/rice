@@ -27,7 +27,7 @@ import org.kuali.rice.shareddata.api.campus.CampusType
 import org.kuali.rice.shareddata.api.campus.CampusTypeContract
 
 @Entity
-@Table(name="KRNS_CMP_TYP_T")
+@Table(name="KRLC_CMP_TYP_T")
 public class CampusTypeBo extends PersistableBusinessObjectBase implements Inactivateable, CampusTypeContract {
 	@Id
 	@Column(name="CAMPUS_TYP_CD")

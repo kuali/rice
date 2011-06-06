@@ -35,7 +35,7 @@ import org.kuali.rice.shareddata.impl.state.StateBo
 
 @IdClass(PostalCodeId.class)
 @Entity
-@Table(name = "KR_STATE_T")
+@Table(name = "KRLC_PSTL_CD_T")
 class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeContract, Inactivateable {
 
     @Id

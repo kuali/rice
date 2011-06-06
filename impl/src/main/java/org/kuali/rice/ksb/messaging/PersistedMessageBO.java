@@ -73,7 +73,7 @@ public class PersistedMessageBO implements PersistedMessage {
 	private String ipNumber;
     @Column(name="SVC_NM")
 	private String serviceName;
-    @Column(name="SVC_NMSPC")
+    @Column(name="APPL_ID")
 	private String applicationId;
     @Column(name="SVC_MTHD_NM")
 	private String methodName;

@@ -33,7 +33,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 @IdClass(ParameterId.class)
 @Entity
-@Table(name = "KRNS_PARM_T")
+@Table(name = "KRCR_PARM_T")
 public class ParameterBo extends PersistableBusinessObjectBase implements ParameterContract {
 
     private static final long serialVersionUID = 1L;
@@ -51,7 +51,7 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
     def String name
 
     @Id
-    @Column(name = "APPL_NMSPC_CD")
+    @Column(name = "APPL_ID")
     def String applicationId
 
     @Column(name = "TXT")

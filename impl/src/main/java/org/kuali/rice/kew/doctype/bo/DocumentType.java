@@ -153,7 +153,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     private String blanketApprovePolicy;
     @Column(name = "RPT_GRP_ID")
     private String reportingWorkgroupId;
-    @Column(name = "SVC_NMSPC")
+    @Column(name = "APPL_ID")
     private String actualApplicationId;
 
 

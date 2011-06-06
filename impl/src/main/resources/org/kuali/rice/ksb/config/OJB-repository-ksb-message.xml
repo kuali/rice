@@ -38,7 +38,7 @@
 		<field-descriptor name="retryCount" column="RTRY_CNT" jdbc-type="INTEGER" />
 		<field-descriptor name="ipNumber" column="IP_NBR" jdbc-type="VARCHAR" />
 		<field-descriptor name="serviceName" column="SVC_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="applicationId" column="SVC_NMSPC" jdbc-type="VARCHAR" />
+		<field-descriptor name="applicationId" column="APPL_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="methodName" column="SVC_MTHD_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="value1" column="APP_VAL_ONE" jdbc-type="VARCHAR" />
 		<field-descriptor name="value2" column="APP_VAL_TWO" jdbc-type="VARCHAR" />

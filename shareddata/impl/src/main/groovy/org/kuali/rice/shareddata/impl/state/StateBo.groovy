@@ -33,7 +33,7 @@ import org.kuali.rice.shareddata.impl.country.CountryBo
 
 @IdClass(StateId.class)
 @Entity
-@Table(name = "KR_STATE_T")
+@Table(name = "KRLC_ST_T")
 class StateBo extends PersistableBusinessObjectBase implements StateContract, Inactivateable {
 
     @Id

@@ -81,7 +81,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase  {
 	@Column(name="XML")
 	private String xmlConfigData;
 
-    @Column(name="SVC_NMSPC")
+    @Column(name="APPL_ID")
 	private String applicationId;
     
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},

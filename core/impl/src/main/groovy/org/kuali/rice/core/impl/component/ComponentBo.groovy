@@ -34,7 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 @IdClass(ComponentId.class)
 @Entity
-@Table(name="KRNS_PARM_DTL_TYP_T")
+@Table(name="KRCR_PARM_DTL_TYP_T")
 public class ComponentBo extends PersistableBusinessObjectBase implements ComponentContract, Inactivateable {
 
     private static final long serialVersionUID = 1L;

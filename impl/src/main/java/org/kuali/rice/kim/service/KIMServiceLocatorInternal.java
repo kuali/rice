@@ -43,7 +43,6 @@ public final class KIMServiceLocatorInternal {
 	public static final String KIM_GROUP_UPDATE_SERVICE = "kimGroupUpdateService";
     public static final String KIM_ROLE_UPDATE_SERVICE = "kimRoleUpdateService";
 	public static final String KIM_PERMISSION_UPDATE_SERVICE = "kimPermissionUpdateService";
-	public static final String KIM_RESPONSIBILITY_UPDATE_SERVICE = "kimResponsibilityUpdateService";
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
     public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";
 	public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";

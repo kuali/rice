@@ -30,7 +30,6 @@ public class KimApiServiceLocator {
 	public static final String KIM_GROUP_UPDATE_SERVICE = "kimGroupUpdateService";
     public static final String KIM_ROLE_UPDATE_SERVICE = "kimRoleUpdateService";
 	public static final String KIM_PERMISSION_UPDATE_SERVICE = "kimPermissionUpdateService";
-	public static final String KIM_RESPONSIBILITY_UPDATE_SERVICE = "kimResponsibilityUpdateService";
     public static final String KIM_TYPE_INFO_SERVICE = "kimTypeInfoService";
 
     static <T> T getService(String serviceName) {

@@ -98,16 +98,6 @@ public class KIMWebServiceConstants {
 		}
 	}
 
-	public static final class ResponsibilityUpdateService {
-		public static final String WEB_SERVICE_NAME = "kimResponsibilityUpdateServiceSOAP";
-		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.ResponsibilityUpdateService";
-		public static final String WEB_SERVICE_PORT = "ResponsibilityUpdateServicePort";
-		
-		private ResponsibilityUpdateService() {
-			throw new UnsupportedOperationException("do not call");
-		}
-	}
-
 	public static final class IdentityService {
 		public static final String WEB_SERVICE_NAME = "kimIdentityServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.entity.services.IdentityService";

@@ -76,7 +76,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	@Override
 	public void saveBusinessObject() {
         if ( LOG.isInfoEnabled() ) {
-            LOG.info( "Attempting to save ReviewResponsibility BO via ResponsibilityUpdateService:" + getBusinessObject() );
+            LOG.info( "Attempting to save ReviewResponsibility BO via ResponsibilityService:" + getBusinessObject() );
         }
         // find the template ID if needed
         if ( reviewTemplate == null ) {

@@ -27,6 +27,10 @@ public final class AttributeTransform implements LookupCustomizer.Transform<Pred
     private static final String ATTRIBUTES_REGEX = "^attributes\\[\\w*\\]$";
     private static final Pattern ATTRIBUTES_PATTERN = Pattern.compile(ATTRIBUTES_REGEX);
 
+    private AttributeTransform() {
+
+    }
+
     @Override
     public Predicate apply(final Predicate input) {
         if (input instanceof PropertyPathPredicate) {

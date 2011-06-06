@@ -13,6 +13,7 @@ package org.kuali.rice.kns.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.uif.control.RadioGroupControl;
 import org.kuali.rice.kns.uif.control.TextControl;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.MessageField;
@@ -24,12 +25,16 @@ import java.util.Map;
 /**
  * Factory class for creating new UIF components from their base definitions
  * in the dictionary
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentFactory {
 
     private static final Map<String, Component> componentDefinitions = new HashMap<String, Component>();
+
+    protected static final String MESSAGE_FIELD = "MessageField";
+    protected static final String TEXT_CONTROL = "TextControl";
+    protected static final String RADIO_GROUP_CONTROL = "RadioGroupControl";
 
     /**
      * Adds a component instance to the factories map of components indexed by the given dictionary id
@@ -38,14 +43,14 @@ public class ComponentFactory {
      * @param component - component instance to add
      */
     public static void addComponentDefinition(String componentDictionaryId, Component component) {
-       componentDefinitions.put(componentDictionaryId, ComponentUtils.copyObject(component));
+        componentDefinitions.put(componentDictionaryId, ComponentUtils.copyObject(component));
     }
 
     /**
      * Returns a new <code>Component</code> instance from the given component id initialized by the
      * corresponding dictionary configuration
      *
-     * @param componentDictionaryId - id for the component to retrieve, note this is the id intially
+     * @param componentDictionaryId - id for the component to retrieve, note this is the id initially
      * assigned and could be the spring generated id (if a static id was not set)
      * @return new component instance or null if no such component definition was found
      */
@@ -58,9 +63,6 @@ public class ComponentFactory {
 
         return null;
     }
-    
-    protected static final String MESSAGE_FIELD = "MessageField";
-    protected static final String TEXT_CONTROL = "TextControl";
 
     public static MessageField getMessageField() {
         return (MessageField) getNewComponentInstance(MESSAGE_FIELD);
@@ -70,29 +72,32 @@ public class ComponentFactory {
         return (TextControl) getNewComponentInstance(TEXT_CONTROL);
     }
 
-    protected static DataDictionaryService getDataDictionaryService() {
-        return KNSServiceLocatorWeb.getDataDictionaryService();
+    public static RadioGroupControl getRadioGroupControl() {
+        return (RadioGroupControl) getNewComponentInstance(RADIO_GROUP_CONTROL);
     }
-    
+
     /**
      * Gets a fresh copy of the component by the id passed in with its lifecycle performed upon it,
      * using the form data passed in.
-     * 
+     *
      * @param form
      * @param id
      * @return
      */
-    public static Component getComponentById(UifFormBase form, String id){
+    public static Component getComponentById(UifFormBase form, String id) {
         String origId = id;
-        
-        if(id.contains("_")){
+
+        if (id.contains("_")) {
             id = StringUtils.substringBefore(id, "_");
         }
         Component component = getNewComponentInstance(id);
-        
+
         form.getView().getViewHelperService().performComponentLifecycle(form, component, origId);
         form.getView().getViewIndex().indexComponent(component);
         return component;
     }
 
+    protected static DataDictionaryService getDataDictionaryService() {
+        return KNSServiceLocatorWeb.getDataDictionaryService();
+    }
 }

@@ -18,13 +18,14 @@ package org.kuali.rice.kim.api.responsibility
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
+
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.common.attribute.KimAttribute
-import org.kuali.rice.kim.api.type.KimType
 import org.kuali.rice.kim.api.common.template.Template
 import org.kuali.rice.kim.api.common.template.TemplateTest
+import org.kuali.rice.kim.api.type.KimType
 
 class ResponsibilityTest {
 
@@ -68,31 +69,28 @@ class ResponsibilityTest {
 	}
 	
 	private static final String XML = """
-        <ns2:responsibility xmlns:ns2="http://rice.kuali.org/kim/v2_0" xmlns="http://rice.kuali.org/core/v2_0">
-          <ns2:id>${ID}</ns2:id>
-          <ns2:namespaceCode>${NAMESPACE_CODE}</ns2:namespaceCode>
-          <ns2:name>${NAME}</ns2:name>
-          <ns2:description>${DESCRIPTION}</ns2:description>
-          <ns2:template>
-            <ns2:id>${TemplateTest.ID}</ns2:id>
-            <ns2:namespaceCode>${TemplateTest.NAMESPACE_CODE}</ns2:namespaceCode>
-            <ns2:name>${TemplateTest.NAME}</ns2:name>
-            <ns2:description>${TemplateTest.DESCRIPTION}</ns2:description>
-            <ns2:kimTypeId>${TemplateTest.KIM_TYPE_ID}</ns2:kimTypeId>
-            <ns2:active>${TemplateTest.ACTIVE}</ns2:active>
-            <ns2:versionNumber>${TemplateTest.VERSION_NUMBER}</ns2:versionNumber>
-            <ns2:objectId>${TemplateTest.OBJECT_ID}</ns2:objectId>
-        </ns2:template>
-          <ns2:active>${ACTIVE}</ns2:active>
-          <ns2:attributes>
-            <item xmlns="" xmlns:ns3="http://rice.kuali.org/core/v2_0">
-              <ns3:key>${KIM_ATTRIBUTE_1_NAME}</ns3:key>
-              <ns3:value>${ATTRIBUTES_1_VALUE}</ns3:value>
-            </item>
-          </ns2:attributes>
-          <ns2:versionNumber>${VERSION_NUMBER}</ns2:versionNumber>
-          <ns2:objectId>${OBJECT_ID}</ns2:objectId>
-        </ns2:responsibility>
+<responsibility xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/kim/v2_0">
+	<id>${ID}</id>
+	<namespaceCode>${NAMESPACE_CODE}</namespaceCode>
+	<name>${NAME}</name>
+	<description>${DESCRIPTION}</description>
+	<template>
+		<id>${TemplateTest.ID}</id>
+		<namespaceCode>${TemplateTest.NAMESPACE_CODE}</namespaceCode>
+		<name>${TemplateTest.NAME}</name>
+		<description>${TemplateTest.DESCRIPTION}</description>
+		<kimTypeId>${TemplateTest.KIM_TYPE_ID}</kimTypeId>
+		<active>${TemplateTest.ACTIVE}</active>
+		<versionNumber>${TemplateTest.VERSION_NUMBER}</versionNumber>
+		<objectId>${TemplateTest.OBJECT_ID}</objectId>
+	</template>
+	<active>${ACTIVE}</active>
+	<attributes>
+		<ns2:entry key="${KIM_ATTRIBUTE_1_NAME}">${ATTRIBUTES_1_VALUE}</ns2:entry>
+	</attributes>
+	<versionNumber>${VERSION_NUMBER}</versionNumber>
+	<objectId>${OBJECT_ID}</objectId>
+</responsibility>
 		"""
 	
     @Test

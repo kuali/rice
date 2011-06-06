@@ -1,12 +1,5 @@
 package org.kuali.rice.core.api.mo.common;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.util.KeyValue;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,16 +10,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.jaxb.StringMapEntry;
+import org.kuali.rice.core.util.jaxb.StringMapEntryList;
+
 /**
  * This is a generic attributes class in rice.  It is essentially a list of key-value
  * pairs where the key & value are strings & the keys are unique.
  */
-@XmlJavaTypeAdapter(value = Attributes.ImmutableKeyValueAttributesAdapter.class)
+@XmlJavaTypeAdapter(Attributes.Adapter.class)
 public final class Attributes implements Serializable {
 
-    private static final Attributes EMPTY = new Attributes(Collections.<String, String>emptyMap());
+    private static final long serialVersionUID = -2804341886674598357L;
 
-    private final HashMap<String, String> keyValues;
+	private static final Attributes EMPTY = new Attributes(Collections.<String, String>emptyMap());
+
+    private final Map<String, String> keyValues;
 
     private final Object lock = new Object();
     private Set<KeyValue> cache;
@@ -217,34 +222,39 @@ public final class Attributes implements Serializable {
     static class Constants {
         final static String[] HASH_CODE_EQUALS_EXCLUDE = {"cache", "lock"};
     }
+    
+    public static class Adapter extends XmlAdapter<StringMapEntryList, Attributes> {
 
-    public static class ImmutableKeyValueAttributesAdapter extends XmlAdapter<ImmutableKeyValue[], Attributes> {
-        @Override
-        public Attributes unmarshal(final ImmutableKeyValue[] vs) {
-            if (vs == null) {
-                return null;
-            }
-            final Map<String, String> m = new HashMap<String, String>();
-            for (ImmutableKeyValue v : vs) {
-                if (v != null) {
-                    m.put(v.getKey(), v.getValue());
-                }
-            }
-            return Attributes.fromMap(m);
-        }
+    	/**
+    	 * @see org.kuali.rice.core.util.jaxb.MapStringStringAdapter#marshal(java.lang.Object)
+    	 */
+    	@Override
+    	public StringMapEntryList marshal(Attributes attributes) throws Exception {
+    		if (attributes == null || attributes.keyValues == null) {
+    			return null;
+    		}
+    		List<StringMapEntry> entries = new ArrayList<StringMapEntry>(attributes.keyValues.size());
+    		for (Map.Entry<String, String> entry : attributes.keyValues.entrySet()) {
+    			entries.add(new StringMapEntry(entry));
+    		}
+    		return new StringMapEntryList(entries);
+    	}
 
-        @Override
-        public ImmutableKeyValue[] marshal(final Attributes vs) {
-            if (vs == null) {
-                return null;
-            }
-            final List<ImmutableKeyValue> c = new ArrayList<ImmutableKeyValue>();
-            for (Map.Entry<String, String> v : vs.toMap().entrySet()) {
-                if (v != null) {
-                    c.add(ImmutableKeyValue.fromMapEntry(v));
-                }
-            }
-            return c.toArray(new ImmutableKeyValue[]{});
-        }
+    	/**
+    	 * @see org.kuali.rice.core.util.jaxb.MapStringStringAdapter#unmarshal(java.util.ArrayList)
+    	 */
+    	@Override
+    	public Attributes unmarshal(StringMapEntryList entries) throws Exception {
+    		if (entries == null || entries.getEntries() == null) {
+    			return null;
+    		}
+    		Map<String, String> resultMap = new HashMap<String, String>();
+    		for (StringMapEntry entry : entries.getEntries()) {
+    			resultMap.put(entry.getKey(), entry.getValue());
+    		}
+    		return new Attributes(resultMap);
+    	}
+
     }
+
 }

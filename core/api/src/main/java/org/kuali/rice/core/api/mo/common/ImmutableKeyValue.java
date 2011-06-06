@@ -1,12 +1,8 @@
 package org.kuali.rice.core.api.mo.common;
 
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.util.KeyValue;
-import org.w3c.dom.Element;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -14,9 +10,14 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.util.KeyValue;
+import org.w3c.dom.Element;
 
 /**
  * An immutable key value class. This class is has a comparison order
@@ -35,7 +36,9 @@ import java.util.Map;
 })
 public class ImmutableKeyValue implements KeyValue, Comparable<KeyValue>{
 
-    @XmlElement(name = Elements.KEY, required = true)
+    private static final long serialVersionUID = -4004980108397166233L;
+
+	@XmlElement(name = Elements.KEY, required = true)
     private final String key;
 
     @XmlElement(name = Elements.VALUE, required = true)

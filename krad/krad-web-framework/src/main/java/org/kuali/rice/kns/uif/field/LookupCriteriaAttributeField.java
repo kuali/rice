@@ -59,10 +59,7 @@ public class LookupCriteriaAttributeField extends AttributeField {
 		
 		// security
 		if (getAttributeSecurity() == null) {
-			setAttributeSecurity(attributeDefinition.getAttributeSecurity());
-		}
-		
-		if (getControl() == null) {
+			//setAttributeSecurity(attributeDefinition.getAttribute== null) {
 		    return;
 		}
 

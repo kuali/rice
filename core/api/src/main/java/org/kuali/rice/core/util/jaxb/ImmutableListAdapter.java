@@ -7,17 +7,21 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Handles JAXB mapping that ensures that any List created from unmarshalled XML will be immutable.
+ * Handles JAXB mapping that ensures that any List created from unmarshalled XML will be an immutable
+ * non-null List reference.
  */
 public class ImmutableListAdapter extends XmlAdapter<Object[], List<?>> {
 
     /**
-     * Returns an immutable List when a List is meant to be unmarshalled from XML.  This is done to ensure service
+     * <p>Returns an immutable List when a List is meant to be unmarshalled from XML.  This is done to ensure service
      * contracts, which are to return immutable objects, also return immutable Lists when an XML sequence is returned
-     * via a remote SOAP call.
+     * via a remote SOAP call.</p>
+     *
+     * <p>If the XML being unmarshalled, represented by the objects parameter, is empty or null then an empty List
+     * is returned.</p>
      *
      * @param objects an array of Objects collected from XML to be transformed into an immutable List
-     * @return An immutable List
+     * @return An immutable List.
      * @throws Exception
      */
     @Override
@@ -30,7 +34,7 @@ public class ImmutableListAdapter extends XmlAdapter<Object[], List<?>> {
      * List is used when marshalling to XML.
      *
      * @param objects
-     * @return The same List object that was passed in
+     * @return An Object[] containing the same contents as the passed in List.
      * @throws Exception
      */
     @Override

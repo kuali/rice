@@ -49,7 +49,7 @@
     </property>
 	<property name="collections">
       <list>
-        <bean parent="CollectionDefinition" p:name="responsibilityAttributes" p:label="Responsibility Detail Values" p:shortLabel="Detail Values" p:elementLabel="Detail Values"/>
+        <bean parent="CollectionDefinition" p:name="attributeDetails" p:label="Responsibility Detail Values" p:shortLabel="Detail Values" p:elementLabel="Detail Values"/>
         <bean parent="CollectionDefinition" p:name="assignedToRoles" p:label="Assigned Roles" p:shortLabel="Assigned Roles" p:elementLabel="Assigned Roles"/>
 
       </list>
@@ -264,7 +264,7 @@
           <property name="inquiryFields">
             <list>
 				<bean parent="InquiryCollectionDefinition">
-	                <property name="attributeName" value="responsibilityAttributes"/>
+	                <property name="attributeName" value="attributeDetails"/>
 	                <property name="businessObjectClass" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo"/>
 	                <property name="numberOfColumns" value="2"/>
 	                <property name="inquiryFields">

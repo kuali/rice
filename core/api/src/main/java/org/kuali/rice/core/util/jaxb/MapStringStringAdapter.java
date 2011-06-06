@@ -53,7 +53,7 @@ public class MapStringStringAdapter extends XmlAdapter<StringMapEntryList, Map<S
 
 	@Override
 	public Map<String, String> unmarshal(StringMapEntryList entryList) throws Exception {
-		if (entryList == null) {
+		if (entryList == null || entryList.getEntries() == null) {
 			return null;
 		}
 		List<StringMapEntry> entries = entryList.getEntries();

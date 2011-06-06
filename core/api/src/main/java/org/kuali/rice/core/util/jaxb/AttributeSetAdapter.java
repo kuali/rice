@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.core.util.jaxb;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -27,33 +29,34 @@ import org.kuali.rice.core.util.AttributeSet;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class AttributeSetAdapter extends XmlAdapter<StringMapEntry[], AttributeSet> {
+public class AttributeSetAdapter extends XmlAdapter<StringMapEntryList, AttributeSet> {
 
 	/**
 	 * @see org.kuali.rice.core.util.jaxb.MapStringStringAdapter#marshal(java.lang.Object)
 	 */
 	@Override
-	public StringMapEntry[] marshal(AttributeSet attributeSet) throws Exception {
-		if(null == attributeSet) return null;
-		StringMapEntry[] entryArray = new StringMapEntry[attributeSet.size()];
-		int i = 0;
-		for (Map.Entry<String, String> e : attributeSet.entrySet()) {
-			entryArray[i] = new StringMapEntry(e);
-			i++;
+	public StringMapEntryList marshal(AttributeSet attributeSet) throws Exception {
+		if (attributeSet == null) {
+			return null;
 		}
-		return entryArray;
+		List<StringMapEntry> entries = new ArrayList<StringMapEntry>(attributeSet.size());
+		for (Map.Entry<String, String> entry : attributeSet.entrySet()) {
+			entries.add(new StringMapEntry(entry));
+		}
+		return new StringMapEntryList(entries);
 	}
 
 	/**
 	 * @see org.kuali.rice.core.util.jaxb.MapStringStringAdapter#unmarshal(java.util.ArrayList)
 	 */
 	@Override
-	public AttributeSet unmarshal(StringMapEntry[] entryArray) throws Exception {
-		if (null == entryArray) return null;
-		AttributeSet resultMap = new AttributeSet(entryArray.length);
-		for (int i = 0; i < entryArray.length; i++) {
-			StringMapEntry stringMapEntry = entryArray[i];
-			resultMap.put(stringMapEntry.getKey(), stringMapEntry.getValue());
+	public AttributeSet unmarshal(StringMapEntryList entries) throws Exception {
+		if (entries == null || entries.getEntries() == null) {
+			return null;
+		}
+		AttributeSet resultMap = new AttributeSet(entries.getEntries().size());
+		for (StringMapEntry entry : entries.getEntries()) {
+			resultMap.put(entry.getKey(), entry.getValue());
 		}
 		return resultMap;
 	}

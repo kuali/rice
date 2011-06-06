@@ -39,7 +39,9 @@ public class ServiceRegistryDaoOjb extends PersistenceBrokerDaoSupport implement
 
 	@Override
 	public ServiceInfoBo getServiceInfo(String serviceId) {
-		return (ServiceInfoBo)getPersistenceBrokerTemplate().getObjectById(ServiceInfoBo.class, serviceId);
+		Criteria crit = new Criteria();
+		crit.addEqualTo("serviceId", serviceId);
+		return (ServiceInfoBo)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ServiceInfoBo.class, crit));
 	}
 
 	@Override
@@ -72,7 +74,9 @@ public class ServiceRegistryDaoOjb extends PersistenceBrokerDaoSupport implement
 	
 	@Override
 	public ServiceDescriptorBo getServiceDescriptor(String serviceDescriptorId) {
-		return (ServiceDescriptorBo)getPersistenceBrokerTemplate().getObjectById(ServiceDescriptorBo.class, serviceDescriptorId);
+		Criteria crit = new Criteria();
+		crit.addEqualTo("id", serviceDescriptorId);
+		return (ServiceDescriptorBo)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ServiceDescriptorBo.class, crit));
 	}
 
 	@Override

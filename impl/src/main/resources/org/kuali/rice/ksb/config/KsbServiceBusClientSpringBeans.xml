@@ -59,6 +59,10 @@
 	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	
+	<bean id="rice.core.config.propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" value="#{T(org.kuali.rice.core.api.config.property.ConfigContext).getCurrentContextConfig().getProperties()}" />
+	</bean>
+	
 	<bean id="rice.ksb.threadPool" class="org.kuali.rice.ksb.messaging.threadpool.KSBThreadPoolImpl" lazy-init="true" />
 	
 	<bean id="rice.ksb.scheduledThreadPool" class="org.kuali.rice.ksb.messaging.threadpool.KSBScheduledThreadPoolExecutor" lazy-init="true" />

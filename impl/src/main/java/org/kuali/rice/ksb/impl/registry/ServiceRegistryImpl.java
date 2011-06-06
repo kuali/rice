@@ -173,28 +173,35 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	}
 
 	@Override
-	public void updateStatus(String serviceId, ServiceEndpointStatus status)
-			throws RiceIllegalArgumentException {
+	public void updateStatus(String serviceId, String status) throws RiceIllegalArgumentException {
 		if (StringUtils.isBlank(serviceId)) {
 			throw new RiceIllegalArgumentException("serviceId cannot be blank");
 		}
 		if (status == null) {
 			throw new RiceIllegalArgumentException("status cannot be null");
 		}
-		serviceRegistryDao.updateStatus(serviceId, status.getCode());
+		try {
+			serviceRegistryDao.updateStatus(serviceId, ServiceEndpointStatus.fromCode(status).getCode());
+		} catch (IllegalArgumentException e) {
+			throw new RiceIllegalArgumentException(e.getMessage());
+		}
 	}
 
 	@Override
-	public void updateStatuses(List<String> serviceIds,
-			ServiceEndpointStatus status) throws RiceIllegalArgumentException {
+	public void updateStatuses(List<String> serviceIds, String status) throws RiceIllegalArgumentException {
 		if (serviceIds == null) {
 			throw new RiceIllegalArgumentException("serviceIds canot be null");
 		}
 		if (status == null) {
 			throw new RiceIllegalArgumentException("status cannot be null");
 		}
-		for (String serviceId : serviceIds) {
-			updateStatus(serviceId, status);
+		try {
+			ServiceEndpointStatus endpointStatus = ServiceEndpointStatus.fromCode(status);
+			for (String serviceId : serviceIds) {
+				updateStatus(serviceId, endpointStatus.getCode());
+			}
+		} catch (IllegalArgumentException e) {
+			throw new RiceIllegalArgumentException(e.getMessage());
 		}
 	}
 
@@ -213,6 +220,8 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 			for (ServiceInfoBo serviceInfoBo : serviceInfoBos) {
 				serviceInfos.add(ServiceInfoBo.to(serviceInfoBo));
 			}
+		} else {
+			return Collections.emptyList();
 		}
 		return Collections.unmodifiableList(serviceInfos);
 	}

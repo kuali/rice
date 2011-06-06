@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -41,11 +43,11 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
 	*/
 	public Map<String,String> convertAttributeKeys(Map<String,String> attributesByName, String namespace) {
 		Map<String,String> attributesById = new HashMap<String,String>();
-		if(attributesByName != null && CollectionUtils.isNotEmpty(attributesByName.keySet())) { 
-			for(String attributeName : attributesByName.keySet()) {
-				String newKey = getKrmsAttributeId(attributeName, namespace);
+		if(attributesByName != null) {
+			for(Map.Entry<String, String> attr : attributesByName.entrySet()) {
+				String newKey = getKrmsAttributeId(attr.getKey(), namespace);
 				if(StringUtils.isNotEmpty(newKey)) {
-					attributesById.put(newKey, attributesByName.get(attributeName));
+					attributesById.put(newKey, attr.getValue());
 				}
 			}
 		}

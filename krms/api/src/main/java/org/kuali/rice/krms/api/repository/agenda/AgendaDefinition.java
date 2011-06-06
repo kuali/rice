@@ -103,7 +103,11 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         this.typeId = builder.getTypeId();
         this.contextId = builder.getContextId();
         this.firstItemId = builder.getFirstItemId();
-        this.attributes = Collections.unmodifiableMap(new HashMap<String, String>(builder.getAttributes()));
+        if (builder.getAttributes() != null){
+        	this.attributes = Collections.unmodifiableMap(new HashMap<String, String>(builder.getAttributes()));
+        } else {
+        	this.attributes = null;
+        }
         this.versionNumber = builder.getVersionNumber();
     }
     

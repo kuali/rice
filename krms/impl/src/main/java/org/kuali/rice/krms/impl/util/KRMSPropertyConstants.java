@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krms.impl.util;
 
-import org.kuali.rice.kns.util.KNSPropertyConstants;
-
 /**
  * This class contains constants associated with the KRMS Repository 
  * 

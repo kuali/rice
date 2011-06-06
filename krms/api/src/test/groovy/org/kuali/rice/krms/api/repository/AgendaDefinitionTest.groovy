@@ -24,7 +24,6 @@ import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaAttribute;
 
 
 /**
@@ -158,7 +157,6 @@ class AgendaDefinitionTest {
 	
 	@Test
 	void test_AgendaDefinition_Builder_create_with_attributes() {
-		Set<AgendaAttribute.Builder> attrSet = new HashSet<AgendaAttribute.Builder>()
 		Map<String,String> myAttrs = new HashMap<String,String>()
 		myAttrs.put(ATTR_NAME_1, ATTR_VALUE_1)
 		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
@@ -168,7 +166,6 @@ class AgendaDefinitionTest {
 	
 	@Test
 	void test_AgendaDefinition_Builder_create_and_build() {
-		Set<AgendaAttribute.Builder> attrSet = new HashSet<AgendaAttribute.Builder>()
 		Map<String,String> myAttrs = new HashMap<String,String>()
 		myAttrs.put(ATTR_NAME_1, ATTR_VALUE_1)
 		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)

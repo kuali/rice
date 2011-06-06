@@ -30,70 +30,59 @@ class RestServiceConfigurationTest {
 	"""
 	
 	private static final String XML_WITH_RESOURCE_CLASS = """
-<ns2:restServiceConfiguration xmlns:ns2="http://rice.kuali.org/ksb/v2_0">
-	<ns2:serviceName>{TEST}myRadService</ns2:serviceName>
-	<ns2:endpointUrl>http://this.is.my.url</ns2:endpointUrl>
-	<ns2:applicationId>TEST</ns2:applicationId>
-	<ns2:serviceVersion>1.0</ns2:serviceVersion>
-	<ns2:type>REST</ns2:type>
-	<ns2:queue>true</ns2:queue>
-	<ns2:busSecurity>false</ns2:busSecurity>
-	<ns2:resourceClass>org.kuali.rice.ksb.api.registry.ServiceRegistry</ns2:resourceClass>
-</ns2:restServiceConfiguration>
-	"""
+<restServiceConfiguration xmlns="http://rice.kuali.org/ksb/v2_0">
+	<serviceName>{TEST}myRadService</serviceName>
+	<endpointUrl>http://this.is.my.url</endpointUrl>
+	<applicationId>TEST</applicationId>
+	<serviceVersion>1.0</serviceVersion>
+	<type>REST</type>
+	<queue>true</queue>
+	<busSecurity>false</busSecurity>
+	<resourceClass>org.kuali.rice.ksb.api.registry.ServiceRegistry</resourceClass>
+</restServiceConfiguration>
+"""
 	
 	private static final String XML_WITH_RESOURCE_TO_CLASSNAME_MAP = """
-<ns2:restServiceConfiguration xmlns:ns2="http://rice.kuali.org/ksb/v2_0">
-	<ns2:serviceName>{TEST}myRadService</ns2:serviceName>
-	<ns2:endpointUrl>http://this.is.my.url</ns2:endpointUrl>
-	<ns2:applicationId>TEST</ns2:applicationId>
-	<ns2:serviceVersion>1.0</ns2:serviceVersion>
-	<ns2:type>REST</ns2:type>
-	<ns2:queue>true</ns2:queue>
-	<ns2:priority>5</ns2:priority>
-	<ns2:retryAttempts>0</ns2:retryAttempts>
-	<ns2:millisToLive>-1</ns2:millisToLive>
-	<ns2:busSecurity>false</ns2:busSecurity>
-	<ns2:resourceClass>org.kuali.rice.ksb.api.bus.support.Resource1</ns2:resourceClass>
-	<ns2:resourceToClassNameMap>
-		<item key="Resource1">
-			<value>org.kuali.rice.ksb.api.bus.support.Resource1</value>
-		</item>
-		<item key="/customResource2Path">
-			<value>org.kuali.rice.ksb.api.bus.support.Resource2</value>
-		</item>
-	</ns2:resourceToClassNameMap>
-</ns2:restServiceConfiguration>
-		"""
+<restServiceConfiguration xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/ksb/v2_0">
+	<serviceName>{TEST}myRadService</serviceName>
+	<endpointUrl>http://this.is.my.url</endpointUrl>
+	<applicationId>TEST</applicationId>
+	<serviceVersion>1.0</serviceVersion>
+	<type>REST</type>
+	<queue>true</queue>
+	<priority>5</priority>
+	<retryAttempts>0</retryAttempts>
+	<millisToLive>-1</millisToLive>
+	<busSecurity>false</busSecurity>
+	<resourceClass>org.kuali.rice.ksb.api.bus.support.Resource1</resourceClass>
+	<resourceToClassNameMap>
+		<ns2:entry key="Resource1">org.kuali.rice.ksb.api.bus.support.Resource1</ns2:entry>
+		<ns2:entry key="/customResource2Path">org.kuali.rice.ksb.api.bus.support.Resource2</ns2:entry>
+	</resourceToClassNameMap>
+</restServiceConfiguration>
+"""
 	
 	private static final String XML_WITH_FUTURE_ELEMENTS = """
-<ns2:restServiceConfiguration xmlns:ns2="http://rice.kuali.org/ksb/v2_0">
-	<ns2:serviceName>{TEST}myRadService</ns2:serviceName>
-	<ns2:endpointUrl>http://this.is.my.url</ns2:endpointUrl>
-	<ns2:applicationId>TEST</ns2:applicationId>
-	<ns2:serviceVersion>1.0</ns2:serviceVersion>
-	<ns2:type>REST</ns2:type>
-	<ns2:queue>true</ns2:queue>
-	<ns2:priority>5</ns2:priority>
-	<ns2:retryAttempts>0</ns2:retryAttempts>
-	<ns2:millisToLive>-1</ns2:millisToLive>
-	<ns2:busSecurity>false</ns2:busSecurity>
-	<ns2:resourceClass>org.kuali.rice.ksb.api.bus.support.Resource1</ns2:resourceClass>
-	<ns2:resourceToClassNameMap>
-		<item key="Resource1">
-			<value>org.kuali.rice.ksb.api.bus.support.Resource1</value>
-		</item>
-		<item key="GroovyObject">
-			<value>groovy.lang.GroovyObject</value>
-		</item>
-		<item key="/customResource2Path">
-			<value>org.kuali.rice.ksb.api.bus.support.Resource2</value>
-		</item>
-	</ns2:resourceToClassNameMap>
+<restServiceConfiguration xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/ksb/v2_0">
+	<serviceName>{TEST}myRadService</serviceName>
+	<endpointUrl>http://this.is.my.url</endpointUrl>
+	<applicationId>TEST</applicationId>
+	<serviceVersion>1.0</serviceVersion>
+	<type>REST</type>
+	<queue>true</queue>
+	<priority>5</priority>
+	<retryAttempts>0</retryAttempts>
+	<millisToLive>-1</millisToLive>
+	<busSecurity>false</busSecurity>
+	<resourceClass>org.kuali.rice.ksb.api.bus.support.Resource1</resourceClass>
+	<resourceToClassNameMap>
+		<ns2:entry key="Resource1">org.kuali.rice.ksb.api.bus.support.Resource1</ns2:entry>
+		<ns2:entry key="/customResource2Path">org.kuali.rice.ksb.api.bus.support.Resource2</ns2:entry>
+	</resourceToClassNameMap>
 	<thisIsTotallyNew brandNew="true">some content from a new version here</thisIsTotallyNew>
 	<unmarshallingShouldStillEatThisJustFine/>
-</ns2:restServiceConfiguration>
-		"""
+</restServiceConfiguration>
+"""
 		
 	private RestServiceDefinition createBaseDefinition() {
 		RestServiceDefinition definition = new RestServiceDefinition();

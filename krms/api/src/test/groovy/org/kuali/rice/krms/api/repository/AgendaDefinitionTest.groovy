@@ -48,23 +48,19 @@ class AgendaDefinitionTest {
 	private static final String ATTR_VALUE_2 = "19900A"
 
 	private static final String SMALL_AGENDA = """
-<ns2:agenda xmlns:ns2="http://rice.kuali.org/krms/repository/v2_0">
-    <ns2:id>AGENDAID001</ns2:id>
-    <ns2:name>Agenda1</ns2:name>
-    <ns2:namespaceCode>KRMS_TEST</ns2:namespaceCode>
-    <ns2:typeId>1234XYZ</ns2:typeId>
-    <ns2:contextId>CONTEXT-001</ns2:contextId>
-    <ns2:firstItemId>ITEM01</ns2:firstItemId>
-    <ns2:attributes>
-        <item key="Fund">
-            <value>19900A</value>
-        </item>
-        <item key="Department">
-            <value>Biology</value>
-        </item>
-    </ns2:attributes>
-</ns2:agenda>
-	"""
+<agenda xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/krms/repository/v2_0">
+    <id>AGENDAID001</id>
+    <name>Agenda1</name>
+    <namespaceCode>KRMS_TEST</namespaceCode>
+    <typeId>1234XYZ</typeId>
+    <contextId>CONTEXT-001</contextId>
+    <firstItemId>ITEM01</firstItemId>
+    <attributes>
+        <ns2:entry key="Fund">19900A</ns2:entry>
+        <ns2:entry key="Department">Biology</ns2:entry>
+    </attributes>
+</agenda>
+"""
 
 
 

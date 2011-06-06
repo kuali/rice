@@ -19,23 +19,35 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "StringMapEntryListType")
 public class StringMapEntryList implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	@XmlElement
-	private List<StringMapEntry> entries;
+	
+	@XmlElement(name = "entry")
+	private final List<StringMapEntry> entries;
 
+	@SuppressWarnings("unused")
+	private StringMapEntryList() {
+		this.entries = null;
+	}
+	
+	public StringMapEntryList(List<StringMapEntry> entries) {
+		this.entries = entries;
+	}
+	
 	/**
 	 * @return the attribute
 	 */
 	public List<StringMapEntry> getEntries() {
 		if (this.entries == null) {
-			this.entries = new ArrayList<StringMapEntry>();
+			return new ArrayList<StringMapEntry>();
 		}
 		return entries;
 	}

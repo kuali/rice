@@ -21,8 +21,8 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * Single String-String key-value pair for 
@@ -42,7 +42,7 @@ public final class StringMapEntry implements Serializable {
 	@XmlAttribute (name = "key")
 	private final String key;
 	
-	@XmlElement(name = "value", required=true)
+	@XmlValue
 	private final String value;
 	
 	/**

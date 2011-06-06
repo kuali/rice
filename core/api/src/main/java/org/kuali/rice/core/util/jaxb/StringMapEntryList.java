@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "StringMapEntryListType")
-public class StringMapEntryList implements Serializable{
+public class StringMapEntryList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	

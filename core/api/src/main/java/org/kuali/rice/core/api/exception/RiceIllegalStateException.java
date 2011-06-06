@@ -9,7 +9,7 @@ import javax.xml.ws.WebFault;
  * This class should be used in place of IllegalArgumentException for all services to be exposed remotely
  * within Rice.
  */
-@WebFault(name = "IllegalStateFault", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_PREFIX)
+@WebFault(name = "IllegalStateFault", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
 @SuppressWarnings("unused")
 public class RiceIllegalStateException extends IllegalStateException {
     public RiceIllegalStateException() {

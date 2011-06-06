@@ -19,7 +19,7 @@ import org.kuali.rice.core.api.CoreConstants;
 
 import javax.xml.ws.WebFault;
 
-@WebFault(targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_PREFIX,name = "RiceRuntimeFault")
+@WebFault(targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0,name = "RiceRuntimeFault")
 public class RiceRuntimeException extends RuntimeException {
 
 private static final long serialVersionUID = 2012770642382150523L;

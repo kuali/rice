@@ -106,7 +106,8 @@ div.globalbuttons { text-align:center;	padding-top: 10px; padding-bottom: 10px;}
 }
 
 .summary {
-	font-size: 12px;
+	font-size: 10px;
+	color: #333;
 	margin-bottom: 2px;
 	display: block;
 }
@@ -365,3 +366,12 @@ input.amount
  #viewfooter_div  {
 	text-align:center;
 }
+
+
+
+table.datatable th[scope="row"].collection-header {
+	padding: 0em;
+	text-align: left;
+}	
+
+.fl-theme-ks { text-align:center; padding-bottom:1em}

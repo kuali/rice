@@ -188,7 +188,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="ActionField_Small" parent="ActionField_Small-parentBean"/>
   <bean id="ActionField_Small-parentBean" abstract="true" parent="ActionField">
-      <property name="styleClasses" value="ui-priority-primary-sm"/>
+      <property name="styleClasses" value="ui-priority-secondary-sm"/>
   </bean>  
   
   <bean id="ActionField_SmallSecondary" parent="ActionField_SmallSecondary-parentBean"/>

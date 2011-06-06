@@ -90,3 +90,10 @@ table.datatable {
 tr .field_attribute.group_docnotes-addField {
 	background: url(../../images/th-back1.gif) bottom;
 }
+
+ tr .collection-header {
+	color:#000;
+	background-image:none;
+	background-color:#999;
+	padding:0.5em
+}

@@ -46,7 +46,7 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = Parameter.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Parameter.Constants.TYPE_NAME, propOrder = {
-        Parameter.Elements.APPLICATION_CODE,
+        Parameter.Elements.APPLICATION_ID,
         Parameter.Elements.NAMESPACE_CODE,
         Parameter.Elements.COMPONENT_CODE,
         Parameter.Elements.NAME,
@@ -62,8 +62,8 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
 
     private static final long serialVersionUID = 6097498602725305353L;
 
-    @XmlElement(name = Elements.APPLICATION_CODE, required = true)
-    private final String applicationCode;
+    @XmlElement(name = Elements.APPLICATION_ID, required = true)
+    private final String applicationId;
 
     @XmlElement(name = Elements.NAMESPACE_CODE, required = true)
     private final String namespaceCode;
@@ -101,7 +101,7 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
      * This constructor should never be called except during JAXB unmarshalling.
      */
     private Parameter() {
-        this.applicationCode = null;
+        this.applicationId = null;
         this.namespaceCode = null;
         this.componentCode = null;
         this.name = null;
@@ -114,7 +114,7 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
     }
 
     private Parameter(Builder builder) {
-        applicationCode = builder.getApplicationCode();
+        applicationId = builder.getApplicationId();
         namespaceCode = builder.getNamespaceCode();
         componentCode = builder.getComponentCode();
         name = builder.getName();
@@ -128,8 +128,8 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
     }
 
     @Override
-    public String getApplicationCode() {
-        return applicationCode;
+    public String getApplicationId() {
+        return applicationId;
     }
 
     @Override
@@ -184,7 +184,7 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
 
         private static final long serialVersionUID = 7077484401017765844L;
 
-        private String applicationCode;
+        private String applicationId;
         private String namespaceCode;
         private String componentCode;
         private String name;
@@ -195,8 +195,8 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         private Long versionNumber;
         private String objectId;
 
-        private Builder(String applicationCode, String namespaceCode, String componentCode, String name, ParameterType.Builder parameterType) {
-            setApplicationCode(applicationCode);
+        private Builder(String applicationId, String namespaceCode, String componentCode, String name, ParameterType.Builder parameterType) {
+            setApplicationId(applicationId);
             setNamespaceCode(namespaceCode);
             setComponentCode(componentCode);
             setName(name);
@@ -206,15 +206,15 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         /**
          * creates a Parameter with the required fields.
          */
-        public static Builder create(String applicationCode, String namespaceCode, String componentCode, String name, ParameterType.Builder parameterType) {
-            return new Builder(applicationCode, namespaceCode, componentCode, name, parameterType);
+        public static Builder create(String applicationId, String namespaceCode, String componentCode, String name, ParameterType.Builder parameterType) {
+            return new Builder(applicationId, namespaceCode, componentCode, name, parameterType);
         }
 
         /**
          * creates a Parameter from an existing {@link ParameterContract}.
          */
         public static Builder create(ParameterContract contract) {
-            Builder builder = new Builder(contract.getApplicationCode(), contract.getNamespaceCode(), contract.getComponentCode(), contract.getName(), ParameterType.Builder.create(contract.getParameterType()));
+            Builder builder = new Builder(contract.getApplicationId(), contract.getNamespaceCode(), contract.getComponentCode(), contract.getName(), ParameterType.Builder.create(contract.getParameterType()));
             builder.setValue(contract.getValue());
             builder.setDescription(contract.getDescription());
             builder.setEvaluationOperator(contract.getEvaluationOperator());
@@ -223,11 +223,11 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
             return builder;
         }
 
-        public void setApplicationCode(String applicationCode) {
-            if (StringUtils.isBlank(applicationCode)) {
-                throw new IllegalArgumentException("applicationCode is blank");
+        public void setApplicationId(String applicationId) {
+            if (StringUtils.isBlank(applicationId)) {
+                throw new IllegalArgumentException("applicationId is blank");
             }
-            this.applicationCode = applicationCode;
+            this.applicationId = applicationId;
         }
 
         public void setNamespaceCode(String namespaceCode) {
@@ -279,8 +279,8 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         }
 
         @Override
-        public String getApplicationCode() {
-            return applicationCode;
+        public String getApplicationId() {
+            return applicationId;
         }
 
         @Override
@@ -364,7 +364,7 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
      * when this object is marshalled to XML.
      */
     static class Elements {
-        final static String APPLICATION_CODE = "applicationCode";
+        final static String APPLICATION_ID = "applicationId";
         final static String NAMESPACE_CODE = "namespaceCode";
         final static String COMPONENT_CODE = "componentCode";
         final static String NAME = "name";

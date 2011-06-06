@@ -59,14 +59,14 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
      *  <p>
      *     If the parameter does not exist under the application
      *     code, then this method will check if the parameter
-     *     exists under the default rice application code and
+     *     exists under the default rice application id and
      *     will return that parameter.
      * </p>
      *
@@ -74,7 +74,7 @@ public interface ParameterService {
      * @param parameterName the parameter name
      * @return true or false
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      */
     Boolean parameterExists(Class<?> componentClass, String parameterName);
 
@@ -87,14 +87,14 @@ public interface ParameterService {
      *       <li>namespace code: from the passed in namespace code</li>
      *       <li>component code: from the passed in component code</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
      *  <p>
      *     If the parameter does not exist under the application
      *     code, then this method will check if the parameter
-     *     exists under the default rice application code and
+     *     exists under the default rice application id and
      *     will return that parameter.
      * </p>
      *
@@ -103,7 +103,7 @@ public interface ParameterService {
      * @param parameterName the parameter name
      * @return true or false
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      */
     Boolean parameterExists(String namespaceCode, String componentCode, String parameterName);
 
@@ -118,7 +118,7 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -126,7 +126,7 @@ public interface ParameterService {
      * @param parameterName the parameter name
      * @return string value or null
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     String getParameterValueAsString(Class<?> componentClass, String parameterName);
@@ -142,7 +142,7 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -151,7 +151,7 @@ public interface ParameterService {
      * @param defaultValue the value to return is the parameter does not exist.  Can be any string value including null
      * @return string value or null
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     String getParameterValueAsString(Class<?> componentClass, String parameterName, String defaultValue);
@@ -166,7 +166,7 @@ public interface ParameterService {
      *       <li>namespace code: from the passed in namespace code</li>
      *       <li>component code: from the passed in component code</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -175,7 +175,7 @@ public interface ParameterService {
      * @param parameterName the parameter name
      * @return string value or null
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName);
@@ -189,7 +189,7 @@ public interface ParameterService {
      *       <li>namespace code: from the passed in namespace code</li>
      *       <li>component code: from the passed in component code</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -199,7 +199,7 @@ public interface ParameterService {
      * @param defaultValue the value to return is the parameter does not exist.  Can be any string value including null
      * @return string value or null
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName, String defaultValue);
@@ -215,7 +215,7 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -223,7 +223,7 @@ public interface ParameterService {
      * @param parameterName the parameter name
      * @return true, false, null
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName);
@@ -239,7 +239,7 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -248,7 +248,7 @@ public interface ParameterService {
      * @param defaultValue the value to return is the parameter does not exist.  Can be any Boolean value including null
      * @return true, false, or the defaultValue
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName, Boolean defaultValue);
@@ -262,7 +262,7 @@ public interface ParameterService {
      *       <li>namespace code: from the passed in namespace code</li>
      *       <li>component code: from the passed in component code</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -271,7 +271,7 @@ public interface ParameterService {
      * @param parameterName the parameter name
      * @return true, false, null
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName);
@@ -285,7 +285,7 @@ public interface ParameterService {
      *       <li>namespace code: from the passed in namespace code</li>
      *       <li>component code: from the passed in component code</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -295,7 +295,7 @@ public interface ParameterService {
      * @param defaultValue the value to return is the parameter does not exist.  Can be any Boolean value including null
      * @return true, false, or the defaultValue
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName, Boolean defaultValue);
@@ -311,7 +311,7 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -319,7 +319,7 @@ public interface ParameterService {
      * @param parameterName the parameter name
      * @return true or false
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameter(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     Parameter getParameter(Class<?> componentClass, String parameterName);
@@ -333,7 +333,7 @@ public interface ParameterService {
      *       <li>namespace code: from the passed in namespace code</li>
      *       <li>component code: from the passed in component code</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -342,7 +342,7 @@ public interface ParameterService {
      * @param parameterName the parameter name
      * @return true or false
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameter(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     Parameter getParameter(String namespaceCode, String componentCode, String parameterName);
@@ -358,7 +358,7 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -366,7 +366,7 @@ public interface ParameterService {
      * @param parameterName the parameter name
      * @return string values or empty Collection
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     Collection<String> getParameterValuesAsString(Class<?> componentClass, String parameterName);
@@ -382,7 +382,7 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -391,7 +391,7 @@ public interface ParameterService {
      * @param parameterName the parameter name
      * @return string values or empty Collection
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     Collection<String> getParameterValuesAsString(String namespaceCode, String componentCode, String parameterName);
@@ -407,7 +407,7 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -416,7 +416,7 @@ public interface ParameterService {
      * @return string value or null
      * @param subParameterName the subParameter name
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getSubParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
      */
     String getSubParameterValueAsString(Class<?> componentClass, String parameterName, String subParameterName);
@@ -430,7 +430,7 @@ public interface ParameterService {
      *       <li>namespace code: from the passed in namespace code</li>
      *       <li>component code: from the passed in component code</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -440,7 +440,7 @@ public interface ParameterService {
      * @param subParameterName the subParameter name
      * @return string value or null
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getSubParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
      */
     String getSubParameterValueAsString(String namespaceCode, String componentCode, String parameterName, String subParameterName);
@@ -456,7 +456,7 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -465,7 +465,7 @@ public interface ParameterService {
      * @param subParameterName the subParameter name
      * @return string values or empty Collection
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getSubParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
      */
     Collection<String> getSubParameterValuesAsString(Class<?> componentClass, String parameterName, String subParameterName);
@@ -481,7 +481,7 @@ public interface ParameterService {
      *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
      *         annotation on the componentClass</li>
      *       <li>parameter name: from the passed in parameter name</li>
-     *       <li>application code: from the client configuration of the service implementation</li>
+     *       <li>application id: from the client configuration of the service implementation</li>
      *     </ul>
      * </p>
      *
@@ -491,7 +491,7 @@ public interface ParameterService {
      * @param subParameterName the subParameter name
      * @return string values or empty Collection
      * @throws IllegalArgumentException if any arguments are null
-     * @throws IllegalStateException if the application code is not configured correctly
+     * @throws IllegalStateException if the application id is not configured correctly
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getSubParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
      */
     Collection<String> getSubParameterValuesAsString(String namespaceCode, String componentCode, String parameterName, String subParameterName);

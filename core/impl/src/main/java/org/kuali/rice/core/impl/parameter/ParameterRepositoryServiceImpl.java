@@ -48,9 +48,9 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
             throw new RiceIllegalArgumentException("parameter is null");
         }
 
-        final ParameterKey key = ParameterKey.create(parameter.getApplicationCode(), parameter.getNamespaceCode(), parameter.getComponentCode(), parameter.getName());
+        final ParameterKey key = ParameterKey.create(parameter.getApplicationId(), parameter.getNamespaceCode(), parameter.getComponentCode(), parameter.getName());
         final Parameter existing = getParameter(key);
-        if (existing != null && existing.getApplicationCode().equals(parameter.getApplicationCode())) {
+        if (existing != null && existing.getApplicationId().equals(parameter.getApplicationId())) {
             throw new RiceIllegalStateException("the parameter to create already exists: " + parameter);
         }
 
@@ -63,16 +63,16 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
             throw new RiceIllegalArgumentException("parameter is null");
         }
 
-        final ParameterKey key = ParameterKey.create(parameter.getApplicationCode(), parameter.getNamespaceCode(), parameter.getComponentCode(), parameter.getName());
+        final ParameterKey key = ParameterKey.create(parameter.getApplicationId(), parameter.getNamespaceCode(), parameter.getComponentCode(), parameter.getName());
         final Parameter existing = getParameter(key);
         if (existing == null) {
             throw new RiceIllegalStateException("the parameter does not exist: " + parameter);
         }
 
         final Parameter toUpdate;
-        if (!existing.getApplicationCode().equals(parameter.getApplicationCode())) {
+        if (!existing.getApplicationId().equals(parameter.getApplicationId())) {
             final Parameter.Builder builder = Parameter.Builder.create(parameter);
-            builder.setApplicationCode(existing.getApplicationCode());
+            builder.setApplicationId(existing.getApplicationId());
             toUpdate = builder.build();
         } else {
             toUpdate = parameter;
@@ -89,13 +89,13 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
 
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", key.getName());
-        map.put("applicationCode", key.getApplicationCode());
+        map.put("applicationId", key.getApplicationId());
         map.put("namespaceCode", key.getNamespaceCode());
         map.put("componentCode", key.getComponentCode());
         ParameterBo bo =  businessObjectService.findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
 
-        if (bo == null & !KNSConstants.DEFAULT_APPLICATION_CODE.equals(key.getApplicationCode())) {
-            map.put("applicationCode", KNSConstants.DEFAULT_APPLICATION_CODE);
+        if (bo == null & !KNSConstants.DEFAULT_PARAMETER_APPLICATION_ID.equals(key.getApplicationId())) {
+            map.put("applicationId", KNSConstants.DEFAULT_PARAMETER_APPLICATION_ID);
             bo = businessObjectService.findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
         }
 

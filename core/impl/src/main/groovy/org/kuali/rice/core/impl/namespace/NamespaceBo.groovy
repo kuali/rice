@@ -33,7 +33,7 @@ class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceCont
     private static final long serialVersionUID = 1L;
 
     @Column(name="APPL_NMSPC_CD")
-	def String applicationCode;
+	def String applicationId;
 
     @Id
     @Column(name="NMSPC_CD")
@@ -70,7 +70,7 @@ class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceCont
         }
 
         NamespaceBo bo = new NamespaceBo()
-        bo.applicationCode = im.applicationCode
+        bo.applicationId = im.applicationId
         bo.active = im.active
         bo.code = im.code
         bo.name = im.name

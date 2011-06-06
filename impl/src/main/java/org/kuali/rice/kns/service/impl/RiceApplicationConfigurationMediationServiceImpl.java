@@ -59,7 +59,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     	    final String applicationNamespaceCode;
     	    Namespace namespace = nsService.getNamespace(namespaceCode);
     	    if (namespace != null) {
-    	        applicationNamespaceCode = namespace.getApplicationCode();
+    	        applicationNamespaceCode = namespace.getApplicationId();
     	    } else {
     	        applicationNamespaceCode = namespaceCode;
     	    }

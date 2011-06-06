@@ -46,7 +46,7 @@ import org.w3c.dom.Element;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Namespace.Constants.TYPE_NAME, propOrder = {
     Namespace.Elements.CODE,
-    Namespace.Elements.APPLICATION_CODE,
+    Namespace.Elements.APPLICATION_ID,
     Namespace.Elements.NAME,
     Namespace.Elements.ACTIVE,
     CoreConstants.CommonElements.VERSION_NUMBER,
@@ -60,8 +60,8 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 	@XmlElement(name = Elements.CODE, required=true)
     private final String code;
 
-    @XmlElement(name = Elements.APPLICATION_CODE, required=true)
-    private final String applicationCode;
+    @XmlElement(name = Elements.APPLICATION_ID, required=true)
+    private final String applicationId;
 
     @XmlElement(name = Elements.NAME, required=false)
     private final String name;
@@ -84,7 +84,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
      */
     private Namespace() {
     	this.code = null;
-    	this.applicationCode = null;
+    	this.applicationId = null;
     	this.name = null;
     	this.active = true;
         this.versionNumber = null;
@@ -99,7 +99,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 	*/
     private Namespace(Builder builder) {
         code = builder.getCode();
-        applicationCode = builder.getApplicationCode();
+        applicationId = builder.getApplicationId();
         name = builder.getName();
         active = builder.isActive();
         versionNumber = builder.getVersionNumber();
@@ -112,8 +112,8 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 	}
 
     @Override
-	public String getApplicationCode() {
-		return applicationCode;
+	public String getApplicationId() {
+		return applicationId;
 	}
 
     @Override
@@ -144,35 +144,35 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 		private static final long serialVersionUID = -70194982373806749L;
 
 		private String code;
-		private String applicationCode;
+		private String applicationId;
 		private String name;
 		private boolean active;
         private Long versionNumber;
         private String objectId;
 
 		/**
-		 * Constructs a Namespace Builder with the given namespace code and application code.  Defaults the active indicator to true.
+		 * Constructs a Namespace Builder with the given namespace code and application id.  Defaults the active indicator to true.
 		 *
 		 * @param code the namespace code to use when constructing this builder
-		 * @param applicationCode the application code to use when constructing this builder
-		 * @throws IllegalArgumentException if the code or applicationCode are null or blank
+		 * @param applicationId the application id to use when constructing this builder
+		 * @throws IllegalArgumentException if the code or applicationId are null or blank
 		 */
-        private Builder(String code, String applicationCode) {
+        private Builder(String code, String applicationId) {
             setCode(code);
-            setApplicationCode(applicationCode);
+            setApplicationId(applicationId);
 			setActive(true);
         }
 
         /**
-         * Creates a builder from the given namespace code and application code.
+         * Creates a builder from the given namespace code and application id.
          * 
 		 * @param code the namespace code to use when constructing this builder
-		 * @param applicationCode the application code to use when constructing this builder
+		 * @param applicationId the application id to use when constructing this builder
 		 * @return an instance of the builder with the given data already populated
-		 * @throws IllegalArgumentException if the code or applicationCode are null or blank
+		 * @throws IllegalArgumentException if the code or applicationId are null or blank
          */
-        public static Builder create(String code, String applicationCode) {
-            return new Builder(code, applicationCode);
+        public static Builder create(String code, String applicationId) {
+            return new Builder(code, applicationId);
         }
 
 		/**
@@ -182,7 +182,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
          * @return an instance of the builder populated with data from the contract
          */
         public static Builder create(NamespaceContract contract) {
-            Builder builder  = new Builder(contract.getCode(), contract.getApplicationCode());
+            Builder builder  = new Builder(contract.getCode(), contract.getApplicationId());
             builder.setName(contract.getName());
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
@@ -204,16 +204,16 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
         }
 
 		/**
-		 * Sets the value of the applicationCode on this builder to the given value.
+		 * Sets the value of the applicationId on this builder to the given value.
 		 *
-		 * @param applicationCode the application code value to set, must not be null or blank
-		 * @throws IllegalArgumentException if the application code is null or blank
+		 * @param applicationId the application id value to set, must not be null or blank
+		 * @throws IllegalArgumentException if the application id is null or blank
 		 */
-        public void setApplicationCode(String applicationCode) {
-            if (StringUtils.isBlank(applicationCode)) {
-                throw new IllegalArgumentException("applicationCode is blank");
+        public void setApplicationId(String applicationId) {
+            if (StringUtils.isBlank(applicationId)) {
+                throw new IllegalArgumentException("applicationId is blank");
             }
-            this.applicationCode = applicationCode;
+            this.applicationId = applicationId;
         }
         
 		public void setVersionNumber(Long versionNumber) {
@@ -248,8 +248,8 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 		}
 
         @Override
-		public String getApplicationCode() {
-			return applicationCode;
+		public String getApplicationId() {
+			return applicationId;
 		}
 
         @Override
@@ -304,7 +304,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 	*/
    static class Elements {
 	   final static String CODE = "code";
-	   final static String APPLICATION_CODE = "applicationCode";
+	   final static String APPLICATION_ID = "applicationId";
 	   final static String NAME = "name";
 	   final static String ACTIVE = "active";
    }

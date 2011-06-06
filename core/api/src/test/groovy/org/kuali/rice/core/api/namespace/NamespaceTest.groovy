@@ -21,13 +21,13 @@ import org.kuali.rice.core.test.JAXBAssert
 
 class NamespaceTest {
 	private static final String CODE = "PC"
-	private static final String APP_CODE = "AC"
+	private static final String APP_ID = "AC"
 	private static final Long VERSION_NUMBER = new Long(1);
 	private static final String OBJECT_ID = UUID.randomUUID();
 	private static final String XML = """
         <namespace xmlns="http://rice.kuali.org/core/v2_0">
             <code>${CODE}</code>
-            <applicationCode>${APP_CODE}</applicationCode>
+            <applicationId>${APP_ID}</applicationId>
             <name>N</name>
             <active>true</active>
             <versionNumber>${VERSION_NUMBER}</versionNumber>
@@ -44,17 +44,17 @@ class NamespaceTest {
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
-        Namespace.Builder.create(null, APP_CODE);
+        Namespace.Builder.create(null, APP_ID);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
-        Namespace.Builder.create("", APP_CODE);
+        Namespace.Builder.create("", APP_ID);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
-        Namespace.Builder.create("  ", APP_CODE);
+        Namespace.Builder.create("  ", APP_ID);
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -74,7 +74,7 @@ class NamespaceTest {
 
     @Test
     void happy_path() {
-        Namespace.Builder.create(CODE, APP_CODE);
+        Namespace.Builder.create(CODE, APP_ID);
     }
 
     @Test
@@ -85,7 +85,7 @@ class NamespaceTest {
     private create() {
 		return Namespace.Builder.create(new NamespaceContract() {
 				def String code = NamespaceTest.CODE
-				def String applicationCode = NamespaceTest.APP_CODE
+				def String applicationId = NamespaceTest.APP_ID
                 def String name = "N"
                 def boolean active = true
                 def Long versionNumber = NamespaceTest.VERSION_NUMBER

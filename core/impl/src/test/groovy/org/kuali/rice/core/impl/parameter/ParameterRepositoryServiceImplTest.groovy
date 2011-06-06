@@ -413,7 +413,7 @@ class ParameterRepositoryServiceImplTest {
                 }).build()
             }
 
-            def String applicationCode = "BORG_HUNT"
+            def String applicationId = "BORG_HUNT"
             def String namespaceCode = "TNG"
             def String componentCode = "C"
             def String value = "true"

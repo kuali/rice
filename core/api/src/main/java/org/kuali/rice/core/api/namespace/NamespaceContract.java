@@ -20,15 +20,15 @@ public interface NamespaceContract extends Versioned, GloballyUnique, Inactivata
     String getCode();
 
     /**
-     * This the application code for the Namespace.  This cannot be null or a blank string.
+     * This the id of the application which owns this Namespace.  This cannot be null or a blank string.
      *
      * <p>
      * It is a way of assigning the Namespace to a specific rice application or rice ecosystem.
      * </p>
      *
-     * @return application code
+     * @return application id
      */
-    String getApplicationCode();
+    String getApplicationId();
 
     /**
      * This the name for the Namespace.  This can be null or a blank string.

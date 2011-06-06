@@ -106,7 +106,7 @@ public class MetadataManagerTest extends KNSTestCase {
 		assertEquals("namespace code was not correctly set", "KR-NS", parameterId.getNamespaceCode());
 		assertEquals("parameter detail type code was not correctly set", "Lookup", parameterId.getComponentCode());
 		assertEquals("parameter name was not correctly set", "MULTIPLE_VALUE_RESULTS_PER_PAGE", parameterId.getName());
-		assertEquals("parameterApplicationNamespaceCode was not correctly set", "KUALI", parameterId.getApplicationCode());
+		assertEquals("parameterApplicationNamespaceCode was not correctly set", "KUALI", parameterId.getApplicationId());
 	}
 	
 	/**

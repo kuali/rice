@@ -29,7 +29,7 @@ import java.util.Collection;
 public class ParameterServiceImpl implements ParameterService {
     private KualiModuleService kualiModuleService;
     private ParameterRepositoryService parameterRepositoryService;
-    private String applicationCode = KNSConstants.DEFAULT_APPLICATION_CODE;
+    private String applicationId = KNSConstants.DEFAULT_PARAMETER_APPLICATION_ID;
 
     @Override
     public void createParameter(Parameter parameter) {
@@ -204,17 +204,17 @@ public class ParameterServiceImpl implements ParameterService {
         this.parameterRepositoryService = parameterRepositoryService;
     }
 
-    public void setApplicationCode(String applicationCode) {
-        this.applicationCode = applicationCode;
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
     }
 
     //utilities that act as a poor-man's closure & higher order functions - these help consolidate validation & construction of parameter keys
     private <R> R exec(Fun<R> fun, String namespaceCode, String componentCode, String parameterName) {
-        if (StringUtils.isBlank(applicationCode)) {
-            throw new IllegalStateException("applicationCode is blank - this service is not configured correctly");
+        if (StringUtils.isBlank(applicationId)) {
+            throw new IllegalStateException("applicationId is blank - this service is not configured correctly");
         }
 
-        return fun.f(ParameterKey.create(applicationCode, namespaceCode, componentCode, parameterName));
+        return fun.f(ParameterKey.create(applicationId, namespaceCode, componentCode, parameterName));
     }
 
     private <R> R exec(Fun<R> fun, Class<?> componentClass, String parameterName) {

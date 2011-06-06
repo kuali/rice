@@ -235,7 +235,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <list>
                <bean parent="AttributeField" p:propertyName="code"/>
                <bean parent="AttributeField" p:propertyName="name"/>
-               <bean parent="AttributeField" p:propertyName="applicationCode"/>
+               <bean parent="AttributeField" p:propertyName="applicationId"/>
                <bean parent="AttributeField" p:propertyName="active"/>
               </list>
             </property>

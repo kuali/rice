@@ -31,7 +31,7 @@
       <list>
         <ref bean="Namespace-code"/>
         <ref bean="Namespace-name"/>
-        <ref bean="Namespace-applicationCode"/>
+        <ref bean="Namespace-applicationId"/>
         <ref bean="Namespace-active"/>
       </list>
     </property>
@@ -81,9 +81,9 @@
   <bean id="Namespace-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active"/>
   </bean>
-  <bean id="Namespace-applicationCode" parent="Namespace-applicationCode-parentBean"/>
+  <bean id="Namespace-applicationId" parent="Namespace-applicationId-parentBean"/>
 
-  <bean id="Namespace-applicationCode-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Namespace-applicationId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Appl Nmspc"/>
     <property name="maxLength" value="20"/>
@@ -95,9 +95,9 @@
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
     <property name="summary" value="The code of the application namespace."/>
-    <property name="name" value="applicationCode"/>
-    <property name="label" value="Application Namespace Code"/>
-    <property name="description" value="The code of the application namespace."/>
+    <property name="name" value="applicationId"/>
+    <property name="label" value="Application ID"/>
+    <property name="description" value="The id of the application which owns this namespace."/>
   </bean>
   
 
@@ -117,7 +117,7 @@
             <list>
               <bean parent="FieldDefinition" p:attributeName="code"/>
               <bean parent="FieldDefinition" p:attributeName="name" p:noInquiry="true"/>
-              <bean parent="FieldDefinition" p:attributeName="applicationCode"/>
+              <bean parent="FieldDefinition" p:attributeName="applicationId"/>
               <bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
           </property>
@@ -147,7 +147,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="code" p:noLookup="true"/>
         <bean parent="FieldDefinition" p:attributeName="name"/>
-        <bean parent="FieldDefinition" p:attributeName="applicationCode"/>
+        <bean parent="FieldDefinition" p:attributeName="applicationId"/>
         <bean parent="FieldDefinition" p:defaultValue="Y" p:attributeName="active"/>
       </list>
     </property>
@@ -155,7 +155,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="code" p:forceInquiry="true"/>
         <bean parent="FieldDefinition" p:attributeName="name"/>
-        <bean parent="FieldDefinition" p:attributeName="applicationCode"/>
+        <bean parent="FieldDefinition" p:attributeName="applicationId"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>

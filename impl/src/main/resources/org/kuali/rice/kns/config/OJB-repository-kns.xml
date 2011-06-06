@@ -155,7 +155,7 @@
 		<field-descriptor name="code" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 
-	    <field-descriptor name="applicationCode" column="APPL_NMSPC_CD" jdbc-type="VARCHAR" />
+	    <field-descriptor name="applicationId" column="APPL_NMSPC_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
@@ -193,7 +193,7 @@
 		<field-descriptor name="description" column="PARM_DESC_TXT" jdbc-type="VARCHAR" />
 		<field-descriptor name="parameterTypeCode" column="PARM_TYP_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="evaluationOperatorCode" column="CONS_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="applicationCode" column="APPL_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
+		<field-descriptor name="applicationId" column="APPL_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 

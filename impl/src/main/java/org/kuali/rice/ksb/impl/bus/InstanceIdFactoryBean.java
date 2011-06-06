@@ -17,7 +17,6 @@ package org.kuali.rice.ksb.impl.bus;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
-import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.util.KSBConstants;
@@ -35,7 +34,7 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
  * </ol>
  * 
  * <p>In the case that the instance id is generated, the application id will be pulled
- * from the configuration context using the {@link Config#APPLICATION_ID} configuration parameter which
+ * from the configuration context using the {@link KSBConstants.Config#INSTANCE_ID} configuration parameter which
  * should always have a value.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)

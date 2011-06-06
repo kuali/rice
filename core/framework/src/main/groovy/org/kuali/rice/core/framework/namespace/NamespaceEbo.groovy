@@ -26,7 +26,7 @@ class NamespaceEbo implements NamespaceContract, Inactivateable, ExternalizableB
 
     private static final long serialVersionUID = 1L;
 
-    def String applicationCode
+    def String applicationId
     def String code
     def String name
     def boolean active
@@ -57,7 +57,7 @@ class NamespaceEbo implements NamespaceContract, Inactivateable, ExternalizableB
         }
 
         NamespaceEbo bo = new NamespaceEbo()
-        bo.applicationCode = im.applicationCode
+        bo.applicationId = im.applicationId
         bo.active = im.active
         bo.code = im.code
         bo.name = im.name

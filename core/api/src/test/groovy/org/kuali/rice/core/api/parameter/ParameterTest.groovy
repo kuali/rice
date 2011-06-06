@@ -27,7 +27,7 @@ import org.kuali.rice.core.test.JAXBAssert
 
 public class ParameterTest {
 
-    private static final String APPLICATION_CODE = "BORG_HUNT";
+    private static final String APPLICATION_ID = "BORG_HUNT";
 	private static final String NAMESPACE_CODE = "TNG";
 	private static final String COMPONENT_CODE = "C";
 	private static final String NAME = "SHIELDS_ON";
@@ -44,7 +44,7 @@ public class ParameterTest {
 
     private static final String XML = """
     <parameter xmlns="http://rice.kuali.org/core/v2_0">
-        <applicationCode>${APPLICATION_CODE}</applicationCode>
+        <applicationId>${APPLICATION_ID}</applicationId>
         <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
         <componentCode>${COMPONENT_CODE}</componentCode>
         <name>${NAME}</name>
@@ -85,57 +85,57 @@ public class ParameterTest {
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
-        Parameter.Builder.create(APPLICATION_CODE, null, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
+        Parameter.Builder.create(APPLICATION_ID, null, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_empty() {
-        Parameter.Builder.create(APPLICATION_CODE, "", COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
+        Parameter.Builder.create(APPLICATION_ID, "", COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_whitespace() {
-        Parameter.Builder.create(APPLICATION_CODE, " ", COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
+        Parameter.Builder.create(APPLICATION_ID, " ", COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_null() {
-        Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, null, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
+        Parameter.Builder.create(APPLICATION_ID, NAMESPACE_CODE, null, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_empty() {
-        Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, "", NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
+        Parameter.Builder.create(APPLICATION_ID, NAMESPACE_CODE, "", NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_whitespace() {
-        Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, " ", NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
+        Parameter.Builder.create(APPLICATION_ID, NAMESPACE_CODE, " ", NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fourth_null() {
-        Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, null, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
+        Parameter.Builder.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, null, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fourth_empty() {
-        Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, "", ParameterType.Builder.create(PARAMETER_TYPE_CODE));
+        Parameter.Builder.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, "", ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fourth_whitespace() {
-        Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, " ", ParameterType.Builder.create(PARAMETER_TYPE_CODE));
+        Parameter.Builder.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, " ", ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fifth_whitespace() {
-        Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, NAME, null);
+        Parameter.Builder.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, NAME, null);
     }
 
     @Test
     void test_copy() {
-        def o1 = Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE)).build();
+        def o1 = Parameter.Builder.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE)).build();
         def o2 = Parameter.Builder.create(o1).build();
 
         Assert.assertEquals(o1, o2);
@@ -143,7 +143,7 @@ public class ParameterTest {
 
     @Test
     void happy_path() {
-        Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
+        Parameter.Builder.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class ParameterTest {
 				def String objectId = ParameterTest.PARAMETER_TYPE_OBJECT_ID
 			}).build()
             }
-            def String applicationCode = ParameterTest.APPLICATION_CODE
+            def String applicationId = ParameterTest.APPLICATION_ID
             def String namespaceCode = ParameterTest.NAMESPACE_CODE
             def String componentCode = ParameterTest.COMPONENT_CODE
             def String value = ParameterTest.VALUE

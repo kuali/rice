@@ -51,7 +51,7 @@
       <list>
         <value>namespaceCode</value>
         <value>componentCode</value>
-        <value>applicationCode</value>
+        <value>applicationId</value>
         <value>name</value>
       </list>
     </property>
@@ -75,7 +75,7 @@
       <list>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="namespaceCode"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="componentCode"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="applicationCode" p:defaultValue="KUALI"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="applicationId" p:defaultValue="KUALI"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name"/>
         <bean parent="MaintainableFieldDefinition" p:required="false" p:name="value"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="description"/>

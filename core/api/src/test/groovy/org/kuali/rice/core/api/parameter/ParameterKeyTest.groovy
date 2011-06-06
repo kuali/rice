@@ -22,14 +22,14 @@ import org.kuali.rice.core.test.JAXBAssert
 class ParameterKeyTest {
         private static final String XML = """
         <parameterKey xmlns="http://rice.kuali.org/core/v2_0">
-            <applicationCode>AC</applicationCode>
+            <applicationId>AC</applicationId>
             <namespaceCode>NC</namespaceCode>
             <componentCode>CC</componentCode>
             <name>N</name>
         </parameterKey>
     """
 
-    private static final String APPLICATION_CODE = "AC"
+    private static final String APPLICATION_ID = "AC"
     private static final String NAMESPACE_CODE = "NC"
     private static final String COMPONENT_CODE = "CC"
     private static final String NAME = "N"
@@ -56,52 +56,52 @@ class ParameterKeyTest {
 
     @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_second_null() {
-        ParameterKey.create(APPLICATION_CODE, null, COMPONENT_CODE, NAME);
+        ParameterKey.create(APPLICATION_ID, null, COMPONENT_CODE, NAME);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_second_empty() {
-        ParameterKey.create(APPLICATION_CODE, "", COMPONENT_CODE, NAME);
+        ParameterKey.create(APPLICATION_ID, "", COMPONENT_CODE, NAME);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_second_whitespace() {
-        ParameterKey.create(APPLICATION_CODE, " ", COMPONENT_CODE, NAME);
+        ParameterKey.create(APPLICATION_ID, " ", COMPONENT_CODE, NAME);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_third_null() {
-        ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, null, NAME);
+        ParameterKey.create(APPLICATION_ID, NAMESPACE_CODE, null, NAME);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_third_empty() {
-        ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, "", NAME);
+        ParameterKey.create(APPLICATION_ID, NAMESPACE_CODE, "", NAME);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_third_whitespace() {
-        ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, " ", NAME);
+        ParameterKey.create(APPLICATION_ID, NAMESPACE_CODE, " ", NAME);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_fourth_null() {
-        ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, null);
+        ParameterKey.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_fourth_empty() {
-        ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, "");
+        ParameterKey.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, "");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_fourth_whitespace() {
-        ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, " ");
+        ParameterKey.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, " ");
     }
 
     @Test
     void happy_path() {
-        ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, NAME);
+        ParameterKey.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, NAME);
     }
 
     @Test
@@ -110,6 +110,6 @@ class ParameterKeyTest {
 	}
 
     private create() {
-		return ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, NAME);
+		return ParameterKey.create(APPLICATION_ID, NAMESPACE_CODE, COMPONENT_CODE, NAME);
 	}
 }

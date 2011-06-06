@@ -29,7 +29,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
  *     the key of a parameter consists of the following pieces:
  *
  *     <ol>
- *         <li>{@link #getApplicationCode() applicationCode}</li>
+ *         <li>{@link #getApplicationId() applicationId}</li>
  *         <li>{@link #getNamespaceCode() namespaceCode}</li>
  *         <li>{@link #getComponentCode() componentCode}</li>
  *         <li>{@link #getName() name}</li>
@@ -41,15 +41,15 @@ import org.kuali.rice.core.api.mo.common.Versioned;
 public interface ParameterContract extends Versioned, GloballyUnique {
 
 	/**
-     * This the application code for the Parameter.  This cannot be null or a blank string.
+     * This is the application id for the Parameter.  This cannot be null or a blank string.
      *
      * <p>
      * It is a way of assigning the Parameter to a specific rice application or rice ecosystem.
      * </p>
      *
-     * @return application code
+     * @return application id
      */
-	String getApplicationCode();
+	String getApplicationId();
 
     /**
      * This is the namespace for the parameter.  This cannot be null or a blank string.

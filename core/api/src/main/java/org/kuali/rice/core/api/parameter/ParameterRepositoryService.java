@@ -54,14 +54,14 @@ public interface ParameterRepositoryService {
      *  <p>
      *     If the parameter does not exist under the application
      *     code passed, then this method will check if the parameter
-     *     exists under the default rice application code and
+     *     exists under the default rice application id and
      *     will update that parameter.
      * </p>
      *
      * @param parameter the parameter to update
      * @throws IllegalArgumentException if the parameter is null
      * @throws IllegalStateException if the parameter does not exist in the system under the
-     * specific application code or default rice application code
+     * specific application id or default rice application id
      */
     @WebMethod(operationName="updateParameter")
     void updateParameter(@WebParam(name = "parameter") Parameter parameter)
@@ -73,7 +73,7 @@ public interface ParameterRepositoryService {
      * <p>
      *     If the parameter does not exist under the application
      *     code passed, then this method will check if the parameter
-     *     exists under the default rice application code and
+     *     exists under the default rice application id and
      *     will return that parameter.
      * </p>
      *
@@ -95,7 +95,7 @@ public interface ParameterRepositoryService {
      *  <p>
      *     If the parameter does not exist under the application
      *     code passed, then this method will check if the parameter
-     *     exists under the default rice application code and
+     *     exists under the default rice application id and
      *     will return that parameter.
      * </p>
      *
@@ -117,7 +117,7 @@ public interface ParameterRepositoryService {
      * <p>
      *     If the parameter does not exist under the application
      *     code passed, then this method will check if the parameter
-     *     exists under the default rice application code and
+     *     exists under the default rice application id and
      *     will return that parameter.
      * </p>
      *
@@ -153,7 +153,7 @@ public interface ParameterRepositoryService {
      * <p>
      *     If the parameter does not exist under the application
      *     code passed, then this method will check if the parameter
-     *     exists under the default rice application code and
+     *     exists under the default rice application id and
      *     will return that parameter.
      * </p>
      *
@@ -189,7 +189,7 @@ public interface ParameterRepositoryService {
      * <p>
      *     If the parameter does not exist under the application
      *     code passed, then this method will check if the parameter
-     *     exists under the default rice application code and
+     *     exists under the default rice application id and
      *     will return that parameter.
      * </p>
      *
@@ -231,7 +231,7 @@ public interface ParameterRepositoryService {
      * <p>
      *     If the parameter does not exist under the application
      *     code passed, then this method will check if the parameter
-     *     exists under the default rice application code and
+     *     exists under the default rice application id and
      *     will return that parameter.
      * </p>
      *

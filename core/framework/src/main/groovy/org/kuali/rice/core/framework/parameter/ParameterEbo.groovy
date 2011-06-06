@@ -28,7 +28,7 @@ class ParameterEbo implements ParameterContract, ExternalizableBusinessObject {
     def String namespaceCode
     def String componentCode
     def String name
-    def String applicationCode
+    def String applicationId
     def String value
     def String description
     def String parameterTypeCode
@@ -74,7 +74,7 @@ class ParameterEbo implements ParameterContract, ExternalizableBusinessObject {
         bo.namespaceCode = im.namespaceCode
         bo.componentCode = im.componentCode
         bo.name = im.name
-        bo.applicationCode = im.applicationCode
+        bo.applicationId = im.applicationId
         bo.value = im.value
         bo.description = im.description
         bo.parameterTypeCode = im.parameterType.code

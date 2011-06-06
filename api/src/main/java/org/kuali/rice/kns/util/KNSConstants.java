@@ -274,7 +274,7 @@ public final class KNSConstants {
     
     public static final String FIELD_NAME_TO_FOCUS_ON_AFTER_SUBMIT = "fieldNameToFocusOnAfterSubmit";
 
-    public static final String DEFAULT_APPLICATION_CODE = "KUALI";
+    public static final String DEFAULT_PARAMETER_APPLICATION_ID = "KUALI";
     public static final String DEFAULT_NAMESPACE = "KUALI";
     public static final String LOOKUP_ACTION = "lookup.do";
     public static final String MULTIPLE_VALUE_LOOKUP_ACTION = "multipleValueLookup.do";

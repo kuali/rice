@@ -52,7 +52,7 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
 
     @Id
     @Column(name = "APPL_NMSPC_CD")
-    def String applicationCode
+    def String applicationId
 
     @Column(name = "TXT")
     def String value
@@ -105,7 +105,7 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
         bo.namespaceCode = im.namespaceCode
         bo.componentCode = im.componentCode
         bo.name = im.name
-        bo.applicationCode = im.applicationCode
+        bo.applicationId = im.applicationId
         bo.value = im.value
         bo.description = im.description
         bo.parameterTypeCode = im.parameterType.code

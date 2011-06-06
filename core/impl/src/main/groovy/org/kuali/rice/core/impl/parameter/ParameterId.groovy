@@ -32,21 +32,21 @@ public class ParameterId implements Serializable {
     @Column(name="PARM_NM")
     def final String name
     @Column(name="APPL_NMSPC_CD")
-    def final String applicationCode
+    def final String applicationId
 
     /** this ctor should never be called.  It is only present for hibernate */
     public ParameterId() {
         namespaceCode = null
         componentCode = null
         name = null
-        applicationCode = null
+        applicationId = null
     }
     
-    public ParameterId(String namespaceCode, String componentCode, String name, String applicationCode) {
+    public ParameterId(String namespaceCode, String componentCode, String name, String applicationId) {
     	this.namespaceCode = namespaceCode
     	this.componentCode = componentCode
     	this.name = name
-    	this.applicationCode = applicationCode
+    	this.applicationId = applicationId
     }
 	
 	@Override

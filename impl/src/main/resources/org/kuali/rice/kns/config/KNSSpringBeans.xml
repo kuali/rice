@@ -854,7 +854,7 @@
 	<bean id="parameterService" class="org.kuali.rice.core.impl.parameter.ParameterServiceImpl">
 		<property name="parameterRepositoryService" ref="parameterRepositoryService" />
 		<property name="kualiModuleService" ref="kualiModuleService" />
-		<property name="applicationCode" value="${application.id}" />
+		<property name="applicationId" value="${application.id}" />
 	</bean>
 
     <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">

@@ -41,7 +41,7 @@ import java.util.Collection;
 @XmlRootElement(name = ParameterKey.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ParameterKey.Constants.TYPE_NAME, propOrder = {
-    ParameterKey.Elements.APPLICATION_CODE,
+    ParameterKey.Elements.APPLICATION_ID,
     ParameterKey.Elements.NAMESPACE_CODE,
     ParameterKey.Elements.COMPONENT_CODE,
     ParameterKey.Elements.NAME,
@@ -51,8 +51,8 @@ public final class ParameterKey implements Serializable {
 
 	private static final long serialVersionUID = -4405355319548951283L;
 
-	@XmlElement(name = Elements.APPLICATION_CODE, required=true)
-	private final String applicationCode;
+	@XmlElement(name = Elements.APPLICATION_ID, required=true)
+	private final String applicationId;
 
 	@XmlElement(name = Elements.NAMESPACE_CODE, required=true)
 	private final String namespaceCode;
@@ -71,7 +71,7 @@ public final class ParameterKey implements Serializable {
      * This constructor should never be called except during JAXB unmarshalling. 
      */
     private ParameterKey() {
-    	this.applicationCode = null;
+    	this.applicationId = null;
     	this.namespaceCode = null;
     	this.componentCode = null;
     	this.name = null;
@@ -80,9 +80,9 @@ public final class ParameterKey implements Serializable {
 	/**
 	 * Constructs a ParameterKey from the given values.
 	 */
-    private ParameterKey(String applicationCode, String namespaceCode, String componentCode, String name) {
-        if (StringUtils.isBlank(applicationCode)) {
-            throw new IllegalArgumentException("applicationCode is blank");
+    private ParameterKey(String applicationId, String namespaceCode, String componentCode, String name) {
+        if (StringUtils.isBlank(applicationId)) {
+            throw new IllegalArgumentException("applicationId is blank");
         }
         if (StringUtils.isBlank(namespaceCode)) {
             throw new IllegalArgumentException("namespaceCode is blank");
@@ -93,7 +93,7 @@ public final class ParameterKey implements Serializable {
 		if (StringUtils.isBlank(name)) {
 			throw new IllegalArgumentException("name is blank");
 		}
-        this.applicationCode = applicationCode;
+        this.applicationId = applicationId;
         this.namespaceCode = namespaceCode;
         this.componentCode = componentCode;
 		this.name = name;
@@ -102,19 +102,19 @@ public final class ParameterKey implements Serializable {
     /**
      * Creates a ParameterKey from the given required values.
      * 
-     * @param applicationCode the application code, cannot be null or blank
+     * @param applicationId the application id, cannot be null or blank
      * @param namespaceCode the namespace code, cannot be null or blank
      * @param componentCode the component code, cannot be null or blank
 	 * @param name the parameter name, cannot be null or blank
      * @return the fully-constructed ParameterKey
      * @throws IllegalArgumentException if any arguments are null or blank
      */
-    public static ParameterKey create(String applicationCode, String namespaceCode, String componentCode, String name) {
-        return new ParameterKey(applicationCode, namespaceCode, componentCode, name);
+    public static ParameterKey create(String applicationId, String namespaceCode, String componentCode, String name) {
+        return new ParameterKey(applicationId, namespaceCode, componentCode, name);
     }
 	
-    public String getApplicationCode() {
-		return applicationCode;
+    public String getApplicationId() {
+		return applicationId;
 	}
 
 	public String getNamespaceCode() {
@@ -158,7 +158,7 @@ public final class ParameterKey implements Serializable {
 	 * when this object is marshalled to XML.
 	 */
 	static class Elements {
-		final static String APPLICATION_CODE = "applicationCode";
+		final static String APPLICATION_ID = "applicationId";
 		final static String NAMESPACE_CODE = "namespaceCode";
 		final static String COMPONENT_CODE = "componentCode";
 		final static String NAME = "name";

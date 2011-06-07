@@ -35,14 +35,18 @@ import org.kuali.rice.ksb.api.KsbApiConstants;
  * application actually wants to connect to the service.
  * 
  * <p>The {@link ServiceInfo} provides two important pieces of information which
- *  help the registry (and the applications which interact with it) understand
- *  who the owner of a service is.  The first of these is the "application id"
- *  which identifies the application which owns the service.  In terms of
- *  Kuali Rice, an "application" is an abstract concept and consist of multiple
- *  instances of an application which are essentially mirrors of each and
- *  publish the same set of services.  Each of these individuals instances of
- *  an application is identified by the "instance id" which is also available
- *  from the {{ServiceInfo}}.
+ * help the registry (and the applications which interact with it) understand
+ * who the owner of a service is.  The first of these is the "application id"
+ * which identifies the application which owns the service.  In terms of
+ * Kuali Rice, an "application" is an abstract concept and consist of multiple
+ * instances of an application which are essentially mirrors of each and
+ * publish the same set of services.  Each of these individuals instances of
+ * an application is identified by the "instance id" which is also available
+ * from the {{ServiceInfo}}.
+ * 
+ * @see ServiceEndpoint
+ * @see ServiceInfo
+ * @see ServiceDescriptor
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -108,21 +112,60 @@ public interface ServiceRegistry {
 	@XmlElement(name = "serviceInfo", required = false)
 	List<ServiceInfo> getAllServices();
 	
+	/**
+	 * Returns an unmodifiable list of {@link ServiceInfo} for all services that
+	 * have an instance id which matches the given instance id, regardless of
+	 * their status.  If there are no services published for the given instance,
+	 * this method should return an empty list.
+	 * 
+	 * @param instanceId the instance id of the services to locate
+	 * @return an unmodifiable listof {{ServiceInfo}} for all services in the
+	 * registry for the given instance id
+	 * 
+	 * @throws RiceIllegalArgumentException if instanceId is a null or blank value
+	 */
 	@WebMethod(operationName = "getAllServicesForInstance")
 	@WebResult(name = "serviceInfos")
 	@XmlElementWrapper(name = "serviceInfos", required = true)
 	@XmlElement(name = "serviceInfo", required = false)
 	List<ServiceInfo> getAllServicesForInstance(@WebParam(name = "instanceId") String instanceId) throws RiceIllegalArgumentException;
 	
+	/**
+	 * Returns the {@link ServiceDescriptor} which has the given id.  If there
+	 * is no descriptor for the id, this method will return null.
+	 * 
+	 * @param serviceDescriptorId
+	 * @return
+	 * @throws RiceIllegalArgumentException
+	 */
 	@WebMethod(operationName = "getServiceDescriptor")
 	@WebResult(name = "serviceDescriptor")
 	@XmlElement(name = "serviceDescriptor", required = false)
 	ServiceDescriptor getServiceDescriptor(@WebParam(name = "serviceDescriptorId") String serviceDescriptorId) throws RiceIllegalArgumentException;
 	
+	/**
+	 * Returns a unmodifiable list of {@link ServiceDescriptor} which match the
+	 * given list of service descriptor ids.  The list that is returned from this
+	 * method may be smaller than the list of ids that were supplied.  This
+	 * happens in cases where a service descriptor for a given id in the list
+	 * could not be found.
+	 * 
+	 * @param serviceDescriptorIds the list of service descriptor ids for which to
+	 * locate the corresponding service descriptor
+	 * 
+	 * @return an unmodifiable list of the service descriptors that could be
+	 * located for the given list of ids.  This list may be smaller than the
+	 * original list of ids that was supplied if the corresponding descriptor
+	 * could not be located for a given id in the registry.  If no service
+	 * descriptors could be located, this method will return an empty list. It
+	 * should never return null. 
+	 * 
+	 * @throws RiceIllegalArgumentException if serviceDescriptorIds is null
+	 */
 	@WebMethod(operationName = "getServiceDescriptors")
 	@WebResult(name = "serviceDescriptors")
 	@XmlElementWrapper(name = "serviceDescriptors", required = true)
-	@XmlElement(name = "serviceDescriptor", required = false)
+	@XmlElement(name = "serviceDescriptor", required = false, nillable = true)
 	List<ServiceDescriptor> getServiceDescriptors(@WebParam(name = "serviceDescriptorId") List<String> serviceDescriptorIds) throws RiceIllegalArgumentException;
 	
 	@WebMethod(operationName = "publishService")

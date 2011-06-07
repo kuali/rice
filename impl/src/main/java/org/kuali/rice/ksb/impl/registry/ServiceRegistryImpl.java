@@ -90,7 +90,9 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		List<ServiceDescriptor> serviceDescriptors = new ArrayList<ServiceDescriptor>();
 		for (String serviceDescriptorId : serviceDescriptorIds) {
 			ServiceDescriptor serviceDescriptor = getServiceDescriptor(serviceDescriptorId);
-			serviceDescriptors.add(serviceDescriptor);
+			if (serviceDescriptor != null) {
+				serviceDescriptors.add(serviceDescriptor);
+			}
 		}
 		return Collections.unmodifiableList(serviceDescriptors);
 	}

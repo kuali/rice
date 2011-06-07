@@ -61,15 +61,37 @@ public class RemoveAndPublishResult implements ModelObjectComplete {
 		this.servicesPublished = servicesPublished;
 	}
 	
+	/**
+	 * Creates a new {@code RemoveAndPublishResult} from the given lists of services removed and published.
+	 * 
+	 * @param servicesRemoved the list of services removed by the operation, can be a null or empty list
+	 * @param servicesPublished the list of services published by the operation, can be a null or empty list
+	 * 
+	 * @return the constructed {@code RemoveAndPublishResult}, should never return null
+	 */
 	public static RemoveAndPublishResult create(List<ServiceEndpoint> servicesRemoved, List<ServiceEndpoint> servicesPublished) {
 		return new RemoveAndPublishResult(new ArrayList<ServiceEndpoint>(servicesRemoved),
 				new ArrayList<ServiceEndpoint>(servicesPublished));
 	}
 
+	/**
+	 * Returns an unmodifiable list of services that were removed as the result
+	 * of a remove-and-publish operation.
+	 * 
+	 * @return an unmodifiable list of removed services, will never be null but
+	 * may be empty if no services were removed
+	 */
 	public List<ServiceEndpoint> getServicesRemoved() {
 		return Collections.unmodifiableList(servicesRemoved);
 	}
 
+	/**
+	 * Returns an unmodifiable list of services that were published as the result
+	 * of a remove-and-publish operation.
+	 * 
+	 * @return an unmodifiable list of published services, will never be null but
+	 * may be empty if no services were published
+	 */
 	public List<ServiceEndpoint> getServicesPublished() {
 		return Collections.unmodifiableList(servicesPublished);
 	}

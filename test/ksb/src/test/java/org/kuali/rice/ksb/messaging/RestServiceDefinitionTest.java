@@ -37,7 +37,6 @@ public class RestServiceDefinitionTest extends KSBTestCase {
     
     private RestServiceDefinition restDefinition;
     private RestServiceDefinition sameExactRestDefinition;
-    private RestServiceDefinition sameFunctionallyRestDefinition;
     private RestServiceDefinition otherRestDefinition;
     private RestServiceDefinition otherNameRestDefinition;
     private RestServiceDefinition otherServiceRestDefinition;
@@ -80,12 +79,7 @@ public class RestServiceDefinitionTest extends KSBTestCase {
         this.sameExactRestDefinition.setLocalServiceName("restServiceName");
         this.sameExactRestDefinition.setResources(sameExactRestResources);
         this.sameExactRestDefinition.validate();
-        
-        this.sameFunctionallyRestDefinition = new RestServiceDefinition();
-        this.sameFunctionallyRestDefinition.setLocalServiceName("restServiceName");
-        this.sameFunctionallyRestDefinition.setResources(functionallySameResources);
-        this.sameFunctionallyRestDefinition.validate();
-        
+                
         this.otherRestDefinition = new RestServiceDefinition();
         this.otherRestDefinition.setLocalServiceName("restServiceName");
         this.otherRestDefinition.setResources(otherRestResources);
@@ -122,11 +116,6 @@ public class RestServiceDefinitionTest extends KSBTestCase {
     @Test
     public void testIsSameSuccessWithDifferentDefinition() throws Exception {
         assertTrue(this.restDefinition.equals(sameExactRestDefinition));
-    }
-    
-    @Test
-    public void testIsSameSuccessWithDifferentDefinitionThatIsFunctionallySame() throws Exception {
-        assertTrue(this.restDefinition.equals(sameFunctionallyRestDefinition));
     }
     
     @Test

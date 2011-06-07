@@ -42,13 +42,13 @@
 
   	     <c:if test="${empty field.alternateDisplayValue}">
   	        <%-- If alternate display value is not present, look for additional property to display --%>
-  	        <c:if test="${not empty field.additionalDisplayAttributeName}">
+  	        <c:if test="${not empty field.additionalDisplayValue}">
   	        	<s:bind path="${field.bindingInfo.bindingPath}">${status.value} - </s:bind>
-  	        	<s:bind path="${field.additionalDisplayAttributeBindingInfo.bindingPath}">${status.value}</s:bind>
+  	        	<c:out value="${field.additionalDisplayValue}"/>
   	        </c:if>
 
   	        <%-- If either alternate value or additional property not preset, display the actual property value --%>
-  	        <c:if test="${empty field.additionalDisplayAttributeName}">
+  	        <c:if test="${empty field.additionalDisplayValue}">
   	     		<s:bind path="${field.bindingInfo.bindingPath}">${status.value}</s:bind>
   	     	</c:if>
   	     </c:if>

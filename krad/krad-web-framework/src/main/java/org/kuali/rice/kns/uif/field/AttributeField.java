@@ -109,6 +109,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 	private BindingInfo additionalDisplayAttributeBindingInfo;
 	
 	private String alternateDisplayValue;
+	private String additionalDisplayValue;
 	
     // widgets
     private Inquiry fieldInquiry;
@@ -168,22 +169,10 @@ public class AttributeField extends FieldBase implements DataBinding {
             constraintMessageField.setMessageText(constraint);
         }
 
-        if (alternateDisplayAttributeBindingInfo != null &&
-                StringUtils.isNotBlank(getAlternateDisplayAttributeName())) {
-            alternateDisplayAttributeBindingInfo.setDefaults(view, getAlternateDisplayAttributeName());
-        }
-
-        if (additionalDisplayAttributeBindingInfo != null &&
-                StringUtils.isNotBlank(getAdditionalDisplayAttributeName())) {
-            additionalDisplayAttributeBindingInfo.setDefaults(view, getAdditionalDisplayAttributeName());
-        }
-        
         /**
-         * Alternate display value (Masking)
+         * Additional and Alternate display value 
          */
-        if ( isReadOnly() || view.isReadOnly() ){ // Check for authorization???
-        	setAlternateDisplayValue(view,model);
-        }
+        setAlternateAndAdditionalDisplayValue(view,model);
         	
         // if read only or the control is not set no need to set client side
         // validation
@@ -204,48 +193,107 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * This method sets the alternate display value to be displayed when the field
-     * is readonly. If alternate display property is set and attributesecurity
-     * exists in that field, it displays the value based on that setting. Otherwise,
-     * set the display value based on this fields security setting.
+     * This method sets the alternate display value to be displayed when the field is readonly. This is how the code decides the alternate value
+     * 
+     * 1. If alternate field is present, check whether security exists for that field. If present, display the value based on that fields security. Otherwise, that fields value will be displayed
+     * 2. If alternate field not present, check for this fields security. If present, display based on this security.
+     * 3. If alternate field not present or this field doesnt have any security, check for the options finder configured. If present, display the options value
+     * 
+     * If nothing is present, then additional display field property would be considered for presentation.
      * 
      * @param view
      * @param model
      */
-    private void setAlternateDisplayValue(View view, Object model){
-    	AttributeSecurity attributeSecurity = null;
-    	String bindingPath = null;
+    private void setAlternateAndAdditionalDisplayValue(View view, Object model){
     	
-    	if (getAttributeSecurity() != null){ 
-    		attributeSecurity = getAttributeSecurity();
-    		bindingPath = getBindingInfo().getBindingPath();
-    	}
+    	boolean alternateValueSet = false;
+    	boolean additionalValueSet = false;
     	
+        /**
+         * If additional display property name set, get the field value and set it in additionalDisplayValue sothat jsp can display 
+         * this value when the field or view is readonly 
+         */
+    	
+        if (additionalDisplayAttributeBindingInfo != null &&
+                StringUtils.isNotBlank(getAdditionalDisplayAttributeName())) {
+            
+        	additionalDisplayAttributeBindingInfo.setDefaults(view, getAdditionalDisplayAttributeName());
+            
+        	String fieldValue = (String)ObjectPropertyUtils.getPropertyValue(model, additionalDisplayAttributeBindingInfo.getBindingPath());
+        	additionalValueSet = true;
+        	
+        	if (StringUtils.isNotBlank(fieldValue)){
+            	additionalDisplayValue = fieldValue;
+            }
+        }
+
+        if (alternateDisplayAttributeBindingInfo != null &&
+                StringUtils.isNotBlank(getAlternateDisplayAttributeName())) {
+            alternateDisplayAttributeBindingInfo.setDefaults(view, getAlternateDisplayAttributeName());
+        }
+        
     	/**
-    	 * If alternate display property is set, check for that fields security
+    	 * If alternate display property is set, Check that field first
     	 */
     	if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())){
     		AttributeField alternateField = view.getViewIndex().getAttributeField(getAlternateDisplayAttributeBindingInfo());
     		
-			if (alternateField != null && alternateField.getAttributeSecurity() != null){
-    			attributeSecurity = alternateField.getAttributeSecurity();
-    			bindingPath = getAlternateDisplayAttributeBindingInfo().getBindingPath();
+			if (alternateField != null){
+				Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getAlternateDisplayAttributeBindingInfo().getBindingPath());
+    		
+				/**
+				 * If security present in that field, set the alternate value based on that masking
+				 */
+				if (alternateField.getAttributeSecurity() != null){
+    				alternateDisplayValue = getSecuredFieldValue(attributeSecurity, fieldValue);
+    			}else{
+    				/**
+    				 * If no security present, set the alternate field's value
+    				 */
+    				alternateDisplayValue = (String)fieldValue;
+    			}
+				
+				alternateValueSet = true;
+    			
     		}
 		}
-    		
-    	/**
-    	 * If attribute security present either in this field or in alternate display field, get the masked value	
-    	 */
-		if (attributeSecurity != null){
-    		Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
-    		
-    		if(attributeSecurity.isMask()){
-    			alternateDisplayValue = attributeSecurity.getMaskFormatter().maskValue(fieldValue);
-    		}else if(getAttributeSecurity().isPartialMask()){
-    			alternateDisplayValue = attributeSecurity.getPartialMaskFormatter().maskValue(fieldValue);
+    	
+    	if (!alternateValueSet){
+    		/**
+    		 * Check this field has security. If present, mask this fields value based on that.
+    		 */
+    		if (getAttributeSecurity() != null){
+    			Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
+    			alternateDisplayValue = getSecuredFieldValue(attributeSecurity, fieldValue);
+    			alternateValueSet = true;
     		}
-    		
     	}
+    	
+    	/**
+    	 * If additional display property not set, we can check for optionsFinder
+    	 */
+    	if (!additionalValueSet && !alternateValueSet && optionsFinder != null){
+    		String fieldValue = (String)ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
+    		/**
+    		 * If the field value is empty, dont set it
+    		 */
+        	if (fieldValue != null){
+        		String keyLabel = optionsFinder.getKeyLabel(fieldValue);
+        		if (StringUtils.isNotBlank(keyLabel)){
+        			alternateDisplayValue = keyLabel;
+        		}
+        	}
+    	}
+    }
+    
+    private String getSecuredFieldValue(AttributeSecurity attributeSecurity, Object fieldValue){
+    	if(attributeSecurity.isMask()){
+			return attributeSecurity.getMaskFormatter().maskValue(fieldValue);
+		}else if(getAttributeSecurity().isPartialMask()){
+			return attributeSecurity.getPartialMaskFormatter().maskValue(fieldValue);
+		}else{
+			throw new RuntimeException("Encountered unsupported Attribute Security..");
+		}
     }
     
     /**
@@ -1080,10 +1128,24 @@ public class AttributeField extends FieldBase implements DataBinding {
 		return this.alternateDisplayAttributeBindingInfo;
 	}
 	
+	/**
+	 * Returns the alternate display value
+	 * 
+	 * @return alternateDisplayValue
+	 */
 	public String getAlternateDisplayValue(){
 		return alternateDisplayValue;
 	}
 
+	/**
+	 * Returns the additional display value.
+	 * 
+	 * @return additionalDisplayValue
+	 */
+	public String getAdditionalDisplayValue(){
+		return additionalDisplayValue;
+	}
+	
 	/**
 	 * Setter for the direct inquiry widget
 	 * 

@@ -23,7 +23,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 /**
  * <p>This is a generic caching proxy for KEW, using the cache administrator service to store results.  It's inteded

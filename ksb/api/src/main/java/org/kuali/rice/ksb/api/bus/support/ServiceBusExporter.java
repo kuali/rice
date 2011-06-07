@@ -16,9 +16,9 @@
  */
 package org.kuali.rice.ksb.api.bus.support;
 
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
 
 /**

@@ -23,7 +23,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.GlobalCallbackRegistry;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.TestCallback;

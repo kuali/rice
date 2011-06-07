@@ -35,7 +35,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 import javax.xml.namespace.QName;

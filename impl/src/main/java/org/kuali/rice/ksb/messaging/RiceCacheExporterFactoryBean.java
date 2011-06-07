@@ -16,8 +16,8 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.cache.RiceCacheAdministratorImpl;
 import org.springframework.beans.factory.FactoryBean;

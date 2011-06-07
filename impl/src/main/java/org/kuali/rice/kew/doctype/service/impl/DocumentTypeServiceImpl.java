@@ -39,7 +39,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 
 /**

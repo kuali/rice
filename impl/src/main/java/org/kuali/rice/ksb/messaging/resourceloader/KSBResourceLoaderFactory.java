@@ -24,8 +24,8 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 
 

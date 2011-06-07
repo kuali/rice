@@ -26,7 +26,7 @@ import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;

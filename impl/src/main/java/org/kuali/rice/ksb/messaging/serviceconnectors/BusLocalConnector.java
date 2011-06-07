@@ -18,9 +18,9 @@ package org.kuali.rice.ksb.messaging.serviceconnectors;
 
 import javax.xml.namespace.QName;
 
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.bam.BAMClientProxy;
 
 

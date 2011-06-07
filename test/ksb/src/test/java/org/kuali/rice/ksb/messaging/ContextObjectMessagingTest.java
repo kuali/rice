@@ -13,7 +13,7 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.test.KSBTestCase;

@@ -33,9 +33,9 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.reflect.BaseTargetedInvocationHandler;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 
 

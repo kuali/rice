@@ -29,8 +29,8 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 //@Transactional
 public class RiceApplicationConfigurationMediationServiceImpl implements RiceApplicationConfigurationMediationService {

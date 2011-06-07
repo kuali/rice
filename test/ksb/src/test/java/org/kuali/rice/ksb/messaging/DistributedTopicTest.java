@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
 import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;

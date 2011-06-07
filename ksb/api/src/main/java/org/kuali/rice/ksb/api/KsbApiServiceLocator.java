@@ -1,4 +1,4 @@
-package org.kuali.rice.ksb.api.bus.services;
+package org.kuali.rice.ksb.api;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
@@ -7,7 +7,8 @@ import org.kuali.rice.ksb.api.messaging.MessageHelper;
 import org.kuali.rice.ksb.api.registry.ServiceRegistry;
 
 /**
- * TODO...
+ * A static service locator which aids in locating the various services that
+ * form the Kuali Service Bus API.
  */
 public class KsbApiServiceLocator {
 

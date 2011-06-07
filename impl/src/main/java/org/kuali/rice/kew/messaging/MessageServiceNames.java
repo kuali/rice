@@ -27,7 +27,7 @@ import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService
 import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.service.RuleCacheProcessor;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 

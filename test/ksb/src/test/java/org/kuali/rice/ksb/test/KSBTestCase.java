@@ -23,7 +23,7 @@ import org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.server.TestClient1;
 import org.kuali.rice.ksb.server.TestClient2;

@@ -17,7 +17,7 @@ package org.kuali.rice.kew.rule.service.impl;
 
 import org.kuali.rice.kew.rule.service.RuleDelegationCacheProcessor;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 public class RuleDelegationCacheProcessorImpl implements RuleDelegationCacheProcessor {
 

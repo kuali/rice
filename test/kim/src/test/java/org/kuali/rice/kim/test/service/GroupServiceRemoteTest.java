@@ -23,9 +23,9 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
 
 /**
  * Test the GroupService via remote calls

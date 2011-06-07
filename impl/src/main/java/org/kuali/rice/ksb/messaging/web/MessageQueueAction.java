@@ -45,7 +45,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.messaging.MessageFetcher;

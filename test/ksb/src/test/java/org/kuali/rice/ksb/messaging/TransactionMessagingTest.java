@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.ksb.api.bus.services.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.messaging.serviceproxies.MessageSendingTransactionSynchronization;
 import org.kuali.rice.ksb.service.KSBServiceLocator;

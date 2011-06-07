@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.core.org.kuali.rice.core.util;
+package org.kuali.rice.core.util;
 
 
 import org.apache.commons.lang.builder.HashCodeBuilder

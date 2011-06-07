@@ -29,7 +29,7 @@
 	                	<br/>
 						<b>Add Responsibility ID:</b>
 						<kul:htmlControlAttribute property="responsibility.responsibilityId" attributeEntry="${responsibilityAttributes.responsibilityId}"/>
-	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.ResponsibilityImpl" fieldConversions=
+	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo" fieldConversions=
 	                	"template.name:responsibility.kimResponsibility.template.name,responsibilityId:responsibility.responsibilityId,name:responsibility.kimResponsibility.name,namespaceCode:responsibility.kimResponsibility.namespaceCode" anchor="${tabKey}" />
 						<html:hidden property="responsibility.kimResponsibility.name" />
 						<html:hidden property="responsibility.kimResponsibility.namespaceCode" />

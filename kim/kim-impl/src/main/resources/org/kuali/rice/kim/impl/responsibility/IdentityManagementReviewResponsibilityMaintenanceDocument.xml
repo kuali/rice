@@ -18,19 +18,19 @@
   <bean id="ReviewResponsibilityMaintenanceDocument" parent="ReviewResponsibilityMaintenanceDocument-parentBean"/>
 
   <bean id="ReviewResponsibilityMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.impl.ReviewResponsibility"/>
-    <property name="maintainableClass" value="org.kuali.rice.kim.document.ReviewResponsibilityMaintainable"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo"/>
+    <property name="maintainableClass" value="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityMaintainable"/>
     <property name="maintainableSections">
       <list>
         <ref bean="ReviewResponsibilityMaintenanceDocument-Main"/>
         <ref bean="ReviewResponsibilityMaintenanceDocument-Details"/>
       </list>
     </property>
-    <property name="defaultExistenceChecks">
+    <!--<property name="defaultExistenceChecks">
       <list>
         <bean parent="ReferenceDefinition" p:attributeName="documentType" p:attributeToHighlightOnFail="documentTypeName"/>
       </list>
-    </property>
+    </property>-->
     <property name="lockingKeys">
       <list>
         <value>responsibilityId</value>
@@ -41,7 +41,7 @@
     <property name="documentTypeName" value="IdentityManagementReviewResponsibilityMaintenanceDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.ReviewResponsibilityMaintenanceDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <property name="documentPresentationControllerClass" value="org.kuali.rice.kim.document.authorization.ReviewResponsibilityMaintenanceDocumentPresentationController" />
+    <property name="documentPresentationControllerClass" value="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityMaintenanceDocumentPresentationController" />
     <property name="workflowProperties">
       <ref bean="ReviewResponsibilityMaintenanceDocument-workflowProperties"/>
     </property>

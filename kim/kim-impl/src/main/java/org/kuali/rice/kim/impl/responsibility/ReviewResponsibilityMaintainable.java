@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.document;
+package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -23,9 +23,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
-import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
-import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -46,7 +43,7 @@ import java.util.List;
  */
 public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 
-	private static final Logger LOG = Logger.getLogger( ReviewResponsibilityMaintainable.class );	
+	private static final Logger LOG = Logger.getLogger( ReviewResponsibilityMaintainable.class );
 	private static final long serialVersionUID = -8102504656976243468L;
 
     //FIXME: this seems really dubious
@@ -58,7 +55,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
         	for (Section section : sections) {
                 for (Row row : section.getRows()) {
                     for (Field field : row.getFields()) {
-                    	if(ReviewResponsibility.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL_FIELD_NAME.equals(field.getPropertyName())){
+                    	if(ReviewResponsibilityBo.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL_FIELD_NAME.equals(field.getPropertyName())){
                     		field.setReadOnly(true);
                     	}
                     }
@@ -76,13 +73,13 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	@Override
 	public void saveBusinessObject() {
         if ( LOG.isInfoEnabled() ) {
-            LOG.info( "Attempting to save ReviewResponsibility BO via ResponsibilityService:" + getBusinessObject() );
+            LOG.info( "Attempting to save ReviewResponsibilityBo BO via ResponsibilityService:" + getBusinessObject() );
         }
         // find the template ID if needed
         if ( reviewTemplate == null ) {
             populateReviewTemplateInfo();
         }
-        ReviewResponsibility resp = (ReviewResponsibility)getBusinessObject();
+        ReviewResponsibilityBo resp = (ReviewResponsibilityBo)getBusinessObject();
         // build the AttributeSet with the details
         AttributeSet details = new AttributeSet();
         details.put( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, resp.getDocumentTypeName() );
@@ -113,8 +110,8 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#getBoClass()
 	 */
 	@Override
-	public Class<? extends PersistableBusinessObject> getBoClass() {
-		return ReviewResponsibility.class;
+	public Class<? extends BusinessObject> getBoClass() {
+		return ReviewResponsibilityBo.class;
 	}
 	
 	/**
@@ -136,17 +133,17 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	public void prepareBusinessObject(BusinessObject businessObject) {
 		try {
 			if ( businessObject == null ) {
-				throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityMaintainable.prepareBusinessObject passed a null object." );
+				throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityBoMaintainable.prepareBusinessObject passed a null object." );
 			}
-			if ( businessObject instanceof ResponsibilityImpl ) {
+			if ( businessObject instanceof ResponsibilityBo ) {
 				ResponsibilityBo resp = getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, ((ResponsibilityBo)businessObject).getId() );
-				businessObject = new ReviewResponsibility( resp );
-			} else if ( businessObject instanceof ReviewResponsibility ) {
-				// lookup the KimResponsibilityImpl and convert to a ReviewResponsibility
-				ResponsibilityBo resp = getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, ((ReviewResponsibility)businessObject).getResponsibilityId() );
-				((ReviewResponsibility)businessObject).loadFromKimResponsibility(resp);
+				businessObject = new ReviewResponsibilityBo( resp );
+			} else if ( businessObject instanceof ReviewResponsibilityBo ) {
+				// lookup the KimResponsibilityImpl and convert to a ReviewResponsibilityBo
+				ResponsibilityBo resp = getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, ((ReviewResponsibilityBo)businessObject).getResponsibilityId() );
+				((ReviewResponsibilityBo)businessObject).loadFromKimResponsibility(resp);
 			} else {
-				throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityMaintainable passed an unsupported object type: " + businessObject.getClass() );
+				throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityBoMaintainable passed an unsupported object type: " + businessObject.getClass() );
 			}
 			if ( businessObject instanceof PersistableBusinessObject ) {
 				setBusinessObject( (PersistableBusinessObject)businessObject );

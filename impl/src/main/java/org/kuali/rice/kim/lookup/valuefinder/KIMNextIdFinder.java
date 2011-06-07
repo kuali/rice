@@ -20,12 +20,7 @@ import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 
-/**
- * This is a description of what this class does - ag266 don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
+
 public abstract class KIMNextIdFinder implements ValueFinder {
     
     private String sequenceName;

@@ -124,7 +124,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	
   <bean id="Responsibility-InquiryView" parent="InquiryView">
 	<property name="title" value="Responsibility Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.kim.bo.impl.ResponsibilityImpl"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.ResponsibilityInquirableImpl"/>
     <property name="Items">
         <list>

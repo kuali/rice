@@ -150,20 +150,21 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/Responsibility.xml</value>
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml</value>
-		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/ResponsibilityImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/impl/responsibility/UberResponsibility.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/responsibility/IdentityManagementReviewResponsibilityMaintenanceDocument.xml</value>
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
 		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/common/attribute/KimAttribute.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/ResponsibilityAttribute.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/ReviewResponsibility.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/responsibility/ReviewResponsibility.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml</value>
                 
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementRoleDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml</value>
-                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementReviewResponsibilityMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/responsibility/ReviewResponsibility.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGenericPermissionMaintenanceDocument.xml</value>
 
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPhoneType.xml</value>

@@ -32,6 +32,7 @@ import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -205,8 +206,8 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		for(RolePermissionImpl rolePermission: permission.getRolePermissions()){
 			if ( rolePermission.isActive() ) {
 				criteria = new AttributeSet();
-				criteria.put("roleId", rolePermission.getRoleId());
-				permission.getAssignedToRoles().add((RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria));
+				criteria.put("id", rolePermission.getRoleId());
+				permission.getAssignedToRoles().add((RoleBo)getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria));
 			}
 		}
 	}

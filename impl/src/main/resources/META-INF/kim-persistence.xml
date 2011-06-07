@@ -82,18 +82,18 @@
     <class>org.kuali.rice.kim.bo.ui.PersonDocumentRole</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleMember</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier</class>
-    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction</class>
+    <class>org.kuali.rice.kim.impl.role.KimDocumentRoleResponsibilityAction</class>
     <class>org.kuali.rice.kim.bo.ui.PersonDocumentGroup</class>
     <class>org.kuali.rice.kim.document.IdentityManagementRoleDocument</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentRolePermission</class>
-    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility</class>
+    <class>org.kuali.rice.kim.impl.role.KimDocumentRoleResponsibility</class>
     <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegation</class>
     <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember</class>
     <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier</class>
     <class>org.kuali.rice.kim.document.IdentityManagementGroupDocument</class>
     <class>org.kuali.rice.kim.bo.ui.GroupDocumentMember</class>
     <class>org.kuali.rice.kim.bo.ui.GroupDocumentQualifier</class>
-    <class>org.kuali.rice.kim.bo.impl.ReviewResponsibility</class>
+    <class>org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo</class>
     <class>org.kuali.rice.kim.bo.impl.GenericPermission</class>
     
     <!-- mapped superclasses -->

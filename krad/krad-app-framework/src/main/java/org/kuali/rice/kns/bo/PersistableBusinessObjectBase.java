@@ -36,6 +36,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerAware;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
@@ -44,7 +46,7 @@ import org.kuali.rice.kns.service.PersistenceStructureService;
  * Business Object Base Business Object
  */
 @MappedSuperclass
-public abstract class PersistableBusinessObjectBase extends BusinessObjectBase implements PersistableBusinessObject, PersistenceBrokerAware {
+public abstract class PersistableBusinessObjectBase extends BusinessObjectBase implements PersistableBusinessObject, PersistenceBrokerAware, Versioned, GloballyUnique {
     
 	private static final long serialVersionUID = 1451642350593233282L;
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistableBusinessObjectBase.class);

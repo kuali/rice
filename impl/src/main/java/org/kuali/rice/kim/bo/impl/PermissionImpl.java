@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.util.AutoPopulatingList;
 
@@ -33,7 +34,7 @@ public class PermissionImpl extends KimPermissionImpl {
 
 	private static final long serialVersionUID = 1L;
 	@Transient
-	List<RoleImpl> assignedToRoles = new AutoPopulatingList(RoleImpl.class);
+	List<RoleBo> assignedToRoles = new AutoPopulatingList(RoleBo.class);
 	@Transient
 	protected String assignedToRoleNamespaceForLookup;
 	@Transient
@@ -62,14 +63,14 @@ public class PermissionImpl extends KimPermissionImpl {
 	 */
 	public String getAssignedToRolesToDisplay() {
 		StringBuffer assignedToRolesToDisplay = new StringBuffer();
-		for(RoleImpl roleImpl: assignedToRoles){
+		for(RoleBo roleImpl: assignedToRoles){
 			assignedToRolesToDisplay.append(getRoleDetailsToDisplay(roleImpl));
 		}
 		return StringUtils.chomp( assignedToRolesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
 	}
 
-	public String getRoleDetailsToDisplay(RoleImpl roleImpl){
-		return roleImpl.getNamespaceCode().trim()+" "+roleImpl.getRoleName().trim()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
+	public String getRoleDetailsToDisplay(RoleBo roleImpl){
+		return roleImpl.getNamespaceCode().trim()+" "+roleImpl.getName().trim()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 	
 	/**
@@ -162,14 +163,14 @@ public class PermissionImpl extends KimPermissionImpl {
 	/**
 	 * @return the assignedToRoles
 	 */
-	public List<RoleImpl> getAssignedToRoles() {
+	public List<RoleBo> getAssignedToRoles() {
 		return this.assignedToRoles;
 	}
 
 	/**
 	 * @param assignedToRoles the assignedToRoles to set
 	 */
-	public void setAssignedToRoles(List<RoleImpl> assignedToRoles) {
+	public void setAssignedToRoles(List<RoleBo> assignedToRoles) {
 		this.assignedToRoles = assignedToRoles;
 	}
 

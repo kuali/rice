@@ -18,7 +18,7 @@
   <bean id="ReviewResponsibility" parent="ReviewResponsibility-parentBean"/>
 
   <bean id="ReviewResponsibility-parentBean" abstract="true" parent="BusinessObjectEntry" 
-        p:businessObjectClass="org.kuali.rice.kim.bo.impl.ReviewResponsibility" 
+        p:businessObjectClass="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo"
         p:titleAttribute="responsibilityId" 
         p:objectLabel="Review Responsibility">
     <property name="attributes">
@@ -36,7 +36,7 @@
         <ref bean="ReviewResponsibility-qualifierResolverProvidedIdentifier"/>
       </list>
     </property>
-    <property name="relationships">
+    <!--<property name="relationships">
       <list>
         <bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="documentType"/>
@@ -47,7 +47,7 @@
           </property>
         </bean>
       </list>
-    </property>
+    </property>-->
   </bean>
 
   <bean id="ReviewResponsibility-responsibilityId" parent="ResponsibilityImpl-id" p:name="responsibilityId" />

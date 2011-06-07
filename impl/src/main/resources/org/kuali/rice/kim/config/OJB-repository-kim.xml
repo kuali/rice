@@ -1179,7 +1179,7 @@
   <!-- Fake Tables for KNS Support -->
   <!-- ******************************************************************* -->
 
-  <class-descriptor class="org.kuali.rice.kim.bo.impl.ReviewResponsibility" table="KRIM_RSP_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo" table="KRIM_RSP_T">
     <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" primarykey="true" />
   </class-descriptor>
 

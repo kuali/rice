@@ -13,29 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.document.authorization;
+package org.kuali.rice.kim.impl.responsibility;
 
-import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase;
 
-/**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public class ReviewResponsibilityMaintenanceDocumentPresentationController extends
-		MaintenanceDocumentPresentationControllerBase {
+        MaintenanceDocumentPresentationControllerBase {
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase#canCreate(java.lang.Class)
-	 */
-	@Override
-	public boolean canCreate(Class boClass) {
-		return super.canCreate( ReviewResponsibility.class );
-	}
-	
-	
+    @Override
+    public boolean canCreate(Class boClass) {
+        return super.canCreate(ReviewResponsibilityBo.class);
+    }
+
+
 }

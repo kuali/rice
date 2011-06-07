@@ -26,10 +26,11 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.responsibility.Responsibility;
+
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
+
+import org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -58,7 +59,7 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
 		boolean rulesPassed = true;
 		GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
 		try {
-			ReviewResponsibility resp = (ReviewResponsibility)document.getNewMaintainableObject().getBusinessObject();
+			ReviewResponsibilityBo resp = (ReviewResponsibilityBo)document.getNewMaintainableObject().getBusinessObject();
 			// check the route level exists on the document or a child
 			HashSet<String> routeNodeNames = getAllPossibleRouteNodeNames( resp.getDocumentTypeName() );
 			//if ( !routeNodeNames.contains( resp.getRouteNodeName() ) ) {
@@ -106,7 +107,7 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
 			addNodesForChildDocTypes( childDocType, routeNodeNames );
 		}
 	}
-	protected boolean checkForDuplicateResponsibility( ReviewResponsibility resp ) {
+	protected boolean checkForDuplicateResponsibility( ReviewResponsibilityBo resp ) {
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         Predicate p = and(
             equal("template.namespaceCode", KEWConstants.KEW_NAMESPACE ),

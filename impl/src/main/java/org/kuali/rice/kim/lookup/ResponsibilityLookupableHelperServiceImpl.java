@@ -22,10 +22,11 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
-import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
+import org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo;
+import org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -68,9 +69,9 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	@Override
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-    	// convert the ResponsibilityImpl class into a ReviewResponsibility object
-        if ( ((ResponsibilityImpl)businessObject).getTemplate().getName().equals( KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME ) ) {
-        	ReviewResponsibility reviewResp = new ReviewResponsibility( (ResponsibilityImpl)businessObject );
+    	// convert the UberResponsibilityBo class into a ReviewResponsibility object
+        if ( ((UberResponsibilityBo)businessObject).getTemplate().getName().equals( KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME ) ) {
+        	ReviewResponsibilityBo reviewResp = new ReviewResponsibilityBo( (UberResponsibilityBo)businessObject );
         	businessObject = reviewResp;
 	        if (allowsMaintenanceEditAction(businessObject)) {
 	        	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
@@ -105,7 +106,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	@Override
 	protected String getMaintenanceDocumentTypeName() {
 		if ( !reviewResponsibilityDocumentTypeNameLoaded ) {
-			reviewResponsibilityDocumentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(ReviewResponsibility.class);
+			reviewResponsibilityDocumentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(ReviewResponsibilityBo.class);
 			reviewResponsibilityDocumentTypeNameLoaded = true;
 		}
 		return reviewResponsibilityDocumentTypeName;
@@ -121,7 +122,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		boolean responsibilityCriteriaEmpty = responsibilitySearchCriteria==null || responsibilitySearchCriteria.isEmpty();
 		boolean roleCriteriaEmpty = roleSearchCriteria==null || roleSearchCriteria.isEmpty();
 		
-		List<ResponsibilityImpl> responsibilitySearchResultsCopy = new CollectionIncomplete<ResponsibilityImpl>(new ArrayList<ResponsibilityImpl>(), new Long(0));
+		List<UberResponsibilityBo> responsibilitySearchResultsCopy = new CollectionIncomplete<UberResponsibilityBo>(new ArrayList<UberResponsibilityBo>(), new Long(0));
 		if(!responsibilityCriteriaEmpty && !roleCriteriaEmpty){
 			responsibilitySearchResultsCopy = getCombinedSearchResults(responsibilitySearchCriteria, roleSearchCriteria, unbounded);
 		} else if(responsibilityCriteriaEmpty && !roleCriteriaEmpty){
@@ -134,58 +135,49 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		return responsibilitySearchResultsCopy;
 	}
 	
-	private List<ResponsibilityImpl> getAllResponsibilities(boolean unbounded){
-		List<ResponsibilityImpl> responsibilities = searchResponsibilities(new HashMap<String, String>(), unbounded);
-		for(ResponsibilityImpl responsibility: responsibilities)
+	private List<UberResponsibilityBo> getAllResponsibilities(boolean unbounded){
+		List<UberResponsibilityBo> responsibilities = searchResponsibilities(new HashMap<String, String>(), unbounded);
+		for(UberResponsibilityBo responsibility: responsibilities)
 			populateAssignedToRoles(responsibility);
 		return responsibilities;
 	}
 	
-	private List<ResponsibilityImpl> getCombinedSearchResults(
+	private List<UberResponsibilityBo> getCombinedSearchResults(
 			Map<String, String> responsibilitySearchCriteria, Map<String, String> roleSearchCriteria, boolean unbounded){
-		List<ResponsibilityImpl> responsibilitySearchResults = searchResponsibilities(responsibilitySearchCriteria, unbounded);
+		List<UberResponsibilityBo> responsibilitySearchResults = searchResponsibilities(responsibilitySearchCriteria, unbounded);
 		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria, unbounded);
-		List<ResponsibilityImpl> responsibilitiesForRoleSearchResults = getResponsibilitiesForRoleSearchResults(roleSearchResults, unbounded);
-		List<ResponsibilityImpl> matchedResponsibilities = new CollectionIncomplete<ResponsibilityImpl>(
-				new ArrayList<ResponsibilityImpl>(), getActualSizeIfTruncated(responsibilitiesForRoleSearchResults));
+		List<UberResponsibilityBo> responsibilitiesForRoleSearchResults = getResponsibilitiesForRoleSearchResults(roleSearchResults, unbounded);
+		List<UberResponsibilityBo> matchedResponsibilities = new CollectionIncomplete<UberResponsibilityBo>(
+				new ArrayList<UberResponsibilityBo>(), getActualSizeIfTruncated(responsibilitiesForRoleSearchResults));
 		if((responsibilitySearchResults!=null && !responsibilitySearchResults.isEmpty()) && 
 				(responsibilitiesForRoleSearchResults!=null && !responsibilitiesForRoleSearchResults.isEmpty())){
-			for(ResponsibilityImpl responsibility: responsibilitySearchResults){
-				for(ResponsibilityImpl responsibilityFromRoleSearch: responsibilitiesForRoleSearchResults){
+			for(UberResponsibilityBo responsibility: responsibilitySearchResults){
+				for(UberResponsibilityBo responsibilityFromRoleSearch: responsibilitiesForRoleSearchResults){
 					if(responsibilityFromRoleSearch.getId().equals(responsibility.getId()))
 						matchedResponsibilities.add(responsibilityFromRoleSearch);
 				}
 			}
 		}
-		/*for(ResponsibilityImpl responsibility: responsibilitySearchResults){
-			for(RoleResponsibilityImpl roleResponsibility: responsibility.getRoleResponsibilities()){
-				for(RoleImpl roleImpl: roleSearchResults){
-					if(roleImpl.getRoleId().equals(roleResponsibility.getRoleId())){
-						responsibility.getAssignedToRoles().add(roleImpl);
-						matchedResponsibilities.add(responsibility);
-					}
-				}
-			}
-		}*/
+
 		return matchedResponsibilities;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<ResponsibilityImpl> searchResponsibilities(Map<String, String> responsibilitySearchCriteria, boolean unbounded){
+	private List<UberResponsibilityBo> searchResponsibilities(Map<String, String> responsibilitySearchCriteria, boolean unbounded){
 		return getResponsibilitiesSearchResultsCopy((List<ResponsibilityBo>)
 					getLookupService().findCollectionBySearchHelper(
 							ResponsibilityBo.class, responsibilitySearchCriteria, unbounded));
 	}
 	
-	private List<ResponsibilityImpl> getResponsibilitiesWithRoleSearchCriteria(Map<String, String> roleSearchCriteria, boolean unbounded){
+	private List<UberResponsibilityBo> getResponsibilitiesWithRoleSearchCriteria(Map<String, String> roleSearchCriteria, boolean unbounded){
 		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria, unbounded);
 		return getResponsibilitiesForRoleSearchResults(roleSearchResults, unbounded);
 	}
 
-	private List<ResponsibilityImpl> getResponsibilitiesForRoleSearchResults(List<RoleImpl> roleSearchResults, boolean unbounded){
+	private List<UberResponsibilityBo> getResponsibilitiesForRoleSearchResults(List<RoleImpl> roleSearchResults, boolean unbounded){
 		Long actualSizeIfTruncated = getActualSizeIfTruncated(roleSearchResults);
-		List<ResponsibilityImpl> responsibilities = new ArrayList<ResponsibilityImpl>();
-		List<ResponsibilityImpl> tempResponsibilities;
+		List<UberResponsibilityBo> responsibilities = new ArrayList<UberResponsibilityBo>();
+		List<UberResponsibilityBo> tempResponsibilities;
 		List<String> collectedResponsibilityIds = new ArrayList<String>();
 		Map<String, String> responsibilityCriteria;
 		
@@ -194,7 +186,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 			responsibilityCriteria.put("roleResponsibilities.roleId", roleImpl.getRoleId());
 			tempResponsibilities = searchResponsibilities(responsibilityCriteria, unbounded);
 			actualSizeIfTruncated += getActualSizeIfTruncated(tempResponsibilities);
-			for(ResponsibilityImpl responsibility: tempResponsibilities){
+			for(UberResponsibilityBo responsibility: tempResponsibilities){
 				if(!collectedResponsibilityIds.contains(responsibility.getId())){
 					populateAssignedToRoles(responsibility);
 					collectedResponsibilityIds.add(responsibility.getId());
@@ -210,15 +202,15 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 				}
 			}
 		}
-		return new CollectionIncomplete<ResponsibilityImpl>(responsibilities, actualSizeIfTruncated);
+		return new CollectionIncomplete<UberResponsibilityBo>(responsibilities, actualSizeIfTruncated);
 	}
 
-	private void populateAssignedToRoles(ResponsibilityImpl responsibility){
+	private void populateAssignedToRoles(UberResponsibilityBo responsibility){
 		AttributeSet criteria = new AttributeSet();
 		if ( responsibility.getAssignedToRoles().isEmpty() ) {
 			for(RoleResponsibilityBo roleResponsibility: responsibility.getRoleResponsibilities()){
 				criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleResponsibility.getRoleId());
-				responsibility.getAssignedToRoles().add((RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria));
+				responsibility.getAssignedToRoles().add((RoleBo)getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria));
 			}
 		}
 	}
@@ -226,25 +218,25 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	/* Since most queries will only be on the template namespace and name, cache the results for 30 seconds
 	 * so that queries against the details, which are done in memory, do not require repeated database trips.
 	 */
-    private static final Map<Map<String,String>,MaxAgeSoftReference<List<ResponsibilityImpl>>> respResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<ResponsibilityImpl>>>(); 
+    private static final Map<Map<String,String>,MaxAgeSoftReference<List<UberResponsibilityBo>>> respResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<UberResponsibilityBo>>>(); 
 	private static final long RESP_CACHE_EXPIRE_SECONDS = 30L;
 	
-	private List<ResponsibilityImpl> getResponsibilitiesWithResponsibilitySearchCriteria(Map<String, String> responsibilitySearchCriteria, boolean unbounded){
+	private List<UberResponsibilityBo> getResponsibilitiesWithResponsibilitySearchCriteria(Map<String, String> responsibilitySearchCriteria, boolean unbounded){
 		String detailCriteriaStr = responsibilitySearchCriteria.remove( DETAIL_CRITERIA );
 		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
-		MaxAgeSoftReference<List<ResponsibilityImpl>> cachedResult = respResultCache.get(responsibilitySearchCriteria);
-		List<ResponsibilityImpl> responsibilities = null;
+		MaxAgeSoftReference<List<UberResponsibilityBo>> cachedResult = respResultCache.get(responsibilitySearchCriteria);
+		List<UberResponsibilityBo> responsibilities = null;
 		if ( cachedResult == null || cachedResult.get() == null ) {
 			responsibilities = searchResponsibilities(responsibilitySearchCriteria, unbounded);
 			synchronized( respResultCache ) {
-				respResultCache.put(responsibilitySearchCriteria, new MaxAgeSoftReference<List<ResponsibilityImpl>>( RESP_CACHE_EXPIRE_SECONDS, responsibilities ) ); 
+				respResultCache.put(responsibilitySearchCriteria, new MaxAgeSoftReference<List<UberResponsibilityBo>>( RESP_CACHE_EXPIRE_SECONDS, responsibilities ) ); 
 			}
 		} else {
 			responsibilities = cachedResult.get();
 		}
-		List<ResponsibilityImpl> filteredResponsibilities = new CollectionIncomplete<ResponsibilityImpl>(
-				new ArrayList<ResponsibilityImpl>(), getActualSizeIfTruncated(responsibilities)); 
-		for(ResponsibilityImpl responsibility: responsibilities){
+		List<UberResponsibilityBo> filteredResponsibilities = new CollectionIncomplete<UberResponsibilityBo>(
+				new ArrayList<UberResponsibilityBo>(), getActualSizeIfTruncated(responsibilities)); 
+		for(UberResponsibilityBo responsibility: responsibilities){
 			if ( detailCriteria.isEmpty() ) {
 				filteredResponsibilities.add(responsibility);
 				populateAssignedToRoles(responsibility);
@@ -258,15 +250,15 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		return filteredResponsibilities;
 	}
 	
-	private List<ResponsibilityImpl> getResponsibilitiesSearchResultsCopy(List<ResponsibilityBo> responsibilitySearchResults){
-		List<ResponsibilityImpl> responsibilitySearchResultsCopy = new CollectionIncomplete<ResponsibilityImpl>(
-				new ArrayList<ResponsibilityImpl>(), getActualSizeIfTruncated(responsibilitySearchResults));
+	private List<UberResponsibilityBo> getResponsibilitiesSearchResultsCopy(List<ResponsibilityBo> responsibilitySearchResults){
+		List<UberResponsibilityBo> responsibilitySearchResultsCopy = new CollectionIncomplete<UberResponsibilityBo>(
+				new ArrayList<UberResponsibilityBo>(), getActualSizeIfTruncated(responsibilitySearchResults));
 		for(ResponsibilityBo responsibilityImpl: responsibilitySearchResults){
-			ResponsibilityImpl responsibilityCopy = new ResponsibilityImpl();
+			UberResponsibilityBo responsibilityCopy = new UberResponsibilityBo();
 			try{
 				PropertyUtils.copyProperties(responsibilityCopy, responsibilityImpl);
 			} catch(Exception ex){
-				LOG.error( "Unable to copy properties from KimResponsibilityImpl to ResponsibilityImpl, skipping.", ex );
+				LOG.error( "Unable to copy properties from KimUberResponsibilityBo to UberResponsibilityBo, skipping.", ex );
 				continue;
 			}
 			responsibilitySearchResultsCopy.add(responsibilityCopy);
@@ -285,10 +277,10 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		return lookupService;
 	}
  
-	private List<ResponsibilityImpl> mergeResponsibilityLists(List<ResponsibilityImpl> perm1, List<ResponsibilityImpl> perm2) {
-		List<ResponsibilityImpl> returnList = new ArrayList<ResponsibilityImpl>(perm1);
+	private List<UberResponsibilityBo> mergeResponsibilityLists(List<UberResponsibilityBo> perm1, List<UberResponsibilityBo> perm2) {
+		List<UberResponsibilityBo> returnList = new ArrayList<UberResponsibilityBo>(perm1);
 		List<String> responsibilityIds = new ArrayList<String>(perm1.size());
-		for (ResponsibilityImpl perm : returnList) {
+		for (UberResponsibilityBo perm : returnList) {
 			responsibilityIds.add(perm.getId());
 		}
 		for (int i=0; i<perm2.size(); i++) {

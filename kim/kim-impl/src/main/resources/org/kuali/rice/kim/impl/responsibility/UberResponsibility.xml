@@ -18,7 +18,7 @@
   <bean id="ResponsibilityImpl" parent="ResponsibilityImpl-parentBean"/>
 
   <bean id="ResponsibilityImpl-parentBean" abstract="true" parent="BusinessObjectEntry" 
-        p:businessObjectClass="org.kuali.rice.kim.bo.impl.ResponsibilityImpl" 
+        p:businessObjectClass="org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo"
         p:titleAttribute="id"
         p:objectLabel="Responsibility"
         p:inquiryDefinition-ref="ResponsibilityImpl-inquiryDefinition" 
@@ -73,12 +73,12 @@
           <property name="objectAttributeName" value="assignedToRole"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="assignedToRole.roleId" p:targetName="roleId"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="assignedToRole.id" p:targetName="id"/>
             </list>
           </property>
           <property name="supportAttributes">
             <list>
-              <bean parent="SupportAttributeDefinition" p:sourceName="assignedToRole.roleName" p:targetName="roleName"/>
+              <bean parent="SupportAttributeDefinition" p:sourceName="assignedToRole.name" p:targetName="name"/>
             </list>
           </property>
         </bean>
@@ -125,7 +125,7 @@
     
 
   <bean id="ResponsibilityImpl-roleId" parent="ResponsibilityImpl-roleId-parentBean"/>
-  <bean id="ResponsibilityImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToRole.roleId" p:label="Role Identifier" p:shortLabel="Role Identifier" p:maxLength="40" p:required="false">
+  <bean id="ResponsibilityImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToRole.id" p:label="Role Identifier" p:shortLabel="Role Identifier" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="HiddenControlDefinition"/>
     </property>
@@ -185,7 +185,7 @@
   </bean>
 
   <bean id="ResponsibilityImpl-assignedToRoleNameForLookup" parent="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean"/>
-  <bean id="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean" parent="RoleImpl-roleName" abstract="true" p:name="assignedToRole.roleName">
+  <bean id="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean" parent="RoleImpl-roleName" abstract="true" p:name="assignedToRole.name">
   </bean>
 
   <bean id="ResponsibilityImpl-assignedToPrincipalNameForLookup" parent="ResponsibilityImpl-assignedToPrincipalNameForLookup-parentBean"/>
@@ -289,19 +289,19 @@
             <list>
 				<bean parent="InquiryCollectionDefinition">
 	                <property name="attributeName" value="assignedToRoles"/>
-	                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.impl.RoleImpl"/>
+	                <property name="businessObjectClass" value="org.kuali.rice.kim.impl.role.RoleBo"/>
 	                <property name="numberOfColumns" value="3"/>
 	                <property name="inquiryFields">
 						<list>
 		                    <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
-		                    <bean parent="FieldDefinition" p:attributeName="roleName"/>
+		                    <bean parent="FieldDefinition" p:attributeName="name"/>
 		                    <bean parent="FieldDefinition" p:attributeName="kimRoleType.name"/>
 		                </list>
 		            </property>
 		            <property name="summaryFields">
 		                  <list>
 		                    <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
-		                    <bean parent="FieldDefinition" p:attributeName="roleName"/>
+		                    <bean parent="FieldDefinition" p:attributeName="name"/>
 		                    <bean parent="FieldDefinition" p:attributeName="kimRoleType.name"/>
 		                  </list>
 	                </property>
@@ -334,13 +334,13 @@
        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
        	  <bean parent="FieldDefinition" p:attributeName="name" p:forceLookup="true"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToRoleNamespaceForLookup"/>
-          <bean parent="FieldDefinition" p:attributeName="assignedToRole.roleName" p:forceLookup="true"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToRole.name" p:forceLookup="true"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalName" p:forceLookup="true"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToGroupNamespaceForLookup"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToGroup.name" p:forceLookup="true"/>
           <bean parent="FieldDefinition" p:attributeName="attributeValue"/>
           <bean parent="FieldDefinition" p:attributeName="detailCriteria"/>
-          <bean parent="FieldDefinition" p:attributeName="assignedToRole.roleId"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToRole.id"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalId"/>
           <bean parent="FieldDefinition" p:attributeName="template.id"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToGroup.id"/>

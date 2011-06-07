@@ -1,6 +1,7 @@
 package org.kuali.rice.core.api.mo.common;
 
 import java.io.Serializable;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,7 +35,7 @@ public final class Attributes implements Serializable {
     private final Map<String, String> keyValues;
 
     private final Object lock = new Object();
-    private Set<KeyValue> cache;
+    private Set<Map.Entry<String, String>> cache;
 
     /**
      * This constructor should never be called except during JAXB unmarshalling.
@@ -63,6 +64,14 @@ public final class Attributes implements Serializable {
      * @throws IllegalArgumentException if map is null
      */
     public static Attributes fromMap(Map<String, String> map) {
+        if (map == null) {
+            throw new IllegalArgumentException("map is null");
+        }
+
+        if (map.isEmpty()) {
+            return empty();
+        }
+
         return new Attributes(map);
     }
 
@@ -70,20 +79,32 @@ public final class Attributes implements Serializable {
      * Creates attributes from a {@link Map.Entry}.  Map.Entry cannot be null.
      *
      * @return Attributes
-     * @throws IllegalArgumentException if entry is null
+     * @throws IllegalArgumentException if entry is null or entry.key is null
      */
     public static Attributes fromMapEntry(Map.Entry<String, String> entry) {
-        return new Attributes(Collections.singletonMap(entry.getKey(), entry.getValue()));
+        if (entry == null) {
+            throw new IllegalArgumentException("entry is null");
+        }
+
+        if (entry.getKey() == null) {
+            throw new IllegalArgumentException("entry.key is null");
+        }
+
+        return fromMap(Collections.singletonMap(entry.getKey(), entry.getValue()));
     }
 
     /**
      * Creates attributes from strings.  Key cannot be null. Value can be null
      *
      * @return Attributes
-     * @throws IllegalArgumentException if value is null
+     * @throws IllegalArgumentException if key is null
      */
     public static Attributes fromStrings(String key, String value) {
-        return new Attributes(Collections.singletonMap(key, value));
+        if (key == null) {
+            throw new IllegalArgumentException("key is null");
+        }
+
+        return fromMap(Collections.singletonMap(key, value));
     }
 
     /**
@@ -93,12 +114,20 @@ public final class Attributes implements Serializable {
      * @throws IllegalArgumentException if keyValue is null
      */
     public static Attributes fromKeyValue(KeyValue keyValue) {
-        return new Attributes(Collections.singletonMap(keyValue.getKey(), keyValue.getValue()));
+        if (keyValue == null) {
+            throw new IllegalArgumentException("keyValue is null");
+        }
+
+        if (keyValue.getKey() == null) {
+            throw new IllegalArgumentException("keyValue.key is null");
+        }
+
+        return fromMap(Collections.singletonMap(keyValue.getKey(), keyValue.getValue()));
     }
 
     /**
      * Converts key value to a mutable {@link Map}.
-     * The map returned is disconnected from this Attributes class.
+     * The map returned is disconnected from this Attributes class and is mutable.
      *
      * @return a Map
      */
@@ -175,24 +204,25 @@ public final class Attributes implements Serializable {
     }
 
     /**
-     * Gets a mutable {@link Set} attribute key-value pairs.
+     * Gets a immutable {@link Set} of immutable {@link Map.Entry} instances.
      *
      * @return the set.
      */
-    public Set<KeyValue> keyValueSet() {
+    public Set<Map.Entry<String, String>> entrySet() {
         //not sure if we really need caching here - but adding it
         //b/c it is easy enough to implement
         synchronized (lock) {
             if (cache == null) {
-                cache = new HashSet<KeyValue>();
+                final Set<Map.Entry<String, String>> temp = new HashSet<Map.Entry<String, String>>();
                 for (Map.Entry<String, String> e : keyValues.entrySet()) {
                     if (e != null) {
-                        cache.add(ImmutableKeyValue.fromMapEntry(e));
+                        temp.add(new AbstractMap.SimpleImmutableEntry<String, String>(e.getKey(), e.getValue()));
                     }
                 }
+                cache = Collections.unmodifiableSet(temp);
             }
-            return cache;
         }
+        return cache;
     }
 
     private static void validateKey(String key) {

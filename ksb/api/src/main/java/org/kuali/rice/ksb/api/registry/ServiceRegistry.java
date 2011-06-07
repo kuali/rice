@@ -21,14 +21,14 @@ import org.kuali.rice.ksb.api.KsbApiConstants;
  * can query for information about available services through the apis provided
  * as well as publishing their own services.
  * 
- * <p>The {{ServiceRegistry}} deals primarily with the concept of a
+ * <p>The {@code ServiceRegistry} deals primarily with the concept of a
  * {@link ServiceEndpoint} which holds a {@link ServiceInfo}
  * and a {@link ServiceDescriptor}.  These pieces include information about the
  * service and it's configuration which might be needed by applications wishing to
  * invoke those services.
  * 
- * <p>Many of the operations on the {{ServiceRegistry}} only return the 
- * {{ServiceInfo}}.  This is because retrieving the full {{ServiceDescriptor}}
+ * <p>Many of the operations on the {@code ServiceRegistry} only return the 
+ * {@code ServiceInfo}.  This is because retrieving the full {@code ServiceDescriptor}
  * is a more expensive operation (since it consists of a serialized XML
  * representation of the service's configuration which needs to be unmarshaled
  * and processed) and typically the descriptor is only needed when the client
@@ -42,7 +42,7 @@ import org.kuali.rice.ksb.api.KsbApiConstants;
  * instances of an application which are essentially mirrors of each and
  * publish the same set of services.  Each of these individuals instances of
  * an application is identified by the "instance id" which is also available
- * from the {{ServiceInfo}}.
+ * from the {@code ServiceInfo}.
  * 
  * @see ServiceEndpoint
  * @see ServiceInfo
@@ -66,7 +66,8 @@ public interface ServiceRegistry {
 	 * of their choosing to connect to and invoke the service.
 	 * 
 	 * @param serviceName the name of the service to locate
-	 * @return an unmodifiable list of {{ServiceInfo}} for online services with the given name.
+	 * 
+	 * @return an unmodifiable list of {@code ServiceInfo} for online services with the given name.
 	 * If no services were found, an empty list will be returned, but this method should never
 	 * return null.
 	 * 
@@ -87,7 +88,7 @@ public interface ServiceRegistry {
 	 * If there are no online services in the registry, this method will return
 	 * an empty list.
 	 * 
-	 * @return an unmodifiable list of {{ServiceInfo}} for all online services
+	 * @return an unmodifiable list of {@code ServiceInfo} for all online services
 	 * in the registry. If no services were found, an empty list will be
 	 * returned, but this method should never return null.
 	 */
@@ -102,7 +103,7 @@ public interface ServiceRegistry {
 	 * the registry.  If there are no services in the registry, this method will
 	 * return an empty list.
 	 * 
-	 * @return an unmodifiable list of {{ServiceInfo}} for all services in the
+	 * @return an unmodifiable list of {@code ServiceInfo} for all services in the
 	 * registry. If no services were found, an empty list will be returned, but
 	 * this method should never return null.
 	 */
@@ -119,7 +120,8 @@ public interface ServiceRegistry {
 	 * this method should return an empty list.
 	 * 
 	 * @param instanceId the instance id of the services to locate
-	 * @return an unmodifiable listof {{ServiceInfo}} for all services in the
+	 * 
+	 * @return an unmodifiable listof {@code ServiceInfo} for all services in the
 	 * registry for the given instance id
 	 * 
 	 * @throws RiceIllegalArgumentException if instanceId is a null or blank value
@@ -168,11 +170,43 @@ public interface ServiceRegistry {
 	@XmlElement(name = "serviceDescriptor", required = false, nillable = true)
 	List<ServiceDescriptor> getServiceDescriptors(@WebParam(name = "serviceDescriptorId") List<String> serviceDescriptorIds) throws RiceIllegalArgumentException;
 	
+	/**
+	 * Publishes the given {@link ServiceEndpoint} to the registry.  If there
+	 * is no service id on the {@code ServiceInfo} then this constitutes a new
+	 * registry endpoint, so it will be added to the registry.  If the given
+	 * endpoint already has a {@code ServiceInfo} with a service id, then the
+	 * corresponding entry in the registry will be updated instead.  
+	 * 
+	 * @param serviceEndpoint the service endpoint to publish
+	 * 
+	 * @return the result of publishing the endpoint, if this is a new registry
+	 * entry, then the service endpoint that is returned will contain access to
+	 * both the service id and service descriptor id that were generated for
+	 * this entry in the registry.  This method will never return null.
+	 * 
+	 * @throws RiceIllegalArgumentException if serviceEndpoint is null
+	 */
 	@WebMethod(operationName = "publishService")
 	@WebResult(name = "serviceEndpoint")
 	@XmlElement(name = "serviceEndpoint", required = true)
 	ServiceEndpoint publishService(@WebParam(name = "serviceEndpoint") ServiceEndpoint serviceEndpoint) throws RiceIllegalArgumentException;
 
+	/**
+	 * Publishes the list of {@link ServiceEndpoint}s to the registry.  This
+	 * functions the same way as executing {@link #publishService(ServiceEndpoint)}
+	 * on each individual {@code ServiceEndpoint}.  However, it performs this as
+	 * an atomic operation, so if there is an error when publishing one service
+	 * endpoint in the list, then none of the endpoints will be published.
+	 * 
+	 * @param serviceEndpoints the list of service endpoints to publish
+	 * 
+	 * @return the result of publishing the endpoints (see {@link #publishService(ServiceEndpoint)}
+	 * for details).  This list will always be the same size and in the same
+	 * order as the list of service endpoints that were supplied for publshing.
+	 * 
+	 * @throws RiceIllegalArgumentException if serviceEndpoints is null or if any
+	 * {@code ServiceEndpoint} within the list is null
+	 */
 	@WebMethod(operationName = "publishServices")
 	@WebResult(name = "serviceEndpoints")
 	@XmlElementWrapper(name = "serviceEndpoints", required = true)

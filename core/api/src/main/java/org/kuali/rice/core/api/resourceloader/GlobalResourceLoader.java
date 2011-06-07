@@ -83,19 +83,19 @@ public class GlobalResourceLoader {
 
 	public static synchronized void addResourceLoader(ResourceLoader resourceLoader) {
 		initialize();
-		LOG.info("Adding ResourceLoader " + resourceLoader.getName() + " to GlobalResourceLoader");
 		if (resourceLoader == null) {
 			throw new ResourceLoaderException("Attempted to add a null resource loader to the Global resource loader.");
 		}
+		LOG.info("Adding ResourceLoader " + resourceLoader.getName() + " to GlobalResourceLoader");
 		getResourceLoader().addResourceLoader(resourceLoader);
 	}
 
 	public static synchronized void addResourceLoaderFirst(ResourceLoader resourceLoader) {
 		initialize();
-		LOG.info("Adding ResourceLoader " + resourceLoader.getName() + " to GlobalResourceLoader");
 		if (resourceLoader == null) {
 			throw new ResourceLoaderException("Attempted to add a null resource loader to the Global resource loader.");
 		}
+		LOG.info("Adding ResourceLoader " + resourceLoader.getName() + " to GlobalResourceLoader");
 		getResourceLoader().addResourceLoaderFirst(resourceLoader);
 	}
 

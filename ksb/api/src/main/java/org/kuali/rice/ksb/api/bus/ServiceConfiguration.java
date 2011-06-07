@@ -18,9 +18,9 @@ import org.kuali.rice.core.api.security.credentials.CredentialsType;
 public interface ServiceConfiguration extends Serializable {
 
 	/**
-	 * Returns the qualified name for the service.
+	 * Returns the qualified name for this service.
 	 * 
-	 * @return the qualfied name for the service, should never be null
+	 * @return the qualified name for this service, should never be null
 	 */
 	QName getServiceName();
 	

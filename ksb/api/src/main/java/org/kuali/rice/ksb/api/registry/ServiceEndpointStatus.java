@@ -1,5 +1,10 @@
 package org.kuali.rice.ksb.api.registry;
 
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
 
@@ -8,26 +13,29 @@ import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@XmlRootElement(name = "serviceEndpointStatus")
+@XmlType(name = "ServiceEndpointStatusType")
+@XmlEnum
 public enum ServiceEndpointStatus implements Coded {
 
 	/**
 	 * Indicates the service is online and available to receieve requests.
 	 */
-	ONLINE("A"),
+	@XmlEnumValue("A") ONLINE("A"),
 	
 	/**
 	 * Indicates the service has been taken offline, most likely as the
 	 * result of the instance hosting the service being taken offline
 	 * (i.e. for maintenance or otherwise)
 	 */
-	OFFLINE("I"),
+	@XmlEnumValue("I") OFFLINE("I"),
 	
 	/**
 	 * Indicates the service has been disabled because the registry has
 	 * detected that it, or it's host instance is defective or not
 	 * processing requests properly.
 	 */
-	DISABLED("D");
+	@XmlEnumValue("D") DISABLED("D");
 	
 	private final String code;
 	

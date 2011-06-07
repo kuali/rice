@@ -31,7 +31,13 @@ import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.api.registry.ServiceRegistry;
 
 /**
- * TODO... 
+ * Reference implementation of the {@link ServiceRegistry} which is backed by a
+ * data access object that handles reading and writing data related to registry
+ * entries from a backend datastore.
+ * 
+ * <p>In order for this class to function properly, a valid {@link ServiceRegistryDao}
+ * must be injected into it via the {@link #setServiceRegistryDao(ServiceRegistryDao)}
+ * method.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -165,46 +171,41 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 			List<ServiceEndpoint> publishServiceEndpoints) {
 		List<ServiceEndpoint> servicesRemoved = new ArrayList<ServiceEndpoint>();
 		List<ServiceEndpoint> servicesPublished = new ArrayList<ServiceEndpoint>();
-		if (removeServiceIds != null) {
+		if (removeServiceIds != null && !removeServiceIds.isEmpty()) {
 			servicesRemoved = removeServiceEndpoints(removeServiceIds);
 		}
-		if (publishServiceEndpoints != null) {
+		if (publishServiceEndpoints != null && !publishServiceEndpoints.isEmpty()) {
 			servicesPublished = publishServices(publishServiceEndpoints);
 		}
 		return RemoveAndPublishResult.create(servicesRemoved, servicesPublished);
 	}
 
 	@Override
-	public void updateStatus(String serviceId, String status) throws RiceIllegalArgumentException {
+	public boolean updateStatus(String serviceId, ServiceEndpointStatus status) throws RiceIllegalArgumentException {
 		if (StringUtils.isBlank(serviceId)) {
 			throw new RiceIllegalArgumentException("serviceId cannot be blank");
 		}
 		if (status == null) {
 			throw new RiceIllegalArgumentException("status cannot be null");
 		}
-		try {
-			serviceRegistryDao.updateStatus(serviceId, ServiceEndpointStatus.fromCode(status).getCode());
-		} catch (IllegalArgumentException e) {
-			throw new RiceIllegalArgumentException(e.getMessage());
-		}
+		return serviceRegistryDao.updateStatus(serviceId, status.getCode());
 	}
 
 	@Override
-	public void updateStatuses(List<String> serviceIds, String status) throws RiceIllegalArgumentException {
+	public List<String> updateStatuses(List<String> serviceIds, ServiceEndpointStatus status) throws RiceIllegalArgumentException {
 		if (serviceIds == null) {
 			throw new RiceIllegalArgumentException("serviceIds canot be null");
 		}
 		if (status == null) {
 			throw new RiceIllegalArgumentException("status cannot be null");
 		}
-		try {
-			ServiceEndpointStatus endpointStatus = ServiceEndpointStatus.fromCode(status);
-			for (String serviceId : serviceIds) {
-				updateStatus(serviceId, endpointStatus.getCode());
+		List<String> updatedServiceIds = new ArrayList<String>();
+		for (String serviceId : serviceIds) {
+			if (updateStatus(serviceId, status)) {
+				updatedServiceIds.add(serviceId);
 			}
-		} catch (IllegalArgumentException e) {
-			throw new RiceIllegalArgumentException(e.getMessage());
 		}
+		return Collections.unmodifiableList(updatedServiceIds);
 	}
 
 	@Override

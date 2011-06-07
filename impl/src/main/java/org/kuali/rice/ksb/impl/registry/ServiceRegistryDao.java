@@ -47,7 +47,7 @@ public interface ServiceRegistryDao {
 	
 	void removeServiceDescriptor(String serviceDescriptorId);
 	
-	void updateStatus(String serviceId, String statusCode);
+	boolean updateStatus(String serviceId, String statusCode);
 	
 	void updateStatusForInstanceId(String instanceId, String statusCode);
 	

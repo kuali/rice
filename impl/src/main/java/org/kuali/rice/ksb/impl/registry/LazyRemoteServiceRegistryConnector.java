@@ -29,6 +29,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.api.registry.RemoveAndPublishResult;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
 import org.kuali.rice.ksb.api.registry.ServiceEndpoint;
+import org.kuali.rice.ksb.api.registry.ServiceEndpointStatus;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.api.registry.ServiceRegistry;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
@@ -118,13 +119,13 @@ public class LazyRemoteServiceRegistryConnector implements ServiceRegistry {
 	}
 
 	@Override
-	public void updateStatus(String serviceId, String status) throws RiceIllegalArgumentException {
-		getDelegate().updateStatus(serviceId, status);
+	public boolean updateStatus(String serviceId, ServiceEndpointStatus status) throws RiceIllegalArgumentException {
+		return getDelegate().updateStatus(serviceId, status);
 	}
 
 	@Override
-	public void updateStatuses(List<String> serviceIds, String status) throws RiceIllegalArgumentException {
-		getDelegate().updateStatuses(serviceIds, status);
+	public List<String> updateStatuses(List<String> serviceIds, ServiceEndpointStatus status) throws RiceIllegalArgumentException {
+		return getDelegate().updateStatuses(serviceIds, status);
 	}
 
 	@Override

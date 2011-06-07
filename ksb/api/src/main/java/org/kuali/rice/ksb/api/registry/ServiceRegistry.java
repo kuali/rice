@@ -146,7 +146,7 @@ public interface ServiceRegistry {
 	ServiceDescriptor getServiceDescriptor(@WebParam(name = "serviceDescriptorId") String serviceDescriptorId) throws RiceIllegalArgumentException;
 	
 	/**
-	 * Returns a unmodifiable list of {@link ServiceDescriptor} which match the
+	 * Returns an unmodifiable list of {@link ServiceDescriptor} which match the
 	 * given list of service descriptor ids.  The list that is returned from this
 	 * method may be smaller than the list of ids that were supplied.  This
 	 * happens in cases where a service descriptor for a given id in the list
@@ -212,30 +212,137 @@ public interface ServiceRegistry {
 	@XmlElementWrapper(name = "serviceEndpoints", required = true)
 	@XmlElement(name = "serviceEndpoint", required = false)
 	List<ServiceEndpoint> publishServices(@WebParam(name = "serviceEndpoint") List<ServiceEndpoint> serviceEndpoints) throws RiceIllegalArgumentException;
-		
+	
+	/**
+	 * Removes the service from the registry with the given service id if it
+	 * exists.  If the service with the given id exists and was successfully
+	 * removed, a copy of the removed {@link ServiceEndpoint} entry will be
+	 * returned.  Otherwise, this method will return null.
+	 * 
+	 * @param serviceId the id of the service to remove
+	 * 
+	 * @return the removed {@link ServiceEndpoint} if a service with the given
+	 * id exists in the registry, if no such service exists, this method will
+	 * return null
+	 * 
+	 * @throws RiceIllegalArgumentException if serviceId is null or a blank value
+	 */
 	@WebMethod(operationName = "removeServiceEndpoint")
 	@WebResult(name = "serviceEndpoint")
 	@XmlElement(name = "serviceEndpoint", required = false)
 	ServiceEndpoint removeServiceEndpoint(@WebParam(name = "serviceId") String serviceId) throws RiceIllegalArgumentException;
 	
+	/**
+	 * As {@link #removeServiceEndpoint(String)} but removes all services that
+	 * match the given list of service ids.  It could be the case that some of
+	 * the given ids do not match a service in the registry, in this case that
+	 * {@link ServiceEndpoint} would not be included in the resulting list of
+	 * services that were removed.  Because of this, the list that is returned
+	 * from this method may be smaller then the list of ids that were supplied.
+	 * 
+	 * @param serviceIds the list of service ids to remove from the registry
+	 * 
+	 * @return a list of all service endpoints that were successfully removed,
+	 * if no such endpoints were removed, this list will be empty, but it will
+	 * never be null
+	 * 
+	 * @throws RiceIllegalArgumentException if serviceIds is null or if one of
+	 * the ids in the list is null or blank
+	 */
 	@WebMethod(operationName = "removeServiceEndpoints")
 	@WebResult(name = "serviceEndpoints")
 	@XmlElementWrapper(name = "serviceEndpoints", required = true)
 	@XmlElement(name = "serviceEndpoint", required = false)
 	List<ServiceEndpoint> removeServiceEndpoints(@WebParam(name = "serviceId") List<String> serviceIds) throws RiceIllegalArgumentException;
 	
+	/**
+	 * Performs a single atomic operation of removing and publishing a set of
+	 * services in the registry.  This operation is useful in situations where
+	 * a client application contains apis to manage the services they are
+	 * publishing on the bus and they want to ensure the registry is kept in
+	 * a consistent state in terms of what they have published.
+	 * 
+	 * <p>Behaviorally, this operation is equivalent to performing a
+	 * {@link #removeServiceEndpoints(List)} followed by a
+	 * {@link #publishServices(List)}, except that a null list is valid for
+	 * either {@code removeServiceIds} or {@code publishServiceEndpoints}.  In
+	 * the case that a null or empty list is passed for either of these, that
+	 * particular portion of the operation will not be performed.
+	 * 
+	 * <p>This method returns a {@link RemoveAndPublishResult} which contains
+	 * a list of the services that were successfully removed as well as those
+	 * that were published.
+	 * 
+	 * @param removeServiceIds the list of ids of the services to remove, if
+	 * this parameter is null or an empty list, then no remove operation will
+	 * be executed
+	 * @param publishServiceEndpoints the list of service endpoints to publish,
+	 * if this parameter is null or an empty list, then no publish operation
+	 * will be executed
+	 * 
+	 * @return the result of the operation which contains information on which
+	 * services were successfully removed as well as published, this method will
+	 * never return null
+	 */
 	@WebMethod(operationName = "removeAndPublish")
 	@WebResult(name = "removeAndPublishResult")
 	@XmlElement(name = "removeAndPublishResult", required = true)
 	RemoveAndPublishResult removeAndPublish(@WebParam(name = "removeServiceId") List<String> removeServiceIds,
 			@WebParam(name = "publishServiceEndpoint") List<ServiceEndpoint> publishServiceEndpoints);
 	
+	/**
+	 * Updates the status for the service with the given id to the given
+	 * {@link ServiceEndpointStatus}.
+	 * 
+	 * @param serviceId the id of the service for which to update the status
+	 * @param status the status to update this service to
+	 * 
+	 * @return true if the service with the given id exists in the registry and
+	 * was updated, false otherwise
+	 * 
+	 * @throws RiceIllegalArgumentException if serviceId is null or a blank value
+	 * @throws RiceIllegalArgumentException if status is null
+	 */
 	@WebMethod(operationName = "updateStatus")
-	void updateStatus(@WebParam(name = "serviceId") String serviceId, @WebParam(name = "status") String status) throws RiceIllegalArgumentException;
-	
+	boolean updateStatus(@WebParam(name = "serviceId") String serviceId, @WebParam(name = "status") ServiceEndpointStatus status) throws RiceIllegalArgumentException;
+
+	/**
+	 * As per {@link #updateStatus(String, ServiceEndpointStatus)} but updates
+	 * mutliple statuses as part of a single operation.
+	 * 
+	 * <p>This method returns a List of ids of the services that were updated.
+	 * If a given service id does not exist in the registry, that id won't be
+	 * included in the result.  So the resuling list of updated ids may be
+	 * smaller than the given list of service ids (though it will never be
+	 * null).
+	 * 
+	 * @param serviceIds the list of ids of the services for which to update the status
+	 * @param status the status to update the services to
+	 * 
+	 * @return an unmodifiable list containing the ids of the services that
+	 * were successfully updated, since it's possible some of the supplied ids
+	 * might not exist in the registry this list could be smaller than the
+	 * given serviceIds list
+	 * 
+	 * @throws RiceIllegalArgumentException if serviceIds is null or if any of
+	 * the entries in the list is null or has a blank value
+	 * @throws RiceIllegalArgumentException if status is null
+	 */
 	@WebMethod(operationName = "updateStatuses")
-	void updateStatuses(@WebParam(name = "serviceId") List<String> serviceIds, @WebParam(name = "status") String status) throws RiceIllegalArgumentException;
+	List<String> updateStatuses(@WebParam(name = "serviceId") List<String> serviceIds, @WebParam(name = "status") ServiceEndpointStatus status) throws RiceIllegalArgumentException;
 	
+	/**
+	 * Flips the status of all services that match the given instance id to the
+	 * status of {@link ServiceEndpointStatus#OFFLINE.  It is intended that this
+	 * operation will be used by a registry client who is going offline for
+	 * maintenance or other reasons and wants to ensure that the state of the
+	 * registry is consistent with the application's state.
+	 * 
+	 * @param instanceId the id of the instance for which to set all services to
+	 * the offline status
+	 * 
+	 * @throws RiceIllegalArgumentException if instanceId is null or a blank value
+	 */
 	@WebMethod(operationName = "takeInstanceOffline")
 	void takeInstanceOffline(@WebParam(name = "instanceId") String instanceId) throws RiceIllegalArgumentException;
 	

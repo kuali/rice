@@ -106,10 +106,14 @@ public class ServiceRegistryDaoOjb extends PersistenceBrokerDaoSupport implement
 	}
 
 	@Override
-	public void updateStatus(String serviceId, String statusCode) {
+	public boolean updateStatus(String serviceId, String statusCode) {
 		ServiceInfoBo serviceInfoBo = getServiceInfo(serviceId);
+		if (serviceInfoBo == null) {
+			return false;
+		}
 		serviceInfoBo.setStatusCode(statusCode);
 		saveServiceInfo(serviceInfoBo);
+		return true;
 	}
 
 	private static final String UPDATE_STATUS_FOR_INSTANCE_ID = "update KRSB_SVC_DEF_T set STAT_CD=? where INSTN_ID=?";

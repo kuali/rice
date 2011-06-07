@@ -14,7 +14,7 @@
       </list>
     </property>
   </bean>
-  <bean id="AddressType-MaintenanceView" parent="MaintenanceView">
+  <bean id="AddressTypeBS-MaintenanceView" parent="MaintenanceView">
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.AddressType"/>
     <property name="items">
       <list merge="true">

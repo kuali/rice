@@ -3,7 +3,6 @@ package edu.sampleu.bookstore.rule;
 import java.util.List;
 
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -51,7 +50,6 @@ public class AuthorMaintenanceDocumentRule extends MaintenanceDocumentRuleBase {
 			System.out.println("Inside Global Aothor address Size is : " + addressEntries.size());
 			Address tempAddress = null;
 			for(Address address : addressEntries){
-				System.out.println("-- Address Type -- " + address.getAddressType().getType());
 				tempAddress = address;
 				for(Address address2 : addressEntries){
 					if(!tempAddress.equals(address2)){

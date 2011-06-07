@@ -44,12 +44,14 @@
           <property name="propertyName" value="addresses"/>
           <property name="items">
             <list>
+              
               <bean parent="AttributeField" p:propertyName="type"/>
               <bean parent="AttributeField" p:propertyName="street1"/>
               <bean parent="AttributeField" p:propertyName="street2"/>
               <bean parent="AttributeField" p:propertyName="city"/>
               <bean parent="AttributeField" p:propertyName="province"/>
               <bean parent="AttributeField" p:propertyName="country"/>
+              <bean parent="AttributeField" p:propertyName="active"/>
             </list>
           </property>
           <property name="layoutManager.summaryTitle" value="Address"/>

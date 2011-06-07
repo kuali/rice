@@ -218,6 +218,7 @@ CREATE TABLE bk_address_t
 	city VARCHAR(50),
 	provience VARCHAR(50),
 	country VARCHAR(50),
+	actv_ind VARCHAR(1) DEFAULT 'Y',
 	obj_id VARCHAR(36) NOT NULL,
 	ver_nbr DECIMAL(8) NOT NULL DEFAULT 1,
 	PRIMARY KEY (address_id),

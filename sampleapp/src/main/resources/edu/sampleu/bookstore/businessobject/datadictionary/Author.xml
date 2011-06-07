@@ -18,7 +18,7 @@
         <ref bean="Author-PhoneNbr"/>
         <ref bean="Author-Active"/>
         <ref bean="Author-extension-accountNumber"/>
-        <ref bean="Author-extension-bankName"/>
+        <ref bean="Author-extension-bankName"/>                             
       </list>
     </property>
     <property name="titleAttribute" value="authorId"/>
@@ -27,7 +27,7 @@
         <value>authorId</value>
       </list>
     </property>
-  </bean>
+  </bean> 	  
   <bean id="Author-Id" parent="Author-Id-parentBean"/>
   <bean id="Author-Id-parentBean" abstract="true" parent="AttributeReferenceDummy-genericSystemId">
     <property name="name" value="authorId"/>
@@ -100,8 +100,21 @@
     <property name="description" value="Name identifying the Author."/>
   </bean>
   <bean id="Author-Active" parent="Author-Active-parentBean"/>
-  <bean id="Author-Active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+  <bean id="Author-Active-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="active"/>
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="active"/>
+    <property name="maxLength" value="1"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
+    </property>
+    <property name="controlField">
+      <bean parent="CheckboxControl"/>
+    </property>
+    <property name="summary" value="Active Indicator"/>
+    <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter"/>
+    <property name="label" value="Active Indicator"/>
+    <property name="description" value="This attribute is used to describe whether the associated object is active or inactive."/>
   </bean>
   <bean id="Author-extension-bankName" parent="Author-extension-bankName-parentBean"/>
   <bean id="Author-extension-bankName-parentBean" abstract="true" parent="Account-bankName">
@@ -143,7 +156,7 @@
           <property name="propertyName" value="addresses"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="type"/>
+              <bean parent="AttributeField" p:propertyName="addressType.type"/>
               <bean parent="AttributeField" p:propertyName="street1"/>
               <bean parent="AttributeField" p:propertyName="street2"/>
               <bean parent="AttributeField" p:propertyName="city"/>
@@ -154,7 +167,7 @@
           <property name="layoutManager.summaryFields">
             <list>
               <value>type</value>
-            </list>
+            </list>           
           </property>
           <property name="layoutManager.summaryTitle" value ="Address"/>
         </bean>
@@ -177,6 +190,7 @@
               <value>title</value>
             </list>
           </property>
+          <property name="layoutManager.summaryTitle" value ="Book"/>
         </bean>
       </list>
     </property>

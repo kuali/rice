@@ -94,9 +94,9 @@ INSERT INTO bk_address_typ_t (addr_typ,desc_txt,actv_ind,obj_id,ver_nbr)
 
 TRUNCATE TABLE bk_address_t DROP STORAGE
 /
-INSERT INTO bk_address_t (address_id,author_id,addr_typ,street1,street2,city,provience,country,obj_id,ver_nbr)
-  VALUES ('1','1','Residence','Strt1R','Strt2R','CityR','ProvinceR','CountryR', 'b8190679-7cfe-49c9-bd99-6b264f700f0d', 1)
+INSERT INTO bk_address_t (address_id,author_id,addr_typ,street1,street2,city,provience,country,actv_ind,obj_id,ver_nbr)
+  VALUES ('1','1','Residence','Strt1R','Strt2R','CityR','ProvinceR','CountryR','Y', 'b8190679-7cfe-49c9-bd99-6b264f700f0d', 1)
 /
-INSERT INTO bk_address_t (address_id,author_id,addr_typ,street1,street2,city,provience,country,obj_id,ver_nbr)
-  VALUES ('2','1','Office','Strt1O','Strt2O','CityO','ProvinceO','CountryO', 'b8190679-7cfe-49c9-bd99-6b264f700f03', 1)
+INSERT INTO bk_address_t (address_id,author_id,addr_typ,street1,street2,city,provience,country,actv_ind,obj_id,ver_nbr)
+  VALUES ('2','1','Office','Strt1O','Strt2O','CityO','ProvinceO','CountryO','Y', 'b8190679-7cfe-49c9-bd99-6b264f700f03', 1)
 /

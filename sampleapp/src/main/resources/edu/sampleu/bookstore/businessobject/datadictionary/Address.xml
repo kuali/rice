@@ -13,21 +13,23 @@
         <ref bean="Address-city"/>
         <ref bean="Address-province"/>
         <ref bean="Address-country"/>
-        <ref bean="Address-addressType-type"/>
+<!--         <ref bean="Address-addressType-type"/> -->
+        <ref bean="Address-activeBean"/>
+        
       </list>
     </property>
-    <property name="relationships">
-      <list>
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="addressType"/>
-          <property name="primitiveAttributes">
-            <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="type" p:targetName="type"/>
-            </list>
-          </property>
-        </bean>
-      </list>
-    </property>
+<!--     <property name="relationships"> -->
+<!--       <list> -->
+<!--         <bean parent="RelationshipDefinition"> -->
+<!--           <property name="objectAttributeName" value="addressType"/> -->
+<!--           <property name="primitiveAttributes"> -->
+<!--             <list> -->
+<!--               <bean parent="PrimitiveAttributeDefinition" p:sourceName="type" p:targetName="type"/> -->
+<!--             </list> -->
+<!--           </property> -->
+<!--         </bean> -->
+<!--       </list> -->
+<!--     </property> -->
     <property name="titleAttribute" value="addressId"/>
     <property name="primaryKeys">
       <list>
@@ -35,6 +37,8 @@
       </list>
     </property>
   </bean>
+   
+  
   <bean id="Address-id" parent="Address-id-parentBean"/>
   <bean id="Address-id-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Id"/>
@@ -133,18 +137,35 @@
       <bean parent="TextControl" p:size="17"/>
     </property>
   </bean>
-  <bean id="Address-addressType-type" parent="Address-addressType-type-parentBean"/>
-  <bean id="Address-addressType-type-parentBean" abstract="true" parent="AddressType-type">
-    <property name="name" value="addressType.type"/>
-    <property name="label" value="Address Type"/>
-    <property name="shortLabel" value="Type"/>
-    <property name="maxLength" value="40"/>
+<!--   <bean id="Address-addressType-type" parent="Address-addressType-type-parentBean"/> -->
+<!--   <bean id="Address-addressType-type-parentBean" abstract="true" parent="AddressType-type"> -->
+<!--     <property name="name" value="addressType.type"/> -->
+<!--     <property name="label" value="Address Type"/> -->
+<!--     <property name="shortLabel" value="Type"/> -->
+<!--     <property name="maxLength" value="40"/> -->
+<!--     <property name="validationPattern"> -->
+<!--       <bean parent="AnyCharacterValidationPattern"/> -->
+<!--     </property>      -->
+<!--     <property name="controlField"> -->
+<!--       <bean parent="TextControl" p:size="30"/> -->
+<!--     </property> -->
+<!--   </bean> -->
+  <bean id="Address-activeBean" parent="Address-activeBean-parentBean"/>
+  <bean id="Address-activeBean-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="active"/>
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="active"/>
+    <property name="maxLength" value="1"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
-    </property>     
-    <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
     </property>
+    <property name="controlField">
+      <bean parent="CheckboxControl"/>
+    </property>
+    <property name="summary" value="Active Indicator"/>
+    <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter"/>
+    <property name="label" value="Active Indicator"/>
+    <property name="description" value="This attribute is used to describe whether the associated object is active or inactive."/>
   </bean>
   <bean id="Address-LookupView" parent="LookupView">
     <property name="title" value="Address Lookup"/>

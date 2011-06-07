@@ -1,14 +1,13 @@
 package edu.sampleu.bookstore.bo;
 
-import java.util.LinkedHashMap;
-
+import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * AddressType Business Object class file relative to AddressType maintenance object.
  */
 
-public class AddressType extends PersistableBusinessObjectBase {
+public class AddressType extends PersistableBusinessObjectBase implements Inactivateable{
 	
 	private String type;
 	private String description;

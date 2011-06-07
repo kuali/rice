@@ -1,14 +1,13 @@
 package edu.sampleu.bookstore.bo;
 
-import java.util.LinkedHashMap;
-
+import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * Address Business Object class file relative to Address maintenance object.
  */
 
-public class Address extends PersistableBusinessObjectBase {
+public class Address extends PersistableBusinessObjectBase implements Inactivateable{
 
 	private static final long serialVersionUID = -8624654503247320725L;
 
@@ -20,8 +19,26 @@ public class Address extends PersistableBusinessObjectBase {
 	private String province;
 	private String country;
 	private Long authorId;
+	private boolean active = true;
 
 	private AddressType addressType;
+
+	
+	
+	
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return this.active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	public Long getAuthorId() {
 		return authorId;

@@ -1,16 +1,16 @@
 package edu.sampleu.bookstore.bo;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * Author Business Object class file for Author maintenance object.
  */
 
-public class Author extends PersistableBusinessObjectBase {
+public class Author extends PersistableBusinessObjectBase implements Inactivateable{
 
 	private static final long serialVersionUID = -4883752918652513985L;
 	private Long authorId;

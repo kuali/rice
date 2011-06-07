@@ -21,7 +21,7 @@
       <bean parent="TextControl" p:size="15"/>
     </property>
     <property name="validationPattern">
-      <bean parent="AlphaNumericValidationPattern" p:exactLength="15"/>
+      <bean parent="AlphaNumericValidationPattern" />
     </property>
   </bean>
   <bean id="Account-authorId" parent="Author-Id">

@@ -3,9 +3,7 @@
  */
 package edu.sampleu.bookstore.bo;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.Inactivateable;
@@ -15,7 +13,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * BookType Business Object class file relative to BookType maintenance Object.
  */
 
-public class BookType extends PersistableBusinessObjectBase {
+public class BookType extends PersistableBusinessObjectBase implements Inactivateable{
 	
 	
 	private static final long serialVersionUID = 8499633675478827977L;

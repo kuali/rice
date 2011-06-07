@@ -76,8 +76,21 @@
     <property name="description" value="Description identifying the book type."/>
   </bean>
   <bean id="BookType-active" parent="BookType-active-parentBean"/>
-  <bean id="BookType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+  <bean id="BookType-active-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="active"/>
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="active"/>
+    <property name="maxLength" value="1"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
+    </property>
+    <property name="controlField">
+      <bean parent="CheckboxControl"/>
+    </property>
+    <property name="summary" value="Active Indicator"/>
+    <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter"/>
+    <property name="label" value="Active Indicator"/>
+    <property name="description" value="This attribute is used to describe whether the associated object is active or inactive."/>
   </bean>
   <bean id="BookType-InquiryView" parent="InquiryView">
     <property name="title" value="Book Type Inquiry"/>
@@ -115,6 +128,7 @@
               <value>title</value>
             </list>
           </property>
+          <property name="layoutManager.summaryTitle" value="Book" />
         </bean>
       </list>
     </property>

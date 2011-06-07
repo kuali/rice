@@ -9,18 +9,18 @@
         <bean parent="CollectionDefinition" p:name="authors" p:label="Authors" p:shortLabel="Authors" p:elementLabel="Author"/>
       </list>
     </property>
-    <property name="relationships">
-      <list>
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="bookType"/>
-          <property name="primitiveAttributes">
-            <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="typeCode" p:targetName="typeCode"/>
-            </list>
-          </property>
-        </bean>
-      </list>
-    </property>
+<!--     <property name="relationships"> -->
+<!--       <list> -->
+<!--         <bean parent="RelationshipDefinition"> -->
+<!--           <property name="objectAttributeName" value="bookType"/> -->
+<!--           <property name="primitiveAttributes"> -->
+<!--             <list> -->
+<!--               <bean parent="PrimitiveAttributeDefinition" p:sourceName="typeCode" p:targetName="typeCode"/> -->
+<!--             </list> -->
+<!--           </property> -->
+<!--         </bean> -->
+<!--       </list> -->
+<!--     </property> -->
     <property name="attributes">
       <list>
         <ref bean="Book-id"/>
@@ -136,14 +136,14 @@
       <bean parent="DateControl"/>
     </property>
    <property name="formatterClass" value="org.kuali.rice.core.web.format.DateFormatter"/>
-<!--     <property name="attributeSecurity">-->
-<!--	            <bean parent="AttributeSecurity">-->
-<!--		  			<property name="partialMask" value="true"/> -->
-<!--	  				<property name="partialMaskFormatter">-->
-<!--	  					<bean parent="MaskFormatterSubString" p:maskLength="2"/> -->
-<!--	  				</property>-->
-<!--	  			</bean>-->
-<!--	 </property>	    -->
+<!--     <property name="attributeSecurity"> -->
+<!-- 	            <bean parent="AttributeSecurity"> -->
+<!-- 		  			<property name="partialMask" value="true"/> -->
+<!-- 	  				<property name="partialMaskFormatter"> -->
+<!-- 	  					<bean parent="MaskFormatterSubString" p:maskLength="2"/> -->
+<!-- 	  				</property> -->
+<!-- 	  			</bean> -->
+<!-- 	 </property>	    -->
     <property name="summary" value="Publication date of the book."/>
     <property name="description" value="Publication date of the book."/>
   </bean>
@@ -204,7 +204,7 @@
       <list>
         <bean parent="GroupSectionGridLayout">
           <property name="title" value="Book Information"/>
-          <property name="layoutManager.numberOfColumns" value="1"/>
+          <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
               <bean parent="AttributeField" p:propertyName="id"/>
@@ -245,6 +245,7 @@
               <value>authorName</value>
             </list>
           </property>
+            <property name="layoutManager.summaryTitle" value ="Author"/>
         </bean>
       </list>
     </property>

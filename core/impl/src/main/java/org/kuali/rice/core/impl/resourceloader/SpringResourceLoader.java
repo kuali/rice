@@ -16,6 +16,12 @@
 
 package org.kuali.rice.core.impl.resourceloader;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
@@ -23,11 +29,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
-
-import javax.servlet.ServletContext;
-import javax.xml.namespace.QName;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A simple {@link org.kuali.rice.core.api.resourceloader.ResourceLoader} which wraps a Spring {@link ConfigurableApplicationContext}.
@@ -113,4 +114,19 @@ public class SpringResourceLoader extends BaseResourceLoader {
 			SpringResourceLoader parentSpringResourceLoader) {
 		this.parentSpringResourceLoader = parentSpringResourceLoader;
 	}
+
+	@Override
+	public String getContents(String indent, boolean servicePerLine) {
+		String contents = "";
+		for (String name : context.getBeanDefinitionNames()) {
+			if (servicePerLine) {
+				contents += indent + "+++" + name + "\n";
+			} else {
+				contents += name + ", ";
+			}
+		}
+		return contents;
+	}
+	
+	
 }

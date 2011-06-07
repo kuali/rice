@@ -118,9 +118,9 @@ public class GlobalResourceLoader {
 	 */
 	public static synchronized void stop() throws Exception {
 		LOG.info("Stopping the GlobalResourceLoader...");
-		if (getResourceLoader() != null) {
+		if (getResourceLoader(ClassLoaderUtils.getDefaultClassLoader()) != null) {
 			LOG.info("Destroying GlobalResourceLoader");
-			getResourceLoader().stop();
+			getResourceLoader(ClassLoaderUtils.getDefaultClassLoader()).stop();
 			rootResourceLoaders.remove(ClassLoaderUtils.getDefaultClassLoader());
 		}
 		LOG.info("...GlobalResourceLoader successfully stopped.");
@@ -157,6 +157,16 @@ public class GlobalResourceLoader {
 	public static synchronized void logContents() {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(getResourceLoader().getContents("", false));
+		}
+	}
+	
+	public static synchronized void logAllContents() {
+		if (LOG.isInfoEnabled()) {
+			LOG.info("######################### Logging All Contents ###########################");
+			for (ResourceLoader rl : rootResourceLoaders.values()) {
+				LOG.info("Logging contents for ResourceLoader: " + rl.getName() + "\n" + rl.getContents("  ", true));
+			}
+			LOG.info("###################### Done Logging All Contents #########################");
 		}
 	}
 

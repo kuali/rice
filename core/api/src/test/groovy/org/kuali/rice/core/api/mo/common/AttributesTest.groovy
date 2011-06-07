@@ -5,8 +5,16 @@ import org.junit.Test
 import org.kuali.rice.core.util.ConcreteKeyValue
 import org.kuali.rice.core.util.KeyValue
 import static org.junit.Assert.*
+import org.kuali.rice.core.test.JAXBAssert
+import org.junit.Ignore
 
 class AttributesTest {
+
+    private static final String XML = """
+	<attributes xmlns="http://rice.kuali.org/core/v2_0">
+		<entry key="foo">bar</entry>
+	</attributes>
+    """
 
     @Test
     void testEmptyOptimization() {
@@ -109,4 +117,13 @@ class AttributesTest {
         def attrs = Attributes.fromMap(m)
         attrs.entrySet().iterator().next().setValue("baz")
     }
+
+    @Test @Ignore("need to figure this out!!!")
+	void test_Xml_Marshal_Unmarshal() {
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, Attributes.class)
+	}
+
+    private create() {
+		return Attributes.fromMap(["foo":"bar"])
+	}
 }

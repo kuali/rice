@@ -1,5 +1,14 @@
 package org.kuali.rice.core.api.mo.common;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.jaxb.StringMapEntry;
+import org.kuali.rice.core.util.jaxb.StringMapEntryList;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -10,16 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.jaxb.StringMapEntry;
-import org.kuali.rice.core.util.jaxb.StringMapEntryList;
 
 /**
  * This is a generic attributes class in rice.  It is essentially a list of key-value

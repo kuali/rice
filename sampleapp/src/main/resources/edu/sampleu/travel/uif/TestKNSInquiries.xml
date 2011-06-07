@@ -247,7 +247,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="KimType-InquiryView" parent="InquiryView">
 	<property name="title" value="Kim Type"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.type.KimTypeBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.KimTypeInquirableImpl"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.type.KimTypeInquirableImpl"/>
     <property name="Items">
         <list>
           <bean parent="GroupSectionGridLayout">

@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.inquiry;
+package org.kuali.rice.kim.impl.type;
 
-import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
-/**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public class KimTypeInquirableImpl extends KualiInquirableImpl {
 
 	protected final String KIM_TYPE_NAME = "name";
@@ -37,9 +29,7 @@ public class KimTypeInquirableImpl extends KualiInquirableImpl {
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
 		if(KIM_TYPE_NAME.equals(attributeName)){
-			List<String> primaryKeys = new ArrayList<String>();
-			primaryKeys.add(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
-			return getInquiryUrlForPrimaryKeys(KimTypeBo.class, businessObject, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(KimTypeBo.class, businessObject, Collections.singletonList(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID), null);
 		}
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);
     }

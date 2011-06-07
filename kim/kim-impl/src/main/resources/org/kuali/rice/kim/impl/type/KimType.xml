@@ -121,7 +121,7 @@
 				</bean>
 			</list>
 		</property>
-	    <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.KimTypeInquirableImpl"/>
+	    <property name="inquirableClass" value="org.kuali.rice.kim.impl.type.KimTypeInquirableImpl"/>
 	</bean>
 
 	<!-- Business Object Lookup Definition -->

@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
+import org.kuali.rice.kim.util.KimConstants;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -127,7 +127,7 @@ public class KimEntityEthnicityImpl extends KimEntityDataBase implements KimEnti
         if (suppressPersonal != null) {
             return suppressPersonal.booleanValue();
         }
-        KimEntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+        EntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
 
         suppressPersonal = false;
         if (privacy != null) {

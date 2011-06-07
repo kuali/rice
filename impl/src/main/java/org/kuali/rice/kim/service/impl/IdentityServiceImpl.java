@@ -17,9 +17,11 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.entity.Type;
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.api.entity.services.IdentityService;
+import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
@@ -27,13 +29,9 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.api.entity.services.IdentityService;
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
@@ -51,6 +49,7 @@ import org.kuali.rice.kim.impl.entity.EntityTypeBo;
 import org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo;
 import org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo;
 import org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo;
+import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -224,9 +223,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		for ( KimPrincipalImpl p : entity.getPrincipals() ) {
 			principalInfo.add( new KimPrincipalInfo( p ) );
 		}
-		KimEntityPrivacyPreferencesInfo privacy = null;
+		EntityPrivacyPreferences privacy = null;
 		if ( ObjectUtils.isNotNull( entity.getPrivacyPreferences() ) ) {
-            privacy = new KimEntityPrivacyPreferencesInfo(entity.getPrivacyPreferences());
+            privacy = EntityPrivacyPreferences.Builder.create(entity.getPrivacyPreferences()).build();
         }
 
 		info.setPrivacyPreferences(privacy);
@@ -257,10 +256,10 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	/**
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getEntityPrivacyPreferences(java.lang.String)
 	 */
-	public KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId) {
+	public EntityPrivacyPreferences getEntityPrivacyPreferences(String entityId) {
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
-		return new KimEntityPrivacyPreferencesInfo( (KimEntityPrivacyPreferences)getBusinessObjectService().findByPrimaryKey(KimEntityPrivacyPreferencesImpl.class, criteria) );
+		return EntityPrivacyPreferencesBo.to(getBusinessObjectService().findByPrimaryKey(EntityPrivacyPreferencesBo.class, criteria));
 	}
 
 	/**

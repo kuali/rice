@@ -52,70 +52,70 @@ public class PersonDocumentPrivacy extends KimDocumentBoEditableBase {
 	protected boolean suppressPersonal;
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressAddress()
+	 * @see org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract#isSuppressAddress()
 	 */
 	public boolean isSuppressAddress() {
 		return suppressAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressEmail()
+	 * @see org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract#isSuppressEmail()
 	 */
 	public boolean isSuppressEmail() {
 		return suppressEmail;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressName()
+	 * @see org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract#isSuppressName()
 	 */
 	public boolean isSuppressName() {
 		return suppressName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressPersonal()
+	 * @see org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract#isSuppressPersonal()
 	 */
 	public boolean isSuppressPersonal() {
 		return suppressPersonal;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#isSuppressPhone()
+	 * @see org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract#isSuppressPhone()
 	 */
 	public boolean isSuppressPhone() {
 		return suppressPhone;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#setSuppressAddress(boolean)
+	 * @see org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract#setSuppressAddress(boolean)
 	 */
 	public void setSuppressAddress(boolean suppressAddress) {
 		this.suppressAddress = suppressAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#setSuppressEmail(boolean)
+	 * @see org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract#setSuppressEmail(boolean)
 	 */
 	public void setSuppressEmail(boolean suppressEmail) {
 		this.suppressEmail = suppressEmail;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#setSuppressName(boolean)
+	 * @see org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract#setSuppressName(boolean)
 	 */
 	public void setSuppressName(boolean suppressName) {
 		this.suppressName = suppressName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#setSuppressPersonal(boolean)
+	 * @see org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract#setSuppressPersonal(boolean)
 	 */
 	public void setSuppressPersonal(boolean suppressPersonal) {
 		this.suppressPersonal = suppressPersonal;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences#setSuppressPhone(boolean)
+	 * @see org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract#setSuppressPhone(boolean)
 	 */
 	public void setSuppressPhone(boolean suppressPhone) {
 		this.suppressPhone = suppressPhone;

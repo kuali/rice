@@ -1,19 +1,19 @@
 package org.kuali.rice.kim.impl.entity.email
 
-import javax.persistence.Id
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.Table
-import javax.persistence.ManyToOne
-import javax.persistence.JoinColumn
 import javax.persistence.FetchType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 import javax.persistence.Transient
 import org.hibernate.annotations.Type
-import org.kuali.rice.kim.api.entity.email.EntityEmail
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences
-import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.KimConstants
+import org.kuali.rice.kim.api.entity.email.EntityEmail
 import org.kuali.rice.kim.api.entity.email.EntityEmailContract
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences
+import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 /**
@@ -99,7 +99,7 @@ class EntityEmailBo extends PersistableBusinessObjectBase implements EntityEmail
         @Override
         boolean isSuppressEmail() {
             if (this.suppressEmail == null) {
-                KimEntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId())
+                EntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId())
                 if (privacy != null) {
                    this.suppressEmail = privacy.isSuppressEmail()
                 } else {

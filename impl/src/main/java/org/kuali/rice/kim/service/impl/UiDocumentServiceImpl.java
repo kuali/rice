@@ -26,16 +26,9 @@ import org.kuali.rice.kim.api.entity.address.EntityAddress;
 import org.kuali.rice.kim.api.entity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.entity.email.EntityEmail;
 import org.kuali.rice.kim.api.entity.email.EntityEmailContract;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.api.entity.phone.EntityPhone;
 import org.kuali.rice.kim.api.entity.phone.EntityPhoneContract;
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.api.entity.type.EntityTypeData;
 import org.kuali.rice.kim.api.group.Group;
@@ -49,11 +42,17 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -92,6 +91,7 @@ import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.impl.entity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo;
+import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.impl.group.GroupAttributeBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
@@ -528,7 +528,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                                         docGroup.setGroupName(group.getName());
                                         docGroup.setNamespaceCode(group.getNamespaceCode());
                                         docGroup.setPrincipalId(memberId);
-                                        docGroup.setGroupMemberId(groupMember.getMemberId());
+                                        docGroup.setGroupMemberId(groupMember.getId());
                                         if (groupMember.getActiveFromDate() != null) {
                                         	docGroup.setActiveFromDate(new Timestamp(groupMember.getActiveFromDate().getTime()));
                                         }
@@ -920,8 +920,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return inactivatingPrincipal;
 	}
 
-    protected void setupPrivacy(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, KimEntityPrivacyPreferencesImpl origPrivacy) {
-		KimEntityPrivacyPreferencesImpl privacyPreferences = new KimEntityPrivacyPreferencesImpl();
+    protected void setupPrivacy(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, EntityPrivacyPreferencesBo origPrivacy) {
+		EntityPrivacyPreferencesBo privacyPreferences = new EntityPrivacyPreferencesBo();
 		privacyPreferences.setEntityId(identityManagementPersonDocument.getEntityId());
 		privacyPreferences.setSuppressAddress(identityManagementPersonDocument.getPrivacy().isSuppressAddress());
 		privacyPreferences.setSuppressEmail(identityManagementPersonDocument.getPrivacy().isSuppressEmail());
@@ -930,10 +930,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		privacyPreferences.setSuppressPersonal(identityManagementPersonDocument.getPrivacy().isSuppressPersonal());
 		if (ObjectUtils.isNotNull(origPrivacy)) {
 			privacyPreferences.setVersionNumber(origPrivacy.getVersionNumber());
+            privacyPreferences.setObjectId(origPrivacy.getObjectId());
 		}
 		kimEntity.setPrivacyPreferences(privacyPreferences);
 	}
-    protected PersonDocumentPrivacy loadPrivacyReferences(KimEntityPrivacyPreferences privacyPreferences) {
+    protected PersonDocumentPrivacy loadPrivacyReferences(EntityPrivacyPreferences privacyPreferences) {
 		PersonDocumentPrivacy docPrivacy = new PersonDocumentPrivacy();
 		docPrivacy.setSuppressAddress(privacyPreferences.isSuppressAddress());
 		docPrivacy.setSuppressEmail(privacyPreferences.isSuppressEmail());
@@ -1258,6 +1259,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				}
 				groupPrincipalImpl.setId(group.getGroupMemberId());
 
+
+                //groupPrincipalImpl.setVersionNumber(group.getVersionNumber());
 				// get the ORM-layer optimisic locking value
 				// TODO: this should be replaced with the retrieval and storage of that value
 				// in the document tables and not re-retrieved here
@@ -1265,8 +1268,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(ObjectUtils.isNotNull(currGroupMembers)){
 					for (GroupMember origGroupMember: currGroupMembers) {
                         if (origGroupMember.isActive()
-                            && origGroupMember.getTypeCode().equals(KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
+                            && origGroupMember.getTypeCode().equals(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
                             if(origGroupMember.getId()!=null && StringUtils.equals(origGroupMember.getId(), group.getGroupMemberId())){
+                                groupPrincipalImpl.setObjectId(origGroupMember.getObjectId());
                                 groupPrincipalImpl.setVersionNumber(origGroupMember.getVersionNumber());
                             }
                         }

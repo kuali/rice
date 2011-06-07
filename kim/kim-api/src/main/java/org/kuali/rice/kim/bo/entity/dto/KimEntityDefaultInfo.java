@@ -18,6 +18,8 @@ package org.kuali.rice.kim.bo.entity.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
@@ -40,7 +42,7 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
     protected KimEntityAffiliationInfo defaultAffiliation;
     protected KimEntityEmploymentInformationInfo primaryEmployment;
     protected List<KimEntityExternalIdentifierInfo> externalIdentifiers;
-    protected KimEntityPrivacyPreferencesInfo privacyPreferences;
+    protected EntityPrivacyPreferences privacyPreferences;
 
     /**
      * Gets this {@link KimEntityDefaultInfo}'s entity id.
@@ -201,11 +203,11 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
      * Gets this {@link KimEntityDefaultInfo}'s privacy preferences.
      * @return the privacy preferences for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
      */
-    public KimEntityPrivacyPreferencesInfo getPrivacyPreferences() {
+    public EntityPrivacyPreferences getPrivacyPreferences() {
         return privacyPreferences;
     }
 
-    public void setPrivacyPreferences(KimEntityPrivacyPreferencesInfo privacyPreferences) {
+    public void setPrivacyPreferences(EntityPrivacyPreferences privacyPreferences) {
         this.privacyPreferences = privacyPreferences;
     }
 

@@ -39,10 +39,10 @@
                 <td align="left" valign="middle" class="infoline" >
                 	<div align="center">
 	                	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupAttributes.groupId}" readOnly="${readOnly}"/>
-	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo" fieldConversions="idd:newGroup.groupId,kimTypeId:newGroup.groupType,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimGroupType.name" anchor="${tabKey}" />
+	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo" fieldConversions="idd:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimTypeInfo.name" anchor="${tabKey}" />
 						<%--<html:hidden property="newGroup.groupName" />--%>
-						<html:hidden property="newGroup.groupType" />
-						<html:hidden property="newGroup.kimGroupType.name" />
+						<html:hidden property="newGroup.kimTypeId" />
+						<html:hidden property="newGroup.kimTypeInfo.name" />
 						<%--<html:hidden property="newGroup.namespaceCode" />--%>				
 					</div>
 				</td>
@@ -50,7 +50,7 @@
                 	<div align="center">
 	                	<kul:htmlControlAttribute property="newGroup.namespaceCode" attributeEntry="${docGroupAttributes.namespaceCode}" readOnly="${readOnly}"/>
 						<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo"
-									fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.groupType,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimGroupType.name"
+									fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimKimTypeInfo.name"
 									lookupParameters="newGroup.groupId:id,newGroup.groupName:name,newGroup.namespaceCode:namespaceCode"
 									anchor="${tabKey}" 
 						/>
@@ -60,7 +60,7 @@
                 	<div align="center">
 	                	<kul:htmlControlAttribute property="newGroup.groupName" attributeEntry="${docGroupAttributes.groupName}" readOnly="${readOnly}"/>
 						<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo"
-									fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.groupType,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimGroupType.name"
+									fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimTypeInfo.name"
 									lookupParameters="newGroup.groupId:id,newGroup.groupName:name,newGroup.namespaceCode:namespaceCode"
 									anchor="${tabKey}" 
 					/>
@@ -68,7 +68,7 @@
 				</td>
                 <td align="left" valign="middle" class="infoline" >
                 	<div align="center">
-	                	<kul:htmlControlAttribute property="newGroup.kimGroupType.name" attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="${readOnly}"/>
+	                	<kul:htmlControlAttribute property="newGroup.kimTypeInfo.name" attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="${readOnly}"/>
 					</div>
 				</td>
 	            <td align="left" valign="middle">

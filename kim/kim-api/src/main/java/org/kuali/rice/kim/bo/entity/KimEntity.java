@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.entity;
 
 import java.util.List;
 
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
 import org.kuali.rice.kns.bo.Inactivateable;
 
@@ -80,10 +81,10 @@ public interface KimEntity extends Inactivateable {
 
     /**
      * Gets this {@link KimEntity}'s privacy preferences
-     * @return the {@link KimEntityPrivacyPreferences} for this {@link KimEntity}, 
+     * @return the {@link org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences} for this {@link KimEntity},
      * or null if none has been assigned.
      */	
-	KimEntityPrivacyPreferences getPrivacyPreferences();
+	EntityPrivacyPreferencesContract getPrivacyPreferences();
 	
 	/**
 	 * Gets this {@link KimEntity}'s demographic information

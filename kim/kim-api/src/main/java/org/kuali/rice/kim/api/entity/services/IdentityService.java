@@ -17,14 +17,14 @@ package org.kuali.rice.kim.api.entity.services;
 
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.entity.Type;
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.api.jaxb.StringToKimEntityNameInfoMapAdapter;
+import org.kuali.rice.kim.api.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.api.jaxb.StringToKimEntityNameInfoMapAdapter;
-import org.kuali.rice.kim.api.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
@@ -137,7 +137,7 @@ public interface IdentityService {
 	/**
 	 * Gets the privacy preferences for the entity with the given entity id.
 	 */
-	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences( @WebParam(name="entityId") String entityId );
+	EntityPrivacyPreferences getEntityPrivacyPreferences( @WebParam(name="entityId") String entityId );
 	
 	/**
 	 * Gets the name for the principals with ids in the given List.

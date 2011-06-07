@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
@@ -57,11 +58,14 @@ public final class EntityTypeData
     private final String entityTypeCode;
     @XmlElement(name = Elements.ENTITY_TYPE, required = false)
     private final Type entityType;
-    @XmlElement(name = Elements.ADDRESSES, required = false)
+    @XmlElementWrapper(name = Elements.ADDRESSES, required = false)
+    @XmlElement(name = Elements.ADDRESS, required = false)
     private final List<EntityAddress> addresses;
-    @XmlElement(name = Elements.EMAIL_ADDRESSES, required = false)
+    @XmlElementWrapper(name = Elements.EMAIL_ADDRESSES, required = false)
+    @XmlElement(name = Elements.EMAIL_ADDRESS, required = false)
     private final List<EntityEmail> emailAddresses;
-    @XmlElement(name = Elements.PHONE_NUMBERS, required = false)
+    @XmlElementWrapper(name = Elements.PHONE_NUMBERS, required = false)
+    @XmlElement(name = Elements.PHONE_NUMBER, required = false)
     private final List<EntityPhone> phoneNumbers;
     @XmlElement(name = Elements.DEFAULT_ADDRESS, required = false)
     private final EntityAddress defaultAddress;
@@ -394,8 +398,11 @@ public final class EntityTypeData
         final static String ENTITY_TYPE_CODE = "entityTypeCode";
         final static String ENTITY_TYPE = "entityType";
         final static String ADDRESSES = "addresses";
+        final static String ADDRESS = "address";
         final static String EMAIL_ADDRESSES = "emailAddresses";
+        final static String EMAIL_ADDRESS = "emailAddress";
         final static String PHONE_NUMBERS = "phoneNumbers";
+        final static String PHONE_NUMBER = "phoneNumber";
         final static String DEFAULT_ADDRESS = "defaultAddress";
         final static String DEFAULT_EMAIL_ADDRESS = "defaultEmailAddress";
         final static String DEFAULT_PHONE_NUMBER = "defaultPhoneNumber";

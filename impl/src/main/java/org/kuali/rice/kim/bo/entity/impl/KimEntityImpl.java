@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.entity.impl;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.util.AutoPopulatingList;
@@ -74,9 +75,9 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<EntityTypeDataBo> entityTypes = new AutoPopulatingList(EntityTypeDataBo.class);
 	
-	@OneToOne(targetEntity=KimEntityPrivacyPreferencesImpl.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToOne(targetEntity=EntityPrivacyPreferencesBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected KimEntityPrivacyPreferencesImpl privacyPreferences;
+	protected EntityPrivacyPreferencesBo privacyPreferences;
 
 	@OneToOne(targetEntity=KimEntityBioDemographicsImpl.class, fetch = FetchType.EAGER, cascade = { })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
@@ -150,7 +151,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @return the privacyPreferences
 	 */
-	public KimEntityPrivacyPreferencesImpl getPrivacyPreferences() {
+	public EntityPrivacyPreferencesBo getPrivacyPreferences() {
 	    if (ObjectUtils.isNull(this.privacyPreferences)) {
 	        return null;
 	    }
@@ -161,7 +162,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @param privacyPreferences
 	 *            the privacyPreferences to set
 	 */
-	public void setPrivacyPreferences(KimEntityPrivacyPreferencesImpl privacyPreferences) {
+	public void setPrivacyPreferences(EntityPrivacyPreferencesBo privacyPreferences) {
 		this.privacyPreferences = privacyPreferences;
 	}
 

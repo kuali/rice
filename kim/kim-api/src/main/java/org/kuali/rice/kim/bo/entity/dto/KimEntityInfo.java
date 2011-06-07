@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityCitizenship;
@@ -50,7 +51,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     private List<KimEntityExternalIdentifierInfo> externalIdentifiers;
     private List<KimEntityNameInfo> names;
     private List<KimPrincipalInfo> principals;
-    private KimEntityPrivacyPreferencesInfo privacyPreferences;
+    private EntityPrivacyPreferences privacyPreferences;
     private List<KimEntityEthnicityInfo> ethnicities;
     private List<KimEntityResidencyInfo> residencies;
     private List<KimEntityVisaInfo> visas;
@@ -91,7 +92,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
             }
 
             if (entity.getPrivacyPreferences() != null) {
-                privacyPreferences = new KimEntityPrivacyPreferencesInfo(entity.getPrivacyPreferences());
+                privacyPreferences = EntityPrivacyPreferences.Builder.create(entity.getPrivacyPreferences()).build();
             }
 
             names = deriveCollection(entity.getNames(), new XForm<KimEntityName, KimEntityNameInfo>() {
@@ -362,7 +363,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getPrivacyPreferences()
      */
-    public KimEntityPrivacyPreferencesInfo getPrivacyPreferences() {
+    public EntityPrivacyPreferences getPrivacyPreferences() {
         return privacyPreferences;
     }
 
@@ -370,7 +371,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * Setter for this {@link KimEntityInfo}'s privacy preferences.  Note the behavior of 
      * {@link #getPrivacyPreferences()} if this is set to null;
      */
-    public void setPrivacyPreferences(KimEntityPrivacyPreferencesInfo privacyPreferences) {
+    public void setPrivacyPreferences(EntityPrivacyPreferences privacyPreferences) {
         this.privacyPreferences = privacyPreferences;
     }
 

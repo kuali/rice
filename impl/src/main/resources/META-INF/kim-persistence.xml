@@ -42,7 +42,7 @@
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityCitizenshipImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl</class>
+    <class>org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl</class>

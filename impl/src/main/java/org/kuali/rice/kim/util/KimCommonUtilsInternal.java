@@ -18,10 +18,10 @@ package org.kuali.rice.kim.util;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -94,7 +94,7 @@ public final class KimCommonUtilsInternal {
 	}
 
 	public static boolean isSuppressName(String entityId) {
-	    KimEntityPrivacyPreferences privacy = null;
+	    EntityPrivacyPreferences privacy = null;
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
@@ -115,7 +115,7 @@ public final class KimCommonUtilsInternal {
     }
 
     public static boolean isSuppressEmail(String entityId) {
-        KimEntityPrivacyPreferences privacy = null;
+        EntityPrivacyPreferences privacy = null;
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
@@ -135,7 +135,7 @@ public final class KimCommonUtilsInternal {
     }
 
     public static boolean isSuppressAddress(String entityId) {
-        KimEntityPrivacyPreferences privacy = null;
+        EntityPrivacyPreferences privacy = null;
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
@@ -155,7 +155,7 @@ public final class KimCommonUtilsInternal {
     }
 
     public static boolean isSuppressPhone(String entityId) {
-        KimEntityPrivacyPreferences privacy = null;
+        EntityPrivacyPreferences privacy = null;
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
@@ -175,7 +175,7 @@ public final class KimCommonUtilsInternal {
     }
 
     public static boolean isSuppressPersonal(String entityId) {
-        KimEntityPrivacyPreferences privacy = null;
+        EntityPrivacyPreferences privacy = null;
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();

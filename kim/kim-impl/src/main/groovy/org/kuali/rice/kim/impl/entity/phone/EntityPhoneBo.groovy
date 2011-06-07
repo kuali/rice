@@ -1,21 +1,21 @@
 package org.kuali.rice.kim.impl.entity.phone
 
-import javax.persistence.Id
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.Table
-import javax.persistence.ManyToOne
-import javax.persistence.JoinColumn
 import javax.persistence.FetchType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 import javax.persistence.Transient
+import org.apache.commons.lang.StringUtils
+import org.hibernate.annotations.Type
+import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.kim.api.entity.phone.EntityPhone
 import org.kuali.rice.kim.api.entity.phone.EntityPhoneContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.hibernate.annotations.Type
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.apache.commons.lang.StringUtils
-import org.kuali.rice.kim.api.KimConstants
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name = "KRIM_ENTITY_PHONE_T")
@@ -105,7 +105,7 @@ public class EntityPhoneBo extends PersistableBusinessObjectBase implements Enti
     @Override
     boolean isSuppressPhone() {
         if (this.suppressPhone == null) {
-            KimEntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId())
+            EntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId())
             if (privacy != null) {
                this.suppressPhone = privacy.isSuppressPhone()
             } else {

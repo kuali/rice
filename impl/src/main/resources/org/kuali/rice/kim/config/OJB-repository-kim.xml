@@ -191,10 +191,10 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
-    <reference-descriptor name="privacyPreferences" class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="privacyPreferences" class-ref="org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <foreignkey field-ref="entityId" />
     </reference-descriptor>
-    <reference-descriptor name="bioDemographics" class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityBioDemographicsImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="bioDemographics" class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityBioDemographicsImpl" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <foreignkey field-ref="entityId" />
     </reference-descriptor>
     <collection-descriptor name="names" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
@@ -311,7 +311,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl" table="KRIM_ENTITY_PRIV_PREF_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo" table="KRIM_ENTITY_PRIV_PREF_T">
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true"  />
     <field-descriptor name="suppressName" column="SUPPRESS_NM_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="suppressEmail" column="SUPPRESS_EMAIL_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />

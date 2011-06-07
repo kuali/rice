@@ -1,24 +1,21 @@
 package org.kuali.rice.kim.impl.entity.address
 
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-
-import javax.persistence.Id
+import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.Table
-import javax.persistence.ManyToOne
-import javax.persistence.JoinColumn
-import javax.persistence.Transient
-
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences
-import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.hibernate.annotations.Type
 import javax.persistence.FetchType
-import javax.persistence.CascadeType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
+import javax.persistence.Transient
+import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.KimConstants
-
 import org.kuali.rice.kim.api.entity.address.EntityAddress
 import org.kuali.rice.kim.api.entity.address.EntityAddressContract
+import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences
+import org.kuali.rice.kim.api.services.KimApiServiceLocator
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -128,7 +125,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Override
     boolean isSuppressAddress() {
         if (this.suppressAddress == null) {
-            KimEntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId())
+            EntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId())
             if (privacy != null) {
                this.suppressAddress = privacy.isSuppressAddress()
             } else {

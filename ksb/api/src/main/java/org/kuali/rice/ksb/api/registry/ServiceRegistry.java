@@ -304,6 +304,7 @@ public interface ServiceRegistry {
 	 * @throws RiceIllegalArgumentException if status is null
 	 */
 	@WebMethod(operationName = "updateStatus")
+	@WebResult(name = "statusUpdated")
 	boolean updateStatus(@WebParam(name = "serviceId") String serviceId, @WebParam(name = "status") ServiceEndpointStatus status) throws RiceIllegalArgumentException;
 
 	/**
@@ -329,6 +330,9 @@ public interface ServiceRegistry {
 	 * @throws RiceIllegalArgumentException if status is null
 	 */
 	@WebMethod(operationName = "updateStatuses")
+	@WebResult(name = "serviceIds")
+	@XmlElementWrapper(name = "serviceIds", required = true)
+	@XmlElement(name = "serviceId", required = false)
 	List<String> updateStatuses(@WebParam(name = "serviceId") List<String> serviceIds, @WebParam(name = "status") ServiceEndpointStatus status) throws RiceIllegalArgumentException;
 	
 	/**

@@ -7,21 +7,109 @@ import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.security.credentials.CredentialsType;
 
+/**
+ * An interface which defines common configuration information for all services.
+ * Specific implementations might add additional configuration attributes which
+ * are appropriate for their given domain or service configuration method.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public interface ServiceConfiguration extends Serializable {
 
+	/**
+	 * Returns the qualified name for the service.
+	 * 
+	 * @return the qualfied name for the service, should never be null
+	 */
 	QName getServiceName();
+	
+	/**
+	 * Returns the URL of the endpoint which provides this service.
+	 * 
+	 * @return the endpoint URL of the service, should never be null
+	 */
 	URL getEndpointUrl();
+	
+	/**
+	 * Returns the id of the application which owns this service.
+	 * 
+	 * @return the id of the application which owns this service, should never
+	 * be null
+	 */
 	String getApplicationId();
+	
+	/**
+	 * Returns the version of this service.
+	 * 
+	 * @return the version of this service, should never be null
+	 */
 	String getServiceVersion();
+	
+	/**
+	 * Returns the type of this service.
+	 * 
+	 * @return the type of this service, should never be null
+	 */
 	String getType();
 	
+	/**
+	 * Return true if this service uses queue-style messaging, false if it uses
+	 * topic-style messaging.
+	 * 
+	 * @return true if this service uses queue-style messaging, false if it uses
+	 * topic-style messaging
+	 */
 	boolean isQueue();
+	
+	/**
+	 * Returns the processing priority for messages that are sent to this service.
+	 * 
+	 * @return the message processing priority for this service
+	 */
 	Integer getPriority();
+	
+	/**
+	 * Returns the retry attempts to use when processing messages sent to this
+	 * service.
+	 * 
+	 * @return the retry attempts for this service
+	 */
 	Integer getRetryAttempts();
+	
+	/**
+	 * Returns the maximum amount of milliseconds a message to this service can
+	 * live and attempt to be processed successfully by this service before it's
+	 * forced into processing by it's exception handler.
+	 *  
+	 * @return the maximum lifetime for this message, if null then this message has
+	 * an infinite lifetime
+	 */
 	Long getMillisToLive();
+	
+	/**
+	 * Returns the name of the exception handler to invoke whenever messages to
+	 * this service fail to be sent.  If null, the default message exception
+	 * handler will be used.
+	 * 
+	 * @return the name of the message exception handler for this service, or
+	 * null if the default handler should be used
+	 */
 	String getMessageExceptionHandler();
 	
+	/**
+	 * Returns true if this service is secured by standard KSB security features.
+	 * 
+	 * @return true if this service is secured, false otherwise
+	 */
 	Boolean getBusSecurity();
+	
+	/**
+	 * Returns the type of security credentials that should be used when
+	 * attempting to authorize access to this service.
+	 * 
+	 * @return the type of security credentials to use when access this service
+	 */
 	CredentialsType getCredentialsType();
 	
 }

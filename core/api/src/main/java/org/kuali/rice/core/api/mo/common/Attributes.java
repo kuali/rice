@@ -7,6 +7,7 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.jaxb.StringMapEntry;
 import org.kuali.rice.core.util.jaxb.StringMapEntryList;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
@@ -24,6 +25,7 @@ import java.util.Set;
  * This is a generic attributes class in rice.  It is essentially a list of key-value
  * pairs where the key & value are strings & the keys are unique.
  */
+@XmlRootElement
 @XmlJavaTypeAdapter(Attributes.Adapter.class)
 public final class Attributes implements Serializable {
 

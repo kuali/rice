@@ -1,19 +1,28 @@
 package org.kuali.rice.core.api.mo.common
 
 import java.util.AbstractMap.SimpleImmutableEntry
+import javax.xml.bind.annotation.XmlAccessorType
+import javax.xml.bind.annotation.XmlElement
+import javax.xml.bind.annotation.XmlRootElement
+import javax.xml.bind.annotation.XmlType
+import org.apache.commons.lang.builder.EqualsBuilder
+import org.apache.commons.lang.builder.HashCodeBuilder
+import org.apache.commons.lang.builder.ToStringBuilder
 import org.junit.Test
+import org.kuali.rice.core.api.CoreConstants
+import org.kuali.rice.core.test.JAXBAssert
 import org.kuali.rice.core.util.ConcreteKeyValue
 import org.kuali.rice.core.util.KeyValue
 import static org.junit.Assert.*
-import org.kuali.rice.core.test.JAXBAssert
-import org.junit.Ignore
 
 class AttributesTest {
 
     private static final String XML = """
-	<attributes xmlns="http://rice.kuali.org/core/v2_0">
-		<entry key="foo">bar</entry>
-	</attributes>
+	<root xmlns="http://rice.kuali.org/core/v2_0">
+		<attributes>
+		    <entry key="foo">bar</entry>
+	    </attributes>
+	</root>
     """
 
     @Test
@@ -26,23 +35,23 @@ class AttributesTest {
         assertTrue Attributes.fromMap([:]).is(Attributes.empty())
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void testFromMapNull() {
         Attributes.fromMap(null)
     }
 
     @Test
     void testFromMapNonNull() {
-        def m = ["foo":"bar"]
+        def m = ["foo": "bar"]
         assertEquals Attributes.fromMap(m).toMap(), m
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void testFromMapEntryNull() {
         Attributes.fromMapEntry(null)
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void testFromMapEntryNullKey() {
         Attributes.fromMapEntry(new SimpleImmutableEntry(null, "bar"))
     }
@@ -55,7 +64,7 @@ class AttributesTest {
         assertEquals set.iterator().next(), e
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void testFromStringsNullKey() {
         Attributes.fromStrings(null, "bar")
     }
@@ -68,12 +77,12 @@ class AttributesTest {
         assertEquals set.iterator().next(), e
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void testFromKeyValueNull() {
         Attributes.fromKeyValue(null)
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void testFromKeyValueNullKey() {
         Attributes.fromKeyValue([getKey: { null }] as KeyValue)
     }
@@ -92,7 +101,7 @@ class AttributesTest {
 
     @Test
     void testToMapMutableView() {
-        def m = ["foo":"bar"]
+        def m = ["foo": "bar"]
         def attrs = Attributes.fromMap(m)
 
         //is it mutable?
@@ -104,26 +113,51 @@ class AttributesTest {
         assertFalse attrs.containsKey("baz")
     }
 
-    @Test(expected=UnsupportedOperationException.class)
-    void testEntrySetImmutable1(){
-        def m = ["foo":"bar"]
+    @Test(expected = UnsupportedOperationException.class)
+    void testEntrySetImmutable1() {
+        def m = ["foo": "bar"]
         def attrs = Attributes.fromMap(m)
-        attrs.entrySet().add(new java.util.AbstractMap.SimpleEntry("junk","poo"))
+        attrs.entrySet().add(new java.util.AbstractMap.SimpleEntry("junk", "poo"))
     }
 
-    @Test(expected=UnsupportedOperationException.class)
-    void testEntrySetImmutable2(){
-        def m = ["foo":"bar"]
+    @Test(expected = UnsupportedOperationException.class)
+    void testEntrySetImmutable2() {
+        def m = ["foo": "bar"]
         def attrs = Attributes.fromMap(m)
         attrs.entrySet().iterator().next().setValue("baz")
     }
 
-    @Test @Ignore("need to figure this out!!!")
-	void test_Xml_Marshal_Unmarshal() {
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, Attributes.class)
-	}
+    @Test
+    void test_Xml_Marshal_Unmarshal() {
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, Root.class)
+    }
 
-    private create() {
-		return Attributes.fromMap(["foo":"bar"])
-	}
+    private static create() {
+        return new Root();
+    }
+
+    @XmlRootElement(name = "root", namespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
+    @XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.NONE)
+    @XmlType(name = "RootType", propOrder = [
+    "attributes"
+    ])
+    static class Root {
+        @XmlElement(name = "attributes", required = true)
+        private final Attributes attributes = Attributes.fromMap(["foo": "bar"])
+
+        @Override
+        public int hashCode() {
+            return HashCodeBuilder.reflectionHashCode(this);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return EqualsBuilder.reflectionEquals(obj, this);
+        }
+
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this);
+        }
+    }
 }

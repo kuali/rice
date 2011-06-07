@@ -159,6 +159,7 @@ public final class Attributes implements Serializable {
     /**
      * Whether this data structure contains an attribute with a given key. Key may not be null.
      *
+     * @param key the key
      * @return true if the key exists false if not
      * @throws IllegalArgumentException if the key is null
      */
@@ -170,6 +171,7 @@ public final class Attributes implements Serializable {
     /**
      * Whether this data structure contains an attribute with a given value. Value may be null.
      *
+     * @param value the value
      * @return true if the value exists false if not
      */
     public boolean containsValue(String value) {
@@ -179,6 +181,7 @@ public final class Attributes implements Serializable {
     /**
      * Gets an attribute value from a key. Key may not be null.
      *
+     * @param key the key
      * @return true if the value exists false if not
      */
     public String get(String key) {

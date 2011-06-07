@@ -109,21 +109,6 @@
     <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="kimPlatformAwareDao" />
 	<bean id="kimGroupDao" class="org.kuali.rice.kim.impl.group.GroupDaoOjb" parent="kimPlatformAwareDao" />
 	<bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="kimPlatformAwareDao" />
-	<bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoOjb" parent="kimPlatformAwareDao"/>
-<!-- 
-	<bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoJpa">
-		<property name="entityManager" ref="kimEntityManager"/>
-	</bean>
-	<bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.GroupDaoJpa">
-		<property name="entityManager" ref="kimEntityManager"/>
-	</bean>
-	<bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoJpa">
-		<property name="entityManager" ref="kimEntityManager"/>
-	</bean>   
-    <bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoJpa">
-      <property name="entityManager" ref="kimEntityManager"/>
-    </bean> 
--->
 
   <!-- START JPA CONFIGURATION -->
 

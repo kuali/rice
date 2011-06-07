@@ -34,8 +34,7 @@ public interface PropositionBoService {
     PropositionDefinition createProposition(PropositionDefinition prop);
 
     /**
-     * This will update a {@link PropositionDefinition}.
-     *
+     * This will update an existing {@link PropositionDefinition}.
      *
      * @param prop the proposition to update
      * @throws IllegalArgumentException if the proposition is null

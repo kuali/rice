@@ -17,25 +17,86 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
 
-import org.kuali.rice.krms.api.repository.action.ActionAttribute;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 
 /**
- * This is the interface for accessing KRMS repositiory Action related bos 
+ * This is the interface for accessing KRMS repository Action related
+ * business objects. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface ActionBoService {
+
+    /**
+     * This will create a {@link ActionDefinition} exactly like the parameter passed in.
+     *
+     * @param action  The Action to create
+     * @throws IllegalArgumentException if the action is null
+     * @throws IllegalStateException if the action already exists in the system
+     */
 	public ActionDefinition createAction(ActionDefinition action);
+	
+    /**
+     * This will update an existing {@link ActionDefinition}.
+     *
+     * @param action  The Action to update
+     * @throws IllegalArgumentException if the Action is null
+     * @throws IllegalStateException if the Action does not exists in the system
+     */	
 	public void updateAction(ActionDefinition action);
 	
+    /**
+     * Retrieves an Action from the repository based on the given action id.
+     *
+     * @param actionId the id of the Action to retrieve
+     * @return an {@link ActionDefinition} identified by the given actionId.  
+     * A null reference is returned if an invalid or non-existent id is supplied.
+     * @throws IllegalArgumentException if the actionId is null or blank.
+     */
 	public ActionDefinition getActionByActionId(String actionId);
+	
+    /**
+     * Retrieves an Action from the repository based on the provided action name
+     * and namespace.
+     *
+     * @param name the name of the Action to retrieve.
+     * @param namespace the namespace that the action is under.
+     * @return an {@link ActionDefinition} identified by the given name and namespace.  
+     * A null reference is returned if an invalid or non-existent name and
+     * namespace combination is supplied.
+     * @throws IllegalArgumentException if the either the name or the namespace
+     * is null or blank.
+     */
 	public ActionDefinition getActionByNameAndNamespace(String name, String namespace);
+
+    /**
+     * Retrieves an ordered List of Actions associated with a {@link Rule}.
+     * The order of the list is determined by the sequenceNumber property
+     * of the Actions.
+     *
+     * @param ruleId the id of the rule
+     * @return a list of {@link ActionDefinition} associated with the given rule.  
+     * A null reference is returned if an invalid or ruleId is supplied.
+     * @throws IllegalArgumentException if the ruleId is null or blank.
+     */
 	public List<ActionDefinition> getActionsByRuleId(String ruleId);
+
+    /**
+     * Retrieves an specific Action associated with a Rule.
+     *
+     * @param ruleId the id of the rule
+     * @param sequenceNumber an Integer that represents the sequence number of the action.
+     * @return an {@link ActionDefinition} identified associated with the 
+     * Rule and identified by the given sequenceNumber
+     * A null reference is returned if an invalid or non-existent name and
+     * namespace combination is supplied.
+     * @throws IllegalArgumentException if the ruleId is null or blank. Or 
+     * if the sequenceNumber is null.
+     */
 	public ActionDefinition getActionByRuleIdAndSequenceNumber(String ruleId, Integer sequenceNumber);
 	
-	public ActionAttribute createActionAttribute(ActionAttribute actionAttribute);
-	public void updateActionAttribute(ActionAttribute actionAttribute);
+//	public ActionAttribute createActionAttribute(ActionAttribute actionAttribute);
+//	public void updateActionAttribute(ActionAttribute actionAttribute);
 	
 }

@@ -72,23 +72,50 @@ class RuleBoServiceImplTest {
 	static def RuleBo TEST_RULE_BO
 	static def ActionDefinition TEST_ACTION_DEF
 	static def ActionBo TEST_ACTION_BO
-
+	private static KrmsAttributeDefinitionBo ADB1
+	
 	@BeforeClass
 	static void createSamples() {
-		Set<ActionAttribute.Builder> attrSet = new HashSet<ActionAttribute.Builder>()
-		ActionAttribute.Builder myAttr = ActionAttribute.Builder.create(ATTR_ID_1, TYPE_ID, ATTR_DEF_ID, ACTION_TYPE, ATTR_VALUE)
+		//  create krmsAttributeDefinitionBo
+		ADB1 = new KrmsAttributeDefinitionBo();
+		ADB1.id = ATTR_DEF_ID
+		ADB1.name = ACTION_TYPE
+		ADB1.namespace = NAMESPACE
+		
+		// create ActionDefinition		
+		Map<String,String> myActionAttrs = new HashMap<String,String>()
+		myActionAttrs.put(ACTION_TYPE, ATTR_VALUE)
 		ActionDefinition.Builder builder = ActionDefinition.Builder.create(ACTION_ID_1, ACTION_NAME_1, NAMESPACE, TYPE_ID, RULE_ID_1, SEQUENCE_1)
-		attrSet.add myAttr
 		builder.setDescription ACTION_DESCRIPTION_1
-		builder.setAttributes attrSet
+		builder.setAttributes myActionAttrs
 		builder.build()
 		TEST_ACTION_DEF = builder.build()
-		TEST_ACTION_BO = ActionBo.from(TEST_ACTION_DEF)
 
+		// Create ActionAttributeBo
+		ActionAttributeBo attributeBo1 = new ActionAttributeBo()
+		attributeBo1.setId( ATTR_ID_1 )
+		attributeBo1.setAttributeDefinitionId( ATTR_DEF_ID )
+		attributeBo1.setValue( ATTR_VALUE )
+		attributeBo1.setActionId( ACTION_ID_1 )
+		attributeBo1.attributeDefinition = ADB1
+		Set<ActionAttributeBo> attrBos = [attributeBo1]
+				
+		// Create ActionBo
+		TEST_ACTION_BO = new ActionBo()
+		TEST_ACTION_BO.setId ACTION_ID_1
+		TEST_ACTION_BO.setNamespace NAMESPACE
+		TEST_ACTION_BO.setName ACTION_NAME_1
+		TEST_ACTION_BO.setTypeId TYPE_ID
+		TEST_ACTION_BO.setRuleId RULE_ID_1
+		TEST_ACTION_BO.setSequenceNumber SEQUENCE_1
+		TEST_ACTION_BO.setAttributeBos attrBos
+
+		// Create Proposition Builder
 		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 		myPropBuilder.setTypeId(TYPE_ID)
 
+		// Create Rule
 		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
 		myBuilder.setProposition myPropBuilder
 		TEST_RULE_DEF = myBuilder.build()

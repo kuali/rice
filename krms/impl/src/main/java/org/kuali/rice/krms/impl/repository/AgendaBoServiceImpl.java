@@ -16,7 +16,6 @@
 
 package org.kuali.rice.krms.impl.repository;
 
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -72,6 +71,8 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 		if (agenda == null){
 			throw new IllegalArgumentException("agenda is null");
 		}
+		
+		// must already exist to be able to update
 		final String agendaIdKey = agenda.getId();
 		final AgendaBo existing = businessObjectService.findBySinglePrimaryKey(AgendaBo.class, agendaIdKey);
 		if (existing == null) {
@@ -79,6 +80,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 		}
 		final AgendaDefinition toUpdate;
 		if (!existing.getId().equals(agenda.getId())){
+			// if passed in id does not match existing id, correct it
 			final AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(agenda);
 			builder.setId(existing.getId());
 			toUpdate = builder.build();
@@ -86,8 +88,8 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 			toUpdate = agenda;
 		}
 
+		// copy all updateable fields to bo
 		AgendaBo boToUpdate = from(toUpdate);
-		boToUpdate.setVersionNumber(existing.getVersionNumber());
 		
 		// delete any old, existing attributes
 		Map<String,String> fields = new HashMap<String,String>(1);
@@ -99,7 +101,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method retrieves an Agenda from the repository
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#getAgendaByAgendaId(java.lang.String)
 	 */
@@ -113,7 +115,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method retrieves an agenda from the repository
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#getAgendaByNameAndNamespace(java.lang.String, java.lang.String)
 	 */
@@ -135,7 +137,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method retrieves a set of agendas from the repository
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#getAgendasByContextId(java.lang.String)
 	 */
@@ -151,7 +153,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method creates a new Agenda in the repository
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#createAgendaItem(org.kuali.rice.krms.api.repository.agenda.AgendaItem)
 	 */
@@ -173,7 +175,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method updates an existing Agenda in the repository
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#updateAgendaItem(org.kuali.rice.krms.api.repository.agenda.AgendaItem)
 	 */
@@ -200,7 +202,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method adds a new AgendaItem to the repository
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#addAgendaItem(org.kuali.rice.krms.api.repository.agenda.AgendaItem, java.lang.String, java.lang.String)
 	 */
@@ -246,7 +248,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method retrieves an AgendaItem from the repository
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#addAgendaItem(org.kuali.rice.krms.api.repository.agenda.AgendaItem, java.lang.String, java.lang.String)
 	 */
@@ -283,10 +285,10 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	}
 
 	/**
-	 * Converts a List<AgendaBo> to an Unmodifiable List<Agenda>
+	 * Converts a Set<AgendaBo> to an Unmodifiable Set<Agenda>
 	 *
-	 * @param AgendaBos a mutable List<AgendaBo> to made completely immutable.
-	 * @return An unmodifiable List<Agenda>
+	 * @param AgendaBos a mutable Set<AgendaBo> to made completely immutable.
+	 * @return An unmodifiable Set<Agenda>
 	 */
 	public Set<AgendaDefinition> convertListOfBosToImmutables(final Collection<AgendaBo> agendaBos) {
 		Set<AgendaDefinition> agendas = new HashSet<AgendaDefinition>();
@@ -313,7 +315,6 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	/**
 	* Converts a immutable object to it's mutable bo counterpart
-	* TODO: move to() and from() to impl service
 	* @param im immutable object
 	* @return the mutable bo
 	*/

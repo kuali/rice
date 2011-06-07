@@ -3,7 +3,9 @@ package org.kuali.rice.krms.api.repository.action;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,6 +15,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -21,6 +24,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition.Elements;
 
 /**
  * Concrete model object implementation of KRMS Repository Action 
@@ -61,10 +66,10 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	@XmlElement(name = Elements.SEQUENCE_NUMBER, required=true)
 	private Integer sequenceNumber;
 	
-	@XmlElementWrapper(name = Elements.ATTRIBUTES)
-	@XmlElement(name = Elements.ATTRIBUTE, required=false)
-	private Set<ActionAttribute> attributes;
-
+	@XmlElement(name = Elements.ATTRIBUTES, required = false)
+	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+	private final Map<String, String> attributes;
+	
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
     	
@@ -94,7 +99,8 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	 * This constructor is private and should only ever be invoked from the builder.
 	 * 
 	 * @param builder the Builder from which to construct the Action
-	 */    private ActionDefinition(Builder builder) {
+	 */
+    private ActionDefinition(Builder builder) {
         this.id = builder.getId();
         this.name = builder.getName();
         this.namespace = builder.getNamespace();
@@ -103,11 +109,9 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         this.ruleId = builder.getRuleId();
         this.sequenceNumber = builder.getSequenceNumber();
         if (builder.attributes != null){
-        	Set<ActionAttribute> attrSet = new HashSet<ActionAttribute>();
-        	for (ActionAttribute.Builder b : builder.attributes){
-        		attrSet.add(b.build());
-        	}
-        	this.attributes = Collections.unmodifiableSet(attrSet);
+        	this.attributes = Collections.unmodifiableMap(builder.getAttributes());
+        } else {
+        	this.attributes = null;
         }
         this.versionNumber = builder.getVersionNumber();
     }
@@ -148,7 +152,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	}
 
 	@Override
-	public Set<ActionAttribute> getAttributes() {
+	public Map<String, String> getAttributes() {
 		return this.attributes; 
 	}
 
@@ -170,7 +174,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         private String typeId;
         private String ruleId;
         private Integer sequenceNumber;
-        private Set<ActionAttribute.Builder> attributes;
+        private Map<String, String> attributes;
         private Long versionNumber;
 
 		/**
@@ -183,17 +187,9 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
             setTypeId(typeId);
             setRuleId(ruleId);
             setSequenceNumber(sequenceNumber);
+            setAttributes(new HashMap<String, String>());
         }
         
-        public Builder description (String description){
-        	setDescription(description);
-        	return this;
-        }
-        public Builder attributes (Set<ActionAttribute.Builder> attributes){
-        	setAttributes(attributes);
-        	return this;
-        }
- 
         public static Builder create(String actionId, String name, String namespace, String typeId, String ruleId, Integer sequenceNumber){
         	return new Builder(actionId, name, namespace, typeId, ruleId, sequenceNumber);
         }
@@ -207,18 +203,13 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-        	Set <ActionAttribute.Builder> attrBuilderList = new HashSet<ActionAttribute.Builder>();
-        	if (contract.getAttributes() != null){
-        		for (ActionAttributeContract attrContract : contract.getAttributes()){
-        			ActionAttribute.Builder myBuilder = ActionAttribute.Builder.create(attrContract);
-        			attrBuilderList.add(myBuilder);
-        		}
-        	}
             Builder builder =  new Builder(contract.getId(), contract.getName(),
             		contract.getNamespace(), contract.getTypeId(), contract.getRuleId(),
-            		contract.getSequenceNumber())
-            			.description(contract.getDescription())
-            			.attributes(attrBuilderList);
+            		contract.getSequenceNumber());
+            builder.setDescription(contract.getDescription());
+        	if (contract.getAttributes() != null){
+                builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
+        	}
             builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
@@ -244,7 +235,6 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
             }
 			this.name = name;
 		}
-
      
         public void setNamespace(String namespace) {
             if (StringUtils.isBlank(namespace)) {
@@ -252,7 +242,6 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
             }
 			this.namespace = namespace;
 		}
-
      
 		public void setDescription(String desc) {
 			this.description = desc;
@@ -279,11 +268,11 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 			this.sequenceNumber = sequenceNumber;
 		}
 		
-		public void setAttributes(Set<ActionAttribute.Builder> attributes){
+		public void setAttributes(Map<String, String> attributes){
 			if (attributes == null){
-				this.attributes = Collections.emptySet();
+				this.attributes = Collections.emptyMap();
 			}
-			this.attributes = Collections.unmodifiableSet(attributes);
+			this.attributes = Collections.unmodifiableMap(attributes);
 		}
 		
         public void setVersionNumber(Long versionNumber){
@@ -326,7 +315,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 		}
 
 		@Override
-		public Set<ActionAttribute.Builder> getAttributes() {
+		public Map<String, String> getAttributes() {
 			return attributes;
 		}
 

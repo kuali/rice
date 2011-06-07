@@ -250,10 +250,10 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		}
 		
 		public void setAttributes(Map<String, String> attributes){
-			if (attributes == null) {
-				throw new IllegalArgumentException("attributes was null, consider passing an empty Map instead");
+			if (attributes == null){
+				this.attributes = Collections.emptyMap();
 			}
-			this.attributes = attributes;
+			this.attributes = Collections.unmodifiableMap(attributes);
 		}
 		
         public void setVersionNumber(Long versionNumber){

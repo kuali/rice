@@ -34,8 +34,6 @@ class ActionBoServiceImplTest {
 
 	private final shouldFail = new GroovyTestCase().&shouldFail
 
-	def mockBusinessObjectService
-
 	static def NAMESPACE = "KRMS_TEST"
 	static def TYPE_ID="1234ABCD"		
 	
@@ -53,19 +51,47 @@ class ActionBoServiceImplTest {
 	// test samples
 	static def ActionDefinition TEST_ACTION_DEF
 	static def ActionBo TEST_ACTION_BO
-		
+	private static KrmsAttributeDefinitionBo ADB1
+	
+	// test services
+	def mockBusinessObjectService
+	
 	@BeforeClass
 	static void createSamples() {
-		Set<ActionAttribute.Builder> attrSet = new HashSet<ActionAttribute.Builder>()
-		ActionAttribute.Builder myAttr = ActionAttribute.Builder.create(ATTR_ID_1, TYPE_ID, ATTR_DEF_ID, ACTION_TYPE, ATTR_VALUE)
+		//  create krmsAttributeDefinitionBo
+		ADB1 = new KrmsAttributeDefinitionBo();
+		ADB1.id = ATTR_DEF_ID
+		ADB1.name = ACTION_TYPE
+		ADB1.namespace = NAMESPACE
+		
+		// create ActionDefinition		
+		Map<String,String> myAttrs = new HashMap<String,String>()
+		myAttrs.put(ACTION_TYPE, ATTR_VALUE)
 		ActionDefinition.Builder builder = ActionDefinition.Builder.create(ACTION_ID_1, ACTION_NAME_1, NAMESPACE, TYPE_ID, RULE_ID_1, SEQUENCE_1)
-		attrSet.add myAttr
 		builder.setDescription ACTION_DESCRIPTION_1
-		builder.setAttributes attrSet
+		builder.setAttributes myAttrs
 		builder.build()
 		TEST_ACTION_DEF = builder.build()
+
+		// Create ActionAttributeBo
+		ActionAttributeBo attributeBo1 = new ActionAttributeBo()
+		attributeBo1.setId( ATTR_ID_1 )
+		attributeBo1.setAttributeDefinitionId( ATTR_DEF_ID )
+		attributeBo1.setValue( ATTR_VALUE )
+		attributeBo1.setActionId( ACTION_ID_1 )
+		attributeBo1.attributeDefinition = ADB1
+		Set<ActionAttributeBo> attrBos = [attributeBo1]
 		
-		TEST_ACTION_BO = ActionBo.from(TEST_ACTION_DEF)
+		
+		// Create ActionBo
+		TEST_ACTION_BO = new ActionBo()
+		TEST_ACTION_BO.setId ACTION_ID_1
+		TEST_ACTION_BO.setNamespace NAMESPACE
+		TEST_ACTION_BO.setName ACTION_NAME_1
+		TEST_ACTION_BO.setTypeId TYPE_ID
+		TEST_ACTION_BO.setRuleId RULE_ID_1
+		TEST_ACTION_BO.setSequenceNumber SEQUENCE_1
+		TEST_ACTION_BO.setAttributeBos attrBos
 	}
 
 	@Before
@@ -282,11 +308,16 @@ class ActionBoServiceImplTest {
   @Test
   void test_createAction_success() {
 		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
+		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB1] }
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
 		
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
+		
+		KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
+		kads.setBusinessObjectService(bos)
+		KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
 		
 		service.createAction(TEST_ACTION_DEF)
 		mockBusinessObjectService.verify(bos)
@@ -320,10 +351,18 @@ class ActionBoServiceImplTest {
   @Test
   void test_updateAction_success() {
 		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_ACTION_BO}
+		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB1] }
+		mockBusinessObjectService.demand.deleteMatching(1) { Class clazz, Map map -> }
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
+
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
+
+		KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
+		kads.setBusinessObjectService(bos)
+		KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
+		
 		service.updateAction(TEST_ACTION_DEF)
 		mockBusinessObjectService.verify(bos)
   }

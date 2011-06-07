@@ -52,7 +52,10 @@ class AgendaBoServiceImplTest {
 	private static final String ATTR_VALUE_2 = "19900A"
 	private static final String ATTR_DEF_ID_2 = "1002"
 	
-	private static AgendaDefinition TEST_AGENDA_DEF;
+	private static final Long VERSION_NUMBER_1 = new Long(1);
+	
+	private static AgendaDefinition TEST_NEW_AGENDA_DEF;
+	private static AgendaDefinition TEST_EXISTING_AGENDA_DEF;
 	private static AgendaBo TEST_AGENDA_BO;
 	
 	private static AgendaDefinition TEST_AGENDA_ITEM_DEF;
@@ -63,29 +66,40 @@ class AgendaBoServiceImplTest {
 	
 	@BeforeClass
 	static void createSamples() {
+		// create two attributes
 		Map<String,String> myAttrs = new HashMap<String,String>()
 		myAttrs.put(ATTR_NAME_1, ATTR_VALUE_1)
 		myAttrs.put(ATTR_NAME_2, ATTR_VALUE_2)
-		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		
+		// create a new agenda definition (null id, null version number)
+		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(null, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
 		builder.setFirstItemId(AGENDA_ITEM_ID_1)
 		builder.setAttributes(myAttrs);
-		TEST_AGENDA_DEF = builder.build()
-
+		TEST_NEW_AGENDA_DEF = builder.build()
+		
+		// create existing definition (with id and version number)
+		builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		builder.setFirstItemId(AGENDA_ITEM_ID_1)
+		builder.setVersionNumber( VERSION_NUMBER_1 )
+		builder.setAttributes(myAttrs);
+		TEST_EXISTING_AGENDA_DEF = builder.build()
+		
 		// create Agenda bo
-		TEST_AGENDA_BO = new AgendaBo();
-		TEST_AGENDA_BO.setId( AGENDA_ID_1 );
-		TEST_AGENDA_BO.setNamespace( NAMESPACE );
-		TEST_AGENDA_BO.setName( AGENDA_NAME );
-		TEST_AGENDA_BO.setTypeId( TYPE_ID );
-		TEST_AGENDA_BO.setContextId( CONTEXT_ID_1 );
-		TEST_AGENDA_BO.setFirstItemId( AGENDA_ITEM_ID_1 );
-
+		TEST_AGENDA_BO = new AgendaBo()
+		TEST_AGENDA_BO.setId( AGENDA_ID_1 )
+		TEST_AGENDA_BO.setNamespace( NAMESPACE )
+		TEST_AGENDA_BO.setName( AGENDA_NAME )
+		TEST_AGENDA_BO.setTypeId( TYPE_ID )
+		TEST_AGENDA_BO.setContextId( CONTEXT_ID_1 )
+		TEST_AGENDA_BO.setFirstItemId( AGENDA_ITEM_ID_1 )
+		TEST_AGENDA_BO.setVersionNumber( VERSION_NUMBER_1 )
+		
 		// krmsAttributeDefinitionBos
-		ADB1 = new KrmsAttributeDefinitionBo();
+		ADB1 = new KrmsAttributeDefinitionBo()
 		ADB1.id = ATTR_DEF_ID_1
 		ADB1.name = ATTR_NAME_1
 		ADB1.namespace = NAMESPACE
-		ADB2 = new KrmsAttributeDefinitionBo();
+		ADB2 = new KrmsAttributeDefinitionBo()
 		ADB2.id = ATTR_DEF_ID_2
 		ADB2.name = ATTR_NAME_2
 		ADB2.namespace = NAMESPACE
@@ -268,7 +282,7 @@ class AgendaBoServiceImplTest {
 		AgendaBoService service = new AgendaBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		shouldFail(IllegalStateException.class) {
-			service.createAgenda(TEST_AGENDA_DEF)
+			service.createAgenda(TEST_NEW_AGENDA_DEF)
 		}
 		mockBusinessObjectService.verify(bos)
   }
@@ -287,7 +301,7 @@ class AgendaBoServiceImplTest {
 		kads.setBusinessObjectService(bos)
 		KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
 				
-		service.createAgenda(TEST_AGENDA_DEF)
+		service.createAgenda(TEST_NEW_AGENDA_DEF)
 		mockBusinessObjectService.verify(bos)
   }
 
@@ -311,7 +325,7 @@ class AgendaBoServiceImplTest {
 		AgendaBoService service = new AgendaBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		shouldFail(IllegalStateException.class) {
-			service.updateAgenda(TEST_AGENDA_DEF)
+			service.updateAgenda(TEST_EXISTING_AGENDA_DEF)
 		}
 		mockBusinessObjectService.verify(bos)
   }
@@ -331,8 +345,8 @@ class AgendaBoServiceImplTest {
 		KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
 		kads.setBusinessObjectService(bos)
 		KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
-				
-		service.updateAgenda(TEST_AGENDA_DEF)
+		
+		service.updateAgenda(TEST_EXISTING_AGENDA_DEF)
 		mockBusinessObjectService.verify(bos)
   }
 

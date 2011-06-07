@@ -3,7 +3,7 @@ package org.kuali.rice.krms.api.repository.action;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
-import java.util.Set;
+import java.util.Map;
 
 public interface ActionDefinitionContract extends Identifiable, Versioned {
 
@@ -60,7 +60,7 @@ public interface ActionDefinitionContract extends Identifiable, Versioned {
 	 * 
 	 * @return a set of ActionAttribute objects.
 	 */
-	public Set<? extends ActionAttributeContract> getAttributes();
+	public Map<String, String> getAttributes();
 	
 
 }

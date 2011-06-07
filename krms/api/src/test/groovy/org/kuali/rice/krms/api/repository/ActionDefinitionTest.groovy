@@ -24,7 +24,6 @@ import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
-import org.kuali.rice.krms.api.repository.action.ActionAttribute;
 
 
 /**
@@ -45,7 +44,7 @@ class ActionDefinitionTest {
 	private static final Integer SEQUENCE_1 = new Integer(1)
 
 	private static final String ACTION_1 = """
-<action xmlns="http://rice.kuali.org/krms/repository/v2_0">
+<action xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/krms/repository/v2_0">
     <id>ACTIONID01</id>
     <name>Say Hello</name>
     <namespace>KRMS_TEST</namespace>
@@ -54,13 +53,7 @@ class ActionDefinitionTest {
     <ruleId>RULEID001</ruleId>
     <sequenceNumber>1</sequenceNumber>
     <attributes>
-        <attribute>
-            <id>ATTR200</id>
-            <actionId>1234XYZ</actionId>
-            <attributeDefinitionId>1001</attributeDefinitionId>
-            <value>Math</value>
-            <actionTypeId>Org</actionTypeId>
-        </attribute>
+        <ns2:entry key="Org">Math</ns2:entry>
     </attributes>
 </action>
 	"""
@@ -165,33 +158,30 @@ class ActionDefinitionTest {
 
 	@Test
 	void test_ActionDefinition_Builder_create_success_attribute() {
-		Set<ActionAttribute.Builder> attrSet = new HashSet<ActionAttribute.Builder>()
-		ActionAttribute.Builder myAttr = ActionAttribute.Builder.create("ATTR200", TYPE_ID, "1001", "Org", "Math")
+		Map<String, String> attrs = new HashMap<String, String>();
+		attrs.put("Org", "Math");
 		ActionDefinition.Builder builder = ActionDefinition.Builder.create(ACTION_ID_1, ACTION_NAME_1, NAMESPACE, TYPE_ID, RULE_ID_1, SEQUENCE_1)
-		attrSet.add myAttr
 		builder.setDescription ACTION_DESCRIPTION_1
-		builder.setAttributes attrSet
+		builder.setAttributes attrs
 	}
 	
 	@Test
 	void test_ActionDefinition_Builder_create_and_build_success() {
-		Set<ActionAttribute.Builder> attrSet = new HashSet<ActionAttribute.Builder>()
-		ActionAttribute.Builder myAttr = ActionAttribute.Builder.create("ATTR200", TYPE_ID, "1001", "Org", "Math")
+		Map<String, String> attrs = new HashMap<String, String>();
+		attrs.put("Org", "Math");
 		ActionDefinition.Builder builder = ActionDefinition.Builder.create(ACTION_ID_1, ACTION_NAME_1, NAMESPACE, TYPE_ID, RULE_ID_1, SEQUENCE_1)
-		attrSet.add myAttr
 		builder.setDescription ACTION_DESCRIPTION_1
-		builder.setAttributes attrSet
+		builder.setAttributes attrs
 		builder.build()
 	}
 	
 	@Test
 	public void testXmlMarshaling_ActionDefinition() {
-		Set<ActionAttribute.Builder> attrSet = new HashSet<ActionAttribute.Builder>()
-		ActionAttribute.Builder myAttr = ActionAttribute.Builder.create("ATTR200", TYPE_ID, "1001", "Org", "Math")
+		Map<String, String> attrs = new HashMap<String, String>();
+		attrs.put("Org", "Math");
 		ActionDefinition.Builder builder = ActionDefinition.Builder.create(ACTION_ID_1, ACTION_NAME_1, NAMESPACE, TYPE_ID, RULE_ID_1, SEQUENCE_1)
-		attrSet.add myAttr
 		builder.setDescription ACTION_DESCRIPTION_1
-		builder.setAttributes attrSet
+		builder.setAttributes attrs
 		builder.build()
 		ActionDefinition myAction = builder.build()
 

@@ -23,6 +23,10 @@ package org.kuali.rice.krms.impl.util;
  */
 public final class KRMSPropertyConstants {
 
+	public static final class Action {
+		public static final String ACTION_ID ="actionId";
+	}
+
 	public static final class Agenda {
 		public static final String ID = "id";
 		public static final String AGENDA_ID ="agendaId";

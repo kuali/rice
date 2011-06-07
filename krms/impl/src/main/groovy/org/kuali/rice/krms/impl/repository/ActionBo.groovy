@@ -1,5 +1,10 @@
 package org.kuali.rice.krms.impl.repository
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
@@ -14,9 +19,17 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 	def String typeId
 	def String ruleId
 	def Integer sequenceNumber
-	def Set<ActionAttributeBo> attributes
 	
+	def Set<ActionAttributeBo> attributeBos
 	
+	public Map<String, String> getAttributes() {
+		HashMap<String, String> attributes = new HashMap<String, String>();
+		for (attr in attributeBos) {
+			attributes.put( attr.attributeDefinition.name, attr.value )
+		}
+		return attributes;
+	}
+
 	/**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object
@@ -43,11 +56,25 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 	   bo.description = im.description
 	   bo.ruleId = im.ruleId
 	   bo.sequenceNumber = im.sequenceNumber
-	   bo.attributes = new HashSet<ActionAttributeBo>()
-	   for (attr in im.attributes){
-		   bo.attributes.add (ActionAttributeBo.from(attr))
-	   }
 	   bo.versionNumber = im.versionNumber
+	   
+	   // build the set of agenda attribute BOs
+	   Set<ActionAttributeBo> attrs = new HashSet<ActionAttributeBo>();
+
+	   // for each converted pair, build an AgendaAttributeBo and add it to the set
+	   ActionAttributeBo attributeBo;
+	   for (Entry<String,String> entry  : im.getAttributes().entrySet()){
+		   KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator
+		   		.getKrmsAttributeDefinitionService()
+		   		.getKrmsAttributeBo(entry.getKey(), im.getNamespace());
+		   attributeBo = new ActionAttributeBo();
+		   attributeBo.setActionId( im.getId() );
+		   attributeBo.setAttributeDefinitionId( attrDefBo.getId() );
+		   attributeBo.setValue( entry.getValue() );
+		   attributeBo.setAttributeDefinition( attrDefBo );
+		   attrs.add( attributeBo );
+	   }
+	   bo.setAttributeBos(attrs);
 	   return bo
    }
  

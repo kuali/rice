@@ -30,13 +30,14 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.action.ActionAttribute;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 
 public final class ActionBoServiceImpl implements ActionBoService {
 
     private BusinessObjectService businessObjectService;
 
 	/**
-	 * This overridden method ...
+	 * This overridden method creates a KRMS Action in the repository
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#createAction(org.kuali.rice.krms.api.repository.action.ActionDefinition)
 	 */
@@ -59,7 +60,7 @@ public final class ActionBoServiceImpl implements ActionBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method updates an existing Action in the repository.
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#updateAction(org.kuali.rice.krms.api.repository.action.ActionDefinition)
 	 */
@@ -68,6 +69,8 @@ public final class ActionBoServiceImpl implements ActionBoService {
 		if (action == null){
 	        throw new IllegalArgumentException("action is null");
 		}
+
+		// must already exist to be able to update
 		final String actionIdKey = action.getId();
 		final ActionBo existing = businessObjectService.findBySinglePrimaryKey(ActionBo.class, actionIdKey);
         if (existing == null) {
@@ -75,20 +78,30 @@ public final class ActionBoServiceImpl implements ActionBoService {
         }
         final ActionDefinition toUpdate;
         if (!existing.getId().equals(action.getId())){
+			// if passed in id does not match existing id, correct it
         	final ActionDefinition.Builder builder = ActionDefinition.Builder.create(action);
         	builder.setId(existing.getId());
         	toUpdate = builder.build();
         } else {
         	toUpdate = action;
         }
+     
+		// copy all updateable fields to bo
+        ActionBo boToUpdate = ActionBo.from(toUpdate);
+
+		// delete any old, existing attributes
+		Map<String,String> fields = new HashMap<String,String>(1);
+		fields.put(KRMSPropertyConstants.Action.ACTION_ID, toUpdate.getId());
+		businessObjectService.deleteMatching(ActionAttributeBo.class, fields);
         
-        businessObjectService.save(ActionBo.from(toUpdate));
+		// update the new action and create new attributes
+        businessObjectService.save(boToUpdate);
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method retrieves an Action from the repository.
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionsByRuleId(java.lang.String)
+	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionsByActionId(java.lang.String)
 	 */
 	@Override
 	public ActionDefinition getActionByActionId(String actionId) {
@@ -99,6 +112,11 @@ public final class ActionBoServiceImpl implements ActionBoService {
 		return ActionBo.to(bo);
 	}
 
+	/**
+	 * This overridden method retrieves an Action from the repository.
+	 * 
+	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionByNameAndNamespace(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public ActionDefinition getActionByNameAndNamespace(String name, String namespace) {
         if (StringUtils.isBlank(name)) {
@@ -117,7 +135,7 @@ public final class ActionBoServiceImpl implements ActionBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method retrieves a List of Actions associated with a Rule.
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionsByRuleId(java.lang.String)
 	 */
@@ -133,7 +151,7 @@ public final class ActionBoServiceImpl implements ActionBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method retrieves a specific Action associated with a Rule.
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionByRuleIdAndSequenceNumber(java.lang.String, java.lang.Integer)
 	 */
@@ -153,66 +171,16 @@ public final class ActionBoServiceImpl implements ActionBoService {
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#createActionAttribute(org.kuali.rice.krms.api.repository.action.ActionAttribute)
-	 */
-	@Override
-	public ActionAttribute createActionAttribute(ActionAttribute attribute) {
-		if (attribute == null){
-	        throw new IllegalArgumentException("action attribute is null");
-		}
-		final String attrIdKey = attribute.getId();
-		final ActionAttribute existing = getActionAttributeById(attrIdKey);
-		if (existing != null){
-            throw new IllegalStateException("the action attribute to create already exists: " + attribute);			
-		}		
-		
-		ActionAttributeBo bo = ActionAttributeBo.from(attribute);
-		businessObjectService.save(bo);
-		
-		return ActionAttributeBo.to(bo);
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#updateActionAttribute(org.kuali.rice.krms.api.repository.action.ActionAttribute)
-	 */
-	@Override
-	public void updateActionAttribute(ActionAttribute attribute) {
-		if (attribute == null){
-	        throw new IllegalArgumentException("action attribute is null");
-		}
-		final String attrIdKey = attribute.getId();
-		final ActionAttributeBo existing = businessObjectService.findBySinglePrimaryKey(ActionAttributeBo.class, attrIdKey);
-        if (existing == null) {
-            throw new IllegalStateException("the action attribute does not exist: " + attribute);
-        }
-        final ActionAttribute toUpdate;
-        if (!existing.getId().equals(attribute.getActionId())){
-        	final ActionAttribute.Builder builder = ActionAttribute.Builder.create(attribute);
-        	builder.setId(existing.getId());
-        	toUpdate = builder.build();
-        } else {
-        	toUpdate = attribute;
-        }
-        
-        businessObjectService.save(ActionAttributeBo.from(toUpdate));		
-	}
-	
-	
-	/**
-	 * This method ...
+	 * This method retrieves an ActionAttributeBo by id
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionsByRuleId(java.lang.String)
 	 */
-	public ActionAttribute getActionAttributeById(String attrId) {
+	public ActionAttributeBo getActionAttributeById(String attrId) {
 		if (StringUtils.isBlank(attrId)){
             return null;			
 		}
 		ActionAttributeBo bo = businessObjectService.findBySinglePrimaryKey(ActionAttributeBo.class, attrId);
-		return ActionAttributeBo.to(bo);
+		return bo;
 	}
 
     /**

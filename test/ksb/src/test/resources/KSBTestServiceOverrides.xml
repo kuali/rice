@@ -17,6 +17,6 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-	<bean id="exceptionMessagingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
+	<bean id="rice.ksb.exceptionMessagingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.TestExceptionHandlerServiceImpl" />
 
 </beans>

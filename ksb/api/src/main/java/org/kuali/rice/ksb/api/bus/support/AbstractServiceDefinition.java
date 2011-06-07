@@ -21,6 +21,8 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreConstants;
@@ -289,6 +291,16 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 	public String toString() {
 	    return ReflectionToStringBuilder.toString(this);
 	}
+	
+	@Override
+    public boolean equals(Object object) {
+		return EqualsBuilder.reflectionEquals(object, this);
+    }
+
+	@Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
 
 	
 }

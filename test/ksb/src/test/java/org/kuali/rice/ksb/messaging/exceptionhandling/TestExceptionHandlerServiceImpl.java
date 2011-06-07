@@ -23,8 +23,8 @@ public class TestExceptionHandlerServiceImpl extends DefaultExceptionServiceImpl
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 	    .getLogger(TestExceptionHandlerServiceImpl.class);
-    
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO message, Object service) {
+        
+    public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO message, Object service) {
 		LOG.info("Executing placeInExceptionRouting - creating and starting the ExceptionThreader");
 		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, message, service, this);
 		exceptionThreader.start();

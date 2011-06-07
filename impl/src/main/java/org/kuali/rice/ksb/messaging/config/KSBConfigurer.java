@@ -221,8 +221,12 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	@Override
 	protected void doAdditionalModuleStopLogic() throws Exception {
-		for (int index = internalLifecycles.size(); index > 0; index--) {
-			internalLifecycles.get(index).stop();
+		for (int index = internalLifecycles.size() - 1; index >= 0; index--) {
+			try {
+				internalLifecycles.get(index).stop();
+			} catch (Exception e) {
+				LOG.error("Failed to properly execute shutdown logic.", e);
+			}
 		}
 	}
 

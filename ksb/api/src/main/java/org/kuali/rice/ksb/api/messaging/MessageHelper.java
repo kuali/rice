@@ -20,11 +20,11 @@ import java.io.Serializable;
 
 import javax.xml.namespace.QName;
 
-
 /**
- * Interface for aquiring services asynchronously.
+ * Interface for acquiring services asynchronously.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * 
  */
 public interface MessageHelper {
 	public String serializeObject(Serializable object);

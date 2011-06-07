@@ -328,7 +328,9 @@ Navigation Slide Control
     background-color:#fff;
     border:1px solid #ccc;
 }
-
+.ui-datepicker-trigger, .ui-datepicker-buttonpane button {            /* make sure the icons appear clickable*/
+    cursor:pointer;
+}
 .ui-datepicker-header {
     background-image:-moz-linear-gradient(top, #99DE80, #62D255);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99DE80), color-stop(1, #62D255));
@@ -337,14 +339,30 @@ Navigation Slide Control
     padding: 5px;
     margin: 3px;
 }
+.ui-datepicker-header .ui-state-hover{
+    background-image:none;
+    border: none;
+}
 
 .ui-datepicker-prev {
     float:left;
     color:transparent
 }
+.ui-datepicker-prev .ui-icon {
+    background:  url(../../images/sprite-icons.png) no-repeat scroll -24px 0 transparent;
+}
+.ui-datepicker-prev:hover .ui-icon {
+    background:  url(../../images/sprite-icons-hover.png) no-repeat scroll -24px 0 transparent;
+}
 .ui-datepicker-next {
     float:right;
     color:transparent;
+}
+.ui-datepicker-next .ui-icon {
+    background:  url(../../images/sprite-icons.png) no-repeat scroll -24px -34px transparent;
+}
+.ui-datepicker-next:hover .ui-icon {
+    background:  url(../../images/sprite-icons-hover.png) no-repeat scroll -24px -34px transparent;
 }
 .ui-datepicker-title select {
     margin-right:5px;

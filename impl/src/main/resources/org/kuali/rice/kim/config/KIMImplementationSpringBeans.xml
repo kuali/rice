@@ -192,7 +192,7 @@
   <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.support.impl.PrincipalDerivedRoleTypeServiceImpl" />
 
   <bean id="groupInternalService" class="org.kuali.rice.kim.service.impl.GroupInternalServiceImpl" />
-  <bean id="responsibilityInternalService" class="org.kuali.rice.kim.service.impl.ResponsibilityInternalServiceImpl" />
+  <bean id="responsibilityInternalService" class="org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalServiceImpl" />
 
   <bean id="documentInitiatorRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-SYS" />
@@ -211,7 +211,7 @@
 
   <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl" />
   <bean id="defaultPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" />
-  <bean id="defaultResponsibilityTypeService" class="org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase" />
+  <bean id="defaultResponsibilityTypeService" class="org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeServiceBase" />
 
   <bean id="permissionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="permissionName" />

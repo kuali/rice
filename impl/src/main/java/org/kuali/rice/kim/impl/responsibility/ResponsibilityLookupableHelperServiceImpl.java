@@ -13,7 +13,7 @@
  * See the License for the specific language governing responsibilities and
  * limitations under the License.
  */
-package org.kuali.rice.kim.lookup;
+package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -28,6 +28,7 @@ import org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo;
 import org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
+import org.kuali.rice.kim.lookup.RoleMemberLookupableHelperServiceImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;

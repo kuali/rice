@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.impl;
+package org.kuali.rice.kim.impl.responsibility;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +24,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor;
@@ -33,8 +32,6 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
-import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -92,7 +89,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kim.service.ResponsibilityInternalService#updateActionRequestsForResponsibilityChange(java.util.Set)
+	 * @see ResponsibilityInternalService#updateActionRequestsForResponsibilityChange(java.util.Set)
 	 */
 	public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds) {
 

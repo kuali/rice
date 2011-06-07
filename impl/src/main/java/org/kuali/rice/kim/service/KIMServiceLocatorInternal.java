@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.entity.services.IdentityArchiveService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.xml.namespace.QName;

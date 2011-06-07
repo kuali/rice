@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.rule.ui;
+package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.rule.event.ui.AddResponsibilityEvent;
 import org.kuali.rice.kns.rule.BusinessRule;
 
 /**
@@ -27,6 +26,6 @@ import org.kuali.rice.kns.rule.BusinessRule;
  *
  */
 public interface AddResponsibilityRule extends BusinessRule {
-    public boolean processAddResponsibility(AddResponsibilityEvent addResponsibilityEvent);
-    public boolean hasPermissionToGrantResponsibility(Responsibility kimResponsibilityInfo, IdentityManagementRoleDocument document);
+    boolean processAddResponsibility(AddResponsibilityEvent addResponsibilityEvent);
+    boolean hasPermissionToGrantResponsibility(Responsibility kimResponsibilityInfo, IdentityManagementRoleDocument document);
 }

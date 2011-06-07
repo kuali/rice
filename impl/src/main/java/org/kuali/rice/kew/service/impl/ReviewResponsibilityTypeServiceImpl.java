@@ -22,13 +22,13 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
-import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
+import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl implements KimResponsibilityTypeService{
+public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl implements KimResponsibilityTypeService {
 	{
 		exactMatchStringAttributeName = KimConstants.AttributeConstants.ROUTE_NODE_NAME;
 		requiredAttributes.add( KimConstants.AttributeConstants.ROUTE_NODE_NAME );

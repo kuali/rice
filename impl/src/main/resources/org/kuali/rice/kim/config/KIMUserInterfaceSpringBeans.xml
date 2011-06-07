@@ -184,7 +184,7 @@
 
     <bean id="responsibilityLookupable" class="org.kuali.rice.kim.impl.responsibility.ResponsibilityLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
-            <bean class="org.kuali.rice.kim.lookup.ResponsibilityLookupableHelperServiceImpl" parent="lookupableHelperService" />
+            <bean class="org.kuali.rice.kim.impl.responsibility.ResponsibilityLookupableHelperServiceImpl" parent="lookupableHelperService" />
         </property>
     </bean>
 

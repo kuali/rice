@@ -13,16 +13,16 @@
  * See the License for the specific language governing responsibilitys and
  * limitations under the License.
  */
-package org.kuali.rice.kim.rules.ui;
+package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.impl.responsibility.AddResponsibilityEvent;
+import org.kuali.rice.kim.impl.responsibility.AddResponsibilityRule;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
-import org.kuali.rice.kim.rule.event.ui.AddResponsibilityEvent;
-import org.kuali.rice.kim.rule.ui.AddResponsibilityRule;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;

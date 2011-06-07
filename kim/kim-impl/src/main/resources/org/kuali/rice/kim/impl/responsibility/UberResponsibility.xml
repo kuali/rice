@@ -311,7 +311,7 @@
 		</bean>
       </list>
     </property>
-    <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.ResponsibilityInquirableImpl"/>
+    <property name="inquirableClass" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityInquirableImpl"/>
   </bean>
 
   <bean id="ResponsibilityImpl-lookupDefinition" parent="ResponsibilityImpl-lookupDefinition-parentBean"/>

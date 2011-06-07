@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support.impl;
+package org.kuali.rice.kim.impl.responsibility;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
-import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
+import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService;
+import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -32,7 +33,7 @@ public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 		implements KimResponsibilityTypeService {
 
 	/**
-	 * @see org.kuali.rice.kim.service.support.KimResponsibilityTypeService#getMatchingResponsibilities(AttributeSet, List)
+	 * @see org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService#getMatchingResponsibilities(AttributeSet, List)
 	 */
 	public final List<Responsibility> getMatchingResponsibilities( AttributeSet requestedDetails, List<Responsibility> responsibilitiesList ) {
 		requestedDetails = translateInputAttributeSet(requestedDetails);

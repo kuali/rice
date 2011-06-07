@@ -31,7 +31,6 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 
@@ -43,8 +42,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
-
-//import org.kuali.rice.kim.api.role.RoleService;
 
 public class ResponsibilityServiceImpl implements ResponsibilityService {
 

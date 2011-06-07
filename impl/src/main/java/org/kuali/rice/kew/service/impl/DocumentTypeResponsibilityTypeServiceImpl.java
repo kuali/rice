@@ -24,15 +24,15 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
-import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
-import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
+import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService;
+import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeResponsibilityTypeServiceImpl extends
-		KimResponsibilityTypeServiceBase implements KimResponsibilityTypeService {
+        KimResponsibilityTypeServiceBase implements KimResponsibilityTypeService {
 	DocumentTypeService documentTypeService;
 	protected String exactMatchStringAttributeName;
 

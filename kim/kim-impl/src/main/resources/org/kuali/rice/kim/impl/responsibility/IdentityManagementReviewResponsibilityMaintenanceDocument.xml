@@ -39,7 +39,7 @@
     
     <property name="allowsNewOrCopy" value="true"/>
     <property name="documentTypeName" value="IdentityManagementReviewResponsibilityMaintenanceDocument"/>
-    <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.ReviewResponsibilityMaintenanceDocumentRule"/>
+    <property name="businessRulesClass" value="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityMaintenanceDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="documentPresentationControllerClass" value="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityMaintenanceDocumentPresentationController" />
     <property name="workflowProperties">

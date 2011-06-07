@@ -225,9 +225,6 @@ public final class Attributes implements Serializable {
     
     public static class Adapter extends XmlAdapter<StringMapEntryList, Attributes> {
 
-    	/**
-    	 * @see org.kuali.rice.core.util.jaxb.MapStringStringAdapter#marshal(java.lang.Object)
-    	 */
     	@Override
     	public StringMapEntryList marshal(Attributes attributes) throws Exception {
     		if (attributes == null || attributes.keyValues == null) {
@@ -240,9 +237,6 @@ public final class Attributes implements Serializable {
     		return new StringMapEntryList(entries);
     	}
 
-    	/**
-    	 * @see org.kuali.rice.core.util.jaxb.MapStringStringAdapter#unmarshal(java.util.ArrayList)
-    	 */
     	@Override
     	public Attributes unmarshal(StringMapEntryList entries) throws Exception {
     		if (entries == null || entries.getEntries() == null) {

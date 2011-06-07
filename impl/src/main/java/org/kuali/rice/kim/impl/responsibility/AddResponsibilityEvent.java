@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.rule.event.ui;
+package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.rule.ui.AddResponsibilityRule;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.event.KualiDocumentEventBase;

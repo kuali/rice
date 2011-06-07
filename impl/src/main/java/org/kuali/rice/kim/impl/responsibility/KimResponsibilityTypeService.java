@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support;
+package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.service.support.KimTypeService;
 
 import java.util.List;
 

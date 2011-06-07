@@ -13,7 +13,7 @@
  * See the License for the specific language governing responsibilitys and
  * limitations under the License.
  */
-package org.kuali.rice.kim.inquiry;
+package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
@@ -26,6 +26,7 @@ import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo;
 import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.inquiry.RoleMemberInquirableImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;

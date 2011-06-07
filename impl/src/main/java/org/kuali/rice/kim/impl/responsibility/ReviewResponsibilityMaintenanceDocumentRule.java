@@ -13,12 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.document.rule;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -26,15 +21,18 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-import org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

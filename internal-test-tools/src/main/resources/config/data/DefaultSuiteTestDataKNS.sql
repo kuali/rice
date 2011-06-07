@@ -328,18 +328,18 @@ INSERT INTO KRCR_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PAR
 INSERT INTO KRCR_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_ID)
   VALUES('KR-NS', 'All', 'STRING_TO_TIMESTAMP_FORMATS', '664F8ABEC727DBCDE0404F8189D85427', 1, 'CONFG', 'MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss', 'A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse date and times when DateTimeServiceImpl.convertToDateTime(String) or DateTimeServiceImpl.convertToSqlTimestamp(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.', 'A', 'KUALI')
 /
-insert into kr_country_t(postal_cntry_cd, obj_id, ver_nbr, postal_cntry_nm, pstl_cntry_rstrc_ind, actv_ind)
+insert into KRLC_CNTRY_T(postal_cntry_cd, obj_id, ver_nbr, postal_cntry_nm, pstl_cntry_rstrc_ind, actv_ind)
 	values('US', 'C20A15A9C0354C108C71CA3AFED063AF', 1, 'UNITED STATES', 'N', 'Y')
 /
-insert into kr_state_t(postal_state_cd, postal_cntry_cd, obj_id, ver_nbr, postal_state_nm, actv_ind)
+insert into KRLC_ST_T(postal_state_cd, postal_cntry_cd, obj_id, ver_nbr, postal_state_nm, actv_ind)
 	values('AZ','US', 'E68FB90D901741C69B4B73FE46CD8BDC', 1, 'ARIZONA', 'Y')
 /
-insert into kr_state_t(postal_state_cd, postal_cntry_cd, obj_id, ver_nbr, postal_state_nm, actv_ind)
+insert into KRLC_ST_T(postal_state_cd, postal_cntry_cd, obj_id, ver_nbr, postal_state_nm, actv_ind)
 	values('CA','US', '18ADEA4EF2B94E0C84E4E8318B7EC338', 1, 'CALIFORNIA', 'Y')
 /
-insert into kr_county_t (county_cd, state_cd, postal_cntry_cd, obj_id, ver_nbr, county_nm, actv_ind) 
+insert into KRLC_CNTY_T (county_cd, state_cd, postal_cntry_cd, obj_id, ver_nbr, county_nm, actv_ind)
 	values('COCONINO','AZ','US', 'F2D5FA4E49F34B509A4AD5F97BB502E6', 1, 'COCONINO', 'Y')
 /
-insert into kr_county_t (county_cd, state_cd, postal_cntry_cd, obj_id, ver_nbr, county_nm, actv_ind) 
+insert into KRLC_CNTY_T (county_cd, state_cd, postal_cntry_cd, obj_id, ver_nbr, county_nm, actv_ind)
 	values('VENTURA','CA','US', '575FA755FA59451DB81CE0A3FD621D2F', 1, 'VENTURA', 'Y')
 /

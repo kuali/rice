@@ -29,10 +29,12 @@ import org.kuali.rice.ksb.api.KsbApiConstants;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 
 /**
- * Service definition for RESTful services.  A JAX-WS service has a resource class, which is the class or
- * interface marked by the JAX-WS annotations (e.g. @Path, @GET, etc).  This may or may not be the implementation
- * class.
+ * Service definition for RESTful services.  A JAX-WS service has a resource
+ * class, which is the class or interface marked by the JAX-WS annotations
+ * (e.g. @Path, @GET, etc).  This may or may not be the implementation class.
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * 
  */
 public class RestServiceDefinition extends AbstractServiceDefinition {
 

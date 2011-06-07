@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.lookup.valuefinder;
+package org.kuali.rice.kim.impl.permission;
 
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.lookup.valuefinder.SequenceValueFinder;
 
-/**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
-public class NextPermissionIdValuesFinder extends KIMNextIdFinder {
-
-	/**
-	 * This constructs a ...
-	 * 
-	 */
+public final class NextPermissionIdValuesFinder extends SequenceValueFinder {
 	public NextPermissionIdValuesFinder() {
-		super( KimConstants.SequenceNames.KRIM_PERM_ID_S );
+		super(PermissionBo.class, KimConstants.SequenceNames.KRIM_PERM_ID_S);
 	}
 }

@@ -57,7 +57,7 @@
       <list>
         <bean parent="MaintainableFieldDefinition" p:name="responsibilityId"
             p:unconditionallyReadOnly="true" p:required="true" 
-            p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextResponsibilityIdValuesFinder" />
+            p:defaultValueFinderClass="org.kuali.rice.kim.impl.responsibility.NextResponsibilityIdValuesFinder" />
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="namespaceCode"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name" p:defaultValue="Review" />
         <bean parent="MaintainableFieldDefinition" p:required="false" p:name="description"/>

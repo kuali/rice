@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.lookup.valuefinder;
+package org.kuali.rice.kim.impl.responsibility;
 
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.lookup.valuefinder.SequenceValueFinder;
 
-/**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
-public class NextResponsibilityIdValuesFinder extends KIMNextIdFinder {
-
-	/**
-	 * This constructs a ...
-	 * 
-	 */
-	public NextResponsibilityIdValuesFinder() {
-		super( KimConstants.SequenceNames.KRIM_RSP_ID_S );
-	}
+public final class NextResponsibilityIdValuesFinder extends SequenceValueFinder {
+    public NextResponsibilityIdValuesFinder() {
+        super(ResponsibilityBo.class, KimConstants.SequenceNames.KRIM_RSP_ID_S);
+    }
 }

@@ -52,7 +52,7 @@
       <list>
         <bean parent="MaintainableFieldDefinition" p:name="permissionId"
             p:unconditionallyReadOnly="true" p:required="true" 
-            p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextPermissionIdValuesFinder" />
+            p:defaultValueFinderClass="org.kuali.rice.kim.impl.permission.NextPermissionIdValuesFinder" />
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="templateId"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="namespaceCode"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name" />

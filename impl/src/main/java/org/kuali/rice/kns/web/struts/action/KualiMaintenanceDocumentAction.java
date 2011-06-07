@@ -498,9 +498,15 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
 
 		ActionForward forward = super.route(mapping, form, request, response);
-		if(document.getNewMaintainableObject().getBusinessObject() instanceof PersistableAttachment) {
-			PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService().retrieve(document.getNewMaintainableObject().getBusinessObject());
-			request.setAttribute("fileName", bo.getFileName());
+		PersistableBusinessObject businessObject = document.getNewMaintainableObject().getBusinessObject();
+		if(businessObject instanceof PersistableAttachment) {
+			businessObject.populateAttachmentForBO();
+			String fileName = ((PersistableAttachment) businessObject).getFileName();
+			if(StringUtils.isEmpty(fileName)) {
+				PersistableAttachment existingBO = (PersistableAttachment) getBusinessObjectService().retrieve(document.getNewMaintainableObject().getBusinessObject());
+				fileName = (existingBO != null ? existingBO.getFileName() : "") ;
+			}
+			request.setAttribute("fileName", fileName);
 		}
 
 		return forward;

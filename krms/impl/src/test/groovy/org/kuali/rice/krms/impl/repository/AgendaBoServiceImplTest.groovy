@@ -30,7 +30,6 @@ import org.junit.Ignore
 import org.junit.Test
 import org.kuali.rice.kns.bo.PersistableBusinessObject
 import org.kuali.rice.kns.service.BusinessObjectService
-import org.kuali.rice.kns.util.KNSPropertyConstants
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition
 
 class AgendaBoServiceImplTest {

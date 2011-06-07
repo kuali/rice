@@ -26,7 +26,6 @@ import org.junit.Ignore
 import org.junit.Test
 import org.kuali.rice.kns.bo.PersistableBusinessObject
 import org.kuali.rice.kns.service.BusinessObjectService
-import org.kuali.rice.kns.util.KNSPropertyConstants
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;

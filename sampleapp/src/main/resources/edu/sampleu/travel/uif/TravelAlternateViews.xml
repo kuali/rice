@@ -22,6 +22,21 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    <bean id="Travel-testView1_KNS" parent="Travel-testView1">
       <property name="id" value="Travel-testView1_KNS"/>
       <property name="additionalCssFiles" ref="kns-css"/>
+      <property name="items">
+        <list>
+          <bean parent="Page_Accordion" p:id="page1">
+             <property name="items">
+               <list>
+                 <ref bean="testSection1"/>
+                 <ref bean="testSection6"/>
+                 <ref bean="testSection5"/>
+                 <ref bean="testSection2"/>
+                 <ref bean="testSection4"/>
+               </list>
+             </property>
+          </bean>
+        </list>
+      </property>
    </bean>
 
    <bean id="Travel-testView2_KNS" parent="Travel-testView2">

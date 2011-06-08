@@ -18,128 +18,158 @@ package org.kuali.rice.kns.uif.field;
 /**
  * Field that contains a header element and optionally a <code>Group</code> to
  * present along with the header text
- * 
+ *
  * <p>
  * Generally the group is used to display content to the right of the header,
  * such as links for the group or other information
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HeaderField extends GroupField {
-	private static final long serialVersionUID = -6950408292923393244L;
+    private static final long serialVersionUID = -6950408292923393244L;
 
-	private String headerText;
-	private String headerLevel;
-	private String headerStyleClasses;
-	private String headerStyle;
+    private String headerText;
+    private String headerLevel;
+    private String headerStyleClasses;
+    private String headerStyle;
     private String headerDivStyleClasses;
     private String headerDivStyle;
 
-	public HeaderField() {
-		super();
-	}
+    public HeaderField() {
+        super();
+    }
 
-	/**
-	 * Text that should be displayed on the header
-	 * 
-	 * @return String header text
-	 */
-	public String getHeaderText() {
-		return this.headerText;
-	}
+    /**
+     * Text that should be displayed on the header
+     *
+     * @return String header text
+     */
+    public String getHeaderText() {
+        return this.headerText;
+    }
 
-	/**
-	 * Setter for the header text
-	 * 
-	 * @param headerText
-	 */
-	public void setHeaderText(String headerText) {
-		this.headerText = headerText;
-	}
+    /**
+     * Setter for the header text
+     *
+     * @param headerText
+     */
+    public void setHeaderText(String headerText) {
+        this.headerText = headerText;
+    }
 
-	/**
-	 * HTML header level (h1 ... h6) that should be applied to the header text
-	 * 
-	 * @return String header level
-	 */
-	public String getHeaderLevel() {
-		return this.headerLevel;
-	}
+    /**
+     * HTML header level (h1 ... h6) that should be applied to the header text
+     *
+     * @return String header level
+     */
+    public String getHeaderLevel() {
+        return this.headerLevel;
+    }
 
-	/**
-	 * Setter for the header level
-	 * 
-	 * @param headerLevel
-	 */
-	public void setHeaderLevel(String headerLevel) {
-		this.headerLevel = headerLevel;
-	}
+    /**
+     * Setter for the header level
+     *
+     * @param headerLevel
+     */
+    public void setHeaderLevel(String headerLevel) {
+        this.headerLevel = headerLevel;
+    }
 
-	/**
-	 * Style class that should be applied to the header text
-	 * 
-	 * <p>
-	 * Note the style class given here applies to only the header text. The
-	 * style class property inherited from the <code>Component</code> interface
-	 * can be used to set the class for the whole header div (which could
-	 * include a nested <code>Group</code>)
-	 * </p>
-	 * 
-	 * @return String style class
-	 * @see org.kuali.rice.kns.uif.Component.getStyleClasses()
-	 */
-	public String getHeaderStyleClasses() {
-		return this.headerStyleClasses;
-	}
+    /**
+     * Style class that should be applied to the header text (h tag)
+     *
+     * <p>
+     * Note the style class given here applies to only the header text. The
+     * style class property inherited from the <code>Component</code> interface
+     * can be used to set the class for the whole field div (which could
+     * include a nested <code>Group</code>)
+     * </p>
+     *
+     * @return String style class
+     * @see org.kuali.rice.kns.uif.Component.getStyleClasses()
+     */
+    public String getHeaderStyleClasses() {
+        return this.headerStyleClasses;
+    }
 
-	/**
-	 * Setter for the header style class
-	 * 
-	 * @param headerStyleClasses
-	 */
-	public void setHeaderStyleClasses(String headerStyleClasses) {
-		this.headerStyleClasses = headerStyleClasses;
-	}
+    /**
+     * Setter for the header style class
+     *
+     * @param headerStyleClasses
+     */
+    public void setHeaderStyleClasses(String headerStyleClasses) {
+        this.headerStyleClasses = headerStyleClasses;
+    }
 
-	/**
-	 * Style that should be applied to the header text
-	 * 
-	 * <p>
-	 * Note the style given here applies to only the header text. The style
-	 * property inherited from the <code>Component</code> interface can be used
-	 * to set the style for the whole header div (which could include a nested
-	 * <code>Group</code>)
-	 * </p>
-	 * 
-	 * @return String header style
-	 * @see org.kuali.rice.kns.uif.Component.getStyle()
-	 */
-	public String getHeaderStyle() {
-		return this.headerStyle;
-	}
+    /**
+     * Style that should be applied to the header text
+     *
+     * <p>
+     * Note the style given here applies to only the header text. The style
+     * property inherited from the <code>Component</code> interface can be used
+     * to set the style for the whole field div (which could include a nested
+     * <code>Group</code>)
+     * </p>
+     *
+     * @return String header style
+     * @see org.kuali.rice.kns.uif.Component.getStyle()
+     */
+    public String getHeaderStyle() {
+        return this.headerStyle;
+    }
 
-	/**
-	 * Setter for the header style
-	 * 
-	 * @param headerStyle
-	 */
-	public void setHeaderStyle(String headerStyle) {
-		this.headerStyle = headerStyle;
-	}
+    /**
+     * Setter for the header style
+     *
+     * @param headerStyle
+     */
+    public void setHeaderStyle(String headerStyle) {
+        this.headerStyle = headerStyle;
+    }
 
+    /**
+     * Style class that should be applied to the header div
+     *
+     * <p>
+     * Note the style class given here applies to the div surrounding the header tag only
+     * </p>
+     *
+     * @return String style class
+     * @see org.kuali.rice.kns.uif.Component.getStyleClasses()
+     */
     public String getHeaderDivStyleClasses() {
         return headerDivStyleClasses;
     }
 
+    /**
+     * Setter for the header div class
+     *
+     * @param headerStyleClasses
+     */
     public void setHeaderDivStyleClasses(String headerDivStyleClasses) {
         this.headerDivStyleClasses = headerDivStyleClasses;
     }
 
+    /**
+     * Style that should be applied to the header div
+     *
+     * <p>
+     * Note the style given here applies to the div surrounding the header tag only
+     * </p>
+     *
+     * @return String header style
+     * @see org.kuali.rice.kns.uif.Component.getStyle()
+     */
     public String getHeaderDivStyle() {
         return headerDivStyle;
     }
 
+    /**
+     * Setter for the header div
+     *
+     * @param headerStyle
+     */
     public void setHeaderDivStyle(String headerDivStyle) {
         this.headerDivStyle = headerDivStyle;
     }

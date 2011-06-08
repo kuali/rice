@@ -17,9 +17,6 @@
 
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.HeaderField"/>
 
-<c:set var="headerOpenTag" value="<${field.headerLevel}>"/>
-<c:set var="headerCloseTag" value="</${field.headerLevel}>"/>
-
 <c:if test="${!empty field.headerStyleClasses}">
   <c:set var="styleClass" value="class=\"${field.headerStyleClasses}\""/>
 </c:if>
@@ -28,8 +25,19 @@
   <c:set var="style" value="style=\"${field.headerStyle}\""/>
 </c:if>
 
+<c:set var="headerOpenTag" value="<${field.headerLevel} ${style} ${styleClass}>"/>
+<c:set var="headerCloseTag" value="</${field.headerLevel}>"/>
+
+<c:if test="${!empty field.headerDivStyleClasses}">
+  <c:set var="divStyleClass" value="class=\"${field.headerDivStyleClasses}\""/>
+</c:if>
+
+<c:if test="${!empty field.headerDivStyle}">
+  <c:set var="divStyle" value="style=\"${field.headerDivStyle}\""/>
+</c:if>
+
 <krad:div component="${field}">
-  <div id="${field.id}_header" ${style} ${styleClass}>
+  <div id="${field.id}_header" ${divStyleClass} ${divStyle}>
      ${headerOpenTag}${field.headerText}${headerCloseTag}
   </div>
   

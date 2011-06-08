@@ -24,6 +24,6 @@
  --%>
  
 <form:checkboxes id="${field.id}" path="${field.bindingInfo.bindingPath}" 
-                   items="${control.options}" itemValue="key" itemLabel="label"
+                   items="${control.options}" itemValue="key" itemLabel="value"
                    cssClass="${control.styleClassesAsString}" delimiter="${control.delimiter}"
                    tabindex="${control.tabIndex}"/>

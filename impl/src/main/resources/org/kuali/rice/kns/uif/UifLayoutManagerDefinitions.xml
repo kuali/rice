@@ -46,10 +46,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="applyDefaultCellWidths" value="true"/>
       <property name="renderAlternatingHeaderColumns" value="false"/>
       <property name="headerFieldPrototype">
-        <bean parent="LabelField" p:renderColon="false" p:align="center" p:styleClasses="infoline"/>
+        <bean parent="LabelField" p:renderColon="false" p:styleClasses="infoline"/>
       </property>      
       <property name="sequenceFieldPrototype">
-        <bean parent="AttributeField" p:conditionalReadOnly="true" p:label=" " p:shortLabel=" " p:align="right"/>
+        <bean parent="AttributeField" p:conditionalReadOnly="true" p:label=" " p:shortLabel=" "/>
       </property>
       <property name="actionFieldPrototype">
         <bean parent="FieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>

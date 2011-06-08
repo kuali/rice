@@ -40,7 +40,7 @@
 	<c:otherwise>
 		<krad:attributeBuilder component="${field}" />
 
-		<input type="submit" id="${field.id}" value="${field.actionLabel}" ${style} ${styleClass} ${title}/>
+		<input type="button" id="${field.id}" value="${field.actionLabel}" ${style} ${styleClass} ${title}/>
 	</c:otherwise>
 </c:choose>
 

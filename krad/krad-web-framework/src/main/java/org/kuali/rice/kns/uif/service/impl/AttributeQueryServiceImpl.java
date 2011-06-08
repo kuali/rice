@@ -167,7 +167,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
                 String messageTemplate =
                         getConfigurationService().getPropertyString(UifConstants.MessageKeys.QUERY_DATA_NOT_FOUND);
                 String message = MessageFormat.format(messageTemplate, attributeField.getLabel());
-                fieldQuery.setReturnMessageText(message);
+                fieldQuery.setReturnMessageText(message.toLowerCase());
             }
         }
 

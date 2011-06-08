@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
-import org.kuali.rice.kns.uif.UifConstants.ViewTypeParameterNames;
+import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.InquiryView;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewTypeService;
@@ -47,8 +47,8 @@ public class InquiryViewTypeServiceImpl implements ViewTypeService {
 
 		InquiryView inquiryView = (InquiryView) view;
 
-		parameters.put(ViewTypeParameterNames.NAME, inquiryView.getViewName());
-		parameters.put(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME, inquiryView.getDataObjectClassName().getName());
+		parameters.put(UifParameters.VIEW_NAME, inquiryView.getViewName());
+		parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryView.getDataObjectClassName().getName());
 
 		return parameters;
 	}
@@ -59,19 +59,19 @@ public class InquiryViewTypeServiceImpl implements ViewTypeService {
 	public Map<String, String> getParametersFromRequest(Map<String, String> requestParameters) {
 		Map<String, String> parameters = new HashMap<String, String>();
 
-		if (requestParameters.containsKey(ViewTypeParameterNames.NAME)) {
-			parameters.put(ViewTypeParameterNames.NAME, requestParameters.get(ViewTypeParameterNames.NAME));
+		if (requestParameters.containsKey(UifParameters.VIEW_NAME)) {
+			parameters.put(UifParameters.VIEW_NAME, requestParameters.get(UifParameters.VIEW_NAME));
 		}
 		else {
-			parameters.put(ViewTypeParameterNames.NAME, UifConstants.DEFAULT_VIEW_NAME);
+			parameters.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
 		}
 
-		if (requestParameters.containsKey(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME)) {
-			parameters.put(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME,
-					requestParameters.get(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME));
+		if (requestParameters.containsKey(UifParameters.DATA_OBJECT_CLASS_NAME)) {
+			parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME,
+					requestParameters.get(UifParameters.DATA_OBJECT_CLASS_NAME));
 		}
 		else {
-			throw new RuntimeException("Parameter '" + ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME
+			throw new RuntimeException("Parameter '" + UifParameters.DATA_OBJECT_CLASS_NAME
 					+ "' must be given to find views of type: " + getViewTypeName());
 		}
 

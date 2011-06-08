@@ -21,7 +21,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
    <bean id="Travel-testView1" parent="FormView">
       <property name="id" value="Travel-testView1"/>
-      <property name="title" value="ACH Setup"/>
+      <property name="title" value="Test View 1"/>
       <property name="entryPageId" value="page1"/>
       <property name="items">
         <list>
@@ -29,27 +29,33 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              <property name="items">
                <list>
                  <ref bean="testSection1"/>
+                 <ref bean="testSection1-cgrid"/>
                  <ref bean="testSection6"/>
                  <ref bean="testSection5"/>
+                 <ref bean="testSection5-cgrid"/>
                  <ref bean="testSection2"/>
                  <ref bean="testSection4"/>
+                 <ref bean="testSection4-cgrid"/>
                </list>
              </property> 
           </bean>
-          <bean parent="Page_Accordion" p:id="page2">
-             <property name="items">
-               <list>
-                 <ref bean="testSection3"/>
-               </list>
-             </property> 
-          </bean>          
         </list>
       </property>    
       <property name="additionalCssFiles" ref="ks-css"/>
       <property name="formClass" value="edu.sampleu.travel.krad.form.UITestForm"/>
       <property name="defaultBindingObjectPath" value="travelAccount1"/>
    </bean>
-   
+
+   <bean id="testSection1-cgrid" parent="testSection1">
+       <property name="title" value="Bank Setup - Non Table"/>
+       <property name="items">
+        <list>
+          <ref bean="testGroup1-cgrid"/>
+          <ref bean="testGroup2-cgrid"/>
+        </list>
+      </property>
+   </bean>
+
    <bean id="testSection1" parent="GroupSection">
       <property name="title" value="Bank Setup"/> 
       <property name="items">
@@ -59,16 +65,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </list>
       </property> 
    </bean>
-   
-   <bean id="testSection7" parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="2" >
-      <property name="title" value="Comparison Section"/> 
-      <property name="items">
-        <list>
-          <bean parent="testGroup1" p:title="Old" p:summary=""/>
-          <bean parent="testGroup1" p:title="New" p:summary=""/>
-        </list>
-      </property> 
-   </bean>   
+
+  <bean id="testGroup1-cgrid" parent="testGroup1">
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
+      </property>
+  </bean>
    
    <bean id="testGroup1" parent="GroupGridLayout">   
       <property name="title" value="Bank Information"/> 
@@ -108,10 +110,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
       <property name="summary" value="Provide basic information for the ACH Bank"/>      
    </bean>
+
+   <bean id="testGroup2-cgrid" parent="testGroup2">
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
+      </property>
+  </bean>
    
-   <bean id="testGroup2" parent="GroupGridLayout" p:layoutManager.style="width: 50%">   
-      <property name="title" value="Test Group 2"/> 
-      <property name="layoutManager.numberOfColumns" value="4"/>
+   <bean id="testGroup2" parent="GroupGridLayout">
+      <property name="title" value="Test Group 2"/>
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager" p:numberOfColumns="4" p:style="width: 50%"/>
+      </property>
       <property name="items">
         <list>
           <bean parent="AttributeField_Form" p:propertyName="field5" p:readOnly="true" p:label="Field 5" p:width="auto" p:maxLength="4" p:conditionalReadOnly="">
@@ -140,16 +150,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>
           <bean parent="AttributeField_Form" p:propertyName="field34" p:label="Field 34" p:width="auto">
             <property name="control">
-              <bean parent="CheckboxControl"/>
+              <bean parent="CheckboxGroupControl"/>
+            </property>
+            <property name="optionsFinder">
+              <bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues"/>
             </property>
           </bean>                              
         </list>
-      </property> 
-      <property name="componentModifiers">
-         <list merge="true">
-            <bean parent="CheckboxToRadioConvertModifier" p:runCondition="#component.layoutManager.numberOfColumns eq 4"/>
-         </list>
-      </property>  
+      </property>
       <property name="propertyReplacers">
          <list>
             <bean parent="PropertyReplacer" p:propertyName="title"
@@ -318,10 +326,19 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </list>
       </property>                  
       <property name="summary" value="Group with sub-collection and table layout"/>  
-   </bean>   
+   </bean>
+
+   <bean id="testGroup3-cgrid" parent="testGroup3">
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
+      </property>
+  </bean>
    
-   <bean id="testGroup3" parent="GroupGridLayout" p:layoutManager.numberOfColumns="4">   
-      <property name="title" value="Test Group 3"/> 
+   <bean id="testGroup3" parent="GroupGridLayout">
+      <property name="title" value="Test Group 3"/>
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager" p:numberOfColumns="4"/>
+      </property>
       <property name="items">
         <list>
           <bean parent="AttributeField_Form" p:propertyName="field33" p:label="@{field18}">
@@ -369,7 +386,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
       <property name="summary" value="Group with grid layout and various col/row spans"/>      
    </bean> 
-   
+
+   <bean id="testSection5-cgrid" parent="testSection5">
+      <property name="title" value="Banking Info - Non Table"/>
+      <property name="items">
+        <list>
+          <ref bean="testGroup3-cgrid"/>
+        </list>
+      </property>
+   </bean>
+
    <bean id="testSection5" parent="GroupSection">
       <property name="title" value="Banking Info"/> 
       <property name="items">
@@ -389,7 +415,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
             <property name="informationalDisplayPropertyNames" value="name,subAccountName" />
             <property name="fieldAttributeQuery">
-              <bean parent="FieldAttributeQuery" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+	              <bean parent="FieldAttributeQuery" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                     p:queryFieldMapping="number:number" p:returnFieldMapping="name:name,subAccountName:subAccountName"/>
             </property>
           </bean>
@@ -398,11 +424,19 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </list>
       </property> 
       <property name="summary" value="Section without nested group, labels top"/> 
-   </bean> 
+   </bean>
+
+   <bean id="testSection4-cgrid" parent="testSection4">
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
+      </property>
+  </bean>
    
    <bean id="testSection4" parent="GroupSectionGridLayout">
-      <property name="title" value="Test Section 4"/> 
-      <property name="layoutManager.numberOfColumns" value="4"/>
+      <property name="title" value="Test Section 4"/>
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager" p:numberOfColumns="4"/>
+      </property>
       <property name="items">
         <list>
           <bean parent="FieldGroup" p:label="Field Group 1" p:width="40%" p:labelField.width="10%">

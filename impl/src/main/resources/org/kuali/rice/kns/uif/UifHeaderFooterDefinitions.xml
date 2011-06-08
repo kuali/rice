@@ -102,7 +102,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="HeaderViewDocument" abstract="true" parent="HeaderView">
      <property name="styleClasses" value="doc_view_header clearfix"/>
-     <property name="headerStyleClasses" value="left"/>
+     <property name="headerDivStyleClasses" value="left"/>
      <property name="group">
        <bean parent="Group_DocumentHeader" p:styleClasses="group_docheader"/>
      </property>
@@ -181,8 +181,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]"/>
         </list>
       </property>  
-  </bean>  
-  
+  </bean>
+
   <bean id="Footer_SaveCloseCancel" parent="Footer">
       <property name="items">
 

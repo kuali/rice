@@ -15,11 +15,11 @@
 
 package org.kuali.rice.core.util;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.lang.reflect.Field;
 import java.util.Calendar;
+
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Class of static utility methods used to aid in the generation of hashcode values and equals comparisons of objects
@@ -61,8 +61,8 @@ public class EqualsAndHashCodeUtils {
                 Class<?> fieldClass = field.getType();
 
                 if (ArrayUtils.contains(fieldClass.getInterfaces(), Comparable.class)) {
-                    @SuppressWarnings("unchecked") Comparable<Object> c1 = (Comparable) field.get(o1);
-                    @SuppressWarnings("unchecked") Comparable<Object> c2 = (Comparable) field.get(o2);
+                    @SuppressWarnings("unchecked") Comparable<Object> c1 = (Comparable<Object>) field.get(o1);
+                    @SuppressWarnings("unchecked") Comparable<Object> c2 = (Comparable<Object>) field.get(o2);
                     if (c1 == c2) {
                         continue;
                     }

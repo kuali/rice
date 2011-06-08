@@ -48,7 +48,7 @@ import java.util.List;
         DelegateType.Elements.ACTIVE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class DelegateType implements DelegateTypeContract, ModelObjectComplete {
+public final class DelegateType implements DelegateTypeContract, ModelObjectComplete {
 
     private static final long serialVersionUID = 1L;
 

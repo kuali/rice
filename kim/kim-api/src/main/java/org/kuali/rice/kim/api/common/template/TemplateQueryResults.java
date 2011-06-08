@@ -46,7 +46,7 @@ import java.util.List;
 		TemplateQueryResults.Elements.TOTAL_ROW_COUNT,
 		TemplateQueryResults.Elements.MORE_RESULTS_AVAILALBE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public class TemplateQueryResults implements QueryResults<Template>, ModelObjectComplete {
+public final class TemplateQueryResults implements QueryResults<Template>, ModelObjectComplete {
 
 	@XmlElementWrapper(name = Elements.RESULTS, required = false)
 	@XmlElement(name = Elements.RESULT_ELEM, required = false)
@@ -111,7 +111,7 @@ public class TemplateQueryResults implements QueryResults<Template>, ModelObject
         return ToStringBuilder.reflectionToString(this);
     }
 
-	public static class Builder implements ModelBuilder, QueryResults<Template.Builder> {
+	public static final class Builder implements ModelBuilder, QueryResults<Template.Builder> {
 
 		private List<Template.Builder> results;
 		private Integer totalRowCount;

@@ -52,7 +52,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class Delegate extends InactivatableFromToImpl implements DelegateContract, ModelObjectComplete {
+public final class Delegate extends InactivatableFromToImpl implements DelegateContract, ModelObjectComplete {
 
     private static final long serialVersionUID = 1L;
 

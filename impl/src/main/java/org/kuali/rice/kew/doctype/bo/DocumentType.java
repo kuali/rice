@@ -1047,6 +1047,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public Group getReportingWorkgroup() {
+    	if (StringUtils.isBlank(this.reportingWorkgroupId)) {
+    		return null;
+    	}
         return getIdentityManagementService().getGroup(this.reportingWorkgroupId);
     }
 

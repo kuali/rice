@@ -10,24 +10,21 @@
  */
 package org.kuali.rice.kns.uif.modifier;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
-import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.core.Component;
-import org.kuali.rice.kns.uif.core.ScriptEventSupport;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.HeaderField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Generates <code>Field</code> instances to produce a comparison view among

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.uif.field;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
@@ -37,10 +38,12 @@ import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
+import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.widget.DirectInquiry;
 import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.uif.widget.QuickFinder;
+import org.kuali.rice.kns.uif.widget.Suggest;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -98,27 +101,34 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     private String description;
 
-    protected AttributeSecurity attributeSecurity;
+    private AttributeSecurity attributeSecurity;
     private MessageField summaryMessageField;
     private MessageField constraintMessageField;
 
-    protected String alternateDisplayAttributeName;
-    protected String additionalDisplayAttributeName;
+    private String alternateDisplayAttributeName;
+    private String additionalDisplayAttributeName;
     
     private BindingInfo alternateDisplayAttributeBindingInfo;
 	private BindingInfo additionalDisplayAttributeBindingInfo;
 	
 	private String alternateDisplayValue;
 	private String additionalDisplayValue;
+    
+    private List<String> informationalDisplayPropertyNames;
+
+    private AttributeQuery fieldAttributeQuery;
 	
     // widgets
     private Inquiry fieldInquiry;
     private QuickFinder fieldLookup;
     private DirectInquiry fieldDirectInquiry;
+    private Suggest fieldSuggest;
 
     public AttributeField() {
         super();
+
         simpleConstraint = new SimpleConstraint();
+        informationalDisplayPropertyNames = new ArrayList<String>();
     }
 
     /**
@@ -138,7 +148,6 @@ public class AttributeField extends FieldBase implements DataBinding {
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
         }
-        
     }
 
     /**
@@ -180,6 +189,8 @@ public class AttributeField extends FieldBase implements DataBinding {
             return;
         }
 
+        setupInformationalFieldQuery();
+
         // TODO: remove later, this should be done within the service lifecycle
         if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
             MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
@@ -189,7 +200,39 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
         
         ClientValidationUtils.processAndApplyConstraints(this, view);            
-        
+    }
+    
+    /**
+     * Performs setup of the field attribute query and informational display properties. Paths
+     * are adjusted to match the binding for the this field, and the necessary onblur script for
+     * triggering the query client side is constructed
+     */
+    protected void setupInformationalFieldQuery() {
+        // adjust paths on informational property names
+        List<String> informationalPropertyPaths = new ArrayList<String>();
+        for (String infoPropertyName : getInformationalDisplayPropertyNames()) {
+            String infoPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(infoPropertyName);
+            informationalPropertyPaths.add(infoPropertyPath);
+        }
+        this.informationalDisplayPropertyNames = informationalPropertyPaths;
+
+        if (getFieldAttributeQuery() != null) {
+            // adjust paths on query mappings
+            getFieldAttributeQuery().updateQueryFieldMapping(getBindingInfo());
+            getFieldAttributeQuery().updateReturnFieldMapping(getBindingInfo());
+            getFieldAttributeQuery().updateQueryMethodArgumentFieldList(getBindingInfo());
+
+            // build onblur script for field query
+            String script = "executeFieldQuery('" + getControl().getId() + "',";
+            script += "'" + getId() + "'," + getFieldAttributeQuery().getQueryFieldMappingJsString() + ",";
+            script += getFieldAttributeQuery().getQueryMethodArgumentFieldsJsString() + ",";
+            script += getFieldAttributeQuery().getReturnFieldMappingJsString() + ");";
+
+            if (StringUtils.isNotBlank(getControl().getOnBlurScript())) {
+                script = getControl().getOnBlurScript() + script;
+            }
+            getControl().setOnBlurScript(script);
+        }
     }
 
     /**
@@ -285,6 +328,7 @@ public class AttributeField extends FieldBase implements DataBinding {
         	}
     	}
     }
+
     
     private String getSecuredFieldValue(AttributeSecurity attributeSecurity, Object fieldValue){
     	if(attributeSecurity.isMask()){
@@ -316,10 +360,17 @@ public class AttributeField extends FieldBase implements DataBinding {
         setId(getId() + UifConstants.IdSuffixes.ATTRIBUTE);
     }
 
+    /**
+     * Helper method for suffixing the ids of the fields nested components
+     *
+     * @param component - component to adjust id for
+     * @param suffix - suffix to append to id
+     */
     private void setNestedComponentIdAndSuffix(Component component, String suffix) {
         if (component != null) {
             String fieldId = getId();
             fieldId += suffix;
+
             component.setId(fieldId);
         }
     }
@@ -379,8 +430,8 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
 
         // control
-        if (getControl() == null) {
-            setControl(attributeDefinition.getControlField());
+        if ((getControl() == null) && (attributeDefinition.getControlField() != null)) {
+            setControl(ComponentUtils.copy(attributeDefinition.getControlField()));
         }
 
         // summary
@@ -409,27 +460,30 @@ public class AttributeField extends FieldBase implements DataBinding {
         if (getOptionsFinder() == null) {
             setOptionsFinder(attributeDefinition.getOptionsFinder());
         }
-        
+
         //alternate property name and binding object
-        if (getAlternateDisplayAttributeName() == null && StringUtils.isNotBlank(attributeDefinition.getAlternateDisplayAttributeName())){
-        	setAlternateDisplayAttributeName(attributeDefinition.getAlternateDisplayAttributeName());
+        if (getAlternateDisplayAttributeName() == null &&
+                StringUtils.isNotBlank(attributeDefinition.getAlternateDisplayAttributeName())) {
+            setAlternateDisplayAttributeName(attributeDefinition.getAlternateDisplayAttributeName());
         }
-        
+
         //additional property display name and binding object
-        if (getAdditionalDisplayAttributeName() == null && StringUtils.isNotBlank(attributeDefinition.getAdditionalDisplayAttributeName())){
-        	setAdditionalDisplayAttributeName(attributeDefinition.getAdditionalDisplayAttributeName());
+        if (getAdditionalDisplayAttributeName() == null &&
+                StringUtils.isNotBlank(attributeDefinition.getAdditionalDisplayAttributeName())) {
+            setAdditionalDisplayAttributeName(attributeDefinition.getAdditionalDisplayAttributeName());
         }
-        
-        if (getFormatter() == null && StringUtils.isNotBlank(attributeDefinition.getFormatterClass())){
-        	try {
-				Class clazz = ClassUtils.getClass(attributeDefinition.getFormatterClass());
-				Formatter formatter;
-				formatter = (Formatter)clazz.newInstance();
-				setFormatter(formatter);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-        	
+
+        if (getFormatter() == null && StringUtils.isNotBlank(attributeDefinition.getFormatterClass())) {
+            Class clazz = null;
+            try {
+                clazz = Class.forName(attributeDefinition.getFormatterClass());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Unable to get class from name: " + attributeDefinition.getFormatterClass(),
+                        e);
+            }
+
+            Formatter formatter = (Formatter) ObjectUtils.newInstance(clazz);
+            setFormatter(formatter);
         }
     }
 
@@ -445,6 +499,7 @@ public class AttributeField extends FieldBase implements DataBinding {
         components.add(fieldLookup);
         components.add(fieldInquiry);
         components.add(fieldDirectInquiry);
+        components.add(fieldSuggest);
 
         return components;
     }
@@ -754,9 +809,9 @@ public class AttributeField extends FieldBase implements DataBinding {
      * 
      * @param attributeSecurity
      */
-//    private void setAttributeSecurity(AttributeSecurity attributeSecurity) {
-//        this.attributeSecurity = attributeSecurity;
-//    }
+    public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
+        this.attributeSecurity = attributeSecurity;
+    }
 
     /**
      * @see org.kuali.rice.kns.uif.core.ComponentBase#getSupportsOnLoad()
@@ -817,6 +872,34 @@ public class AttributeField extends FieldBase implements DataBinding {
      */
     public void setFieldInquiry(Inquiry fieldInquiry) {
         this.fieldInquiry = fieldInquiry;
+    }
+
+    /**
+     * Suggest box widget for the attribute field
+     *
+     * <p>
+     * If enabled (by render flag), as the user inputs data into the
+     * fields control a dynamic query is performed to provide the user
+     * suggestions on values which they can then select
+     * </p>
+     *
+     * <p>
+     * Note the Suggest widget is only valid when using a standard TextControl
+     * </p>
+     *
+     * @return Suggest instance
+     */
+    public Suggest getFieldSuggest() {
+        return fieldSuggest;
+    }
+
+    /**
+     * Setter for the fields Suggest widget
+     *
+     * @param fieldSuggest
+     */
+    public void setFieldSuggest(Suggest fieldSuggest) {
+        this.fieldSuggest = fieldSuggest;
     }
 
     /**
@@ -1137,6 +1220,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 		return alternateDisplayValue;
 	}
 
+
+
 	/**
 	 * Returns the additional display value.
 	 * 
@@ -1157,6 +1242,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * DirectInquiry widget for the field
+     *
      * <p>
      * The direct inquiry widget will render a button for the field value when
      * that field is editable. It points to the associated inquiry view for the
@@ -1172,4 +1258,61 @@ public class AttributeField extends FieldBase implements DataBinding {
         return fieldDirectInquiry;
     }
 
+    /**
+     * List of property names whose values should be displayed read-only under this field
+     *
+     * <p>
+     * In the attribute field template for each information property name given its values is
+     * outputted read-only. Informational property values can also be updated dynamically with
+     * the use of field attribute query
+     * </p>
+     *
+     * <p>
+     * Simple property names can be given if the property has the same binding parent as this
+     * field, in which case the binding path will be adjusted by the framework. If the property
+     * names starts with org.kuali.rice.kns.uif.UifConstants#NO_BIND_ADJUST_PREFIX, no binding
+     * prefix will be added.
+     * </p>
+     *
+     * @return List<String> informational property names
+     */
+    public List<String> getInformationalDisplayPropertyNames() {
+        return informationalDisplayPropertyNames;
+    }
+
+    /**
+     * Setter for the list of informational property names
+     *
+     * @param informationalDisplayPropertyNames
+     */
+    public void setInformationalDisplayPropertyNames(List<String> informationalDisplayPropertyNames) {
+        this.informationalDisplayPropertyNames = informationalDisplayPropertyNames;
+    }
+
+    /**
+     * Attribute query instance configured for this field to dynamically pull information back for
+     * updates other fields or providing messages
+     *
+     * <p>
+     * If field attribute query is not null, associated event script will be generated to trigger the
+     * query from the UI. This will invoke the <code>AttributeQueryService</code> to
+     * execute the query and return an instance of <code>AttributeQueryResult</code> that is then
+     * read by the script to update the UI. Typically used to update informational property values or
+     * other field values
+     * </p>
+     *
+     * @return AttributeQuery instance
+     */
+    public AttributeQuery getFieldAttributeQuery() {
+        return fieldAttributeQuery;
+    }
+
+    /**
+     * Setter for this fields query
+     *
+     * @param fieldAttributeQuery
+     */
+    public void setFieldAttributeQuery(AttributeQuery fieldAttributeQuery) {
+        this.fieldAttributeQuery = fieldAttributeQuery;
+    }
 }

@@ -283,6 +283,20 @@
           </map>
       </property>
   </bean>
+
+  <bean id="Suggest" parent="Suggest-parentBean"/>
+  <bean id="Suggest-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.Suggest" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/suggest.jsp"/>
+      <property name="componentOptions">
+          <map>
+              <entry key="minLength" value="2"/>
+              <entry key="delay" value="300"/>
+          </map>
+      </property>
+      <property name="suggestQuery">
+        <bean parent="AttributeQuery" />
+      </property>
+  </bean>
   
   <!-- Modifiers -->
   
@@ -334,8 +348,12 @@
   
   <bean id="KeyLabelPair" class="org.kuali.rice.core.util.ConcreteKeyValue" scope="prototype"/>
   
-  <bean id="MethodInvoker" class="org.springframework.util.MethodInvoker" scope="prototype"/>
+  <bean id="MethodInvokerConfig" class="org.kuali.rice.kns.uif.core.MethodInvokerConfig" scope="prototype"/>
   
   <bean id="PropertyReplacer" class="org.kuali.rice.kns.uif.core.PropertyReplacer" scope="prototype"/>
+
+  <bean id="AttributeQuery" class="org.kuali.rice.kns.uif.field.AttributeQuery" scope="prototype"/>
+
+  <bean id="FieldAttributeQuery" parent="AttributeQuery" p:returnMessageStyleClasses="info-message-error"/>
   
 </beans>

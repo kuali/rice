@@ -660,6 +660,7 @@ function coerceValue(name){
 	if(value == null){
 		value = "";
 	}
+
 	return value;
 }
 
@@ -818,7 +819,7 @@ function retrieveComponent(id){
 	}
 
 	jq("#kualiForm").ajaxSubmit({
-		data: {methodToCall: "updateComponent", reqComponentId: id},
+		data: {methodToCall: "updateComponent", reqComponentId: id, skipViewInit: "true"},
 		beforeSend: function() {
 			if(elementToBlock.hasClass("unrendered")){
 				elementToBlock.append('<img src="/kr-dev/krad/images/loader.gif" alt="working..." /> Loading...');

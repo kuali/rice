@@ -29,7 +29,8 @@ import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * This class is a Spring Exception intercepter.
+ * Spring Exception intercepter
+ *
  * <p>
  * Gets the data needed for the incident report from the request and builds the
  * model and view for the incident report. This resolver intercepts any unhandled 
@@ -43,7 +44,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
     private static final Logger LOG = Logger.getLogger(UifHandlerExceptionResolver.class);
 
     /**
-     * This overridden method builds the incident report model and view from the
+     * Builds the incident report model and view from the
      * request that threw the exception.
      * 
      * @param request
@@ -65,11 +66,16 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         LOG.error("The following error was caught by the UifHandlerExceptionResolver : ", ex);        
         String incidentDocId = request.getParameter(KNSConstants.DOCUMENT_DOCUMENT_NUMBER);
         String incidentViewId = "";
+
+        // log exception
+        LOG.error(ex.getMessage(), ex);
+
         UifFormBase form = UifWebUtils.getFormFromRequest(request);
         if (form instanceof DocumentFormBase) {
             incidentDocId = ((DocumentFormBase) form).getDocument().getDocumentNumber();
             incidentViewId = ((DocumentFormBase) form).getViewId();
         }
+
         UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
         IncidentReportForm incidentReportForm = new IncidentReportForm();
         // Set the post url map to the incident report controller and not 
@@ -85,22 +91,27 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setUserName(userSession.getPrincipalName());
         incidentReportForm.setUserEmail(userSession.getPerson().getEmailAddress());
         incidentReportForm.setDevMode(!WebUtils.isProductionEnvironment());
+
         // Set the view object
         incidentReportForm.setView(getViewService().getView("Incident-Report",
                 incidentReportForm.getViewRequestParameters()));
+
         // Add a new History entry to avoid errors in the postHandle
         History history = new History();
         HistoryEntry entry = new HistoryEntry("", "", "Incident Report", "", "");
         history.setCurrent(entry);
         incidentReportForm.setFormHistory(history);
+
         // Set render full view to force full render
         incidentReportForm.setRenderFullView(true);
+
         ModelAndView modelAndView = UifWebUtils.getUIFModelAndView(incidentReportForm, "Incident-Report", "");
         try {
             UifWebUtils.postControllerHandle(request, response, handler, modelAndView);
         } catch (Exception e) {
             LOG.error("An error stopped the incident form from loading", e);
-        }        
+        }
+
         return modelAndView;
     }
 
@@ -108,9 +119,6 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         return KNSServiceLocatorWeb.getViewService();
     }
 
-    /**
-     * @return the sessionDocumentService
-     */
     protected SessionDocumentService getSessionDocumentService() {
         return KNSServiceLocatorWeb.getSessionDocumentService();
     }

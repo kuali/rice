@@ -30,7 +30,7 @@ public abstract class ControlBase extends ComponentBase implements Control {
 	private int tabIndex;
 
 	public ControlBase() {
-
+      super();
 	}
 
 	/**
@@ -49,4 +49,28 @@ public abstract class ControlBase extends ComponentBase implements Control {
 		this.tabIndex = tabIndex;
 	}
 
+    @Override
+    public boolean getSupportsOnChange() {
+        return true;
+    }
+
+    @Override
+    public boolean getSupportsOnBlur() {
+        return true;
+    }
+
+    @Override
+    public boolean getSupportsOnClick() {
+        return true;
+    }
+
+    @Override
+    public boolean getSupportsOnDblClick() {
+        return true;
+    }
+
+    @Override
+    public boolean getSupportsOnFocus() {
+        return true;
+    }
 }

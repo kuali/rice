@@ -106,6 +106,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnBlurScript();
 
+    /**
+     * Setter for the onblur script
+     *
+     * @param script
+     */
+    public void setOnBlurScript(String script);
+
 	/**
 	 * Indicates whether the component supports the onChange event
 	 * 

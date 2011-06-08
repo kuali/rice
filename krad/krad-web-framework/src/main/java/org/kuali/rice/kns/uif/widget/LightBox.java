@@ -36,7 +36,9 @@ public class LightBox extends WidgetBase {
 	 * If this is not be specific to Fancybox it should be moved to ComponentBase
 	 * Builds a string from the underlying <code>Map</code> of component options
 	 * that will export that options as a JavaScript Map for use in js and
-	 * jQuery plugins. 
+	 * jQuery plugins.
+     *
+     * TODO: move to component base
 	 * 
 	 * @return String of widget options formatted as JS Map
 	 */

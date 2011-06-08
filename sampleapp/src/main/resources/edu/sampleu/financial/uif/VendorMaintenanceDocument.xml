@@ -89,8 +89,6 @@
                      <bean parent="AttributeField" p:propertyName="vendorBusinessToBusinessUrlAddress" />
                      <bean parent="AttributeField" p:propertyName="vendorFaxNumber" />
                      <bean parent="AttributeField" p:propertyName="vendorAddressEmailAddress" p:constraint="must be valid email address"/>
-                     <bean parent="AttributeField" p:propertyName="vendorDefaultAddressIndicator" />
-                     <bean parent="AttributeField" p:propertyName="vendorHeaderGeneratedIdentifier" />
                      <bean parent="AttributeField" p:propertyName="vendorDetailAssignedIdentifier" />
                      <bean parent="AttributeField" p:propertyName="active" />
                   </list>
@@ -104,8 +102,7 @@
                </property>
                <property name="subCollections">
                   <list>
-                     <bean parent="MaintenanceCollectionGroupSection">
-                        <property name="title" value="" />
+                     <bean parent="MaintenanceSubCollectionGroup">
                         <property name="collectionObjectClass" value="edu.sampleu.financial.bo.VendorDefaultAddress" />
                         <property name="propertyName" value="vendorDefaultAddresses" />
                         <property name="items">

@@ -36,6 +36,9 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
+import org.kuali.rice.kns.datadictionary.exporter.StringMap;
+import org.kuali.rice.kns.datadictionary.parse.StringListConverter;
+import org.kuali.rice.kns.datadictionary.parse.StringMapConverter;
 import org.kuali.rice.kns.datadictionary.uif.UifDictionaryIndex;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
@@ -47,6 +50,8 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 
@@ -153,8 +158,12 @@ public class DataDictionary  {
 		try {
 			BeanPostProcessor idPostProcessor = ComponentBeanPostProcessor.class.newInstance();
 			ddBeans.addBeanPostProcessor(idPostProcessor);
-			
 			ddBeans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
+
+            GenericConversionService conversionService = new GenericConversionService();
+            conversionService.addConverter(new StringMapConverter());
+            conversionService.addConverter(new StringListConverter());
+            ddBeans.setConversionService(conversionService);
 		}
 		catch (Exception e1) {
 			LOG.error("Cannot create component decorator post processor: " + e1.getMessage(), e1);

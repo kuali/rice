@@ -116,6 +116,7 @@ public class UifConstants {
 	public static final String EL_PLACEHOLDER_PREFIX = "@{";
 	public static final String EL_PLACEHOLDER_SUFFIX = "}";
 	public static final String EL_CONDITIONAL_PROPERTY_PREFIX = "conditional";
+    public static final String NO_BIND_ADJUST_PREFIX = "form:";
 
 	public static class ContextVariableNames {
         public static final String COLLECTION_GROUP = "collectionGroup";
@@ -164,5 +165,9 @@ public class UifConstants {
         public static final String FORM_KEY = "formKey";
         public static final String PAGE_ID = "pageId";
         public static final String HISTORY = "history";
+    }
+
+    public static class MessageKeys {
+       public static final String QUERY_DATA_NOT_FOUND = "query.dataNotFound";
     }
 }

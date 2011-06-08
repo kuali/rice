@@ -42,10 +42,17 @@ import java.util.Set;
  */
 public class ComponentUtils {
 
+    public static <T extends Component> T copy(T component) {
+        return copy(component, null);
+    }
+
     public static <T extends Component> T copy(T component, String idSuffix) {
         T copy = copyObject(component);
-        updateIdsWithSuffixNested(copy, idSuffix);
-        
+
+        if (StringUtils.isNotBlank(idSuffix)) {
+            updateIdsWithSuffixNested(copy, idSuffix);
+        }
+
         return copy;
     }
 

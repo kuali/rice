@@ -1439,6 +1439,12 @@
       </property> 
   </bean>
 
+  <bean id="attributeQueryService"  class="org.kuali.rice.kns.uif.service.impl.AttributeQueryServiceImpl">
+      <property name="lookupService">
+          <ref bean="lookupService" />
+      </property>
+  </bean>
+
     <!-- this should go in the core spring beans once ojb is available-->
   <bean id="criteriaLookupService" class="org.kuali.rice.core.impl.criteria.CriteriaLookupServiceOjbImpl" parent="platformAwareDao"/>
 </beans>

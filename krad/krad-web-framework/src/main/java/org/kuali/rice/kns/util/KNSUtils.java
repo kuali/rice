@@ -16,9 +16,13 @@
 package org.kuali.rice.kns.util;
 
 import java.lang.reflect.Constructor;
+import java.nio.channels.NonWritableChannelException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
@@ -168,4 +172,61 @@ public final class KNSUtils {
 	private static String getComponentFullName(Class<? extends Object> clazz) {
 		return clazz.getName();
 	}
+
+    /**
+     * Parses a string that is in map format (commas separating map entries, colon separates
+     * map key/value) to a new map instance
+     *
+     * @param parameter - string parameter to parse
+     * @return Map<String, String> instance populated from string parameter
+     */
+    public static Map<String, String> convertStringParameterToMap(String parameter) {
+        Map<String, String> map = new HashMap<String, String>();
+
+        if (StringUtils.isNotBlank(parameter)) {
+            if (StringUtils.contains(parameter, ",")) {
+                String[] fieldConversions = StringUtils.split(parameter, ",");
+
+                for (int i = 0; i < fieldConversions.length; i++) {
+                    String fieldConversionStr = fieldConversions[i];
+                    if (StringUtils.isNotBlank(fieldConversionStr)) {
+                        if (StringUtils.contains(fieldConversionStr, ":")) {
+                            String[] fieldConversion = StringUtils.split(fieldConversionStr, ":");
+                            map.put(fieldConversion[0], fieldConversion[1]);
+                        } else {
+                            map.put(fieldConversionStr, fieldConversionStr);
+                        }
+                    }
+                }
+            } else if (StringUtils.contains(parameter, ":")) {
+                String[] fieldConversion = StringUtils.split(parameter, ":");
+                map.put(fieldConversion[0], fieldConversion[1]);
+            } else {
+                map.put(parameter, parameter);
+            }
+        }
+
+        return map;
+    }
+
+    /**
+     * Parses a string that is in list format (commas separating list entries) to a new List instance
+     *
+     * @param parameter - string parameter to parse
+     * @return List<String> instance populated from string parameter
+     */
+    public static List<String> convertStringParameterToList(String parameter) {
+        List<String> list = new ArrayList<String>();
+
+        if (StringUtils.isNotBlank(parameter)) {
+            if (StringUtils.contains(parameter, ",")) {
+                String[] parameters = StringUtils.split(parameter, ",");
+                list = Arrays.asList(parameters);
+            } else {
+                list.add(parameter);
+            }
+        }
+
+        return list;
+    }
 }

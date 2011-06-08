@@ -154,7 +154,6 @@
       <ref bean="AnyCharacterValidation" />
     </property>
     <property name="controlField" >
-      <!-- <bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.kfs.vnd.businessobject.options.TaxPayerTypeWithNoneValuesFinder" p:includeKeyInLabel="false"/>-->
       <bean parent="TextControl" p:size="4"/>
     </property>
     <property name="attributeSecurity"> 
@@ -178,7 +177,6 @@
       <ref bean="AnyCharacterValidation" />
     </property>
     <property name="controlField" >
-      <!-- <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.kfs.vnd.businessobject.options.VendorTypeValuesFinder" p:includeKeyInLabel="false"/>-->
       <bean parent="TextControl" p:size="4"/>
     </property>
   </bean>
@@ -190,9 +188,8 @@
     <property name="label" value="W-8BEN Received" />
     <property name="shortLabel" value="W-8BEN Received" />
     <property name="maxLength" value="1" />
-    <property name="optionsFinderClass" value="org.kuali.rice.kns.lookup.keyvalues.IndicatorYNNullValuesFinder"/>
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="CheckboxControl"/>
     </property>     
   </bean>
   <bean id="VendorHeader-vendorW9ReceivedIndicator" parent="VendorHeader-vendorW9ReceivedIndicator-parentBean" />
@@ -203,9 +200,8 @@
     <property name="label" value="W9 Received" />
     <property name="shortLabel" value="W9 Received" />
     <property name="maxLength" value="1" />
-    <property name="optionsFinderClass" value="org.kuali.rice.kns.lookup.keyvalues.IndicatorYNNullValuesFinder"/>
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="CheckboxControl"/>
     </property>      
   </bean>
   <bean id="VendorHeader-vendorDebarredIndicator" parent="VendorHeader-vendorDebarredIndicator-parentBean" />
@@ -216,9 +212,8 @@
     <property name="label" value="Debarred" />
     <property name="shortLabel" value="Debarred" />
     <property name="maxLength" value="1" />
-    <property name="optionsFinderClass" value="org.kuali.rice.kns.lookup.keyvalues.IndicatorYNNullValuesFinder"/>
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="CheckboxControl"/>
     </property> 
   </bean>
   <bean id="VendorHeader-vendorForeignIndicator" parent="VendorHeader-vendorForeignIndicator-parentBean" />
@@ -229,9 +224,8 @@
     <property name="label" value="Is this a foreign vendor" />
     <property name="shortLabel" value="Is Foreign" />
     <property name="maxLength" value="1" />
-    <property name="optionsFinderClass" value="org.kuali.rice.kns.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="CheckboxControl"/>
     </property>     
   </bean>
 </beans>

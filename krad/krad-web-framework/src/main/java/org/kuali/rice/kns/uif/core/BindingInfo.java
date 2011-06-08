@@ -13,7 +13,9 @@ package org.kuali.rice.kns.uif.core;
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * Provides binding configuration for an DataBinding component (attribute or
@@ -141,6 +143,33 @@ public class BindingInfo implements Serializable {
         }
 
         return bindingPrefix;
+    }
+
+    /**
+     * Returns the binding path that is formed by taking the binding configuration
+     * of this <code>BindingInfo</code> instance with the given property path as the
+     * binding name. This can be used to get the binding path when just a property
+     * name is given that is assumed to be on the same parent object of the field with
+     * the configured binding info
+     *
+     * <p>
+     * Special check is done for org.kuali.rice.kns.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix
+     * on the property name which indicates the property path is the full path and should
+     * not be adjusted
+     * </p>
+     *
+     * @param propertyPath - path for property to return full binding path for
+     * @return String full binding path
+     */
+    public String getPropertyAdjustedBindingPath(String propertyPath) {
+        if (propertyPath.startsWith(UifConstants.NO_BIND_ADJUST_PREFIX)) {
+            return propertyPath;
+        }
+
+        BindingInfo bindingInfoCopy = (BindingInfo) ObjectUtils.deepCopy(this);
+        bindingInfoCopy.setBindingName(propertyPath);
+
+        return bindingInfoCopy.getBindingPath();
     }
 
     /**

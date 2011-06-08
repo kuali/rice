@@ -1,12 +1,17 @@
 /*
- * Copyright 2007 The Kuali Foundation Licensed under the Educational Community
- * License, Version 1.0 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.opensource.org/licenses/ecl1.php Unless required by applicable law
- * or agreed to in writing, software distributed under the License is
- * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.kuali.rice.kns.uif.widget;
 
@@ -55,11 +60,6 @@ public class Inquiry extends WidgetBase {
 
     private LinkField inquiryLinkField;    
     
-    private String conditionalReadOnly;
-    
-    private boolean readOnly;
-
-
     public Inquiry() {
         super();
 
@@ -284,18 +284,6 @@ public class Inquiry extends WidgetBase {
         this.inquiryParameters = inquiryParameters;
     }
 
-    public void setInquiryParameters(String inquiryParameterString) {
-        Map<String, String> inquiryParms = new HashMap<String, String>();
-
-        String[] mappings = StringUtils.split(inquiryParameterString, ",");
-        for (int i = 0; i < mappings.length; i++) {
-            String[] mapping = StringUtils.split(mappings[i], ":");
-            inquiryParms.put(mapping[0], mapping[1]);
-        }
-
-        this.inquiryParameters = inquiryParms;
-    }
-
     public LinkField getInquiryLinkField() {
         return this.inquiryLinkField;
     }
@@ -303,33 +291,5 @@ public class Inquiry extends WidgetBase {
     public void setInquiryLinkField(LinkField inquiryLinkField) {
         this.inquiryLinkField = inquiryLinkField;
     }
-
-	/**
-	 * @return the conditionalReadOnly
-	 */
-	public String getConditionalReadOnly() {
-		return this.conditionalReadOnly;
-	}
-
-	/**
-	 * @param conditionalReadOnly the conditionalReadOnly to set
-	 */
-	public void setConditionalReadOnly(String conditionalReadOnly) {
-		this.conditionalReadOnly = conditionalReadOnly;
-	}
-
-	/**
-	 * @return the readOnly
-	 */
-	public boolean isReadOnly() {
-		return this.readOnly;
-	}
-
-	/**
-	 * @param readOnly the readOnly to set
-	 */
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
-	}
 
 }

@@ -363,6 +363,7 @@ function createVerticalMenu(listId, options) {
 /**
  * Sets ups a text popout button and window for this particular field that will be generated
  * when that button is clicked
+ *
  * @param id - id of the control
  * @param label - label to be used in popout
  * @param summary - summary to be used in popout
@@ -373,9 +374,9 @@ function setupTextPopout(id, label, summary, constraint){
 	jq("#" + id).initPopoutText(options);
 }
 
-
 /**
  * Show growl with message, title and theme passed in
+ *
  * @param message message of this jGrowl
  * @param title title of this jGrowl, can be empty string for none
  * @param theme class to append to jGrowl classes, can be empty string for none
@@ -392,6 +393,7 @@ function showGrowl(message, title, theme){
 
 /**
  * Set default growl options for this view
+ *
  * @param options
  */
 function setGrowlDefaults(options){
@@ -401,6 +403,7 @@ function setGrowlDefaults(options){
 
 /**
  * Get the current context
+ *
  * @returns the jQuery context that can be used to perform actions that must be global to the entire page
  * ie, showing lightBoxes and growls etc
  */
@@ -428,9 +431,9 @@ function getContext(){
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createDatePicker(controlId, options) {
-  jq(function() {
-   	jq("#" + controlId).datepicker(options);
-	});	
+   jq(function() {
+   	  jq("#" + controlId).datepicker(options);
+   });
 }
 
 /**
@@ -700,14 +703,14 @@ function createLoading(showLoading) {
  * for the plug-in. See <link>http://www.datatables.net/usage/</link> for
  * documentation on these options
  * 
- * @param controlId -
+ * @param tableId -
  *          id for the table that should be decorated
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function createTable(controlId, options) {
+function createTable(tableId, options) {
 	jq(document).ready(function() {
-		var oTable = jq("#" + controlId).dataTable(options);
+		var oTable = jq("#" + tableId).dataTable(options);
 	});
 }
 
@@ -717,15 +720,127 @@ function createTable(controlId, options) {
  * for the plug-in. See <link>http://www.jstree.com/documentation/</link> for
  * documentation on these options
  *
- * @param controlId -
+ * @param divId -
  *          id for the div that should be decorated
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function createTree(controlId, options) {
+function createTree(divId, options) {
 	jq(document).ready(function() {
-		jq("#" + controlId).jstree(options);
+		jq("#" + divId).jstree(options);
 	});
+}
+
+/**
+ * Uses jQuery UI Auto-complete widget to provide suggest options for the given field. See
+ * <link>http://jqueryui.com/demos/autocomplete/</link> for documentation on this widget
+ *
+ * @param controlId -
+ *           id for the html control the autocomplete will be enabled for
+ * @param options -
+ *           map of option settings (option name/value pairs) for the widget
+ * @param queryFieldId -
+ *          id for the attribute field the control belongs to, used when making the
+ * request to execute the associated attribute query
+ * @param queryParameters -
+ *         map of parameters that should be sent along with the query. map key gives
+ * the name of the parameter to send, and the value gives the name of the field to pull the value from
+ */
+function createSuggest(controlId, options, queryFieldId, queryParameters) {
+    options.source = function( request, response ) {
+                       var queryData = {};
+                       queryData.methodToCall = 'performFieldSuggest';
+                       queryData.skipViewInit = 'true';
+                       queryData.formKey = jq("input#formKey").val();
+                       queryData.queryTerm = request.term;
+                       queryData.queryFieldId = queryFieldId;
+
+                       for (var parameter in queryParameters) {
+                         queryData['queryParameter.' + parameter] = coerceValue(queryParameters[parameter]);
+                       }
+
+	                   jq.ajax({
+                          url: jq("form#kualiForm").attr("action"),
+                          dataType: "json",
+                          data: queryData,
+                          success: function ( data ) {
+                             response( data.resultData );
+                          }
+                        });
+    };
+
+    jq(document).ready(function() {
+        jq("#" + controlId).autocomplete(options);
+    });
+}
+
+/**
+ * Executes a query with ajax for the given field to retrieve additional information after
+ * the field has been updated (on blur)
+ *
+ * @param controlId -
+ *           id for the html control to pull current value from
+ * @param queryFieldId -
+ *          id for the attribute field the control belongs to, used when making the
+ * request to execute the associated field query
+ * @param queryParameters -
+ *         map of parameters that should be sent along with the query. map key gives
+ * the name of the parameter to send, and the value gives the name of the field to pull the value from
+ * @param queryMethodArgs -
+ *         list of parameters that should be sent along with the query, the list gives the
+ * name of the field in the view to pull values from, and will be sent with the same name
+ * as a query parameter on the request
+ * @param returnFieldMapping -
+ *        map of fields that should be returned (updated) from the query. map key gives
+ * the name of the parameter to update, map value is the name of field to pull value from
+ */
+function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethodArgs, returnFieldMapping) {
+    var queryData = {};
+
+    queryData.methodToCall = 'performFieldQuery';
+    queryData.skipViewInit = 'true';
+    queryData.formKey = jq("input#formKey").val();
+    queryData.queryFieldId = queryFieldId;
+
+    for (var parameter in queryParameters) {
+        queryData['queryParameter.' + parameter] = coerceValue(queryParameters[parameter]);
+    }
+
+    for (var i = 0; i < queryMethodArgs.length; i++) {
+        var parameter = queryMethodArgs[i];
+        queryData['queryParameter.' + parameter] = coerceValue(parameter);
+    }
+
+    jq.ajax({
+                url: jq("form#kualiForm").attr("action"),
+                dataType: "json",
+                data: queryData,
+                success: function (data) {
+                    // write out return message (or blank)
+                    var returnMessageSpan = jq("#" + queryFieldId + "_info_message");
+                    if (returnMessageSpan.length > 0) {
+                        returnMessageSpan.html(data.resultMessage);
+                        if (data.resultMessageStyleClasses) {
+                           returnMessageSpan.addClass(data.resultMessageStyleClasses);
+                        }
+                    }
+
+                    // write out informational field values, note if data does not exist
+                    // this will clear the field values
+                    for (var returnField in returnFieldMapping) {
+                        var fieldValue = data.resultFieldData[returnField];
+                        if (!fieldValue) {
+                            fieldValue = "";
+                        }
+
+                        var returnFieldId = returnField.replace(/\./g, "_");
+                        var infoFieldSpan = jq("#" + queryFieldId + "_info_" + returnFieldId);
+                        if (infoFieldSpan.length > 0) {
+                            infoFieldSpan.html(fieldValue);
+                        }
+                    }
+                }
+            });
 }
 
 /**
@@ -886,12 +1001,12 @@ function showChangeIconOnHeader(headerFieldId) {
     }
 }
 
-//Applies the watermark to the input with the id specified
+// Applies the watermark to the input with the id specified
 function createWatermark(id, watermark){
 	jq("#" + id).watermark(watermark);
 }
 
-//Creates tabs for the tabs div id specified, this div is created by tabGroup
+// Creates tabs for the tabs div id specified, this div is created by tabGroup
 function createTabs(id, options){
 	jq("#" + id + "_tabs").tabs(options);
 }

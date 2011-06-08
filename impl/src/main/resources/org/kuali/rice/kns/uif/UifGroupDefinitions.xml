@@ -244,6 +244,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             p:oldBindingObjectPath="document.oldMaintainableObject.dataObject" />
     </property>
   </bean>
+
+  <bean id="MaintenanceSubCollectionGroup" abstract="true" parent="MaintenanceSubCollectionGroup-parentBean"/>
+  <bean id="MaintenanceSubCollectionGroup-parentBean" parent="MaintenanceCollectionGroupSection">
+     <property name="header.render" value="false"/>
+     <property name="accordion.render" value="false"/>
+  </bean>
   
   <!-- Common Groups -->
   

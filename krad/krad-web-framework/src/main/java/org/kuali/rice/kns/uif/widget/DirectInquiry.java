@@ -110,6 +110,7 @@ public class DirectInquiry extends Inquiry {
 			lightBoxOptions = directInquiryActionField.getLightBox()
 					.getComponentOptionsJSString();
 		}
+
 		// Build parameter string using the actual names of the fields as on the
 		// html page
 		for (Entry<String, String> inquiryParameter : inquiryParms.entrySet()) {
@@ -128,6 +129,7 @@ public class DirectInquiry extends Inquiry {
 			paramMapString.append(",");
 		}
 		paramMapString.deleteCharAt(paramMapString.length() - 1);
+
 		// Create onlick script to open the inquiry window on the click event
 		// of the direct inquiry
 		StringBuilder onClickScript = new StringBuilder("showDirectInquiry(\"");

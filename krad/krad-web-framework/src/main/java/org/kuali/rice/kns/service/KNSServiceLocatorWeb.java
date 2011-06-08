@@ -5,6 +5,7 @@ import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
+import org.kuali.rice.kns.uif.service.AttributeQueryService;
 import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.kns.uif.service.ViewDictionaryService;
 import org.kuali.rice.kns.uif.service.ViewService;
@@ -43,6 +44,7 @@ public class KNSServiceLocatorWeb {
     public static final String EXPRESSION_EVALUATOR_SERVICE = "expressionEvaluatorService";
     public static final String VIEW_SERVICE = "viewService";
     public static final String VIEW_DICTIONARY_SERVICE = "viewDictionaryService";
+    public static final String ATTRIBUTE_QUERY_SERVICE = "attributeQueryService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -171,4 +173,8 @@ public class KNSServiceLocatorWeb {
 	public static ViewDictionaryService getViewDictionaryService() {
 		return (ViewDictionaryService) getService(VIEW_DICTIONARY_SERVICE);
 	}
+
+    public static AttributeQueryService getAttributeQueryService() {
+        return (AttributeQueryService) getService(ATTRIBUTE_QUERY_SERVICE);
+    }
 }

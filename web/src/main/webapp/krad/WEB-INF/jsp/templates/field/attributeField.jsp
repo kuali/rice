@@ -82,9 +82,22 @@
   <c:if test="${!field.readOnly}">
     <%-- render field constraint --%>
     <krad:template component="${field.constraintMessageField}"/>
-  </c:if>  
+  </c:if>
+
+  <%-- render span and values for informational properties --%>
+  <span id="${field.id}_info_message"></span>
+  <c:forEach items="${field.informationalDisplayPropertyNames}" var="infoPropertyPath" varStatus="status">
+     <span id="${field.id}_info_${fn:replace(infoPropertyPath,'.','_')}" class="info-field">
+        <s:bind path="${infoPropertyPath}">${status.value}</s:bind>
+     </span>
+  </c:forEach>
 
   <%-- render field help --%>
+
+  <%-- render field suggest --%>
+  <c:if test="${!field.readOnly}">
+     <krad:template component="${field.fieldSuggest}" parent="${field}"/>
+  </c:if>
   
 </krad:span>
 

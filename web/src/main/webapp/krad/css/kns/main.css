@@ -410,3 +410,18 @@ table.datatable th[scope="row"].collection-header {
  .breadcrumbs .current{
 	color: #FFF;
  }
+
+.info-field {
+    font-size: xx-small;
+	color: #7E7E7E;
+	font-weight: normal;
+    padding-bottom: 3px;
+    display: block;
+}
+
+.info-message-error {
+    font-size: xx-small;
+	color: red;
+	font-weight: normal;
+    padding-bottom: 3px;
+}

@@ -33,6 +33,8 @@ public class HeaderField extends GroupField {
 	private String headerLevel;
 	private String headerStyleClasses;
 	private String headerStyle;
+    private String headerDivStyleClasses;
+    private String headerDivStyle;
 
 	public HeaderField() {
 		super();
@@ -126,4 +128,19 @@ public class HeaderField extends GroupField {
 		this.headerStyle = headerStyle;
 	}
 
+    public String getHeaderDivStyleClasses() {
+        return headerDivStyleClasses;
+    }
+
+    public void setHeaderDivStyleClasses(String headerDivStyleClasses) {
+        this.headerDivStyleClasses = headerDivStyleClasses;
+    }
+
+    public String getHeaderDivStyle() {
+        return headerDivStyle;
+    }
+
+    public void setHeaderDivStyle(String headerDivStyle) {
+        this.headerDivStyle = headerDivStyle;
+    }
 }

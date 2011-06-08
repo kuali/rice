@@ -35,7 +35,6 @@ import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.kns.uif.service.ViewDictionaryService;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
-import org.kuali.rice.kns.uif.control.TextControl;
 import org.kuali.rice.kns.uif.util.BooleanMap;
 import org.kuali.rice.kns.uif.util.CloneUtils;
 import org.kuali.rice.kns.uif.util.ComponentFactory;
@@ -669,7 +668,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             finalizeMethodInvoker = new MethodInvoker();
         }
 
-        // if method not set on invoker, use renderingMethodToCall
+        // if method not set on invoker, use renderingMethodToCall, note staticMethod could be set(don't know since
+        // there is not a getter), if so it will override the target method in prepare
         if (StringUtils.isBlank(finalizeMethodInvoker.getTargetMethod())) {
             finalizeMethodInvoker.setTargetMethod(finalizeMethodToCall);
         }
@@ -1046,5 +1046,4 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     public void setViewDictionaryService(ViewDictionaryService viewDictionaryService) {
         this.viewDictionaryService = viewDictionaryService;
     }
-
 }

@@ -1120,7 +1120,7 @@ public final class ObjectUtils {
 
         return b;
     }
-    
+
     /**
      * Helper method for creating a new instance of the given class
      * 

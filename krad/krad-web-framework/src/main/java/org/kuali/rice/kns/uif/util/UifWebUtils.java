@@ -31,10 +31,11 @@ import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * This class provides helper methods that will be used during the request
- * lifecycle.
+ * Provides helper methods that will be used during the request
+ * lifecycle
+ *
  * <p>
- * This class was created to avoid duplication of the methods used by 
+ * Created to avoid duplication of the methods used by
  * the UifHandlerExceptionResolver
  * </p>
  * 
@@ -116,7 +117,7 @@ public class UifWebUtils {
      */
     public static void postControllerHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
-        if (handler instanceof UifControllerBase) {
+        if (handler instanceof UifControllerBase && (modelAndView != null)) {
             UifControllerBase controller = (UifControllerBase) handler;
             UifFormBase form = null;
             //Check to see if this is a full view request

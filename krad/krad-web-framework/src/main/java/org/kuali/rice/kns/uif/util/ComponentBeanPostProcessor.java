@@ -68,9 +68,10 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
                 component.setId(beanName);
             }
 
-            if (StringUtils.contains(component.getId(), "__")) {
-                throw new RuntimeException(("Component id is not allowed to have two underscores together"));
-            }
+            // TODO: removed until ids are fixed to not have underscore
+//            if (StringUtils.contains(component.getId(), "_")) {
+//                throw new RuntimeException(("Component id is not allowed to have an underscore"));
+//            }
 
             // hold definition in component factory
             ComponentFactory.addComponentDefinition(component.getId(), component);

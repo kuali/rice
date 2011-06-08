@@ -23,6 +23,7 @@ import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
+import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.util.WebUtils;
 
 /**

@@ -37,6 +37,7 @@ import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.service.ViewService;
+import org.kuali.rice.kns.uif.field.AttributeQueryResult;
 import org.kuali.rice.kns.uif.util.ComponentFactory;
 import org.kuali.rice.kns.uif.util.LookupInquiryUtils;
 import org.kuali.rice.kns.uif.util.UifWebUtils;
@@ -50,6 +51,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -392,6 +394,87 @@ public abstract class UifControllerBase {
         }
 
         return performRedirect(form, baseLookupUrl, lookupParameters);
+    }
+
+    /**
+     * Invoked to provide the options for a suggest widget. The valid options are retrieved by the associated
+     * <code>AttributeQuery</code> for the field containing the suggest widget. The controller method picks
+     * out the query parameters from the request and calls <code>AttributeQueryService</code> to perform the
+     * suggest query and prepare the result object that will be exposed with JSON
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=performFieldSuggest")
+    public @ResponseBody AttributeQueryResult performFieldSuggest(@ModelAttribute("KualiForm") UifFormBase form,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+
+        // retrieve query fields from request
+        Map<String, String> queryParameters = new HashMap<String, String>();
+        for (Object parameterName : request.getParameterMap().keySet()) {
+            if (parameterName.toString().startsWith(UifParameters.QUERY_PARAMETER + ".")) {
+                String fieldName =
+                        StringUtils.substringAfter(parameterName.toString(), UifParameters.QUERY_PARAMETER + ".");
+                String fieldValue = request.getParameter(parameterName.toString());
+                queryParameters.put(fieldName, fieldValue);
+            }
+        }
+
+        // retrieve id for field to perform query for
+        String queryFieldId = request.getParameter(UifParameters.QUERY_FIELD_ID);
+        if (StringUtils.isBlank(queryFieldId)) {
+            throw new RuntimeException(
+                    "Unable to find id for field to perform query on under request parameter name: " +
+                            UifParameters.QUERY_FIELD_ID);
+        }
+
+        // get the field term to match
+        String queryTerm = request.getParameter(UifParameters.QUERY_TERM);
+        if (StringUtils.isBlank(queryTerm)) {
+            throw new RuntimeException(
+                    "Unable to find id for query term value for attribute query on under request parameter name: " +
+                            UifParameters.QUERY_TERM);
+        }
+
+        // invoke attribute query service to perform the query
+        AttributeQueryResult queryResult = KNSServiceLocatorWeb.getAttributeQueryService()
+                .performFieldSuggestQuery(form.getView(), queryFieldId, queryTerm, queryParameters);
+
+        return queryResult;
+    }
+
+    /**
+     * Invoked to execute the <code>AttributeQuery</code> associated with a field given the query parameters
+     * found in the request. This controller method picks out the query parameters from the request and calls
+     * <code>AttributeQueryService</code> to perform the field query and prepare the result object
+     * that will be exposed with JSON. The result is then used to update field values in the UI with client
+     * script.
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=performFieldQuery")
+    public @ResponseBody AttributeQueryResult performFieldQuery(@ModelAttribute("KualiForm") UifFormBase form,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+
+        // retrieve query fields from request
+        Map<String, String> queryParameters = new HashMap<String, String>();
+        for (Object parameterName : request.getParameterMap().keySet()) {
+            if (parameterName.toString().startsWith(UifParameters.QUERY_PARAMETER + ".")) {
+                String fieldName =
+                        StringUtils.substringAfter(parameterName.toString(), UifParameters.QUERY_PARAMETER + ".");
+                String fieldValue = request.getParameter(parameterName.toString());
+                queryParameters.put(fieldName, fieldValue);
+            }
+        }
+
+        // retrieve id for field to perform query for
+        String queryFieldId = request.getParameter(UifParameters.QUERY_FIELD_ID);
+        if (StringUtils.isBlank(queryFieldId)) {
+            throw new RuntimeException(
+                    "Unable to find id for field to perform query on under request parameter name: " +
+                            UifParameters.QUERY_FIELD_ID);
+        }
+
+        // invoke attribute query service to perform the query
+        AttributeQueryResult queryResult = KNSServiceLocatorWeb.getAttributeQueryService()
+                .performFieldQuery(form.getView(), queryFieldId, queryParameters);
+
+        return queryResult;
     }
 
     /**

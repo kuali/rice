@@ -34,6 +34,7 @@ import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -55,6 +56,7 @@ import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -970,4 +972,23 @@ public class WebUtils {
 
 		return map;
 	}
+
+    /**
+     * Retrieves value for the given parameter name in the request and attempts to convert to a Boolean using
+     * the <code>BooleanFormatter</code>
+     *
+     * @param request - servlet request containing parameters
+     * @param parameterName - name of parameter to retrieve value for
+     * @return Boolean set to value of parameter, or null if parameter was not found in request
+     */
+    public static Boolean getRequestParameterAsBoolean(ServletRequest request, String parameterName) {
+        Boolean parameterValue = null;
+
+        String parameterValueStr = request.getParameter(parameterName);
+        if (StringUtils.isNotBlank(parameterValueStr)) {
+            parameterValue = (Boolean) new BooleanFormatter().convertFromPresentationFormat(parameterValueStr);
+        }
+
+        return parameterValue;
+    }
 }

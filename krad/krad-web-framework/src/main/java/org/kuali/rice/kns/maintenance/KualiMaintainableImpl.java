@@ -105,6 +105,9 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 
 	protected String docTypeName;
 
+    // TODO: rename once 'newCollectionLines' is removed
+    protected Set<String> newCollectionLineNames = new HashSet<String>();
+
 	protected transient PersistenceStructureService persistenceStructureService;
 	protected transient MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 	protected transient BusinessObjectService businessObjectService;
@@ -121,6 +124,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 	 * Default empty constructor
 	 */
 	public KualiMaintainableImpl() {
+        super();
 	}
 
 	/**
@@ -129,7 +133,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 	 * @param businessObject
 	 */
 	public KualiMaintainableImpl(PersistableBusinessObject businessObject) {
-		this();
+		super();
 		this.businessObject = businessObject;
 		this.dataObject = businessObject;
 	}

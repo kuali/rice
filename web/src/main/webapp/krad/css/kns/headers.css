@@ -126,3 +126,7 @@ div.grouping-header-expandable h3 img {
 	padding: 3px;
 	font-weight: bold;
 }
+
+.section-subhead {
+    text-align: left;
+}

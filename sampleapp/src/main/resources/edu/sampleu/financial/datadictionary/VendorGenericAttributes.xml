@@ -56,6 +56,9 @@
     <property name="label" value="State"/>
     <property name="shortLabel" value="State"/>
     <property name="required" value="false"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="14"/>
+    </property>
   </bean>
   
   <bean id="VendorGenericAttributes-campusCode" parent="VendorGenericAttributes-campusCode-parentBean"/>

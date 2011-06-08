@@ -579,7 +579,7 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
     public String getFinalizeMethodToCall();
 
     /**
-     * <code>MethodInvoker</code> instance for the method that should be invoked
+     * <code>MethodInvokerConfig</code> instance for the method that should be invoked
      * for finalizing the component configuration
      * 
      * <p>
@@ -595,9 +595,9 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
      * be set to true on the component. 
      * </p>
      * 
-     * @return MethodInvoker instance
+     * @return MethodInvokerConfig instance
      */
-    public MethodInvoker getFinalizeMethodInvoker();
+    public MethodInvokerConfig getFinalizeMethodInvoker();
     
     /**
      * Indicates whether the component contains its own render output (through

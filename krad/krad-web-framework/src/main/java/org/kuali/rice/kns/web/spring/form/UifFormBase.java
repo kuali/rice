@@ -491,6 +491,7 @@ public class UifFormBase implements Serializable {
 	 * when the form is loaded in the view.
 	 * Using "TOP" or "BOTTOM" will jump to the top or the bottom of the resulting page.
 	 * jumpToId always takes precedence over jumpToName, if set.
+     *
 	 * @return the jumpToId
 	 */
 	public String getJumpToId() {
@@ -508,6 +509,7 @@ public class UifFormBase implements Serializable {
 	 * The jumpToName for this form, the element with this name will be jumped to automatically
 	 * when the form is loaded in the view.
 	 * WARNING: jumpToId always takes precedence over jumpToName, if set.
+     *
 	 * @return the jumpToName
 	 */
 	public String getJumpToName() {
@@ -524,6 +526,7 @@ public class UifFormBase implements Serializable {
 	/**
 	 * Field to place focus on when the page loads
 	 * An empty focusId will result in focusing on the first visible input element by default.
+     *
 	 * @return the focusId
 	 */
 	public String getFocusId() {
@@ -540,6 +543,7 @@ public class UifFormBase implements Serializable {
     /**
      * History parameter representing the History of views that have come before the
      * viewing of the current view.  Used for breadcrumb widget generation on the view.
+     *
      * @param history the history to set
      */
     public void setFormHistory(History history) {

@@ -31,17 +31,14 @@ import org.springframework.util.MethodInvoker;
 /**
  * Base implementation of <code>Component</code> which other component
  * implementations should extend
+ *
  * <p>
  * Provides base component properties such as id and template. Also provides
  * default implementation for the <code>ScriptEventSupport</code> and
- * <code>Ordered</code> interfaces. By default no script events are supported.
+ * <code>Ordered</code> interfaces. By default no script events except the
+ * onDocumentReady are supported.
  * </p>
- * <p>
- * <code>ComponentBase</code> also provides properties for a
- * <code>ComponentDecorator</code> and a List of
- * </code>ComponentInitializers</code>
- * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ComponentBase implements Component {
@@ -94,7 +91,7 @@ public abstract class ComponentBase implements Component {
     private boolean skipInTabOrder;
 
     private String finalizeMethodToCall;
-    private MethodInvoker finalizeMethodInvoker;
+    private MethodInvokerConfig finalizeMethodInvoker;
     private boolean selfRendered;
     private String renderOutput;
 
@@ -597,19 +594,6 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * Sets the styleClasses list from the given string that has the classes
-     * delimited by space. This is a convenience for configuration. If a child
-     * bean needs to inherit the classes from the parent, it should configure as
-     * a list and use merge="true"
-     * 
-     * @param styleClasses
-     */
-    public void setStyleClasses(String styleClasses) {
-        String[] classes = StringUtils.split(styleClasses);
-        this.styleClasses = Arrays.asList(classes);
-    }
-
-    /**
      * @see org.kuali.rice.kns.uif.core.Component#addStyleClass(java.lang.String)
      */
     public void addStyleClass(String styleClass) {
@@ -647,7 +631,7 @@ public abstract class ComponentBase implements Component {
     /**
      * @see org.kuali.rice.kns.uif.core.Component#getFinalizeMethodInvoker()
      */
-    public MethodInvoker getFinalizeMethodInvoker() {
+    public MethodInvokerConfig getFinalizeMethodInvoker() {
         return this.finalizeMethodInvoker;
     }
 
@@ -656,7 +640,7 @@ public abstract class ComponentBase implements Component {
      * 
      * @param renderingMethodInvoker
      */
-    public void setFinalizeMethodInvoker(MethodInvoker finalizeMethodInvoker) {
+    public void setFinalizeMethodInvoker(MethodInvokerConfig finalizeMethodInvoker) {
         this.finalizeMethodInvoker = finalizeMethodInvoker;
     }
 

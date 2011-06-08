@@ -375,3 +375,38 @@ table.datatable th[scope="row"].collection-header {
 }	
 
 .fl-theme-ks { text-align:center; padding-bottom:1em}
+
+
+ .breadcrumbs{
+	border-bottom: 1px dotted #C9C9C9;
+	border-top: 1px dotted #C9C9C9;
+	clear: both;
+	color: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+	letter-spacing: 0.02em;
+	padding: 3px 0 3px 15px;
+	background: #666666;
+	font-size: 0.8em;
+ }
+ 
+ .breadcrumbs span{
+	color: #FFF;
+ }
+ 
+ .breadcrumbs a{
+	color: #FFF;
+	text-decoration: underline;
+ }
+ 
+ .breadcrumbs a:visited{
+	color: #FFF;
+	text-decoration: underline;
+ }
+ 
+ .breadcrumbs a:focus, .breadcrumbs a:hover{
+ 	text-decoration: underline;
+ }
+ 
+ .breadcrumbs .current{
+	color: #FFF;
+ }

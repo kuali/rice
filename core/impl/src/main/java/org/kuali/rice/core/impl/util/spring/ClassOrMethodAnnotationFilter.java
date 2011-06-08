@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.util.spring;
+package org.kuali.rice.core.impl.util.spring;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.springframework.aop.ClassFilter;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Matches if the annotation specified during construction is present on the class or any of methods returned by class.getMethods().
@@ -31,7 +30,7 @@ public class ClassOrMethodAnnotationFilter implements ClassFilter {
         this.annotationType = annotationType;
     }
 
-    public boolean matches(Class clazz) {
+    public boolean matches(Class<?> clazz) {
         boolean isAnnotationPresent = clazz.isAnnotationPresent(this.annotationType);
         if (!isAnnotationPresent) {
             for (Method method : clazz.getMethods()) {

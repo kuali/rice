@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.util.spring;
+package org.kuali.rice.core.impl.util.spring;
 
 import java.lang.reflect.Method;
 
@@ -27,7 +27,10 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
  * name matching takes precendence, if they do.
  */
 public class AnnotationAndNameMatchingTransactionAttributeSource extends NameMatchTransactionAttributeSource {
-    private AnnotationTransactionAttributeSource annotationTransactionAttributeSource;
+    
+	private static final long serialVersionUID = 6119879657045541414L;
+	
+	private AnnotationTransactionAttributeSource annotationTransactionAttributeSource;
     private Integer transactionTimeout;
 
     /**
@@ -35,7 +38,7 @@ public class AnnotationAndNameMatchingTransactionAttributeSource extends NameMat
      *      java.lang.Class)
      */
     @Override
-    public TransactionAttribute getTransactionAttribute(Method method, Class targetClass) {
+    public TransactionAttribute getTransactionAttribute(Method method, Class<?> targetClass) {
         TransactionAttribute transactionAttribute = annotationTransactionAttributeSource.getTransactionAttribute(method, targetClass);
         if (transactionAttribute != null) {
             TransactionAttribute overridingTransactionAttribute = super.getTransactionAttribute(method, targetClass);

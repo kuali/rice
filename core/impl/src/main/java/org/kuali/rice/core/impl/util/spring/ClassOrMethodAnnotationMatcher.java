@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.util.spring;
+package org.kuali.rice.core.impl.util.spring;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -35,7 +35,7 @@ public class ClassOrMethodAnnotationMatcher extends StaticMethodMatcher {
     /**
      * @see org.springframework.aop.MethodMatcher#matches(java.lang.reflect.Method, java.lang.Class)
      */
-    public boolean matches(Method method, Class targetClass) {
+    public boolean matches(Method method, Class<?> targetClass) {
         return targetClass.isAnnotationPresent(this.annotationType) || AopUtils.getMostSpecificMethod(method, targetClass).isAnnotationPresent(this.annotationType);
     }
 }

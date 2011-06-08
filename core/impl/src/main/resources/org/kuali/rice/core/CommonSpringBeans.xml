@@ -117,7 +117,7 @@
 		<property name="transactionInterceptor" ref="transactionInterceptor" />
 	</bean>
 
-	<bean id="transactionAdvisorClassFilter" class="org.kuali.rice.kns.util.spring.ClassOrMethodAnnotationFilter">
+	<bean id="transactionAdvisorClassFilter" class="org.kuali.rice.core.impl.util.spring.ClassOrMethodAnnotationFilter">
 		<constructor-arg value="org.springframework.transaction.annotation.Transactional" />
 	</bean>
 
@@ -126,7 +126,7 @@
 		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
 	</bean>
 
-	<bean id="transactionAttributeSource" class="org.kuali.rice.kns.util.spring.AnnotationAndNameMatchingTransactionAttributeSource">
+	<bean id="transactionAttributeSource" class="org.kuali.rice.core.impl.util.spring.AnnotationAndNameMatchingTransactionAttributeSource">
 		<property name="annotationTransactionAttributeSource" ref="annotationTransactionAttributeSource" />
 		<property name="transactionTimeout" value="${transaction.timeout}" />
 	</bean>

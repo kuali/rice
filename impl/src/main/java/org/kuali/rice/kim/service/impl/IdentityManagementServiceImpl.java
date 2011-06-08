@@ -23,22 +23,21 @@ import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.kim.api.entity.Type;
 import org.kuali.rice.kim.api.entity.TypeContract;
+import org.kuali.rice.kim.api.entity.services.IdentityService;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.api.entity.services.IdentityService;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.api.group.GroupUpdateService;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
-import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
@@ -48,12 +47,12 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.impl.entity.EntityTypeBo;
 import org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo;
+import org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipStatusBo;
 import org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo;
 import org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.PermissionService;
-
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -943,7 +942,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     public Type getEmailType( String code ) {
 		Type type = (Type)kimReferenceTypeCacheMap.get(EntityEmailTypeBo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
-			type = getIdentityService().getEmailType(code);
+			type = Type.Builder.create(getIdentityService().getEmailType(code)).build();
 			kimReferenceTypeCacheMap.put(EntityEmailTypeBo.class.getSimpleName()+"-"+code, type);
 		}
 		return type;
@@ -956,11 +955,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return type;
 	}
-	public CitizenshipStatusInfo getCitizenshipStatus( String code ) {
-		CitizenshipStatusInfo type = (CitizenshipStatusInfo)kimReferenceTypeCache.get(CitizenshipStatusInfo.class.getSimpleName()+"-"+code);
+	public Type getCitizenshipStatus( String code ) {
+		Type type = (Type)kimReferenceTypeCacheMap.get(EntityCitizenshipStatusBo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
-			type = getIdentityService().getCitizenshipStatus(code);
-			kimReferenceTypeCache.put(CitizenshipStatusInfo.class.getSimpleName()+"-"+code, type);
+			type = Type.Builder.create(getIdentityService().getCitizenshipStatus(code)).build();
+			kimReferenceTypeCacheMap.put(EntityCitizenshipStatusBo.class.getSimpleName()+"-"+code, type);
 		}
 		return type;
 	}
@@ -992,7 +991,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	public Type getEntityType( String code ) {
 		Type type = (Type)kimReferenceTypeCacheMap.get(EntityTypeBo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
-			type = getIdentityService().getEntityType(code);
+			type = Type.Builder.create(getIdentityService().getEntityType(code)).build();
 			kimReferenceTypeCacheMap.put(EntityTypeBo.class.getSimpleName()+"-"+code, type);
 		}
 		return type;
@@ -1008,7 +1007,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	public Type getPhoneType( String code ) {
 		TypeContract type = kimReferenceTypeCacheMap.get(EntityPhoneTypeBo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
-			type = getIdentityService().getPhoneType(code);
+			type = Type.Builder.create(getIdentityService().getPhoneType(code)).build();
 			kimReferenceTypeCacheMap.put(EntityPhoneTypeBo.class.getSimpleName()+"-"+code, type);
 		}
 		return Type.Builder.create(type).build();

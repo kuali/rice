@@ -24,7 +24,7 @@
     <mapping-file>META-INF/kim-orm.xml</mapping-file>
     <class>org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo</class>
     <class>org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl</class>
-    <class>org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl</class>
+    <class>org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipStatusBo</class>
     <class>org.kuali.rice.kim.impl.entity.email.EntityEmailBo</class>
     <class>org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl</class>
     <class>org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl</class>
@@ -39,7 +39,7 @@
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityBioDemographicsImpl</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityCitizenshipImpl</class>
+    <class>org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl</class>
     <class>org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo</class>

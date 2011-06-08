@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.entity;
 
 import java.util.List;
 
+import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
 import org.kuali.rice.kns.bo.Inactivateable;
@@ -95,10 +96,10 @@ public interface KimEntity extends Inactivateable {
 	
     /**
      * Gets this {@link KimEntity}'s citizenship information
-     * @return the List of {@link KimEntityCitizenship}S for this {@link KimEntity}.
+     * @return the List of {@link EntityCitizenshipContract}s for this {@link KimEntity}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
-	List<? extends KimEntityCitizenship> getCitizenships();
+	List<? extends EntityCitizenshipContract> getCitizenships();
 	
 	/**
 	 * Gets this {@link KimEntity}'s entity type for the given type code

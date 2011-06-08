@@ -19,22 +19,19 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.entity.Type;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
-import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 import javax.jws.WebMethod;
@@ -103,7 +100,7 @@ public interface IdentityManagementService {
 
 	Type getAddressType(@WebParam(name = "code") String code);
 	AffiliationTypeInfo getAffiliationType(@WebParam(name = "code") String code);
-	CitizenshipStatusInfo getCitizenshipStatus(@WebParam(name = "code") String code);
+	Type getCitizenshipStatus(@WebParam(name = "code") String code);
 	Type getEmailType(@WebParam(name = "code") String code);
 	EmploymentStatusInfo getEmploymentStatus(@WebParam(name = "code") String code);
 	EmploymentTypeInfo getEmploymentType(@WebParam(name = "code") String code);

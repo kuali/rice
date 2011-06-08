@@ -17,7 +17,7 @@
 
   <bean id="CitizenshipStatus" parent="CitizenshipStatus-parentBean"/>
   <bean id="CitizenshipStatus-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipStatusBo"/>
     <property name="inquiryDefinition">
       <ref bean="CitizenshipStatus-inquiryDefinition"/>
     </property>
@@ -41,7 +41,7 @@
   <bean id="CitizenshipStatus-citizenshipStatusCode" parent="CitizenshipStatus-citizenshipStatusCode-parentBean"/>
   <bean id="CitizenshipStatus-citizenshipStatusCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true"/>  
-    <property name="name" value="citizenshipStatusCode"/>
+    <property name="name" value="code"/>
     <property name="label" value="Citizenship Status Code"/>
     <property name="shortLabel" value="Citizenship Status Code"/>
     <property name="maxLength" value="7"/>
@@ -54,7 +54,7 @@
 
   <bean id="CitizenshipStatus-citizenshipStatusName" parent="CitizenshipStatus-citizenshipStatusName-parentBean"/>
   <bean id="CitizenshipStatus-citizenshipStatusName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="citizenshipStatusName"/>
+    <property name="name" value="name"/>
     <property name="label" value="Citizenship Status Name"/>
     <property name="shortLabel" value="Name"/>
     <property name="maxLength" value="50"/>
@@ -67,7 +67,7 @@
   
   <bean id="CitizenshipStatus-displaySortCode" parent="CitizenshipStatus-displaySortCode-parentBean"/>
   <bean id="CitizenshipStatus-displaySortCode-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="displaySortCode"/>
+    <property name="name" value="sortCode"/>
     <property name="label" value="Display Sort Code"/>
     <property name="shortLabel" value="Sort"/>
     <property name="maxLength" value="1"/>
@@ -95,9 +95,9 @@
           <property name="numberOfColumns" value="1"/>
           <property name="inquiryFields">
             <list>
-              <bean parent="FieldDefinition" p:attributeName="citizenshipStatusCode"/>
-              <bean parent="FieldDefinition" p:attributeName="citizenshipStatusName"/>
-              <bean parent="FieldDefinition" p:attributeName="displaySortCode"/>
+              <bean parent="FieldDefinition" p:attributeName="code"/>
+              <bean parent="FieldDefinition" p:attributeName="name"/>
+              <bean parent="FieldDefinition" p:attributeName="sortCode"/>
               <bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
           </property>
@@ -114,16 +114,16 @@
     
     <property name="lookupFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="citizenshipStatusCode"/>
-        <bean parent="FieldDefinition" p:attributeName="citizenshipStatusName"/>
+        <bean parent="FieldDefinition" p:attributeName="code"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
         <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="citizenshipStatusCode"/>
-        <bean parent="FieldDefinition" p:attributeName="citizenshipStatusName"/>
-		<bean parent="FieldDefinition" p:attributeName="displaySortCode"/>
+        <bean parent="FieldDefinition" p:attributeName="code"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
+		<bean parent="FieldDefinition" p:attributeName="sortCode"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>

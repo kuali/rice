@@ -25,7 +25,6 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
-import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
@@ -78,8 +77,8 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	/**
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getCitizenshipStatus(java.lang.String)
 	 */
-	public CitizenshipStatusInfo getCitizenshipStatus(String code) {
-		return getInnerIdentityService().getCitizenshipStatus(code);
+	public Type getCitizenshipStatus(String code) {
+		return Type.Builder.create(getInnerIdentityService().getCitizenshipStatus(code)).build();
 	}
 
 	/**
@@ -102,7 +101,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getEmailType(java.lang.String)
 	 */
 	public Type getEmailType(String code) {
-		return getInnerIdentityService().getEmailType(code);
+		return Type.Builder.create(getInnerIdentityService().getEmailType(code)).build();
 	}
 
 	/**
@@ -209,7 +208,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getEntityType(java.lang.String)
 	 */
 	public Type getEntityType(String code) {
-		return getInnerIdentityService().getEntityType(code);
+		return Type.Builder.create(getInnerIdentityService().getEntityType(code)).build();
 	}
 
 	/**
@@ -230,7 +229,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getPhoneType(java.lang.String)
 	 */
 	public Type getPhoneType(String code) {
-		return getInnerIdentityService().getPhoneType(code);
+		return Type.Builder.create(getInnerIdentityService().getPhoneType(code)).build();
 	}
 
 	/**

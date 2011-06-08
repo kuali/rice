@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.entity.impl;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipBo;
 import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -83,10 +84,10 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected KimEntityBioDemographicsImpl bioDemographics;
 	
-	@OneToMany(targetEntity = KimEntityCitizenshipImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = EntityCitizenshipBo.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityCitizenshipImpl> citizenships = new AutoPopulatingList(KimEntityCitizenshipImpl.class);
+	protected List<EntityCitizenshipBo> citizenships = new AutoPopulatingList(EntityCitizenshipBo.class);
 
 	@OneToMany(targetEntity = KimEntityEthnicityImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
@@ -294,14 +295,14 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @return the citizenships
 	 */
-	public List<KimEntityCitizenshipImpl> getCitizenships() {
+	public List<EntityCitizenshipBo> getCitizenships() {
 		return this.citizenships;
 	}
 
 	/**
 	 * @param citizenships the citizenships to set
 	 */
-	public void setCitizenships(List<KimEntityCitizenshipImpl> citizenships) {
+	public void setCitizenships(List<EntityCitizenshipBo> citizenships) {
 		this.citizenships = citizenships;
 	}
 

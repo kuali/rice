@@ -102,6 +102,10 @@ public class EntityPhoneBo extends PersistableBusinessObjectBase implements Enti
         return this.phoneType
     }
 
+    public void setPhoneType(EntityPhoneTypeBo phoneType) {
+            this.phoneType = phoneType
+    }
+
     @Override
     boolean isSuppressPhone() {
         if (this.suppressPhone == null) {

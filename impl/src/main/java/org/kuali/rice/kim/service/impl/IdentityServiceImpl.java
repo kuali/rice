@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.entity.Type;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
@@ -34,20 +35,22 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
-import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
-import org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
 import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.impl.entity.EntityTypeBo;
+import org.kuali.rice.kim.impl.entity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo;
+import org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipStatusBo;
+import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo;
+import org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo;
 import org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
@@ -280,12 +283,25 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 
 	public KimEntityImpl getEntityImpl(String entityId) {
-		KimEntityImpl entityImpl = (KimEntityImpl)getBusinessObjectService().findByPrimaryKey(KimEntityImpl.class, Collections.singletonMap("entityId", entityId));
-        //TODO - remove this hack... This is here because currently jpa only seems to be going 2 levels deep on the eager fetching.
-		if(entityImpl!=null  && entityImpl.getEntityTypes() != null) {
-        	for (EntityTypeDataBo et : entityImpl.getEntityTypes()) {
-        		et.refresh();
-        	}
+		KimEntityImpl entityImpl = getBusinessObjectService().findByPrimaryKey(KimEntityImpl.class, Collections.singletonMap("entityId", entityId));
+        if(entityImpl!=null) {
+        	entityImpl.refresh();
+            /*TODO: We need to try and remove this.  Currently, without it, some integration tests fail because of some
+             * sort of OJB caching and not filling in the type values.  We need to figure out why this is happening and fix it.
+             * Yes, this is a hack :P
+             */
+            for (EntityTypeDataBo type : entityImpl.getEntityTypes()) {
+                type.refresh();
+                for (EntityAddressBo addressBo : type.getAddresses()) {
+                    addressBo.refreshReferenceObject("addressType");
+                }
+                for (EntityEmailBo emailBo : type.getEmailAddresses()) {
+                    emailBo.refreshReferenceObject("emailType");
+                }
+                for (EntityPhoneBo phoneBo : type.getPhoneNumbers()) {
+                    phoneBo.refreshReferenceObject("phoneType");
+                }
+            }
         }
         return entityImpl;
 	}
@@ -469,12 +485,12 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		return impl.toInfo();
 	}
 
-	public CitizenshipStatusInfo getCitizenshipStatus( String code ) {
-		CitizenshipStatusImpl impl = getBusinessObjectService().findBySinglePrimaryKey(CitizenshipStatusImpl.class, code);
+	public Type getCitizenshipStatus( String code ) {
+		EntityCitizenshipStatusBo impl = getBusinessObjectService().findBySinglePrimaryKey(EntityCitizenshipStatusBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
-		return impl.toInfo();
+		return EntityCitizenshipStatusBo.to(impl);
 	}
 
 	public Type getEmailType( String code ) {

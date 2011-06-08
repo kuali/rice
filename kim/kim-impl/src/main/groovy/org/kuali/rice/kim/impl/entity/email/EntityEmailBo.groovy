@@ -96,6 +96,10 @@ class EntityEmailBo extends PersistableBusinessObjectBase implements EntityEmail
             return this.emailType
         }
 
+        public void setEmailType(EntityEmailTypeBo emailType) {
+            this.emailType = emailType
+        }
+
         @Override
         boolean isSuppressEmail() {
             if (this.suppressEmail == null) {

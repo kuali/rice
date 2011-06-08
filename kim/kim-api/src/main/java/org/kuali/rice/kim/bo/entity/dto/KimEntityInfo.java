@@ -15,10 +15,13 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenship;
+import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.api.entity.type.EntityTypeData;
+import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.KimEntityCitizenship;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
@@ -26,8 +29,6 @@ import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.entity.KimEntityResidency;
 import org.kuali.rice.kim.bo.entity.KimEntityVisa;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.api.entity.type.EntityTypeData;
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 
     private List<KimEntityAffiliationInfo> affiliations;
     private KimEntityBioDemographicsInfo bioDemographics;
-    private List<KimEntityCitizenshipInfo> citizenships;
+    private List<EntityCitizenship> citizenships;
     private List<KimEntityEmploymentInformationInfo> employmentInformation;
     private String entityId;
     private List<EntityTypeData> entityTypes;
@@ -126,11 +127,10 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
                 }
             });        
 
-            citizenships = deriveCollection(entity.getCitizenships(), new XForm<KimEntityCitizenship, KimEntityCitizenshipInfo>() {
-                public KimEntityCitizenshipInfo xform(KimEntityCitizenship source) {
-                    return new KimEntityCitizenshipInfo(source);
-                }
-            });
+            citizenships = new ArrayList<EntityCitizenship>();
+            for (EntityCitizenshipContract contract : entity.getCitizenships()) {
+                citizenships.add(EntityCitizenship.Builder.create(contract).build());
+            }
 
             ethnicities = deriveCollection(entity.getEthnicities(), new XForm<KimEntityEthnicity, KimEntityEthnicityInfo>() {
                 public KimEntityEthnicityInfo xform(KimEntityEthnicity source) {
@@ -209,9 +209,9 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getCitizenships()
      */
-    public List<KimEntityCitizenshipInfo> getCitizenships() {
+    public List<EntityCitizenship> getCitizenships() {
         // If our reference is null, assign and return an empty List
-        return (citizenships != null) ? citizenships : (citizenships = new ArrayList<KimEntityCitizenshipInfo>());
+        return (citizenships != null) ? citizenships : (citizenships = new ArrayList<EntityCitizenship>());
 
     }
 
@@ -219,7 +219,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * Setter for this {@link KimEntityInfo}'s demographic information.  Note the behavior of 
      * {@link #getCitizenships()} if this is set to null;
      */
-    public void setCitizenships(List<KimEntityCitizenshipInfo> citizenships) {
+    public void setCitizenships(List<EntityCitizenship> citizenships) {
         this.citizenships = citizenships;
     }
 

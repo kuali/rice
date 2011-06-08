@@ -24,9 +24,9 @@ public class EntityCitizenshipStatusBo extends PersistableBusinessObjectBase imp
 
 
     /**
-   * Converts a mutable AddressTypeBo to an immutable AddressType representation.
+   * Converts a mutable EntityCitizenshipStatusBo to an immutable EntityCitizenshipStatus representation.
    * @param bo
-   * @return an immutable AddressType
+   * @return an immutable EntityCitizenshipStatus
    */
   static Type to(EntityCitizenshipStatusBo bo) {
     if (bo == null) { return null }
@@ -34,9 +34,9 @@ public class EntityCitizenshipStatusBo extends PersistableBusinessObjectBase imp
   }
 
   /**
-   * Creates a AddressType business object from an immutable representation of a AddressType.
-   * @param an immutable AddressType
-   * @return a AddressTypeBo
+   * Creates a EntityCitizenshipStatusBo business object from an immutable representation of a EntityCitizenshipStatus.
+   * @param an immutable EntityCitizenshipStatus
+   * @return a EntityCitizenshipStatusBo
    */
   static EntityCitizenshipStatusBo from(Type immutable) {
     if (immutable == null) {return null}

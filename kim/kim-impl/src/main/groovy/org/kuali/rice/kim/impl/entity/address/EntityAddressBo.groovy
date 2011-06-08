@@ -68,7 +68,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     boolean active;
 
 
-	@ManyToOne(targetEntity=EntityAddressTypeBo.class, fetch=FetchType.EAGER, cascade=[CascadeType.ALL])
+	@ManyToOne(targetEntity=EntityAddressTypeBo.class, fetch=FetchType.EAGER, cascade=[])
 	@JoinColumn(name = "ADDR_TYP_CD", insertable = false, updatable = false)
 	EntityAddressTypeBo addressType;
 
@@ -76,9 +76,9 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     boolean suppressAddress;
 
   /*
-   * Converts a mutable CountryBo to an immutable Country representation.
+   * Converts a mutable EntityAddressBo to an immutable EntityAddress representation.
    * @param bo
-   * @return an immutable Country
+   * @return an immutable EntityAddress
    */
   static EntityAddress to(EntityAddressBo bo) {
     if (bo == null) { return null }
@@ -86,9 +86,9 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
   }
 
   /**
-   * Creates a CountryBo business object from an immutable representation of a Country.
-   * @param an immutable Country
-   * @return a CountryBo
+   * Creates a EntityAddressBo business object from an immutable representation of a EntityAddress.
+   * @param an immutable EntityAddress
+   * @return a EntityAddressBo
    */
   static EntityAddressBo from(EntityAddress immutable) {
     if (immutable == null) {return null}
@@ -120,6 +120,10 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Override
     EntityAddressTypeBo getAddressType() {
         return addressType
+    }
+
+    public void setAddressType(EntityAddressTypeBo addressType) {
+        this.addressType = addressType
     }
 
     @Override

@@ -81,7 +81,7 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 
 	@ManyToOne(targetEntity=EntityAddressTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "ADDR_TYP_CD", insertable = false, updatable = false)
-	private TypeContract addressType;
+	private EntityAddressTypeBo addressType;
 
 	// Waiting until we pull in from KFS
 	// protected State state;
@@ -230,7 +230,7 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 		this.entityAddressId = entityAddressId;
 	}
 
-	public TypeContract getAddressType() {
+	public EntityAddressTypeBo getAddressType() {
 		return this.addressType;
 	}
 

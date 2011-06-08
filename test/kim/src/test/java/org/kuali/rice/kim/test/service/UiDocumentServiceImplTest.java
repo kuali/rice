@@ -19,6 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.api.entity.Type;
 import org.kuali.rice.kim.api.entity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.entity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.entity.phone.EntityPhoneContract;
@@ -38,6 +39,8 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.impl.entity.address.EntityAddressBo;
+import org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo;
 import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
@@ -86,8 +89,16 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
             e.printStackTrace();
         }
 		uiDocumentService.saveEntityPerson(personDoc);
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put("entityId", "entity124eId");
+        criteria.put("entityTypeCode", "PERSON");
+
 		KimEntityImpl entity = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
+        //EntityTypeDataBo entityTypeDataBo = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(EntityTypeDataBo.class, criteria);
+        //EntityAddressBo entityAddressBo = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(EntityAddressBo.class, criteria);
+        //entityAddressBo.refresh();
         EntityTypeDataBo entityType = entity.getEntityTypes().get(0);
+        //entityType.refresh();
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
 		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));
@@ -332,6 +343,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	}
 
 	private void assertAddressTrue(PersonDocumentAddress docAddress, EntityAddressContract entityAddress) {
+
 		assertEquals(docAddress.getAddressTypeCode(), entityAddress.getAddressType().getCode());
 		assertEquals(docAddress.getCountryCode(), entityAddress.getCountryCode());
 		assertEquals(docAddress.getLine1(), entityAddress.getLine1());

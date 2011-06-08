@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
+import org.kuali.rice.kim.api.entity.Type;
 import org.kuali.rice.kim.api.entity.address.EntityAddress;
 import org.kuali.rice.kim.api.entity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.entity.email.EntityEmail;
@@ -89,6 +90,7 @@ import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.impl.entity.address.EntityAddressBo;
+import org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo;
 import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo;
 import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
@@ -201,10 +203,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					entityType.setActive(type.isActive());
 				}
 			}
-			kimEntity.setEntityTypes(entityTypes);
 			setupPhone(identityManagementPersonDocument, entityType, origEntityType.getPhoneNumbers());
 			setupEmail(identityManagementPersonDocument, entityType, origEntityType.getEmailAddresses());
 			setupAddress(identityManagementPersonDocument, entityType, origEntityType.getAddresses());
+            kimEntity.setEntityTypes(entityTypes);
 		} else{
 			if(ObjectUtils.isNotNull(origEntity.getExternalIdentifiers()))
 				kimEntity.setExternalIdentifiers(origEntity.getExternalIdentifiers());

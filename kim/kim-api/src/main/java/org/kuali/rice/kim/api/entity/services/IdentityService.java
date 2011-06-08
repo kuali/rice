@@ -26,7 +26,6 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
-import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
@@ -168,7 +167,7 @@ public interface IdentityService {
 	/**
 	 * Gets the citizenship status for the given citizenship status code.
 	 */
-	public CitizenshipStatusInfo getCitizenshipStatus( @WebParam(name="code") String code );
+	public Type getCitizenshipStatus( @WebParam(name="code") String code );
 	
     /**
      * Gets the email type for the given email type code.

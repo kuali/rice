@@ -19,6 +19,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
+
 /**
  * Declares a common interface for all {@link BusinessObject} classes which can have their
  * state persisted.  A business object which is persistable defines some additional methods
@@ -56,16 +59,7 @@ import java.util.UUID;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface PersistableBusinessObject extends BusinessObject {
-
-    /**
-     * Returns the version number of this instance of the business object.
-     * This is generally used by the framework for optimistic locking
-     * purposes.
-     * 
-     * @return the version number of the business object
-     */
-    public Long getVersionNumber();
+public interface PersistableBusinessObject extends BusinessObject, Versioned, GloballyUnique {
 
     /**
      * Sets the business object's version number.  It is rarely advisable
@@ -77,12 +71,7 @@ public interface PersistableBusinessObject extends BusinessObject {
     public void setVersionNumber(Long versionNumber);
     
     /**
-     * @return objectID, the unique identifier for the object 
-     */
-    public String getObjectId();
-
-    /**
-     * Sets the unique identifer for the object
+     * Sets the unique identifier for the object
      * 
      * @param objectId
      */

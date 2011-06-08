@@ -49,7 +49,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class KimAttributeData implements KimAttributeDataContract, ModelObjectComplete {
+public final class KimAttributeData implements KimAttributeDataContract, ModelObjectComplete {
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
 
@@ -89,7 +89,7 @@ public class KimAttributeData implements KimAttributeDataContract, ModelObjectCo
         this.objectId = null;
     }
 
-    public KimAttributeData(Builder builder) {
+    private KimAttributeData(Builder builder) {
         this.id = builder.getId();
         this.assignedToId = builder.getAssignedToId();
         this.kimTypeId = builder.getKimTypeId();
@@ -157,7 +157,7 @@ public class KimAttributeData implements KimAttributeDataContract, ModelObjectCo
         return ToStringBuilder.reflectionToString(this);
     }
 
-        public static class Builder implements KimAttributeDataContract, ModelBuilder, Serializable {
+    public static final class Builder implements KimAttributeDataContract, ModelBuilder, Serializable {
         private String id;
         private String assignedToId;
         private String kimTypeId;

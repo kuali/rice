@@ -28,7 +28,7 @@
       <docHandler>${application.url}/travelDocument2.do?methodToCall=docHandler</docHandler>
       <active>true</active>
       <routingVersion>2</routingVersion>
-      <serviceNamespace>TRAVEL</serviceNamespace>
+      <applicationId>TRAVEL</applicationId>
       <routePaths>
         <routePath>
           <start name="PreRoute" nextNode="DestinationApproval" />

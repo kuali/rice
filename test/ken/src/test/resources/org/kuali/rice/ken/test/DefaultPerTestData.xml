@@ -10,9 +10,6 @@
         <label>Notification Action List Attribute</label>
         <description>Notification Action List Attribute</description>
         <type>ActionListAttribute</type>
-        <!--
-        <serviceNamespace>KEN</serviceNamespace>
-         -->
       </ruleAttribute>
       <ruleAttribute>
            <name>NotificationChannelSearchableAttribute</name>
@@ -130,9 +127,6 @@
             <label>Notification  Action List Attribute</label>
             <description>Notification Action List Attribute</description>
             <type>ActionListAttribute</type>
-            <!--
-            <serviceNamespace>KEN</serviceNamespace>
-            -->
         </ruleAttribute>
         <ruleAttribute>
             <name>ChannelReviewerRoleAttribute</name>
@@ -140,9 +134,6 @@
             <label>Channel Reviewer Role Attribute</label>
             <description>Channel Reviewer Role Attribute</description>
             <type>RuleAttribute</type>
-            <!--
-            <serviceNamespace>KEN</serviceNamespace>
-            -->
         </ruleAttribute>
     </ruleAttributes>
 
@@ -170,9 +161,6 @@
           <name>KualiNotification</name>
           <description>This is the re-usable notification document type that will be used for delivering all notifications with KEW.</description>
           <label>Notification</label>
-          <!--
-          <serviceNamespace>KEN</serviceNamespace>
-          -->
           <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationPostProcessor</postProcessorName>
           <superUserGroupName namespace="KR-WKFLW">NotificationAdmin</superUserGroupName>
           <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -222,9 +210,6 @@
             <name>SendNotificationRequest</name>
             <description>Create a New Notification Request</description>
             <label>Send Notification Request</label>
-            <!--
-            <serviceNamespace>KEN</serviceNamespace>
-            -->
             <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationSenderFormPostProcessor</postProcessorName>
             <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
             <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>

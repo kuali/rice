@@ -31,7 +31,7 @@
             <docSearchHelpURL>_nothing</docSearchHelpURL>
 			<notificationFromAddress>_nothing</notificationFromAddress>
 			<emailStylesheet>_nothing</emailStylesheet>
-			<serviceNamespace>KEW</serviceNamespace>
+			<applicationId>KEW</applicationId>
 			<active>true</active>
 			<policies>
 				<policy>

@@ -28,7 +28,7 @@
             <label>   Unit111   
 
 </label>
-			<serviceNamespace>    NSTrimSearchableTest</serviceNamespace>
+			<applicationId>    NSTrimSearchableTest</applicationId>
             <type>SearchableXmlAttribute  </type>
             <searchingConfig>
                 <fieldDef name="unit" title="Unit">

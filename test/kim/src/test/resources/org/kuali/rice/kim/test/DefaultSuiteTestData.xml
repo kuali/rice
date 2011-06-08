@@ -215,7 +215,7 @@
 			<docHandler>_blank</docHandler>
 			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
 			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
-			<serviceNamespace>KEW</serviceNamespace>
+			<applicationId>KEW</applicationId>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
@@ -255,7 +255,7 @@
 			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
 			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<!-- This is set to KEWNEW for the RouteQueueTest.testGetNextDocumentsWithserviceNamespace() -->
-			<serviceNamespace>KEWNEW</serviceNamespace>
+			<applicationId>KEWNEW</applicationId>
 		</documentType>
 		<documentType>
 			<name>TestDocumentType3</name>

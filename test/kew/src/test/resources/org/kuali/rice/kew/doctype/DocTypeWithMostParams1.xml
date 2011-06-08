@@ -31,7 +31,7 @@
             <docSearchHelpURL>_blank</docSearchHelpURL>
 			<notificationFromAddress>_blank</notificationFromAddress>
 			<emailStylesheet>_blank</emailStylesheet>
-			<serviceNamespace>TestCl1</serviceNamespace>
+			<applicationId>TestCl1</applicationId>
 			<active>false</active>
 			<policies>
 				<policy>

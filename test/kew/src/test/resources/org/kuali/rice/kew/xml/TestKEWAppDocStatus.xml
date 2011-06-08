@@ -21,7 +21,7 @@
             <className>edu.sampleu.travel.workflow.DestinationRuleAttribute</className>
             <label>Department of Prudence Routing</label>
             <description>Department of Prudence Routing</description>
-            <serviceNamespace>TRAVEL</serviceNamespace>
+            <applicationId>TRAVEL</applicationId>
             <type>RuleAttribute</type>
         </ruleAttribute>
         <ruleAttribute>
@@ -29,7 +29,7 @@
             <className>edu.sampleu.travel.workflow.EmployeeAttribute</className>
             <label>Employee Routing</label>
             <description>Employee Routing</description>
-            <serviceNamespace>TRAVEL</serviceNamespace>
+            <applicationId>TRAVEL</applicationId>
             <type>RuleAttribute</type>
         </ruleAttribute>
         <ruleAttribute>
@@ -37,7 +37,7 @@
             <className>edu.sampleu.travel.workflow.AccountAttribute</className>
             <label>Account Routing</label>
             <description>Account Routing</description>
-            <serviceNamespace>TRAVEL</serviceNamespace>
+            <applicationId>TRAVEL</applicationId>
             <type>RuleAttribute</type>
         </ruleAttribute>
  	</ruleAttributes>

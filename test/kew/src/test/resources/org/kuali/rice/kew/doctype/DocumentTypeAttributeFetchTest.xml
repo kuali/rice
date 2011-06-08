@@ -22,7 +22,7 @@
 			<label>Client1AlwaysRouteAttribute</label>
 			<description>Client1AlwaysRouteAttribute</description>
 			<type>RuleAttribute</type>
-			<serviceNamespace>TestCl1</serviceNamespace>
+			<applicationId>TestCl1</applicationId>
 		</ruleAttribute>
 	    <ruleAttribute>
 	      <name>ActionListAttribute</name>
@@ -30,7 +30,7 @@
 	      <label>ActionListAttribute</label>
 	      <description>ActionListAttribute</description>
 	      <type>ActionListAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>DocumentSearchGeneratorAttribute</name>
@@ -38,7 +38,7 @@
 	      <label>DocumentSearchGeneratorAttribute</label>
 	      <description>DocumentSearchGeneratorAttribute</description>
 	      <type>DocumentSearchGeneratorAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>NoteAttribute</name>
@@ -46,7 +46,7 @@
 	      <label>NoteAttribute</label>
 	      <description>NoteAttribute</description>
 	      <type>NoteAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>EmailAttribute</name>
@@ -54,7 +54,7 @@
 	      <label>EmailAttribute</label>
 	      <description>EmailAttribute</description>
 	      <type>EmailAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>SearchAttribute</name>
@@ -62,7 +62,7 @@
 	      <label>SearchAttribute</label>
 	      <description>SearchAttribute</description>
 	      <type>SearchableAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>SearchAttribute2</name>
@@ -70,7 +70,7 @@
 	      <label>SearchAttribute2</label>
 	      <description>SearchAttribute2</description>
 	      <type>SearchableAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <!-- attribute with no M.E. -->
 		<ruleAttribute>
@@ -93,7 +93,7 @@
 	      <label>DocumentSearchGeneratorAttribute</label>
 	      <description>DocumentSearchGeneratorAttribute</description>
 	      <type>DocumentSearchGeneratorAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>NoteAttributeNoME</name>
@@ -155,7 +155,7 @@
 			<name>AttributeTestDocumentNoME</name>
 			<description>AttributeTestDocumentNoME</description>
 			<label>AttributeTestDocumentNoME</label>
-			<serviceNamespace>TestCl1</serviceNamespace>
+			<applicationId>TestCl1</applicationId>
 			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
 			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<docHandler>_blank</docHandler>
@@ -211,7 +211,7 @@
 			<name>AttributeTestDocument</name>
 			<description>AttributeTestDocument</description>
 			<label>AttributeTestDocument</label>
-			<serviceNamespace>KEW</serviceNamespace>
+			<applicationId>KEW</applicationId>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<docHandler>_blank</docHandler>

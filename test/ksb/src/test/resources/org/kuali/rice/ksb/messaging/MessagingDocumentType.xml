@@ -9,7 +9,7 @@ test that the remoting of component functionality is working properly -->
 			<label>Client1AlwaysRouteAttribute</label>
 			<description>Client1AlwaysRouteAttribute</description>
 			<type>RuleAttribute</type>
-			<serviceNamespace>TestCl1</serviceNamespace>
+			<applicationId>TestCl1</applicationId>
 		</ruleAttribute>
 	    <ruleAttribute>
 	      <name>ActionListAttribute</name>
@@ -17,7 +17,7 @@ test that the remoting of component functionality is working properly -->
 	      <label>ActionListAttribute</label>
 	      <description>ActionListAttribute</description>
 	      <type>ActionListAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>NoteAttribute</name>
@@ -25,7 +25,7 @@ test that the remoting of component functionality is working properly -->
 	      <label>NoteAttribute</label>
 	      <description>NoteAttribute</description>
 	      <type>NoteAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>EmailAttribute</name>
@@ -33,7 +33,7 @@ test that the remoting of component functionality is working properly -->
 	      <label>EmailAttribute</label>
 	      <description>EmailAttribute</description>
 	      <type>EmailAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>SearchAttribute</name>
@@ -41,7 +41,7 @@ test that the remoting of component functionality is working properly -->
 	      <label>SearchAttribute</label>
 	      <description>SearchAttribute</description>
 	      <type>SearchableAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	    <ruleAttribute>
 	      <name>SearchAttribute2</name>
@@ -49,7 +49,7 @@ test that the remoting of component functionality is working properly -->
 	      <label>SearchAttribute2</label>
 	      <description>SearchAttribute2</description>
 	      <type>SearchableAttribute</type>
-	      <serviceNamespace>TestCl1</serviceNamespace>
+	      <applicationId>TestCl1</applicationId>
 	    </ruleAttribute>
 	</ruleAttributes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
@@ -73,7 +73,7 @@ test that the remoting of component functionality is working properly -->
 			<name>RemoteTestDocumentType</name>
 			<description>RemoteTestDocumentType</description>
 			<label>RemoteTestDocumentType</label>
-			<serviceNamespace>TestCl1</serviceNamespace>
+			<applicationId>TestCl1</applicationId>
 			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
 			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<docHandler>_blank</docHandler>
@@ -109,7 +109,7 @@ test that the remoting of component functionality is working properly -->
 			<name>ExceptionRemoteTestDocumentType</name>
 			<description>ExceptionRemoteTestDocumentType</description>
 			<label>ExceptionRemoteTestDocumentType</label>
-			<serviceNamespace>TestCl1</serviceNamespace>
+			<applicationId>TestCl1</applicationId>
 			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
 			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<docHandler>_blank</docHandler>
@@ -140,7 +140,7 @@ test that the remoting of component functionality is working properly -->
 			<name>AlwaysRouteAttributeTestDocument</name>
 			<description>AlwaysRouteAttributeTestDocument</description>
 			<label>AlwaysRouteAttributeTestDocument</label>
-			<serviceNamespace>TestCl1</serviceNamespace>
+			<applicationId>TestCl1</applicationId>
 			<postProcessorName>org.kuali.rice.kew.test.services.remotedcomponents.TestClient1PostProcessor</postProcessorName>
 			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<docHandler>_blank</docHandler>

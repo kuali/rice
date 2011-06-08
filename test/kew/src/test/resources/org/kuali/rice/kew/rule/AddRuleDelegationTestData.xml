@@ -133,7 +133,7 @@
             <docHandler>_blank</docHandler>
             <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
             <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
-            <serviceNamespace>KEW</serviceNamespace>
+            <applicationId>KEW</applicationId>
             <policies>
                <policy>
                     <name>DEFAULT_APPROVE</name>

@@ -49,8 +49,8 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     	contextQualifiers.put("namespace", contextSelectionCriteria.getNamespaceCode());
     	contextQualifiers.put("name", contextSelectionCriteria.getName());
     	for(Entry<String,String> attributeEntry : attributesById.entrySet()) {
-			contextQualifiers.put("attributes.attributeDefinitionId", attributeEntry.getKey());
-			contextQualifiers.put("attributes.value", attributeEntry.getValue());
+			contextQualifiers.put("attributeBos.attributeDefinitionId", attributeEntry.getKey());
+			contextQualifiers.put("attributeBos.value", attributeEntry.getValue());
 		}    	
     	
     	List<ContextBo> resultBos = (List<ContextBo>) getBusinessObjectService().findMatching(ContextBo.class, contextQualifiers);

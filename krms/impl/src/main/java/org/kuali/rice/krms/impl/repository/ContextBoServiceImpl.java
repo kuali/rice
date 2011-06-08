@@ -20,15 +20,24 @@ package org.kuali.rice.krms.impl.repository;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 
 import java.util.*;
 
+/**
+ * This is the interface for accessing KRMS repository Context related
+ * business objects. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public final class ContextBoServiceImpl implements ContextBoService {
 
     private BusinessObjectService businessObjectService;
 
 	/**
-	 * This overridden method ...
+	 * This method will create a {@link ContextDefintion} as described
+	 * by the parameter passed in.
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#createContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
 	 */
@@ -47,7 +56,7 @@ public final class ContextBoServiceImpl implements ContextBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This method updates an existing Context in the repository.
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#updateContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
 	 */
@@ -56,6 +65,8 @@ public final class ContextBoServiceImpl implements ContextBoService {
 		if (context == null){
 	        throw new IllegalArgumentException("context is null");
 		}
+
+		// must already exist to be able to update
 		final String contextIdKey = context.getId();
 		final ContextBo existing = businessObjectService.findBySinglePrimaryKey(ContextBo.class, contextIdKey);
         if (existing == null) {
@@ -63,6 +74,7 @@ public final class ContextBoServiceImpl implements ContextBoService {
         }
         final ContextDefinition toUpdate;
         if (!existing.getId().equals(context.getId())){
+			// if passed in id does not match existing id, correct it
         	final ContextDefinition.Builder builder = ContextDefinition.Builder.create(context);
         	builder.setId(existing.getId());
         	toUpdate = builder.build();
@@ -70,6 +82,15 @@ public final class ContextBoServiceImpl implements ContextBoService {
         	toUpdate = context;
         }
         
+		// copy all updateable fields to bo
+		ContextBo boToUpdate = ContextBo.from(toUpdate);
+
+		// delete any old, existing attributes
+		Map<String,String> fields = new HashMap<String,String>(1);
+		fields.put(KRMSPropertyConstants.Context.CONTEXT_ID, toUpdate.getId());
+		businessObjectService.deleteMatching(ContextAttributeBo.class, fields);
+        
+		// update the rule and create new attributes
         businessObjectService.save(ContextBo.from(toUpdate));
 	}
 

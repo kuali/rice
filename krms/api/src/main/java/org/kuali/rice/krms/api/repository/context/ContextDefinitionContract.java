@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -64,5 +65,13 @@ public interface ContextDefinitionContract extends Versioned, Identifiable {
 	 * @return the set of agendas on the context definition
 	 */
 	Set<? extends AgendaDefinitionContract> getAgendas();
+
+	/**
+	 * This method returns a list of attributes associated with the 
+	 * a context.
+	 * 
+	 * @return a list of AgendaAttribute objects.
+	 */
+	public Map<String, String> getAttributes();
 	
 }

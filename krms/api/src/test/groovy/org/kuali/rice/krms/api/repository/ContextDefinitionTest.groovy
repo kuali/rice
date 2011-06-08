@@ -50,6 +50,7 @@ class ContextDefinitionTest {
     <ns2:name>KRMS_TEST</ns2:name>
     <ns2:typeId>1234XYZ</ns2:typeId>
     <ns2:agendas/>
+    <ns2:attributes/>
 </ns2:context> """
 
 	private static final String SMALL_CONTEXT_2 = """
@@ -59,6 +60,7 @@ class ContextDefinitionTest {
     <blah:name>KRMS_TEST</blah:name>
     <blah:typeId>1234XYZ</blah:typeId>
     <blah:agendas/>
+    <blah:attributes/>
 </blah:context> """
 
 	private static final String SMALL_CONTEXT_NO_NAMESPACE = """
@@ -68,6 +70,7 @@ class ContextDefinitionTest {
     <name>KRMS_TEST</name>
     <typeId>1234XYZ</typeId>
     <agendas/>
+    <attributes/>
 </context> """
 
 	private static final String FULL_CONTEXT = """
@@ -78,6 +81,8 @@ class ContextDefinitionTest {
 			<typeId>1234XYZ</typeId>
 			<agendas>
     		</agendas>
+			<attributes>
+			</attributes>
 		</context>	"""
 
 

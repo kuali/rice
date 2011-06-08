@@ -22,6 +22,8 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition.Builder;
 
 /**
  * Concrete model object implementation of KRMS Repository Agenda 
@@ -256,6 +258,16 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 			this.attributes = Collections.unmodifiableMap(attributes);
 		}
 		
+		/**
+         * Sets the version number for the style that will be returned by this
+         * builder.
+         * 
+         * <p>In general, this value should not be manually set on the builder,
+         * but rather copied from an existing {@link ContextDefinitionContract} when
+         * invoking {@link Builder#create(ContextDefinitionContract)}.
+         * 
+         * @param versionNumber the version number to set
+         */
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }

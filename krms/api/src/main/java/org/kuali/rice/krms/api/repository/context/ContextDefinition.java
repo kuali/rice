@@ -3,7 +3,9 @@ package org.kuali.rice.krms.api.repository.context;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,6 +15,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -21,6 +24,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
@@ -44,6 +48,7 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 		ContextDefinition.Elements.NAME,
 		ContextDefinition.Elements.TYPE_ID,
 		ContextDefinition.Elements.AGENDAS,
+		ContextDefinition.Elements.ATTRIBUTES,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
@@ -67,6 +72,10 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 	@XmlElement(name = Elements.AGENDA, required = false)
 	private final Set<AgendaDefinition> agendas;
 	    
+	@XmlElement(name = Elements.ATTRIBUTES, required = false)
+	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+	private final Map<String, String> attributes;
+	
 	@XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 	
@@ -84,6 +93,7 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
     	this.typeId = null;
     	this.agendas = null;
     	this.versionNumber = null;
+    	this.attributes = null;
     }
     
     private ContextDefinition(Builder builder) {
@@ -93,6 +103,11 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
     	this.typeId = builder.getTypeId();
     	this.agendas = constructAgendas(builder.getAgendas());
     	this.versionNumber = builder.getVersionNumber();
+        if (builder.getAttributes() != null){
+        	this.attributes = Collections.unmodifiableMap(new HashMap<String, String>(builder.getAttributes()));
+        } else {
+        	this.attributes = null;
+        }
     }
     
     private static Set<AgendaDefinition> constructAgendas(Set<AgendaDefinition.Builder> agendaBuilders) {
@@ -131,6 +146,11 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 	}
 	
 	@Override
+	public Map<String, String> getAttributes() {
+		return this.attributes; 
+	}
+
+	@Override
 	public Long getVersionNumber() {
 		return versionNumber;
 	}
@@ -152,12 +172,14 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
         private String name;
         private String typeId;
         private Set<AgendaDefinition.Builder> agendas;
+        private Map<String, String> attributes;
         private Long versionNumber;
         
         private Builder(String namespace, String name) {
         	setNamespace(namespace);
         	setName(name);
         	setAgendas(new HashSet<AgendaDefinition.Builder>());
+            setAttributes(new HashMap<String, String>());
         }
         
         /**
@@ -195,6 +217,9 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
         	builder.setTypeId(contract.getTypeId());
         	builder.setVersionNumber(contract.getVersionNumber());
         	builder.setAgendas(contract.getAgendas());
+            if (contract.getAttributes() != null) {
+                builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
+            }
         	return builder;
         }
         
@@ -231,6 +256,11 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 		@Override
 		public Set<AgendaDefinition.Builder> getAgendas() {
 			return agendas;
+		}
+
+		@Override
+		public Map<String, String> getAttributes() {
+			return attributes;
 		}
 
 		/**
@@ -300,6 +330,13 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 			}
 		}
 
+		public void setAttributes(Map<String, String> attributes){
+			if (attributes == null){
+				this.attributes = Collections.emptyMap();
+			}
+			this.attributes = Collections.unmodifiableMap(attributes);
+		}
+		
 		/**
          * Sets the version number for the style that will be returned by this
          * builder.
@@ -351,6 +388,7 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
         final static String TYPE_ID = "typeId";
         final static String AGENDA = "agenda";
         final static String AGENDAS = "agendas";
+		final static String ATTRIBUTES = "attributes";
     }
 		
 	

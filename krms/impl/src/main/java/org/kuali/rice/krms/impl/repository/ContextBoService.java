@@ -16,6 +16,8 @@
 package org.kuali.rice.krms.impl.repository;
 
 
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 
 /**
@@ -25,13 +27,50 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinition;
  *
  */
 public interface ContextBoService {
+
+    /**
+     * This will create a {@link ContextDefinition} exactly like the parameter passed in.
+     *
+     * @param context  The Context to create
+     * @throws IllegalArgumentException if the context is null
+     * @throws IllegalStateException if the context already exists in the system
+     */
 	public ContextDefinition createContext(ContextDefinition context);
+
+    /**
+     * This will update an existing {@link ContextDefinition}.
+     *
+     * @param context  The Context to update
+     * @throws IllegalArgumentException if the Context is null
+     * @throws IllegalStateException if the Context does not exists in the system
+     */	
 	public void updateContext(ContextDefinition context);
 	
 //	public void createContextAttribute(ContextAttribute contextAttribute);
 //	public void updateContextAttribute(ContextAttribute contextAttribute);
 	
+    /**
+     * Retrieves an Context from the repository based on the given context id.
+     *
+     * @param contextId the id of the Context to retrieve
+     * @return an {@link ContextDefinition} identified by the given contextId.  
+     * A null reference is returned if an invalid or non-existent id is supplied.
+     * @throws IllegalArgumentException if the contextId is null or blank.
+     */
 	public ContextDefinition getContextByContextId( String contextId );
+	
+    /**
+     * Retrieves an Context from the repository based on the provided context name
+     * and namespace.
+     *
+     * @param name the name of the Context to retrieve.
+     * @param namespace the namespace that the context is under.
+     * @return an {@link ContextDefinition} identified by the given name and namespace.  
+     * A null reference is returned if an invalid or non-existent name and
+     * namespace combination is supplied.
+     * @throws IllegalArgumentException if the either the name or the namespace
+     * is null or blank.
+     */
 	public ContextDefinition getContextByNameAndNamespace( String name, String namespace );
 	
 	/**

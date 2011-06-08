@@ -56,7 +56,7 @@ public interface ActionDefinitionContract extends Identifiable, Versioned {
 	
 	/**
 	 * This method returns a set of attributes associated with the 
-	 * Action
+	 * Action.  The attributes are represented as name/value pairs.
 	 * 
 	 * @return a set of ActionAttribute objects.
 	 */

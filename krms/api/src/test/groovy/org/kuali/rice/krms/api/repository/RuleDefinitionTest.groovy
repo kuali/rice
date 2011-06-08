@@ -91,6 +91,7 @@ class RuleDefinitionTest {
         			</parameter>
         		</parameters>
     		</proposition>
+       		<attributes></attributes>
 		</rule>	"""
 
 	private static final String FULL_RULE = """
@@ -105,8 +106,6 @@ class RuleDefinitionTest {
 				<action></action>
 			</actions>
 			<attributes>
-				<attribute></attribute>
-				<attribute></attribute>
 			</attributes>
 		</rule>		"""
 

@@ -18,10 +18,8 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.action.ActionDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.rule.RuleAttribute;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 
 import java.util.*;
 
@@ -30,7 +28,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	private BusinessObjectService businessObjectService;
 
 	/**
-	 * This overridden method ...
+	 * This overridden creates a KRMS Rule in the repository
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRule(org.kuali.rice.krms.api.repository.rule.RuleDefinition)
 	 */
@@ -51,7 +49,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden updates an existing Rule in the Repository
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRule(org.kuali.rice.krms.api.repository.rule.RuleDefinition)
 	 */
@@ -60,6 +58,8 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		if (rule == null){
 			throw new IllegalArgumentException("rule is null");
 		}
+
+		// must already exist to be able to update
 		final String ruleIdKey = rule.getId();
 		final RuleBo existing = businessObjectService.findBySinglePrimaryKey(RuleBo.class, ruleIdKey);
 		if (existing == null) {
@@ -67,20 +67,28 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		}
 		final RuleDefinition toUpdate;
 		if (!existing.getId().equals(rule.getId())){
+			// if passed in id does not match existing id, correct it
 			final RuleDefinition.Builder builder = RuleDefinition.Builder.create(rule);
 			builder.setId(existing.getId());
 			toUpdate = builder.build();
 		} else {
 			toUpdate = rule;
 		}
+	     
+		// copy all updateable fields to bo
 		RuleBo boToUpdate = RuleBo.from(toUpdate);
-		boToUpdate.setVersionNumber(existing.getVersionNumber());
 
+		// delete any old, existing attributes
+		Map<String,String> fields = new HashMap<String,String>(1);
+		fields.put(KRMSPropertyConstants.Rule.RULE_ID, toUpdate.getId());
+		businessObjectService.deleteMatching(RuleAttributeBo.class, fields);
+        
+		// update the rule and create new attributes
 		businessObjectService.save(boToUpdate);
 	}
 
 	/**
-	 * This overridden method ...
+	 * This method retrieves a rule from the repository given the rule id.
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#getRuleByRuleId(java.lang.String)
 	 */
@@ -94,7 +102,8 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	}
 
 	/**
-	 * This overridden method ...
+	 * This method retrieves a rule from the repository given the name of the rule
+	 * and namespace.
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#getRuleByRuleId(java.lang.String)
 	 */
@@ -115,63 +124,63 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		return RuleBo.to(myRule);
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRuleAttribute(org.kuali.rice.krms.api.repository.rule.RuleAttribute)
-	 */
-	@Override
-	public void createRuleAttribute(RuleAttribute attribute) {
-		if (attribute == null){
-			throw new IllegalArgumentException("rule attribute is null");
-		}
-		final String attrIdKey = attribute.getId();
-		final RuleAttribute existing = getRuleAttributeById(attrIdKey);
-		if (existing != null){
-			throw new IllegalStateException("the rule attribute to create already exists: " + attribute);			
-		}
-
-		businessObjectService.save(RuleAttributeBo.from(attribute));		
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRuleAttribute(org.kuali.rice.krms.api.repository.rule.RuleAttribute)
-	 */
-	@Override
-	public void updateRuleAttribute(RuleAttribute attribute) {
-		if (attribute == null){
-			throw new IllegalArgumentException("rule attribute is null");
-		}
-		final String attrIdKey = attribute.getId();
-		final RuleAttribute existing = getRuleAttributeById(attrIdKey);
-		if (existing == null) {
-			throw new IllegalStateException("the rule attribute does not exist: " + attribute);
-		}
-		final RuleAttribute toUpdate;
-		if (!existing.getId().equals(attribute.getRuleId())){
-			final RuleAttribute.Builder builder = RuleAttribute.Builder.create(attribute);
-			builder.setId(existing.getId());
-			toUpdate = builder.build();
-		} else {
-			toUpdate = attribute;
-		}
-
-		businessObjectService.save(RuleAttributeBo.from(toUpdate));
-	}
-
+//	/**
+//	 * This overridden method ...
+//	 * 
+//	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRuleAttribute(org.kuali.rice.krms.api.repository.rule.RuleAttribute)
+//	 */
+//	@Override
+//	public void createRuleAttribute(RuleAttribute attribute) {
+//		if (attribute == null){
+//			throw new IllegalArgumentException("rule attribute is null");
+//		}
+//		final String attrIdKey = attribute.getId();
+//		final RuleAttribute existing = getRuleAttributeById(attrIdKey);
+//		if (existing != null){
+//			throw new IllegalStateException("the rule attribute to create already exists: " + attribute);			
+//		}
+//
+//		businessObjectService.save(RuleAttributeBo.from(attribute));		
+//	}
+//
+//	/**
+//	 * This overridden method ...
+//	 * 
+//	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRuleAttribute(org.kuali.rice.krms.api.repository.rule.RuleAttribute)
+//	 */
+//	@Override
+//	public void updateRuleAttribute(RuleAttribute attribute) {
+//		if (attribute == null){
+//			throw new IllegalArgumentException("rule attribute is null");
+//		}
+//		final String attrIdKey = attribute.getId();
+//		final RuleAttribute existing = getRuleAttributeById(attrIdKey);
+//		if (existing == null) {
+//			throw new IllegalStateException("the rule attribute does not exist: " + attribute);
+//		}
+//		final RuleAttribute toUpdate;
+//		if (!existing.getId().equals(attribute.getRuleId())){
+//			final RuleAttribute.Builder builder = RuleAttribute.Builder.create(attribute);
+//			builder.setId(existing.getId());
+//			toUpdate = builder.build();
+//		} else {
+//			toUpdate = attribute;
+//		}
+//
+//		businessObjectService.save(RuleAttributeBo.from(toUpdate));
+//	}
+//
 	/**
 	 * This method ...
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#getRuleAttributeById(java.lang.String)
 	 */
-	public RuleAttribute getRuleAttributeById(String attrId) {
+	public RuleAttributeBo getRuleAttributeById(String attrId) {
 		if (StringUtils.isBlank(attrId)){
 			return null;			
 		}
 		RuleAttributeBo bo = businessObjectService.findBySinglePrimaryKey(RuleAttributeBo.class, attrId);
-		return RuleAttributeBo.to(bo);
+		return bo;
 	}
 
 	/**

@@ -31,4 +31,9 @@ public final class KRMSPropertyConstants {
 		public static final String ID = "id";
 		public static final String AGENDA_ID ="agendaId";
 	}
+	
+	public static final class Rule {
+		public static final String RULE_ID ="ruleId";
+	}
+
 }

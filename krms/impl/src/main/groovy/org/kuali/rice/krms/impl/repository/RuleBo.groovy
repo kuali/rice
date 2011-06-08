@@ -1,9 +1,10 @@
 package org.kuali.rice.krms.impl.repository
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.action.ActionDefinition;
-import org.kuali.rice.krms.api.repository.rule.RuleAttribute;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinitionContract;
 
@@ -18,8 +19,20 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 
 	def PropositionBo proposition
 	def List<ActionBo> actions	
-	def Set<RuleAttributeBo> attributes
+	def Set<RuleAttributeBo> attributeBos
     //def List<PropositionBo> allChildPropositions
+	
+   public PropositionBo getProposition(){
+	   return proposition
+   }
+   
+	public Map<String, String> getAttributes() {
+		HashMap<String, String> attributes = new HashMap<String, String>();
+		for (attr in attributeBos) {
+			attributes.put( attr.attributeDefinition.name, attr.value )
+		}
+		return attributes;
+	}
 	
 	/**
 	* Converts a mutable bo to it's immutable counterpart
@@ -46,20 +59,31 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	   bo.typeId = im.typeId
 	   bo.propId = im.propId
 	   bo.proposition = PropositionBo.from(im.proposition)
-	   bo.attributes = new HashSet<RuleAttributeBo>()
-	   for (attr in im.attributes){
-		   bo.attributes.add ( RuleAttributeBo.from(attr) )
-	   }
+	   bo.versionNumber = im.versionNumber
+	   
 	   bo.actions = new ArrayList<ActionBo>()
 	   for (action in im.actions){
 		   bo.actions.add( ActionBo.from(action) )
 	   }
-	   bo.versionNumber = im.versionNumber
+
+	   // build the set of agenda attribute BOs
+	   Set<RuleAttributeBo> attrs = new HashSet<RuleAttributeBo>();
+
+	   // for each converted pair, build an AgendaAttributeBo and add it to the set
+	   RuleAttributeBo attributeBo;
+	   for (Entry<String,String> entry  : im.getAttributes().entrySet()){
+		   KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator
+				   .getKrmsAttributeDefinitionService()
+				   .getKrmsAttributeBo(entry.getKey(), im.getNamespace());
+		   attributeBo = new ActionAttributeBo();
+		   attributeBo.setActionId( im.getId() );
+		   attributeBo.setAttributeDefinitionId( attrDefBo.getId() );
+		   attributeBo.setValue( entry.getValue() );
+		   attributeBo.setAttributeDefinition( attrDefBo );
+		   attrs.add( attributeBo );
+	   }
+	   bo.setAttributeBos(attrs);
+
 	   return bo
    }
- 
-   public PropositionBo getProposition(){
-	   return proposition
-   }
-   
 } 

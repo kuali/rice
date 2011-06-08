@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -24,6 +25,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
@@ -66,9 +68,9 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	@XmlElement(name = Elements.ACTION, required=false)
 	private List<ActionDefinition> actions;
 	
-	@XmlElementWrapper(name = Elements.ATTRIBUTES)
-	@XmlElement(name = Elements.ATTRIBUTE, required=false)
-	private Set<RuleAttribute> attributes;
+	@XmlElement(name = Elements.ATTRIBUTES, required = false)
+	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+	private final Map<String, String> attributes;
 	
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
@@ -120,12 +122,10 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         	}
             this.actions = Collections.unmodifiableList(actionList);
         }
-        Set<RuleAttribute> attributes = new HashSet<RuleAttribute>();
-        if (builder.getAttributes() != null){
-        	for (RuleAttribute.Builder b : builder.attributes){
-        		attributes.add(b.build());
-        	}
-            this.attributes = Collections.unmodifiableSet(attributes);
+        if (builder.attributes != null){
+        	this.attributes = Collections.unmodifiableMap(builder.getAttributes());
+        } else {
+        	this.attributes = null;
         }
         this.versionNumber = builder.getVersionNumber();
     }
@@ -166,7 +166,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	}
 		
 	@Override
-	public Set<RuleAttribute> getAttributes() {
+	public Map<String, String> getAttributes() {
 		return this.attributes; 
 	}
 
@@ -188,7 +188,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         private String propId;
         private PropositionDefinition.Builder proposition;
         private List<ActionDefinition.Builder> actions;
-        private Set<RuleAttribute.Builder> attributes;
+        private Map<String, String> attributes;
         private Long versionNumber;
 
 		/**
@@ -200,11 +200,13 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
             setNamespace(namespace);
             setTypeId(typeId);
             setPropId(propId);
+            setAttributes(new HashMap<String, String>());
         }
         
         public static Builder create(String ruleId, String name, String namespace, String typeId, String propId){
         	return new Builder(ruleId, name, namespace, typeId, propId);
         }
+        
         /**
          * Creates a builder by populating it with data from the given {@link RuleDefinitionContract}.
          * 
@@ -224,21 +226,15 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         		}
         	}
         	
-        	Set <RuleAttribute.Builder> attrBuilderList = new HashSet<RuleAttribute.Builder>();
-        	if (contract.getAttributes() != null){
-        		for (RuleAttributeContract attrContract : contract.getAttributes()){
-        			RuleAttribute.Builder myBuilder = RuleAttribute.Builder.create(attrContract);
-        			attrBuilderList.add(myBuilder);
-        		}
-        	}
-        	
             Builder builder =  new Builder(contract.getId(), contract.getName(),
             		contract.getNamespace(), contract.getTypeId(), contract.getPropId());
             if (contract.getProposition() != null) {
                 builder.setProposition(PropositionDefinition.Builder.create(contract.getProposition()));
             }
+        	if (contract.getAttributes() != null){
+                builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
+        	}
             builder.setActions(actionList);
-            builder.setAttributes(attrBuilderList);
             builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
@@ -298,12 +294,11 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 			this.actions = Collections.unmodifiableList(actions);
 		}
 		
-		public void setAttributes(Set<RuleAttribute.Builder> attributes){
+		public void setAttributes(Map<String, String> attributes){
 			if (attributes == null){
-				this.attributes = Collections.emptySet();
-				return;
+				this.attributes = Collections.emptyMap();
 			}
-			this.attributes = Collections.unmodifiableSet(attributes);
+			this.attributes = Collections.unmodifiableMap(attributes);
 		}
 		
         public void setVersionNumber(Long versionNumber){
@@ -345,7 +340,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 			return actions;
 		}
 		@Override
-		public Set<RuleAttribute.Builder> getAttributes() {
+		public Map<String, String> getAttributes() {
 			return attributes;
 		}
 
@@ -402,7 +397,6 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		final static String ACTIONS = "actions";
 		final static String ACTION = "action";
 		final static String ATTRIBUTES = "attributes";
-		final static String ATTRIBUTE = "attribute";
 	}
 
 }

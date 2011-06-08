@@ -1,6 +1,7 @@
 package org.kuali.rice.krms.api.repository.rule;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
@@ -62,11 +63,11 @@ public interface RuleDefinitionContract extends Identifiable, Versioned {
 	public List<? extends ActionDefinitionContract> getActions();
 
 	/**
-	 * This method returns a set of attributes associated with the 
-	 * Rule
+	 * This method returns a Map of attributes associated with the 
+	 * Rule. The attributes are represented as name/value pairs.
 	 * 
-	 * @return a set of RuleAttribute objects.
+	 * @return a Map<String,String> of RuleAttribute objects.
 	 */
-	public Set<? extends RuleAttributeContract> getAttributes();
+	public Map<String, String> getAttributes();
 	
 }

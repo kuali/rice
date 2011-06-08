@@ -4,15 +4,12 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -25,7 +22,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition.Elements;
 
 /**
  * Concrete model object implementation of KRMS Repository Action 
@@ -371,7 +367,6 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 		final static String TYPE_ID = "typeId";
 		final static String RULE_ID = "ruleId";
 		final static String SEQUENCE_NUMBER = "sequenceNumber";
-		final static String ATTRIBUTE = "attribute";
 		final static String ATTRIBUTES = "attributes";
 	}
 

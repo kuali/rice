@@ -286,6 +286,7 @@ class RuleBoServiceImplTest {
 	@Test
 	void test_updateRule_success() {
 		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_RULE_BO}
+		mockBusinessObjectService.demand.deleteMatching(1) { Class clazz, Map map -> }
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 		RuleBoService service = new RuleBoServiceImpl()

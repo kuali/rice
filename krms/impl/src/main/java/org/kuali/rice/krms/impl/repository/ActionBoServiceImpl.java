@@ -91,7 +91,7 @@ public final class ActionBoServiceImpl implements ActionBoService {
 		fields.put(KRMSPropertyConstants.Action.ACTION_ID, toUpdate.getId());
 		businessObjectService.deleteMatching(ActionAttributeBo.class, fields);
         
-		// update the new action and create new attributes
+		// update the action and create new attributes
         businessObjectService.save(boToUpdate);
 	}
 

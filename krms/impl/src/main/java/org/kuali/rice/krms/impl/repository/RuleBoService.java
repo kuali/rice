@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.rule.RuleAttribute;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 /**
@@ -35,11 +30,11 @@ public interface RuleBoService {
 	public RuleDefinition getRuleByRuleId(String ruleId);
 	public RuleDefinition getRuleByNameAndNamespace(String name, String namespace);
 	
-	public void createRuleAttribute(RuleAttribute ruleAttribute);
-	public void updateRuleAttribute(RuleAttribute ruleAttribute);
-	
-	public RuleAttribute getRuleAttributeById(String attrId);
+//	public void createRuleAttribute(RuleAttribute ruleAttribute);
+//	public void updateRuleAttribute(RuleAttribute ruleAttribute);
+//	
+//	public RuleAttribute getRuleAttributeById(String attrId);
 
-	public void setBusinessObjectService(final BusinessObjectService businessObjectService);
-	public List<RuleDefinition> convertListOfBosToImmutables(final Collection<RuleBo> ruleBos);
+//	public void setBusinessObjectService(final BusinessObjectService businessObjectService);
+//	public List<RuleDefinition> convertListOfBosToImmutables(final Collection<RuleBo> ruleBos);
 }

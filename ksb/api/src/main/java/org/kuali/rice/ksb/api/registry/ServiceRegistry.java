@@ -39,7 +39,7 @@ import org.kuali.rice.ksb.api.KsbApiConstants;
  * who the owner of a service is.  The first of these is the "application id"
  * which identifies the application which owns the service.  In terms of
  * Kuali Rice, an "application" is an abstract concept and consist of multiple
- * instances of an application which are essentially mirrors of each and
+ * instances of an application which are essentially mirrors of each other and
  * publish the same set of services.  Each of these individuals instances of
  * an application is identified by the "instance id" which is also available
  * from the {@code ServiceInfo}.

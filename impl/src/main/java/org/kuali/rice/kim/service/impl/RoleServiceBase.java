@@ -92,7 +92,6 @@ public class RoleServiceBase {
 	protected static final String DELEGATION_MEMBER_IMPL_LIST_CACHE_PREFIX = "KimDelegationMemberImpl-List-";
 	protected static final String DELEGATION_MEMBER_IMPL_LIST_BY_MBR_DLGN_CACHE_PREFIX = "KimDelegationMemberImpl-List-MemberAndDelegationId-";
 	protected static final String DELEGATION_MEMBER_IMPL_CACHE_GROUP = "KimDelegationMemberImpl";
-    private static final int DEFAULT_REFRESH_PERIOD_SECONDS = 3600;
 
 	private BusinessObjectService businessObjectService;
 	private LookupService lookupService;

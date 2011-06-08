@@ -63,7 +63,6 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 public class PermissionServiceImpl extends PermissionServiceBase implements PermissionService {
 	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
 
-    private static final int DEFAULT_REFRESH_PERIOD_SECONDS = 3600;
 	private RoleService roleService;
 	private KimPermissionDao permissionDao;
     private KimPermissionTypeService defaultPermissionTypeService;

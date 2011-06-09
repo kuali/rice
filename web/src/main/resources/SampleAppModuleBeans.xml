@@ -30,6 +30,10 @@
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountType.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountUseRate.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelRequestDocument.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/AttachmentSample.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/AttachmentSampleMaintenanceDocument.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/MultiAttachmentSample.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/MultiAttachmentSampleMaintenanceDocument.xml</value>
             </list>
         </property>
         <property name="databaseRepositoryFilePaths">

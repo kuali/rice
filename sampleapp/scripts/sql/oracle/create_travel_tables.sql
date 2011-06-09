@@ -212,3 +212,46 @@ PRIMARY KEY (DOC_HDR_ID,ACCT_NUM)
 /
 
 
+# -----------------------------------------------------------------------------
+# -- TRV_ATTACH_SAMPLE_T
+# -----------------------------------------------------------------------------
+DECLARE temp NUMBER;
+BEGIN
+	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TRV_SAMPLE_ATTACH_T';
+	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TRV_SAMPLE_ATTACH_T CASCADE CONSTRAINTS PURGE'; END IF;
+END;
+/
+CREATE TABLE TRV_SAMPLE_ATTACH_T (ATTACHMENT_ID VARCHAR2(30),
+                              DESCRIPTION VARCHAR2(4000),
+                              ATTACHMENT_FILENAME VARCHAR2(300),
+                              ATTACHMENT_FILE_CONTENT_TYPE VARCHAR2(255),
+                              ATTACHMENT_FILE BLOB,
+                              OBJ_ID VARCHAR2(36) not null,
+                              VER_NBR NUMBER(8) default 1 NOT NULL)
+/
+ALTER TABLE TRV_SAMPLE_ATTACH_T
+    ADD CONSTRAINT TRV_SAMPLE_ATTACH_P1
+PRIMARY KEY (ATTACHMENT_ID)
+/
+# -----------------------------------------------------------------------------
+# -- TRV_MULTI_ATTACH_SAMPLE_T
+# -----------------------------------------------------------------------------
+DECLARE temp NUMBER;
+BEGIN
+	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TRV_MULTI_ATTACH_SAMPLE_T';
+	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TRV_MULTI_ATTACH_SAMPLE_T CASCADE CONSTRAINTS PURGE'; END IF;
+END;
+/
+CREATE TABLE TRV_MULTI_ATTACH_SAMPLE_T (GEN_ID NUMBER(14) not null,
+                              ATTACHMENT_ID VARCHAR2(30),
+                              DESCRIPTION VARCHAR2(4000),
+                              ATTACHMENT_FILENAME VARCHAR2(300),
+                              ATTACHMENT_FILE_CONTENT_TYPE VARCHAR2(255),
+                              ATTACHMENT_FILE BLOB,
+                              OBJ_ID VARCHAR2(36) not null,
+                              VER_NBR NUMBER(8) default 1 NOT NULL)
+/
+ALTER TABLE TRV_MULTI_ATTACH_SAMPLE_T
+    ADD CONSTRAINT TRV_MULTI_ATTACH_SAMPLE_P1
+PRIMARY KEY (GEN_ID)
+/

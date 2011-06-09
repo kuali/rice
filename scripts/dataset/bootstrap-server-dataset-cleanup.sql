@@ -285,7 +285,10 @@ drop table TRV_ACCT_USE_RT_T
 /
 drop sequence trv_fo_id_s
 /
-
+drop table trv_attach_sample_t
+/
+drop table trv_multi_attach_sample_t
+/
 
 
 drop table kr_kim_test_bo

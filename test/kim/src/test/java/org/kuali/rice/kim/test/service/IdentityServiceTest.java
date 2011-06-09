@@ -18,10 +18,11 @@ package org.kuali.rice.kim.test.service;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.bo.entity.dto.*;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
@@ -87,14 +88,14 @@ public class IdentityServiceTest extends KIMTestCase {
 	
 	@Test
 	public void testGetPrincipal() {
-		KimPrincipal principal = identityService.getPrincipal("KULUSER");
+		Principal principal = identityService.getPrincipal("KULUSER");
 		assertNotNull("principal must not be null", principal);
 		assertEquals("Principal name did not match expected result","kuluser", principal.getPrincipalName());
 	}
 
 	@Test
 	public void testGetPrincipalByPrincipalName() {
-		KimPrincipal principal = identityService.getPrincipalByPrincipalName("kuluser");
+		Principal principal = identityService.getPrincipalByPrincipalName("kuluser");
 		assertNotNull("principal must not be null", principal);
 		assertEquals("Principal ID did not match expected result","KULUSER", principal.getPrincipalId());
 	}
@@ -106,7 +107,7 @@ public class IdentityServiceTest extends KIMTestCase {
 		assertNotNull("entity must not be null", info);
 		assertNotNull("entity principals must not be null", info.getPrincipals());
 		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
-		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+		for (Principal principalInfo : info.getPrincipals()) {
 			assertEquals("Wrong principal id", principalId, principalInfo.getPrincipalId());
 		}
 		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
@@ -119,7 +120,7 @@ public class IdentityServiceTest extends KIMTestCase {
 		assertNotNull("entity must not be null", info);
 		assertNotNull("entity principals must not be null", info.getPrincipals());
 		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
-		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+		for (Principal principalInfo : info.getPrincipals()) {
 			assertEquals("Wrong principal name", principalName, principalInfo.getPrincipalName());
 		}
 		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
@@ -132,7 +133,7 @@ public class IdentityServiceTest extends KIMTestCase {
 		assertNotNull("entity must not be null", info);
 		assertNotNull("entity principals must not be null", info.getPrincipals());
 		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
-		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+		for (Principal principalInfo : info.getPrincipals()) {
 			assertEquals("Wrong principal id", principalId, principalInfo.getPrincipalId());
 		}
 		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
@@ -146,7 +147,7 @@ public class IdentityServiceTest extends KIMTestCase {
 		assertNotNull("entity must not be null", info);
 		assertNotNull("entity principals must not be null", info.getPrincipals());
 		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
-		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+		for (Principal principalInfo : info.getPrincipals()) {
 			assertEquals("Wrong principal name", principalName, principalInfo.getPrincipalName());
 		}
 		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
@@ -155,7 +156,7 @@ public class IdentityServiceTest extends KIMTestCase {
 
 	@Test
 	public void testGetContainedAttributes() {
-		KimPrincipal principal = identityService.getPrincipal("p1");
+		Principal principal = identityService.getPrincipal("p1");
 		
 		KimEntityDefaultInfo entity = identityService.getEntityDefaultInfo( principal.getEntityId() );
 		assertNotNull( "Entity Must not be null", entity );

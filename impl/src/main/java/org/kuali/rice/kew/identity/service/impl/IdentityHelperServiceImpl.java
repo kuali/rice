@@ -29,10 +29,11 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 /**
  *
@@ -47,7 +48,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		if (principalName == null) {
 			throw new IllegalArgumentException("Can't lookup a principal ID for a null principal name.");
 		}
-		KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		if (principal == null) {
 			throw new RiceRuntimeException("Given principal name of '" + principalName + "' was invalid.  Failed to lookup a corresponding principal ID.");
 		}
@@ -69,20 +70,20 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 
 
 	public Recipient getPrincipalRecipient(String principalId) {
-		KimPrincipal principal = getPrincipal(principalId);
+		Principal principal = getPrincipal(principalId);
 		return new KimPrincipalRecipient(principal);
 	}
 
-	public KimPrincipal getPrincipal(String principalId) {
-		KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+	public Principal getPrincipal(String principalId) {
+		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
 		if (principal == null) {
 			throw new RiceRuntimeException("Could not locate a principal with the given principalId of " + principalId);
 		}
 		return principal;
 	}
 
-	public KimPrincipal getPrincipalByPrincipalName(String principalName) {
-		KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+	public Principal getPrincipalByPrincipalName(String principalName) {
+		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		if (principal == null) {
 			throw new RiceRuntimeException("Could not locate a principal with the given principalName of " + principalName);
 		}
@@ -141,7 +142,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		throw new IllegalArgumentException("Invalid GroupId type was passed: " + groupId);
 	}
 
-	public KimPrincipal getPrincipal(UserId userId) {
+	public Principal getPrincipal(UserId userId) {
 		if (userId == null) {
 			return null;
 		} else if (userId instanceof WorkflowUserId) {
@@ -158,7 +159,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
 	}
 	
-	public KimPrincipal getSystemPrincipal() {
+	public Principal getSystemPrincipal() {
 		return getPrincipalByPrincipalName(KEWConstants.SYSTEM_USER);
 	}
 

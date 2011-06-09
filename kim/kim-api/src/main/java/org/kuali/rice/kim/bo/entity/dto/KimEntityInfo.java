@@ -18,6 +18,8 @@ package org.kuali.rice.kim.bo.entity.dto;
 import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenship;
 import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.entity.personal.EntityBioDemographics;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.entity.type.EntityTypeData;
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
@@ -29,7 +31,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.entity.KimEntityResidency;
 import org.kuali.rice.kim.bo.entity.KimEntityVisa;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     private List<EntityTypeData> entityTypes;
     private List<KimEntityExternalIdentifierInfo> externalIdentifiers;
     private List<KimEntityNameInfo> names;
-    private List<KimPrincipalInfo> principals;
+    private List<Principal> principals;
     private EntityPrivacyPreferences privacyPreferences;
     private List<KimEntityEthnicityInfo> ethnicities;
     private List<KimEntityResidencyInfo> residencies;
@@ -83,11 +85,10 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
             // See comments by utility method deriveCollection for why this is used.  
             // Essentially, the constructor was too darned long.
 
-            principals = deriveCollection(entity.getPrincipals(), new XForm<KimPrincipal, KimPrincipalInfo>() {
-                public KimPrincipalInfo xform(KimPrincipal source) {
-                    return new KimPrincipalInfo(source);
-                }
-            });
+            principals = new ArrayList<Principal>();
+            for (PrincipalContract contract : entity.getPrincipals()) {
+                principals.add(Principal.Builder.create(contract).build());
+            }
 
             if (entity.getBioDemographics() != null) {
                 bioDemographics = EntityBioDemographics.Builder.create(entity.getBioDemographics()).build();
@@ -347,16 +348,16 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getPrincipals()
      */
-    public List<KimPrincipalInfo> getPrincipals() {
+    public List<Principal> getPrincipals() {
         // If our reference is null, assign and return an empty List
-        return (principals != null) ? principals : (principals = new ArrayList<KimPrincipalInfo>());
+        return (principals != null) ? principals : (principals = new ArrayList<Principal>());
     }
 
     /** 
      * Setter for this {@link KimEntityInfo}'s principals.  Note the behavior of 
      * {@link #getPrincipals()} if this is set to null;
      */
-    public void setPrincipals(List<KimPrincipalInfo> principals) {
+    public void setPrincipals(List<Principal> principals) {
         this.principals = principals;
     }
 

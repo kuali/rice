@@ -27,8 +27,8 @@ import org.kuali.rice.kim.api.entity.email.EntityEmail;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
+import org.kuali.rice.kim.impl.entity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
@@ -180,7 +180,7 @@ public class UserXmlParser {
 		return entity;
     }
     
-    protected KimPrincipalImpl constructPrincipal(Element userElement, String entityId) {
+    protected PrincipalBo constructPrincipal(Element userElement, String entityId) {
     	String principalId = userElement.getChildTextTrim(WORKFLOW_ID_ELEMENT, NAMESPACE);
     	if (principalId == null) {
     		principalId = userElement.getChildTextTrim(PRINCIPAL_ID_ELEMENT, NAMESPACE);
@@ -190,12 +190,12 @@ public class UserXmlParser {
     		principalName = userElement.getChildTextTrim(PRINCIPAL_NAME_ELEMENT, NAMESPACE);
     	}
     	
-		KimPrincipalImpl principal = new KimPrincipalImpl();
+		PrincipalBo principal = new PrincipalBo();
 		principal.setActive(true);
 		principal.setPrincipalId(principalId);
 		principal.setPrincipalName(principalName);
 		principal.setEntityId(entityId);
-		principal = (KimPrincipalImpl) KNSServiceLocator.getBusinessObjectService().save(principal);
+		principal = (PrincipalBo) KNSServiceLocator.getBusinessObjectService().save(principal);
 		
 		return principal;
     }

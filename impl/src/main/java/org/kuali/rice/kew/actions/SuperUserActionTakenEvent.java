@@ -25,7 +25,8 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +46,11 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
     private ActionRequestValue actionRequest;
     public static String AUTHORIZATION = "general.routing.superuser.notAuthorized";
 
-    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(actionTakenCode, routeHeader, principal);
     }
 
-    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, boolean runPostProcessor) {
+    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor) {
         super(actionTakenCode, routeHeader, principal, annotation, runPostProcessor);
     }
 

@@ -22,7 +22,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @param rh RouteHeader for the document upon which the action is taken.
      * @param principal User taking the action.
      */
-    public LogDocumentActionAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+    public LogDocumentActionAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, principal);
     }
 
@@ -49,7 +49,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @param principal User taking the action.
      * @param annotation User comment on the action taken
      */
-    public LogDocumentActionAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
+    public LogDocumentActionAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
         super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, principal, annotation);
     }
 

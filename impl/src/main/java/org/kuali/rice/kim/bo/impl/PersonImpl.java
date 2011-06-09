@@ -19,11 +19,12 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.entity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.entity.email.EntityEmailContract;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.api.entity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
@@ -109,11 +110,11 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	public PersonImpl() {}
 	
-	public PersonImpl( KimPrincipal principal, String personEntityTypeCode ) {
+	public PersonImpl( Principal principal, String personEntityTypeCode ) {
 		this( principal, null, personEntityTypeCode );
 	}
 
-	public PersonImpl( KimPrincipal principal, KimEntityDefaultInfo entity, String personEntityTypeCode ) {
+	public PersonImpl( Principal principal, KimEntityDefaultInfo entity, String personEntityTypeCode ) {
 		setPrincipal( principal, entity, personEntityTypeCode );
 	}
 	
@@ -140,7 +141,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * Sets the principal object and populates the person object from that. 
 	 */
-	public void setPrincipal(KimPrincipal principal, KimEntityDefaultInfo entity, String personEntityTypeCode) {
+	public void setPrincipal(Principal principal, KimEntityDefaultInfo entity, String personEntityTypeCode) {
 		populatePrincipalInfo( principal );
 		if ( entity == null ) {
 			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
@@ -149,14 +150,14 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 
 	
-	protected void populatePrincipalInfo( KimPrincipal principal ) {
+	protected void populatePrincipalInfo( Principal principal ) {
 		entityId = principal.getEntityId();
 		principalId = principal.getPrincipalId();
 		principalName = principal.getPrincipalName();
 		active = principal.isActive();
 	}
 	
-	protected void populateEntityInfo( KimEntityDefaultInfo entity, KimPrincipal principal, String personEntityTypeCode ) {
+	protected void populateEntityInfo( KimEntityDefaultInfo entity, Principal principal, String personEntityTypeCode ) {
 		if(entity!=null){
 		    populatePrivacyInfo (entity );
 			EntityTypeDataDefault entityTypeDataDefault = entity.getEntityType( personEntityTypeCode );
@@ -171,7 +172,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateNameInfo( String entityTypeCode, KimEntityDefaultInfo entity, KimPrincipal principal ) {
+	protected void populateNameInfo( String entityTypeCode, KimEntityDefaultInfo entity, Principal principal ) {
 		if(entity!=null){
 			KimEntityName entityName = entity.getDefaultName();
 			if ( entityName != null ) {

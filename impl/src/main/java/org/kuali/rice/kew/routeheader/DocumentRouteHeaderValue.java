@@ -52,7 +52,8 @@ import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -237,7 +238,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
     public DocumentRouteHeaderValue() {
     }
 
-    public KimPrincipal getInitiatorPrincipal() {
+    public Principal getInitiatorPrincipal() {
     	// if we are running a simulation, there will be no initiator
     	if (getInitiatorWorkflowId() == null) {
     		return null;
@@ -245,7 +246,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
     	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getInitiatorWorkflowId());
     }
     
-    public KimPrincipal getRoutedByPrincipal()
+    public Principal getRoutedByPrincipal()
     {
     	if (getRoutedByUserWorkflowId() == null) {
     		return null;

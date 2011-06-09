@@ -29,7 +29,8 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +57,12 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SuperUserActionRequestApproveEvent.class);
     private Long actionRequestId;
 
-    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, principal);
         this.superUserAction = KEWConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
     }
 
-    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, Long actionRequestId, String annotation, boolean runPostProcessor) {
+    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, Long actionRequestId, String annotation, boolean runPostProcessor) {
         super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, principal, annotation, runPostProcessor);
         this.superUserAction = KEWConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
         this.actionRequestId = actionRequestId;

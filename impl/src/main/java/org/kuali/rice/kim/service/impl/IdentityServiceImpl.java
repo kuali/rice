@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.entity.Type;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
@@ -30,10 +30,8 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
@@ -52,6 +50,7 @@ import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo;
 import org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo;
 import org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo;
+import org.kuali.rice.kim.impl.entity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.service.IdentityUpdateService;
@@ -153,14 +152,15 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
-	public KimPrincipalInfo getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
+	public Principal getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
 		 Map<String,Object> criteria = new HashMap<String,Object>(3);
          criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
          criteria.put(KIMPropertyConstants.Principal.PASSWORD, password);
          criteria.put(KIMPropertyConstants.Principal.ACTIVE, true);
-         Collection<KimPrincipalImpl> principals = (Collection<KimPrincipalImpl>)getBusinessObjectService().findMatching(KimPrincipalImpl.class, criteria);
+         Collection<PrincipalBo> principals = getBusinessObjectService().findMatching(PrincipalBo.class, criteria);
+
          if (!principals.isEmpty()) {
-             return new KimPrincipalInfo( principals.iterator().next() );
+             return PrincipalBo.to(principals.iterator().next());
          }
          return null;
 	}
@@ -221,10 +221,10 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		KimEntityDefaultInfo info = new KimEntityDefaultInfo();
 		info.setEntityId( entity.getEntityId() );
 		info.setActive( entity.isActive() );
-		ArrayList<KimPrincipalInfo> principalInfo = new ArrayList<KimPrincipalInfo>( entity.getPrincipals().size() );
+		ArrayList<Principal> principalInfo = new ArrayList<Principal>( entity.getPrincipals().size() );
 		info.setPrincipals( principalInfo );
-		for ( KimPrincipalImpl p : entity.getPrincipals() ) {
-			principalInfo.add( new KimPrincipalInfo( p ) );
+		for ( PrincipalBo p : entity.getPrincipals() ) {
+			principalInfo.add( PrincipalBo.to(p) );
 		}
 		EntityPrivacyPreferences privacy = null;
 		if ( ObjectUtils.isNotNull( entity.getPrivacyPreferences() ) ) {
@@ -268,18 +268,18 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	/**
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getPrincipal(java.lang.String)
 	 */
-	public KimPrincipalInfo getPrincipal(String principalId) {
-		KimPrincipalImpl principal = getPrincipalImpl( principalId );
+	public Principal getPrincipal(String principalId) {
+		PrincipalBo principal = getPrincipalImpl( principalId );
 		if ( principal == null ) {
 			return null;
 		}
-		return new KimPrincipalInfo( principal );
+		return PrincipalBo.to(principal);
 	}
 	
-	public KimPrincipalImpl getPrincipalImpl(String principalId) {
+	private PrincipalBo getPrincipalImpl(String principalId) {
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
-		return (KimPrincipalImpl)getBusinessObjectService().findByPrimaryKey(KimPrincipalImpl.class, criteria);
+		return getBusinessObjectService().findByPrimaryKey(PrincipalBo.class, criteria);
 	}
 
 	public KimEntityImpl getEntityImpl(String entityId) {
@@ -330,15 +330,15 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getPrincipalByPrincipalName(java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
-	public KimPrincipalInfo getPrincipalByPrincipalName(String principalName) {
+	public Principal getPrincipalByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank(principalName) ) {
 			return null;
 		}
 		Map<String,Object> criteria = new HashMap<String,Object>(1);
         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName.toLowerCase());
-        Collection<KimPrincipalImpl> principals = (Collection<KimPrincipalImpl>)getBusinessObjectService().findMatching(KimPrincipalImpl.class, criteria);
+        Collection<PrincipalBo> principals = getBusinessObjectService().findMatching(PrincipalBo.class, criteria);
         if (!principals.isEmpty() && principals.size() == 1) {
-            return new KimPrincipalInfo( principals.iterator().next() );
+            return PrincipalBo.to(principals.iterator().next());
         }
         return null;
     }
@@ -370,7 +370,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		if ( StringUtils.isBlank( principalId ) ) {
 			return null;
 		}
-		KimPrincipalImpl principal = getPrincipalImpl(principalId);		
+		PrincipalBo principal = getPrincipalImpl(principalId);
 		return principal != null ? principal.getEntityId() : null;
     }
 
@@ -381,7 +381,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		if ( StringUtils.isBlank( principalName ) ) {
 			return null;
 		}
-		KimPrincipalInfo principal = getPrincipalByPrincipalName(principalName);		
+		Principal principal = getPrincipalByPrincipalName(principalName);
 		return principal != null ? principal.getEntityId() : null;
     }
 	
@@ -392,7 +392,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		if ( StringUtils.isBlank( principalName ) ) {
 			return null;
 		}
-		KimPrincipalInfo principal = getPrincipalByPrincipalName( principalName );
+		Principal principal = getPrincipalByPrincipalName( principalName );
 		return principal != null ? principal.getPrincipalId() : null;
 	}
 	
@@ -429,7 +429,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 			
 			Map<String,String> criteria = new HashMap<String,String>();
 			criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_ID, s);
-			KimPrincipalImpl principal = (KimPrincipalImpl) getBusinessObjectService().findByPrimaryKey(KimPrincipalImpl.class, criteria);
+			PrincipalBo principal = (PrincipalBo) getBusinessObjectService().findByPrimaryKey(PrincipalBo.class, criteria);
 			
 			if (null != principal) {
 				namePrincipal.setPrincipalName(principal.getPrincipalName());

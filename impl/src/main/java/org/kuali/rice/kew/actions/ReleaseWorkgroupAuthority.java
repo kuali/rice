@@ -23,8 +23,9 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 
 /**
@@ -40,7 +41,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @param routeHeader
      * @param principal
      */
-    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, principal);
     }
 
@@ -50,7 +51,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
      * @param annotation
      * @param groupId
      */
-    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String groupId) {
+    public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String groupId) {
         super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, principal, annotation);
         this.groupId = groupId;
     }

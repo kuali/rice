@@ -23,8 +23,9 @@ import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 import java.util.List;
 
@@ -48,11 +49,11 @@ public class AdHocAction extends ActionTakenEvent {
 	private String annotation;
 	private String requestLabel;
 
-    public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public AdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(NO_ACTION_TAKEN_CODE, routeHeader, principal);
     }
 
-	public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean forceAction, String requestLabel) {
+	public AdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean forceAction, String requestLabel) {
 		super(NO_ACTION_TAKEN_CODE, routeHeader, principal, annotation);
 		this.actionRequested = actionRequested;
 		this.nodeName = nodeName;

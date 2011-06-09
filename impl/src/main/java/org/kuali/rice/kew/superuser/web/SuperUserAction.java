@@ -45,8 +45,9 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.AppSpecificRouteRecipient;
 import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.exception.ValidationException;
@@ -390,7 +391,7 @@ public class SuperUserAction extends KewKualiAction {
         }
         else {
         	if (KEWConstants.PERSON.equals(recipient.getType())) {
-        		KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
+        		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
         		if (principal == null) {
         			LOG.error("App Specific user recipient not found");
         			GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient.id", "appspecificroute.user.invalid");

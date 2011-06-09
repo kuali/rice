@@ -19,12 +19,12 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.entity.Type;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
@@ -65,10 +65,10 @@ public interface IdentityManagementService {
 	// IdentityService
 	// *******************************
 
-	KimPrincipalInfo getPrincipal(@WebParam(name = "principalId") String principalId);
-	KimPrincipalInfo getPrincipalByPrincipalName(@WebParam(name = "principalName") String principalName);
+	Principal getPrincipal(@WebParam(name = "principalId") String principalId);
+	Principal getPrincipalByPrincipalName(@WebParam(name = "principalName") String principalName);
 
-	KimPrincipalInfo getPrincipalByPrincipalNameAndPassword(
+	Principal getPrincipalByPrincipalNameAndPassword(
             @WebParam(name = "principalName") String principalName,
             @WebParam(name = "password") String password
     );

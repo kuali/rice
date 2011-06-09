@@ -20,9 +20,11 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupNameId;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 import java.util.List;
 
@@ -56,7 +58,7 @@ public final class RuleTestUtils {
     	
     	RuleResponsibility originalResp = responsibilities.get(0);
 
-    	KimPrincipal delegatePrincipal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(delegateUser);
+    	Principal delegatePrincipal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(delegateUser);
 
 		// save the new rule delegation
 		// this *SHOULD* requeue
@@ -104,7 +106,7 @@ public final class RuleTestUtils {
 	 * @param parentResponsibility
 	 * @param delegatePrincipal
 	 */
-	public static RuleDelegation createRuleDelegationToUser(RuleBaseValues parentRule, RuleResponsibility parentResponsibility, KimPrincipal delegatePrincipal) {
+	public static RuleDelegation createRuleDelegationToUser(RuleBaseValues parentRule, RuleResponsibility parentResponsibility, PrincipalContract delegatePrincipal) {
 		return createRuleDelegation(parentRule, parentResponsibility, delegatePrincipal.getPrincipalId(), KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 	}
 	

@@ -18,14 +18,25 @@ package org.kuali.rice.kim.bo.ui;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.util.AutoPopulatingList;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -195,8 +206,7 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 
 	protected void populateDerivedValues() {
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(getMemberTypeCode())){
-        	KimPrincipalInfo principalInfo = null;
-        	principalInfo = KimApiServiceLocator.getIdentityManagementService().getPrincipal(getMemberId());
+            Principal principalInfo = KimApiServiceLocator.getIdentityManagementService().getPrincipal(getMemberId());
         	if (principalInfo != null) {
         		setMemberName(principalInfo.getPrincipalName());
         	}        	        	

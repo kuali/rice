@@ -24,9 +24,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 
 public class ActionListCountServlet extends HttpServlet {
@@ -63,7 +64,7 @@ public class ActionListCountServlet extends HttpServlet {
 			} else if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType)) {
 				principalId = id;
 		    } else if ("authenticationId".equalsIgnoreCase(idType) || "a".equalsIgnoreCase(idType)) {
-		    	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(id);
+		    	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(id);
 		    	if (principal != null) {
 		    		principalId = principal.getPrincipalId();
 		    	}

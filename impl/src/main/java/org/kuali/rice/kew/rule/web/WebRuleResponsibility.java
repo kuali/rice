@@ -29,9 +29,10 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.util.KNSConstants;
 
 import java.lang.reflect.InvocationHandler;
@@ -117,7 +118,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 				// setReviewer(getUserService().getWorkflowUser(new
 				// WorkflowUserId(getRuleResponsibilityName())).getPrincipalName().getAuthenticationId());
-				KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(getRuleResponsibilityName());
+				Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(getRuleResponsibilityName());
 				setReviewer(principal.getPrincipalName());
 				setReviewerId(principal.getPrincipalId());
 			} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
@@ -299,7 +300,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			if (!invalidUser)
 			{
 				//chb: 10Jan2009: not using KEW IdentityHelperService b/c we want to deal w/ exception here
-				KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(getReviewer());
+				Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(getReviewer());
 				if( principal != null)
 				{
 					setRuleResponsibilityName(principal.getPrincipalId());

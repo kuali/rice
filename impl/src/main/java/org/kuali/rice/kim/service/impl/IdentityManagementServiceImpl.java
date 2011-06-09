@@ -23,6 +23,8 @@ import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.kim.api.entity.Type;
 import org.kuali.rice.kim.api.entity.TypeContract;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -33,10 +35,8 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
@@ -92,8 +92,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected Map<String,MaxAgeSoftReference<KimEntityDefaultInfo>> entityDefaultInfoCache;
 	protected Map<String,MaxAgeSoftReference<KimEntity>> entityCache;
 	protected Map<String,MaxAgeSoftReference<KimEntityInfo>> entityInfoCache;
-	protected Map<String,MaxAgeSoftReference<KimPrincipalInfo>> principalByIdCache;
-	protected Map<String,MaxAgeSoftReference<KimPrincipalInfo>> principalByNameCache;
+	protected Map<String,MaxAgeSoftReference<Principal>> principalByIdCache;
+	protected Map<String,MaxAgeSoftReference<Principal>> principalByNameCache;
 	protected Map<String,MaxAgeSoftReference<Group>> groupByIdCache;
 	protected Map<String,MaxAgeSoftReference<Group>> groupByNameCache;
 	protected Map<String,MaxAgeSoftReference<List<String>>> groupIdsForPrincipalCache;
@@ -114,8 +114,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		entityDefaultInfoCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimEntityDefaultInfo>>( entityPrincipalCacheMaxSize ) );
 		entityCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimEntity>>( entityPrincipalCacheMaxSize ) );
 		entityInfoCache = Collections.synchronizedMap( new MaxSizeMap<String, MaxAgeSoftReference<KimEntityInfo>>(entityPrincipalCacheMaxSize));
-		principalByIdCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimPrincipalInfo>>( entityPrincipalCacheMaxSize ) );
-		principalByNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimPrincipalInfo>>( entityPrincipalCacheMaxSize ) );
+		principalByIdCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Principal>>( entityPrincipalCacheMaxSize ) );
+		principalByNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Principal>>( entityPrincipalCacheMaxSize ) );
 		groupByIdCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Group>>( groupCacheMaxSize ) );
 		groupByNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Group>>( groupCacheMaxSize ) );
 		groupIdsForPrincipalCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize ) );
@@ -236,16 +236,16 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return null;
 	}
 
-	protected KimPrincipalInfo getPrincipalByIdCache( String principalId ) {
-		MaxAgeSoftReference<KimPrincipalInfo> principalRef = principalByIdCache.get( principalId );
+	protected Principal getPrincipalByIdCache( String principalId ) {
+		MaxAgeSoftReference<Principal> principalRef = principalByIdCache.get( principalId );
 		if ( principalRef != null ) {
 			return principalRef.get();
 		}
 		return null;
 	}
 
-	protected KimPrincipalInfo getPrincipalByNameCache( String principalName ) {
-		MaxAgeSoftReference<KimPrincipalInfo> principalRef = principalByNameCache.get( principalName );
+	protected Principal getPrincipalByNameCache( String principalName ) {
+		MaxAgeSoftReference<Principal> principalRef = principalByNameCache.get( principalName );
 		if ( principalRef != null ) {
 			return principalRef.get();
 		}
@@ -344,7 +344,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected void addEntityToCache( KimEntity entity ) {
 		if ( entity != null ) {
 			entityCache.put( "entityId="+entity.getEntityId(), new MaxAgeSoftReference<KimEntity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
-			for ( KimPrincipal p : entity.getPrincipals() ) {
+			for ( PrincipalContract p : entity.getPrincipals() ) {
 				entityCache.put( "principalId="+p.getPrincipalId(), new MaxAgeSoftReference<KimEntity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 				entityCache.put( "principalName="+p.getPrincipalName(), new MaxAgeSoftReference<KimEntity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 			}
@@ -354,7 +354,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected void addEntityDefaultInfoToCache( KimEntityDefaultInfo entity ) {
 		if ( entity != null ) {
 			entityDefaultInfoCache.put( "entityId="+entity.getEntityId(), new MaxAgeSoftReference<KimEntityDefaultInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
-			for ( KimPrincipal p : entity.getPrincipals() ) {
+			for ( PrincipalContract p : entity.getPrincipals() ) {
 				entityDefaultInfoCache.put( "principalId="+p.getPrincipalId(), new MaxAgeSoftReference<KimEntityDefaultInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 				entityDefaultInfoCache.put( "principalName="+p.getPrincipalName(), new MaxAgeSoftReference<KimEntityDefaultInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 			}
@@ -364,17 +364,17 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected void addEntityInfoToCache( KimEntityInfo entity ) {
 		if ( entity != null ) {
 			entityInfoCache.put( "entityId="+entity.getEntityId(), new MaxAgeSoftReference<KimEntityInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
-			for ( KimPrincipal p : entity.getPrincipals() ) {
+			for ( PrincipalContract p : entity.getPrincipals() ) {
 				entityInfoCache.put( "principalId="+p.getPrincipalId(), new MaxAgeSoftReference<KimEntityInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 				entityInfoCache.put( "principalName="+p.getPrincipalName(), new MaxAgeSoftReference<KimEntityInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 			}
 		}
 	}
 
-	protected void addPrincipalToCache( KimPrincipalInfo principal ) {
+	protected void addPrincipalToCache( Principal principal ) {
 		if ( principal != null ) {
-			principalByNameCache.put( principal.getPrincipalName(), new MaxAgeSoftReference<KimPrincipalInfo>( entityPrincipalCacheMaxAgeSeconds, principal ) );
-			principalByIdCache.put( principal.getPrincipalId(), new MaxAgeSoftReference<KimPrincipalInfo>( entityPrincipalCacheMaxAgeSeconds, principal ) );
+			principalByNameCache.put( principal.getPrincipalName(), new MaxAgeSoftReference<Principal>( entityPrincipalCacheMaxAgeSeconds, principal ) );
+			principalByIdCache.put( principal.getPrincipalId(), new MaxAgeSoftReference<Principal>( entityPrincipalCacheMaxAgeSeconds, principal ) );
 		}
 	}
 
@@ -795,8 +795,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
     // IDENTITY SERVICE
 
-	public KimPrincipalInfo getPrincipal(String principalId) {
-    	KimPrincipalInfo principal = getPrincipalByIdCache(principalId);
+	public Principal getPrincipal(String principalId) {
+    	Principal principal = getPrincipalByIdCache(principalId);
 		if (principal != null) {
 			return principal;
 		}
@@ -805,8 +805,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	return principal;
 	}
 
-    public KimPrincipalInfo getPrincipalByPrincipalName(String principalName) {
-    	KimPrincipalInfo principal = getPrincipalByNameCache(principalName);
+    public Principal getPrincipalByPrincipalName(String principalName) {
+    	Principal principal = getPrincipalByNameCache(principalName);
 		if (principal != null) {
 			return principal;
 		}
@@ -818,7 +818,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     /**
      * @see org.kuali.rice.kim.api.services.IdentityManagementService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
      */
-    public KimPrincipalInfo getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
+    public Principal getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
     	// TODO: cache this?
     	return getIdentityService().getPrincipalByPrincipalNameAndPassword( principalName, password );
     }
@@ -1132,7 +1132,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		sb.append( "Is AuthZ for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
 		sb.append( "             Principal:  " ).append( principalId );
 		if ( principalId != null ) {
-			KimPrincipalInfo principal = getPrincipal( principalId );
+			Principal principal = getPrincipal( principalId );
 			if ( principal != null ) {
 				sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
 			}
@@ -1163,7 +1163,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		sb.append( "Has Perm for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
 		sb.append( "             Principal:  " ).append( principalId );
 		if ( principalId != null ) {
-			KimPrincipalInfo principal = getPrincipal( principalId );
+			Principal principal = getPrincipal( principalId );
 			if ( principal != null ) {
 				sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
 			}

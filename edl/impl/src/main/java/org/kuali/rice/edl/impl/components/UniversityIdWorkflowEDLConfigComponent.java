@@ -18,8 +18,9 @@ package org.kuali.rice.edl.impl.components;
 
 import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -79,7 +80,7 @@ public class UniversityIdWorkflowEDLConfigComponent extends SimpleWorkflowEDLCon
 			//not blank validate as normal whether required or not
 			String employeeId = param.getParamValue();
 			
-			KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(employeeId);
+			Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(employeeId);
 			if (principal == null) {
 				return ("The value " + employeeId + " is an invalid University ID");
 			}

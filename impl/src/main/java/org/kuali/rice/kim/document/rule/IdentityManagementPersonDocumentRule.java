@@ -19,11 +19,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -37,6 +37,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAuthorizer;
+import org.kuali.rice.kim.impl.entity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPersonDelegationMemberEvent;
@@ -48,7 +49,6 @@ import org.kuali.rice.kim.rule.ui.AddRoleRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
-import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.RoleService;
@@ -159,7 +159,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	protected boolean validDuplicatePrincipalName(IdentityManagementPersonDocument personDoc){
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put("principalName", personDoc.getPrincipalName());
-    	List<KimPrincipalImpl> prncplImpls = (List<KimPrincipalImpl>)getBusinessObjectService().findMatching(KimPrincipalImpl.class, criteria);
+    	List<PrincipalBo> prncplImpls = (List<PrincipalBo>)getBusinessObjectService().findMatching(PrincipalBo.class, criteria);
     	boolean rulePassed = true;
     	if(prncplImpls!=null && prncplImpls.size()>0){
     		if(prncplImpls.size()==1 && prncplImpls.get(0).getPrincipalId().equals(personDoc.getPrincipalId()))
@@ -384,7 +384,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     }
 
     protected boolean doesPrincipalNameExist (String principalName, String principalId) {
-    	KimPrincipal principal = getIdentityService().getPrincipalByPrincipalName(principalName);
+    	Principal principal = getIdentityService().getPrincipalByPrincipalName(principalName);
     	if (principal != null && (StringUtils.isBlank(principalId) || !principal.getPrincipalId().equals(principalId))) {
         	GlobalVariables.getMessageMap().putError(KIMPropertyConstants.Person.PRINCIPAL_NAME,RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
 			return false;

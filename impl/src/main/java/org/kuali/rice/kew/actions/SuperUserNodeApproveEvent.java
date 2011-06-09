@@ -24,7 +24,8 @@ import org.kuali.rice.kew.exception.*;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,12 +44,12 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SuperUserNodeApproveEvent.class);
     private String nodeName;
 
-    public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, principal);
         this.superUserAction = KEWConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
     }
 
-    public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, boolean runPostProcessor, String nodeName) {
+    public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor, String nodeName) {
         super(KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, principal, annotation, runPostProcessor);
         this.superUserAction = KEWConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
         this.nodeName = nodeName;

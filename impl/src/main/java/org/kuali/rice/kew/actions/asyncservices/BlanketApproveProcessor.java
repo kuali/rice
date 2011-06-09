@@ -25,7 +25,8 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+
 
 
 /**
@@ -45,7 +46,7 @@ public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(actionTakenId);
-		KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+		Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
 		BlanketApproveAction blanketApprove = new BlanketApproveAction(document, principal, "", nodeNames);
 		LOG.debug("Doing blanket approve work document " + document.getDocumentId());
 		try {

@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -38,14 +37,13 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kim.api.common.delegate.Delegate;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -144,7 +142,7 @@ public class ActionRequestFactory {
 	}
 
 
-    public ActionRequestValue createNotificationRequest(String actionRequestCode, KimPrincipal principal, String reasonActionCode, KimPrincipal reasonActionUser, String responsibilityDesc) {
+    public ActionRequestValue createNotificationRequest(String actionRequestCode, PrincipalContract principal, String reasonActionCode, PrincipalContract reasonActionUser, String responsibilityDesc) {
     	ActionRequestValue request = createActionRequest(actionRequestCode, new KimPrincipalRecipient(principal), responsibilityDesc, Boolean.TRUE, null);
     	String annotation = generateNotificationAnnotation(reasonActionUser, actionRequestCode, reasonActionCode, request);
     	request.setAnnotation(annotation);
@@ -152,7 +150,7 @@ public class ActionRequestFactory {
     }
 
     //unify these 2 methods if possible
-    public List<ActionRequestValue> generateNotifications(List requests, KimPrincipal principal, Recipient delegator,
+    public List<ActionRequestValue> generateNotifications(List requests, PrincipalContract principal, Recipient delegator,
             String notificationRequestCode, String actionTakenCode)
     {
         String groupName =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE,
@@ -171,7 +169,7 @@ public class ActionRequestFactory {
     }
 
     private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest,
-            List requests, KimPrincipal principal, Recipient delegator, String notificationRequestCode,
+            List requests, PrincipalContract principal, Recipient delegator, String notificationRequestCode,
             String actionTakenCode, Group notifyExclusionWorkgroup)
     {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
@@ -217,7 +215,7 @@ public class ActionRequestFactory {
         return isMember;
     }
 
-    private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, KimPrincipal reasonPrincipal, String notificationRequestCode, String actionTakenCode) {
+    private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, PrincipalContract reasonPrincipal, String notificationRequestCode, String actionTakenCode) {
 
     	String annotation = generateNotificationAnnotation(reasonPrincipal, notificationRequestCode, actionTakenCode, actionRequest);
         ActionRequestValue request = createActionRequest(notificationRequestCode, actionRequest.getPriority(), actionRequest.getRecipient(), actionRequest.getResponsibilityDesc(), KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, Boolean.TRUE, annotation);
@@ -316,7 +314,7 @@ public class ActionRequestFactory {
                 }
                 if (recipientId instanceof UserId)
                 {
-                    KimPrincipal principal = getIdentityHelperService().getPrincipal((UserId) recipientId);
+                    Principal principal = getIdentityHelperService().getPrincipal((UserId) recipientId);
                     role.setTarget(new KimPrincipalRecipient(principal));
                 } else if (recipientId instanceof GroupId)
                 {
@@ -458,7 +456,7 @@ public class ActionRequestFactory {
     	annotation.append( " to " );
     	if (isPrincipal) {
     		annotation.append( "principal " );
-    		KimPrincipalInfo principal = getIdentityManagementService().getPrincipal( delegate.getMemberId() );
+    		Principal principal = getIdentityManagementService().getPrincipal( delegate.getMemberId() );
     		if ( principal != null ) {
     			annotation.append( principal.getPrincipalName() );
     		} else {
@@ -583,7 +581,7 @@ public class ActionRequestFactory {
 		return requestsToRemove;
 	}
 
-    private String generateNotificationAnnotation(KimPrincipal principal, String notificationRequestCode, String actionTakenCode, ActionRequestValue request) {
+    private String generateNotificationAnnotation(PrincipalContract principal, String notificationRequestCode, String actionTakenCode, ActionRequestValue request) {
     	String notification = "Action " + CodeTranslator.getActionRequestLabel(notificationRequestCode) + " generated by Workflow because " + principal.getPrincipalName() + " took action "
 				+ CodeTranslator.getActionTakenLabel(actionTakenCode);
     	if (request.getResponsibilityId() != null && request.getResponsibilityId() != 0) {

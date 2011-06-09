@@ -20,7 +20,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 
 /**
@@ -30,12 +31,12 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  */
 public class SuperUserCancelEvent extends SuperUserActionTakenEvent {
     
-    public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, principal);
         this.superUserAction = KEWConstants.SUPER_USER_CANCEL;
     }
 
-    public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, boolean runPostProcessor) {
+    public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor) {
         super(KEWConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, principal, annotation, runPostProcessor);
         this.superUserAction = KEWConstants.SUPER_USER_CANCEL;
     }

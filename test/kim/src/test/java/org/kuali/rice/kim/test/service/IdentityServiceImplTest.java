@@ -16,8 +16,9 @@
 package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
@@ -41,21 +42,21 @@ public class IdentityServiceImplTest extends KIMTestCase {
 
 	@Test
 	public void testGetPrincipal() {
-		KimPrincipal principal = identityService.getPrincipal("KULUSER");
+		Principal principal = identityService.getPrincipal("KULUSER");
 		assertNotNull("principal must not be null", principal);
 		assertEquals("Principal name did not match expected result","kuluser", principal.getPrincipalName());
 	}
 
 	@Test
 	public void testGetPrincipalByPrincipalName() {
-		KimPrincipal principal = identityService.getPrincipalByPrincipalName("kuluser");
+		Principal principal = identityService.getPrincipalByPrincipalName("kuluser");
 		assertNotNull("principal must not be null", principal);
 		assertEquals("Principal ID did not match expected result","KULUSER", principal.getPrincipalId());
 	}
 	
 	@Test
 	public void testGetContainedAttributes() {
-		KimPrincipal principal = identityService.getPrincipal("p1");
+		Principal principal = identityService.getPrincipal("p1");
 		
 		KimEntity entity = identityService.getEntityImpl( principal.getEntityId() );
 		assertNotNull( "Entity Must not be null", entity );

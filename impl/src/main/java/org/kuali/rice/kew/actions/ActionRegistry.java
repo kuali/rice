@@ -22,7 +22,8 @@ import java.util.Map;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 
 /**
@@ -68,5 +69,5 @@ public interface ActionRegistry {
      *
      * @throws ResourceUnavailableException if an action class cannot be constructed
      */
-    public ValidActions getValidActions(KimPrincipal principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException;
+    public ValidActions getValidActions(PrincipalContract principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException;
 }

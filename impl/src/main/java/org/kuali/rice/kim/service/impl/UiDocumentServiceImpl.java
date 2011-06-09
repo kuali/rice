@@ -22,13 +22,13 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
-import org.kuali.rice.kim.api.entity.Type;
 import org.kuali.rice.kim.api.entity.address.EntityAddress;
 import org.kuali.rice.kim.api.entity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.entity.email.EntityEmail;
 import org.kuali.rice.kim.api.entity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.entity.phone.EntityPhone;
 import org.kuali.rice.kim.api.entity.phone.EntityPhoneContract;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.api.entity.type.EntityTypeData;
@@ -44,17 +44,14 @@ import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -90,9 +87,9 @@ import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.impl.entity.address.EntityAddressBo;
-import org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo;
 import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo;
+import org.kuali.rice.kim.impl.entity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.impl.group.GroupAttributeBo;
@@ -331,7 +328,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @see org.kuali.rice.kim.service.UiDocumentService#loadEntityToPersonDoc(IdentityManagementPersonDocument, String)
 	 */
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId) {
-		KimPrincipalInfo principal = this.getIdentityService().getPrincipal(principalId);
+		Principal principal = this.getIdentityService().getPrincipal(principalId);
         if(principal==null)
         	throw new RuntimeException("Principal does not exist for principal id:"+principalId);
 
@@ -639,10 +636,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
     }
 
-	private KimPrincipalImpl getPrincipalImpl(String principalId) {
+	private PrincipalBo getPrincipalImpl(String principalId) {
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
-		return (KimPrincipalImpl)getBusinessObjectService().findByPrimaryKey(KimPrincipalImpl.class, criteria);
+		return (PrincipalBo)getBusinessObjectService().findByPrimaryKey(PrincipalBo.class, criteria);
 	}
 
 	public List<KimEntityEmploymentInformationInfo> getEntityEmploymentInformationInfo(String entityId) {
@@ -896,19 +893,19 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	}
 
-    protected boolean setupPrincipal(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<KimPrincipalImpl> origPrincipals) {
+    protected boolean setupPrincipal(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<PrincipalBo> origPrincipals) {
     	boolean inactivatingPrincipal = false;
-		List<KimPrincipalImpl> principals = new ArrayList<KimPrincipalImpl>();
-		KimPrincipalImpl principal = new KimPrincipalImpl();
+		List<PrincipalBo> principals = new ArrayList<PrincipalBo>();
+		Principal.Builder principal = Principal.Builder.create(identityManagementPersonDocument.getPrincipalName());
 		principal.setPrincipalId(identityManagementPersonDocument.getPrincipalId());
-		principal.setPrincipalName(identityManagementPersonDocument.getPrincipalName());
 		principal.setPassword(identityManagementPersonDocument.getPassword());
 		principal.setActive(identityManagementPersonDocument.isActive());
 		principal.setEntityId(identityManagementPersonDocument.getEntityId());
 		if(ObjectUtils.isNotNull(origPrincipals)){
-			for (KimPrincipalImpl prncpl : origPrincipals) {
+			for (PrincipalBo prncpl : origPrincipals) {
 				if (prncpl.getPrincipalId()!=null && StringUtils.equals(prncpl.getPrincipalId(), principal.getPrincipalId())) {
 					principal.setVersionNumber(prncpl.getVersionNumber());
+                    principal.setObjectId(prncpl.getObjectId());
 					// check if inactivating the principal
 					if ( prncpl.isActive() && !principal.isActive() ) {
 						inactivatingPrincipal = true;
@@ -916,7 +913,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				}
 			}
 		}
-		principals.add(principal);
+		principals.add(PrincipalBo.from(principal.build()));
 
 		kimEntity.setPrincipals(principals);
 		return inactivatingPrincipal;
@@ -1695,10 +1692,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         Class<? extends BusinessObject> roleMemberTypeClass = null;
         String roleMemberIdName = "";
     	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-        	roleMemberTypeClass = KimPrincipalImpl.class;
+        	roleMemberTypeClass = PrincipalBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
-        	KimPrincipalInfo  principalInfo = null;
-	 	 	principalInfo = getIdentityManagementService().getPrincipal(memberId);
+	 	 	Principal principalInfo = getIdentityManagementService().getPrincipal(memberId);
 	 	 	if (principalInfo != null) {
 	 	 		
 	 	 	}
@@ -1729,7 +1725,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
 			String fakeName = "";
-			KimPrincipal kp = KimApiServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+			Principal kp = KimApiServiceLocator.getIdentityManagementService().getPrincipal(memberId);
 			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
 				fakeName = kp.getPrincipalName();
 			}
@@ -1743,7 +1739,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
 	   	String memberFullName = "";
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-        	KimPrincipalInfo principalInfo = null;
+        	Principal principalInfo = null;
         	principalInfo = getIdentityManagementService().getPrincipal(memberId);
         	if (principalInfo != null) {
         		String principalName = principalInfo.getPrincipalName();
@@ -1787,7 +1783,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     public String getMemberIdByName(String memberTypeCode, String memberNamespaceCode, String memberName){
     	String memberId = "";
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-            KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName(memberName);
+            Principal principal = getIdentityManagementService().getPrincipalByPrincipalName(memberName);
             if(principal!=null)
             	memberId = principal.getPrincipalId();
        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
@@ -1803,7 +1799,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     public String getMemberName(String memberTypeCode, BusinessObject member){
     	String roleMemberName = "";
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-        	roleMemberName = ((KimPrincipalImpl)member).getPrincipalName();
+        	roleMemberName = ((PrincipalBo)member).getPrincipalName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	roleMemberName = ((GroupBo)member).getName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
@@ -2731,8 +2727,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	RoleMemberImpl roleMemberImpl = matchingRoleMembers.get(0);
     	documentRoleMember.setRoleMemberId(roleMemberImpl.getRoleMemberId());
     	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-    		KimPrincipalInfo principal = null;
-    		principal = getIdentityManagementService().getPrincipal(memberId);
+    		Principal principal = getIdentityManagementService().getPrincipal(memberId);
     		if (principal != null) {
     			documentRoleMember.setMemberId(principal.getPrincipalId());
         		documentRoleMember.setMemberName(principal.getPrincipalName());

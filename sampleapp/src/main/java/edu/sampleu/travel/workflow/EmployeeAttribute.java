@@ -35,8 +35,9 @@ import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -200,7 +201,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 			errors.add(new WorkflowServiceErrorImpl("userid is required", "uh.accountattribute.userid.required"));
 		}
 
-		KimPrincipal principal = null;
+		Principal principal = null;
 		if (!StringUtils.isBlank(userid)) {
 			principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(userid);
 		}

@@ -20,9 +20,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.services.IdentityArchiveService;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -225,14 +225,14 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 			private String getPrincipalIdsString(KimEntityDefaultInfo entity) {
 				String result = "";
 				if (entity != null) {
-					List<KimPrincipalInfo> principals = entity.getPrincipals();
+					List<Principal> principals = entity.getPrincipals();
 					if (principals != null) {
 						if (principals.size() == 1) { // one
 							result = principals.get(0).getPrincipalId();
 						} else { // multiple
 							String [] ids = new String [principals.size()];
 							int insertIndex = 0;
-							for (KimPrincipalInfo principal : principals) {
+							for (Principal principal : principals) {
 								ids[insertIndex++] = principal.getPrincipalId();
 							}
 							Arrays.sort(ids);

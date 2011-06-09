@@ -36,7 +36,8 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 
 /**
@@ -130,7 +131,7 @@ public class ActionRegistryImpl implements ActionRegistry {
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.actions.ActionValidationService#getValidActions(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue)
      */
-    public ValidActions getValidActions(KimPrincipal principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException {
+    public ValidActions getValidActions(PrincipalContract principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException {
         ValidActions validActions = new ValidActions();
         ArrayList<ActionRequestValue> activeRequests = new ArrayList<ActionRequestValue>();
         for ( ActionRequestValue ar : document.getActionRequests() ) {

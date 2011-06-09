@@ -74,8 +74,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWWebServiceConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -456,7 +457,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         	LOG.debug("Evaluating isUserInRouteLog [docId=" + documentId + ", principalId=" + principalId + ", lookFuture=" + lookFuture + "]");
         }
         DocumentRouteHeaderValue routeHeader = loadDocument(documentId);
-        KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+        Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
         List actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentIdWorkflowId(documentId, principal.getPrincipalId());
 
         if(routeHeader.getInitiatorWorkflowId().equals(principal.getPrincipalId())){
@@ -571,7 +572,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	return results.toArray(new String[]{});
     }
 
-    private boolean actionRequestListHasPrincipal(KimPrincipal principal, List actionRequests) throws WorkflowException {
+    private boolean actionRequestListHasPrincipal(Principal principal, List actionRequests) throws WorkflowException {
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
             if (actionRequest.isRecipientRoutedRequest(new KimPrincipalRecipient(principal))) {

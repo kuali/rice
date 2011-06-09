@@ -26,9 +26,10 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
@@ -146,7 +147,7 @@ public class DelegateRuleForm extends KualiForm {
 		if (getParentRule() != null) {
 			for (RuleResponsibility responsibility : getParentRule().getResponsibilities()) {
 				if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(responsibility.getRuleResponsibilityType())) {
-					KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(responsibility.getRuleResponsibilityName());
+					Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(responsibility.getRuleResponsibilityName());
 					if (principal != null) {
 					    reviewers.add(principal.getPrincipalName());
 					}

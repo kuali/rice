@@ -32,7 +32,8 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,12 +50,12 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 
 	private static final Logger LOG = Logger.getLogger(SuperUserApproveEvent.class);
 
-    public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, principal);
         this.superUserAction = KEWConstants.SUPER_USER_APPROVE;
     }
 
-    public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, boolean runPostProcessor) {
+    public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor) {
         super(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, principal, annotation, runPostProcessor);
         this.superUserAction = KEWConstants.SUPER_USER_APPROVE;
     }

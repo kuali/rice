@@ -16,12 +16,13 @@
  */
 package org.kuali.rice.kew.routeheader;
 
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.Person;
+
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 
 /**
@@ -38,13 +39,13 @@ public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHe
 	private static final long serialVersionUID = 8458532812557846684L;
 
     @Transient
-	private KimPrincipal actionListInitiatorPrincipal = null;
+	private PrincipalContract actionListInitiatorPrincipal = null;
 
-    public KimPrincipal getActionListInitiatorPrincipal() {
+    public PrincipalContract getActionListInitiatorPrincipal() {
         return actionListInitiatorPrincipal;
     }
 
-    public void setActionListInitiatorPrincipal(KimPrincipal actionListInitiatorPrincipal) {
+    public void setActionListInitiatorPrincipal(PrincipalContract actionListInitiatorPrincipal) {
         this.actionListInitiatorPrincipal = actionListInitiatorPrincipal;
     }
 

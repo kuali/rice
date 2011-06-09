@@ -19,8 +19,9 @@ package org.kuali.rice.kew.test.web;
 
 import javax.servlet.ServletContext;
 
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -49,7 +50,7 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
     }
 
     public void setUser(String user) {
-        KimPrincipal wfuser;
+        Principal wfuser;
         if (user == null) {
             wfuser = null;
         } else {
@@ -59,7 +60,7 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
     }
 
     public String getUser() {
-        KimPrincipal user = getWorkflowUser();
+        Principal user = getWorkflowUser();
         if (user == null) return null;
         return user.getPrincipalName();
     }
@@ -72,7 +73,7 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
         session.setBackdoorUser(backdoorId);
     }
 
-    public void setWorkflowUser(KimPrincipal user) {
+    public void setWorkflowUser(Principal user) {
         if (user == null) {
             setUserSession(null);
         } else {
@@ -80,7 +81,7 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
         }
     }
 
-    public KimPrincipal getWorkflowUser() {
+    public Principal getWorkflowUser() {
         UserSession session = getUserSession();
         if (session == null) return null;
         return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(session.getLoggedInUserPrincipalName());

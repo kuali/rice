@@ -25,12 +25,13 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.util.KimConstants;
 import org.xml.sax.SAXException;
 
@@ -265,7 +266,7 @@ public class GroupXmlParser {
             String elementName = member.getName().trim();
             if (elementName.equals(PRINCIPAL_NAME)) {
                 String principalName = member.getText().trim();
-                KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName(principalName);
+                Principal principal = identityManagementService.getPrincipalByPrincipalName(principalName);
                 if (principal != null) {
                     addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getName(), principal.getPrincipalId());
                 } else {
@@ -273,7 +274,7 @@ public class GroupXmlParser {
                 }
             } else if (elementName.equals(PRINCIPAL_ID)) {
                 String xmlPrincipalId = member.getText().trim();
-                KimPrincipal principal = identityManagementService.getPrincipal(xmlPrincipalId);
+                Principal principal = identityManagementService.getPrincipal(xmlPrincipalId);
                 if (principal != null) {
                     addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getName(), principal.getPrincipalId());
                 } else {

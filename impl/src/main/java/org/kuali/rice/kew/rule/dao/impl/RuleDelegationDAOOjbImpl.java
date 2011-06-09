@@ -36,8 +36,9 @@ import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
@@ -196,7 +197,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         }
         if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) && searchUserInWorkgroups)
         {
-            KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+            Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
 
             if (principal == null)
             {

@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -38,15 +34,20 @@ import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
+
+import javax.xml.namespace.QName;
+import java.util.List;
 
 
 /**
  * Super class containing mostly often used methods by all actions. Holds common
  * state as well, {@link DocumentRouteHeaderValue} document,
- * {@link ActionTakenValue} action taken (once saved), {@link KimPrincipal} principal
+ * {@link ActionTakenValue} action taken (once saved), {@link PrincipalContract} principal
  * that has taken the action
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -64,7 +65,7 @@ public abstract class ActionTakenEvent {
 
 	protected DocumentRouteHeaderValue routeHeader;
 
-	private final KimPrincipal principal;
+	private final PrincipalContract principal;
 
     private final boolean runPostProcessorLogic;
     
@@ -74,15 +75,15 @@ public abstract class ActionTakenEvent {
     private boolean queueDocumentAfterAction = true;
 
 
-	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
 		this(actionTakenCode, routeHeader, principal, null, true);
 	}
 
-    public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation) {
+    public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation) {
         this(actionTakenCode, routeHeader, principal, annotation, true);
     }
 
-	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, boolean runPostProcessorLogic) {
+	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessorLogic) {
 	    this.actionTakenCode = actionTakenCode;
 	    this.routeHeader = routeHeader;
         this.principal = principal;
@@ -103,7 +104,7 @@ public abstract class ActionTakenEvent {
 		this.routeHeader = routeHeader;
 	}
 
-	public KimPrincipal getPrincipal() {
+	public PrincipalContract getPrincipal() {
 		return principal;
 	}
 

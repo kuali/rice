@@ -34,7 +34,8 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.*;
 
@@ -49,23 +50,23 @@ public class BlanketApproveAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveAction.class);
     private Set<String> nodeNames;
 
-    public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+    public BlanketApproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal);
 
         setQueueDocumentAfterAction(false);
 
     }
 
-    public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, Integer routeLevel) {
+    public BlanketApproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation, Integer routeLevel) {
         this(rh, principal, annotation, convertRouteLevel(rh.getDocumentType(), routeLevel));
     }
 
-    public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, String nodeName) {
+    public BlanketApproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation, String nodeName) {
         this(rh, principal, annotation, Collections.singleton(nodeName));
 
     }
 
-    public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, Set<String> nodeNames) {
+    public BlanketApproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation, Set<String> nodeNames) {
         super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal, annotation);
         this.nodeNames = (nodeNames == null ? new HashSet<String>() : nodeNames);
         setQueueDocumentAfterAction(false);

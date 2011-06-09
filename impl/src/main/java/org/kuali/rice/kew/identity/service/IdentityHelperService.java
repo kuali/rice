@@ -18,9 +18,10 @@ package org.kuali.rice.kew.identity.service;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 /**
  * A simple helper service in KEW for interacting with the KIM identity
@@ -40,13 +41,13 @@ public interface IdentityHelperService {
 	 * Returns the KimPrincipal for the given principal id.  Throws an exception
 	 * if the principal id cannot be resolved to a principal.
 	 */
-	public KimPrincipal getPrincipal(String principalId);
+	public Principal getPrincipal(String principalId);
 
 	/**
 	 * Returns the KimPrincipal for the given principal name.  Throws an exception
 	 * if the principal name cannot be resolved to a principal.
 	 */
-	public KimPrincipal getPrincipalByPrincipalName(String principalName);
+	public Principal getPrincipalByPrincipalName(String principalName);
 
 	/**
 	 * Returns the Person for the given principal id.  Throws an exception
@@ -71,7 +72,7 @@ public interface IdentityHelperService {
 	 */
 	public void validatePrincipalId(String principalId);
 
-	public KimPrincipal getPrincipal(UserId userId);
+	public Principal getPrincipal(UserId userId);
 
 	/**
 	 * Returns the Group for the given groupId.  Throws an exception
@@ -90,5 +91,5 @@ public interface IdentityHelperService {
 	 * that can be used in the cases where an actual user cannot be
 	 * determined.
 	 */
-	public KimPrincipal getSystemPrincipal();
+	public Principal getSystemPrincipal();
 }

@@ -24,7 +24,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -39,11 +40,11 @@ public class CancelAction extends ActionTakenEvent {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CancelAction.class);
 
-    public CancelAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+    public CancelAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, principal);
     }
 
-    public CancelAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
+    public CancelAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
         super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, principal, annotation);
     }
 

@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.entity.personal.EntityBioDemographicsContract;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
 import org.kuali.rice.kns.bo.Inactivateable;
@@ -47,10 +48,11 @@ public interface KimEntity extends Inactivateable {
 	
     /**
      * Gets this {@link KimEntity}'s principals
-     * @return the List of {@link KimPrincipal}S for this {@link KimEntity}.
+     * @return the List of {@link PrincipalContract}s for this {@link KimEntity}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
-	List<? extends KimPrincipal> getPrincipals();
+	List<? extends PrincipalContract> getPrincipals();
+
 	
     /**
      * Gets this {@link KimEntity}'s external identifiers

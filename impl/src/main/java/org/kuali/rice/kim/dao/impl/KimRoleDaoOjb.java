@@ -25,11 +25,12 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -457,7 +458,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
         List<String> principalIds = new ArrayList<String>();
         for (KimEntityDefaultInfo entity : entities) {
-            for (KimPrincipal principal : entity.getPrincipals()) {
+            for (Principal principal : entity.getPrincipals()) {
                 principalIds.add(principal.getPrincipalId());
             }
         }
@@ -480,7 +481,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
         List<String> principalIds = new ArrayList<String>();
         for (KimEntityDefaultInfo entity : entities) {
-            for (KimPrincipal principal : entity.getPrincipals()) {
+            for (Principal principal : entity.getPrincipals()) {
                 principalIds.add(principal.getPrincipalId());
             }
         }

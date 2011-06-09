@@ -20,6 +20,7 @@ import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipBo;
 import org.kuali.rice.kim.impl.entity.personal.EntityBioDemographicsBo;
+import org.kuali.rice.kim.impl.entity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -55,7 +56,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimPrincipalImpl> principals = new AutoPopulatingList(KimPrincipalImpl.class);
+	protected List<PrincipalBo> principals = new AutoPopulatingList(PrincipalBo.class);
 
 	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
 	@Fetch(value = FetchMode.SELECT)
@@ -222,7 +223,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getPrincipals()
 	 */
-	public List<KimPrincipalImpl> getPrincipals() {
+	public List<PrincipalBo> getPrincipals() {
 		return principals;
 	}
 	
@@ -349,7 +350,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 		this.visas = visas;
 	}
 
-	public void setPrincipals(List<KimPrincipalImpl> principals) {
+	public void setPrincipals(List<PrincipalBo> principals) {
 		this.principals = principals;
 	}
 }

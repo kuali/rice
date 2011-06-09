@@ -19,9 +19,10 @@ package org.kuali.rice.kim.test.service;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.services.IdentityArchiveService;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl;
@@ -121,14 +122,13 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 			if (principalName == null) principalName = principalId;
 			if (active == null) active = true;
 
-			KimPrincipalInfo principal = new KimPrincipalInfo();
+			Principal.Builder principal = Principal.Builder.create(principalName);
 			principal.setActive(active);
 			principal.setEntityId(entityId);
 			principal.setPrincipalId(principalId);
-			principal.setPrincipalName(principalName);
 
 			KimEntityDefaultInfo kedi = new KimEntityDefaultInfo();
-			kedi.setPrincipals(Collections.singletonList(principal));
+			kedi.setPrincipals(Collections.singletonList(principal.build()));
 			kedi.setEntityId(entityId);
 
 			return kedi;

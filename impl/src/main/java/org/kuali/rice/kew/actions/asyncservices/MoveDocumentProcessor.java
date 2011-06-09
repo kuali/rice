@@ -21,7 +21,8 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+
 
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class MoveDocumentProcessor implements MoveDocumentService {
 
 	public void moveDocument(String principalId, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set<String> nodeNames) {
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(document.getDocumentId(), true);
-		KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+		Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
 		MoveDocumentAction moveAction = new MoveDocumentAction(document, principal, "", null);
         LOG.debug("Doing move document work " + document.getDocumentId());
         try {

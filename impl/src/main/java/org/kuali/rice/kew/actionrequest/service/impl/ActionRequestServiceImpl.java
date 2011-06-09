@@ -56,8 +56,9 @@ import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -315,7 +316,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 	                    return;
 	                }
 	                if (responsibleParty.getPrincipalId() != null) {
-	                    KimPrincipal user = KimApiServiceLocator.getIdentityManagementService()
+	                    Principal user = KimApiServiceLocator.getIdentityManagementService()
 	                            .getPrincipal(responsibleParty.getPrincipalId());
 	                    actionRequest.setPrincipalId(user.getPrincipalId());
 	                } else if (responsibleParty.getGroupId() != null) {
@@ -937,7 +938,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest person id null.", "actionrequest.persosn.empty",
                             actionRequest.getActionRequestId().toString()));
                 } else {
-                	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+                	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
                 	if (principal == null) {
                 		errors.add(new WorkflowServiceErrorImpl("ActionRequest person id invalid.",
                 				"actionrequest.personid.invalid", actionRequest.getActionRequestId().toString()));

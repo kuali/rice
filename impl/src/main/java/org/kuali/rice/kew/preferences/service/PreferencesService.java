@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.preferences.service;
 
 import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 /**
  * A service which provides data access for {@link Preferences}.

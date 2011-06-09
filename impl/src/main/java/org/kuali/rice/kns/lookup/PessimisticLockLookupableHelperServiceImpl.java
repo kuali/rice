@@ -23,10 +23,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
@@ -125,7 +126,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
         //set owner's principal id and remove owner principal name field 
         String principalName = fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME);
         if (!StringUtils.isEmpty(principalName)) {
-            KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+            Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
             if (principal != null) { 
                 fieldValues.put(OWNER_PRINCIPAL_ID_PROPERTY_NAME, principal.getPrincipalId());
             }

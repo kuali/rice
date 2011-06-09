@@ -78,9 +78,10 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.xml.sax.SAXException;
 
 /**
@@ -463,7 +464,7 @@ public class RuleXmlParser {
         // in code below, we allow core config parameter replacement in responsibilities
         if (!StringUtils.isBlank(principalId)) {
         	principalId = Utilities.substituteConfigParameters(principalId);
-        	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
             if (principal == null) {
             	throw new XmlException("Could not locate principal with the given id: " + principalId);
             }
@@ -471,7 +472,7 @@ public class RuleXmlParser {
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(principalName)) {
         	principalName = Utilities.substituteConfigParameters(principalName);
-        	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
             if (principal == null) {
             	throw new XmlException("Could not locate principal with the given name: " + principalName);
             }

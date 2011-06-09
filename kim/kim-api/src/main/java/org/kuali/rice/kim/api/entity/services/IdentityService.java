@@ -17,6 +17,7 @@ package org.kuali.rice.kim.api.entity.services;
 
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.entity.Type;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.jaxb.StringToKimEntityNameInfoMapAdapter;
 import org.kuali.rice.kim.api.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
@@ -24,7 +25,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
@@ -73,17 +74,17 @@ public interface IdentityService {
 	/** 
 	 * Get the principal with the given unique principal ID. Returns null if not found. 
 	 */
-	KimPrincipalInfo getPrincipal( @WebParam(name="principalId") String principalId );
+	Principal getPrincipal( @WebParam(name="principalId") String principalId );
 	
 	/**
 	 * Get the principal with the given principalName.
 	 */
-	KimPrincipalInfo getPrincipalByPrincipalName( @WebParam(name="principalName") String principalName );
+	Principal getPrincipalByPrincipalName( @WebParam(name="principalName") String principalName );
 
 	/**
 	 * Get the principal with the given name and password.
 	 */
-	KimPrincipalInfo getPrincipalByPrincipalNameAndPassword( @WebParam(name="principalName") String principalName,  @WebParam(name="password") String password );
+	Principal getPrincipalByPrincipalNameAndPassword( @WebParam(name="principalName") String principalName,  @WebParam(name="password") String password );
 
 	/**
 	 * Get the entity default info for the entity with the given id.

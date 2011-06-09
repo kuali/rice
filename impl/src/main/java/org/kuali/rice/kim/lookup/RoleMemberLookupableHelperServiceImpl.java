@@ -15,21 +15,14 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.util.KimConstants;
@@ -38,6 +31,13 @@ import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -152,7 +152,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
 	protected Map<String, String> buildRoleSearchCriteria(Map<String, String> fieldValues){
        	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
     	Map<String, String> searchCriteria;
-    	List<KimPrincipalInfo> principals = new ArrayList<KimPrincipalInfo>();
+    	List<Principal> principals = new ArrayList<Principal>();
         if(StringUtils.isNotEmpty(assignedToPrincipalName)){
         	searchCriteria = new HashMap<String, String>();
         	searchCriteria.put("principals.principalName", WILDCARD+assignedToPrincipalName+WILDCARD);
@@ -194,7 +194,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
     	StringBuffer memberQueryString = null;
         if(principals!=null){
         	memberQueryString = new StringBuffer();
-        	for(KimPrincipalInfo principal: principals){
+        	for(Principal principal: principals){
         		memberQueryString.append(principal.getPrincipalId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}
             if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR))

@@ -22,8 +22,9 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -334,7 +335,7 @@ public class ActionListForm extends KualiForm {
         request.setAttribute("preferences", GlobalVariables.getUserSession().retrieveObject(KEWConstants.PREFERENCES));
 
         String principalId = GlobalVariables.getUserSession().getPrincipalId();
-        final KimPrincipal hdalPrinc = (KimPrincipal) GlobalVariables.getUserSession().retrieveObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
+        final Principal hdalPrinc = (Principal) GlobalVariables.getUserSession().retrieveObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
         if (hdalPrinc != null) {
         	setHelpDeskActionListUserName(hdalPrinc.getPrincipalName());
         }

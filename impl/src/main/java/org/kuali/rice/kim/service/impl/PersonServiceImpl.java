@@ -20,7 +20,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
@@ -151,7 +152,7 @@ public class PersonServiceImpl implements PersonService {
 		}
 		KimEntityDefaultInfo entity = null;
 		// get the corresponding principal
-		KimPrincipal principal = getIdentityManagementService().getPrincipal( principalId );
+		Principal principal = getIdentityManagementService().getPrincipal( principalId );
 		// get the entity
 		if ( principal != null ) {
 			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
@@ -165,7 +166,7 @@ public class PersonServiceImpl implements PersonService {
 		return person;
 	}
 
-	protected PersonImpl convertEntityToPerson( KimEntityDefaultInfo entity, KimPrincipal principal ) {
+	protected PersonImpl convertEntityToPerson( KimEntityDefaultInfo entity, Principal principal ) {
 		try {
 			// get the EntityEntityType for the EntityType corresponding to a Person
 			for ( String entityTypeCode : personEntityTypeCodes ) {
@@ -242,7 +243,7 @@ public class PersonServiceImpl implements PersonService {
 		}
 		KimEntityDefaultInfo entity = null;
 		// get the corresponding principal
-		KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
+		Principal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
 		// get the entity
 		if ( principal != null ) {
 			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
@@ -380,7 +381,7 @@ public class PersonServiceImpl implements PersonService {
 
 		for ( KimEntityDefaultInfo e : entities ) {
 			// get to get all principals for the entity as well
-			for ( KimPrincipal p : e.getPrincipals() ) {
+			for ( Principal p : e.getPrincipals() ) {
 				people.add( convertEntityToPerson( e, p ) );
 			}
 		}
@@ -735,7 +736,7 @@ public class PersonServiceImpl implements PersonService {
                             resolvedPrincipalIdPropertyName.append(sourcePrimitivePropertyName);
                         	// get the principal - for translation of the principalName to principalId
                             String principalName = fieldValues.get( propertyName );
-                        	KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
+                        	Principal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
                             if (principal != null ) {
                                 processedFieldValues.put(resolvedPrincipalIdPropertyName.toString(), principal.getPrincipalId());
                             } else {
@@ -806,7 +807,7 @@ public class PersonServiceImpl implements PersonService {
                          	 	}
                                 String currRelatedPersonPrincipalId = processedFieldValues.get(relatedPrincipalIdPropertyName);
                                 if ( StringUtils.isBlank( currRelatedPersonPrincipalId ) ) {
-                                	KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
+                                	Principal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
                                 	if ( principal != null ) {
                                 		processedFieldValues.put(relatedPrincipalIdPropertyName, principal.getPrincipalId());
                                 	} else {

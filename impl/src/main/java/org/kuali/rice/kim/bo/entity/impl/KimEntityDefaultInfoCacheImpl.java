@@ -17,14 +17,14 @@ package org.kuali.rice.kim.bo.entity.impl;
 
 import org.kuali.rice.kim.api.entity.address.EntityAddress;
 import org.kuali.rice.kim.api.entity.email.EntityEmail;
+import org.kuali.rice.kim.api.entity.phone.EntityPhone;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.api.entity.phone.EntityPhone;
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
@@ -124,13 +124,12 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 		info.setActive( this.isActive() );
 
 		// principal info
-		KimPrincipalInfo principalInfo = new KimPrincipalInfo();
-		principalInfo.setEntityId(this.getEntityId() );
+		Principal.Builder principalInfo = Principal.Builder.create(this.getPrincipalName());
+		principalInfo.setEntityId(this.getEntityId());
 		principalInfo.setPrincipalId(this.getPrincipalId());
-		principalInfo.setPrincipalName(this.getPrincipalName());
 		principalInfo.setActive(this.isActive());
-		info.setPrincipals( new ArrayList<KimPrincipalInfo>( 1 ) );
-		((ArrayList<KimPrincipalInfo>)info.getPrincipals()).add(principalInfo);
+		info.setPrincipals( new ArrayList<Principal>( 1 ) );
+		((ArrayList<Principal>)info.getPrincipals()).add(principalInfo.build());
 
 		// name info
 		KimEntityNameInfo nameInfo = new KimEntityNameInfo();

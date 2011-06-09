@@ -30,9 +30,10 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.util.KNSConstants;
 
 import java.util.Collection;
@@ -55,7 +56,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @param rh RouteHeader for the document upon which the action is taken.
      * @param principal User taking the action.
      */
-    public DisapproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+    public DisapproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, principal);
     }
 
@@ -64,7 +65,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @param principal User taking the action.
      * @param annotation User comment on the action taken
      */
-    public DisapproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
+    public DisapproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
         super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, principal, annotation);
     }
 

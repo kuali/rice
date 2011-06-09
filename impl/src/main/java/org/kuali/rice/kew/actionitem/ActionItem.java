@@ -26,10 +26,11 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.RowStyleable;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -276,7 +277,7 @@ public class ActionItem implements RowStyleable, Serializable {
         return getGroupId() != null;
     }
     
-    public KimPrincipal getPrincipal(){
+    public Principal getPrincipal(){
         return KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     }
 

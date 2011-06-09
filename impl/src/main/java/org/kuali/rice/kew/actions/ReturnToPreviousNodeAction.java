@@ -36,7 +36,8 @@ import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,17 +62,17 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     private boolean superUserUsage;
     private boolean sendNotifications = true;
 
-    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal);
     }
 
-    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String nodeName, boolean sendNotifications) {
+    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications) {
         super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
     
-    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
+    public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
         super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
@@ -80,7 +81,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
      */
-    protected ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String nodeName, boolean sendNotifications) {
+    protected ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications) {
         super(overrideActionTakenCode, routeHeader, principal, annotation);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
@@ -89,7 +90,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
      */
-    public ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
+    public ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
         super(overrideActionTakenCode, routeHeader, principal, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;

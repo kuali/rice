@@ -26,7 +26,8 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +52,7 @@ public class ApproveAction extends ActionTakenEvent {
      * @param principal
      *            User taking the action.
      */
-    public ApproveAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public ApproveAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, principal);
     }
 
@@ -63,7 +64,7 @@ public class ApproveAction extends ActionTakenEvent {
      * @param annotation
      *            User comment on the action taken
      */
-    public ApproveAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation) {
+    public ApproveAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation) {
         super(KEWConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, principal, annotation);
     }
 

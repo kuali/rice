@@ -51,9 +51,10 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
@@ -151,7 +152,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         if (actionItem.getDelegatorWorkflowId() != null) {
             delegatorType = "user";
             delegatorId = actionItem.getDelegatorWorkflowId();
-            KimPrincipal delegator = KimApiServiceLocator.getIdentityManagementService().getPrincipal(delegatorId);
+            Principal delegator = KimApiServiceLocator.getIdentityManagementService().getPrincipal(delegatorId);
             
             if (delegator == null) {
             	LOG.error("Cannot find user for id " + delegatorId);

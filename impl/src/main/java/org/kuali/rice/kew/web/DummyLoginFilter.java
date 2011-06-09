@@ -28,9 +28,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.WebUtils;
 
@@ -67,7 +68,7 @@ public class DummyLoginFilter implements Filter {
             final String password = request.getParameter("__login_pw");
             if (user != null) {
             	// Very simple password checking. Nothing hashed or encrypted. This is strictly for demonstration purposes only.
-            	final KimPrincipal principal = showPassword ? auth.getPrincipalByPrincipalNameAndPassword(user, password) : auth.getPrincipalByPrincipalName(user);
+            	final Principal principal = showPassword ? auth.getPrincipalByPrincipalNameAndPassword(user, password) : auth.getPrincipalByPrincipalName(user);
             	if (principal == null) {
             		handleInvalidLogin(request, response);	
             		return;

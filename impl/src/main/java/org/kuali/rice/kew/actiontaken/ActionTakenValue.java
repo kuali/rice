@@ -31,9 +31,10 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -95,7 +96,7 @@ public class ActionTakenValue implements Serializable {
     @Transient
     private String actionDateString;
 
-    public KimPrincipal getPrincipal() {
+    public Principal getPrincipal() {
     	return getPrincipalForId( principalId );
     }
     
@@ -109,7 +110,7 @@ public class ActionTakenValue implements Serializable {
     	return KEWServiceLocator.getIdentityHelperService().getPerson(getPrincipalId()).getName();
     }
 
-    public KimPrincipal getDelegatorPrincipal() {
+    public Principal getDelegatorPrincipal() {
     	return getPrincipalForId(delegatorPrincipalId);
     }
 
@@ -146,8 +147,8 @@ public class ActionTakenValue implements Serializable {
       }
     }
     
-    private KimPrincipal getPrincipalForId(String principalId) {
-    	KimPrincipal principal = null;
+    private Principal getPrincipalForId(String principalId) {
+    	Principal principal = null;
     	
     	if (!StringUtils.isBlank(principalId)) {
     		principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);

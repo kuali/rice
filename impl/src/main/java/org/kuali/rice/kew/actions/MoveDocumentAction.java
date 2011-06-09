@@ -30,7 +30,8 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -52,11 +53,11 @@ public class MoveDocumentAction extends ActionTakenEvent {
 
     private MovePoint movePoint;
 
-    public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_MOVE_CD, routeHeader, principal);
     }
 
-    public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, MovePoint movePoint) {
+    public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, MovePoint movePoint) {
         super(KEWConstants.ACTION_TAKEN_MOVE_CD, routeHeader, principal, annotation);
         this.movePoint = movePoint;
     }

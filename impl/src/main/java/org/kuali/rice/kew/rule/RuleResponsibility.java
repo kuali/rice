@@ -26,9 +26,10 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -79,7 +80,7 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
     //        mappedBy="ruleResponsibility")
     //private List<RuleDelegation> delegationRules = new ArrayList<RuleDelegation>();
 
-    public KimPrincipal getPrincipal() 
+    public Principal getPrincipal()
     {
     	if (isUsingWorkflowUser()) {
     		return KEWServiceLocator.getIdentityHelperService().getPrincipal(ruleResponsibilityName);

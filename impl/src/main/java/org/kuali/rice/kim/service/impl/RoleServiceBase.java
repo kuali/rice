@@ -20,11 +20,13 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
@@ -1055,8 +1057,8 @@ public class RoleServiceBase {
         if( member == null ) {
         	return "";
         }
-        if ( member instanceof KimPrincipal ) {
-        	return ((KimPrincipal)member).getPrincipalName();
+        if ( member instanceof PrincipalContract ) {
+        	return ((PrincipalContract)member).getPrincipalName();
         }
         if ( member instanceof Group ) {
         	return ((Group)member).getName();
@@ -1071,7 +1073,7 @@ public class RoleServiceBase {
         if( member == null ) {
         	return "";
         }
-        if ( member instanceof KimPrincipal ) {
+        if ( member instanceof PrincipalContract ) {
         	return "";
         }
         if ( member instanceof Group ) {

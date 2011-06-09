@@ -29,9 +29,10 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.StatementCallback;
@@ -179,7 +180,7 @@ public final class TestUtilities {
      * Asserts that the given document id is in the given user's action list.
      */
     public static void assertInActionList(String principalId, String documentId) {
-    	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
@@ -195,7 +196,7 @@ public final class TestUtilities {
      * Asserts that the given document id is NOT in the given user's action list.
      */
     public static void assertNotInActionList(String principalId, String documentId) {
-    	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {

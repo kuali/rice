@@ -37,10 +37,11 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -219,7 +220,7 @@ public class ActionRequestValue implements Serializable {
         return principalId != null;
     }
 
-    public KimPrincipal getPrincipal() {
+    public Principal getPrincipal() {
     	if (getPrincipalId() == null) {
     		return null;
     	}

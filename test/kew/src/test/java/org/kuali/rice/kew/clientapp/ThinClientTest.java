@@ -29,8 +29,9 @@ import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.config.ThinClientResourceLoader;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+
 
 import javax.xml.namespace.QName;
 import java.security.AccessController;
@@ -123,8 +124,7 @@ public class ThinClientTest extends KEWTestCase {
 		ThinClientResourceLoader thinRL = (ThinClientResourceLoader)tempThinRL;
 
 		// test KIM identity service
-		KimPrincipalInfo principal = null;
-		principal = thinRL.getIdentityService().getPrincipalByPrincipalName(KIM_PRINCIPAL_NAME);
+		Principal principal = thinRL.getIdentityService().getPrincipalByPrincipalName(KIM_PRINCIPAL_NAME);
 		assertTrue(principal.getPrincipalName().equals(KIM_PRINCIPAL_NAME));
 
 		// test KIM group service

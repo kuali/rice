@@ -32,8 +32,9 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +61,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     }
 
     public RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException {
-    	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(KNSConstants.SYSTEM_USER);
+    	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(KNSConstants.SYSTEM_USER);
     	if (principal == null) {
     		throw new WorkflowException("Failed to locate System User with principal name 'kr'");
     	}

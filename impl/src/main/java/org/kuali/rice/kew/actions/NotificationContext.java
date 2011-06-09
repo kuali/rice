@@ -17,7 +17,8 @@
 package org.kuali.rice.kew.actions;
 
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 
 
 /**
@@ -28,10 +29,10 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 public class NotificationContext {
 
     private String notificationRequestCode;
-    private KimPrincipal principalTakingAction;
+    private PrincipalContract principalTakingAction;
     private String actionTakenCode;
     
-    public NotificationContext(String notificationRequestCode, KimPrincipal principalTakingAction, String actionTakenCode) {
+    public NotificationContext(String notificationRequestCode, PrincipalContract principalTakingAction, String actionTakenCode) {
         this.notificationRequestCode = notificationRequestCode;
         this.principalTakingAction = principalTakingAction;
         this.actionTakenCode = actionTakenCode;
@@ -45,7 +46,7 @@ public class NotificationContext {
         return notificationRequestCode;
     }
 
-    public KimPrincipal getPrincipalTakingAction() {
+    public PrincipalContract getPrincipalTakingAction() {
         return principalTakingAction;
     }
     

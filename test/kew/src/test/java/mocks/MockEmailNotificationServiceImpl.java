@@ -19,9 +19,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.mail.service.EmailContentService;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -131,7 +132,7 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
     }
 
     public int immediateReminderEmailsSent(String networkId, String documentId, String actionRequestCd) {
-    	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+        Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
         List actionItemsSentUser = immediateReminders.get(principal.getPrincipalId());
         if (actionItemsSentUser == null) {
             return 0;

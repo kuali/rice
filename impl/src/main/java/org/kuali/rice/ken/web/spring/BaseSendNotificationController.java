@@ -20,10 +20,11 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.ken.exception.ErrorList;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -92,7 +93,7 @@ public class BaseSendNotificationController extends MultiActionController {
 
     protected boolean isUserRecipientValid(String user, ErrorList errors) {
         boolean valid = true;
-        KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName(user);
+        Principal principal = getIdentityManagementService().getPrincipalByPrincipalName(user);
         if (principal == null) {
         	valid = false;
         	errors.addError("'" + user + "' is not a valid principal name");

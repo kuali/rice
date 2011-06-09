@@ -23,11 +23,12 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.test.BaselineTestCase;
 
@@ -70,11 +71,11 @@ public class ActionItemServiceTest extends KEWTestCase {
         GroupService groupService = KimApiServiceLocator.getGroupService();
         assertEquals("Workgroup should have 6 members.", 6, groupService.getMembersOfGroup(oldWorkgroup.getId()).size());
 
-        KimPrincipal user1 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
-        KimPrincipal user2 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
+        Principal user1 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
+        Principal user2 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
 
-        KimPrincipal rkirkend = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend");
-        KimPrincipal shenl = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("shenl");
+        Principal rkirkend = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend");
+        Principal shenl = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("shenl");
 
         List<GroupMember> usersToRemove = new ArrayList<GroupMember>();
         //remove 'rkirkend' and 'shenl' from the workgroup
@@ -154,7 +155,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",workgroup1.getId(), "", true);
         document.routeDocument("");
 
-        KimPrincipal ewestfal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+        Principal ewestfal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 
         assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
         assertEquals("Workgroup should have 6 members.", 6, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
@@ -170,7 +171,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
          // test the save group
          Group workgroup1Impl = this.getGroup(workgroup1.getId());
-         KimPrincipal dewey = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("dewey");
+         Principal dewey = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("dewey");
          KimApiServiceLocator.getGroupUpdateService().addPrincipalToGroup(dewey.getPrincipalId(), workgroup1Impl.getId());
          //GroupMember groupMember = GroupMember.Builder.create(workgroup1Impl.getId(), dewey.getPrincipalId(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE).build();
          //GroupBo workgroup1Bo = GroupBo.from(workgroup1Impl);
@@ -183,7 +184,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(dewey.getPrincipalId()).size());
 
          // test nested
-         KimPrincipal user1 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
+         Principal user1 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
 
          document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionItemDocumentType");
          document.setTitle("");

@@ -23,7 +23,8 @@ import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+
 
 
 /**
@@ -40,7 +41,7 @@ public class ActionInvocationProcessor implements ActionInvocationService { // i
 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 
-	KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+	Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
 	List<DataDefinition> parameters = new ArrayList<DataDefinition>();
 	parameters.add(new DataDefinition(document));
 	parameters.add(new DataDefinition(principal));

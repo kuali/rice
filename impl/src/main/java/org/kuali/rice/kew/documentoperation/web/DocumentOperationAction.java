@@ -71,8 +71,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
@@ -649,7 +650,7 @@ public class DocumentOperationAction extends KewKualiAction {
 			if (lookupInvocationModule.equals("ActionTaken")) {
 				ActionTakenValue actionTaken = docForm.getRouteHeader().getDocActionTaken(lookupIndex);
 				if ("workflowId".equals(lookupField)) {
-					KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
 					if (principal != null) {
 						actionTaken.setPrincipalId(principal.getPrincipalId());
 					} else {
@@ -658,7 +659,7 @@ public class DocumentOperationAction extends KewKualiAction {
 					}
 				}
 				if ("delegatorWorkflowId".equals(lookupField)) {
-					KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
 					if (principal != null) {
 						actionTaken.setDelegatorPrincipalId(principal.getPrincipalId());
 					} else {
@@ -678,7 +679,7 @@ public class DocumentOperationAction extends KewKualiAction {
 			if (lookupInvocationModule.equals("ActionItem")) {
 				ActionItem actionItem = docForm.getRouteHeader().getDocActionItem(lookupIndex);
 				if ("workflowId".equals(lookupField)) {
-					KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
 					if (principal != null) {
 						actionItem.setPrincipalId(principal.getPrincipalId());
 					} else {
@@ -698,7 +699,7 @@ public class DocumentOperationAction extends KewKualiAction {
 					actionItem.setRoleName(request.getParameter("roleName"));
 				}
 				if ("delegatorWorkflowId".equals(lookupField)) {
-					KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
 					if (principal != null) {
 						actionItem.setDelegatorWorkflowId(principal.getPrincipalId());
 					} else {

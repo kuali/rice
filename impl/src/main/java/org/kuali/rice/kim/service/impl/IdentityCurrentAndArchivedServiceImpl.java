@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import org.kuali.rice.kim.api.entity.Type;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.entity.services.IdentityArchiveService;
 import org.kuali.rice.kim.api.entity.services.IdentityService;
@@ -23,7 +24,6 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
@@ -235,21 +235,21 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	/**
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getPrincipal(java.lang.String)
 	 */
-	public KimPrincipalInfo getPrincipal(String principalId) {
+	public Principal getPrincipal(String principalId) {
 		return getInnerIdentityService().getPrincipal(principalId);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getPrincipalByPrincipalName(java.lang.String)
 	 */
-	public KimPrincipalInfo getPrincipalByPrincipalName(String principalName) {
+	public Principal getPrincipalByPrincipalName(String principalName) {
 		return getInnerIdentityService().getPrincipalByPrincipalName(principalName);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.api.entity.services.IdentityService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
 	 */
-	public KimPrincipalInfo getPrincipalByPrincipalNameAndPassword(
+	public Principal getPrincipalByPrincipalNameAndPassword(
 			String principalName, String password) {
 		return getInnerIdentityService().getPrincipalByPrincipalNameAndPassword(
 				principalName, password);

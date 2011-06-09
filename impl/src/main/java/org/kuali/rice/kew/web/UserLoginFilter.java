@@ -24,9 +24,10 @@ import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
@@ -106,7 +107,7 @@ public class UserLoginFilter implements Filter {
 				throw new AuthenticationException( "Blank User from AuthenticationService - This should never happen." );
 			}
 			
-			KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
+			Principal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
 			if (principal == null) {
 				throw new AuthenticationException("Unknown User: " + principalName);
 			}

@@ -74,8 +74,9 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 /**
  * Exports rules to XML.
  *
@@ -242,7 +243,7 @@ public class RuleXmlExporter implements XmlExporter {
         RuleResponsibility ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(delegation.getResponsibilityId());
         renderer.renderTextElement(parentResponsibilityElement, PARENT_RULE_NAME, ruleResponsibility.getRuleBaseValues().getName());
         if (ruleResponsibility.isUsingWorkflowUser()) {
-        	KimPrincipal principal = ruleResponsibility.getPrincipal();
+        	Principal principal = ruleResponsibility.getPrincipal();
         	renderer.renderTextElement(parentResponsibilityElement, PRINCIPAL_NAME, principal.getPrincipalName());
         } else if (ruleResponsibility.isUsingGroup()) {
         	Group group = ruleResponsibility.getGroup();

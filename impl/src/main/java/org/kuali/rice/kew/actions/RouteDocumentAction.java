@@ -25,7 +25,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.List;
 
@@ -39,11 +40,11 @@ import java.util.List;
 public class RouteDocumentAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RouteDocumentAction.class);
 
-    public RouteDocumentAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
+    public RouteDocumentAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_COMPLETED_CD, rh, principal);
     }
 
-    public RouteDocumentAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
+    public RouteDocumentAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
         super(KEWConstants.ACTION_TAKEN_COMPLETED_CD, rh, principal, annotation);
     }
 

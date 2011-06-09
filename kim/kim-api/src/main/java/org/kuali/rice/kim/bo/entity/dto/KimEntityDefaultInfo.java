@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.entity.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
@@ -36,7 +37,7 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
     private static final long serialVersionUID = 7930630152792502380L;
     protected String entityId;
     protected KimEntityNameInfo defaultName;
-    protected List<KimPrincipalInfo> principals;
+    protected List<Principal> principals;
     protected List<EntityTypeDataDefault> entityTypes;
     protected List<KimEntityAffiliationInfo> affiliations;
     protected KimEntityAffiliationInfo defaultAffiliation;
@@ -168,16 +169,16 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
     }
 
     /**
-     * Gets this {@link KimEntityDefaultInfo}'s List of {@link KimPrincipalInfo}S.
-     * @return the List of {@link KimPrincipalInfo}S for this {@link KimEntityDefaultInfo}.
+     * Gets this {@link KimEntityDefaultInfo}'s List of {@link Principal}s.
+     * @return the List of {@link Principal}S for this {@link KimEntityDefaultInfo}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
-    public List<KimPrincipalInfo> getPrincipals() {
+    public List<Principal> getPrincipals() {
         // If our reference is null, assign and return an empty List
-        return (principals != null) ? principals : (principals = new ArrayList<KimPrincipalInfo>());
+        return (principals != null) ? principals : (principals = new ArrayList<Principal>());
     }
 
-    public void setPrincipals(List<KimPrincipalInfo> principals) {
+    public void setPrincipals(List<Principal> principals) {
         this.principals = principals;
     }
 

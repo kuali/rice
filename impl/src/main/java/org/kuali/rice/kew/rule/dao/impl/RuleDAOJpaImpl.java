@@ -39,7 +39,8 @@ import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 
@@ -248,7 +249,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
         }
         
         if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) && searchUserInWorkgroups) {
-            KimPrincipal principal = null;
+            Principal principal = null;
 
             principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
 

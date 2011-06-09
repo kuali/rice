@@ -64,10 +64,11 @@ import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.web.KeyValueSort;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -121,7 +122,7 @@ public class DTOConverter {
 
 
         if (principalId != null) {
-        	KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+        	Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
             routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(principal, routeHeader)));
         }
         return routeHeaderVO;
@@ -1080,7 +1081,7 @@ public class DTOConverter {
         criteria.setActivateRequests(criteriaVO.getActivateRequests());
         criteria.setFlattenNodes(criteriaVO.isFlattenNodes());
         if (criteriaVO.getRoutingPrincipalId() != null) {
-        	KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(criteriaVO.getRoutingPrincipalId());
+        	Principal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(criteriaVO.getRoutingPrincipalId());
             Person user = KimApiServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
             if (user == null) {
                 throw new RiceRuntimeException("Could not locate user for the given id: " + criteriaVO.getRoutingPrincipalId());
@@ -1101,7 +1102,7 @@ public class DTOConverter {
         }
         if (criteriaVO.getTargetPrincipalIds() != null) {
             for (String targetPrincipalId : criteriaVO.getTargetPrincipalIds()) {
-                KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(targetPrincipalId);
+                Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(targetPrincipalId);
                 criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
             }
         }
@@ -1127,7 +1128,7 @@ public class DTOConverter {
         if (actionToTakeVO.getPrincipalId() == null) {
             throw new IllegalArgumentException("ReportActionToTakeVO must contain a principalId and does not");
         }
-        KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(actionToTakeVO.getPrincipalId());
+        Principal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(actionToTakeVO.getPrincipalId());
         Person user = KimApiServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
         if (user == null) {
             throw new RiceRuntimeException("Could not locate Person for the given id: " + actionToTakeVO.getPrincipalId());

@@ -22,7 +22,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -46,7 +47,7 @@ public class PreferencesServiceTest extends KEWTestCase {
        //verify that user doesn't have any preferences in the db.
 
        final UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
-       KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
+       Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
        Collection userOptions = userOptionsService.findByWorkflowUser(principal.getPrincipalId());
        assertTrue("UserOptions should be empty", userOptions.isEmpty());
 
@@ -98,7 +99,7 @@ public class PreferencesServiceTest extends KEWTestCase {
     @Test public void testPreferencesConcurrentDefaultSave() throws Throwable {
        //verify that user doesn't have any preferences in the db.
        final UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
-       final KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
+       final Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
        Collection userOptions = userOptionsService.findByWorkflowUser(principal.getPrincipalId());
        assertTrue("UserOptions should be empty", userOptions.isEmpty());
 

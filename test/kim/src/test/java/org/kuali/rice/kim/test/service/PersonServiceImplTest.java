@@ -19,9 +19,10 @@ import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
@@ -63,7 +64,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 	@Test
 	public void testGetPersonByExternalIdentifier() {
 		//insert external identifier
-		KimPrincipal principal = KimApiServiceLocator.getIdentityService().getPrincipal("p1");
+		Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal("p1");
 		
 		SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
 		Long externalIdentifierId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_EXT_ID_ID_S", KimEntityExternalIdentifierImpl.class);

@@ -35,10 +35,10 @@
     <class>org.kuali.rice.kim.impl.type.KimTypeBo</class>
     <class>org.kuali.rice.kim.impl.common.attribute.KimAttributeBo</class>
     <class>org.kuali.rice.kim.impl.type.KimTypeAttributeBo</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl</class>
+    <class>org.kuali.rice.kim.impl.entity.principal.PrincipalBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityBioDemographicsImpl</class>
+    <class>org.kuali.rice.kim.impl.entity.personal.EntityBioDemographicsBo</class>
     <class>org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl</class>

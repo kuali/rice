@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 /**
  * Represents an ActionRequest recipient who is a KimGroup
@@ -26,20 +28,20 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 public class KimPrincipalRecipient implements Recipient {
 
 	private static final long serialVersionUID = 1L;
-	private KimPrincipal principal;
+	private PrincipalContract principal;
 
 	public KimPrincipalRecipient(String principalId) {
 		this(ActionRequestFactory.getIdentityManagementService().getPrincipal(principalId));
 	}
 
-	public KimPrincipalRecipient(KimPrincipal principal) {
+	public KimPrincipalRecipient(PrincipalContract principal) {
 		if (principal == null) {
 			throw new IllegalArgumentException("Attempted to create a KimPrincipalRecipient with a null KimPrincipal!");
 		}
 		this.principal = principal;
 	}
 
-	public KimPrincipal getPrincipal() {
+	public PrincipalContract getPrincipal() {
 		return this.principal;
 	}
 

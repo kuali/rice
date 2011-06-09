@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.kew.user;
 
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.UserSession;
@@ -49,7 +50,7 @@ public final class UserUtils {
 	    return null;
 	  }
 	
-	public static String getTransposedName(UserSession userSession, KimPrincipal principal) {
+	public static String getTransposedName(UserSession userSession, PrincipalContract principal) {
 		Person person = getPersonService().getPerson(principal.getPrincipalId());
 		return person.getName(); //contructTransposedName(person);
 	}

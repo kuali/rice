@@ -22,11 +22,12 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+
+
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
@@ -317,7 +318,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         if (StringUtils.isEmpty(newMember.getMemberId())
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-        	KimPrincipalInfo principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
+        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
         	if (principal != null) {
         		newMember.setMemberId(principal.getPrincipalId());
         	}
@@ -344,7 +345,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		}
 
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(newMember.getMemberTypeCode())){
-        	KimPrincipal pi = this.getIdentityService().getPrincipal(newMember.getMemberId());
+        	Principal pi = this.getIdentityService().getPrincipal(newMember.getMemberId());
         	if(pi != null){
         		memberExists = true;
         		memberName = pi.getPrincipalName();
@@ -408,8 +409,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         	return false;
 		}
     	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(newMember.getMemberTypeCode())){
-        	KimPrincipalInfo principalInfo = null;
-        	principalInfo = getIdentityManagementService().getPrincipal(newMember.getMemberId());
+        	Principal principalInfo = getIdentityManagementService().getPrincipal(newMember.getMemberId());
         	if (principalInfo == null) {
         		GlobalVariables.getMessageMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
             			new String[] {newMember.getMemberId()});
@@ -465,7 +465,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         if (StringUtils.isEmpty(newDelegationMember.getMemberId())
         		&& StringUtils.isNotEmpty(newDelegationMember.getMemberName())
         		&& StringUtils.equals(newDelegationMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-        	KimPrincipalInfo principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newDelegationMember.getMemberName());
+        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newDelegationMember.getMemberName());
         	if (principal != null) {
         		newDelegationMember.setMemberId(principal.getPrincipalId());
         	}

@@ -19,10 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.util.KimConstants;
@@ -74,7 +75,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	@Override
 	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification) {
         // check that the principal exists and is active
-        KimPrincipal principal = getIdentityManagementService().getPrincipal( principalId );
+        Principal principal = getIdentityManagementService().getPrincipal( principalId );
         if ( principal == null || !principal.isActive() ) {
             return false;
         }

@@ -28,7 +28,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.Principal;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -246,7 +247,7 @@ public class RoleServiceTest extends KEWTestCase {
 	 * complete request and a re-resolved request.
 	 */
 	private void assertInitiatorRequestDone(String roleName, String qualifiedRoleNameLabel) throws Exception {
-        KimPrincipal initiator = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
+        Principal initiator = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
 		List requests = KEWServiceLocator.getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, documentId);
 		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();

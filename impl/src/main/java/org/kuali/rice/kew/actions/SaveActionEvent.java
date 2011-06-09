@@ -27,7 +27,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+
 
 import java.util.List;
 
@@ -45,11 +46,11 @@ public class SaveActionEvent extends ActionTakenEvent {
 
     private static final String RESPONSIBILITY_DESCRIPTION = "Initiator needs to complete document.";
 
-    public SaveActionEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
+    public SaveActionEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
 	super(KEWConstants.ACTION_TAKEN_SAVED_CD, routeHeader, principal);
     }
 
-    public SaveActionEvent(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation) {
+    public SaveActionEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation) {
 	super(KEWConstants.ACTION_TAKEN_SAVED_CD, routeHeader, principal, annotation);
     }
 

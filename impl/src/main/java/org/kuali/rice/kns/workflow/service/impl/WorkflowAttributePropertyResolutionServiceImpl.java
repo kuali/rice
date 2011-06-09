@@ -15,19 +15,6 @@
  */
 package org.kuali.rice.kns.workflow.service.impl;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
@@ -48,9 +35,19 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.util.DataTypeUtil;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
 
 /**
  * The default implementation of the WorkflowAttributePropertyResolutionServiceImpl
@@ -61,7 +58,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
 
     /**
      * Using the proper RoutingTypeDefinition for the current routing node of the document, aardvarks out the proper routing type qualifiers
-     * @see org.kuali.kfs.sys.document.service.WorkflowAttributePropertyResolutionService#resolveRoutingTypeQualifiers(Document, RoutingTypeDefinition)
+     *
      */
     public List<AttributeSet> resolveRoutingTypeQualifiers(Document document, RoutingTypeDefinition routingTypeDefinition) {
         List<AttributeSet> qualifiers = new ArrayList<AttributeSet>();
@@ -161,8 +158,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * Aardvarks values out of a business object and puts them into an AttributeSet, based on a List of paths
      * @param businessObject the business object to get values from
      * @param paths the paths of values to get from the qualifier
-     * @param routingAttribute the RoutingAttribute associated with this qualifier's document value
-     * @param currentRoutingAttributeIndex - the current index of the routing attribute
+     * @param routingAttributes the RoutingAttribute associated with this qualifier's document value
      * @param qualifier the qualifier to put values into
      */
     protected void addPathValuesToQualifier(Object businessObject, List<String> paths, RoutingAttributeTracker routingAttributes, AttributeSet qualifier) {
@@ -191,7 +187,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
 
     /**
      * Resolves all of the searching values to index for the given document, returning a list of SearchableAttributeValue implementations
-     * @see org.kuali.kfs.sys.document.service.WorkflowAttributePropertyResolutionService#resolveSearchableAttributeValues(org.kuali.rice.kns.document.Document, org.kuali.rice.kns.datadictionary.WorkflowAttributes)
+     *
      */
     public List<SearchableAttributeValue> resolveSearchableAttributeValues(Document document, WorkflowAttributes workflowAttributes) {
         List<SearchableAttributeValue> valuesToIndex = new ArrayList<SearchableAttributeValue>();
@@ -255,18 +251,9 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
        }
        return cleanedQualifiers;
     }
-    
-    /**
-     * @see org.kuali.kfs.sys.document.service.WorkflowAttributePropertyResolutionService#determineFieldDataType(java.lang.Class, java.lang.String)
-     */
+
     public String determineFieldDataType(Class<? extends BusinessObject> businessObjectClass, String attributeName) {
-        final Class attributeClass = thieveAttributeClassFromBusinessObjectClass(businessObjectClass, attributeName);
-        if (isStringy(attributeClass)) return KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING; // our most common case should go first
-        if (isDecimaltastic(attributeClass)) return KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT;
-        if (isDateLike(attributeClass)) return KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE;
-        if (isIntsy(attributeClass)) return KEWConstants.SearchableAttributeConstants.DATA_TYPE_LONG;
-        if (isBooleanable(attributeClass)) return DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN;
-        return KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING; // default to String
+        return DataTypeUtil.determineFieldDataType(businessObjectClass, attributeName);
     }
 
     /**
@@ -279,84 +266,11 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         if (value == null) return null;
         final String fieldDataType = determineFieldDataType(businessObjectClass, attributeKey);
         if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING)) return buildSearchableStringAttribute(attributeKey, value); // our most common case should go first
-        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT) && isDecimaltastic(value.getClass())) return buildSearchableRealAttribute(attributeKey, value);
-        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE) && isDateLike(value.getClass())) return buildSearchableDateTimeAttribute(attributeKey, value);
-        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_LONG) && isIntsy(value.getClass())) return buildSearchableFixnumAttribute(attributeKey, value);
-        if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN) && isBooleanable(value.getClass())) return buildSearchableYesNoAttribute(attributeKey, value);
+        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT) && DataTypeUtil.isDecimaltastic(value.getClass())) return buildSearchableRealAttribute(attributeKey, value);
+        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE) && DataTypeUtil.isDateLike(value.getClass())) return buildSearchableDateTimeAttribute(attributeKey, value);
+        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_LONG) && DataTypeUtil.isIntsy(value.getClass())) return buildSearchableFixnumAttribute(attributeKey, value);
+        if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN) && DataTypeUtil.isBooleanable(value.getClass())) return buildSearchableYesNoAttribute(attributeKey, value);
         return buildSearchableStringAttribute(attributeKey, value);
-    }
-    
-    /**
-     * Determines if the given Class is a String
-     * @param clazz the class to check for Stringiness
-     * @return true if the Class is a String, false otherwise
-     */
-    protected boolean isStringy(Class clazz) {
-        return java.lang.String.class.isAssignableFrom(clazz);
-    }
-
-    /**
-     * Determines if the given class is enough like a date to store values of it as a SearchableAttributeDateTimeValue
-     * @param class the class to determine the type of
-     * @return true if it is like a date, false otherwise
-     */
-    protected boolean isDateLike(Class clazz) {
-        return java.util.Date.class.isAssignableFrom(clazz);
-    }
-    
-    /**
-     * Determines if the given class is enough like a Float to store values of it as a SearchableAttributeFloatValue
-     * @param value the class to determine of the type of
-     * @return true if it is like a "float", false otherwise
-     */
-    protected boolean isDecimaltastic(Class clazz) {
-        return java.lang.Double.class.isAssignableFrom(clazz) || java.lang.Float.class.isAssignableFrom(clazz) || clazz.equals(Double.TYPE) || clazz.equals(Float.TYPE) || java.math.BigDecimal.class.isAssignableFrom(clazz) || org.kuali.rice.core.util.type.KualiDecimal.class.isAssignableFrom(clazz);
-    }
-    
-    /**
-     * Determines if the given class is enough like a "long" to store values of it as a SearchableAttributeLongValue
-     * @param value the class to determine the type of
-     * @return true if it is like a "long", false otherwise
-     */
-    protected boolean isIntsy(Class clazz) {
-        return java.lang.Integer.class.isAssignableFrom(clazz) || java.lang.Long.class.isAssignableFrom(clazz) || java.lang.Short.class.isAssignableFrom(clazz) || java.lang.Byte.class.isAssignableFrom(clazz) || java.math.BigInteger.class.isAssignableFrom(clazz) || clazz.equals(Integer.TYPE) || clazz.equals(Long.TYPE) || clazz.equals(Short.TYPE) || clazz.equals(Byte.TYPE);
-    }
-
-    /**
-     * Determines if the given class is enough like a boolean, to index it as a String "Y" or "N"
-     * @param value the class to determine the type of
-     * @return true if it is like a boolean, false otherwise
-     */
-    protected boolean isBooleanable(Class clazz) {
-        return java.lang.Boolean.class.isAssignableFrom(clazz) || clazz.equals(Boolean.TYPE);
-    }
-    
-    /**
-     * Given a BusinessObject class and an attribute name, determines the class of that attribute on the BusinessObject class
-     * @param boClass a class extending BusinessObject
-     * @param attributeKey the name of a field on that class
-     * @return the Class of the given attribute
-     */
-    private Class thieveAttributeClassFromBusinessObjectClass(Class<? extends BusinessObject> boClass, String attributeKey) {
-        Class attributeFieldClass = null;
-        try {
-            final BeanInfo beanInfo = Introspector.getBeanInfo(boClass);
-            int i = 0;
-            while (attributeFieldClass == null && i < beanInfo.getPropertyDescriptors().length) {
-                final PropertyDescriptor prop = beanInfo.getPropertyDescriptors()[i];
-                if (prop.getName().equals(attributeKey)) {
-                    attributeFieldClass = prop.getPropertyType();
-                }
-                i += 1;
-            }
-        }
-        catch (SecurityException se) {
-            throw new RuntimeException("Could not determine type of attribute "+attributeKey+" of BusinessObject class "+boClass.getName(), se);
-        }
-        catch (IntrospectionException ie) {
-            throw new RuntimeException("Could not determine type of attribute "+attributeKey+" of BusinessObject class "+boClass.getName(), ie);
-        }
-        return attributeFieldClass;
     }
     
     /**
@@ -442,9 +356,6 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         return "N";
     }
 
-    /**
-     * @see org.kuali.kfs.sys.document.service.WorkflowAttributePropertyResolutionService#getPropertyByPath(java.lang.Object, java.lang.String)
-     */
     public Object getPropertyByPath(Object object, String path) {
         if (object instanceof Collection) return getPropertyOfCollectionByPath((Collection)object, path);
 

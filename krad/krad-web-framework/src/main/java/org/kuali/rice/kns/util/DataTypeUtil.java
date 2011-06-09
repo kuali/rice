@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-
+import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
+
+import java.beans.PropertyDescriptor;
 
 /**
  * Pulled this logic out of the org.kuali.rice.kns.workflow.service.impl.WorkflowAttributePropertyResolutionServiceImpl
@@ -56,7 +54,7 @@ public class DataTypeUtil {
 
     /**
      * Determines if the given class is enough like a date to store values of it as a SearchableAttributeDateTimeValue
-     * @param class the class to determine the type of
+     * @param clazz the class to determine the type of
      * @return true if it is like a date, false otherwise
      */
 	public static boolean isDateLike(Class clazz) {
@@ -65,7 +63,7 @@ public class DataTypeUtil {
     
     /**
      * Determines if the given class is enough like a Float to store values of it as a SearchableAttributeFloatValue
-     * @param value the class to determine of the type of
+     * @param clazz the class to determine of the type of
      * @return true if it is like a "float", false otherwise
      */
 	public static boolean isDecimaltastic(Class clazz) {
@@ -74,7 +72,7 @@ public class DataTypeUtil {
     
     /**
      * Determines if the given class is enough like a "long" to store values of it as a SearchableAttributeLongValue
-     * @param value the class to determine the type of
+     * @param clazz the class to determine the type of
      * @return true if it is like a "long", false otherwise
      */
 	public static boolean isIntsy(Class clazz) {
@@ -83,7 +81,7 @@ public class DataTypeUtil {
 
     /**
      * Determines if the given class is enough like a boolean, to index it as a String "Y" or "N"
-     * @param value the class to determine the type of
+     * @param clazz the class to determine the type of
      * @return true if it is like a boolean, false otherwise
      */
 	public static boolean isBooleanable(Class clazz) {
@@ -97,25 +95,12 @@ public class DataTypeUtil {
      * @return the Class of the given attribute
      */
     private static Class thieveAttributeClassFromBusinessObjectClass(Class<? extends BusinessObject> boClass, String attributeKey) {
-        Class attributeFieldClass = null;
-        try {
-            final BeanInfo beanInfo = Introspector.getBeanInfo(boClass);
-            int i = 0;
-            while (attributeFieldClass == null && i < beanInfo.getPropertyDescriptors().length) {
-                final PropertyDescriptor prop = beanInfo.getPropertyDescriptors()[i];
-                if (prop.getName().equals(attributeKey)) {
-                    attributeFieldClass = prop.getPropertyType();
-                }
-                i += 1;
+        for (PropertyDescriptor prop : PropertyUtils.getPropertyDescriptors(boClass)) {
+            if (prop.getName().equals(attributeKey)) {
+                return prop.getPropertyType();
             }
         }
-        catch (SecurityException se) {
-            throw new RuntimeException("Could not determine type of attribute "+attributeKey+" of BusinessObject class "+boClass.getName(), se);
-        }
-        catch (IntrospectionException ie) {
-            throw new RuntimeException("Could not determine type of attribute "+attributeKey+" of BusinessObject class "+boClass.getName(), ie);
-        }
-        return attributeFieldClass;
+        return null;
     }
 	
 }

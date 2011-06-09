@@ -15,17 +15,7 @@
  */
 package org.kuali.rice.kns.datadictionary.validation;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.type.TypeUtils;
@@ -39,6 +29,14 @@ import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class provides legacy processing for maintenance documents in the dictionary validation service implementation. 
@@ -150,16 +148,8 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 
 	private Map<String, PropertyDescriptor> getBeanInfo(Class<?> clazz) {
-		Map<String, PropertyDescriptor> properties = new HashMap<String, PropertyDescriptor>();
-		BeanInfo beanInfo = null;
-		try {
-			beanInfo = Introspector.getBeanInfo(clazz);
-		} catch (IntrospectionException e) {
-			throw new RuntimeException(e);
-		}
-		PropertyDescriptor[] propertyDescriptors = beanInfo
-		.getPropertyDescriptors();
-		for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+		final Map<String, PropertyDescriptor> properties = new HashMap<String, PropertyDescriptor>();
+		for (PropertyDescriptor propertyDescriptor : PropertyUtils.getPropertyDescriptors(clazz)) {
 			properties.put(propertyDescriptor.getName(), propertyDescriptor);
 		}
 		return properties;

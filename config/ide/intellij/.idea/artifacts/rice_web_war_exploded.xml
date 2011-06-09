@@ -103,6 +103,8 @@
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-template:2.2.2" />
           <element id="library" level="project" name="Maven: net.sf.jtidy:jtidyservlet:r8-m1" />
           <element id="library" level="project" name="Maven: net.sf.jtidy:jtidy:r938" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.1" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.1" />
           <element id="archive" name="rice-ksb-api-2.0.0-m5-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-api" />
           </element>

@@ -37,7 +37,7 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>commons-beanutils</groupId>
+			<groupId>org.kuali.commons</groupId>
 			<artifactId>commons-beanutils</artifactId>
 		</dependency>
 		<dependency>

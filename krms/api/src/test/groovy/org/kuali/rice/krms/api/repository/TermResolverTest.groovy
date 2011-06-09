@@ -23,7 +23,6 @@ import javax.xml.bind.Unmarshaller;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.kuali.rice.krms.api.repository.term.TermResolverAttribute;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 
@@ -55,7 +54,7 @@ class TermResolverTest {
 	private static final String PARAM_NAME="paramName"
 	
 	private static final String EXPECTED_XML = """
-	<termResolverDefinition xmlns="http://rice.kuali.org/krms/repository/v2_0">
+	<termResolverDefinition xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/krms/repository/v2_0">
     <id>123TERMRESOLVER</id>
     <name>termResolver-name</name>
     <namespaceCode>foo-namespace</namespaceCode>
@@ -76,12 +75,7 @@ class TermResolverTest {
         </termSpecificationDefinition>
     </prerequisites>
     <attributes>
-        <attribute>
-            <id>123ATTR</id>
-            <termResolverId>123TERMRESOLVER</termResolverId>
-            <attributeDefinitionId>123ATTR_DEF</attributeDefinitionId>
-            <value>attrValue</value>
-        </attribute>
+        <ns2:entry key="attrName">attrValue</ns2:entry>
     </attributes>
     <parameterNames>
         <parameterName>paramName1</parameterName>
@@ -96,10 +90,7 @@ class TermResolverTest {
 		TermSpecificationDefinition.Builder output = TermSpecificationDefinition.Builder.create(ID, TERM_SPEC_CONTEXT_ID, TERM_SPEC_NAME, TERM_SPEC_TYPE); 
 		
 		TermSpecificationDefinition.Builder prereq = TermSpecificationDefinition.Builder.create("PREREQ"+ID, TERM_SPEC_CONTEXT_ID, "PREREQ"+TERM_SPEC_NAME, "PREREQ"+TERM_SPEC_TYPE); 
-		
-		// create(String id, String termResolverId, String attributeDefinitionId, String value) {
-		TermResolverAttribute.Builder attribute = TermResolverAttribute.Builder.create(ATTR_ID, ID, ATTR_DEF_ID, ATTR_VALUE);
-		
+				
 		/*
 		public Builder create(String id,
 		   String namespaceCode,
@@ -107,11 +98,12 @@ class TermResolverTest {
 		   String typeId,
 		   TermSpecificationDefinition.Builder output,
 		   List<TermSpecificationDefinition.Builder> prerequisites,
-		   List<TermResolverAttribute.Builder> attributes,
+		   Map<String, String> attributes,
 		   List<String> parameterNames) {
 */
 		java.util.Set<TermSpecificationDefinition.Builder> prereqs = [prereq];
-		java.util.Set<TermResolverAttribute.Builder> attributes = [attribute];
+		Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put(ATTR_NAME, ATTR_VALUE);
 		java.util.Set<String> params = [PARAM_NAME+"1",PARAM_NAME+2];
 		
 		TermResolverDefinition termResolver = TermResolverDefinition.Builder.create(ID, NAMESPACE_CODE, NAME, CONTEXT_ID, TYPE_ID, output, prereqs, attributes, params).build()

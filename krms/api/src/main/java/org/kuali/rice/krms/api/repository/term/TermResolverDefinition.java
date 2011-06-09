@@ -18,6 +18,7 @@ package org.kuali.rice.krms.api.repository.term;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,6 +28,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -35,6 +37,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.krms.api.repository.BuilderUtils;
 
 /**
@@ -74,16 +77,20 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
     private final String typeId;
 	@XmlElement(name = Elements.OUTPUT, required=false)
 	private final TermSpecificationDefinition output;
+
 	@XmlElement(name = "termSpecificationDefinition", required=false)
 	@XmlElementWrapper(name = Elements.PREREQUISITES, required=false)
 	private final Set<TermSpecificationDefinition> prerequisites;
-	@XmlElement(name = "attribute", required=false)
-	@XmlElementWrapper(name = Elements.ATTRIBUTES, required=false)
-	private final Set<TermResolverAttribute> attributes;
+
+	@XmlElement(name = Elements.ATTRIBUTES, required = false)
+	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+	private final Map<String, String> attributes;
+
 	@XmlElementWrapper(name = Elements.PARAMETER_NAMES, required=false)
 	@XmlElement(name = "parameterName")
 	private final Set<String> parameterNames;
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+
+	@XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;	
 	
     @SuppressWarnings("unused")
@@ -114,9 +121,13 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		this.typeId = builder.getTypeId();
 		this.output = builder.getOutput().build();
 		this.prerequisites = BuilderUtils.convertFromBuilderSet(builder.getPrerequisites());
-		this.attributes = BuilderUtils.convertFromBuilderSet(builder.getAttributes());
 		this.parameterNames = Collections.unmodifiableSet(builder.getParameterNames());
 		this.versionNumber = builder.getVersionNumber();
+        if (builder.attributes != null){
+        	this.attributes = Collections.unmodifiableMap(builder.getAttributes());
+        } else {
+        	this.attributes = null;
+        }
 	}
 	
 	public static class Builder implements TermResolverDefinitionContract, ModelBuilder, 
@@ -131,7 +142,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
         private String typeId;
 		private TermSpecificationDefinition.Builder output;
 		private Set<TermSpecificationDefinition.Builder> prerequisites;
-		private Set<TermResolverAttribute.Builder> attributes;
+        private Map<String, String> attributes;
 		private Set<String> parameterNames;
         private Long versionNumber;
 		
@@ -142,7 +153,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
                 String typeId,
 				TermSpecificationDefinition.Builder output,
 				Set<TermSpecificationDefinition.Builder> prerequisites,
-				Set<TermResolverAttribute.Builder> attributes,
+				Map<String, String> attributes,
 				Set<String> parameterNames) {
 			setId(id);
 			setNamespaceCode(namespaceCode);
@@ -165,7 +176,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 			setTypeId(termResolver.getTypeId());
 			setOutput(TermSpecificationDefinition.Builder.create(termResolver.getOutput()));
 			setPrerequisites(BuilderUtils.transform(termResolver.getPrerequisites(), TermSpecificationDefinition.Builder.toBuilder));
-			setAttributes(BuilderUtils.transform(termResolver.getAttributes(), TermResolverAttribute.Builder.toBuilder));
+			setAttributes(termResolver.getAttributes());
 			this.setParameterNames(termResolver.getParameterNames());
 			this.setVersionNumber(termResolver.getVersionNumber());
 		}
@@ -181,7 +192,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 				String typeId,
 				TermSpecificationDefinition.Builder output,
 				Set<TermSpecificationDefinition.Builder> prerequisites,
-				Set<TermResolverAttribute.Builder> attributes,
+				Map<String, String> attributes,
 				Set<String> parameterNames) {
 			return new Builder(id, namespaceCode, name, contextId, typeId, output, prerequisites, attributes, parameterNames); 
 		}
@@ -257,8 +268,12 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		/**
 		 * @param attributes the attributes to set
 		 */
-		public void setAttributes(Set<TermResolverAttribute.Builder> attributes) {
-			this.attributes = attributes;
+		public void setAttributes(Map<String, String> attributes){
+			if (attributes == null){
+				this.attributes = Collections.emptyMap();
+			} else {
+				this.attributes = Collections.unmodifiableMap(attributes);
+			}
 		}
 
 		/**
@@ -323,7 +338,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 		/**
 		 * @return the attributes
 		 */
-		public Set<TermResolverAttribute.Builder> getAttributes() {
+		public Map<String, String> getAttributes() {
 			return this.attributes;
 		}
 		/**
@@ -411,7 +426,7 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 	 * @return the attributes
 	 */
 	@Override
-	public Set<TermResolverAttribute> getAttributes() {
+	public Map<String, String> getAttributes() {
 		return this.attributes;
 	}
 

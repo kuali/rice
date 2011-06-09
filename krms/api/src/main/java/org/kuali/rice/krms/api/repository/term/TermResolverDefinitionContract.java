@@ -18,6 +18,7 @@ package org.kuali.rice.krms.api.repository.term;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -34,7 +35,7 @@ public interface TermResolverDefinitionContract extends Identifiable, Versioned 
 	String getTypeId();
 	TermSpecificationDefinitionContract getOutput();
 	Set<? extends TermSpecificationDefinitionContract> getPrerequisites();
-	Set<? extends TermResolverAttributeContract> getAttributes();
+	public Map<String, String> getAttributes();
 	Set<String> getParameterNames();
 	
 }

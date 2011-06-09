@@ -58,10 +58,10 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 	   bo.sequenceNumber = im.sequenceNumber
 	   bo.versionNumber = im.versionNumber
 	   
-	   // build the set of agenda attribute BOs
+	   // build the set of action attribute BOs
 	   Set<ActionAttributeBo> attrs = new HashSet<ActionAttributeBo>();
 
-	   // for each converted pair, build an AgendaAttributeBo and add it to the set
+	   // for each converted pair, build an ActionAttributeBo and add it to the set
 	   ActionAttributeBo attributeBo;
 	   for (Entry<String,String> entry  : im.getAttributes().entrySet()){
 		   KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator

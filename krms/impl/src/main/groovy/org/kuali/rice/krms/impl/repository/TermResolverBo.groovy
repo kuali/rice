@@ -1,13 +1,14 @@
 package org.kuali.rice.krms.impl.repository
 
+import java.util.Map;
+import java.util.Map.Entry
+
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinitionContract;
 
 public class TermResolverBo extends PersistableBusinessObjectBase implements TermResolverDefinitionContract {
-
-    
     
     def String id
     def String namespaceCode
@@ -19,7 +20,7 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
     def TermSpecificationBo output
     def Set<TermSpecificationBo> prerequisites
     def Set<TermResolverParameterSpecificationBo> parameterSpecifications;
-    def Set<TermResolverAttributeBo> attributes
+    def Set<TermResolverAttributeBo> attributeBos
 
     public void setParameterNames(Set<String> pns) {
         if (pns != null) {
@@ -45,6 +46,14 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
         return results;
     }
     
+	public Map<String, String> getAttributes() {
+		HashMap<String, String> attributes = new HashMap<String, String>();
+		for (attr in attributeBos) {
+			attributes.put( attr.attributeDefinition.name, attr.value )
+		}
+		return attributes;
+	}
+
     /**
      * Converts a mutable bo to it's immutable counterpart
      * @param bo the mutable business object
@@ -72,22 +81,36 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
         bo.output = TermSpecificationBo.from(im.output)
         bo.outputId = im.output.id
         bo.parameterNames = new HashSet<String>()
-        for (paramName in im.parameterNames) {
-            bo.parameterSpecifications.add(TermResolverParameterSpecificationBo.from(im, paramName))
-        }
-        bo.prerequisites = new HashSet<TermSpecificationBo>()
-        for (prereq in im.prerequisites){
-            bo.prerequisites.add (TermSpecificationBo.from(prereq))
-        }
-        bo.attributes = new HashSet<TermResolverAttributeBo>()
-        for (attr in im.attributes){
-            bo.attributes.add (TermResolverAttributeBo.from(attr))
-        }
-	    bo.versionNumber = im.versionNumber
-        return bo
-    }
-    public TermSpecificationBo getOutput(){
-        return output;
+		for (paramName in im.parameterNames) {
+			bo.parameterSpecifications.add(TermResolverParameterSpecificationBo.from(im, paramName))
+		}
+		bo.prerequisites = new HashSet<TermSpecificationBo>()
+		for (prereq in im.prerequisites){
+			bo.prerequisites.add (TermSpecificationBo.from(prereq))
+		}
+		
+		// build the set of term resolver attribute BOs
+		Set<TermResolverAttributeBo> attrs = new HashSet<TermResolverAttributeBo>();
+
+		// for each converted pair, build an TermResolverAttributeBo and add it to the set
+		TermResolverAttributeBo attributeBo;
+		for (Entry<String,String> entry  : im.getAttributes().entrySet()){
+			KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator
+					.getKrmsAttributeDefinitionService()
+					.getKrmsAttributeBo(entry.getKey(), im.getNamespaceCode());
+			attributeBo = new TermResolverAttributeBo();
+			attributeBo.setTermResolverId( im.getId() );
+			attributeBo.setAttributeDefinitionId( attrDefBo.getId() );
+			attributeBo.setValue( entry.getValue() );
+			attributeBo.setAttributeDefinition( attrDefBo );
+			attrs.add( attributeBo );
+		}
+		bo.setAttributeBos(attrs);
+		bo.versionNumber = im.versionNumber
+		return bo
+	}
+	public TermSpecificationBo getOutput(){
+		return output;
     }
 
 }

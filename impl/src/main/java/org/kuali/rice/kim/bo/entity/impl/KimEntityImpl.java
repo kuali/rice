@@ -19,6 +19,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipBo;
+import org.kuali.rice.kim.impl.entity.personal.EntityBioDemographicsBo;
 import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -80,9 +81,9 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected EntityPrivacyPreferencesBo privacyPreferences;
 
-	@OneToOne(targetEntity=KimEntityBioDemographicsImpl.class, fetch = FetchType.EAGER, cascade = { })
+	@OneToOne(targetEntity=EntityBioDemographicsBo.class, fetch = FetchType.EAGER, cascade = { })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected KimEntityBioDemographicsImpl bioDemographics;
+	protected EntityBioDemographicsBo bioDemographics;
 	
 	@OneToMany(targetEntity = EntityCitizenshipBo.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
@@ -170,7 +171,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @return the bioDemographics
 	 */
-	public KimEntityBioDemographicsImpl getBioDemographics() {
+	public EntityBioDemographicsBo getBioDemographics() {
 	    if (ObjectUtils.isNull(this.bioDemographics)) {
             return null;
         }
@@ -181,7 +182,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @param bioDemographics
 	 *            the bioDemographics to set
 	 */
-	public void setBioDemographics(KimEntityBioDemographicsImpl bioDemographics) {
+	public void setBioDemographics(EntityBioDemographicsBo bioDemographics) {
 		this.bioDemographics = bioDemographics;
 	}
 

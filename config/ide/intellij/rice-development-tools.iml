@@ -102,6 +102,8 @@
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-template:2.2.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.jtidy:jtidyservlet:r8-m1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.jtidy:jtidy:r938" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.1" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" />
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />

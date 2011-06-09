@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.entity.dto;
 
 import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenship;
 import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract;
+import org.kuali.rice.kim.api.entity.personal.EntityBioDemographics;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.entity.type.EntityTypeData;
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
@@ -44,7 +45,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     private static final long serialVersionUID = 1L;
 
     private List<KimEntityAffiliationInfo> affiliations;
-    private KimEntityBioDemographicsInfo bioDemographics;
+    private EntityBioDemographics bioDemographics;
     private List<EntityCitizenship> citizenships;
     private List<KimEntityEmploymentInformationInfo> employmentInformation;
     private String entityId;
@@ -89,7 +90,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
             });
 
             if (entity.getBioDemographics() != null) {
-                bioDemographics = new KimEntityBioDemographicsInfo(entity.getBioDemographics());
+                bioDemographics = EntityBioDemographics.Builder.create(entity.getBioDemographics()).build();
             }
 
             if (entity.getPrivacyPreferences() != null) {
@@ -193,7 +194,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getBioDemographics()
      */
-    public KimEntityBioDemographicsInfo getBioDemographics() {
+    public EntityBioDemographics getBioDemographics() {
         return bioDemographics;
     }
 
@@ -201,7 +202,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * Setter for this {@link KimEntityInfo}'s demographic information.  Note the behavior of 
      * {@link #getBioDemographics()} if this is set to null;
      */
-    public void setBioDemographics(KimEntityBioDemographicsInfo bioDemographics) {
+    public void setBioDemographics(EntityBioDemographics bioDemographics) {
         this.bioDemographics = bioDemographics;
     }
 

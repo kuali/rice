@@ -22,7 +22,9 @@
       <module fileurl="file://$PROJECT_DIR$/rice-impl.iml" filepath="$PROJECT_DIR$/rice-impl.iml" group="rice and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-internal-test-tools.iml" filepath="$PROJECT_DIR$/rice-internal-test-tools.iml" group="rice and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kew.iml" filepath="$PROJECT_DIR$/rice-kew.iml" group="rice and modules/rice-kew and modules" />
+      <module fileurl="file://$PROJECT_DIR$/../../../kew/api/rice-kew-api.iml" filepath="$PROJECT_DIR$/../../../kew/api/rice-kew-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-kew-framework.iml" filepath="$PROJECT_DIR$/rice-kew-framework.iml" group="rice and modules/rice-kew and modules" />
+      <module fileurl="file://$PROJECT_DIR$/../../../kew/impl/rice-kew-impl.iml" filepath="$PROJECT_DIR$/../../../kew/impl/rice-kew-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-kim-api.iml" filepath="$PROJECT_DIR$/rice-kim-api.iml" group="rice and modules/kim and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kim-framework.iml" filepath="$PROJECT_DIR$/rice-kim-framework.iml" group="rice and modules/kim and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kim-impl.iml" filepath="$PROJECT_DIR$/rice-kim-impl.iml" group="rice and modules/kim and modules" />

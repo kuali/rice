@@ -82,7 +82,7 @@ still render, but render in a hidden container --%>
 		<krad:script
 			value="
 			var condition = function(){return (${component.progressiveDisclosureConditionJs});};
-			setupProgressiveCheck('${cName}', '${component.id}', condition, ${component.progressiveRenderAndRefresh});" />
+			setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', condition, ${component.progressiveRenderAndRefresh});" />
 	</c:forEach>
 	<krad:script
 			value="

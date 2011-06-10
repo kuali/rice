@@ -123,7 +123,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
             for (ComparableInfo comparable : groupComparables) {
                 String idSuffix = comparable.getIdSuffix();
                 if (StringUtils.isBlank(idSuffix)) {
-                    idSuffix = "c" + defaultSuffix;
+                    idSuffix = "_c" + defaultSuffix;
                 }
 
                 Component compareItem = ComponentUtils.copy(item, idSuffix);

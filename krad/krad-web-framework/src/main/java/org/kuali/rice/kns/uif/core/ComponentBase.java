@@ -11,10 +11,10 @@
 package org.kuali.rice.kns.uif.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,9 +24,10 @@ import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.control.ControlBase;
+import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
-import org.springframework.util.MethodInvoker;
+import org.kuali.rice.kns.uif.util.ViewModelUtils;
 
 /**
  * Base implementation of <code>Component</code> which other component
@@ -229,7 +230,19 @@ public abstract class ComponentBase implements Component {
                     ((ControlBase) component).setTabIndex(-1);
                 }
             }
-
+        }
+        // replace the #line? collections place holder with the correct binding
+        // path
+        // TODO : handle all components not only AttributeField
+        if (StringUtils.isNotEmpty(progressiveRender)) {
+            if (progressiveRender.indexOf("#line?") != -1 && this instanceof AttributeField) {
+                String path = ViewModelUtils.getParentObjectPath((AttributeField) this);
+                progressiveDisclosureConditionJs = progressiveDisclosureConditionJs.replace("#line?", path);
+                ListIterator<String> listIterator = progressiveDisclosureControlNames.listIterator();
+                while (listIterator.hasNext()) {
+                    listIterator.set(listIterator.next().replace("#line?", path));
+                }
+            }
         }
     }
 

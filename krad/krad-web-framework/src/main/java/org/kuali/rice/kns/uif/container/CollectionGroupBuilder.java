@@ -211,7 +211,7 @@ public class CollectionGroupBuilder implements Serializable {
 
 		if (bindToForm) {
 			ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, new Boolean(true));
-		}
+		}		
 		
         // remove fields from the line that have render false
         lineFields = removeNonRenderLineFields(view, model, collectionGroup, lineFields, currentLine, lineIndex);
@@ -239,11 +239,13 @@ public class CollectionGroupBuilder implements Serializable {
 				subCollectionFields.add(subCollectionGroupField);
 			}
 		}
-
+		
+		
 		// invoke layout manager to build the complete line
 		layoutManager.buildLine(view, model, collectionGroup, lineFields, subCollectionFields, bindingPath, actions,
 				"_l" + lineIndex, currentLine, lineIndex);
 	}
+
 	
     /**
      * Evaluates the render property for the given list of <code>Field</code>
@@ -287,8 +289,10 @@ public class CollectionGroupBuilder implements Serializable {
                 lineField.setRender(render);
             }
 
-            // only add line field if set to render
-            if (lineField.isRender()) {
+            // only add line field if set to render or if it is hidden by
+            // progressive render
+            if (lineField.isRender()
+                    || (!lineField.isRender() && !StringUtils.isEmpty(lineField.getProgressiveRender()))) {
                 fields.add(lineField);
             }
         }

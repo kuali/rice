@@ -501,8 +501,8 @@ public class ComponentUtils {
                 + "$0".replaceAll("\\s+(?i:matches)\\s+", "") + "/).length > 0 ");
         
         for(String propertyName: controlNames){
-            conditionJs = conditionJs.replaceAll(propertyName, 
-                    "coerceValue('"+ propertyName +"')");
+            conditionJs = conditionJs.replace(propertyName, 
+                    "coerceValue(\""+ propertyName +"\")");
         }
         return conditionJs;
     }

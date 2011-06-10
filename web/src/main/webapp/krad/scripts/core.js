@@ -746,37 +746,38 @@ function setupRefreshCheck(controlName, refreshId, condition){
  * which may satisfy the progressive disclosure condition passed in.  When the condition is satisfied,
  * show the necessary content, otherwise hide it.  If the content has not yet been rendered then a server
  * call is made to retrieve the content to be shown.  If alwaysRetrieve is true, the component
- * is always retrieved from the server when disclosed.
+ * is always retrieved from the server when disclosed. 
+ * Do not add check if the component is part of the "old" values on a maintanance document (endswith _c0).
  * @param controlName
  * @param disclosureId
  * @param condition - function which returns true to disclose, false otherwise
  */
 function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetrieve){
 	var actualId = retrieveOriginalId(disclosureId);
-
-	jq("[name='"+ controlName +"']").change(function() {
-		var refreshDisclosure = jq("#" + disclosureId + "_refreshWrapper");
-		if(refreshDisclosure.length){
-			if(condition()){
-				if(refreshDisclosure.hasClass("unrendered") || alwaysRetrieve){
-					retrieveComponent(disclosureId);
+	if (!actualId.match("\_c0$")) {
+		jq("[name='"+ controlName +"']").change(function() {
+			var refreshDisclosure = jq("#" + disclosureId + "_refreshWrapper");
+			if(refreshDisclosure.length){
+				if(condition()){
+					if(refreshDisclosure.hasClass("unrendered") || alwaysRetrieve){
+						retrieveComponent(disclosureId);
+					}
+					else{
+						refreshDisclosure.fadeIn("slow");
+						//re-enable validation on now shown inputs
+						hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
+						jq(".displayWith-" + actualId).show();
+					}
 				}
 				else{
-					refreshDisclosure.fadeIn("slow");
-					//re-enable validation on now shown inputs
+					refreshDisclosure.hide();
+					//ignore validation on hidden inputs
 					hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
-					jq(".displayWith-" + actualId).show();
+					jq(".displayWith-" + actualId).hide();
 				}
 			}
-			else{
-				refreshDisclosure.hide();
-				//ignore validation on hidden inputs
-				hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
-				jq(".displayWith-" + actualId).hide();
-			}
-		}
-	});
-	
+		});
+	}
 
 }
 
@@ -879,16 +880,27 @@ function retrieveComponent(id){
 /**
  * Retrieves the original dictionary based id that was used to generate this component and/or its
  * children/parent.  Basically removes everything after the first "_" in the idString passed in. 
+ * Check if it is part of collections or old/new values of maintanance document to check
+ * if the first one ot two underscores must be preserved.
  * @param idString
  * @returns
  */
 function retrieveOriginalId(idString){
+	var oneExtraUnderscoreFlag = idString.match("_add$|_add_|_[0-9]*_|_[0-9]*$|_c[0-1]_|_c[0-1]$");
+	var twoExtraUnderscoreFlag = idString.match("_[0-9]*_c[0-1]_|_[0-9]*_c[0-1]$");
 	var index = idString.indexOf("_");
 	var id = idString;
 	if(index){
-		id = idString.substr(0,index);
-	}
-	
+		if (oneExtraUnderscoreFlag || twoExtraUnderscoreFlag) {
+			index = idString.indexOf("_", index+1);
+		}
+		if (twoExtraUnderscoreFlag) {
+			index = idString.indexOf("_", index+1);
+		}
+		if (index) {
+			id = idString.substr(0,index);
+		}
+	}	
 	return id;
 }
 

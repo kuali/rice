@@ -6,9 +6,8 @@
         <groupId>org.kuali.rice</groupId>
         <version>2.0.0-m5-SNAPSHOT</version>
     </parent>
-    <groupId>org.kuali.rice</groupId>
     <artifactId>rice-kim-impl</artifactId>
-    <name>rice-kim-impl</name>
+    <name>Rice KIM Impl</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

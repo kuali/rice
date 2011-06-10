@@ -14,43 +14,44 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <name>rice-test</name>
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.kuali.rice</groupId>
-        <artifactId>rice</artifactId>
-        <version>2.0.0-m5-SNAPSHOT</version>
-    </parent>
-    <artifactId>rice-test</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>core</module>
-        <module>kns</module>
-        <module>ksb</module>
-        <module>kim</module>
-        <module>kew</module>
-        <module>ken</module>
-        <module>kcb</module>
-        <module>impl</module>
-        <module>edl</module>
-        <module>shareddata</module>
-    </modules>
-    <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <name>Rice Test</name>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.kuali.rice</groupId>
+    <artifactId>rice</artifactId>
+    <version>2.0.0-m5-SNAPSHOT</version>
+  </parent>
+  <artifactId>rice-test</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+    <module>core</module>
+    <module>kns</module>
+    <module>ksb</module>
+    <module>kim</module>
+    <module>kew</module>
+    <module>ken</module>
+    <module>kcb</module>
+    <module>impl</module>
+    <module>edl</module>
+    <module>shareddata</module>
+  </modules>
+  <properties>
         <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->
-        <maven.surefire.skip>true</maven.surefire.skip>
-        <maven.failsafe.skip>true</maven.failsafe.skip>
-    </properties>
+    <maven.surefire.skip>true</maven.surefire.skip>
+    <maven.failsafe.skip>true</maven.failsafe.skip>
+  </properties>
 
-    <profiles>
-        <profile>
-            <id>itests</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <maven.failsafe.skip>false</maven.failsafe.skip>
-            </properties>
-        </profile>
-    </profiles>
+  <profiles>
+    <profile>
+      <id>itests</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <maven.failsafe.skip>false</maven.failsafe.skip>
+      </properties>
+    </profile>
+  </profiles>
 </project>

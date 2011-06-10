@@ -775,6 +775,7 @@
   </build>
 
   <modules>
+    <module>core</module>
     <module>api</module>
     <module>impl</module>
     <module>web</module>
@@ -782,7 +783,6 @@
     <module>development-tools</module>
     <module>sampleapp</module>
     <module>standalone</module>
-    <module>core</module>
     <module>test</module>
     <module>edl</module>
     <module>kim</module>

@@ -5,11 +5,10 @@
     <groupId>org.kuali.rice</groupId>
     <version>2.0.0-m5-SNAPSHOT</version>
   </parent>
-  <groupId>org.kuali.rice</groupId>
   <artifactId>rice-ksb</artifactId>
   <version>2.0.0-m5-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>rice-ksb</name>
+  <name>Rice KSB</name>
   <modules>
   	<module>api</module>
 	<module>framework</module>

@@ -1,28 +1,24 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>rice-krms</artifactId>
     <groupId>org.kuali.rice</groupId>
     <version>2.0.0-m5-SNAPSHOT</version>
   </parent>
-  <groupId>org.kuali.rice</groupId>
   <artifactId>rice-krms-api</artifactId>
-  <name>rice-krms-api</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <name>Rice KRMS API</name>
   <dependencies>
     <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>rice-core-api</artifactId>
-        <version>${project.version}</version>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-api</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>rice-api</artifactId>
-        <version>${project.version}</version>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-api</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -31,37 +27,37 @@
     </dependency>
   </dependencies>
   	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-java2ws-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>ruleRepositoryService-wsdl</id>
-						<phase>${rice.java2ws.phase}</phase>
-						<configuration>
-							<className>org.kuali.rice.krms.api.repository.RuleRepositoryService</className>
-							<outputFile>${project.build.directory}/generated-sources/wsdl/RuleRepositoryService.wsdl</outputFile>
-							<serviceName>RuleRepositoryService</serviceName>
-						</configuration>
-						<goals>
-							<goal>java2ws</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>functionRepositoryService-wsdl</id>
-						<phase>${rice.java2ws.phase}</phase>
-						<configuration>
-							<className>org.kuali.rice.krms.api.repository.function.FunctionRepositoryService</className>
-							<outputFile>${project.build.directory}/generated-sources/wsdl/FunctionRepositoryService.wsdl</outputFile>
-							<serviceName>FunctionRepositoryService</serviceName>
-						</configuration>
-						<goals>
-							<goal>java2ws</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-java2ws-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>ruleRepositoryService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.krms.api.repository.RuleRepositoryService</className>
+              <outputFile>${project.build.directory}/generated-sources/wsdl/RuleRepositoryService.wsdl</outputFile>
+              <serviceName>RuleRepositoryService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>functionRepositoryService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.krms.api.repository.function.FunctionRepositoryService</className>
+              <outputFile>${project.build.directory}/generated-sources/wsdl/FunctionRepositoryService.wsdl</outputFile>
+              <serviceName>FunctionRepositoryService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

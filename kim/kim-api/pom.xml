@@ -8,7 +8,7 @@
         <version>2.0.0-m5-SNAPSHOT</version>
     </parent>
     <artifactId>rice-kim-api</artifactId>
-    <name>rice-kim-api</name>
+    <name>Rice KIM API</name>
 
     <dependencies>
         <dependency>

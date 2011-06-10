@@ -7,7 +7,7 @@
         <version>2.0.0-m5-SNAPSHOT</version>
     </parent>
     <artifactId>rice-shareddata</artifactId>
-    <name>rice-shareddata</name>
+    <name>Rice Shared Data</name>
     <packaging>pom</packaging>
     <modules>
         <module>api</module>

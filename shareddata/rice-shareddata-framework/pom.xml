@@ -7,7 +7,7 @@
         <version>2.0.0-m5-SNAPSHOT</version>
     </parent>
     <artifactId>rice-shareddata-framework</artifactId>
-    <name>rice-shareddata-framework</name>
+    <name>Rice Shared Data Framework</name>
 
     <dependencies>
         <dependency>

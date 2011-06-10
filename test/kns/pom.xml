@@ -16,8 +16,9 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <name>kns-test</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <name>Rice Test KNS</name>
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali.rice</groupId>
@@ -27,10 +28,10 @@
   <artifactId>rice-test-kns</artifactId>
 
   <properties>
-  	<maven.skip.packaging>false</maven.skip.packaging>
-  	<maven.failsafe.forkmode>always</maven.failsafe.forkmode>
+    <maven.skip.packaging>false</maven.skip.packaging>
+    <maven.failsafe.forkmode>always</maven.failsafe.forkmode>
     <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
-  	<maven.failsafe.forkedProcessTimeoutInSeconds>300</maven.failsafe.forkedProcessTimeoutInSeconds>
+    <maven.failsafe.forkedProcessTimeoutInSeconds>300</maven.failsafe.forkedProcessTimeoutInSeconds>
   </properties>
 
   <dependencies>
@@ -41,16 +42,16 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-	  <groupId>${project.groupId}</groupId>
-	  <artifactId>rice-internal-test-tools</artifactId>
-	  <version>${project.version}</version>
-	  <scope>test</scope>
-	</dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-internal-test-tools</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
     <!-- HACK!! this dependency should not be here -->
     <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>rice-edl-impl</artifactId>
-        <version>${project.version}</version>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-edl-impl</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>mysql</groupId>
@@ -119,7 +120,7 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
       <scope>test</scope>
-    </dependency>     
+    </dependency>
   </dependencies>
 
 </project>

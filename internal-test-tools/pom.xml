@@ -16,198 +16,199 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<name>Internal Test Tools</name>
-    <description>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <name>Rice Internal Test Tools</name>
+  <description>
         This module contains rice's internal testing tools.
 
         This module is internal to rice and should not used outside of the rice project.
         It should only be depended on by rice test code.  This module can depend on any part of rice.
     </description>
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.kuali.rice</groupId>
-		<artifactId>rice</artifactId>
-		<version>2.0.0-m5-SNAPSHOT</version>
-	</parent>
-	<artifactId>rice-internal-test-tools</artifactId>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.kuali.rice</groupId>
+    <artifactId>rice</artifactId>
+    <version>2.0.0-m5-SNAPSHOT</version>
+  </parent>
+  <artifactId>rice-internal-test-tools</artifactId>
 
-    <dependencyManagement>
-        <dependencies>
-        	<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-deploy</artifactId>
-				<version>${jetty.version}</version>
-				<scope>test</scope>
-			</dependency>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-deploy</artifactId>
+        <version>${jetty.version}</version>
+        <scope>test</scope>
+      </dependency>
 
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-jsp-2.1</artifactId>
-				<version>${jetty.version}</version>
-				<scope>test</scope>
-			</dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-jsp-2.1</artifactId>
+        <version>${jetty.version}</version>
+        <scope>test</scope>
+      </dependency>
 
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-server</artifactId>
-				<version>${jetty.version}</version>
-				<scope>test</scope>
-			</dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>${jetty.version}</version>
+        <scope>test</scope>
+      </dependency>
 
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-servlet</artifactId>
-				<version>${jetty.version}</version>
-				<scope>test</scope>
-			</dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-servlet</artifactId>
+        <version>${jetty.version}</version>
+        <scope>test</scope>
+      </dependency>
 
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-webapp</artifactId>
-				<version>${jetty.version}</version>
-				<scope>test</scope>
-			</dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-webapp</artifactId>
+        <version>${jetty.version}</version>
+        <scope>test</scope>
+      </dependency>
 
         	<!-- the jsp libraries have not been moved over to eclipse as of jetty 7 - this is required for jetty 7 -->
-			<dependency>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jsp-2.1-glassfish</artifactId>
-				<version>${jsp-2.1-glassfish.version}</version>
-				<scope>test</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>org.mortbay.jetty</groupId>
-						<artifactId>servlet-api</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-        </dependencies>
-    </dependencyManagement>
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jsp-2.1-glassfish</artifactId>
+        <version>${jsp-2.1-glassfish.version}</version>
+        <scope>test</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>servlet-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-	<dependencies>
-	    <dependency>
-	      <groupId>${project.groupId}</groupId>
-	      <artifactId>rice-core-impl</artifactId>
-	      <version>${project.version}</version>
-	      <exclusions>
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-impl</artifactId>
+      <version>${project.version}</version>
+      <exclusions>
 	      	<!-- the versions from the jetty server -->
-	      	<exclusion>
-				<groupId>javax.servlet</groupId>
-				<artifactId>jstl</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>javax.servlet.jsp</groupId>
-				<artifactId>jsp-api</artifactId>
-			</exclusion>
-	      </exclusions>
-	    </dependency>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>jstl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.servlet.jsp</groupId>
+          <artifactId>jsp-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
-        <dependency>
-	      <groupId>${project.groupId}</groupId>
-	      <artifactId>rice-impl</artifactId>
-	      <version>${project.version}</version>
-	      <exclusions>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-impl</artifactId>
+      <version>${project.version}</version>
+      <exclusions>
 	      	<!-- the versions from the jetty server -->
-	      	<exclusion>
-				<groupId>javax.servlet</groupId>
-				<artifactId>jstl</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>javax.servlet.jsp</groupId>
-				<artifactId>jsp-api</artifactId>
-			</exclusion>
-	      </exclusions>
-	    </dependency>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>jstl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.servlet.jsp</groupId>
+          <artifactId>jsp-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
-	    <dependency>
-	    	<groupId>org.springframework</groupId>
-	    	<artifactId>spring-core</artifactId>
-	    </dependency>
-	    
-	    <dependency>
-	    	<groupId>org.springframework</groupId>
-	    	<artifactId>spring-context</artifactId>
-	    </dependency>
-	    
-	    <dependency>
-	    	<groupId>org.springframework</groupId>
-	    	<artifactId>spring-tx</artifactId>
-	    </dependency>
-	    
-	   	<dependency>
-	    	<groupId>org.springframework</groupId>
-	    	<artifactId>spring-jdbc</artifactId>
-	    </dependency>
-	    
-	    <dependency>
-	    	<groupId>org.kuali.commons</groupId>
-	    	<artifactId>commons-beanutils</artifactId>
-	    </dependency>
-	    
-	   <dependency>
-	    	<groupId>commons-lang</groupId>
-	    	<artifactId>commons-lang</artifactId>
-	    </dependency>
-	    
-	    <dependency>
-	    	<groupId>log4j</groupId>
-	    	<artifactId>log4j</artifactId>
-	    </dependency>
-	    
-	   	<dependency>
-	    	<groupId>javax.transaction</groupId>
-	    	<artifactId>jta</artifactId>
-	    </dependency>
-	    
-	   	<dependency>
-		    <groupId>org.eclipse.jetty</groupId>
-		    <artifactId>jetty-deploy</artifactId>
-		    <scope>compile</scope>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
 
-		<dependency>
-		    <groupId>org.eclipse.jetty</groupId>
-		    <artifactId>jetty-jsp-2.1</artifactId>
-		    <scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.eclipse.jetty</groupId>
-		    <artifactId>jetty-server</artifactId>
-		    <scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.eclipse.jetty</groupId>
-		    <artifactId>jetty-servlet</artifactId>
-		    <scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.eclipse.jetty</groupId>
-		    <artifactId>jetty-webapp</artifactId>
-		    <scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jsp-2.1-glassfish</artifactId>
-			<scope>compile</scope>
-		</dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>compile</scope>
-		</dependency>
-	</dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kuali.commons</groupId>
+      <artifactId>commons-beanutils</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>jta</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-deploy</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-jsp-2.1</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-webapp</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>jsp-2.1-glassfish</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
 </project>

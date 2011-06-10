@@ -7,7 +7,7 @@
         <version>2.0.0-m5-SNAPSHOT</version>
     </parent>
     <artifactId>rice-test-shareddata</artifactId>
-    <name>shareddata-test</name>
+    <name>Rice Test Shared Data</name>
 
     <dependencies>
         <dependency>

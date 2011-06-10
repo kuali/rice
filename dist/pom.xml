@@ -24,7 +24,7 @@
   </parent>
   <artifactId>rice-dist</artifactId>
   <packaging>pom</packaging>
-  <name>rice-dist</name>
+  <name>Rice Distributions</name>
   <properties>
     <kuali.testjar.phase>none</kuali.testjar.phase>
   </properties>

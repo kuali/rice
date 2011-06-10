@@ -16,6 +16,7 @@
 
 package org.kuali.rice.kim.api.group;
 
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
@@ -85,16 +86,6 @@ public interface GroupContract extends Versioned, GloballyUnique, Inactivatable,
 
     List<? extends GroupContract> getGroupMembers();*/
 
-    /**
-     * This is a set of Attributes for a Group.
-     *
-     * <p>
-     * This is a set of attributes which are key-label pairs that are defined by the Group's Kim Type.
-     * </p>
-     *
-     * @return attributes
-     */
-    List<? extends KimAttributeDataContract> getAttributes();
 
 
 
@@ -108,6 +99,6 @@ public interface GroupContract extends Versioned, GloballyUnique, Inactivatable,
      *
      * @return attributes
      */
-	//AttributeSet getAttributes();
+	Attributes getAttributes();
 
 }

@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -43,7 +44,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -313,8 +316,8 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		return null;
 	}
 
-	public AttributeSet getQualifiersAsAttributeSet() {
-		AttributeSet attributes = new AttributeSet(qualifiers.size());
+	public Attributes getQualifiersAsAttributes() {
+        Map<String, String> attributes = new HashMap<String, String>();
 		for(GroupDocumentQualifier qualifier: qualifiers){
 			if ( qualifier.getKimAttribute() != null ) {
 				attributes.put(qualifier.getKimAttribute().getAttributeName(), qualifier.getAttrVal());
@@ -323,7 +326,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 				attributes.put("Unknown Attribute ID: " + qualifier.getKimAttrDefnId(), qualifier.getAttrVal());
 			}
 		}
-		return attributes;
+		return Attributes.fromMap(attributes);
 	}
 	
 	public void setDefinitions(AttributeDefinitionMap definitions) {

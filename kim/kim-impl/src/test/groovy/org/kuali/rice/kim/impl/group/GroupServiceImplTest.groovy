@@ -29,6 +29,7 @@ import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.kim.util.KimConstants
 import org.kuali.rice.kns.service.BusinessObjectService
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo
 
 
 class GroupServiceImplTest {
@@ -83,8 +84,11 @@ class GroupServiceImplTest {
         KimTypeBo kimTypeBo = new KimTypeBo(id: "2", serviceName: "service", namespaceCode: "KUALI", name: "thisType",
                 active: true)
 
+        KimAttributeBo kimAttributeBo = new KimAttributeBo(id: "attrId1", componentName: "component1", attributeName: "attrName1",
+                namespaceCode: "KUALI", attributeLabel: "label", active: true)
+
         GroupAttributeBo attribute1 = new GroupAttributeBo(id: "1", assignedToId: "2", kimAttributeId: "1",
-                         attributeValue: "Y", kimTypeId: "2", kimType: kimTypeBo)
+                         attributeValue: "Y", kimTypeId: "2", kimType: kimTypeBo, kimAttribute: kimAttributeBo)
 
 
         List<GroupAttributeBo> attributesForOtherGroup = new ArrayList<GroupAttributeBo>()
@@ -97,7 +101,7 @@ class GroupServiceImplTest {
                 name: "somegroup", description: "this is some group", kimTypeId: "1", members: group1Members)
         GroupBo otherGroup = new GroupBo(active: true, id: "2", namespaceCode: "ROCK",
                 name: "othergroup", description: "this is some other group", kimTypeId: "2", members: group2Members,
-                attributes: attributesForOtherGroup)
+                attributeDetails: attributesForOtherGroup)
         GroupBo thirdGroup = new GroupBo(active: true, id: "114", namespaceCode: "SOMETHING",
                 name: "HMMM", description: "this is some weird group", kimTypeId: "1")
         for (bo in [someGroup, otherGroup, thirdGroup]) {

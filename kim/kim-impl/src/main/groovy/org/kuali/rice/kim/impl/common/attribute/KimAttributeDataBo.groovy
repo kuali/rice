@@ -24,6 +24,8 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.core.util.CollectionUtils
+import org.apache.commons.collections.CollectionUtils
 
 abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implements KimAttributeDataContract {
     private static final long serialVersionUID = 1L;
@@ -74,6 +76,9 @@ abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implemen
 
     /** creates a list of KimAttributeDataBos from attributes, kimTypeId, and assignedToId. */
     static <T extends KimAttributeDataBo> List<T> createFrom(Class<T> type, Attributes attributes, String kimTypeId) {
+       if (attributes == null) {
+           return new ArrayList<T>();
+       }
        return attributes.toMap().entrySet().collect {
             KimTypeAttribute attr = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(it.getKey());
             if (attr != null && StringUtils.isNotBlank(it.getValue())) {

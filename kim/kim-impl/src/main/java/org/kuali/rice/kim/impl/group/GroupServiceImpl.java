@@ -19,8 +19,7 @@ package org.kuali.rice.kim.impl.group;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -262,25 +261,20 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
     @Override
-    public AttributeSet getGroupAttributes(String groupId) throws RiceIllegalArgumentException {
+    public Attributes getAttributes(String groupId) throws RiceIllegalArgumentException {
         if ( StringUtils.isEmpty(groupId) ) {
 			throw new RiceIllegalArgumentException("groupId is blank");
 		}
 
         if (groupId == null) {
-            return new AttributeSet(0);
+            return Attributes.empty();
         }
 
-        AttributeSet groupAttrs = new AttributeSet();
         Group group = getGroup(groupId);
         if (group != null) {
-            List<KimAttributeData> attributes = group.getAttributes();
-
-            for (KimAttributeData attr : attributes) {
-                groupAttrs.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
-            }
+            return group.getAttributes();
         }
-        return groupAttrs;
+        return null;
     }
 
     @Override

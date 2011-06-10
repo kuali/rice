@@ -18,6 +18,7 @@ package org.kuali.rice.kew.xml;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
@@ -41,6 +42,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 
@@ -104,10 +106,6 @@ public class GroupXmlParser {
                 }
                 try {
                     Group newGroup =  identityManagementService.createGroup(group);
-                    //TODO: use identitymanagementservice createGroup once updated
-                    /*GroupBo newGroupBo = (GroupBo)KNSServiceLocator.getBusinessObjectService().save(GroupBo.from(group));
-                    Group newGroup = GroupBo.to(newGroupBo);*/
-
 
                     String key = newGroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + newGroup.getName().trim();
                     addGroupMembers(newGroup, key);
@@ -127,27 +125,9 @@ public class GroupXmlParser {
                     //builder.setVersionNumber(foundGroup.getVersionNumber());
                     group = builder.build();
                     identityManagementService.updateGroup(foundGroup.getId(), group);
-                    /*//todo Use updateGroup method
-                    GroupBo groupBo = (GroupBo)KNSServiceLocator.getBusinessObjectService().save(GroupBo.from(group));*/
 
                     //delete existing group members and replace with new
-
                     identityManagementService.removeAllMembers(foundGroup.getId());
-
-                    //HACK!!!!!!!!
-                    /*Collection<GroupMemberBo> toDeactivate = groupBo.getMembers();
-                    java.sql.Timestamp today = new java.sql.Timestamp(System.currentTimeMillis());
-
-                    // Set principals as inactive
-                    if (toDeactivate != null) {
-                        for (GroupMemberBo aToDeactivate : toDeactivate) {
-                            aToDeactivate.setActiveToDate(today);
-                        }
-
-                        // Save
-                        KNSServiceLocator.getBusinessObjectService().save(new ArrayList<GroupMemberBo>(toDeactivate));
-                    }*/
-                    //END HACK!!!!!!!!
 
                     String key = group.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + group.getName().trim();
                     addGroupMembers(group, key);
@@ -205,8 +185,6 @@ public class GroupXmlParser {
         IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
         //groupInfo.setGroupName(element.getChildText(NAME, GROUP_NAMESPACE));
 
-
-
         String id = element.getChildText(ID, GROUP_NAMESPACE);
         if (id != null) {
             groupInfo.setId(id.trim());
@@ -218,8 +196,6 @@ public class GroupXmlParser {
         if (description != null && !description.trim().equals("")) {
             groupInfo.setDescription(description);
         }
-
-
 
         //Active Indicator
         groupInfo.setActive(DEFAULT_ACTIVE_VALUE);
@@ -238,23 +214,16 @@ public class GroupXmlParser {
         //Group attributes
         if (element.getChild(ATTRIBUTES, GROUP_NAMESPACE) != null) {
             List<Element> attributes = element.getChild(ATTRIBUTES, GROUP_NAMESPACE).getChildren();
-            AttributeSet attributeSet = new AttributeSet();
-            List<KimAttributeData.Builder> groupAttributes = new ArrayList<KimAttributeData.Builder>();
-            for (Element attr : attributes ) {
-                KimAttributeData.Builder attrBuilder = KimAttributeData.Builder.create(kimTypeInfo.getId());
-                String key = attr.getAttributeValue(KEY);
-                String value = attr.getAttributeValue(VALUE);
-                attrBuilder.setKimAttribute(KimAttribute.Builder.create("org.kuali.rice.kim.bo.impl.KimAttributes", key, kimTypeInfo.getNamespaceCode()));
-                attrBuilder.setValue(value);
-                attrBuilder.setAssignedToId(groupInfo.getId());
 
-                //attributeSet.put(key, value);
-                groupAttributes.add(attrBuilder);
-                if (!validAttributeKeys.contains(key)) {
+            Map<String, String> attrMap = new HashMap<String, String>();
+            for (Element attr : attributes ) {
+                attrMap.put(attr.getAttributeValue(KEY), attr.getAttributeValue(VALUE));
+                if (!validAttributeKeys.contains(attr.getAttributeValue(KEY))) {
                     throw new XmlException("Invalid attribute specified.");
                 }
             }
-            if (groupAttributes.size() > 0) {
+            Attributes groupAttributes = Attributes.fromMap(attrMap);
+            if (!groupAttributes.isEmpty()) {
                 groupInfo.setAttributes(groupAttributes);
             }
         }

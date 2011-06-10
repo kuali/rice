@@ -27,6 +27,7 @@ import org.kuali.rice.kim.api.common.attribute.KimAttribute
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.api.type.KimType
+import org.kuali.rice.core.api.mo.common.Attributes
 
 class GroupTest {
 
@@ -88,14 +89,12 @@ class GroupTest {
     }
 
 
-    private static final String ATTRIBUTES_1_ID = "1"
-    private static final String ATTRIBUTES_1_GROUP_ID = "50"
+    private static final String ATTRIBUTES_1_NAME = "1"
     private static final String ATTRIBUTES_1_VALUE = "X"
     private static final Long ATTRIBUTES_1_VER_NBR = new Long(1)
     private static final String ATTRIBUTES_1_OBJ_ID = UUID.randomUUID()
 
-    private static final String ATTRIBUTES_2_ID = "2"
-    private static final String ATTRIBUTES_2_GROUP_ID = "50"
+    private static final String ATTRIBUTES_2_NAME = "2"
     private static final String ATTRIBUTES_2_VALUE = "Y"
     private static final Long ATTRIBUTES_2_VER_NBR = new Long(1)
     private static final String ATTRIBUTES_2_OBJ_ID = UUID.randomUUID()
@@ -107,51 +106,15 @@ class GroupTest {
     private static final String XML;
     static {
         XML = """
-        <group xmlns="http://rice.kuali.org/kim/v2_0">
+        <group xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/kim/v2_0">
           <id>${ID}</id>
           <namespaceCode>${NAMESPACE}</namespaceCode>
           <name>${NAME}</name>
           <description>${DESCRIPTION}</description>
           <kimTypeId>${KIM_TYPE_ID}</kimTypeId>
           <attributes>
-              <attribute>
-                <id>${ATTRIBUTES_1_ID}</id>
-                <assignedToId>${ATTRIBUTES_1_GROUP_ID}</assignedToId>
-                <kimTypeId>${KIM_TYPE_1.id}</kimTypeId>
-                <kimType>
-                    <id>${KIM_TYPE_1.id}</id>
-                    <versionNumber>${VERSION_NUMBER}</versionNumber>
-                </kimType>
-                <kimAttribute>
-                    <id>${KIM_ATTRIBUTE_1.id}</id>
-                    <componentName>${KIM_ATTRIBUTE_1.componentName}</componentName>
-                    <attributeName>${KIM_ATTRIBUTE_1.attributeName}</attributeName>
-                    <namespaceCode>${KIM_ATTRIBUTE_1.namespaceCode}</namespaceCode>
-                    <versionNumber>${VERSION_NUMBER}</versionNumber>
-                </kimAttribute>
-                <attributeValue>${ATTRIBUTES_1_VALUE}</attributeValue>
-                <versionNumber>${ATTRIBUTES_1_VER_NBR}</versionNumber>
-                <objectId>${ATTRIBUTES_1_OBJ_ID}</objectId>
-              </attribute>
-              <attribute>
-                <id>${ATTRIBUTES_2_ID}</id>
-                <assignedToId>${ATTRIBUTES_2_GROUP_ID}</assignedToId>
-                <kimTypeId>${KIM_TYPE_2.id}</kimTypeId>
-                <kimType>
-                    <id>${KIM_TYPE_2.id}</id>
-                    <versionNumber>${VERSION_NUMBER}</versionNumber>
-                </kimType>
-                <kimAttribute>
-                    <id>${KIM_ATTRIBUTE_2.id}</id>
-                    <componentName>${KIM_ATTRIBUTE_2.componentName}</componentName>
-                    <attributeName>${KIM_ATTRIBUTE_2.attributeName}</attributeName>
-                    <namespaceCode>${KIM_ATTRIBUTE_2.namespaceCode}</namespaceCode>
-                    <versionNumber>${VERSION_NUMBER}</versionNumber>
-                </kimAttribute>
-                <attributeValue>${ATTRIBUTES_2_VALUE}</attributeValue>
-                <versionNumber>${ATTRIBUTES_2_VER_NBR}</versionNumber>
-                <objectId>${ATTRIBUTES_2_OBJ_ID}</objectId>
-              </attribute>
+              <ns2:entry key="${ATTRIBUTES_1_NAME}">${ATTRIBUTES_1_VALUE}</ns2:entry>
+              <ns2:entry key="${ATTRIBUTES_2_NAME}">${ATTRIBUTES_2_VALUE}</ns2:entry>
           </attributes>
           <active>${ACTIVE}</active>
           <versionNumber>${VERSION_NUMBER}</versionNumber>
@@ -196,50 +159,16 @@ class GroupTest {
 	}
 
     private Group createGroupFromPassedInContract() {
+        Map<String, String> attributeMap = new HashMap<String, String>(2)
+        attributeMap.put(GroupTest.ATTRIBUTES_1_NAME, GroupTest.ATTRIBUTES_1_VALUE)
+        attributeMap.put(GroupTest.ATTRIBUTES_2_NAME, GroupTest.ATTRIBUTES_2_VALUE)
 		Group group =  Group.Builder.create(new GroupContract() {
 			String getId() {GroupTest.ID}
             String getNamespaceCode() {GroupTest.NAMESPACE}
 			String getName() {GroupTest.NAME}
             String getDescription() {GroupTest.DESCRIPTION}
             String getKimTypeId() {GroupTest.KIM_TYPE_ID}
-			/*List<GroupMember> getMembers() {[
-                    GroupMember.Builder.create(new GroupMemberContract() {
-				        String getId() {GroupTest.MEMBER_1_ID}
-                        String getGroupId() {GroupTest.MEMBER_1_GROUP_ID}
-                        String getMemberId() {GroupTest.MEMBER_1_MEMBER_ID}
-                        String getTypeCode() {GroupTest.MEMBER_1_TYPE_CD}
-                        Timestamp getActiveFromDate() {GroupTest.MEMBER_1_ACTIVE_FROM}
-                        Timestamp getActiveToDate() {GroupTest.MEMBER_1_ACTIVE_TO}
-                        Long getVersionNumber() { GroupTest.MEMBER_1_VER_NBR }
-                        String getObjectId() { GroupTest.MEMBER_1_OBJ_ID }}).build(),
-                    GroupMember.Builder.create(new GroupMemberContract() {
-				        String getId() {GroupTest.MEMBER_2_ID}
-                        String getGroupId() {GroupTest.MEMBER_2_GROUP_ID}
-                        String getMemberId() {GroupTest.MEMBER_2_MEMBER_ID}
-                        String getTypeCode() {GroupTest.MEMBER_2_TYPE_CD}
-                        Timestamp getActiveFromDate() {null}
-                        Timestamp getActiveToDate() {null}
-                        Long getVersionNumber() { GroupTest.MEMBER_2_VER_NBR }
-                        String getObjectId() { GroupTest.MEMBER_2_OBJ_ID }}).build() ]}*/
-            List<KimAttributeData> getAttributes() {[
-                    KimAttributeData.Builder.create(new KimAttributeDataContract() {
-				        String getId() {GroupTest.ATTRIBUTES_1_ID}
-                        String getAssignedToId() {GroupTest.ATTRIBUTES_1_GROUP_ID}
-                        String getKimTypeId() {GroupTest.KIM_TYPE_1.id}
-                        KimType getKimType() {GroupTest.KIM_TYPE_1}
-                        KimAttribute getKimAttribute() {GroupTest.KIM_ATTRIBUTE_1}
-                        String getAttributeValue() {GroupTest.ATTRIBUTES_1_VALUE}
-                        Long getVersionNumber() { GroupTest.ATTRIBUTES_1_VER_NBR }
-                        String getObjectId() { GroupTest.ATTRIBUTES_1_OBJ_ID }}).build(),
-                    KimAttributeData.Builder.create(new KimAttributeDataContract() {
-				        String getId() {GroupTest.ATTRIBUTES_2_ID}
-                        String getAssignedToId() {GroupTest.ATTRIBUTES_2_GROUP_ID}
-                        String getKimTypeId() {GroupTest.KIM_TYPE_2.id}
-                        KimType getKimType() {GroupTest.KIM_TYPE_2}
-                        KimAttribute getKimAttribute() {GroupTest.KIM_ATTRIBUTE_2}
-                        String getAttributeValue() {GroupTest.ATTRIBUTES_2_VALUE}
-                        Long getVersionNumber() { GroupTest.ATTRIBUTES_2_VER_NBR }
-                        String getObjectId() { GroupTest.ATTRIBUTES_2_OBJ_ID }}).build() ]}
+            Attributes getAttributes() { Attributes.fromMap(attributeMap) }
 			boolean isActive() { GroupTest.ACTIVE.toBoolean() }
             Long getVersionNumber() { GroupTest.VERSION_NUMBER }
 			String getObjectId() { GroupTest.OBJECT_ID }
@@ -277,21 +206,10 @@ class GroupTest {
         Assert.assertEquals(MEMBER_2_VER_NBR, group.members[1].versionNumber)*/
 
 	    Assert.assertEquals(2, group.attributes.size())
-        Assert.assertEquals(ATTRIBUTES_1_ID, group.attributes[0].id)
-        Assert.assertEquals(ATTRIBUTES_1_GROUP_ID, group.attributes[0].assignedToId)
-        Assert.assertEquals(KIM_TYPE_1, group.attributes[0].kimType)
-        Assert.assertEquals(KIM_ATTRIBUTE_1, group.attributes[0].kimAttribute)
-        Assert.assertEquals(ATTRIBUTES_1_VALUE, group.attributes[0].attributeValue)
-        Assert.assertEquals(ATTRIBUTES_1_OBJ_ID, group.attributes[0].objectId)
-        Assert.assertEquals(ATTRIBUTES_1_VER_NBR, group.attributes[0].versionNumber)
+        Assert.assertEquals(ATTRIBUTES_1_VALUE, group.attributes.get(ATTRIBUTES_1_NAME))
 
-        Assert.assertEquals(ATTRIBUTES_2_ID, group.attributes[1].id)
-        Assert.assertEquals(ATTRIBUTES_2_GROUP_ID, group.attributes[1].assignedToId)
-        Assert.assertEquals(KIM_TYPE_2, group.attributes[1].kimType)
-        Assert.assertEquals(KIM_ATTRIBUTE_2, group.attributes[1].kimAttribute)
-        Assert.assertEquals(ATTRIBUTES_2_VALUE, group.attributes[1].attributeValue)
-        Assert.assertEquals(ATTRIBUTES_2_OBJ_ID, group.attributes[1].objectId)
-        Assert.assertEquals(ATTRIBUTES_2_VER_NBR, group.attributes[1].versionNumber)
+        Assert.assertEquals(ATTRIBUTES_2_VALUE, group.attributes.get(ATTRIBUTES_2_NAME))
+
 
 
         Assert.assertEquals(VERSION_NUMBER, group.versionNumber)

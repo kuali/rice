@@ -34,6 +34,8 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import javax.persistence.Transient
 import org.kuali.rice.kim.impl.type.KimTypeBo
+import org.kuali.rice.core.api.mo.common.Attributes
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 
 @Entity
 @Table(name="KRIM_GRP_T")
@@ -66,13 +68,20 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
 
 	@OneToMany(targetEntity=GroupAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
 	@Fetch(value = FetchMode.SELECT)
-	List<GroupAttributeBo> attributes
+	List<GroupAttributeBo> attributeDetails
 
     @Transient
-    List<Person> memberPersons
+    private List<Person> memberPersons
 
     @Transient
-    List<GroupBo> memberGroups
+    private List<GroupBo> memberGroups
+
+    //@Transient
+    //Attributes attributes
+
+    Attributes getAttributes() {
+        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : Attributes.empty()
+    }
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -104,16 +113,8 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         bo.description = im.description
         bo.active = im.active
         bo.kimTypeId = im.kimTypeId
-        //todo: how do we handle Group Members if Group doesn't have data?
-        /*bo.members = new ArrayList<GroupMemberBo>()
-        for (member in im.members) {
-            bo.members.add (GroupMemberBo.from(member))
-        }*/
-
-        bo.attributes = new ArrayList<GroupAttributeBo>()
-        for (attr in im.attributes) {
-            bo.attributes.add (GroupAttributeBo.from(attr))
-        }
+        //bo.attributes = im.attributes
+        //bo.attributeDetails = KimAttributeDataBo.createFrom(GroupAttributeBo.class, im.attributes, im.kimTypeId )
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;
 
@@ -122,9 +123,9 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
 
     //helper function to get Attribute Value with specific id
     public String getGroupAttributeValueById(String attributeId) {
-	    for (GroupAttributeBo gad : getAttributes()) {
-	        if (gad.getAttributeId().equals(attributeId.trim())) {
-	            return gad.getValue();
+	    for (GroupAttributeBo gad : getAttributeDetails()) {
+	        if (gad.getKimAttributeId().equals(attributeId.trim())) {
+	            return gad.getAttributeValue();
 	        }
 	    }
 	    return null;
@@ -154,7 +155,7 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
 
     public List<Person> getMemberPersons() {
         if (this.memberPersons == null) {
-            spitMembersToTypes()
+            splitMembersToTypes()
         }
         return this.memberPersons
     }
@@ -189,7 +190,7 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
 
     public List<Group> getMemberGroups() {
         if (this.memberGroups == null) {
-            spitMembersToTypes()
+            splitMembersToTypes()
         }
         return this.memberGroups
     }

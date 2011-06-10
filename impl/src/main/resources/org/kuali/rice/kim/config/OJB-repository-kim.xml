@@ -467,7 +467,7 @@
     <collection-descriptor name="members" element-class-ref="org.kuali.rice.kim.impl.group.GroupMemberBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="groupId" />
     </collection-descriptor>
-    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.impl.group.GroupAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="attributeDetails" element-class-ref="org.kuali.rice.kim.impl.group.GroupAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="assignedToId" target-field-ref="id" />
     </collection-descriptor>
   </class-descriptor>
@@ -667,7 +667,7 @@
     <reference-descriptor name="template" class-ref="org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="templateId" target-field-ref="id"/>
     </reference-descriptor>
-    <collection-descriptor name="responsibilityAttributes" element-class-ref="org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="attributeDetails" element-class-ref="org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="assignedToId" target-field-ref="id"/>
     </collection-descriptor>
 	<collection-descriptor name="roleResponsibilities" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">

@@ -20,6 +20,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.entity.address.EntityAddress;
@@ -86,6 +87,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.entity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo;
@@ -2533,7 +2535,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected List<GroupDocumentQualifier> loadGroupQualifiers(IdentityManagementGroupDocument IdentityManagementGroupDocument,
-			List<KimAttributeData> attributeDataList){
+			Attributes attributes){
 		List<GroupDocumentQualifier> pndGroupQualifiers = new ArrayList<GroupDocumentQualifier>();
 		GroupDocumentQualifier pndGroupQualifier = new GroupDocumentQualifier();
 		AttributeDefinitionMap origAttributes = IdentityManagementGroupDocument.getDefinitions();
@@ -2543,8 +2545,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 			for(String key: origAttributes.keySet()) {
 				origAttributeId = IdentityManagementGroupDocument.getKimAttributeDefnId(origAttributes.get(key));
-				if(CollectionUtils.isNotEmpty(attributeDataList)){
-					for(KimAttributeData groupQualifier: attributeDataList){
+				if(!attributes.isEmpty()){
+
+					for(GroupAttributeBo groupQualifier: KimAttributeDataBo.createFrom(GroupAttributeBo.class, attributes, IdentityManagementGroupDocument.getGroupTypeId())){
 						if(origAttributeId!=null && ObjectUtils.isNotNull(groupQualifier.getKimAttribute()) &&
 								StringUtils.equals(origAttributeId, groupQualifier.getKimAttribute().getId())){
 							pndGroupQualifier = new GroupDocumentQualifier();
@@ -2602,7 +2605,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimGroup.setNamespaceCode(identityManagementGroupDocument.getGroupNamespace());
 		kimGroup.setName(identityManagementGroupDocument.getGroupName());
 		kimGroup.setDescription(identityManagementGroupDocument.getGroupDescription());
-		kimGroup.setAttributes(getGroupAttributeData(identityManagementGroupDocument, origGroup.getAttributes()));
+		kimGroup.setAttributeDetails(getGroupAttributeData(identityManagementGroupDocument, origGroup.getAttributeDetails()));
 
 		List<String> oldIds = null;
 		List<String> newIds = null;

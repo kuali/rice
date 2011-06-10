@@ -24,6 +24,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
@@ -71,9 +72,8 @@ public final class Group implements GroupContract, ModelObjectComplete {
     @XmlElement(name = Elements.KIM_TYPE_ID, required = true)
     private final String kimTypeId;
 
-    @XmlElementWrapper(name = Elements.ATTRIBUTES, required = false)
-    @XmlElement(name = Elements.ATTRIBUTE, required = false)
-    private final List<KimAttributeData> attributes;
+    @XmlElement(name = Elements.ATTRIBUTES, required = false)
+    private final Attributes attributes;
 
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
@@ -106,12 +106,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
         name = builder.getName();
         description = builder.getDescription();
         kimTypeId = builder.getKimTypeId();
-        attributes = new ArrayList<KimAttributeData>();
-        if (!CollectionUtils.isEmpty(builder.getAttributes())) {
-            for (KimAttributeData.Builder attribute : builder.getAttributes()) {
-                attributes.add(attribute.build());
-            }
-        }
+        attributes = builder.getAttributes();
         versionNumber = builder.getVersionNumber();
         objectId = builder.getObjectId();
         active = builder.isActive();
@@ -127,7 +122,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
         private String name;
         private String description;
         private String kimTypeId;
-        private List<KimAttributeData.Builder> attributes;
+        private Attributes attributes;
         private boolean active;
         private Long versionNumber;
         private String objectId;
@@ -156,14 +151,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
             builder.setId(contract.getId());
             builder.setDescription(contract.getDescription());
 
-            List<KimAttributeData.Builder> groupAttributeBuilders = new ArrayList<KimAttributeData.Builder>();
-            if (!CollectionUtils.isEmpty(contract.getAttributes())) {
-                for (KimAttributeDataContract attributeContract : contract.getAttributes()) {
-                    KimAttributeData.Builder attributeBuilder = KimAttributeData.Builder.create(attributeContract);
-                    groupAttributeBuilders.add(attributeBuilder);
-                }
-            }
-            builder.setAttributes(groupAttributeBuilders);
+            builder.setAttributes(contract.getAttributes());
 
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
@@ -229,11 +217,11 @@ public final class Group implements GroupContract, ModelObjectComplete {
         }
 
         @Override
-        public List<KimAttributeData.Builder> getAttributes() {
+        public Attributes getAttributes() {
             return attributes;
         }
 
-        public void setAttributes(List<KimAttributeData.Builder> attributes) {
+        public void setAttributes(Attributes attributes) {
             this.attributes = attributes;
         }
 
@@ -311,11 +299,11 @@ public final class Group implements GroupContract, ModelObjectComplete {
     }
 
     @Override
-    public List<KimAttributeData> getAttributes() {
+    public Attributes getAttributes() {
         return attributes;
     }
 
-    public AttributeSet getAttributeSet() {
+    /*public AttributeSet getAttributeSet() {
         AttributeSet attributeSet = new AttributeSet( this.attributes.size() );
         for ( KimAttributeData attr : attributes ) {
         	if ( attr.getKimAttribute() != null ) {
@@ -326,7 +314,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
         }
 
         return attributeSet;
-    }
+    }*/
 
     @Override
     public boolean isActive() {
@@ -363,9 +351,6 @@ public final class Group implements GroupContract, ModelObjectComplete {
         final static String DESCRIPTION = "description";
         final static String KIM_TYPE_ID = "kimTypeId";
         final static String ATTRIBUTES = "attributes";
-        final static String ATTRIBUTE = "attribute";
-        final static String MEMBERS = "members";
-        final static String MEMBER = "member";
         final static String ACTIVE = "active";
     }
 }

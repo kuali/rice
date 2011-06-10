@@ -17,10 +17,9 @@
 package org.kuali.rice.kim.api.group;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kim.api.group.GroupMember;
-import org.kuali.rice.kim.api.person.Person;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;
@@ -341,7 +340,8 @@ public interface GroupService {
 	/**
 	 * Get all the attributes of the given group.
 	 */
-    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String,String> getGroupAttributes( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    Attributes getAttributes( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
     /**

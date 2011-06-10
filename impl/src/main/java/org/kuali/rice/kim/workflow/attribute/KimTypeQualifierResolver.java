@@ -17,6 +17,7 @@ package org.kuali.rice.kim.workflow.attribute;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kim.api.group.Group;
@@ -99,8 +100,18 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	}
     	return typeService;
 	}
-	
+
+    @Deprecated
 	protected void putMatchingAttributesIntoQualifier( AttributeSet qualifier, AttributeSet itemAttributes, List<String> routingAttributes ) {
+		if ( routingAttributes != null && !routingAttributes.isEmpty() ) {
+        	// pull the qualifiers off the document object (group or role member)
+    		for ( String attribName : routingAttributes ) {
+    			qualifier.put( attribName, itemAttributes.get(attribName));
+    		}
+		}
+	}
+
+    protected void putMatchingAttributesIntoQualifier( AttributeSet qualifier, Attributes itemAttributes, List<String> routingAttributes ) {
 		if ( routingAttributes != null && !routingAttributes.isEmpty() ) {
         	// pull the qualifiers off the document object (group or role member)
     		for ( String attribName : routingAttributes ) {
@@ -112,7 +123,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 	protected String handleGroupDocument( List<AttributeSet> qualifiers, IdentityManagementGroupDocument groupDoc, String routeLevel ) {
     	// get the appropriate type service for the group being edited
     	String typeId = groupDoc.getGroupTypeId();
-    	qualifiers.add( getGroupQualifier(groupDoc.getGroupId(), typeId, groupDoc.getQualifiersAsAttributeSet(), routeLevel) );
+    	qualifiers.add( getGroupQualifier(groupDoc.getGroupId(), typeId, groupDoc.getQualifiersAsAttributes(), routeLevel) );
     	
         return null;
 	}
@@ -166,7 +177,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         		if ( group.isActive() && !currentGroups.contains( group.getGroupId() ) ) {
             		// pull the group to get its attributes for adding to the qualifier 
             		Group kimGroup = getGroupService().getGroup(group.getGroupId());
-        			qualifiers.add( getGroupQualifier( group.getGroupId(), kimGroup.getKimTypeId(), kimGroup.getAttributeSet(), routeLevel ) );
+        			qualifiers.add( getGroupQualifier( group.getGroupId(), kimGroup.getKimTypeId(), kimGroup.getAttributes(), routeLevel ) );
         		}
         	}
         	// detect removed groups
@@ -175,7 +186,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         		for ( PersonDocumentGroup group : groups ) {
         			if ( !group.isActive() ) {
                 		Group kimGroup = getGroupService().getGroup(groupId);
-            			qualifiers.add( getGroupQualifier( groupId, kimGroup.getKimTypeId(), kimGroup.getAttributeSet(), routeLevel ) );
+            			qualifiers.add( getGroupQualifier( groupId, kimGroup.getKimTypeId(), kimGroup.getAttributes(), routeLevel ) );
         			}
         		}
         	}
@@ -210,7 +221,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	return null;
 	}
 
-    protected AttributeSet getGroupQualifier( String groupId, String kimTypeId, AttributeSet groupAttributes, String routeLevel ) {
+    protected AttributeSet getGroupQualifier( String groupId, String kimTypeId, Attributes groupAttributes, String routeLevel ) {
 		AttributeSet qualifier = new AttributeSet();        			
 		// pull the group to get its attributes for adding to the qualifier 
         qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);

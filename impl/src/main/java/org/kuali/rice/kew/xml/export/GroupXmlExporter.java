@@ -96,16 +96,10 @@ public class GroupXmlExporter implements XmlExporter {
 
         if (group.getAttributes().size() > 0) {
             Element attributesElement = renderer.renderElement(groupElement, ATTRIBUTES);
-            //todo : is the new code correct?
-            /*for (String key : group.getAttributes().keySet()) {
+            for (String key : group.getAttributes().keySet()) {
                 Element attributeElement = renderer.renderElement(attributesElement, ATTRIBUTE);
                 attributeElement.setAttribute(KEY, key);
                 attributeElement.setAttribute(VALUE, group.getAttributes().get(key));
-            }*/
-            for (KimAttributeData attr : group.getAttributes()) {
-                Element attributeElement = renderer.renderElement(attributesElement, ATTRIBUTE);
-                attributeElement.setAttribute(KEY, attr.getKimAttribute().getAttributeName());
-                attributeElement.setAttribute(VALUE, attr.getAttributeValue());
             }
         }
 

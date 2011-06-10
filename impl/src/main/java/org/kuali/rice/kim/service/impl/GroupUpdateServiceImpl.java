@@ -20,13 +20,14 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.group.GroupAttributeBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
@@ -103,23 +104,76 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         if (group == null) {
             throw new RiceIllegalArgumentException(("group is null"));
         }
-        GroupBo groupBo = new GroupBo();
+        if (StringUtils.isNotBlank(group.getId()) && getGroup(group.getId()) != null) {
+            throw new RiceIllegalStateException("the group to create already exists: " + group);
+        }
+        List<GroupAttributeBo> attrBos = KimAttributeDataBo.createFrom(GroupAttributeBo.class, group.getAttributes(), group.getKimTypeId());
+        if (StringUtils.isNotEmpty(group.getId())) {
+            for (GroupAttributeBo attr : attrBos) {
+                attr.setAssignedToId(group.getId());
+            }
+        }
+        GroupBo bo = GroupBo.from(group);
+        bo.setAttributeDetails(attrBos);
 
-        groupBo = GroupBo.from(group);
+        bo = saveGroup(bo);
 
+        return GroupBo.to(bo);
+    }
+
+    public Group updateGroup(Group group) {
+        if (group == null) {
+            throw new RiceIllegalArgumentException(("group is null"));
+        }
+        GroupBo origGroup = getGroupBo(group.getId());
+        if (StringUtils.isBlank(group.getId()) || origGroup == null) {
+            throw new RiceIllegalStateException("the group does not exist: " + group);
+        }
+        List<GroupAttributeBo> attrBos = KimAttributeDataBo.createFrom(GroupAttributeBo.class, group.getAttributes(), group.getKimTypeId());
+        GroupBo bo = GroupBo.from(group);
+        bo.setMembers(origGroup.getMembers());
+        bo.setAttributeDetails(attrBos);
+
+        bo = saveGroup(bo);
+
+        return GroupBo.to(bo);
+    }
+
+    	/**
+	 *
+	 * @see org.kuali.rice.kim.api.group.GroupUpdateService#updateGroup(java.lang.String, org.kuali.rice.kim.api.group.Group)
+	 */
+	public Group updateGroup(String groupId, Group group) {
+        if (group == null) {
+            throw new RiceIllegalArgumentException(("group is null"));
+        }
+        if (StringUtils.isEmpty(groupId)) {
+            throw new RiceIllegalArgumentException(("groupId is empty"));
+        }
+
+        if (StringUtils.equals(groupId, group.getId())) {
+            return updateGroup(group);
+        }
+
+        //if group Ids are different, inactivate old group, and create new with new id based off old
+        GroupBo groupBo = getGroupBo(groupId);
+
+        if (StringUtils.isBlank(group.getId()) || groupBo == null) {
+            throw new RiceIllegalStateException("the group does not exist: " + group);
+        }
+
+        //create and save new group
+        GroupBo newGroup = GroupBo.from(group);
+        newGroup.setMembers(groupBo.getMembers());
+        List<GroupAttributeBo> attrBos = KimAttributeDataBo.createFrom(GroupAttributeBo.class, group.getAttributes(), group.getKimTypeId());
+        newGroup.setAttributeDetails(attrBos);
+        newGroup = saveGroup(newGroup);
+
+        //inactivate and save old group
+        groupBo.setActive(false);
         saveGroup(groupBo);
 
-        Group newGroupInfo = getGroupByName(group.getNamespaceCode(), group.getName());
-
-        if(group.getAttributes() != null && group.getAttributes().size() > 0) {
-
-            List<GroupAttributeBo> attributeBos = new ArrayList<GroupAttributeBo>();
-            for (KimAttributeData attr : group.getAttributes()) {
-                attributeBos.add(GroupAttributeBo.from(attr));
-            }
-            saveGroupAttributes(attributeBos);
-        }
-        return getGroup(newGroupInfo.getId());
+        return GroupBo.to(newGroup);
     }
 
     /**
@@ -190,52 +244,6 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         }
 
         return false;
-    }
-
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.kim.api.group.GroupUpdateService#updateGroup(java.lang.String, org.kuali.rice.kim.api.group.Group)
-	 */
-	public Group updateGroup(String groupId, Group group) {
-        if (group == null) {
-            throw new RiceIllegalArgumentException(("group is null"));
-        }
-        if (StringUtils.isEmpty(groupId)) {
-            throw new RiceIllegalArgumentException(("groupId is empty"));
-        }
-        // Note:  this cannot be used to change id
-        GroupBo groupBo = getGroupBo(groupId);
-
-        if (groupBo == null) {
-            throw new IllegalArgumentException("Group not found for update.");
-        }
-
-        groupBo.setActive(group.isActive());
-        groupBo.setName(group.getName());
-        groupBo.setNamespaceCode(group.getNamespaceCode());
-        groupBo.setDescription(group.getDescription());
-        groupBo.setKimTypeId(group.getKimTypeId());
-
-
-        //delete old group attributes
-        Map<String,String> criteria = new HashMap<String,String>();
-        criteria.put(KIMPropertyConstants.Group.GROUP_ID, groupBo.getId());
-        this.businessObjectService.deleteMatching(GroupAttributeBo.class, criteria);
-
-
-        groupBo = saveGroup(groupBo);
-
-        //create new group attributes
-        if(group.getAttributes() != null && group.getAttributes().size() > 0) {
-            List<GroupAttributeBo> attributeBos = new ArrayList<GroupAttributeBo>();
-            for (KimAttributeData attr : group.getAttributes()) {
-                attributeBos.add(GroupAttributeBo.from(attr));
-            }
-            saveGroupAttributes(attributeBos);
-        }
-
-        return getGroup(group.getId());
     }
 
 	protected GroupBo saveGroup(GroupBo group) {

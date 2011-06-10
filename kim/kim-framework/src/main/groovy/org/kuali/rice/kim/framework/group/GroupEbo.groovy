@@ -21,6 +21,7 @@ import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupContract
 import org.kuali.rice.kim.api.group.GroupMember
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
+import org.kuali.rice.core.api.mo.common.Attributes
 
 //@ToString
 class GroupEbo implements GroupContract, ExternalizableBusinessObject {
@@ -33,7 +34,8 @@ class GroupEbo implements GroupContract, ExternalizableBusinessObject {
 	String kimTypeId
 	String namespaceCode
 	List<GroupMember> members
-	List<KimAttributeData> attributes
+	List<KimAttributeData> attributeDetails
+    Attributes attributes
     Long versionNumber
 	String objectId
 
@@ -68,11 +70,14 @@ class GroupEbo implements GroupContract, ExternalizableBusinessObject {
         bo.active = im.active
         bo.kimTypeId = im.kimTypeId
         bo.attributes = im.attributes
+        //TODO
+        //attributeDetails?
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;
 
         return bo
     }
+
 
     void refresh() { }
 }

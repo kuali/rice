@@ -42,18 +42,34 @@ public interface GroupUpdateService {
     @WebResult(name = "group")
 	Group createGroup(@WebParam(name="group") Group group) throws UnsupportedOperationException;
 
+    /**
+     * Updates an existing group using the given Group.
+     *
+     * <p>
+     * This will attempt to update an existing Group.  For this to return without exceptions, the passed in Group
+     * must have it's Id set and be a valid group that already exists.
+     * </p>
+     *
+     * @param group The group to be updated
+     * @return a the Group that has been updated.
+     */
+    @WebMethod(operationName = "updateGroup")
+    @WebResult(name = "group")
+	Group updateGroup(@WebParam(name="group") Group group) throws UnsupportedOperationException;
+
 	/**
      * Updates a group using the given Group.
      *
      * <p>
-     * This will attempt to update an existing group with data from the passed in group
+     * This will attempt to update an existing group with data from the passed in group.  If the passed in groupId and the group.id values are different
+     * this method will inactivate the old group and create a new group with the same members with the passed in groups properties.
      * </p>
      *
      * @param groupId Id of the Group to be updated
      * @param group   Group object to use for update
      * @return a the Group that has been updated.
      */
-    @WebMethod(operationName = "updateGroup")
+    @WebMethod(operationName = "updateGroupWithId")
     @WebResult(name = "group")
     Group updateGroup(@WebParam(name="groupId") String groupId, @WebParam(name="group") Group group) throws UnsupportedOperationException;
 

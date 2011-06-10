@@ -131,3 +131,22 @@
  .ui-datepicker-buttonpane button { font-size:.7em}
  
   .ui-datepicker-buttonpane { text-align:center; background-color:#999999}
+  
+  
+  
+  .constraint {
+	font-size: 10px;
+	color: gray;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	display: block;
+}
+.summary {
+	font-size: 12px;
+	margin-bottom: auto;
+	display: block;
+}
+.boxLayoutVerticalItem{
+	padding-bottom: 20px;
+	display: block;
+}

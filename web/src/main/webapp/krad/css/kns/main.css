@@ -425,3 +425,26 @@ table.datatable th[scope="row"].collection-header {
 	font-weight: normal;
     padding-bottom: 3px;
 }
+
+h2 img.expand_collapse-buttons[alt="expand"] {
+	background: url(../../images/h2_expand-back-kns.png);
+	background-repeat:no-repeat;
+}
+
+h2 img.expand_collapse-buttons[alt="collapse"] {
+	background: url(../../images/h2_collapse-back-kns.png);
+	background-repeat:no-repeat;
+}
+
+h3 img.expand_collapse-buttons[alt="expand"] {
+	background: url(../../images/h3_expand-back-kns.png);
+	background-repeat:no-repeat;
+}
+
+h3 img.expand_collapse-buttons[alt="collapse"] {
+	background: url(../../images/h3_collapse-back-kns.png);
+	background-repeat:no-repeat;
+}
+
+
+

@@ -32,3 +32,27 @@ h4.section-subhead-no-border  {
 }
 
 
+
+h2 img.expand_collapse-buttons[alt="expand"] {
+	background: url(../../images/h2_expand-back-ks.png);
+	background-repeat:no-repeat;
+}
+
+h2 img.expand_collapse-buttons[alt="collapse"] {
+	background: url(../../images/h2_collapse-back-ks.png);
+	background-repeat:no-repeat;
+}
+
+h3 img.expand_collapse-buttons[alt="expand"] {
+	background: url(../../images/h3_expand-back-ks.png);
+	background-repeat:no-repeat;
+}
+
+h3 img.expand_collapse-buttons[alt="collapse"] {
+	background: url(../../images/h3_collapse-back-ks.png);
+	background-repeat:no-repeat;
+}
+
+
+
+

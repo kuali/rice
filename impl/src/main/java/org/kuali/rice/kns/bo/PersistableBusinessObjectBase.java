@@ -61,7 +61,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     @Transient
     protected PersistableBusinessObjectExtension extension;
     @Transient
-    private transient FormFile attachmentFile;
+    private FormFile attachmentFile;
 
     // The following support notes on BusinessObjects (including DocumentHeader)
     @Transient

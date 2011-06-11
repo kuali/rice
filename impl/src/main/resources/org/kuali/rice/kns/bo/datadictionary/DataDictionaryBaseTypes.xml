@@ -319,25 +319,49 @@
 	    parent="ValidCharactersConstraint"
 		abstract="true" 
 		p:labelKey="time"/>
-	
+
 	<!-- end clientside only constraints -->
-	
+
+    <!-- Begin Character Level Constraints -->
+
 	<bean id="AlphaNumericPatternConstraint" 
 		abstract="true" 
 		class="org.kuali.rice.kns.datadictionary.validation.constraint.AlphaNumericPatternConstraint" />
-	
+
+    <bean id="AlphaPatternConstraint" 
+        abstract="true" 
+        class="org.kuali.rice.kns.datadictionary.validation.constraint.AlphaPatternConstraint" />
+
+    <bean id="AnyCharacterPatternConstraint" 
+        abstract="true" 
+        class="org.kuali.rice.kns.datadictionary.validation.constraint.AnyCharacterPatternConstraint" />
+
+    <bean id="CharsetPatternConstraint" 
+        abstract="true" 
+        class="org.kuali.rice.kns.datadictionary.validation.constraint.CharsetPatternConstraint" />
+
+    <bean id="NumericPatternConstraint" 
+        abstract="true" 
+        class="org.kuali.rice.kns.datadictionary.validation.constraint.NumericPatternConstraint" />
+
+    <bean id="RegexPatternConstraint" 
+        abstract="true" 
+        class="org.kuali.rice.kns.datadictionary.validation.constraint.RegexPatternConstraint" />
+
+    <!-- End Character Level Constraints -->
+
 	<bean id="MustOccurConstraint" 
 		abstract="true" 
 		class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint" />
-		
+
 	<bean id="CaseConstraint" 
 		abstract="true" 
 		class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint" />
-		
+
 	<bean id="WhenConstraint" 
 		abstract="true" 
 		class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint" />
-	
+
 	<bean id="PrerequisiteConstraint" 
 		abstract="true" 
 		class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" />

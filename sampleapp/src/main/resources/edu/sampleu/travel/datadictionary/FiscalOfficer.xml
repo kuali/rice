@@ -47,6 +47,9 @@
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint"/>
+    </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
@@ -66,6 +69,9 @@
     <property name="maxLength" value="30"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
+    </property>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint"/>
     </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>

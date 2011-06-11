@@ -680,6 +680,16 @@ function getAttributeId(elementId, elementType){
 	return id;
 }
 
+/**
+ * Validate dirty fields on the form.
+ * 
+ * <p>Whenever the user clicks on the action field which has action methods set to <code>REFRESH,NAVIGATE,CANCEL,CLOSE</code>,
+ * form dirtyness is checked. It checks for any input elements which has "dirty" class. If present, it pops a message to 
+ * the user to confirm whether they want to stay on the page or want to navigate.
+ * </p>
+ * @param event 
+ * @returns true if the form has dirty fields
+ */
 function checkDirty(event){
 
 	var validateDirty = jq("[name='validateDirty']").val()
@@ -929,7 +939,7 @@ function setupValidator(){
 	
 	jq('#kualiForm').dirty_form({changedClass: 'dirty'});
 	
-	//Make sure form doesn't have any unsaved data if user clicks on any other portal links, closes browser or presses fwd/back browser button
+	//Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
 	jq(window).bind('beforeunload', function(evt){
 		var validateDirty = jq("[name='validateDirty']").val();
 		if (validateDirty == "true")

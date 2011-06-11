@@ -139,9 +139,7 @@ public class ActionField extends FieldBase {
     				writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
     						+ actionParameters.get(key) + "'); ";
     				
-    				/**
-    				 * Include dirtycheck js function call if the method to call is refresh, navigate, cancel or close
-    				 */
+    				//Include dirtycheck js function call if the method to call is refresh, navigate, cancel or close	
     				if (validateFormDirty && !includeDirtyCheckScript && key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)){
     						String keyValue = (String)actionParameters.get(key);
     						if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || 

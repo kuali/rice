@@ -18,26 +18,67 @@ package org.kuali.rice.core.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.Reader;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 /**
- * This is a description of what this class does - g don't forget to fill this in. 
+ * This is a wrapper for the Properties class that prevents other objects from making
+ * changes to the properties stored within it. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ImmutableProperties extends Properties {
 	
+	private Properties _properties;
+	
 	public ImmutableProperties(Properties properties){
 		super();
-		for(Object o: properties.keySet()){
-			super.put(o, properties.get(o));
-		}		
+		this._properties = properties;	
 	}
 
+	@Override
+	public Object get(Object key) {
+		return _properties.get(key);
+	}
+	
+	@Override
+	public String getProperty(String key) {
+		return _properties.getProperty(key);
+	}
+	
+	@Override
+    public String getProperty(String key, String defaultValue) {
+		return _properties.getProperty(key, defaultValue);
+	}
+	
+	@Override
+	public Enumeration<?> propertyNames() {
+		return _properties.propertyNames();
+	}
+	
+	@Override 
+	public Set<String> stringPropertyNames() {
+		return _properties.stringPropertyNames();
+	}
+	
+	@Override
+	public void list(PrintStream out) {
+		_properties.list(out);
+	}
+	
+	@Override
+	public void clear() {
+		throw new UnsupportedOperationException("This class is immutable");
+	}
+	
 	@Override
 	public synchronized void load(InputStream inStream) throws IOException {
 		 throw new UnsupportedOperationException("This class is immutable");
@@ -77,6 +118,21 @@ public class ImmutableProperties extends Properties {
 	@Override
 	public synchronized Object remove(Object key) {
 		throw new UnsupportedOperationException("This class is immutable");
+	}
+	
+	@Override
+	public Set<Object> keySet() {
+		return Collections.unmodifiableSet(_properties.keySet());
+	}
+	
+	@Override
+	public Set<Map.Entry<Object, Object>> entrySet() {
+		return Collections.unmodifiableSet(_properties.entrySet());
+	}
+	
+	@Override
+	public Collection<Object> values() {
+		return Collections.unmodifiableCollection(_properties.values());
 	}
 
 }

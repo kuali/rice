@@ -77,17 +77,17 @@ public class MultipleAttachmentsTest extends KNSTestCase {
     	as.getMultiAttachment().add(child1);
     	
     	MultiAttachmentSample child2 = new MultiAttachmentSample();
-    	child1.setFileName("child2.txt");
-    	child1.setDescription("This is the second child");
-    	child1.setContentType("text/plain");
-    	child1.setAttachmentContent("This is the content of the second child".getBytes());
+    	child2.setFileName("child2.txt");
+    	child2.setDescription("This is the second child");
+    	child2.setContentType("text/plain");
+    	child2.setAttachmentContent("This is the content of the second child".getBytes());
     	as.getMultiAttachment().add(child2);
     	
     	MultiAttachmentSample child3 = new MultiAttachmentSample();
-    	child1.setFileName("child3.txt");
-    	child1.setDescription("This is the third child");
-    	child1.setContentType("text/plain");
-    	child1.setAttachmentContent("This is the content of the third child".getBytes());
+    	child3.setFileName("child3.txt");
+    	child3.setDescription("This is the third child");
+    	child3.setContentType("text/plain");
+    	child3.setAttachmentContent("This is the content of the third child".getBytes());
     	as.getMultiAttachment().add(child3);
     	
     	

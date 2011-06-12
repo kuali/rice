@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.document;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -97,8 +98,25 @@ public class MultipleAttachmentsTest extends KNSTestCase {
         document.getNewMaintainableObject().setMaintenanceAction(KNSConstants.MAINTENANCE_NEW_ACTION);
         document.getDocumentHeader().setDocumentDescription("Testing");
 
-        KNSServiceLocator.getDocumentService().routeDocument(document, "Routing", null);
+        Document routedDoc = KNSServiceLocator.getDocumentService().routeDocument(document, "Routing", null);
         
+        MaintenanceDocument retrievedDoc = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getByDocumentHeaderId(routedDoc.getDocumentNumber());
+        
+        AttachmentSample ras = (AttachmentSample)retrievedDoc.getNewMaintainableObject().getBusinessObject();
+        
+        assertEquals("This is a test", new String(ras.getAttachmentContent()));
+        assertEquals("text/plain", ras.getContentType());
+        
+        List<MultiAttachmentSample> multiAttachments = ras.getMultiAttachment();
+        assertEquals(3, multiAttachments.size());
+        
+        int i=1;
+        for (MultiAttachmentSample multiAttachment : multiAttachments) {
+        	String expectedName = "child" + i + ".txt";
+        	assertEquals(expectedName, multiAttachment.getFileName());
+        	assertEquals("text/plain", multiAttachment.getContentType());
+        	i++;
+        }
     }
 	
 }

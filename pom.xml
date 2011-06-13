@@ -69,7 +69,7 @@
     <bsf.version>2.4.0</bsf.version>
     <cas-client-core.version>3.2.0</cas-client-core.version>
     <cglib.version>2.2</cglib.version>
-    <commons-beanutils.version>1.8.3-kuali-SNAPSHOT</commons-beanutils.version>
+    <commons-beanutils.version>1.8.3-kuali</commons-beanutils.version>
     <commons-codec.version>1.5</commons-codec.version>
     <commons-collections.version>3.2.1</commons-collections.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
@@ -85,7 +85,7 @@
         <cxf.version>2.4.0</cxf.version>
     -->
     <cxf.version>2.3.4</cxf.version>
-    <db-ojb.version>1.0.4-patch7-SNAPSHOT</db-ojb.version>
+    <db-ojb.version>1.0.4-patch7</db-ojb.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.M1</dwr.version>

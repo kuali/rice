@@ -20,7 +20,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.util.jaxb.ImmutableCollectionAdapter;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -168,7 +167,6 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getParameterValuesAsString")
     @WebResult(name = "values")
-    @XmlJavaTypeAdapter(ImmutableCollectionAdapter.class)
     Collection<String> getParameterValuesAsString(@WebParam(name = "key") ParameterKey key);
 
     /**
@@ -258,7 +256,6 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getSubParameterValuesAsString")
     @WebResult(name = "values")
-    @XmlJavaTypeAdapter(ImmutableCollectionAdapter.class)
     Collection<String> getSubParameterValuesAsString(@WebParam(name = "key") ParameterKey key,
                                                      @WebParam(name = "subParameterName") String subParameterName)
             throws RiceIllegalArgumentException;

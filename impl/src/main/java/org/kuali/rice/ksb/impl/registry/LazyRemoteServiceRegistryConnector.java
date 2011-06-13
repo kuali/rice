@@ -26,6 +26,7 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.cxf.interceptors.ImmutableCollectionsInInterceptor;
 import org.kuali.rice.ksb.api.registry.RemoveAndPublishResult;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
 import org.kuali.rice.ksb.api.registry.ServiceEndpoint;
@@ -161,6 +162,9 @@ public class LazyRemoteServiceRegistryConnector implements ServiceRegistry {
 		// Set security interceptors
 		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(true));
 		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(true));
+
+        //Set transformation interceptors
+        clientFactory.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
 		
 		Object service = clientFactory.create();
 		if (!(service instanceof ServiceRegistry)) {

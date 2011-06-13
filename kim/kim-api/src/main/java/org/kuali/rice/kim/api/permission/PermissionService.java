@@ -16,8 +16,6 @@
 package org.kuali.rice.kim.api.permission;
 
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
-import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.template.Template;
@@ -30,7 +28,6 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -169,7 +166,6 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getPermissionAssignees")
     @WebResult(name = "permissionAssignees")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<Assignee> getPermissionAssignees( @WebParam(name="namespaceCode") String namespaceCode,
     													 @WebParam(name="permissionName") String permissionName,
     													 @WebParam(name="permissionDetails") Attributes permissionDetails,
@@ -189,7 +185,6 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getPermissionAssigneesForTemplateName")
     @WebResult(name = "permissionAssigneesForTemplateName")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<Assignee> getPermissionAssigneesForTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
     																	@WebParam(name="permissionTemplateName") String permissionTemplateName,
     																	@WebParam(name="permissionDetails") Attributes permissionDetails,
@@ -234,7 +229,6 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getAuthorizedPermissions")
     @WebResult(name = "authorizedPermissions")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<Permission> getAuthorizedPermissions( @WebParam(name="principalId") String principalId,
     												  @WebParam(name="namespaceCode") String namespaceCode,
     												  @WebParam(name="permissionName") String permissionName,
@@ -262,7 +256,6 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getAuthorizedPermissionsByTemplateName")
     @WebResult(name = "authorizedPermissions")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<Permission> getAuthorizedPermissionsByTemplateName( @WebParam(name="principalId") String principalId,
     																@WebParam(name="namespaceCode") String namespaceCode,
     																@WebParam(name="permissionTemplateName") String permissionTemplateName,
@@ -286,7 +279,6 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionsByTemplateName")
     @WebResult(name = "permissions")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<Permission> getPermissionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
     													  @WebParam(name="permissionTemplateName") String permissionTemplateName );
 
@@ -296,7 +288,6 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionsByName")
     @WebResult(name = "permissions")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<Permission> getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
 			    											  @WebParam(name="permissionName") String permissionName );
     
@@ -332,7 +323,6 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getAllTemplates")
     @WebResult(name = "permissionTemplates")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     public List<Template> getAllTemplates();
 	
     /**
@@ -343,7 +333,6 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "lookupPermissions")
     @WebResult(name = "lookupPermissions")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)		
     List<Permission> lookupPermissions( @WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String,String> searchCriteria,
     									@WebParam(name="unbounded") boolean unbounded);
     
@@ -352,7 +341,6 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getRoleIdsForPermission")
     @WebResult(name = "roleIdsForPermission")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<String> getRoleIdsForPermission( @WebParam(name="namespaceCode") String namespaceCode,
     									  @WebParam(name="permissionName") String permissionName,
     									  @WebParam(name="permissionDetails") Attributes permissionDetails);
@@ -362,7 +350,6 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getRoleIdsForPermissions")
     @WebResult(name = "roleIdsForPermissions")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<String> getRoleIdsForPermissions( @WebParam(name="permissions") List<Permission> permissions );
     
     /**
@@ -377,7 +364,6 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getRoleIdsForPermissionId")
     @WebResult(name = "roleIdsForPermissionId")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<String> getRoleIdsForPermissionId(@WebParam(name = "permissionId") String permissionId);
 
     /**
@@ -386,6 +372,5 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getPermissionsByNameIncludingInactive")
     @WebResult(name = "permissionsIncludingInactive")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)	
     List<Permission> getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
 }

@@ -17,7 +17,6 @@
 package org.kuali.rice.shareddata.api.postalcode;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 
 import javax.jws.WebMethod;
@@ -74,7 +73,6 @@ public interface PostalCodeService {
      */
     @WebMethod(operationName="findAllPostalCodesInCountry")
     @WebResult(name = "postalCodes")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<PostalCode> findAllPostalCodesInCountry(@WebParam(name = "countryCode") String countryCode)
             throws RiceIllegalArgumentException;
 }

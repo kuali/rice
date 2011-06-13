@@ -24,6 +24,7 @@ import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.cxf.interceptors.ImmutableCollectionsInInterceptor;
 import org.kuali.rice.ksb.api.bus.support.SoapServiceConfiguration;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
@@ -47,7 +48,7 @@ public class SOAPConnector extends AbstractServiceConnector {
 	}
 	
 	/**
-	 * This overridden method returns a CXF client proxy for web service.
+	 * This overridden method returns a CXF client praoxy for web service.
 	 * 
 	 * @see org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector#getService()
 	 */
@@ -71,7 +72,7 @@ public class SOAPConnector extends AbstractServiceConnector {
 		clientFactory.setServiceName(getSoapServiceConfiguration().getServiceName());
 		clientFactory.setAddress(getActualEndpointUrl().toExternalForm());
 		
-		//Set logging and security interceptors
+		//Set logging, transformation, and security interceptors
 		clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
 		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(getSoapServiceConfiguration().getBusSecurity()));
 		if (getCredentialsSource() != null) {
@@ -80,6 +81,8 @@ public class SOAPConnector extends AbstractServiceConnector {
 		
 		clientFactory.getInInterceptors().add(new LoggingInInterceptor());
 		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(getSoapServiceConfiguration().getBusSecurity()));
+        clientFactory.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
+
 		
 		Object service = clientFactory.create();		
 		return getServiceProxyWithFailureMode(service, getSoapServiceConfiguration());

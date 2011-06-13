@@ -18,7 +18,6 @@ package org.kuali.rice.kim.api.group;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -50,7 +49,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getGroupsForPrincipal")
     @WebResult(name = "groupsForPrincipal")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<Group> getGroupsForPrincipal(@WebParam(name="principalId") String principalId) throws RiceIllegalArgumentException;
 
 
@@ -69,7 +67,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getGroupsForPrincipalByNamespace")
     @WebResult(name = "groupsForPrincipal")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<Group> getGroupsForPrincipalByNamespace(@WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
 
     /**
@@ -85,7 +82,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "lookupGroupIds")
     @WebResult(name = "lookupGroupIds")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<String> lookupGroupIds(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria);
 
     /**
@@ -107,7 +103,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "lookupGroups")
     @WebResult(name = "lookupGroup")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<? extends Group> lookupGroups(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria);
 
     /**
@@ -194,7 +189,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getGroupIdsForPrincipal")
     @WebResult(name = "groupIdsForPrincipal")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
 	List<String> getGroupIdsForPrincipal(@WebParam(name="principalId") String principalId) throws RiceIllegalArgumentException;
 
     /**
@@ -211,7 +205,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getGroupIdsForPrincipalByNamespace")
     @WebResult(name = "groupIdsForPrincipal")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
 	List<String> getGroupIdsForPrincipalByNamespace(@WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
 
 
@@ -227,7 +220,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getDirectGroupIdsForPrincipal")
     @WebResult(name = "directGroupIdsForPrincipal")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<String> getDirectGroupIdsForPrincipal(@WebParam(name="principalId") String principalId) throws RiceIllegalArgumentException;
 
 
@@ -262,7 +254,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getMemberPrincipalIds")
     @WebResult(name = "memberPrincipalIds")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
 	List<String> getMemberPrincipalIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
@@ -276,7 +267,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getDirectMemberPrincipalIds")
     @WebResult(name = "directMemberPrincipalIds")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
 	List<String> getDirectMemberPrincipalIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
@@ -291,7 +281,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getMemberGroupIds")
     @WebResult(name = "memberGroupIds")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
 	List<String> getMemberGroupIds( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
@@ -305,7 +294,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getDirectMemberOfGroup")
     @WebResult(name = "directMemberGroupIds")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
 	List<String> getDirectMemberGroupIds( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
@@ -320,7 +308,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getParentGroupIds")
     @WebResult(name = "parentGroupIds")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<String> getParentGroupIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
@@ -334,7 +321,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getDirectParentGroupIds")
     @WebResult(name = "directParentGroupIds")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<String> getDirectParentGroupIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 	/**
@@ -356,7 +342,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getMembersOfGroup")
     @WebResult(name = "members")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
 	List<GroupMember> getMembersOfGroup( @WebParam(name="groupId") String groupIds ) throws RiceIllegalArgumentException;
 
 
@@ -373,7 +358,6 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getMembers")
     @WebResult(name = "members")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
 	List<GroupMember> getMembers( @WebParam(name="groupIds") List<String> groupIds ) throws RiceIllegalArgumentException;
 
 
@@ -389,7 +373,6 @@ public interface GroupService {
      */
 /*    @WebMethod(operationName = "getPersonMembersOfGroup")
     @WebResult(name = "personMembersOfGroup")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     Collection<Person> getPersonMembersOfGroup( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
@@ -405,6 +388,5 @@ public interface GroupService {
      *//*
     @WebMethod(operationName = "getGroupMembersOfGroup")
     @WebResult(name = "groupMembersOfGroup")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     Collection<Group> getGroupMembersOfGroup( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;*/
 }

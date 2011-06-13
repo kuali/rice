@@ -1,6 +1,9 @@
 package org.kuali.rice.test.remote;
 
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.kuali.rice.core.cxf.interceptors.ImmutableCollectionsInInterceptor;
 
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
@@ -28,10 +31,16 @@ public class RemoteTestHarness {
 
             endpoint = Endpoint.publish(ServiceEndpointLocation.ENDPOINT_URL, serviceImplementation);
 
+
+
             JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
             factory.setServiceClass(jaxWsAnnotatedInterface);
             factory.setAddress(ServiceEndpointLocation.ENDPOINT_URL);
-            return (T) factory.create();
+
+            T serviceProxy = (T) factory.create();
+            Client cxfClient = ClientProxy.getClient(serviceProxy);
+            cxfClient.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
+            return serviceProxy;
         } else {
             throw new IllegalArgumentException("Passed in interface class type must be annotated with @WebService " +
                     "and object reference must be an implementing class of that interface");

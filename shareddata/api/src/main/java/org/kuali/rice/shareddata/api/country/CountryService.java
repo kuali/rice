@@ -18,7 +18,6 @@ package org.kuali.rice.shareddata.api.country;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 
 import javax.jws.WebMethod;
@@ -26,7 +25,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
 
@@ -66,7 +64,6 @@ public interface CountryService {
      */
     @WebMethod(operationName = "findAllCountriesNotRestricted")
     @WebResult(name = "countriesNotRestricted")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<Country> findAllCountriesNotRestricted();
 
     /**
@@ -76,6 +73,5 @@ public interface CountryService {
      */
     @WebMethod(operationName = "findAllCountries")
     @WebResult(name = "allCountries")
-    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<Country> findAllCountries();
 }

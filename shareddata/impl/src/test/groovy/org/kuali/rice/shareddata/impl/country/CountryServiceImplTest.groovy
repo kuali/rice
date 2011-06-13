@@ -185,6 +185,7 @@ class CountryServiceImplTest {
         businessObjectServiceMockFor.verify(bos)
     }
 
+    @Test
     public void testFindAllCountriesReturnsImmutableList() {
         businessObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]

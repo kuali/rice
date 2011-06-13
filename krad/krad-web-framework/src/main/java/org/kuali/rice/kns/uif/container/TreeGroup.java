@@ -1,5 +1,11 @@
 package org.kuali.rice.kns.uif.container;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.kuali.rice.core.util.Node;
 import org.kuali.rice.core.util.Tree;
 import org.kuali.rice.kns.uif.UifConstants;
@@ -9,11 +15,6 @@ import org.kuali.rice.kns.uif.field.MessageField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.widget.TreeWidget;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Group component that is backed by a <code>Tree</code> data structure and typically
@@ -27,11 +28,9 @@ public class TreeGroup extends Group {
     private String propertyName;
     private BindingInfo bindingInfo;
 
-    private Group dataGroupPrototype;
-
-    private MessageField nodeLabelPrototype;
-    private Map<String, String> nodeTypeStyleClasses;
-
+    private Map<Class<?>, NodePrototype> nodeProtypeMap;
+    private NodePrototype defaultNodePrototype;
+    
     private Tree<Group, MessageField> treeGroups;
 
     private TreeWidget treeWidget;
@@ -39,7 +38,6 @@ public class TreeGroup extends Group {
     public TreeGroup() {
         super();
 
-        nodeTypeStyleClasses = new HashMap<String, String>();
         treeGroups = new Tree<Group, MessageField>();
     }
 
@@ -67,8 +65,38 @@ public class TreeGroup extends Group {
 
         // TODO: set object path for prototypes equal to the tree group object path?
 
-        view.getViewHelperService().performComponentInitialization(view, nodeLabelPrototype);
-        view.getViewHelperService().performComponentInitialization(view, dataGroupPrototype);
+        initializeNodePrototypeComponents(view);
+    }
+
+    /**
+     * This method initializes {@link org.kuali.rice.kns.uif.core.Component}s within the {@link NodePrototype}s
+     * 
+     * @param view
+     */
+    private void initializeNodePrototypeComponents(View view) {
+        view.getViewHelperService().performComponentInitialization(view, defaultNodePrototype.getLabelPrototype());
+        view.getViewHelperService().performComponentInitialization(view, defaultNodePrototype.getDataGroupPrototype());
+        
+        if (nodeProtypeMap != null) for (Entry<Class<?>, NodePrototype> prototypeEntry : nodeProtypeMap.entrySet()) {
+            NodePrototype prototype = prototypeEntry.getValue();
+            if (prototype != null) {
+                
+                if (prototype.getLabelPrototype() != null) {
+                    view.getViewHelperService().performComponentInitialization(view, prototype.getLabelPrototype());
+                } else {
+                    throw new IllegalStateException("encountered null NodePrototype.labelPrototype");
+                }
+                
+                if (prototype.getDataGroupPrototype() != null) {
+                    view.getViewHelperService().performComponentInitialization(view, prototype.getDataGroupPrototype());
+                } else {
+                    throw new IllegalStateException("encountered null NodePrototype.dataGroupPrototype");
+                }
+                
+            } else {
+                throw new IllegalStateException("encountered null NodePrototype");
+            }
+        }
     }
 
     /**
@@ -112,15 +140,18 @@ public class TreeGroup extends Group {
 
     protected Node<Group, MessageField> buildTreeNode(Node<Object, String> nodeData, String bindingPrefix, int nodeCounter) {
         Node<Group, MessageField> node = new Node<Group, MessageField>();
+        node.setNodeType(nodeData.getNodeType());
 
         String idSuffix = "_n" + nodeCounter;
+        
+        NodePrototype prototype = getNodePrototype(nodeData);
 
-        MessageField messageField = ComponentUtils.copy(this.nodeLabelPrototype, idSuffix);
+        MessageField messageField = ComponentUtils.copy(prototype.getLabelPrototype(), idSuffix);
         ComponentUtils.pushObjectToContext(messageField, UifConstants.ContextVariableNames.NODE, nodeData);
         messageField.setMessageText(nodeData.getNodeLabel());
         node.setNodeLabel(messageField);
-
-        Group nodeGroup = ComponentUtils.copyComponent(this.dataGroupPrototype, bindingPrefix + ".data", idSuffix);
+        
+        Group nodeGroup = ComponentUtils.copyComponent(prototype.getDataGroupPrototype(), bindingPrefix + ".data", idSuffix);
         ComponentUtils.pushObjectToContext(nodeGroup, UifConstants.ContextVariableNames.NODE, nodeData);
         node.setData(nodeGroup);
 
@@ -136,6 +167,29 @@ public class TreeGroup extends Group {
         node.setChildren(nodeChildren);
 
         return node;
+    }
+
+    
+    /**
+     * This method gets the NodePrototype to use for the given Node
+     */
+    private NodePrototype getNodePrototype(Node<Object, String> nodeData) {
+        NodePrototype result = null;
+        if (nodeData != null && nodeData.getData() != null) {
+            Class<?> dataClass = nodeData.getData().getClass();
+            result = nodeProtypeMap.get(dataClass);
+            
+            // somewhat lame fallback - to do this right we'd find all entries that are assignable from the data class 
+            // and then figure out which one is the closest relative
+            if (result == null) for (Entry<Class<?>, NodePrototype> prototypeEntry : nodeProtypeMap.entrySet()) {
+                if (prototypeEntry.getKey().isAssignableFrom(dataClass)) {
+                    result = prototypeEntry.getValue();
+                    break;
+                }
+            }
+        } 
+        if (result == null) result = defaultNodePrototype;
+        return result;
     }
 
     /**
@@ -185,28 +239,32 @@ public class TreeGroup extends Group {
         this.bindingInfo = bindingInfo;
     }
 
-    public Group getDataGroupPrototype() {
-        return dataGroupPrototype;
+    /**
+     * @return the defaultNodePrototype
+     */
+    public NodePrototype getDefaultNodePrototype() {
+        return this.defaultNodePrototype;
     }
-
-    public void setDataGroupPrototype(Group dataGroupPrototype) {
-        this.dataGroupPrototype = dataGroupPrototype;
+    
+    /**
+     * @param defaultNodePrototype the defaultNodePrototype to set
+     */
+    public void setDefaultNodePrototype(NodePrototype defaultNodePrototype) {
+        this.defaultNodePrototype = defaultNodePrototype;
     }
-
-    public MessageField getNodeLabelPrototype() {
-        return nodeLabelPrototype;
+    
+    /**
+     * @return the nodeProtypeMap
+     */
+    public Map<Class<?>, NodePrototype> getNodeProtypeMap() {
+        return this.nodeProtypeMap;
     }
-
-    public void setNodeLabelPrototype(MessageField nodeLabelPrototype) {
-        this.nodeLabelPrototype = nodeLabelPrototype;
-    }
-
-    public Map<String, String> getNodeTypeStyleClasses() {
-        return nodeTypeStyleClasses;
-    }
-
-    public void setNodeTypeStyleClasses(Map<String, String> nodeTypeStyleClasses) {
-        this.nodeTypeStyleClasses = nodeTypeStyleClasses;
+    
+    /**
+     * @param nodeProtypeMap the nodeProtypeMap to set
+     */
+    public void setNodeProtypeMap(Map<Class<?>, NodePrototype> nodeProtypeMap) {
+        this.nodeProtypeMap = nodeProtypeMap;
     }
 
     public Tree<Group, MessageField> getTreeGroups() {
@@ -223,5 +281,41 @@ public class TreeGroup extends Group {
 
     public void setTreeWidget(TreeWidget treeWidget) {
         this.treeWidget = treeWidget;
+    }
+    
+    public static class NodePrototype implements Serializable {
+        
+        private static final long serialVersionUID = 1L;
+        
+        MessageField labelPrototype;
+        Group dataGroupPrototype;
+        
+        /**
+         * @param labelPrototype the labelPrototype to set
+         */
+        public void setLabelPrototype(MessageField labelPrototype) {
+            this.labelPrototype = labelPrototype;
+        }
+        
+        /**
+         * @return the labelPrototype
+         */
+        public MessageField getLabelPrototype() {
+            return this.labelPrototype;
+        }
+        
+        /**
+         * @param dataGroupPrototype the dataGroupPrototype to set
+         */
+        public void setDataGroupPrototype(Group dataGroupPrototype) {
+            this.dataGroupPrototype = dataGroupPrototype;
+        }
+        
+        /**
+         * @return the dataGroupPrototype
+         */
+        public Group getDataGroupPrototype() {
+            return this.dataGroupPrototype;
+        }
     }
 }

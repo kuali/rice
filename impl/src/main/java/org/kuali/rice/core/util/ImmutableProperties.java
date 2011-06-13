@@ -66,9 +66,9 @@ public class ImmutableProperties extends Properties {
 	
 	// TODO: This overrides a method that was added in JDK6 -- remove comments when Rice moves to JDK6 on all builds
 	//@Override 
-	public Set<String> stringPropertyNames() {
-		return _properties.stringPropertyNames();
-	}
+//	public Set<String> stringPropertyNames() {
+//		return _properties.stringPropertyNames();
+//	}
 	
 	@Override
 	public void list(PrintStream out) {

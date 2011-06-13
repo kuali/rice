@@ -42,7 +42,8 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 @XmlType(name = RuleDefinition.Constants.TYPE_NAME, propOrder = {
 		RuleDefinition.Elements.ID,
 		RuleDefinition.Elements.NAME,
-		RuleDefinition.Elements.NAMESPACE,
+        RuleDefinition.Elements.NAMESPACE,
+        RuleDefinition.Elements.DESCRIPTION,
 		RuleDefinition.Elements.TYPE_ID,
 		RuleDefinition.Elements.PROPOSITION,
 		RuleDefinition.Elements.ACTIONS,
@@ -57,10 +58,10 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	private String id;
     @XmlElement(name = Elements.NAME, required=true)
 	private String name;
-    @XmlElement(name = Elements.DESCRIPTION, required=false)
-    private String description;
 	@XmlElement(name = Elements.NAMESPACE, required=true)
 	private String namespace;
+    @XmlElement(name = Elements.DESCRIPTION, required=false)
+    private String description;
 	@XmlElement(name = Elements.TYPE_ID, required=true)
 	private String typeId;
 	@XmlElement(name = Elements.PROPOSITION, required=true)

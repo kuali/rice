@@ -49,9 +49,9 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
         StringBuffer regexString = new StringBuffer("[");
 
 
-        regexString.append("\\p{Graph}");
-        if (getAllowWhitespace()) {
-            regexString.append("\\p{Space}");
+        regexString.append("\\x21-\\x7E");
+        if (allowWhitespace) {
+            regexString.append("\\t\\r\\n\\v\\f");
         }
         regexString.append("]");
 

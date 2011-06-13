@@ -739,22 +739,26 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // in the DB.
         else if (document.isNew()) {
 
-            // get a map of the pk field names and values
-            Map<String, ?> newPkFields = businessObjectMetaDataService.getPrimaryKeyFieldValues(newBo);
-
-            // TODO: Good suggestion from Aaron, dont bother checking the DB, if all of the
-            // objects PK fields dont have values. If any are null or empty, then
-            // we're done. The current way wont fail, but it will make a wasteful
-            // DB call that may not be necessary, and we want to minimize these.
-
-            // attempt to do a lookup, see if this object already exists by these Primary Keys
-            PersistableBusinessObject testBo = boService.findByPrimaryKey(boClass.asSubclass(PersistableBusinessObject.class), newPkFields);
+        	// TODO: when/if we have standard support for DO retrieval, do this check for DO's
+            if(newBo instanceof PersistableBusinessObject) {
             
-            // if the retrieve was successful, then this object already exists, and we need
-            // to complain
-            if (testBo != null) {
-                putDocumentError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW, getHumanReadablePrimaryKeyFieldNames(boClass));
-                success &= false;
+	            // get a map of the pk field names and values
+	            Map<String, ?> newPkFields = businessObjectMetaDataService.getPrimaryKeyFieldValues(newBo);
+	
+	            // TODO: Good suggestion from Aaron, dont bother checking the DB, if all of the
+	            // objects PK fields dont have values. If any are null or empty, then
+	            // we're done. The current way wont fail, but it will make a wasteful
+	            // DB call that may not be necessary, and we want to minimize these.
+	
+	            // attempt to do a lookup, see if this object already exists by these Primary Keys
+	            PersistableBusinessObject testBo = boService.findByPrimaryKey(boClass.asSubclass(PersistableBusinessObject.class), newPkFields);
+	            
+	            // if the retrieve was successful, then this object already exists, and we need
+	            // to complain
+	            if (testBo != null) {
+	                putDocumentError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW, getHumanReadablePrimaryKeyFieldNames(boClass));
+	                success &= false;
+	            }
             }
         }
         
@@ -961,11 +965,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         if (newMaintainable.getDataObject() == null) {
             throw new ValidationException("Maintainable's component data object is null.");
         }
-
-        // document's newMaintainable must contain a valid BusinessObject descendent
-        if (!PersistableBusinessObject.class.isAssignableFrom(newMaintainable.getBoClass())) {
-            throw new ValidationException("Maintainable's component object is not descended from BusinessObject.");
-        }
+        
         return success;
     }
 

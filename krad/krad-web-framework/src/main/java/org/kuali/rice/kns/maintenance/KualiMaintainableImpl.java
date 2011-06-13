@@ -413,7 +413,11 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 	 * Retrieves the status of the boNotesEnabled
 	 */
 	public boolean isBoNotesEnabled() {
-		return getBusinessObjectDictionaryService().areNotesSupported(this.boClass);
+		if(BusinessObject.class.isAssignableFrom(boClass)) {
+			return getBusinessObjectDictionaryService().areNotesSupported(this.boClass);
+		}
+		
+		return false;
 	}
 
 	/**

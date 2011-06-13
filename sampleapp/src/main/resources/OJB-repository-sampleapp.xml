@@ -104,7 +104,6 @@
 	<class-descriptor class="edu.sampleu.travel.bo.FiscalOfficer" table="TRV_ACCT_FO">
 		<field-descriptor name="id" column="acct_fo_id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="TRV_FO_ID_S" />
 		<field-descriptor name="userName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
-		<field-descriptor name="firstName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 

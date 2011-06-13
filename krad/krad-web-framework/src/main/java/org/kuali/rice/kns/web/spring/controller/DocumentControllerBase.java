@@ -204,7 +204,11 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     		form.setAnnotation("");
 		}
 		catch(ValidationException vex) {
-		    // swallow exception so screen will draw with errors
+		    // if errors in map, swallow exception so screen will draw with errors
+			// if not then throw runtime because something bad happened
+			if(GlobalVariables.getMessageMap().hasNoErrors()) {
+				throw new RuntimeException("Validation Exception with no error message.", vex);
+			}
 		}
 
 		return getUIFModelAndView(form);

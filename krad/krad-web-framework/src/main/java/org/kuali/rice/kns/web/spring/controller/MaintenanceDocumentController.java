@@ -30,6 +30,7 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.web.spring.form.DocumentFormBase;
@@ -248,6 +249,10 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
                 request.setAttribute("fileName", bo.getFileName());
             }
         } catch (ValidationException vex) {
+        	if(GlobalVariables.getMessageMap().hasNoErrors()) {
+				throw new RuntimeException("Validation Exception with no error message.", vex);
+			}
+        	
             modelAndView = getUIFModelAndView(form);
         }
 

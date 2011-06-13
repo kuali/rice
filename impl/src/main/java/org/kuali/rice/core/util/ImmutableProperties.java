@@ -64,7 +64,8 @@ public class ImmutableProperties extends Properties {
 		return _properties.propertyNames();
 	}
 	
-	@Override 
+	// TODO: This overrides a method that was added in JDK6 -- remove comments when Rice moves to JDK6 on all builds
+	//@Override 
 	public Set<String> stringPropertyNames() {
 		return _properties.stringPropertyNames();
 	}
@@ -84,6 +85,7 @@ public class ImmutableProperties extends Properties {
 		 throw new UnsupportedOperationException("This class is immutable");
 	}
 
+	// TODO: This overrides a method that was added in JDK6 -- remove comments when Rice moves to JDK6 on all builds
 	//@Override
 	public synchronized void load(Reader reader) throws IOException {
 		throw new UnsupportedOperationException("This class is immutable");

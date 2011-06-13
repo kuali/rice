@@ -126,11 +126,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="bindingInfo">
         <ref bean="BindingInfo"/>
       </property>
-      <property name="dataGroupPrototype">
-        <bean parent="Group"/>
+      <property name="nodeProtypeMap">
+        <map/>
       </property>
-      <property name="nodeLabelPrototype">
-        <bean parent="MessageField"/>
+      <property name="defaultNodePrototype">
+        <bean class="org.kuali.rice.kns.uif.container.TreeGroup.NodePrototype">
+            <property name="labelPrototype">
+                <bean parent="MessageField"/>
+            </property>
+            <property name="dataGroupPrototype">
+                <bean parent="Group"/>
+            </property>
+        </bean>
       </property>
       <property name="treeWidget">
         <bean parent="TreeWidget"/>

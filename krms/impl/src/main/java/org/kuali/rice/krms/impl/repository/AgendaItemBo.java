@@ -18,6 +18,7 @@ package org.kuali.rice.krms.impl.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
 
@@ -36,6 +37,8 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 	private String whenTrueId;
 	private String whenFalseId;
 	private String alwaysId;
+	
+	private RuleBo rule;
 	
 	private AgendaItemBo whenTrue;
 	private AgendaItemBo whenFalse;
@@ -65,7 +68,21 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 	}
 
     public String getRuleText() {
-        return "Build up rule text string";
+        StringBuilder resultBuilder = new StringBuilder();
+        if (getRule() != null) {
+            if (StringUtils.isBlank(getRule().getName())) {
+                resultBuilder.append("- unnamed rule -");
+            } else {
+                resultBuilder.append(getRule().getName());
+            }
+            if (!StringUtils.isBlank(getRule().getDescription())) {
+                resultBuilder.append(": ");
+                resultBuilder.append(getRule().getDescription());
+            }
+        } else {
+            throw new IllegalStateException();
+        }
+        return resultBuilder.toString();
     }
 
 //	def List<AgendaItemBo> alwaysList
@@ -225,41 +242,22 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 		this.always = always;
 	}
 	
-//	public List<AgendaItemBo> getWhenTrueList() {
-//		List<AgendaItemBo> results = new ArrayList<AgendaItemBo>();
-//		
-//		AgendaItemBo currentNode = this;
-//		if (currentNode.whenTrue != null) {
-//			results.add(currentNode.whenTrue);
-//			currentNode = currentNode.whenTrue;
-//		}
-//		while (currentNode.always != null) {
-//			results.add(currentNode.always);
-//			currentNode = currentNode.always;
-//		}
-//		
-//		return results;
-//	}
-//	
-//	public List<AgendaItemBo> getWhenFalseList() {
-//		List<AgendaItemBo> results = new ArrayList<AgendaItemBo>();
-//		
-//		AgendaItemBo currentNode = this;
-//		if (currentNode.whenFalse != null) {
-//			results.add(currentNode.whenFalse);
-//			currentNode = currentNode.whenFalse;
-//		}
-//		while (currentNode.always != null) {
-//			results.add(currentNode.always);
-//			currentNode = currentNode.always;
-//		}
-//		
-//		return results;
-//	}
+    /**
+     * @return the rule
+     */
+    public RuleBo getRule() {
+        return this.rule;
+    }
+
+    /**
+     * @param rule the rule to set
+     */
+    public void setRule(RuleBo rule) {
+        this.rule = rule;
+    }
+
 	
-	// Would make life in KNS easier to map to related AgendaItemBos, and RuleBos
-	
-	/**
+    /**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object
 	* @return the immutable object

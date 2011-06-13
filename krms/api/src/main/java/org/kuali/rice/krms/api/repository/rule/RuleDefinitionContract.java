@@ -10,14 +10,23 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
 
 public interface RuleDefinitionContract extends Identifiable, Versioned {
-	/**
-	 * This is the name of the Rule 
-	 * <p>
-	 * name - the name of the Rule
-	 * </p>
-	 * @return the name of the Rule
-	 */
-	public String getName();
+    /**
+     * This is the name of the Rule 
+     * <p>
+     * name - the name of the Rule
+     * </p>
+     * @return the name of the Rule
+     */
+    public String getName();
+
+    /**
+     * This is the description of the Rule 
+     * <p>
+     * description - the description of the Rule
+     * </p>
+     * @return the description of the Rule
+     */
+    public String getDescription();
 
 	/**
 	 * This is the namespace of the Rule 

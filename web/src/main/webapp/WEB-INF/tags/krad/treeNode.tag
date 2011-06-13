@@ -14,16 +14,17 @@
  limitations under the License.
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ attribute name="node" required="true"
               description="Node instance in the tree to be rendered"
               type="org.kuali.rice.core.util.Node"%>
 
 <li>
-   <a href="#">
+   <a href="#" class="${node.nodeType}">
        <krad:template component="${node.nodeLabel}"/>
    </a>
    <krad:template component="${node.data}" />
+   <c:if test="${(node.children != null) and (fn:length(node.children) > 0)}">
    <ul>
       <c:forEach items="${node.children}" var="childNode" varStatus="itemVarStatus">
          <%-- ran into recursive tag problem on Linux, see KULRICE-5161 --%>
@@ -32,6 +33,7 @@
          <kul2:containerTreeNode node="${childNode}"/>
       </c:forEach>
    </ul>
+   </c:if>
 
 </li>
 

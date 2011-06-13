@@ -55,8 +55,10 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 
 	@XmlElement(name = Elements.ID, required=true)
 	private String id;
-	@XmlElement(name = Elements.NAME, required=true)
+    @XmlElement(name = Elements.NAME, required=true)
 	private String name;
+    @XmlElement(name = Elements.DESCRIPTION, required=false)
+    private String description;
 	@XmlElement(name = Elements.NAMESPACE, required=true)
 	private String namespace;
 	@XmlElement(name = Elements.TYPE_ID, required=true)
@@ -140,7 +142,11 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		return this.name;
 	}
 
-	@Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    @Override
 	public String getNamespace() {
 		return this.namespace;
 	}
@@ -183,6 +189,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         
 		private String id;
         private String name;
+        private String description;
         private String namespace;
         private String typeId;
         private String propId;
@@ -236,6 +243,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         	}
             builder.setActions(actionList);
             builder.setVersionNumber(contract.getVersionNumber());
+            builder.setDescription(contract.getDescription());
             return builder;
         }
 
@@ -257,8 +265,15 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
             if (StringUtils.isBlank(name)) {
                 throw new IllegalArgumentException("name is blank");
             }
-			this.name = name;
-		}
+            this.name = name;
+        }
+     
+        public void setDescription(String description) {
+            if (description != null && StringUtils.isBlank(description)) {
+                throw new IllegalArgumentException("description is non-null but is blank");
+            }
+            this.description = description;
+        }
      
         public void setNamespace(String namespace) {
             if (StringUtils.isBlank(namespace)) {
@@ -313,6 +328,11 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		@Override
 		public String getName() {
 			return name;
+		}
+		
+		@Override
+		public String getDescription() {
+		    return description;
 		}
 
 		@Override
@@ -390,7 +410,8 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	 */
 	public static class Elements {
 		final static String ID = "id";
-		final static String NAME = "name";
+        final static String NAME = "name";
+        final static String DESCRIPTION = "description";
 		final static String NAMESPACE = "namespace";
 		final static String TYPE_ID = "typeId";
 		final static String PROPOSITION = "proposition";

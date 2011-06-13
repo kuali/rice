@@ -65,7 +65,7 @@ values('C1ATTR1', 'CONTEXT1', 'BLAH', 'Q44001', 1)
 
 
 insert into krms_rule_t
-(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, descr_txt)
+(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
 values ('R201', 'KRMS_TEST', 'Rule1', 'T2', null, 'Y', 1, 'Bloomington Campus Code Rule')
 ;
 

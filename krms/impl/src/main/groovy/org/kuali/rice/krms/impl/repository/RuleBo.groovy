@@ -13,6 +13,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 
 	def String id
 	def String namespace
+    def String description
 	def String name
 	def String typeId
 	def String propId
@@ -56,6 +57,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	   bo.id = im.id
 	   bo.namespace = im.namespace
 	   bo.name = im.name
+       bo.description = im.description
 	   bo.typeId = im.typeId
 	   bo.propId = im.propId
 	   bo.proposition = PropositionBo.from(im.proposition)

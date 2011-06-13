@@ -268,7 +268,7 @@
 		<property name="header.headerText" value="Stacktrace (only in dev mode)" />
 		<property name="items">
 			<list>
-				<bean parent="AttributeField" p:propertyName="exceptionStackTrace"
+				<bean parent="AttributeField" p:propertyName="preWrappedStackTrace"
 					p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
 					p:labelField.renderColon="false" p:label="" p:readOnly="true"
 					p:width="auto" p:conditionalReadOnly="">

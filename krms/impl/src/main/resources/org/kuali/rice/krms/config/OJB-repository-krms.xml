@@ -153,7 +153,7 @@
             <inverse-foreignkey field-ref="agendaId" />
         </collection-descriptor>
         <collection-descriptor name="items" element-class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" 
-          collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
+          collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
             <inverse-foreignkey field-ref="agendaId" />
         </collection-descriptor>
         
@@ -179,10 +179,13 @@
         <field-descriptor name="whenFalseId" column="WHEN_FALSE" jdbc-type="VARCHAR" />
         <field-descriptor name="alwaysId" column="ALWAYS" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-        <reference-descriptor name="whenTrue" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="false" auto-update="none" auto-delete="none" proxy="true">
+        <reference-descriptor name="rule" class-ref="org.kuali.rice.krms.impl.repository.RuleBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+            <foreignkey field-ref="ruleId" target-field-ref="id" />
+        </reference-descriptor>
+        <reference-descriptor name="whenTrue" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
             <foreignkey field-ref="whenTrueId" target-field-ref="id" />
         </reference-descriptor>
-        <reference-descriptor name="whenFalse" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="false" auto-update="none" auto-delete="none" proxy="true">
+        <reference-descriptor name="whenFalse" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
             <foreignkey field-ref="whenFalseId" target-field-ref="id" />
         </reference-descriptor>
         <reference-descriptor name="always" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
@@ -251,7 +254,8 @@
 
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.RuleBo" table="KRMS_RULE_T">
 		<field-descriptor name="id" column="RULE_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_RULE_S"/>
-		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+        <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+        <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
 		<field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
 		<field-descriptor name="propId" column="PROP_ID" jdbc-type="VARCHAR"  />

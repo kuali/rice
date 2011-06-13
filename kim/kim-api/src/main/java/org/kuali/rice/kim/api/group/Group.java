@@ -122,7 +122,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
         private String name;
         private String description;
         private String kimTypeId;
-        private Attributes attributes;
+        private Attributes attributes = Attributes.empty();
         private boolean active;
         private Long versionNumber;
         private String objectId;

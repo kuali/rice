@@ -132,6 +132,31 @@ class AttributesTest {
         JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, Root.class)
     }
 
+    @Test void testSerializable() {
+        Attributes a = Attributes.fromMap(["foo": "bar"])
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(a);
+        byte[] bytes = bos.toByteArray();
+        oos.flush();
+        oos.close();
+
+
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bis);
+        Attributes deserialized = (Attributes)ois.readObject();
+        ois.close();
+
+
+        assertEquals(a, deserialized);
+
+        //checks that transient fields are reinitialized properly
+        deserialized.entrySet();
+        assertNotNull(deserialized.lock)
+    }
+
     private static create() {
         return new Root();
     }

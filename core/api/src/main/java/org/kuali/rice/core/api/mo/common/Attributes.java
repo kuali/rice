@@ -10,6 +10,8 @@ import org.kuali.rice.core.util.jaxb.StringMapEntryList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -35,8 +37,9 @@ public final class Attributes implements Serializable {
 
     private final Map<String, String> keyValues;
 
-    private final Object lock = new Object();
-    private Set<Map.Entry<String, String>> cache;
+    //should only be reassigned on deserialization
+    private transient Object lock = new Object();
+    private transient Set<Map.Entry<String, String>> cache;
 
     /**
      * This constructor should never be called except during JAXB unmarshalling.
@@ -248,6 +251,12 @@ public final class Attributes implements Serializable {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    //resetting transient fields on deserialization
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        lock = new Object();
     }
 
     /**

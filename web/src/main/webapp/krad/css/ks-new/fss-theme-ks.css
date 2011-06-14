@@ -65,6 +65,16 @@ table td, table th {
 	background-color:#73C561;
 	color: #3F7826;
 }
+.ui-priority-secondary-sm {
+    border-radius:3px;
+    background-image: -moz-linear-gradient(top, #ffffff, #e2e2e2);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #e2e2e2));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#e2e2e2')";
+	/* fallback for < 8 versions of IE*/
+	background-color:#73C561;
+	color: #3F7826;
+    border: 1px solid #999;s
+}
 .fl-theme-ks .button-primary a, .button-primary a:link, .button-primary a:visited {
 	color: #eeeeee;
 }
@@ -131,6 +141,9 @@ table td, table th {
     .display td {
         vertical-align:top;
         padding:  3px 10px 3px 3px;
+    }
+    tr.even, tr.odd {
+        border-bottom: 1px dotted #000;
     }
 
     /* cell colors for sortable table should be white */

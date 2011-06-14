@@ -31,6 +31,8 @@ public interface ActionRequestContract extends Identifiable {
 	
 	RecipientType getRecipientType();
 	
+	ActionRequestPolicy getRequestPolicy();
+	
 	// TODO finish contract for ActionRequest
 	
 }

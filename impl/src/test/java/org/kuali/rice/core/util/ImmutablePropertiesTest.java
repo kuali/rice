@@ -125,7 +125,13 @@ public class ImmutablePropertiesTest extends Assert {
 	}
 	
 	@Test public void stringPropertyNames() throws IOException {
-		Set<String> set = properties.stringPropertyNames();
+
+	    Enumeration propertyNames = properties.propertyNames();
+	    Set<String> set = new HashSet<String>();
+	    while (propertyNames.hasMoreElements()) {
+	        set.add((String)propertyNames.nextElement());
+	    }
+	        
 		assertTrue(set.contains("1"));
 		assertTrue(set.contains("2"));
 		assertTrue(set.contains("3"));

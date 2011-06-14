@@ -15,11 +15,15 @@
  */
 package org.kuali.rice.kew.util;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.sql.Date;
-import java.util.*;
 
 public final class KEWConstants {
 
@@ -86,25 +90,16 @@ public final class KEWConstants {
     public static final String NOTE_ATTRIBUTE_CLASS_PROPERTY = "customNoteAttributeClassName";
 
     // Delegation Constants
-    public static final String DELEGATION_NONE = null;
-    public static final String DELEGATION_PRIMARY = "P";
-    public static final String DELEGATION_SECONDARY = "S";
+//    public static final String DELEGATION_PRIMARY = "P";
+//    public static final String DELEGATION_SECONDARY = "S";
     /**
      * This is a UI option, not valid data for a delgationType value.
      */
     public static final String DELEGATION_BOTH = "E";
 
-    public static final String DELEGATION_PRIMARY_LABEL = "Primary";
-    public static final String DELEGATION_SECONDARY_LABEL = "Secondary";
+//    public static final String DELEGATION_PRIMARY_LABEL = "Primary";
+//    public static final String DELEGATION_SECONDARY_LABEL = "Secondary";
     public static final String DELEGATION_BOTH_LABEL = "Both";
-
-    // Linked hash map to preseve order for iteration
-    public static final Map<String, String> DELEGATION_TYPES = new LinkedHashMap<String, String>();
-    static {
-    	DELEGATION_TYPES.put(DELEGATION_PRIMARY, DELEGATION_PRIMARY_LABEL);
-    	DELEGATION_TYPES.put(DELEGATION_SECONDARY, DELEGATION_SECONDARY_LABEL);
-    	DELEGATION_TYPES.put(DELEGATION_BOTH, DELEGATION_BOTH_LABEL);
-    }
 
     public static final String FLEX_RM_NAME = "FRM";
     public static final String DOC_HANDLER_REDIRECT_PAGE = "DocHandler.do";

@@ -16,24 +16,34 @@
 package org.kuali.rice.kew.server;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.dto.*;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
+import org.kuali.rice.kew.dto.ActionItemDTO;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-
-import java.sql.Timestamp;
-import java.util.Date;
-
-import static org.junit.Assert.*;
 
 public class DTOConverterTest extends KEWTestCase {
 
@@ -192,7 +202,7 @@ public class DTOConverterTest extends KEWTestCase {
         String docTypeLabel = "Label Me";
         String docTitle = "Title me";
         Long responsibilityId = Long.valueOf(35);
-        String delegationType = KEWConstants.DELEGATION_PRIMARY;
+        String delegationType = DelegationType.PRIMARY.getCode();
 
         // create fake action item
         ActionItem actionItem = new ActionItem();

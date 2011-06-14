@@ -39,6 +39,7 @@ import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -212,7 +213,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         if (StringUtils.isBlank(filter.getDelegationType()) && StringUtils.isBlank(filter.getPrimaryDelegateId()) && StringUtils.isBlank(filter.getDelegatorId())) {
             crit.addEqualTo("principalId", principalId);
             addedDelegationCriteria = true;
-        } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_PRIMARY.equals(filter.getDelegationType()))
+        } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && DelegationType.PRIMARY.getCode().equals(filter.getDelegationType()))
                 || StringUtils.isNotBlank(filter.getPrimaryDelegateId())) {
             // using a primary delegation
             if ((StringUtils.isBlank(filter.getPrimaryDelegateId())) || (filter.getPrimaryDelegateId().trim().equals(KEWConstants.ALL_CODE))) {
@@ -228,8 +229,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);
-                crit.addEqualTo("delegationType", KEWConstants.DELEGATION_PRIMARY);
-                filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+                crit.addEqualTo("delegationType", DelegationType.PRIMARY.getCode());
+                filter.setDelegationType(DelegationType.PRIMARY.getCode());
                 filter.setExcludeDelegationType(false);
                 addToFilterDescription(filteredByItems, "Primary Delegator Id");
                 addedDelegationCriteria = true;
@@ -248,31 +249,31 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);
-                crit.addEqualTo("delegationType", KEWConstants.DELEGATION_PRIMARY);
-                filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+                crit.addEqualTo("delegationType", DelegationType.PRIMARY.getCode());
+                filter.setDelegationType(DelegationType.PRIMARY.getCode());
                 filter.setExcludeDelegationType(false);
                 addToFilterDescription(filteredByItems, "Primary Delegator Id");
                 addedDelegationCriteria = true;
                 filterOn = true;
             }
         }
-        if (!addedDelegationCriteria && ( (StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
+        if (!addedDelegationCriteria && ( (StringUtils.isNotBlank(filter.getDelegationType()) && DelegationType.SECONDARY.getCode().equals(filter.getDelegationType()))
                 || StringUtils.isNotBlank(filter.getDelegatorId()) )) {
             // using a secondary delegation
             crit.addEqualTo("principalId", principalId);
             if (StringUtils.isBlank(filter.getDelegatorId())) {
-                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+                filter.setDelegationType(DelegationType.SECONDARY.getCode());
                 // if isExcludeDelegationType() we want to show the default action list which is set up later in this method
                 if (!filter.isExcludeDelegationType()) {
-                    crit.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
+                    crit.addEqualTo("delegationType", DelegationType.SECONDARY.getCode());
                     addToFilterDescription(filteredByItems, "Secondary Delegator Id");
                     addedDelegationCriteria = true;
                     filterOn = true;
                 }
             } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
                 // user wishes to see all secondary delegations
-                crit.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
-                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+                crit.addEqualTo("delegationType", DelegationType.SECONDARY.getCode());
+                filter.setDelegationType(DelegationType.SECONDARY.getCode());
                 filter.setExcludeDelegationType(false);
                 addToFilterDescription(filteredByItems, "Secondary Delegator Id");
                 addedDelegationCriteria = true;
@@ -280,7 +281,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             } else if (!filter.getDelegatorId().trim().equals(
                     KEWConstants.DELEGATION_DEFAULT)) {
                 // user has specified an id to see for secondary delegation
-                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+                filter.setDelegationType(DelegationType.SECONDARY.getCode());
                 filter.setExcludeDelegationType(false);
                 Criteria userCrit = new Criteria();
                 Criteria groupCrit = new Criteria();
@@ -313,7 +314,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
 //            if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim()) && !filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)
 //                    && !filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
-//                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//                filter.setDelegationType(DelegationType.SECONDARY.getCode());
 //                filter.setExcludeDelegationType(false);
 //                Criteria userCrit = new Criteria();
 //                Criteria groupCrit = new Criteria();
@@ -339,7 +340,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //                addToFilterDescription(filteredByItems, "Secondary Delegator Id");
 //                addedDelegationCriteria = true;
 //            } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
-//                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//                filter.setDelegationType(DelegationType.SECONDARY.getCode());
 //                filter.setExcludeDelegationType(false);
 //                addToFilterDescription(filteredByItems, "Secondary Delegator Id");
 //                addedDelegationCriteria = true;
@@ -349,11 +350,11 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         // if we haven't added delegation criteria then use the default criteria below
         if (!addedDelegationCriteria) {
             crit.addEqualTo("principalId", principalId);
-            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+            filter.setDelegationType(DelegationType.SECONDARY.getCode());
             filter.setExcludeDelegationType(true);
             Criteria critNotEqual = new Criteria();
             Criteria critNull = new Criteria();
-            critNotEqual.addNotEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
+            critNotEqual.addNotEqualTo("delegationType", DelegationType.SECONDARY.getCode());
             critNull.addIsNull("delegationType");
             critNotEqual.addOrCriteria(critNull);
             crit.addAndCriteria(critNotEqual);
@@ -363,10 +364,10 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //        if (filter.getPrimaryDelegateId().equals(KEWConstants.PRIMARY_DELEGATION_DEFAULT) && filter.getDelegatorId().equals(KEWConstants.DELEGATION_DEFAULT)) {
 //            // no secondary or primary delegation displayed
 //            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
-//            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//            filter.setDelegationType(DelegationType.SECONDARY.getCode());
 //            Criteria critNotEqual = new Criteria();
 //            Criteria critNull = new Criteria();
-//            critNotEqual.addNotEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
+//            critNotEqual.addNotEqualTo("delegationType", DelegationType.SECONDARY.getCode());
 //            critNull.addIsNull("delegationType");
 //            critNotEqual.addOrCriteria(critNull);
 //            crit.addAndCriteria(critNotEqual);
@@ -381,8 +382,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //            orCrit.addOrCriteria(userCrit);
 //            orCrit.addOrCriteria(groupCrit);
 //            crit.addAndCriteria(orCrit);
-//            crit.addEqualTo("delegationType", KEWConstants.DELEGATION_PRIMARY);
-//            filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+//            crit.addEqualTo("delegationType", DelegationType.PRIMARY.getCode());
+//            filter.setDelegationType(DelegationType.PRIMARY.getCode());
 //            filter.setExcludeDelegationType(false);
 //            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
 //            filteredByItems += "Primary Delegator Id";
@@ -390,8 +391,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //        } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
 //            // user wishes to see all secondary delegations
 //            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
-//            crit.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
-//            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//            crit.addEqualTo("delegationType", DelegationType.SECONDARY.getCode());
+//            filter.setDelegationType(DelegationType.SECONDARY.getCode());
 //            filter.setExcludeDelegationType(false);
 //            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
 //            filteredByItems += "Secondary Delegator Id";
@@ -406,8 +407,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //            orCrit.addOrCriteria(userCrit);
 //            orCrit.addOrCriteria(groupCrit);
 //            crit.addAndCriteria(orCrit);
-//            crit.addEqualTo("delegationType", KEWConstants.DELEGATION_PRIMARY);
-//            filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+//            crit.addEqualTo("delegationType", DelegationType.PRIMARY.getCode());
+//            filter.setDelegationType(DelegationType.PRIMARY.getCode());
 //            filter.setExcludeDelegationType(false);
 //            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
 //            filteredByItems += "Primary Delegator Id";
@@ -415,8 +416,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //        } else if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim())) {
 //            // user wishes to see secondary delegation for a single user
 //            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
-//            crit.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
-//            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//            crit.addEqualTo("delegationType", DelegationType.SECONDARY.getCode());
+//            filter.setDelegationType(DelegationType.SECONDARY.getCode());
 //            filter.setExcludeDelegationType(false);
 //            Criteria userCrit = new Criteria();
 //            Criteria groupCrit = new Criteria();
@@ -460,14 +461,14 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
 
 //        if (primary delegation) {
-//            filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+//            filter.setDelegationType(DelegationType.PRIMARY.getCode());
 //            crit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
 //
 //        } else {
 //            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
 //            if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim()) && !filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)
 //                    && !filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
-//                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//                filter.setDelegationType(DelegationType.SECONDARY.getCode());
 //                filter.setExcludeDelegationType(false);
 //                Criteria userCrit = new Criteria();
 //                Criteria groupCrit = new Criteria();
@@ -494,10 +495,10 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //                filteredByItems += "Delegator Id";
 //                filterOn = true;
 //            } else if (filter.getDelegatorId().trim().equals(KEWConstants.DELEGATION_DEFAULT)) {
-//                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//                filter.setDelegationType(DelegationType.SECONDARY.getCode());
 //                filter.setExcludeDelegationType(true);
 //            } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
-//                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+//                filter.setDelegationType(DelegationType.SECONDARY.getCode());
 //                filter.setExcludeDelegationType(false);
 //                filteredByItems += filteredByItems.length() > 0 ? ", " : "";
 //                filteredByItems += "Delegator Id";

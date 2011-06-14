@@ -26,15 +26,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -170,7 +170,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         orCriteria.or(notNullWorkgroupCriteria);
         Criteria criteria = new Criteria(ActionItem.class.getName());
         criteria.eq("principalId", principalId);
-        criteria.eq("delegationType", KEWConstants.DELEGATION_SECONDARY);
+        criteria.eq("delegationType", DelegationType.SECONDARY.getCode());
         criteria.and(orCriteria);
 
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
@@ -205,7 +205,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
             orCriteria.and(delegatorWorkflowIdCriteria);
         }
         Criteria criteria = new Criteria(ActionItem.class.getName());
-        criteria.eq("delegationType", KEWConstants.DELEGATION_PRIMARY);
+        criteria.eq("delegationType", DelegationType.PRIMARY.getCode());
         criteria.and(orCriteria);
 
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();

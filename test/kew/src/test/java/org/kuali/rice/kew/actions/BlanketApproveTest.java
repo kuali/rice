@@ -32,6 +32,7 @@ import mocks.MockEmailNotificationService;
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
@@ -392,13 +393,13 @@ public class BlanketApproveTest extends KEWTestCase {
                     String childId = (childRequest.isGroupRequest() ? childRequest.getGroup().getName(): getPrincipalNameForId(childRequest.getPrincipalId()));
                     if ("temay".equals(childId)) {
                         foundTemayDelegate = true;
-                        assertEquals("Should be primary delegation.", KEWConstants.DELEGATION_PRIMARY, childRequest.getDelegationType());
+                        assertEquals("Should be primary delegation.", DelegationType.PRIMARY.getCode(), childRequest.getDelegationType());
                     } else if ("pmckown".equals(childId)) {
                         foundPmckownDelegate = true;
-                        assertEquals("Should be secondary delegation.", KEWConstants.DELEGATION_SECONDARY, childRequest.getDelegationType());
+                        assertEquals("Should be secondary delegation.", DelegationType.SECONDARY.getCode(), childRequest.getDelegationType());
                     } else if ("NonSIT".equals(childId)) {
                         foundNonSITWGDelegate = true;
-                        assertEquals("Should be primary delegation.", KEWConstants.DELEGATION_PRIMARY, childRequest.getDelegationType());
+                        assertEquals("Should be primary delegation.", DelegationType.PRIMARY.getCode(), childRequest.getDelegationType());
                     }
                 }
                 assertTrue("Could not locate delegate request for temay.", foundTemayDelegate);
@@ -429,7 +430,7 @@ public class BlanketApproveTest extends KEWTestCase {
                assertEquals("Should be 1 delegate role requests", 1, delegateRoleRequests.size());
                ActionRequestValue delegateRoleRequest = (ActionRequestValue)delegateRoleRequests.get(0);
                assertEquals("Should be NotifyDelegate role", "NotifyDelegate", delegateRoleRequest.getRoleName());
-               assertEquals("Should be secondary delegation", KEWConstants.DELEGATION_SECONDARY, delegateRoleRequest.getDelegationType());
+               assertEquals("Should be secondary delegation", DelegationType.SECONDARY.getCode(), delegateRoleRequest.getDelegationType());
                List delegateRequests = arService.getTopLevelRequests(delegateRoleRequest);
                assertEquals("Should be 2 delegate requests", 2, delegateRequests.size());
                boolean foundNatjohnsDelegate = false;

@@ -69,6 +69,7 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -206,7 +207,7 @@ public class RuleXmlParser {
     	}
     	Long parentResponsibilityId = parseParentResponsibilityId(parentResponsibilityElement);
     	String delegationType = element.getChildText(DELEGATION_TYPE, element.getNamespace());
-        if (delegationType == null || !(delegationType.equals(KEWConstants.DELEGATION_PRIMARY) || delegationType.equals(KEWConstants.DELEGATION_SECONDARY))) {
+        if (delegationType == null || !(delegationType.equals(DelegationType.PRIMARY.getCode()) || delegationType.equals(DelegationType.SECONDARY.getCode()))) {
             throw new XmlException("Invalid delegation type specified for delegate rule '" + delegationType + "'");
         }
         

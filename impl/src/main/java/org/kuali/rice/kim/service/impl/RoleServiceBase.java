@@ -15,17 +15,27 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
-
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
@@ -53,16 +63,6 @@ import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
-
-import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -1118,7 +1118,7 @@ public class RoleServiceBase {
             secondaryDelegation = new KimDelegationImpl();
             secondaryDelegation.setRoleId(roleId);
             secondaryDelegation.setDelegationId(getNewDelegationId());
-            secondaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_SECONDARY);
+            secondaryDelegation.setDelegationTypeCode(DelegationType.SECONDARY.getCode());
             secondaryDelegation.setKimTypeId(roleImpl.getKimTypeId());
         }
         return secondaryDelegation;
@@ -1135,7 +1135,7 @@ public class RoleServiceBase {
             primaryDelegation = new KimDelegationImpl();
             primaryDelegation.setRoleId(roleId);
             primaryDelegation.setDelegationId(getNewDelegationId());
-            primaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
+            primaryDelegation.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
             primaryDelegation.setKimTypeId(roleImpl.getKimTypeId());
         }
         return primaryDelegation;
@@ -1151,11 +1151,11 @@ public class RoleServiceBase {
 	}
 	
 	protected boolean isDelegationPrimary(String delegationTypeCode){
-        return KEWConstants.DELEGATION_PRIMARY.equals(delegationTypeCode);
+        return DelegationType.PRIMARY.getCode().equals(delegationTypeCode);
     }
 	
 	protected boolean isDelegationSecondary(String delegationTypeCode){
-        return KEWConstants.DELEGATION_SECONDARY.equals(delegationTypeCode);
+        return DelegationType.SECONDARY.getCode().equals(delegationTypeCode);
     }
 	
 	

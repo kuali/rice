@@ -28,6 +28,7 @@ import java.util.StringTokenizer;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -60,7 +61,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     Connection connection = broker.serviceConnectionManager().getConnection();
 
                     selectActionItems = connection.prepareStatement("select DOC_TYP_NM, COUNT(*) from KREW_ACTN_ITM_T where PRNCPL_ID = ? " +
-                            "and (dlgn_typ is null or dlgn_typ != '" + KEWConstants.DELEGATION_SECONDARY + "') group by DOC_TYP_NM");
+                            "and (dlgn_typ is null or dlgn_typ != '" + DelegationType.SECONDARY.getCode() + "') group by DOC_TYP_NM");
                     selectDocTypeLabel = connection.prepareStatement("select LBL from KREW_DOC_TYP_T WHERE DOC_TYP_NM = ? and CUR_IND = 1");
                     selectActionItems.setString(1, principalId);
                     selectedActionItems = selectActionItems.executeQuery();

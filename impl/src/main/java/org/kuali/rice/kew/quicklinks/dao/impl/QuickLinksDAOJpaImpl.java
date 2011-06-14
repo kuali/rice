@@ -18,6 +18,7 @@ package org.kuali.rice.kew.quicklinks.dao.impl;
 
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -47,7 +48,7 @@ public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
 	@SuppressWarnings("unchecked")
     public List<ActionListStats> getActionListStats(final String principalId) {
         try {
-            final List<Object[]> stats = entityManager.createNamedQuery("ActionItem.QuickLinks.FindActionListStatsByPrincipalId").setParameter("principalId", principalId).getResultList();
+            final List<Object[]> stats = entityManager.createNamedQuery("ActionItem.QuickLinks.FindActionListStatsByPrincipalId").setParameter("principalId", principalId).setParameter("delegationType", DelegationType.SECONDARY.getCode()).getResultList();
             final List<ActionListStats> docTypes = new ArrayList<ActionListStats>(stats.size());
             for (Object[] res : stats) {
                 final String docTypeName = (String) res[0];

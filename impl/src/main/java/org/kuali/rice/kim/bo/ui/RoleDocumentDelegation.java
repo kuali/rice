@@ -15,15 +15,27 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.springframework.util.AutoPopulatingList;
-
-import javax.persistence.*;
-import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -149,11 +161,11 @@ public class RoleDocumentDelegation extends KimDocumentBoActivatableBase {
 	}
 
 	public boolean isDelegationPrimary(){
-		return KEWConstants.DELEGATION_PRIMARY.equals(getDelegationTypeCode());
+		return DelegationType.PRIMARY.getCode().equals(getDelegationTypeCode());
 	}
 
 	public boolean isDelegationSecondary(){
-		return KEWConstants.DELEGATION_SECONDARY.equals(getDelegationTypeCode());
+		return DelegationType.SECONDARY.getCode().equals(getDelegationTypeCode());
 	}
 
 }

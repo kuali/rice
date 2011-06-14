@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -40,13 +41,12 @@ public class DelegationTypeValuesFinder extends KeyValuesBase {
 		final List<KeyValue> delegationTypes = new ArrayList<KeyValue>();
 		final List<KeyValue> delegationTypesForMaintDocs = new ArrayList<KeyValue>();
 		
-		for (String delegationType : KEWConstants.DELEGATION_TYPES.keySet()) {
-			delegationTypes.add(new ConcreteKeyValue(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
-			// Use a separate delegation types list for the related maintenance docs, since they should disallow the "Both" option.
-			if (!KEWConstants.DELEGATION_BOTH.equals(delegationType)) {
-				delegationTypesForMaintDocs.add(new ConcreteKeyValue(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
-			}
+		for (DelegationType delegationType : DelegationType.values()) {
+			delegationTypes.add(new ConcreteKeyValue(delegationType.getCode(), delegationType.getLabel()));
+			delegationTypesForMaintDocs.add(new ConcreteKeyValue(delegationType.getCode(), delegationType.getLabel()));
 		}
+		// for non maintenance documents, add a "both" option
+		delegationTypes.add(new ConcreteKeyValue(KEWConstants.DELEGATION_BOTH, KEWConstants.DELEGATION_BOTH_LABEL));
 		
 		C_DELEGATION_TYPES = Collections.unmodifiableList(delegationTypes);
 		C_DELEGATION_TYPES_FOR_MAIN_DOCS = Collections.unmodifiableList(delegationTypesForMaintDocs);

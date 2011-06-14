@@ -16,26 +16,27 @@
  */
 package org.kuali.rice.kew.xml;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
-import org.jdom.Attribute;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.xml.sax.SAXException;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTIVE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTES;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.DEFAULT_ACTION_REQUESTED;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.DELEGATION_TEMPLATE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.DELEGATION_TYPE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.FORCE_ACTION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.FROM_DATE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.REQUIRED;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_DEFAULTS;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_TEMPLATE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_TEMPLATES;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_TEMPLATE_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPPORTS_ACKNOWLEDGE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPPORTS_APPROVE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPPORTS_COMPLETE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPPORTS_FYI;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.TO_DATE;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -45,7 +46,27 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
+import org.jdom.Attribute;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.util.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlHelper;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleTemplateOption;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.xml.sax.SAXException;
 /**
  * Parses {@link RuleTemplate}s from XML.
  *
@@ -278,9 +299,9 @@ public class RuleTemplateXmlParser {
             Boolean forceAction = BooleanUtils.toBooleanObject(defaultsElement.getChildText(FORCE_ACTION, RULE_TEMPLATE_NAMESPACE));
             Boolean active = BooleanUtils.toBooleanObject(defaultsElement.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE));
 
-            if (isDelegation && !KEWConstants.DELEGATION_PRIMARY.equals(delegationType) && !KEWConstants.DELEGATION_SECONDARY.equals(delegationType)) {
+            if (isDelegation && !DelegationType.PRIMARY.getCode().equals(delegationType) && !DelegationType.SECONDARY.getCode().equals(delegationType)) {
                 throw new XmlException("Invalid delegation type '" + delegationType + "'." + "  Expected one of: "
-                        + KEWConstants.DELEGATION_PRIMARY + "," + KEWConstants.DELEGATION_SECONDARY);
+                        + DelegationType.PRIMARY.getCode() + "," + DelegationType.SECONDARY.getCode());
             }
     
             // create our "default rule" which encapsulates the defaults for the rule

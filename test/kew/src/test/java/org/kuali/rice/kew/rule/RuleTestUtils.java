@@ -16,19 +16,19 @@
 package org.kuali.rice.kew.rule;
 
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
-
-
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 
@@ -132,7 +132,7 @@ public final class RuleTestUtils {
     	RuleTemplate delegationTemplate = parentRule.getRuleTemplate();
 		RuleDelegation ruleDelegation = new RuleDelegation();
 		ruleDelegation.setResponsibilityId(parentResponsibility.getResponsibilityId());
-		ruleDelegation.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+		ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
 		RuleBaseValues rule = new RuleBaseValues();
 		ruleDelegation.setDelegationRuleBaseValues(rule);
 		rule.setDelegateRule(true);

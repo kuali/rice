@@ -16,20 +16,23 @@
  */
 package org.kuali.rice.kew.rule;
 
-import mocks.MockDocumentRequeuerImpl;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
+import mocks.MockDocumentRequeuerImpl;
+
+import org.junit.Test;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests adding a delegation rule
@@ -109,7 +112,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		assertEquals("Should have 1 responsibility", 1, newRuleDelegation.getDelegationRuleBaseValues().getResponsibilities().size());
 		assertEquals("Incorrect responsibility name", principal2.getPrincipalId(), newRuleDelegation.getDelegationRuleBaseValues().getResponsibilities().get(0).getRuleResponsibilityName());
 		assertEquals("Incorrect responsibility type", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, newRuleDelegation.getDelegationRuleBaseValues().getResponsibilities().get(0).getRuleResponsibilityType());
-		assertEquals("Incorrect delegation type", KEWConstants.DELEGATION_PRIMARY, newRuleDelegation.getDelegationType());
+		assertEquals("Incorrect delegation type", DelegationType.PRIMARY.getCode(), newRuleDelegation.getDelegationType());
 
 
 		/**
@@ -147,7 +150,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 
 		Long newRuleDelegationId = newRuleDelegation.getRuleDelegationId();
 		// change the delegation type to secondary
-		newRuleDelegation.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+		newRuleDelegation.setDelegationType(DelegationType.SECONDARY.getCode());
 		saveNewVersion(newRuleDelegation);
 		Long newRuleDelegationId2 = newRuleDelegation.getRuleDelegationId();
 

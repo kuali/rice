@@ -26,6 +26,7 @@ import java.util.Set;
 import org.apache.commons.collections.ComparatorUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemComparator;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -81,9 +82,9 @@ public class DefaultNotificationService implements NotificationService {
 			Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId());
 			boolean sendEmail = false;
 			if (KEWConstants.EMAIL_RMNDR_IMMEDIATE.equals(preferences.getEmailNotification())) {
-				if (KEWConstants.DELEGATION_PRIMARY.equals(actionItem.getDelegationType())) {
+				if (DelegationType.PRIMARY.getCode().equals(actionItem.getDelegationType())) {
 					sendEmail = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
-				} else if (KEWConstants.DELEGATION_SECONDARY.equals(actionItem.getDelegationType())) {
+				} else if (DelegationType.SECONDARY.getCode().equals(actionItem.getDelegationType())) {
 					sendEmail = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
 				} else {
 					sendEmail = true;

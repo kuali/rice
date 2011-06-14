@@ -32,11 +32,11 @@ import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 /**
  * OJB implementation of {@link ActionItemDAO}.
@@ -128,7 +128,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         orCriteria.addOrCriteria(notNullWorkgroupCriteria);
         Criteria criteria = new Criteria();
         criteria.addEqualTo("principalId", principalId);
-        criteria.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
+        criteria.addEqualTo("delegationType", DelegationType.SECONDARY.getCode());
         criteria.addAndCriteria(orCriteria);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionItem.class, criteria);
 
@@ -165,7 +165,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             orCriteria.addAndCriteria(delegatorWorkflowIdCriteria);
         }
         Criteria criteria = new Criteria();
-        criteria.addEqualTo("delegationType", KEWConstants.DELEGATION_PRIMARY);
+        criteria.addEqualTo("delegationType", DelegationType.PRIMARY.getCode());
         criteria.addAndCriteria(orCriteria);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionItem.class, criteria, true);
 

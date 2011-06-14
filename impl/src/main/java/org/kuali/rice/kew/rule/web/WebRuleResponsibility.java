@@ -28,6 +28,7 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExtension;
@@ -161,7 +162,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	public RuleDelegation addNewDelegation() {
 		RuleDelegation ruleDelegation = new RuleDelegation();
 		ruleDelegation.setDelegationRuleBaseValues(new WebRuleBaseValues());
-		ruleDelegation.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+		ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
 		ruleDelegation.getDelegationRuleBaseValues().setDelegateRule(Boolean.TRUE);
 		ruleDelegation.getDelegationRuleBaseValues().setDocTypeName(getRuleBaseValues().getDocTypeName());
 		getDelegationRules().add(ruleDelegation);

@@ -29,6 +29,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -570,7 +571,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		KimDelegationImpl delegate = new KimDelegationImpl();
 
 		delegate.setDelegationId(id);
-		delegate.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
+		delegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
 		delegate.setActive(true);
 		delegate.setKimTypeId("" + kimDlgnTypeId);
 		/*
@@ -732,7 +733,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         		ewestfalHasRequest = true;
         		if (actionRequest.getParentActionRequestId() != null) {
         			ewestfalHasDelegateRequest = true;
-        			assertEquals("Delegation type should been PRIMARY", KEWConstants.DELEGATION_PRIMARY, actionRequest.getDelegationType());
+        			assertEquals("Delegation type should been PRIMARY", DelegationType.PRIMARY.getCode(), actionRequest.getDelegationType());
         		}
         	}
         }

@@ -16,6 +16,16 @@
 
 package org.kuali.rice.kew.mail.service.impl;
 
+import java.text.FieldPosition;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
@@ -27,6 +37,7 @@ import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
@@ -51,16 +62,6 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-
-import java.text.FieldPosition;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -298,9 +299,9 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 				continue;
 			}
 			boolean includeItem = true;
-			if (KEWConstants.DELEGATION_PRIMARY.equals(actionItem.getDelegationType())) {
+			if (DelegationType.PRIMARY.getCode().equals(actionItem.getDelegationType())) {
 				includeItem = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
-			} else if (KEWConstants.DELEGATION_SECONDARY.equals(actionItem.getDelegationType())) {
+			} else if (DelegationType.SECONDARY.getCode().equals(actionItem.getDelegationType())) {
 				includeItem = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
 			}
 			if (includeItem) {

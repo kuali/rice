@@ -38,6 +38,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -181,10 +182,10 @@ public class ActionListTest extends KEWTestCase {
 
     	ActionListFilter noFilter = new ActionListFilter();
     	ActionListFilter excludeSecondaryFilter = new ActionListFilter();
-    	excludeSecondaryFilter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+    	excludeSecondaryFilter.setDelegationType(DelegationType.SECONDARY.getCode());
     	excludeSecondaryFilter.setExcludeDelegationType(true);
     	ActionListFilter secondaryFilter = new ActionListFilter();
-    	secondaryFilter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+    	secondaryFilter.setDelegationType(DelegationType.SECONDARY.getCode());
     	Collection<ActionItem> actionItems = null;
     	ActionItem actionItem = null;
 
@@ -194,10 +195,10 @@ public class ActionListTest extends KEWTestCase {
     	assertEquals("bmcgough should have 1 item in his secondary action list.", 1, actionItems.size());
         actionItem = actionItems.iterator().next();
         assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-        assertEquals("Should be a secondary delegation request.", KEWConstants.DELEGATION_SECONDARY, actionItem.getDelegationType());
+        assertEquals("Should be a secondary delegation request.", DelegationType.SECONDARY.getCode(), actionItem.getDelegationType());
     	actionItem = actionItems.iterator().next();
     	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-    	assertEquals("Should be a secondary delegation request.", KEWConstants.DELEGATION_SECONDARY, actionItem.getDelegationType());
+    	assertEquals("Should be a secondary delegation request.", DelegationType.SECONDARY.getCode(), actionItem.getDelegationType());
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, noFilter);
     	assertEquals("bmcgough should have 1 item in his entire action list.", 1, actionItems.size());
 
@@ -259,31 +260,31 @@ public class ActionListTest extends KEWTestCase {
 
         // test secondary delegation with all selected returns all
         filter = new ActionListFilter();
-        filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+        filter.setDelegationType(DelegationType.SECONDARY.getCode());
         filter.setDelegatorId(KEWConstants.ALL_CODE);
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough has incorrect action list item count.", 3, actionItems.size());
 
         // test that primary delegation with none selected returns none
         filter = new ActionListFilter();
-        filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+        filter.setDelegationType(DelegationType.SECONDARY.getCode());
         filter.setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough has incorrect action list item count.", 0, actionItems.size());
 
         // test that primary delegation with single user ids works corectly
         filter = new ActionListFilter();
-        filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+        filter.setDelegationType(DelegationType.SECONDARY.getCode());
         filter.setDelegatorId(bmcgoughPrincipalId);
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough has incorrect action list item count.", 3, actionItems.size());
         filter = new ActionListFilter();
-        filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+        filter.setDelegationType(DelegationType.SECONDARY.getCode());
         filter.setDelegatorId(bmcgoughPrincipalId);
         actionItems = getActionListService().getActionList(ewestfalPrincipalId, filter);
         assertEquals("ewestfal has incorrect action list item count.", 3, actionItems.size());
         filter = new ActionListFilter();
-        filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+        filter.setDelegationType(DelegationType.SECONDARY.getCode());
         filter.setDelegatorId(jitruePrincipalId);
         actionItems = getActionListService().getActionList(jitruePrincipalId, filter);
         assertEquals("jitrue has incorrect action list item count.", 3, actionItems.size());
@@ -313,7 +314,7 @@ public class ActionListTest extends KEWTestCase {
     	String jhopfPrincipalId = getPrincipalIdForName("jhopf");
 
     	ActionListFilter showPrimaryFilter = new ActionListFilter();
-    	showPrimaryFilter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+    	showPrimaryFilter.setDelegationType(DelegationType.PRIMARY.getCode());
     	Collection<ActionItem> actionItems = null;
     	ActionItem actionItem = null;
 
@@ -343,31 +344,31 @@ public class ActionListTest extends KEWTestCase {
 
         // test primary delegation with all selected returns all
         filter = new ActionListFilter();
-        filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+        filter.setDelegationType(DelegationType.PRIMARY.getCode());
         filter.setPrimaryDelegateId(KEWConstants.ALL_CODE);
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 1 item in his entire action list.", 3, actionItems.size());
 
         // test that primary delegation with none selected returns none
         filter = new ActionListFilter();
-        filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+        filter.setDelegationType(DelegationType.PRIMARY.getCode());
         filter.setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 1 item in his entire action list.", 0, actionItems.size());
 
         // test that primary delegation with single user ids works corectly
         filter = new ActionListFilter();
-        filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+        filter.setDelegationType(DelegationType.PRIMARY.getCode());
         filter.setPrimaryDelegateId(rkirkendPrincipalId);
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 3 items in his entire action list.", 3, actionItems.size());
         filter = new ActionListFilter();
-        filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+        filter.setDelegationType(DelegationType.PRIMARY.getCode());
         filter.setPrimaryDelegateId(delyeaPrincipalId);
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 2 items in his entire action list.", 2, actionItems.size());
         filter = new ActionListFilter();
-        filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+        filter.setDelegationType(DelegationType.PRIMARY.getCode());
         filter.setPrimaryDelegateId(temayPrincipalId);
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, filter);
         assertEquals("bmcgough should have 1 item in his entire action list.", 1, actionItems.size());

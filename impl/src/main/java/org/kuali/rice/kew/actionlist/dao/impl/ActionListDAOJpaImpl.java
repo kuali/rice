@@ -38,6 +38,7 @@ import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
@@ -301,7 +302,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         if (StringUtils.isBlank(filter.getDelegationType()) && StringUtils.isBlank(filter.getPrimaryDelegateId()) && StringUtils.isBlank(filter.getDelegatorId())) {
             crit.eq("principalId", principalId);
             addedDelegationCriteria = true;
-        } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_PRIMARY.equals(filter.getDelegationType()))
+        } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && DelegationType.PRIMARY.getCode().equals(filter.getDelegationType()))
                 || StringUtils.isNotBlank(filter.getPrimaryDelegateId())) {
             // using a primary delegation
             if ((StringUtils.isBlank(filter.getPrimaryDelegateId())) || (filter.getPrimaryDelegateId().trim().equals(KEWConstants.ALL_CODE))) {
@@ -321,8 +322,8 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 orCrit.or(userCrit);
                 orCrit.or(groupCrit);
                 crit.and(orCrit);
-                crit.eq("delegationType", KEWConstants.DELEGATION_PRIMARY);
-                filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+                crit.eq("delegationType", DelegationType.PRIMARY.getCode());
+                filter.setDelegationType(DelegationType.PRIMARY.getCode());
                 filter.setExcludeDelegationType(false);
                 addToFilterDescription(filteredByItems, "Primary Delegator Id");
                 addedDelegationCriteria = true;
@@ -344,31 +345,31 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 orCrit.or(userCrit);
                 orCrit.or(groupCrit);
                 crit.and(orCrit);
-                crit.eq("delegationType", KEWConstants.DELEGATION_PRIMARY);
-                filter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+                crit.eq("delegationType", DelegationType.PRIMARY.getCode());
+                filter.setDelegationType(DelegationType.PRIMARY.getCode());
                 filter.setExcludeDelegationType(false);
                 addToFilterDescription(filteredByItems, "Primary Delegator Id");
                 addedDelegationCriteria = true;
                 filterOn = true;
             }
         }
-        if (!addedDelegationCriteria && ( (StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
+        if (!addedDelegationCriteria && ( (StringUtils.isNotBlank(filter.getDelegationType()) && DelegationType.SECONDARY.getCode().equals(filter.getDelegationType()))
                 || StringUtils.isNotBlank(filter.getDelegatorId()) )) {
             // using a secondary delegation
             crit.eq("principalId", principalId);
             if (StringUtils.isBlank(filter.getDelegatorId())) {
-                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+                filter.setDelegationType(DelegationType.SECONDARY.getCode());
                 // if isExcludeDelegationType() we want to show the default aciton list which is set up later in this method
                 if (!filter.isExcludeDelegationType()) {
-                    crit.eq("delegationType", KEWConstants.DELEGATION_SECONDARY);
+                    crit.eq("delegationType", DelegationType.SECONDARY.getCode());
                     addToFilterDescription(filteredByItems, "Secondary Delegator Id");
                     addedDelegationCriteria = true;
                     filterOn = true;
                 }
             } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
                 // user wishes to see all secondary delegations
-                crit.eq("delegationType", KEWConstants.DELEGATION_SECONDARY);
-                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+                crit.eq("delegationType", DelegationType.SECONDARY.getCode());
+                filter.setDelegationType(DelegationType.SECONDARY.getCode());
                 filter.setExcludeDelegationType(false);
                 addToFilterDescription(filteredByItems, "Secondary Delegator Id");
                 addedDelegationCriteria = true;
@@ -376,7 +377,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
             } else if (!filter.getDelegatorId().trim().equals(
                     KEWConstants.DELEGATION_DEFAULT)) {
                 // user has specified an id to see for secondary delegation
-                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+                filter.setDelegationType(DelegationType.SECONDARY.getCode());
                 filter.setExcludeDelegationType(false);
                 Criteria userCrit = new Criteria(objectsToRetrieve.getName());
                 Criteria groupCrit = new Criteria(objectsToRetrieve.getName());
@@ -406,11 +407,11 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         // if we haven't added delegation criteria then use the default criteria below
         if (!addedDelegationCriteria) {
             crit.eq("principalId", principalId);
-            filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+            filter.setDelegationType(DelegationType.SECONDARY.getCode());
             filter.setExcludeDelegationType(true);
             Criteria critNotEqual = new Criteria(objectsToRetrieve.getName());
             Criteria critNull = new Criteria(objectsToRetrieve.getName());
-            critNotEqual.ne("delegationType", KEWConstants.DELEGATION_SECONDARY);
+            critNotEqual.ne("delegationType", DelegationType.SECONDARY.getCode());
             critNull.isNull("delegationType");
             critNotEqual.or(critNull);
             crit.and(critNotEqual);

@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -168,7 +169,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
 		// save a new rule delegation
 		RuleDelegation ruleDelegation = new RuleDelegation();
 		ruleDelegation.setResponsibilityId(originalResp.getResponsibilityId());
-		ruleDelegation.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
+		ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
 		RuleBaseValues rule = new RuleBaseValues();
 		ruleDelegation.setDelegationRuleBaseValues(rule);
 		rule.setDelegateRule(true);

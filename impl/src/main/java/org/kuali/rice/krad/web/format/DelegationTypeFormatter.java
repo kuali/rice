@@ -19,6 +19,7 @@ package org.kuali.rice.krad.web.format;
 // end Kuali Foundation modification
 
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.util.KEWConstants;
 
 /**
@@ -50,11 +51,17 @@ public class DelegationTypeFormatter extends Formatter {
     }
 */
     public Object format(Object target) {
-        if (target == null)
+        if (target == null) {
             return null;
+        }
         // begin Kuali Foundation modification
         if (target instanceof String) {
-            return KEWConstants.DELEGATION_TYPES.get(((String)target).trim().toUpperCase());
+        	DelegationType delegationType = DelegationType.fromCode(((String)target).trim().toUpperCase());
+        	if (delegationType != null) {
+        		return delegationType.getLabel();
+        	} else {
+        		return KEWConstants.DELEGATION_BOTH_LABEL;
+        	}
         } else {
             return "";
         }

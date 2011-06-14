@@ -16,14 +16,23 @@
  */
 package org.kuali.rice.kew.rule;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-
-import javax.persistence.*;
 
 
 /**
@@ -52,7 +61,7 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
     @Column(name="DLGN_RULE_BASE_VAL_ID", insertable=false, updatable=false)
 	private Long delegateRuleId;
     @Column(name="DLGN_TYP")
-    private String delegationType = KEWConstants.DELEGATION_PRIMARY;
+    private String delegationType = DelegationType.PRIMARY.getCode();
 
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID")

@@ -16,6 +16,19 @@
 
 package org.kuali.rice.kew.actionlist.web;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
@@ -38,6 +51,7 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -48,24 +62,11 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.bo.Person;
-
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.struts.action.KualiAction;
 import org.kuali.rice.krad.web.ui.ExtraButton;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -186,7 +187,7 @@ public class ActionListAction extends KualiAction {
             String principalId = null;
             if (uSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME) == null) {
                 ActionListFilter filter = new ActionListFilter();
-                filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
+                filter.setDelegationType(DelegationType.SECONDARY.getCode());
                 filter.setExcludeDelegationType(true);
                 uSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
             }

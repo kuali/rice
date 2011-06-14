@@ -30,7 +30,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.util.KimConstants;
@@ -69,7 +69,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	
 	protected void addDelegationMemberToDelegation(RoleDocumentDelegationMember delegationMember){
 		RoleDocumentDelegation delegation;
-		if(KEWConstants.DELEGATION_PRIMARY.equals(delegationMember.getDelegationTypeCode())){
+		if(DelegationType.PRIMARY.getCode().equals(delegationMember.getDelegationTypeCode())){
 			delegation = getPrimaryDelegation();
 		} else{
 			delegation = getSecondaryDelegation();
@@ -89,7 +89,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 		if(primaryDelegation==null){
 			primaryDelegation = new RoleDocumentDelegation();
 			primaryDelegation.setDelegationId(getDelegationId());
-			primaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
+			primaryDelegation.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
 			getDelegations().add(primaryDelegation);
 		}
 		return primaryDelegation;
@@ -108,7 +108,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 		if(secondaryDelegation==null){
 			secondaryDelegation = new RoleDocumentDelegation();
 			secondaryDelegation.setDelegationId(getDelegationId());
-			secondaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_SECONDARY);
+			secondaryDelegation.setDelegationTypeCode(DelegationType.SECONDARY.getCode());
 			getDelegations().add(secondaryDelegation);
 		}
 		return secondaryDelegation;

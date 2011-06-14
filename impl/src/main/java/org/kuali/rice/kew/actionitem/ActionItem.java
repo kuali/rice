@@ -39,10 +39,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.api.document.actions.DelegationType;
 import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.RowStyleable;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
@@ -67,7 +67,7 @@ import org.kuali.rice.kim.bo.Person;
 //@Sequence(name="KREW_ACTN_ITM_S",property="actionItemId")
 @NamedQueries({
     @NamedQuery(name="ActionItem.QuickLinks.FindActionListStatsByPrincipalId", query="SELECT docName, COUNT(*) FROM ActionItem WHERE principalId = :principalId " +
-        "AND (delegationType IS null OR delegationType != '" + KEWConstants.DELEGATION_SECONDARY + "') GROUP BY docName")
+        "AND (delegationType IS null OR delegationType != :delegationType) GROUP BY docName")
 })
 public class ActionItem implements RowStyleable, Serializable {
 

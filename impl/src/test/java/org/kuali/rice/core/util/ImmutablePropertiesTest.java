@@ -18,7 +18,6 @@ package org.kuali.rice.core.util;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,18 +56,6 @@ public class ImmutablePropertiesTest extends Assert {
 		UnsupportedOperationException exception = null;
 		try {
 			properties.setProperty("4", "D");
-		} catch (UnsupportedOperationException e) {
-			exception = e;
-		}
-		assertNotNull(exception);
-		assertNull(properties.get("4"));
-	}
-	
-	@Test public void loadReader() throws IOException {
-		UnsupportedOperationException exception = null;
-		try {
-			StringReader reader = new StringReader("4 = D");
-			properties.load(reader);
 		} catch (UnsupportedOperationException e) {
 			exception = e;
 		}

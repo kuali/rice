@@ -29,7 +29,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.exception.GroupNotFoundException;
+import org.kuali.rice.krad.exception.GroupNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Iterator;

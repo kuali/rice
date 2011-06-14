@@ -34,7 +34,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 /**
  * An attachment which is attached to a {@link Note}.
@@ -131,7 +131,7 @@ public class Attachment {
 	
 	//@PrePersist
 	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+		OrmUtils.populateAutoIncValue(this, KRADServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 
 }

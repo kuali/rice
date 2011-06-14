@@ -46,7 +46,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.service.RoleManagementService;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -154,7 +154,7 @@ public class ActionRequestFactory {
             String notificationRequestCode, String actionTakenCode)
     {
         String groupName =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE,
-                KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
+                KRADConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
                 KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
         
         

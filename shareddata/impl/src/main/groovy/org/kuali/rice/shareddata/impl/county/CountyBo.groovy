@@ -25,8 +25,8 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 import org.hibernate.annotations.Type
-import org.kuali.rice.kns.bo.Inactivateable
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.county.County
 import org.kuali.rice.shareddata.api.county.CountyContract
 import org.kuali.rice.shareddata.impl.country.CountryBo

@@ -55,16 +55,16 @@
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <bean id="businessObjectService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectService" />
 	</bean>
 
     <bean id="encryptionService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="encryptionService" />
 	</bean>
 
-    <bean id="postDataLoadEncryptionDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.PostDataLoadEncryptionDaoJdbc" />
+    <bean id="postDataLoadEncryptionDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.krad.dao.jdbc.PostDataLoadEncryptionDaoJdbc" />
 
 	<bean id="postDataLoadEncryptionService" class="org.kuali.rice.devtools.pdle.PostDataLoadEncryptionServiceImpl">
 		<property name="postDataLoadEncryptionDao" ref="postDataLoadEncryptionDao" />

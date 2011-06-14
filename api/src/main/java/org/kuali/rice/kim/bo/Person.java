@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 
 /**
  * Person object for use by the KNS and KNS-based applications.  This provides an abstraction layer

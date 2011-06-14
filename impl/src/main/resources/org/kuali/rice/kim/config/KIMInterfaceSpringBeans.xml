@@ -66,7 +66,7 @@
   <!-- In the case of the data source name, we want to check if
       the kimDataSource spring bean exists, if it does, we
       return "kimDataSource", otherwise return null -->
-  <bean id="kimDataSourceNameIfExists" class="org.kuali.rice.kns.util.spring.IfExistsFactoryBean">
+  <bean id="kimDataSourceNameIfExists" class="org.kuali.rice.krad.util.spring.IfExistsFactoryBean">
     <property name="beanName" value="kimDataSource"/>
     <property name="customReturnValue" value="kimDataSource"/>
   </bean>
@@ -74,23 +74,23 @@
   <!-- In the case of the entity manager, we want to check if
      the "kimEntityManager" bean exists.  If it does, we
      return that spring bean, otherwise return null -->
-  <bean id="kimEntityManagerIfExists" class="org.kuali.rice.kns.util.spring.IfExistsFactoryBean">
+  <bean id="kimEntityManagerIfExists" class="org.kuali.rice.krad.util.spring.IfExistsFactoryBean">
     <property name="beanName" value="kimEntityManager"/>
   </bean>
 
   <bean id="kimModuleConfiguration" parent="kimModuleConfiguration-parentBean"/>
 
 	<bean id="dataDictionaryService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="dataDictionaryService" />
 	</bean>
 	
 	<bean id="persistenceServiceOjb"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="persistenceServiceOjb" />
 	</bean>
 
-  <bean id="kimModuleConfiguration-parentBean" class="org.kuali.rice.kns.bo.ModuleConfiguration" abstract="true">
+  <bean id="kimModuleConfiguration-parentBean" class="org.kuali.rice.krad.bo.ModuleConfiguration" abstract="true">
     <property name="namespaceCode" value="KR-IDM" />
     <property name="dataSourceName" ref="kimDataSourceNameIfExists" />
     <property name="entityManager" ref="kimEntityManagerIfExists" />
@@ -180,17 +180,17 @@
                 
                 <!-- from kns -->
                 
-                <value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRoutePerson.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRouteWorkgroup.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Attachment.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceDummy.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceElements.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentHeader.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
+                <value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/Attachment.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/Note.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/NoteType.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml</value>
             </list>
     </property>
         <property name="packagePrefixes">
@@ -218,7 +218,7 @@
   </bean>
 
 	<bean id="kualiModuleService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="kualiModuleService" />
 	</bean>
 

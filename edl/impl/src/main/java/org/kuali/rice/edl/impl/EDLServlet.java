@@ -28,9 +28,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.IncidentReportUtils;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.IncidentReportUtils;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -75,12 +75,12 @@ public class EDLServlet extends HttpServlet {
 		    if (edlName == null) {
 		        documentId = requestParser.getParameterValue("docId");
 		        if (documentId == null) {
-		        	String docFormKey = requestParser.getParameterValue(KNSConstants.DOC_FORM_KEY);
+		        	String docFormKey = requestParser.getParameterValue(KRADConstants.DOC_FORM_KEY);
 		        	if (docFormKey != null) {
 		        		Document document = (Document) GlobalVariables.getUserSession().retrieveObject(docFormKey);
 		        		Element documentState = EDLXmlUtils.getDocumentStateElement(document);
 		        		documentId = EDLXmlUtils.getChildElementTextValue(documentState, "docId");
-		        		requestParser.setAttribute(KNSConstants.DOC_FORM_KEY, docFormKey);
+		        		requestParser.setAttribute(KRADConstants.DOC_FORM_KEY, docFormKey);
 		        	}
 		        	if (documentId == null) {
 		        		throw new WorkflowRuntimeException("No edl name or document id detected");

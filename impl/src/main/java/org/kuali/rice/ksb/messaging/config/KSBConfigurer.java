@@ -134,10 +134,10 @@ public class KSBConfigurer extends ModuleConfigurer {
         
         if (getRunMode().equals( RunMode.LOCAL )) {
     		// TODO hack 'cause KSB used KNS - this needs to be fixed!!!
-    		springFileLocations.add("classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml");
+    		springFileLocations.add("classpath:org/kuali/rice/krad/config/KRADSpringBeans.xml");
         	springFileLocations.add(REGISTRY_SERVER_SPRING);
         	springFileLocations.add(OJB_REGISTRY_SPRING);
-        	if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.LOAD_KNS_MODULE_CONFIGURATION, false)) {
+        	if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.LOAD_KRAD_MODULE_CONFIGURATION, false)) {
             	springFileLocations.add(MODULE_SPRING);
             	springFileLocations.add(WEB_SPRING);
             }

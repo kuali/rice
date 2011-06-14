@@ -19,7 +19,7 @@
 
   <bean id="FiscalOfficerMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="edu.sampleu.travel.bo.FiscalOfficer"/>
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.KualiMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
         <ref bean="FiscalOfficerMaintenanceDocument-EditTravelFiscalOfficer"/>
@@ -34,7 +34,7 @@
 
 
     <property name="documentTypeName" value="RiceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
 
 
   </bean>

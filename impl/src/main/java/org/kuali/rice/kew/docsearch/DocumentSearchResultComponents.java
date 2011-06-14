@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.web.ui.Column;
+import org.kuali.rice.krad.web.ui.Column;
 
 
 /**

@@ -25,8 +25,8 @@ import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupRule;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.rules.DocumentRuleBase;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.rules.DocumentRuleBase;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

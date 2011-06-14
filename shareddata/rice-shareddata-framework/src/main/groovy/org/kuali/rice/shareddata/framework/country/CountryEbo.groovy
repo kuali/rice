@@ -22,8 +22,8 @@
 
 package org.kuali.rice.shareddata.framework.country
 
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
-import org.kuali.rice.kns.bo.Inactivateable
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
+import org.kuali.rice.krad.bo.Inactivateable
 import org.kuali.rice.shareddata.api.country.Country
 import org.kuali.rice.shareddata.api.country.CountryContract
 

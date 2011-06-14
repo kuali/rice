@@ -261,7 +261,7 @@ public class SqlBuilder {
 			return new BigDecimal(cleanNumeric(value));
 		/*
 		} catch (NumberFormatException ex) {
-			GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Numeric Input: " + value });
+			GlobalVariables.getMessageMap().putError(KRADConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Numeric Input: " + value });
 			return null;
 		}*/
 	}

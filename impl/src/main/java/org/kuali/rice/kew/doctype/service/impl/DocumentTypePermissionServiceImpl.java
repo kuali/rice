@@ -27,14 +27,14 @@ import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSUtils;
+import org.kuali.rice.krad.datadictionary.DocumentEntry;
+import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
@@ -212,8 +212,8 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentType(documentType);
 		
 		AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
-		if (useKimPermission(KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails)) {
-			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS);
+		if (useKimPermission(KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails)) {
+			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS);
     }
 		return true;
 	}
@@ -347,16 +347,16 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		}
 		qualifiers.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, documentType.getName());
 		
-		DocumentEntry documentEntry = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentType.getName());
+		DocumentEntry documentEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentType.getName());
 		if (documentEntry != null) {
 			Class<? extends Document> documentClass = documentEntry.getDocumentClass();
 			String namespaceCode;
 			if (MaintenanceDocument.class.isAssignableFrom(documentClass)) {
 				MaintenanceDocumentEntry maintenanceDocumentEntry = (MaintenanceDocumentEntry) documentEntry;
-				namespaceCode = KNSUtils.getNamespaceCode(maintenanceDocumentEntry.getBusinessObjectClass());
+				namespaceCode = KRADUtils.getNamespaceCode(maintenanceDocumentEntry.getBusinessObjectClass());
 			}
 			else {
-				namespaceCode = KNSUtils.getNamespaceCode(documentClass);
+				namespaceCode = KRADUtils.getNamespaceCode(documentClass);
 			}
 			qualifiers.put(KimConstants.AttributeConstants.NAMESPACE_CODE, namespaceCode);
 		}
@@ -400,7 +400,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 
 	
 	protected boolean useKimPermission(String namespace, String permissionTemplateName, AttributeSet permissionDetails) {
-		Boolean b =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		Boolean b =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
 		if (b == null || b) {
 			return getIdentityManagementService().isPermissionDefinedForTemplateName(namespace, permissionTemplateName, permissionDetails);
 		}

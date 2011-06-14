@@ -20,9 +20,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.Row;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -45,8 +45,8 @@ public class DocumentLookupCriteriaBuilder  {
     	DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
     	Map<String,String[]> fieldsToSet = new HashMap<String,String[]>();
 		for (String formKey : fieldsForLookup.keySet()) {
-			if(!(formKey.equalsIgnoreCase(KNSConstants.BACK_LOCATION) ||
-			   formKey.equalsIgnoreCase(KNSConstants.DOC_FORM_KEY)) && fieldsForLookup.get(formKey)!=null && fieldsForLookup.get(formKey).length!=0) {
+			if(!(formKey.equalsIgnoreCase(KRADConstants.BACK_LOCATION) ||
+			   formKey.equalsIgnoreCase(KRADConstants.DOC_FORM_KEY)) && fieldsForLookup.get(formKey)!=null && fieldsForLookup.get(formKey).length!=0) {
 				fieldsToSet.put(formKey, fieldsForLookup.get(formKey));
 			}
 		}
@@ -103,7 +103,7 @@ public class DocumentLookupCriteriaBuilder  {
 				for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
 					for (Row row : searchableAttribute.getSearchingRows(
 							DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-						for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
+						for (org.kuali.rice.krad.web.ui.Field field : row.getFields()) {
 							if (field instanceof Field) {
                                 SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
 								SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);

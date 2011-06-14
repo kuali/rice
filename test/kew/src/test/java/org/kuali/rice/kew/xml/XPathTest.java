@@ -153,12 +153,12 @@ public class XPathTest extends BaseRiceTestCase {
         String KUALI_CAMPUS_TYPE_ACTIVE_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "campus/campusType/dataObjectMaintenanceCodeActiveIndicator" + XSTREAM_SAFE_SUFFIX;
         String KUALI_INITIATOR_UNIVERSAL_USER_STUDENT_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "kualiTransactionalDocumentInformation/documentInitiator/person/student" + XSTREAM_SAFE_SUFFIX;
         DocumentContent docContent = new StandardDocumentContent(
-              "<documentContent><applicationContent><org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer>" + 
+              "<documentContent><applicationContent><org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>" +
               "  <kualiTransactionalDocumentInformation>" + 
               "  <documentInitiator>" + 
               "     <person>" +
               "        <student>false</student>" +
-              "        <campus class=\"org.kuali.rice.kns.bo.CampusImpl--EnhancerByCGLIB--4968dd25\">" +
+              "        <campus class=\"org.kuali.rice.krad.bo.CampusImpl--EnhancerByCGLIB--4968dd25\">" +
               "          <campusType>" +
               "            <dataObjectMaintenanceCodeActiveIndicator>true</dataObjectMaintenanceCodeActiveIndicator>" +
               "          </campusType>" + 
@@ -170,7 +170,7 @@ public class XPathTest extends BaseRiceTestCase {
               "    <purchaseOrderCreateDate>11-09-2007</purchaseOrderCreateDate>" +
               "    <oldPurchaseOrderCreateDate></oldPurchaseOrderCreateDate>" +
               "  </document>" +
-              "</org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer></applicationContent></documentContent>"
+              "</org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer></applicationContent></documentContent>"
               );
 //        DocumentContent docContent = KualiAttributeTestUtil.getDocumentContentFromXmlFileAndPath(KualiAttributeTestUtil.PURCHASE_ORDER_DOCUMENT, KualiAttributeTestUtil.RELATIVE_PATH_IN_PROJECT_WORKFLOW, "PurchaseOrderDocument");
         XPath xpath = XPathHelper.newXPath(docContent.getDocument());

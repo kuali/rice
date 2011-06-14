@@ -40,7 +40,7 @@
       <bean parent="NumericValidationPattern"/>
     </property>
 <!--     <property name="control">-->
-<!--      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.Book" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="title"/>-->
+<!--      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.Book" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="title"/>-->
 <!--    </property>-->
 <!--     <property name="controlField">-->
 <!--      <bean parent="TextControl" p:size="10"/>-->

@@ -22,9 +22,9 @@ import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -47,15 +47,15 @@ public class PerformLookupComponent implements EDLModelComponent {
 	
 	protected String constructRedirectUrl(Document dom, Element configElement, EDLContext edlContext) {
 		StringBuilder buf = new StringBuilder(30);
-		buf.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
-		buf.append("/kr/").append(KNSConstants.LOOKUP_ACTION);
+		buf.append(KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.APPLICATION_URL_KEY));
+		buf.append("/kr/").append(KRADConstants.LOOKUP_ACTION);
 		
 		Properties parameters = new Properties();
-		parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, getBusinessObjectClassName(dom, configElement, edlContext));
+		parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, getBusinessObjectClassName(dom, configElement, edlContext));
 		parameters.put(KEWPropertyConstants.DOC_FORM_KEY, edlContext.getUserSession().addObjectWithGeneratedKey(dom));
-		parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, constructReturnUrl(dom, configElement, edlContext));
+		parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, constructReturnUrl(dom, configElement, edlContext));
 		parameters.putAll(getLookupParameters(dom, configElement, edlContext));
-		parameters.put(KNSConstants.CONVERSION_FIELDS_PARAMETER, getFieldConversions(dom, configElement, edlContext));
+		parameters.put(KRADConstants.CONVERSION_FIELDS_PARAMETER, getFieldConversions(dom, configElement, edlContext));
 		
 		String url = UrlFactory.parameterizeUrl(buf.toString(), parameters);
 		
@@ -152,7 +152,7 @@ public class PerformLookupComponent implements EDLModelComponent {
 
 	protected String constructReturnUrl(Document dom, Element configElement, EDLContext edlContext) {
 		StringBuilder baseUrl = new StringBuilder(30);
-		baseUrl.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
+		baseUrl.append(KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.APPLICATION_URL_KEY));
 		baseUrl.append("/kew/EDocLite");
 		
 		Properties parameters = new Properties();

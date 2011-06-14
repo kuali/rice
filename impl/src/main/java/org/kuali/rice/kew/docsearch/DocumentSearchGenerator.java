@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.kuali.rice.kew.exception.WorkflowServiceError;
-import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.rice.krad.util.MessageMap;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

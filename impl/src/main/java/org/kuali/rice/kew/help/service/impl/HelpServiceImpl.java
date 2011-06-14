@@ -31,8 +31,8 @@ import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.HelpEntryXmlParser;
 import org.kuali.rice.kew.xml.export.HelpEntryXmlExporter;
-import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 
 @TransactionalNoValidationExceptionRollback

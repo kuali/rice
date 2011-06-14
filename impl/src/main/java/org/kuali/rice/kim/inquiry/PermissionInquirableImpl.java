@@ -29,13 +29,13 @@ import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.uif.widget.Inquiry;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.krad.lookup.HtmlData.MultipleAnchorHtmlData;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.widget.Inquiry;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,14 +146,14 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
+	 * @see org.kuali.rice.krad.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("permissionId", fieldValues.get("permissionId").toString());
-		KimPermissionImpl permissionImpl = (KimPermissionImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionImpl.class, criteria);
+		KimPermissionImpl permissionImpl = (KimPermissionImpl) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionImpl.class, criteria);
 		return getPermissionsSearchResultsCopy(permissionImpl);
 	}
 
@@ -175,7 +175,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("permissionId", permissionSearchResultCopy.getPermissionId());
 		List<RolePermissionImpl> rolePermissions = 
-			(List<RolePermissionImpl>) KNSServiceLocator.getBusinessObjectService().findMatching(RolePermissionImpl.class, criteria);
+			(List<RolePermissionImpl>) KRADServiceLocator.getBusinessObjectService().findMatching(RolePermissionImpl.class, criteria);
 		List<RoleBo> assignedToRoles = new ArrayList<RoleBo>();
 		for(RolePermissionImpl rolePermissionImpl: rolePermissions){
 			assignedToRoles.add(getRoleImpl(rolePermissionImpl.getRoleId()));

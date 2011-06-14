@@ -17,7 +17,7 @@
 
 	<filter>
         <filter-name>HideWebInfFilter</filter-name>
-        <filter-class>org.kuali.rice.kns.web.filter.HideWebInfFilter</filter-class>
+        <filter-class>org.kuali.rice.krad.web.filter.HideWebInfFilter</filter-class>
     </filter>
     
     <filter>
@@ -133,7 +133,7 @@
 	</listener>
 
 	<listener>
-		<listener-class>org.kuali.rice.kns.web.listener.KualiHttpSessionListener</listener-class>
+		<listener-class>org.kuali.rice.krad.web.listener.KualiHttpSessionListener</listener-class>
 	</listener>
 	
     <listener>
@@ -142,7 +142,7 @@
 
 	<servlet>
 		<servlet-name>action</servlet-name>
-		<servlet-class>org.kuali.rice.kns.web.struts.action.KualiActionServlet</servlet-class>
+		<servlet-class>org.kuali.rice.krad.web.struts.action.KualiActionServlet</servlet-class>
         <init-param>
           <param-name>config</param-name>
           <param-value>/WEB-INF/struts-config.xml</param-value>

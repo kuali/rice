@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.notes;
 
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.krad.UserSession;
 
 
 /**

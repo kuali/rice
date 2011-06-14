@@ -30,7 +30,7 @@ import javax.persistence.Table
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.role.RoleResponsibility
 import org.kuali.rice.kim.api.role.RoleResponsibilityContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import javax.persistence.FetchType
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo
 

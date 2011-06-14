@@ -7,7 +7,7 @@ import javax.persistence.Column
 import javax.persistence.Transient
 import org.kuali.rice.kim.api.entity.personal.EntityBioDemographics
 import org.kuali.rice.kim.api.entity.personal.EntityBioDemographicsContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.util.KualiDateMask

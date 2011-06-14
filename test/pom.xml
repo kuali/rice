@@ -26,7 +26,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>core</module>
-    <module>kns</module>
+    <module>krad</module>
     <module>ksb</module>
     <module>kim</module>
     <module>kew</module>

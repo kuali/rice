@@ -15,11 +15,8 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kns.service.BusinessObjectService;
 
 /**
  * This class keeps track of the KRMS Repository Services

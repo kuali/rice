@@ -47,10 +47,10 @@ public abstract class KEWTestCase extends BaselineTestCase {
 
     private static final String SQL_FILE = "classpath:org/kuali/rice/kew/test/DefaultSuiteTestData.sql";
 	private static final String XML_FILE = "classpath:org/kuali/rice/kew/test/DefaultSuiteTestData.xml";
-    private static final String KNS_MODULE_NAME = "kew";
+    private static final String KRAD_MODULE_NAME = "kew";
 
     public KEWTestCase() {
-		super(KNS_MODULE_NAME);
+		super(KRAD_MODULE_NAME);
 	}
 
     @Override

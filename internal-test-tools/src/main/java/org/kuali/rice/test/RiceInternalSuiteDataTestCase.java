@@ -34,7 +34,7 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 	 */
 	@Override
 	protected void loadSuiteTestData() throws Exception {
-		new SQLDataLoader(getKNSDefaultSuiteTestData(), "/").runSql();
+		new SQLDataLoader(getKRADDefaultSuiteTestData(), "/").runSql();
 		
 		//ClassPathResource cpr = new ClassPathResource(getKIMDataLoadOrderFile());
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
@@ -49,9 +49,9 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 		}
 	}
 	
-	protected String getKNSDefaultSuiteTestData() {
-	    //return "file:" + getBaseDir() + "/../src/test/config/data/DefaultSuiteTestDataKNS.sql";
-		return "classpath:/config/data/DefaultSuiteTestDataKNS.sql";
+	protected String getKRADDefaultSuiteTestData() {
+	    //return "file:" + getBaseDir() + "/../src/test/config/data/DefaultSuiteTestDataKRAD.sql";
+		return "classpath:/config/data/DefaultSuiteTestDataKRAD.sql";
 	}
 
 	protected String getKIMDataLoadOrderFile() {

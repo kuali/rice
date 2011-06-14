@@ -27,11 +27,11 @@ import org.kuali.rice.kim.service.support.KimGroupTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.struts.form.LookupForm;
 import org.springframework.remoting.RemoteAccessException;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
 		List<KimTypeBo> searchResults = (List<KimTypeBo>)super.getSearchResultsHelper(fieldValues, unbounded);
 		List<KimTypeBo> filteredSearchResults = new ArrayList<KimTypeBo>();
-		if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY))) {
+		if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KRADConstants.DOC_FORM_KEY))) {
 			for(KimTypeBo kimTypeBo: searchResults){
 				if(hasRoleTypeService(KimTypeBo.to(kimTypeBo))) {
 					filteredSearchResults.add(kimTypeBo);
@@ -61,7 +61,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 			return filteredSearchResults;
 		}
 		
-		if(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY))) {
+		if(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KRADConstants.DOC_FORM_KEY))) {
 			for(KimTypeBo kimTypeBo: searchResults){
 				if(hasGroupTypeService(KimTypeBo.to(kimTypeBo))) {
 					filteredSearchResults.add(kimTypeBo);
@@ -73,7 +73,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	}
 	
 	/**
-     * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getReturnUrl(org.kuali.rice.kns.bo.BusinessObject, java.util.Map,
+     * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getReturnUrl(org.kuali.rice.krad.bo.BusinessObject, java.util.Map,
      *      java.lang.String)
      */
     @SuppressWarnings("unchecked")
@@ -105,11 +105,11 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     	}
     	if(showReturnHref){
     		if (!refreshMe){
-    			parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-    			parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-    			parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
+    			parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOC_HANDLER_METHOD);
+    			parameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+    			parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, docTypeName);
     	        if (StringUtils.isNotBlank(getReturnLocation())) {
-    	        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+    	        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
     			}
     		}
 	    	href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+docTypeAction, parameters);

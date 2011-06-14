@@ -15,7 +15,7 @@ import org.kuali.rice.kim.api.entity.phone.EntityPhone
 import org.kuali.rice.kim.api.entity.phone.EntityPhoneContract
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name = "KRIM_ENTITY_PHONE_T")

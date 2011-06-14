@@ -21,8 +21,8 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 import org.hibernate.annotations.Type
-import org.kuali.rice.kns.bo.Inactivateable
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.campus.CampusType
 import org.kuali.rice.shareddata.api.campus.CampusTypeContract
 

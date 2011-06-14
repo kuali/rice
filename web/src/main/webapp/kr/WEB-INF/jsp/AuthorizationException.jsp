@@ -13,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ page import="org.kuali.rice.kns.exception.AuthorizationException"%>
+<%@ page import="org.kuali.rice.krad.exception.AuthorizationException"%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 
 <c:set var="parameters"
-       value="<%=request.getAttribute(\"org.kuali.rice.kns.web.struts.action.AuthorizationExceptionAction\")%>" />
+       value="<%=request.getAttribute(\"AuthorizationExceptionAction\")%>" />
 
 <c:if test="${not empty parameters}">
 	<c:set var="message" value="${parameters.message}" />

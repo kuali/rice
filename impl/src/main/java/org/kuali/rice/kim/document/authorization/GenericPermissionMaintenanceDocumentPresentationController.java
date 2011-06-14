@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.document.authorization;
 
 import org.kuali.rice.kim.bo.impl.GenericPermission;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase;
+import org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationControllerBase;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -30,7 +30,7 @@ public class GenericPermissionMaintenanceDocumentPresentationController extends
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase#canCreate(java.lang.Class)
+	 * @see org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationControllerBase#canCreate(java.lang.Class)
 	 */
 	@Override
 	public boolean canCreate(Class boClass) {

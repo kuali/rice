@@ -34,12 +34,12 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.document.TransactionalDocumentBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.document.TransactionalDocumentBase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
 
 /**
@@ -145,7 +145,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	
 	protected SequenceAccessorService getSequenceAccessorService(){
 		if(this.sequenceAccessorService==null){
-	    	this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+	    	this.sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
 		}
 		return this.sequenceAccessorService;
 	}

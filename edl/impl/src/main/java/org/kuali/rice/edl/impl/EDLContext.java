@@ -19,7 +19,7 @@ package org.kuali.rice.edl.impl;
 import javax.xml.transform.Transformer;
 
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
-import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.krad.UserSession;
 
 
 /**

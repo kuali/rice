@@ -1,13 +1,9 @@
 package org.kuali.rice.kim.framework.entity
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
 import org.kuali.rice.kim.api.entity.Type
 import org.kuali.rice.kim.api.entity.TypeContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
+
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 
 public class EntityTypeEbo implements TypeContract, ExternalizableBusinessObject {
     String code;

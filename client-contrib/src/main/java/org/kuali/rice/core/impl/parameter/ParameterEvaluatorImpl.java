@@ -20,9 +20,9 @@ import java.util.List;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.parameter.ParameterEvaluator;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 public class ParameterEvaluatorImpl implements ParameterEvaluator {
 	private static final long serialVersionUID = -758645169354452022L;
@@ -145,7 +145,7 @@ public class ParameterEvaluatorImpl implements ParameterEvaluator {
 	 */
 	protected DataDictionaryService getDataDictionaryService() {
 		if ( dataDictionaryService == null ) {
-			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
+			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}

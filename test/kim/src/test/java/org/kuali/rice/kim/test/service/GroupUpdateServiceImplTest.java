@@ -25,13 +25,12 @@ import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springframework.util.CollectionUtils;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +54,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		super.setUp();
 		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupService"));
 		groupUpdateService = (GroupUpdateServiceImpl) GlobalResourceLoader.getService(new QName("KIM", "kimGroupUpdateService"));
-		businessObjectService = KNSServiceLocator.getBusinessObjectService();
+		businessObjectService = KRADServiceLocator.getBusinessObjectService();
 	}
 
 	@Test

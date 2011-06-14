@@ -22,8 +22,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - chris don't forget to fill this in. 
@@ -34,7 +34,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 public class SavedSearchValuesFinder extends KeyValuesBase {
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
+	 * @see org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
 	@Override
 	public List<KeyValue> getKeyValues() {

@@ -29,7 +29,7 @@
 	),
 	/*@org.hibernate.annotations.TypeDef(
 		name="rice_percentage",
-		typeClass=org.kuali.rice.kns.util.HibernateKualiPercentageFieldType.class
+		typeClass=org.kuali.rice.krad.util.HibernateKualiPercentageFieldType.class
 	),*/
 	@org.hibernate.annotations.TypeDef(
 			name="rice_integer",

@@ -35,7 +35,7 @@ import org.kuali.rice.kim.api.role.RoleContract
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.type.KimTypeInfoService
 import org.kuali.rice.kim.impl.type.KimTypeBo
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.springframework.util.AutoPopulatingList
 
 @Entity

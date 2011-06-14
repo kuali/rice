@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ page trimDirectiveWhitespaces="true"%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
   
 <%-- render component only --%>

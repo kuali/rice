@@ -37,9 +37,9 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.api.type.KimTypeInfoService
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kns.service.DataDictionaryService
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.service.DataDictionaryService
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -150,7 +150,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 	private DataDictionaryService dataDictionaryService;
 	private DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
-			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
+			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}

@@ -23,7 +23,7 @@ import org.kuali.rice.kim.impl.entity.EntityTypeBo
 import org.kuali.rice.kim.impl.entity.address.EntityAddressBo
 import org.kuali.rice.kim.impl.entity.email.EntityEmailBo
 import org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault
 
 @Entity

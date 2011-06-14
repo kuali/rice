@@ -25,8 +25,8 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
-import org.kuali.rice.kns.web.struts.action.KualiAction;
-import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
+import org.kuali.rice.krad.web.struts.action.KualiAction;
+import org.kuali.rice.krad.web.struts.form.KualiTableRenderFormMetadata;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -48,7 +48,7 @@ public abstract class IdentityManagementBaseInquiryAction extends KualiAction {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#execute(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 * @see org.kuali.rice.krad.web.struts.action.KualiAction#execute(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -72,7 +72,7 @@ public abstract class IdentityManagementBaseInquiryAction extends KualiAction {
     }
  
     /**
-     * @see org.kuali.rice.kns.web.struts.action.KualiTableAction#switchToPage(org.apache.struts.action.ActionMapping,
+     * @see org.kuali.rice.krad.web.struts.action.KualiTableAction#switchToPage(org.apache.struts.action.ActionMapping,
      *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ActionForward switchToPage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

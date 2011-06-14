@@ -1,9 +1,7 @@
 package org.kuali.rice.krms.impl.repository
 
-import java.util.Set;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
 

@@ -20,8 +20,8 @@ package org.kuali.rice.shareddata.impl.country;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.shareddata.api.country.Country;
 import org.kuali.rice.shareddata.api.country.CountryService;
 
@@ -42,7 +42,8 @@ public final class CountryServiceImpl implements CountryService {
             throw new RiceIllegalArgumentException("code is blank");
         }
 
-        CountryBo countryBo = businessObjectService.findByPrimaryKey(CountryBo.class, Collections.singletonMap(KNSPropertyConstants.POSTAL_COUNTRY_CODE, code));
+        CountryBo countryBo = businessObjectService.findByPrimaryKey(CountryBo.class, Collections.singletonMap(
+                KRADPropertyConstants.POSTAL_COUNTRY_CODE, code));
 
         return CountryBo.to(countryBo);
     }
@@ -53,7 +54,8 @@ public final class CountryServiceImpl implements CountryService {
             throw new RiceIllegalArgumentException("alt code is blank");
         }
 
-        Collection<CountryBo> countryList = businessObjectService.findMatching(CountryBo.class, Collections.singletonMap(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternateCode));
+        Collection<CountryBo> countryList = businessObjectService.findMatching(CountryBo.class, Collections.singletonMap(
+                KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternateCode));
         if (countryList == null || countryList.isEmpty()) {
             return null;
         } else if (countryList.size() == 1) {
@@ -68,7 +70,7 @@ public final class CountryServiceImpl implements CountryService {
         criteriaValues.add("N");
 
         final Map<String, Object> map = new HashMap<String, Object>();
-        map.put(KNSPropertyConstants.POSTAL_COUNTRY_RESTRICTED_INDICATOR, criteriaValues);
+        map.put(KRADPropertyConstants.POSTAL_COUNTRY_RESTRICTED_INDICATOR, criteriaValues);
         map.put("active", Boolean.TRUE);
 
         Collection<CountryBo> countryBos = businessObjectService.findMatching(CountryBo.class, Collections.unmodifiableMap(map));

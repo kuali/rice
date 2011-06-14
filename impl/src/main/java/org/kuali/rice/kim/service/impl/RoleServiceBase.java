@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
@@ -46,12 +45,12 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LookupService;
+import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
@@ -1180,7 +1179,7 @@ public class RoleServiceBase {
 		AttributeSet criteria = new AttributeSet();
 		criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
 		criteria.put(KimConstants.UniqueKeyConstants.ROLE_NAME, roleName);
-		criteria.put(KNSPropertyConstants.ACTIVE, "Y");
+		criteria.put(KRADPropertyConstants.ACTIVE, "Y");
 		// while this is not actually the primary key - there will be at most one row with these criteria
 		RoleImpl result = (RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria);
 		addRoleImplToCache( result );
@@ -1312,7 +1311,7 @@ public class RoleServiceBase {
     
     protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KRADServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
@@ -1322,7 +1321,7 @@ public class RoleServiceBase {
 	 */
     protected LookupService getLookupService() {
 		if(lookupService == null) {
-			lookupService = KNSServiceLocatorWeb.getLookupService();
+			lookupService = KRADServiceLocatorWeb.getLookupService();
 		}
 		return lookupService;
 	}
@@ -1344,7 +1343,7 @@ public class RoleServiceBase {
 
 	protected SequenceAccessorService getSequenceAccessorService() {
 		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+			sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
 		}
 		return sequenceAccessorService;
 	}

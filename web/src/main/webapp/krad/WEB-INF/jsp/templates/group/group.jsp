@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="group" classname="org.kuali.rice.kns.uif.container.Group"/>
+<tiles:useAttribute name="group" classname="org.kuali.rice.krad.uif.container.Group"/>
 
 <krad:group group="${group}">
 

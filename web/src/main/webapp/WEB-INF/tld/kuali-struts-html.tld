@@ -106,7 +106,7 @@
     <tag>
         <name>button</name>
         <!--<tag-class>org.apache.struts.taglib.html.ButtonTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSButtonTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSButtonTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>Render A Button Input Field</strong></p>
@@ -453,7 +453,7 @@
     <tag>
         <name>cancel</name>
         <!--<tag-class>org.apache.struts.taglib.html.CancelTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSCancelTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSCancelTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -789,7 +789,7 @@
     <tag>
         <name>checkbox</name>
         <!--<tag-class>org.apache.struts.taglib.html.CheckboxTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSCheckboxTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSCheckboxTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -1390,7 +1390,7 @@
     <tag>
         <name>file</name>
         <!--<tag-class>org.apache.struts.taglib.html.FileTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSFileTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSFileTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -2604,7 +2604,7 @@
     <tag>
         <name>hidden</name>
         <!--<tag-class>org.apache.struts.taglib.html.HiddenTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSHiddenTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSHiddenTag</tag-class>
         <body-content>empty</body-content>
         <description>
             <![CDATA[
@@ -3017,7 +3017,7 @@
     <tag>
         <name>image</name>
         <!--<tag-class>org.apache.struts.taglib.html.ImageTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSImageTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSImageTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -5090,7 +5090,7 @@
     <tag>
         <name>multibox</name>
         <!--<tag-class>org.apache.struts.taglib.html.MultiboxTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSMultiboxTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSMultiboxTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -5974,7 +5974,7 @@
     <tag>
         <name>password</name>
         <!--<tag-class>org.apache.struts.taglib.html.PasswordTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSPasswordTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSPasswordTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -6482,7 +6482,7 @@
     <tag>
         <name>radio</name>
         <!--<tag-class>org.apache.struts.taglib.html.RadioTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSRadioTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSRadioTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -7512,7 +7512,7 @@
     <tag>
         <name>select</name>
         <!--<tag-class>org.apache.struts.taglib.html.SelectTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSSelectTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSSelectTag</tag-class>
         <body-content>JSP</body-content>
         <description>
             <![CDATA[
@@ -7981,7 +7981,7 @@
     <tag>
         <name>submit</name>
         <!--<tag-class>org.apache.struts.taglib.html.SubmitTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSSubmitTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSSubmitTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -8311,7 +8311,7 @@
     <tag>
         <name>text</name>
         <!--<tag-class>org.apache.struts.taglib.html.TextTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSTextTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSTextTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>Render An Input Field of Type text</strong></p>
@@ -8795,7 +8795,7 @@
     <tag>
         <name>textarea</name>
         <!--<tag-class>org.apache.struts.taglib.html.TextareaTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSTextareaTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSTextareaTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>

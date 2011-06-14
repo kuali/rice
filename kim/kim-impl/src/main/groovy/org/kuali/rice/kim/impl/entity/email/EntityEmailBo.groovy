@@ -14,7 +14,7 @@ import org.kuali.rice.kim.api.entity.email.EntityEmail
 import org.kuali.rice.kim.api.entity.email.EntityEmailContract
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

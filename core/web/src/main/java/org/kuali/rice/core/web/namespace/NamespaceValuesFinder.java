@@ -18,9 +18,9 @@ package org.kuali.rice.core.web.namespace;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KeyValuesService;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KeyValuesService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class NamespaceValuesFinder extends KeyValuesBase {
 	public List<KeyValue> getKeyValues() {
 
         // get a list of all Namespaces
-        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
+        KeyValuesService boService = KRADServiceLocator.getKeyValuesService();
         List<NamespaceBo> bos = (List<NamespaceBo>) boService.findAll(NamespaceBo.class);
         // copy the list of codes before sorting, since we can't modify the results from this method
         if ( bos == null ) {

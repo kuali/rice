@@ -18,9 +18,9 @@ package org.kuali.rice.core.web.parameter;
 import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KeyValuesService;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KeyValuesService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class ParameterTypeValuesFinder extends KeyValuesBase {
     public List<KeyValue> getKeyValues() {
 
         // get a list of all ParameterTypes
-        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
+        KeyValuesService boService = KRADServiceLocator.getKeyValuesService();
         List<ParameterTypeBo> bos = (List<ParameterTypeBo>) boService.findAll(ParameterTypeBo.class);
         // copy the list of codes before sorting, since we can't modify the results from this method
         if (bos == null) {

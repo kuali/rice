@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.kim.api.entity.address;
 
-import org.kuali.rice.core.api.mo.common.Defaultable;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.entity.TypeContract;
-import org.kuali.rice.kns.bo.DefaultableInactivateable;
+import org.kuali.rice.krad.bo.DefaultableInactivateable;
 
 /**
  * address information for a KIM entity

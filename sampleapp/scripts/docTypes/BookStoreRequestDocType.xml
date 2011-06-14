@@ -20,7 +20,7 @@
 			<description>Parent Document for Bookstore Maintenance Documents
 			</description>
 			<label>Bookstore Maintenance Document Parent</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor
 			</postProcessorName>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin
 			</superUserGroupName>

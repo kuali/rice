@@ -29,8 +29,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.framework.logic.LogicalOperator;
-import org.kuali.rice.kns.util.KNSConstants;
-
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Utility class for working with SQL.
@@ -336,11 +335,11 @@ public final class SQLUtils {
   		   lRet = new ArrayList<String>();
   		   for(String val: lTemp){
   			   // Clean the wildcards appropriately, depending on the field's data type.
-  			   if (KNSConstants.DATA_TYPE_STRING.equals(propertyDataType)) {
+  			   if (KRADConstants.DATA_TYPE_STRING.equals(propertyDataType)) {
   				   lRet.add(clean(val));
-  			   } else if (KNSConstants.DATA_TYPE_FLOAT.equals(propertyDataType) || KNSConstants.DATA_TYPE_LONG.equals(propertyDataType)) {
+  			   } else if (KRADConstants.DATA_TYPE_FLOAT.equals(propertyDataType) || KRADConstants.DATA_TYPE_LONG.equals(propertyDataType)) {
   				   lRet.add(SQLUtils.cleanNumericOfValidOperators(val));
-  			   } else if (KNSConstants.DATA_TYPE_DATE.equals(propertyDataType)) {
+  			   } else if (KRADConstants.DATA_TYPE_DATE.equals(propertyDataType)) {
   				   lRet.add(SQLUtils.cleanDate(val));
   			   } else {
   				   lRet.add(clean(val));
@@ -388,7 +387,7 @@ public final class SQLUtils {
  			return;
  		}
  		if (StringUtils.contains(valueEntered, LogicalOperator.AND.op())) {
- 			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND.op())));
+ 			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KRADConstants.AND.op())));
  			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperator.AND.op()));
  			for(String value : l){
  				getSearchableValueRecursive(value,lRet);
@@ -407,8 +406,8 @@ public final class SQLUtils {
      * @return Cleaned string
      */
     private static String clean(String string) {
-        for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
-            string = StringUtils.replace(string, KNSConstants.QUERY_CHARACTERS[i], KNSConstants.EMPTY_STRING);
+        for (int i = 0; i < KRADConstants.QUERY_CHARACTERS.length; i++) {
+            string = StringUtils.replace(string, KRADConstants.QUERY_CHARACTERS[i], KRADConstants.EMPTY_STRING);
         }
         return string;
     }

@@ -19,7 +19,7 @@ package org.kuali.rice.shareddata.framework.country;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.shareddata.api.country.Country;
 
 import java.util.ArrayList;

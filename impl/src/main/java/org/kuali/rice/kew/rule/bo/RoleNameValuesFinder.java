@@ -24,11 +24,11 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.struts.form.KualiMaintenanceForm;
 
 /**
  * A values finder for generating a list of Role names that can be selected for a given RuleTemplate.

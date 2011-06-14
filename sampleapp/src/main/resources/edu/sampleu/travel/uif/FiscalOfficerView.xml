@@ -39,7 +39,7 @@
       </list>
     </property>
     <property name="formClass"
-      value="org.kuali.rice.kns.web.struts.form.InquiryForm" />
+      value="org.kuali.rice.krad.web.struts.form.InquiryForm" />
   </bean>
 
   <bean id="FiscalOfficer-InquiryView-Section1" parent="GroupSectionGridLayout">

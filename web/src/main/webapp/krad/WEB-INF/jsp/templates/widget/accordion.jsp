@@ -15,8 +15,8 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.Accordion"/>
-<tiles:useAttribute name="parent" classname="org.kuali.rice.kns.uif.container.Group"/>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.Accordion"/>
+<tiles:useAttribute name="parent" classname="org.kuali.rice.krad.uif.container.Group"/>
 
 <%--
     Invokes JS method to setup collapse/expand script for group

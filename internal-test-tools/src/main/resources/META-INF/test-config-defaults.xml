@@ -37,7 +37,7 @@
     <param name="unittest.jetty.server9.port" override="false" random="true">18000-18999</param>
     <param name="unittest.jetty.server10.port" override="false" random="true">19000-19999</param>
     
-    <param name="rice.struts.message.resources">org.kuali.rice.kns.ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,KR-Test-ApplicationResources</param>
+    <param name="rice.struts.message.resources">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,KR-Test-ApplicationResources</param>
     
     <param name="rice.kr.set.soap.services.as.default">false</param>
     <param name="rice.kcb.set.soap.services.as.default">false</param>

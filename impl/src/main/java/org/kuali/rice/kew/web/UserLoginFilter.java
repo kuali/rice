@@ -30,11 +30,11 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.exception.AuthenticationException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.WebUtils;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.exception.AuthenticationException;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.WebUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -121,7 +121,7 @@ public class UserLoginFilter implements Filter {
 				throw new AuthenticationException("Invalid User: " + principalName);
 			}
 			
-			request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
+			request.getSession().setAttribute(KRADConstants.USER_SESSION_KEY, userSession);
 		}
 	}
 	
@@ -144,7 +144,7 @@ public class UserLoginFilter implements Filter {
 		String kualiSessionId = this.getKualiSessionId(request.getCookies());
 		if (kualiSessionId == null) {
 			kualiSessionId = UUID.randomUUID().toString();
-			response.addCookie(new Cookie(KNSConstants.KUALI_SESSION_ID, kualiSessionId));
+			response.addCookie(new Cookie(KRADConstants.KUALI_SESSION_ID, kualiSessionId));
 		}
 		WebUtils.getUserSessionFromRequest(request).setKualiSessionId(kualiSessionId);
 	}
@@ -153,7 +153,7 @@ public class UserLoginFilter implements Filter {
 	private String getKualiSessionId(final Cookie[] cookies) {
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				if (KNSConstants.KUALI_SESSION_ID.equals(cookie.getName())) {
+				if (KRADConstants.KUALI_SESSION_ID.equals(cookie.getName())) {
 					return cookie.getValue();
 				}
 			}
@@ -163,11 +163,11 @@ public class UserLoginFilter implements Filter {
 	
 	/** establishes the backdoor user on the established user id if backdoor capabilities are valid. */
 	private void establishBackdoorUser(HttpServletRequest request) {
-		final String backdoor = request.getParameter(KNSConstants.BACKDOOR_PARAMETER);
+		final String backdoor = request.getParameter(KRADConstants.BACKDOOR_PARAMETER);
 		
 		if ( StringUtils.isNotBlank(backdoor) ) {
 			if ( !getKualiConfigurationService().isProductionEnvironment() ) {
-				if ( getParameterService().getParameterValueAsBoolean(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
+				if ( getParameterService().getParameterValueAsBoolean(KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
 					WebUtils.getUserSessionFromRequest(request).setBackdoorUser(backdoor);
 				}
 			}
@@ -189,7 +189,7 @@ public class UserLoginFilter implements Filter {
 	 * @return true if the user session has been established, false otherwise
 	 */
 	private boolean isUserSessionEstablished(HttpServletRequest request) {
-		return (request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY) != null);
+		return (request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY) != null);
 	}
 	
     private IdentityManagementService getIdentityManagementService() {
@@ -202,7 +202,7 @@ public class UserLoginFilter implements Filter {
     
     private ConfigurationService getKualiConfigurationService() {
     	if (this.kualiConfigurationService == null) {
-    		this.kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+    		this.kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
     	}
     	
     	return this.kualiConfigurationService;

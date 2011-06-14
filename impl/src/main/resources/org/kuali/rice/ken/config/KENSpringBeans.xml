@@ -257,7 +257,7 @@
     </bean>
     
 	<bean id="rice.ksb.serviceBus"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 	

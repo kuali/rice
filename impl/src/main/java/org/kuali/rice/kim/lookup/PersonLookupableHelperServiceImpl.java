@@ -28,13 +28,13 @@ import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.Row;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -62,17 +62,17 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
 		if(allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME)){
 			String href = "";
 			Properties parameters = new Properties();
-	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-	        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
+	        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOC_HANDLER_METHOD);
+	        parameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+	        parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
 	        parameters.put(KimConstants.PrimaryKeyConstants.PRINCIPAL_ID, ((PersonImpl)bo).getPrincipalId());
 	        if (StringUtils.isNotBlank(getReturnLocation())) {
-	        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+	        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 			}
 	        href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION, parameters);
 	
 	        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
-	        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
+	        		KRADConstants.DOC_HANDLER_METHOD, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
 	
 	    	anchorHtmlDataList.add(anchorHtmlData);
 		}
@@ -84,7 +84,7 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
 		HtmlData inqUrl = super.getInquiryUrl(bo, propertyName);
 		Properties parameters = new Properties();
         parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
-        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
+        parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
         parameters.put(KimConstants.PrimaryKeyConstants.PRINCIPAL_ID, ((Person)bo).getPrincipalId());
         String href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION, parameters);
 	    ((AnchorHtmlData)inqUrl).setHref(href);
@@ -95,7 +95,7 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
 	 * Checks for the special role lookup parameters and removes/marks read-only the fields in the search criteria.
 	 * If present, this method also has a side-effect of updating the title with the role name.
 	 * 
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getRows()
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getRows()
 	 */
 	@Override
 	public List<Row> getRows() {

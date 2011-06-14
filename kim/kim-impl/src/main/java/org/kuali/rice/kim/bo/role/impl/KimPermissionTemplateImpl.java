@@ -20,7 +20,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -56,14 +56,14 @@ public class KimPermissionTemplateImpl extends PersistableBusinessObjectBase imp
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
+	 * @see org.kuali.rice.krad.bo.Inactivateable#isActive()
 	 */
 	public boolean isActive() {
 		return active;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
+	 * @see org.kuali.rice.krad.bo.Inactivateable#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
 		this.active = active;

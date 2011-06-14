@@ -18,9 +18,9 @@ package org.kuali.rice.kim.rule.event.ui;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.ui.AddRoleRule;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.rule.BusinessRule;
-import org.kuali.rice.kns.rule.event.KualiDocumentEventBase;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.rule.BusinessRule;
+import org.kuali.rice.krad.rule.event.KualiDocumentEventBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

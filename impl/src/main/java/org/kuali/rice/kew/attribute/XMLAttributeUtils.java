@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.attribute;
 
-import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.krad.web.ui.Field;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 

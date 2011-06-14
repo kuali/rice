@@ -28,7 +28,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.web.ui.Column;
+import org.kuali.rice.krad.web.ui.Column;
 
 import java.util.Arrays;
 import java.util.Iterator;

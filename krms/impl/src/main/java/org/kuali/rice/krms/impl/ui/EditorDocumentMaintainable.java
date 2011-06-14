@@ -17,13 +17,13 @@ package org.kuali.rice.krms.impl.ui;
 
 import java.util.Map;
 
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 
@@ -41,7 +41,7 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 	 * @return the boService
 	 */
 	public BusinessObjectService getBoService() {
-		return KNSServiceLocator.getBusinessObjectService();
+		return KRADServiceLocator.getBusinessObjectService();
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 
 		super.setupMaintenanceObject(document, maintenanceAction, requestParameters);
 		
-		if (KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
+		if (KRADConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
 			String[] agendaIds = requestParameters.get("agendaId");
 			if (agendaIds == null || agendaIds.length != 1) { 
 				//throw new RiceRuntimeException("one and only one agendaId request parameter may be passed");
@@ -79,7 +79,7 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#saveBusinessObject()
 	 */
 	@Override
 	public void saveBusinessObject() {
@@ -88,7 +88,7 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 	}
 	
 //	/**
-//	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.rice.kns.document.MaintenanceDocument, java.util.Map)
+//	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.rice.krad.document.MaintenanceDocument, java.util.Map)
 //	 */
 //	@Override
 //	public void processAfterNew(MaintenanceDocument document,
@@ -104,7 +104,7 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#getBusinessObject()
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#getBusinessObject()
 	 */
 	@Override
 	public PersistableBusinessObject getBusinessObject() {
@@ -115,7 +115,7 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.kns.bo.BusinessObject)
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.krad.bo.BusinessObject)
 	 */
 	@Override
 	public void prepareBusinessObject(BusinessObject businessObject) {

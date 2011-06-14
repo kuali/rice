@@ -16,9 +16,9 @@
 package org.kuali.rice.maintainable;
 
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.exception.PessimisticLockingException;
-import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.exception.PessimisticLockingException;
+import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 /**
  * This is a subclass of KualiMaintainableImpl designed specifically for testing custom lock descriptors. 
@@ -47,7 +47,7 @@ public class AccountType2MaintainableImpl extends KualiMaintainableImpl {
 	/**
 	 * Since this class was made to test custom lock descriptors, this method will always return true.
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#useCustomLockDescriptors()
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#useCustomLockDescriptors()
 	 */
 	@Override
 	public boolean useCustomLockDescriptors() {
@@ -58,7 +58,7 @@ public class AccountType2MaintainableImpl extends KualiMaintainableImpl {
      * Generates a custom lock descriptor with a format of "[documentNumber]-[The user session's 'acctType2MaintFieldsToEdit' parameter value]".
      * Will throw a PessimisticLockingException if this parameter is not defined or if its value is neither "editCodeOnly" nor "editNameOnly".
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#getCustomLockDescriptor(org.kuali.rice.kim.bo.Person)
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#getCustomLockDescriptor(org.kuali.rice.kim.bo.Person)
 	 */
 	@Override
 	public String getCustomLockDescriptor(Person user) {

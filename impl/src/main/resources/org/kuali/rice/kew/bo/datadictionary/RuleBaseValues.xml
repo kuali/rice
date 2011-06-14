@@ -279,7 +279,7 @@
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
     <property name="control">
-      <bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.IndicatorPersonSearchTypeValuesFinder" p:includeKeyInLabel="true"/>
+      <bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.IndicatorPersonSearchTypeValuesFinder" p:includeKeyInLabel="true"/>
     </property>
     <property name="name" value="personReviewerType"/>
     <property name="label" value="Person Reviewer Type"/>
@@ -294,7 +294,7 @@
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
     <property name="control">
-      <bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.DelegateRuleValuesFinder" p:includeKeyInLabel="true"/>
+      <bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.DelegateRuleValuesFinder" p:includeKeyInLabel="true"/>
     </property>
     <property name="name" value="delegateRule"/>
     <property name="label" value="Delegate Rule"/>

@@ -312,7 +312,7 @@ public class GroupXmlParser {
                     groupMember.setTypeCode( KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE );
                     groupMember.setMemberId(group.getId());*/
 
-                    /*groupMember = (GroupMemberBo)KNSServiceLocator.getBusinessObjectService().save(groupMember);*/
+                    /*groupMember = (GroupMemberBo)KRADServiceLocator.getBusinessObjectService().save(groupMember);*/
                 } else {
                     throw new XmlException("Group Id "+groupId+" cannot be found.");
                 }
@@ -329,7 +329,7 @@ public class GroupXmlParser {
                     groupMember.setTypeCode( KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE );
                     groupMember.setMemberId(group.getId());
 
-                    groupMember = (GroupMemberBo)KNSServiceLocator.getBusinessObjectService().save(groupMember);*/
+                    groupMember = (GroupMemberBo)KRADServiceLocator.getBusinessObjectService().save(groupMember);*/
                 	identityManagementService.addGroupToGroup(group.getId(), groupInfo.getId());
                 } else {
                     throw new XmlException("Group "+groupName+" cannot be found.");
@@ -345,7 +345,7 @@ public class GroupXmlParser {
                 groupMember.setTypeCode(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
                 groupMember.setMemberId(principalId);
 
-                groupMember = (GroupMemberBo)KNSServiceLocator.getBusinessObjectService().save(groupMember);*/
+                groupMember = (GroupMemberBo)KRADServiceLocator.getBusinessObjectService().save(groupMember);*/
 
             	identityManagementService.addPrincipalToGroup(principalId, groupInfo.getId());
             }

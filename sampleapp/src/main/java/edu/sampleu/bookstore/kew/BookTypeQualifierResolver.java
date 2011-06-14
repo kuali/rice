@@ -10,9 +10,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.workflow.attribute.QualifierResolverBase;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.krad.workflow.attribute.QualifierResolverBase;
 import edu.sampleu.bookstore.bo.Book;
 import edu.sampleu.bookstore.bo.BookstoreKimAttributes;
 

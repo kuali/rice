@@ -25,7 +25,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.reference.AffiliationType;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

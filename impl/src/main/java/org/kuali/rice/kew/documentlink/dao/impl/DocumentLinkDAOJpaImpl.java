@@ -26,7 +26,7 @@ import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 

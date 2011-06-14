@@ -36,8 +36,8 @@ import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.workflow.attribute.QualifierResolverBase;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.workflow.attribute.QualifierResolverBase;
 
 import java.util.ArrayList;
 import java.util.Collections;

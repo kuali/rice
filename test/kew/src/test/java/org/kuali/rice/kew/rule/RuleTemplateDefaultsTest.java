@@ -23,12 +23,12 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.document.MaintenanceDocumentBase;
-import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
-import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.document.MaintenanceDocumentBase;
+import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
+import org.kuali.rice.krad.web.struts.form.KualiMaintenanceForm;
 
 import java.util.HashSet;
 import java.util.Iterator;

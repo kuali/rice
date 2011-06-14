@@ -37,6 +37,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.0.0-m5-SNAPSHOT" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/sampleapp-2.0.0-m5-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />
@@ -54,10 +55,10 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.acegisecurity:acegi-security-cas:1.0.7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: cas:cas-server:3.0.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: cas:cas:2.0.12" level="project" />
-    <orderEntry type="module" module-name="rice-web (1)" />
+    <orderEntry type="module" module-name="rice-web" />
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-core-api" />
-    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
@@ -70,7 +71,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: xerces:xercesImpl:2.9.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />

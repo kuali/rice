@@ -19,9 +19,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.lookup.KualiLookupableImpl;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.krad.lookup.KualiLookupableImpl;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
 
 import java.util.Properties;
 
@@ -40,14 +40,14 @@ public class RoleLookupableImpl extends KualiLookupableImpl {
         String url = "";
         if((getLookupableHelperService()).allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME)){
             Properties parameters = new Properties();
-            parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, KimTypeBo.class.getName());
-            //parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, KNSConstants.PORTAL_ACTION);
-            parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-            parameters.put(KNSConstants.DOC_FORM_KEY, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY);
+            parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, KimTypeBo.class.getName());
+            //parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, KRADConstants.PORTAL_ACTION);
+            parameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+            parameters.put(KRADConstants.DOC_FORM_KEY, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY);
 	        if (StringUtils.isNotBlank(getReturnLocation())) {
-	        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
+	        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 	        	}
-            url = getCreateNewUrl(UrlFactory.parameterizeUrl(KNSConstants.LOOKUP_ACTION, parameters));
+            url = getCreateNewUrl(UrlFactory.parameterizeUrl(KRADConstants.LOOKUP_ACTION, parameters));
             //String url = "lookup.do?businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey="+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY;
         }
         return url;

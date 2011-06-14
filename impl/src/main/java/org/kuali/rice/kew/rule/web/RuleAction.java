@@ -23,8 +23,8 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,9 +58,9 @@ public class RuleAction extends KewKualiAction {
     }
 
     protected String generateMaintenanceUrl(HttpServletRequest request, RuleForm form) {
-        return getApplicationBaseUrl() + "/kr/" + KNSConstants.MAINTENANCE_ACTION + "?" +
-            KNSConstants.DISPATCH_REQUEST_PARAMETER + "=" + KNSConstants.START_METHOD + "&" +
-            KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE + "=" + RuleBaseValues.class.getName() +  "&" +
+        return getApplicationBaseUrl() + "/kr/" + KRADConstants.MAINTENANCE_ACTION + "?" +
+            KRADConstants.DISPATCH_REQUEST_PARAMETER + "=" + KRADConstants.START_METHOD + "&" +
+            KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE + "=" + RuleBaseValues.class.getName() +  "&" +
             WebRuleUtils.DOCUMENT_TYPE_NAME_PARAM + "=" + form.getDocumentTypeName() + "&" +
             WebRuleUtils.RULE_TEMPLATE_NAME_PARAM + "=" + form.getRuleTemplateName();
     }

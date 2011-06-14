@@ -1,18 +1,19 @@
+<%@ tag import="org.kuali.rice.krad.util.KRADConstants" %>
 <%--
-  ~ Copyright 2006-2011 The Kuali Foundation
-  ~
-  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.opensource.org/licenses/ecl2.php
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  --%>
+~ Copyright 2006-2011 The Kuali Foundation
+~
+~ Licensed under the Educational Community License, Version 2.0 (the "License");
+~ you may not use this file except in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~ http://www.opensource.org/licenses/ecl2.php
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+--%>
 
 <%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
@@ -38,7 +39,7 @@
       </html:form>
     </c:when>
     <c:otherwise> 
-      <c:set var="backboorEnabled" value="<%=org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(org.kuali.rice.kew.util.KEWConstants.KEW_NAMESPACE, org.kuali.rice.kns.util.KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, org.kuali.rice.kew.util.KEWConstants.SHOW_BACK_DOOR_LOGIN_IND)%>"/>
+      <c:set var="backboorEnabled" value="<%=org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(org.kuali.rice.kew.util.KEWConstants.KEW_NAMESPACE, org.kuali.rice.krad.util.KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, org.kuali.rice.kew.util.KEWConstants.SHOW_BACK_DOOR_LOGIN_IND)%>"/>
       <c:if test="${backboorEnabled}">
         <html:form action="/backdoorlogin.do" method="post" style="margin:0; display:inline">
           <input name="backdoorId" type="text" class="searchbox" size="10" title="Enter your backdoor ID here.">

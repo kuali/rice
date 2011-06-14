@@ -49,8 +49,8 @@ import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
 
 		try {
-            personDoc.getDocumentHeader().setWorkflowDocument(KNSServiceLocatorWeb.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
+            personDoc.getDocumentHeader().setWorkflowDocument(KRADServiceLocatorWeb.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
         } catch (WorkflowException e) {
             e.printStackTrace();
         }
@@ -186,7 +186,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		List<KimTypeAttributeBo> attributeDefinitions = new ArrayList<KimTypeAttributeBo>();
 		Map pkMap = new HashMap();
 		pkMap.put("kimTypeAttributeId", "kimAttr3");
-		KimTypeAttributeBo attr1 = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeBo.class, pkMap);
+		KimTypeAttributeBo attr1 = (KimTypeAttributeBo) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeBo.class, pkMap);
 
 //		attr1.setKimAttributeId("kimAttrDefn2");
 //		attr1.setSortCode("a");
@@ -199,7 +199,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 //		attr1.setKimTypeAttributeId("kimAttr4");
 
 		pkMap.put("kimTypeAttributeId", "kimAttr4");
-		KimTypeAttributeBo attr2 = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeBo.class, pkMap);
+		KimTypeAttributeBo attr2 = (KimTypeAttributeBo) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeBo.class, pkMap);
 
 		attributeDefinitions.add(attr2);
 		kimType.setAttributeDefinitions(attributeDefinitions);

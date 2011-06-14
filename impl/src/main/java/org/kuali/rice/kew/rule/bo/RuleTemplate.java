@@ -26,7 +26,7 @@ package org.kuali.rice.kew.rule.bo;
  import org.kuali.rice.kew.rule.RuleTemplateOption;
  import org.kuali.rice.kew.rule.WorkflowAttribute;
  import org.kuali.rice.kew.util.KEWConstants;
- import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
  import javax.persistence.*;
  import java.net.URLEncoder;

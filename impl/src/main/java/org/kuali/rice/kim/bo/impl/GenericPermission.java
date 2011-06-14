@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.KimPermission;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
 import java.util.Iterator;
@@ -128,14 +128,14 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
+	 * @see org.kuali.rice.krad.bo.Inactivateable#isActive()
 	 */
 	public boolean isActive() {
 		return active;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
+	 * @see org.kuali.rice.krad.bo.Inactivateable#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
 		this.active = active;

@@ -21,15 +21,15 @@ import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.parameter.ParameterKey;
 import org.kuali.rice.core.api.parameter.ParameterRepositoryService;
 import org.kuali.rice.core.framework.parameter.ParameterService;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.service.KualiModuleService;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collection;
 
 public class ParameterServiceImpl implements ParameterService {
     private KualiModuleService kualiModuleService;
     private ParameterRepositoryService parameterRepositoryService;
-    private String applicationId = KNSConstants.DEFAULT_PARAMETER_APPLICATION_ID;
+    private String applicationId = KRADConstants.DEFAULT_PARAMETER_APPLICATION_ID;
 
     @Override
     public void createParameter(Parameter parameter) {

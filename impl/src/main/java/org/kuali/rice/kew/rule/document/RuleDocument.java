@@ -16,9 +16,9 @@
 
 package org.kuali.rice.kew.rule.document;
 
-import org.kuali.rice.kns.document.Copyable;
-import org.kuali.rice.kns.document.SessionDocument;
-import org.kuali.rice.kns.document.TransactionalDocumentBase;
+import org.kuali.rice.krad.document.Copyable;
+import org.kuali.rice.krad.document.SessionDocument;
+import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
 /**
  * This is the business object that represents the DisbursementVoucher document in Kuali.

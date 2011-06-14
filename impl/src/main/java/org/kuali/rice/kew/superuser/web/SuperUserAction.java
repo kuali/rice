@@ -49,11 +49,10 @@ import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * A Struts Action which provides super user functionality.
@@ -159,11 +158,11 @@ public class SuperUserAction extends KewKualiAction {
         SuperUserForm superUserForm = (SuperUserForm) form;
         
         // Retrieve the relevant arguments from the "methodToCall" parameter.
-        String methodToCallAttr = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
-        superUserForm.setActionTakenRecipientCode(StringUtils.substringBetween(methodToCallAttr, KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL));
-        superUserForm.setActionTakenNetworkId(StringUtils.substringBetween(methodToCallAttr, KNSConstants.METHOD_TO_CALL_PARM2_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL));
-        superUserForm.setActionTakenWorkGroupId(StringUtils.substringBetween(methodToCallAttr, KNSConstants.METHOD_TO_CALL_PARM4_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM4_RIGHT_DEL));
-        superUserForm.setActionTakenActionRequestId(StringUtils.substringBetween(methodToCallAttr, KNSConstants.METHOD_TO_CALL_PARM5_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM5_RIGHT_DEL));
+        String methodToCallAttr = (String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE);
+        superUserForm.setActionTakenRecipientCode(StringUtils.substringBetween(methodToCallAttr, KRADConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL));
+        superUserForm.setActionTakenNetworkId(StringUtils.substringBetween(methodToCallAttr, KRADConstants.METHOD_TO_CALL_PARM2_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL));
+        superUserForm.setActionTakenWorkGroupId(StringUtils.substringBetween(methodToCallAttr, KRADConstants.METHOD_TO_CALL_PARM4_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM4_RIGHT_DEL));
+        superUserForm.setActionTakenActionRequestId(StringUtils.substringBetween(methodToCallAttr, KRADConstants.METHOD_TO_CALL_PARM5_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM5_RIGHT_DEL));
         
         LOG.debug("Routing super user action request approve action");
         boolean runPostProcessorLogic = ArrayUtils.contains(superUserForm.getActionRequestRunPostProcessorCheck(), superUserForm.getActionTakenActionRequestId());
@@ -171,7 +170,7 @@ public class SuperUserAction extends KewKualiAction {
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserActionRequestApproveAction(getUserSession(request).getPrincipalId(), documentId, new Long(superUserForm.getActionTakenActionRequestId()), superUserForm.getAnnotation(), runPostProcessorLogic);
         String messageString;
-        String actionReqest = StringUtils.substringBetween(methodToCallAttr, KNSConstants.METHOD_TO_CALL_PARM6_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM6_RIGHT_DEL);
+        String actionReqest = StringUtils.substringBetween(methodToCallAttr, KRADConstants.METHOD_TO_CALL_PARM6_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM6_RIGHT_DEL);
         if (actionReqest.equalsIgnoreCase("acknowledge")){
         	messageString = "general.routing.superuser.actionRequestAcknowledged";
         }else if (actionReqest.equalsIgnoreCase("FYI")){
@@ -264,8 +263,8 @@ public class SuperUserAction extends KewKualiAction {
     	
     	//super.routeToAppSpecificRecipient(mapping, form, request, response);
     	//WorkflowRoutingForm routingForm = (WorkflowRoutingForm) form;
-        String routeType = StringUtils.substringBetween((String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE),
-        		KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
+        String routeType = StringUtils.substringBetween((String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE),
+        		KRADConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
         AppSpecificRouteRecipient recipient = null;
         if (KEWConstants.PERSON.equals(routeType)) {
         	recipient = superUserForm.getAppSpecificRouteRecipient();
@@ -344,8 +343,8 @@ public class SuperUserAction extends KewKualiAction {
     public ActionForward removeAppSpecificRecipient(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	SuperUserForm superUserForm = (SuperUserForm) form;
     	// Make sure a valid route recipient index was specified in the "methodToCall" attribute.
-        String strIndex = StringUtils.substringBetween((String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE),
-        		KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
+        String strIndex = StringUtils.substringBetween((String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE),
+        		KRADConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
         if (StringUtils.isBlank(strIndex)) {
         	throw new WorkflowException("No adhoc route recipient index specified");
         }

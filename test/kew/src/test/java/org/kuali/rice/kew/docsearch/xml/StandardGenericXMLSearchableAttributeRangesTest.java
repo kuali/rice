@@ -45,8 +45,8 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.Row;
 
 import java.math.BigDecimal;
 import java.util.Calendar;

@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
 import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.jws.WebService;
 import java.util.Iterator;
@@ -100,7 +100,7 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
 	}
 	
 	public String getNextAvailablePermissionId() throws UnsupportedOperationException {
-        Long nextSeq = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S, KimPermissionImpl.class);
+        Long nextSeq = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S, KimPermissionImpl.class);
 
         if (nextSeq == null) {
             LOG.error("Unable to get new permission id from sequence " + KimConstants.SequenceNames.KRIM_PERM_ID_S);

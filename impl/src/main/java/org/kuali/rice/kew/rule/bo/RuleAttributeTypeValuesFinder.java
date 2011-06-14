@@ -22,7 +22,7 @@ import java.util.List;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 

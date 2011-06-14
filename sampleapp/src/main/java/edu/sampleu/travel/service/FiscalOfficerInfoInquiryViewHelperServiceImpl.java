@@ -18,7 +18,7 @@ package edu.sampleu.travel.service;
 import java.util.Map;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
 
 import edu.sampleu.travel.dto.FiscalOfficerInfo;
 

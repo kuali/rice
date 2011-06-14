@@ -16,18 +16,16 @@
 
 package edu.sampleu.financial.bo;
 
-import java.util.LinkedHashMap;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * An association between a <code>Campus</code> and a <code>VendorAddress</code> to indicate that the Address is the default one
  * for this Campus among the various Addresses available for this Vendor.
  *
- * @see org.kuali.rice.kns.bo.Campus
+ * @see org.kuali.rice.krad.bo.Campus
  * @see org.kuali.kfs.vnd.businessobject.VendorAddress
  */
 public class VendorDefaultAddress extends PersistableBusinessObjectBase implements Inactivateable {

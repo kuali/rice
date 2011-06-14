@@ -51,26 +51,26 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
-import org.kuali.rice.kns.web.struts.form.LookupForm;
-import org.kuali.rice.kns.web.ui.Column;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.ResultRow;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.FieldUtils;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.MessageMap;
+import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.comparator.CellComparatorHelper;
+import org.kuali.rice.krad.web.struts.form.LookupForm;
+import org.kuali.rice.krad.web.ui.Column;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.ResultRow;
+import org.kuali.rice.krad.web.ui.Row;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -100,14 +100,14 @@ KualiLookupableHelperServiceImpl {
 	private static final Pattern HREF_PATTERN = Pattern.compile("<a href=\"([^\"]+)\"");
 
 	/**
-	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.kns.service.DateTimeService)
+	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.krad.service.DateTimeService)
 	 */
 	public void setDateTimeService(DateTimeService dateTimeService) {
 		this.dateTimeService = dateTimeService;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#performLookup(org.kuali.rice.kns.web.struts.form.LookupForm, java.util.Collection, boolean)
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#performLookup(org.kuali.rice.krad.web.struts.form.LookupForm, java.util.Collection, boolean)
 	 */
 	@Override
 	public Collection performLookup(LookupForm lookupForm,
@@ -167,11 +167,11 @@ KualiLookupableHelperServiceImpl {
     	// check various warning conditions
 
     	if (criteria.isOverThreshold() && criteria.getSecurityFilteredRows() > 0) {
-    	    GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES, "docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", String.valueOf(components.getSearchResults().size()), String.valueOf(criteria.getSecurityFilteredRows()));
+    	    GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES, "docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", String.valueOf(components.getSearchResults().size()), String.valueOf(criteria.getSecurityFilteredRows()));
     	} else if (criteria.getSecurityFilteredRows() > 0) {
-    	    GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES, "docsearch.DocumentSearchService.securityFiltered", String.valueOf(criteria.getSecurityFilteredRows()));
+    	    GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES, "docsearch.DocumentSearchService.securityFiltered", String.valueOf(criteria.getSecurityFilteredRows()));
     	} else if (criteria.isOverThreshold()) {
-    		GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES,"docsearch.DocumentSearchService.exceededThreshold", String.valueOf(components.getSearchResults().size()));
+    		GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES,"docsearch.DocumentSearchService.exceededThreshold", String.valueOf(components.getSearchResults().size()));
     	}
 
     	for (Row row : this.getRows()) {
@@ -188,8 +188,8 @@ KualiLookupableHelperServiceImpl {
 //		}
 
 		//####BEGIN COPIED CODE#########
-        setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
-        setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
+        setBackLocation((String) lookupForm.getFieldsForLookup().get(KRADConstants.BACK_LOCATION));
+        setDocFormKey((String) lookupForm.getFieldsForLookup().get(KRADConstants.DOC_FORM_KEY));
 
 //###COMENTED OUT
 //		  Collection displayList;
@@ -285,7 +285,7 @@ KualiLookupableHelperServiceImpl {
             	Formatter formatter = col.getFormatter();
 
                 // pick off result column from result list, do formatting
-                String propValue = KNSConstants.EMPTY_STRING;
+                String propValue = KRADConstants.EMPTY_STRING;
 //                Object prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
 //ADDED
                 Object prop=keyValue.getSortValue();
@@ -333,9 +333,9 @@ KualiLookupableHelperServiceImpl {
                     }
                     if (formatter != null) {
                         //hack for Currency values as big decimal
-                        if (prop instanceof BigDecimal  && formatter.getImplementationClass().equals("org.kuali.rice.kns.web.format.CurrencyFormatter")) {
+                        if (prop instanceof BigDecimal  && formatter.getImplementationClass().equals("org.kuali.rice.krad.web.format.CurrencyFormatter")) {
                             prop = new KualiDecimal((BigDecimal)prop);
-                        } else if (prop instanceof BigDecimal  && formatter.getImplementationClass().equals("org.kuali.rice.kns.web.format.PercentageFormatter")) {
+                        } else if (prop instanceof BigDecimal  && formatter.getImplementationClass().equals("org.kuali.rice.krad.web.format.PercentageFormatter")) {
                             prop = new KualiPercent((BigDecimal)prop);
                         }
                          propValue = (String) formatter.format(prop);
@@ -357,7 +357,7 @@ KualiLookupableHelperServiceImpl {
                 if (StringUtils.isNotBlank(propValue)) {
 //                    col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
 //ADDED (3 lines)
-                	AnchorHtmlData anchor = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
+                	AnchorHtmlData anchor = new AnchorHtmlData(KRADConstants.EMPTY_STRING, KRADConstants.EMPTY_STRING);
                 	//TODO: change to grab URL from config variable
                 	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("documentId", keyValue.getKey())) {
                 	    String target = StringUtils.substringBetween(keyValue.getValue(), "target=\"", "\"");
@@ -370,12 +370,12 @@ KualiLookupableHelperServiceImpl {
                 		} else {
                 			// KULRICE-3035: Append the doc search's returnLocation parameter to the superuser page URL.
     						String returnLoc = "";
-    						if (this.getParameters().containsKey(KNSConstants.RETURN_LOCATION_PARAMETER)) {
-    							returnLoc = (new StringBuilder()).append("&").append(KNSConstants.RETURN_LOCATION_PARAMETER).append("=").append(
-    									((String[])this.getParameters().get(KNSConstants.RETURN_LOCATION_PARAMETER))[0]).toString();
+    						if (this.getParameters().containsKey(KRADConstants.RETURN_LOCATION_PARAMETER)) {
+    							returnLoc = (new StringBuilder()).append("&").append(KRADConstants.RETURN_LOCATION_PARAMETER).append("=").append(
+    									((String[])this.getParameters().get(KRADConstants.RETURN_LOCATION_PARAMETER))[0]).toString();
     						}
     						else if (StringUtils.isNotBlank(this.getBackLocation())) {
-    							returnLoc = (new StringBuilder()).append("&").append(KNSConstants.RETURN_LOCATION_PARAMETER).append("=").append(
+    							returnLoc = (new StringBuilder()).append("&").append(KRADConstants.RETURN_LOCATION_PARAMETER).append("=").append(
     									this.getBackLocation()).toString();
     						}
 
@@ -441,7 +441,7 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
 	 */
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
@@ -468,7 +468,7 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#setRows()
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#setRows()
 	 */
 	@Override
 	protected void setRows() {
@@ -477,7 +477,7 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#setRows()
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#setRows()
 	 */
 	protected void setRows(Map fieldValues, String docTypeName) {
 		// TODO chris - this method should call the criteria processor adapter which will
@@ -542,10 +542,10 @@ KualiLookupableHelperServiceImpl {
 		//call get rows
 		List<Row> rows = processor.getRows(docType,lookupRows, detailed, superSearch);
 
-		BusinessObjectEntry boe = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
+		BusinessObjectEntry boe = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
         int numCols = boe.getLookupDefinition().getNumOfColumns();
         if(numCols == 0) {
-			numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS;
+			numCols = KRADConstants.DEFAULT_NUM_OF_COLUMNS;
 		}
 
 		super.getRows().addAll(FieldUtils.wrapFields(this.getFields(rows),numCols ));
@@ -630,8 +630,8 @@ KualiLookupableHelperServiceImpl {
     	            for (Field field : row.getFields()) {
     	                //if from date, strip off prefix
     	                String propertyName = null;
-    	                if(field.getPropertyName().startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
-    	                    propertyName = StringUtils.remove(field.getPropertyName(), KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
+    	                if(field.getPropertyName().startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+    	                    propertyName = StringUtils.remove(field.getPropertyName(), KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
     	                } else {
     	                    propertyName = field.getPropertyName();
     	                }
@@ -652,7 +652,7 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#performClear()
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#performClear()
 	 */
 	@Override
 	public void performClear(LookupForm lookupForm) {
@@ -762,7 +762,7 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getSupplementalMenuBar()
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getSupplementalMenuBar()
 	 */
 	@Override
 	public String getSupplementalMenuBar() {
@@ -790,13 +790,13 @@ KualiLookupableHelperServiceImpl {
 		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(([true]))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" alt=\"clear saved searches\" title=\"clear saved searches\" />");
 
         Properties parameters = new Properties();
-        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.getBusinessObjectClass().getName());
+        parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.getBusinessObjectClass().getName());
         this.getParameters().keySet();
         for (Object parameter : this.getParameters().keySet()) {
 			parameters.put(parameter, this.getParameters().get(parameter));
 		}
 
-		UrlFactory.parameterizeUrl(KNSConstants.LOOKUP_ACTION, parameters);
+		UrlFactory.parameterizeUrl(KRADConstants.LOOKUP_ACTION, parameters);
 		return suppMenuBar.toString();
 	}
 
@@ -832,7 +832,7 @@ KualiLookupableHelperServiceImpl {
 //    }
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#shouldDisplayHeaderNonMaintActions()
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#shouldDisplayHeaderNonMaintActions()
 	 */
 	@Override
 	public boolean shouldDisplayHeaderNonMaintActions() {
@@ -841,7 +841,7 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#shouldDisplayLookupCriteria()
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#shouldDisplayLookupCriteria()
 	 */
 	@Override
 	public boolean shouldDisplayLookupCriteria() {
@@ -850,7 +850,7 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#checkForAdditionalFields(java.util.Map)
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#checkForAdditionalFields(java.util.Map)
 	 */
 	@Override
 	public boolean checkForAdditionalFields(Map fieldValues) {
@@ -884,7 +884,7 @@ KualiLookupableHelperServiceImpl {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#validateSearchParameters(java.util.Map)
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#validateSearchParameters(java.util.Map)
 	 */
 	@Override
     public void validateSearchParameters(Map fieldValues) {
@@ -922,7 +922,7 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#performCustomAction(boolean)
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#performCustomAction(boolean)
 	 */
 	@Override
 	public boolean performCustomAction(boolean ignoreErrors) {
@@ -932,16 +932,17 @@ KualiLookupableHelperServiceImpl {
 		Map<String,String[]> multFieldValues = new HashMap<String,String[]>();
 
 		// Determine if there are any properties embedded in the methodToCall parameter, and retrieve them if so.
-		String[] methodToCallArray = ((String[])this.getParameters().get(KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall"));
+		String[] methodToCallArray = ((String[])this.getParameters().get(
+                KRADConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall"));
 		if (methodToCallArray == null) {
     		for (String parameter: new ArrayList<String>(this.getParameters().keySet())) {
     		    String[] parameterSplit = StringUtils.split(parameter, ".");
     		    String parameterValue = "";
-    		    if (StringUtils.contains(parameter, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.")) {
+    		    if (StringUtils.contains(parameter, KRADConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.")) {
     		        if (parameter.trim().endsWith(".x")) {
-    		            parameterValue = StringUtils.substringBetween(parameter, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.", ".x");
+    		            parameterValue = StringUtils.substringBetween(parameter, KRADConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.", ".x");
     		        } else if (parameter.trim().endsWith(".y")) {
-    		            parameterValue = StringUtils.substringBetween(parameter, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.", ".y");
+    		            parameterValue = StringUtils.substringBetween(parameter, KRADConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.", ".y");
     		        } 
     		        if (StringUtils.isNotEmpty(parameterValue)) {
     		            methodToCallArray = new String[]{ parameterValue };
@@ -950,13 +951,13 @@ KualiLookupableHelperServiceImpl {
     		    }
     		}
 		}
-		//String[] methodToCallArray = ((String[])this.getParameters().get(KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall"));
+		//String[] methodToCallArray = ((String[])this.getParameters().get(KRADConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall"));
 		if (ObjectUtils.isNotNull(methodToCallArray) && methodToCallArray.length > 0) {
 			String methodToCallVal = methodToCallArray[0];
 			if (StringUtils.isNotBlank(methodToCallVal)) {
 				boolean resetRows = false;
 				// Retrieve the isAdvancedSearch property, if present.
-				String advancedSearchVal = StringUtils.substringBetween(methodToCallVal, KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
+				String advancedSearchVal = StringUtils.substringBetween(methodToCallVal, KRADConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
 				if (StringUtils.isNotBlank(advancedSearchVal)) {
 					if (this.getParameters().containsKey("isAdvancedSearch")) {
 						((String[]) this.getParameters().get("isAdvancedSearch"))[0] = advancedSearchVal;
@@ -967,7 +968,7 @@ KualiLookupableHelperServiceImpl {
 					resetRows = true;
 				}
 				// Retrieve the superUserSearch property, if present.
-				String superUserSearchVal = StringUtils.substringBetween(methodToCallVal, KNSConstants.METHOD_TO_CALL_PARM2_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
+				String superUserSearchVal = StringUtils.substringBetween(methodToCallVal, KRADConstants.METHOD_TO_CALL_PARM2_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
 				if (StringUtils.isNotBlank(superUserSearchVal)) {
 					if (this.getParameters().containsKey("superUserSearch")) {
 						((String[]) this.getParameters().get("superUserSearch"))[0] = superUserSearchVal;
@@ -977,7 +978,7 @@ KualiLookupableHelperServiceImpl {
 					resetRows = true;
 				}
 				// Retrieve and act upon the resetSavedSearch property, if present and set to true.
-				String resetSavedSearchVal = StringUtils.substringBetween(methodToCallVal, KNSConstants.METHOD_TO_CALL_PARM4_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM4_RIGHT_DEL);
+				String resetSavedSearchVal = StringUtils.substringBetween(methodToCallVal, KRADConstants.METHOD_TO_CALL_PARM4_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM4_RIGHT_DEL);
 				if (Boolean.parseBoolean(resetSavedSearchVal)) {
 					docSearchService.clearNamedSearches(GlobalVariables.getUserSession().getPrincipalId());
 					resetRows = true;
@@ -1141,7 +1142,7 @@ KualiLookupableHelperServiceImpl {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getExtraField()
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getExtraField()
 	 */
 	@Override
 	public Field getExtraField() {
@@ -1161,8 +1162,8 @@ KualiLookupableHelperServiceImpl {
 	private Object getDocSearchCriteriaDTOFieldValue (DocSearchCriteriaDTO searchCriteria, String fieldName) {
         Class<?> clazz = searchCriteria.getClass();
         String propertyName = fieldName;
-        if(fieldName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
-            propertyName = StringUtils.remove(fieldName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
+        if(fieldName.startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+            propertyName = StringUtils.remove(fieldName, KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
         }
         try {
             String methodName = new StringBuffer("get").append(propertyName.toUpperCase().charAt(0)).append(propertyName.substring(1)).toString();
@@ -1185,8 +1186,8 @@ KualiLookupableHelperServiceImpl {
 	    Object valueToReturn = null;
 	    String propertyName = fieldName;
 	    boolean isDateTime = false;
-        if(fieldName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
-            propertyName = StringUtils.remove(fieldName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
+        if(fieldName.startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+            propertyName = StringUtils.remove(fieldName, KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
         }
 	    if (searchCriteria.getSearchableAttributes() != null) {
     	    for (SearchAttributeCriteriaComponent sa : searchCriteria.getSearchableAttributes()) {
@@ -1207,7 +1208,7 @@ KualiLookupableHelperServiceImpl {
 	    if (valueToReturn != null
 	            && valueToReturn instanceof String
 	            && isDateTime) {
-	        if(fieldName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+	        if(fieldName.startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
     	        if (StringUtils.contains((String)valueToReturn, "..")) {
     	            valueToReturn = StringUtils.split((String)valueToReturn, "..")[0];
     	        } else if (StringUtils.contains((String)valueToReturn, ">=")) {

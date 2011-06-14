@@ -27,9 +27,9 @@ import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
@@ -86,14 +86,14 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	protected List<RolePermissionImpl> rolePermissions = new AutoPopulatingList(RolePermissionImpl.class);
 
 	/**
-	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
+	 * @see org.kuali.rice.krad.bo.Inactivateable#isActive()
 	 */
 	public boolean isActive() {
 		return active;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
+	 * @see org.kuali.rice.krad.bo.Inactivateable#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
@@ -262,7 +262,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	
 	protected DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
-			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
+			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}

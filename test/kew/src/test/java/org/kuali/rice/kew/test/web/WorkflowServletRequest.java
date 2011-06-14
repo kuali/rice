@@ -22,8 +22,8 @@ import javax.servlet.ServletContext;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 
@@ -94,10 +94,10 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
     }
 
     public void setUserSession(UserSession userSession) {
-        getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
+        getSession().setAttribute(KRADConstants.USER_SESSION_KEY, userSession);
     }
 
     public UserSession getUserSession() {
-        return (UserSession) getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
+        return (UserSession) getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
     }
 }

@@ -15,10 +15,10 @@
  */
 package edu.sampleu.travel.document.rule;
 
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 import edu.sampleu.travel.document.TravelDocument2;
 
@@ -34,7 +34,7 @@ public class TravelDocumentRule extends TransactionalDocumentRuleBase {
 
         GlobalVariables.getMessageMap().addToErrorPath("document");
 
-        KNSServiceLocatorWeb.getDictionaryValidationService().validateDocument(document);
+        KRADServiceLocatorWeb.getDictionaryValidationService().validateDocument(document);
 
         GlobalVariables.getMessageMap().removeFromErrorPath("document");
 

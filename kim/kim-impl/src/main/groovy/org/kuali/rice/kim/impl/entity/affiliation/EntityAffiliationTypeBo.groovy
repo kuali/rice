@@ -6,7 +6,7 @@ import javax.persistence.Id
 import javax.persistence.Table
 import org.kuali.rice.kim.api.entity.Type
 import org.kuali.rice.kim.api.entity.TypeContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_AFLTN_TYP_T")

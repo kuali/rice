@@ -29,7 +29,6 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
@@ -39,10 +38,10 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.Row;
 
 
 /**
@@ -126,7 +125,7 @@ public final class DocSearchUtils {
             	//KFSMI-1466 - DocumentSearchContext
                 for (Row row : searchableAttribute.getSearchingRows(
                 		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-                    for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
+                    for (org.kuali.rice.krad.web.ui.Field field : row.getFields()) {
                         if (field instanceof Field) {
                             SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
                             SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);
@@ -301,7 +300,7 @@ public final class DocSearchUtils {
                 	//KFSMI-1466 - DocumentSearchContext
                     for (Row row : searchableAttribute.getSearchingRows(
                     		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-                        for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
+                        for (org.kuali.rice.krad.web.ui.Field field : row.getFields()) {
                             if (field instanceof Field) {
                                 SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
                                 SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);

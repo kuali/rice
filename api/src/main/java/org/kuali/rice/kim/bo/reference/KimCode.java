@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.bo.reference;
 
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.bo.KualiCode;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.bo.KualiCode;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

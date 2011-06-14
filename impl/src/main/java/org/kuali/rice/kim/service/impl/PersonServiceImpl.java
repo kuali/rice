@@ -32,16 +32,16 @@ import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.BusinessObjectRelationship;
-import org.kuali.rice.kns.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.lookup.CollectionIncomplete;
+import org.kuali.rice.krad.lookup.LookupUtils;
+import org.kuali.rice.krad.service.BusinessObjectMetaDataService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.lang.ref.SoftReference;
 import java.security.GeneralSecurityException;
@@ -97,11 +97,11 @@ public class PersonServiceImpl implements PersonService {
 		// init the criteria which will need to be applied to every lookup against
 		// the entity data tables
 		baseLookupCriteria.put( KIMPropertyConstants.Person.ACTIVE, "Y" );
-		baseLookupCriteria.put( ENTITY_TYPE_PROPERTY_PREFIX + KNSPropertyConstants.ACTIVE, "Y" );
+		baseLookupCriteria.put( ENTITY_TYPE_PROPERTY_PREFIX + KRADPropertyConstants.ACTIVE, "Y" );
 		
 		// create the field mappings between the Person object and the KimEntity object
 		criteriaConversion.put( KIMPropertyConstants.Person.ENTITY_ID, KIMPropertyConstants.Person.ENTITY_ID );
-		criteriaConversion.put( KIMPropertyConstants.Person.ACTIVE, PRINCIPAL_PROPERTY_PREFIX + KNSPropertyConstants.ACTIVE );
+		criteriaConversion.put( KIMPropertyConstants.Person.ACTIVE, PRINCIPAL_PROPERTY_PREFIX + KRADPropertyConstants.ACTIVE );
 		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_ID, PRINCIPAL_PROPERTY_PREFIX + KIMPropertyConstants.Person.PRINCIPAL_ID );
 		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_NAME, PRINCIPAL_PROPERTY_PREFIX + KIMPropertyConstants.Person.PRINCIPAL_NAME );
 		criteriaConversion.put( KIMPropertyConstants.Person.FIRST_NAME, "names.firstName" );
@@ -681,7 +681,7 @@ public class PersonServiceImpl implements PersonService {
     }    
 
     /**
-     * @see org.kuali.rice.kim.service.PersonService#resolvePrincipalNamesToPrincipalIds(org.kuali.rice.kns.bo.BusinessObject, java.util.Map)
+     * @see org.kuali.rice.kim.service.PersonService#resolvePrincipalNamesToPrincipalIds(org.kuali.rice.krad.bo.BusinessObject, java.util.Map)
      */
     @SuppressWarnings("unchecked")
 	public Map<String,String> resolvePrincipalNamesToPrincipalIds(BusinessObject businessObject, Map<String,String> fieldValues) {
@@ -768,8 +768,8 @@ public class PersonServiceImpl implements PersonService {
                 String principalName = fieldValues.get(propertyName);
                 if ( StringUtils.isNotEmpty( principalName ) ) {
                     String containerPropertyName = propertyName;
-                    if (containerPropertyName.startsWith(KNSConstants.MAINTENANCE_ADD_PREFIX)) {
-                        containerPropertyName = StringUtils.substringAfter( propertyName, KNSConstants.MAINTENANCE_ADD_PREFIX );
+                    if (containerPropertyName.startsWith(KRADConstants.MAINTENANCE_ADD_PREFIX)) {
+                        containerPropertyName = StringUtils.substringAfter( propertyName, KRADConstants.MAINTENANCE_ADD_PREFIX );
                     }
                     // get the class of the object that is referenced by the property name
                     // if this is not true then there's a principalName collection or primitive attribute 
@@ -854,14 +854,14 @@ public class PersonServiceImpl implements PersonService {
 	
 	protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
 		if ( businessObjectMetaDataService == null ) {
-			businessObjectMetaDataService = KNSServiceLocatorWeb.getBusinessObjectMetaDataService();
+			businessObjectMetaDataService = KRADServiceLocatorWeb.getBusinessObjectMetaDataService();
 		}
 		return businessObjectMetaDataService;
 	}
 
 	protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if ( maintenanceDocumentDictionaryService == null ) {
-			maintenanceDocumentDictionaryService = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KRADServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

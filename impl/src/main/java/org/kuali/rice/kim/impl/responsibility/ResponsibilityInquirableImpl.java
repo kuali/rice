@@ -30,13 +30,13 @@ import org.kuali.rice.kim.inquiry.RoleMemberInquirableImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.uif.widget.Inquiry;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.krad.lookup.HtmlData.MultipleAnchorHtmlData;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.widget.Inquiry;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -141,14 +141,14 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
+	 * @see org.kuali.rice.krad.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("responsibilityId", fieldValues.get("responsibilityId").toString());
-		ResponsibilityBo responsibilityImpl = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, criteria);
+		ResponsibilityBo responsibilityImpl = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, criteria);
 		return getResponsibilitiesSearchResultsCopy(responsibilityImpl);
 	}
 
@@ -171,7 +171,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("id", responsibilitySearchResultCopy.getId());
 		List<RoleResponsibilityImpl> roleResponsibilitys =
-			(List<RoleResponsibilityImpl>) KNSServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityImpl.class, criteria);
+			(List<RoleResponsibilityImpl>) KRADServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityImpl.class, criteria);
 		List<RoleBo> assignedToRoles = new ArrayList<RoleBo>();
 		for(RoleResponsibilityImpl roleResponsibilityImpl: roleResponsibilitys){
 			assignedToRoles.add(getRoleImpl(roleResponsibilityImpl.getRoleId()));

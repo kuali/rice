@@ -22,7 +22,7 @@
 <%@ attribute name="extraButtonSource" required="false" description="The image src of a single extra button." %>
 <%@ attribute name="extraButtonProperty" required="false" description="The methodToCall property of a single extra button." %>
 <%@ attribute name="extraButtonAlt" required="false" description="The alt description of a single extra button." %>
-<%@ attribute name="extraButtons" required="false" type="java.util.List" description="A List of org.kuali.rice.kns.web.ui.ExtraButton objects to render before the standard button." %>
+<%@ attribute name="extraButtons" required="false" type="java.util.List" description="A List of org.kuali.rice.krad.web.ui.ExtraButton objects to render before the standard button." %>
 <%@ attribute name="viewOnly" required="false" description="Boolean value of whether this document is view only, which means in effect the save button would be suppressed." %>
 
 <c:set var="tabindex" value="0" />

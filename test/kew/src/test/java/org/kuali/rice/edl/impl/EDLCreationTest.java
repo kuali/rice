@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.krad.UserSession;
 import org.w3c.dom.Document;
 
 

@@ -23,7 +23,7 @@ import org.junit.Test
 import org.kuali.rice.kim.api.type.KimType
 import org.kuali.rice.kim.api.type.KimTypeAttributeContract
 import org.kuali.rice.kim.api.type.KimTypeContract
-import org.kuali.rice.kns.service.BusinessObjectService
+import org.kuali.rice.krad.service.BusinessObjectService
 
 class KimTypeInfoServiceImplTest {
 

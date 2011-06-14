@@ -18,7 +18,7 @@ package org.kuali.rice.shareddata.impl.county;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.shareddata.api.county.County;
 import org.kuali.rice.shareddata.api.county.CountyService;
 

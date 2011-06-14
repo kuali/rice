@@ -1,10 +1,8 @@
 package edu.sampleu.bookstore.bo;
 
-import java.util.LinkedHashMap;
-
 import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 
 /**

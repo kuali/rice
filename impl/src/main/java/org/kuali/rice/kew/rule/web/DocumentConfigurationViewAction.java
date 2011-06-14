@@ -44,12 +44,12 @@ import org.kuali.rice.kim.service.PermissionService;
 
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.DocumentHelperService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -194,7 +194,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		while ( docType != null) {
             QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
             Predicate p = and(
-                equal("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
+                equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
                 equal("template.name", KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME),
                 equal("active", "Y"),
                 equal("attributes[documentTypeName]", docType.getName())
@@ -296,7 +296,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		while ( docType != null) {
             QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
             Predicate p = and(
-                equal("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
+                equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
                 equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
                 equal("active", "Y"),
                 equal("attributes[documentTypeName]", docType.getName())
@@ -336,7 +336,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#toggleTab(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 * @see org.kuali.rice.krad.web.struts.action.KualiAction#toggleTab(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
 	public ActionForward toggleTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -466,7 +466,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 
 	public DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
-			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
+			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}
@@ -480,14 +480,14 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 
 	public DocumentHelperService getDocumentHelperService() {
 		if(documentHelperService == null){
-			documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
+			documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
 		}
 		return documentHelperService;
 	}
 
 	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if(maintenanceDocumentDictionaryService == null){
-			maintenanceDocumentDictionaryService = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KRADServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

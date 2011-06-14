@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.krad.bo.BusinessObject;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

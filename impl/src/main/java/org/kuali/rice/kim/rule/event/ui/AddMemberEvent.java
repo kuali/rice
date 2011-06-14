@@ -18,10 +18,10 @@ package org.kuali.rice.kim.rule.event.ui;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.ui.AddMemberRule;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.rule.BusinessRule;
-import org.kuali.rice.kns.rule.event.KualiDocumentEventBase;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.rule.BusinessRule;
+import org.kuali.rice.krad.rule.event.KualiDocumentEventBase;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

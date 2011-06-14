@@ -30,13 +30,13 @@ import org.kuali.rice.kim.api.entity.services.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.MessageMap;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -71,13 +71,13 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         IdentityManagementGroupDocument groupDoc = (IdentityManagementGroupDocument)document;
 
         boolean valid = true;
-        GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         valid &= validAssignGroup(groupDoc);
         valid &= validDuplicateGroupName(groupDoc);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validateGroupQualifier(groupDoc.getQualifiers(), groupDoc.getKimType());
         valid &= validGroupMemberActiveDates(groupDoc.getMembers());
-        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
     }
@@ -132,11 +132,11 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
-        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 		attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
 		errorsTemp = kimTypeService.validateAttributes(kimType.getId(), attributeSetToValidate);
 		validationErrors.putAll( attributeValidationHelper.convertErrors("",attributeValidationHelper.convertQualifiersToAttrIdxMap(groupQualifiers),errorsTemp) );
-		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+		GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 		
     	if (validationErrors.isEmpty()) {
     		return true;
@@ -180,7 +180,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 	 */
 	public BusinessObjectService getBusinessObjectService() {
 		if(businessObjectService == null){
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KRADServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

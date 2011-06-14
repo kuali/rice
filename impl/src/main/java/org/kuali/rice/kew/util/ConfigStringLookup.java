@@ -20,8 +20,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrLookup;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Looks up Strings from the Config and System Parameters.
@@ -50,12 +50,12 @@ public class ConfigStringLookup extends StrLookup {
 		
 		// TODO temporarily disabling configuration parameter resolution against the racms because it's been causing some issues
 		if ( applicationId != null ) {
-			paramValue = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getConfigurationParameter(applicationId, propertyName);
+			paramValue = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getConfigurationParameter(applicationId, propertyName);
 		}
 		
 		// check system parameters first
 		if ( paramValue == null ) {
-			paramValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
+			paramValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
 		}
 		if (paramValue == null) {
 			paramValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);

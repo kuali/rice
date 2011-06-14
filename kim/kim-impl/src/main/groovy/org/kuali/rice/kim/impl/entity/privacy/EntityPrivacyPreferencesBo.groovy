@@ -3,11 +3,11 @@ package org.kuali.rice.kim.impl.entity.privacy
 import javax.persistence.Entity
 import javax.persistence.Table
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import javax.persistence.Column
 import javax.persistence.Id
 import org.hibernate.annotations.Type
-import org.kuali.rice.kim.api.entity.phone.EntityPhone
+
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences
 
 @Entity

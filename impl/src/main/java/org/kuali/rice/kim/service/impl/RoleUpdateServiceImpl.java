@@ -32,8 +32,8 @@ import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.service.RoleUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 
 import javax.jws.WebService;
 import java.sql.Date;
@@ -430,7 +430,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     }
 
     public String getNextAvailableRoleId() throws UnsupportedOperationException {
-        Long nextSeq = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleImpl.class);
+        Long nextSeq = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleImpl.class);
 
         if (nextSeq == null) {
             LOG.error("Unable to get new role id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S);
@@ -443,7 +443,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     public void assignPermissionToRole(String permissionId, String roleId) throws UnsupportedOperationException {
         RolePermissionImpl newRolePermission = new RolePermissionImpl();
 
-        Long nextSeq = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S, RolePermissionImpl.class);
+        Long nextSeq = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S, RolePermissionImpl.class);
 
         if (nextSeq == null) {
             LOG.error("Unable to get new role permission id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S);

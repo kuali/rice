@@ -22,10 +22,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LookupService;
 import org.springframework.beans.BeanUtils;
 
 import edu.sampleu.travel.bo.FiscalOfficer;
@@ -195,7 +195,7 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
 
     protected BusinessObjectService getBusinessObjectService() {
         if(businessObjectService == null) {
-            businessObjectService = KNSServiceLocator.getBusinessObjectService();
+            businessObjectService = KRADServiceLocator.getBusinessObjectService();
         }
         return this.businessObjectService;
     }
@@ -206,7 +206,7 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
 
     protected LookupService getLookupService() {
         if(lookupService == null) {
-            lookupService = KNSServiceLocatorWeb.getLookupService();
+            lookupService = KRADServiceLocatorWeb.getLookupService();
         }
         return this.lookupService;
     }

@@ -1,7 +1,7 @@
 package edu.sampleu.bookstore.bo;
 
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * AddressType Business Object class file relative to AddressType maintenance object.

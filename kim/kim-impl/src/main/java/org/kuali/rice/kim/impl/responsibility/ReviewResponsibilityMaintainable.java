@@ -24,14 +24,14 @@ import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.kns.web.ui.Section;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.Row;
+import org.kuali.rice.krad.web.ui.Section;
 
 import java.util.List;
 
@@ -68,7 +68,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	/**
 	 * Saves the responsibility via the responsibility update service
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#saveBusinessObject()
 	 */
 	@Override
 	public void saveBusinessObject() {
@@ -107,7 +107,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#getBoClass()
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#getBoClass()
 	 */
 	@Override
 	public Class<? extends BusinessObject> getBoClass() {
@@ -117,7 +117,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
 	 */
 	@Override
 	public boolean isExternalBusinessObject() {
@@ -127,7 +127,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.kns.bo.BusinessObject)
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.krad.bo.BusinessObject)
 	 */
 	@Override
 	public void prepareBusinessObject(BusinessObject businessObject) {

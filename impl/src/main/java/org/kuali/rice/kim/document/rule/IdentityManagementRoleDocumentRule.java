@@ -58,14 +58,14 @@ import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.impl.RoleServiceBase;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.MessageMap;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -120,7 +120,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
         boolean valid = true;
         boolean validateRoleAssigneesAndDelegations = !KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDoc.getKimType());
-        GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         valid &= validDuplicateRoleName(roleDoc);
         valid &= validPermissions(roleDoc);
         valid &= validResponsibilities(roleDoc);
@@ -142,7 +142,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	        valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
         }
         valid &= validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
-        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
     }
@@ -299,7 +299,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
-        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getId());
         final Set<String> uniqueAttributeNames = figureOutUniqueQualificationSet(roleMembers, attributeDefinitions);
         
@@ -319,7 +319,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			roleMemberCount += 1;
     	}
 
-		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+		GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 		
     	if (validationErrors.isEmpty()) {
     		return true;
@@ -443,7 +443,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
-        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         KimDocumentRoleMember roleMember;
         String errorPath;
         final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getId());
@@ -475,7 +475,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			}
 	        memberCounter++;
     	}
-		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+		GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
     	if (validationErrors.isEmpty()) {
     		valid = true;
     	} else {
@@ -754,7 +754,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	 */
 	public BusinessObjectService getBusinessObjectService() {
 		if(businessObjectService == null){
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KRADServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

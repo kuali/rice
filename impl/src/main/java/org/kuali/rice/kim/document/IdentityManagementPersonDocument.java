@@ -44,10 +44,10 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.service.DocumentHelperService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
@@ -104,7 +104,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 		})
 	@Column(name="ENTITY_ID")
     protected String entityId;
-    @Type(type="org.kuali.rice.kns.util.HibernateKualiHashType")
+    @Type(type="org.kuali.rice.krad.util.HibernateKualiHashType")
     @Column(name="PRNCPL_PSWD")
     protected String password;
 
@@ -344,7 +344,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     }
 
     /**
-     * @see org.kuali.rice.kns.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     * @see org.kuali.rice.krad.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
     @Override
     public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
@@ -539,7 +539,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
-	        documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
+	        documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
 		}
 	    return this.documentHelperService;
 	}

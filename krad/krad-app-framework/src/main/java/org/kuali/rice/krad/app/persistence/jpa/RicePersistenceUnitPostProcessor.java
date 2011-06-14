@@ -23,16 +23,17 @@ import javax.sql.DataSource;
 public class RicePersistenceUnitPostProcessor implements PersistenceUnitPostProcessor {
 	static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RicePersistenceUnitPostProcessor.class);
 	
-	public static final String KNS_APPLICATION_PERSISTENCE_UNIT_NAME = "kns-application-unit";
-	public static final String KNS_SERVER_PERSISTENCE_UNIT_NAME = "kns-server-unit";
+	public static final String KRAD_APPLICATION_PERSISTENCE_UNIT_NAME = "krad-application-unit";
+	public static final String KRAD_SERVER_PERSISTENCE_UNIT_NAME = "krad-server-unit";
 
 	private DataSource jtaDataSource;
     
     public void postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo mutablePersistenceUnitInfo) {
         mutablePersistenceUnitInfo.setJtaDataSource(getJtaDataSource());
-        addKNSManagedClassNames(mutablePersistenceUnitInfo);
-        if (mutablePersistenceUnitInfo.getPersistenceUnitName().equals(KNS_APPLICATION_PERSISTENCE_UNIT_NAME) || mutablePersistenceUnitInfo.getPersistenceUnitName().equals(KNS_SERVER_PERSISTENCE_UNIT_NAME)) {
-        	addRiceManagedClassNamesToKNSPersistenceUnit(mutablePersistenceUnitInfo);
+        addKRADManagedClassNames(mutablePersistenceUnitInfo);
+        if (mutablePersistenceUnitInfo.getPersistenceUnitName().equals(KRAD_APPLICATION_PERSISTENCE_UNIT_NAME) || mutablePersistenceUnitInfo.getPersistenceUnitName().equals(
+                KRAD_SERVER_PERSISTENCE_UNIT_NAME)) {
+        	addRiceManagedClassNamesToKRADPersistenceUnit(mutablePersistenceUnitInfo);
         }
     }
     
@@ -43,8 +44,8 @@ public class RicePersistenceUnitPostProcessor implements PersistenceUnitPostProc
      * 
      * @param mutablePersistenceUnitInfo
      */
-    public void addKNSManagedClassNames(MutablePersistenceUnitInfo mutablePersistenceUnitInfo) {
-    	addManagedClassNames(mutablePersistenceUnitInfo, new KNSPersistableBusinessObjectClassExposer());
+    public void addKRADManagedClassNames(MutablePersistenceUnitInfo mutablePersistenceUnitInfo) {
+    	addManagedClassNames(mutablePersistenceUnitInfo, new KRADPersistableBusinessObjectClassExposer());
     }
     
     /**
@@ -62,7 +63,7 @@ public class RicePersistenceUnitPostProcessor implements PersistenceUnitPostProc
     	}
     }
     
-    public void addRiceManagedClassNamesToKNSPersistenceUnit(MutablePersistenceUnitInfo mutablePersistenceUnitInfo) {
+    public void addRiceManagedClassNamesToKRADPersistenceUnit(MutablePersistenceUnitInfo mutablePersistenceUnitInfo) {
     	addManagedClassNames(mutablePersistenceUnitInfo, new RiceToNervousSystemBusinessObjectClassExposer());
     }
 

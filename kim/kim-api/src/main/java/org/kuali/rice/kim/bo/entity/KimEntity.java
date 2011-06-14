@@ -22,7 +22,7 @@ import org.kuali.rice.kim.api.entity.personal.EntityBioDemographicsContract;
 import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
-import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivateable;
 
 
 /**

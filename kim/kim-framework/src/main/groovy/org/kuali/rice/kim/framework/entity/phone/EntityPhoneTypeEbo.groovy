@@ -2,7 +2,7 @@ package org.kuali.rice.kim.framework.entity.phone
 
 import org.kuali.rice.kim.api.entity.Type
 import org.kuali.rice.kim.api.entity.TypeContract
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 
 
 class EntityPhoneTypeEbo implements TypeContract, ExternalizableBusinessObject {

@@ -16,7 +16,7 @@
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <tiles:useAttribute name="field"
-	classname="org.kuali.rice.kns.uif.field.LinkField" />
+	classname="org.kuali.rice.krad.uif.field.LinkField" />
 
 <%--
     Standard HTML Link     

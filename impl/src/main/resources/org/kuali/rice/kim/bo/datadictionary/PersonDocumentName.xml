@@ -65,7 +65,7 @@
    <bean id="DocName-nameTypeCode" parent="DocName-nameTypeCode-parentBean"/>
   <bean id="DocName-nameTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="nameTypeCode" p:forceUppercase="true" p:label="Name Type" p:shortLabel="Name Type" p:maxLength="40" p:required="false">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
     </property>
   </bean>
     

@@ -16,8 +16,8 @@
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <tiles:useAttribute name="items" classname="java.util.List"/>
-<tiles:useAttribute name="manager" classname="org.kuali.rice.kns.uif.layout.StackedLayoutManager"/>
-<tiles:useAttribute name="container" classname="org.kuali.rice.kns.uif.container.ContainerBase"/>
+<tiles:useAttribute name="manager" classname="org.kuali.rice.krad.uif.layout.StackedLayoutManager"/>
+<tiles:useAttribute name="container" classname="org.kuali.rice.krad.uif.container.ContainerBase"/>
 
 <%--
     Stacked Layout Manager:

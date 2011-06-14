@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.role;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivateable;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

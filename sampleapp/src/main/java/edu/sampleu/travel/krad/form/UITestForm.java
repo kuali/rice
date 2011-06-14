@@ -15,11 +15,9 @@
  */
 package edu.sampleu.travel.krad.form;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.kns.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.web.spring.form.UifFormBase;
 
 import edu.sampleu.travel.bo.TravelAccount;
 

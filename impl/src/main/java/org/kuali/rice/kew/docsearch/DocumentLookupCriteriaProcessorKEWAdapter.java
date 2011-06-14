@@ -28,10 +28,10 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.lookup.valuefinder.DocumentRouteStatusValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.util.FieldUtils;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.Row;
 
 /**
  * This is a description of what this class does - chris don't forget to fill this in.
@@ -355,7 +355,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 
 	/**
 	 *
-	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#shouldDisplayHeaderNonMaintActions()
+	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#shouldDisplayHeaderNonMaintActions()
 	 */
 	public boolean shouldDisplayHeaderNonMaintActions() {
 		return criteriaProcessor.isHeaderBarDisplayed();
@@ -363,7 +363,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 
 	/**
 	 *
-	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#shouldDisplayLookupCriteria()
+	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#shouldDisplayLookupCriteria()
 	 */
 	public boolean shouldDisplayLookupCriteria() {
 		//TODO: chris - How should this handle advanced?  I thought we were only hiding main

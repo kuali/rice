@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ page trimDirectiveWhitespaces="true"%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:choose>
@@ -24,7 +23,7 @@
   
      <%-- render full view --%>
      <krad:template component="${KualiForm.view}"/>
-     
+
   </c:when>
   <c:otherwise>
   

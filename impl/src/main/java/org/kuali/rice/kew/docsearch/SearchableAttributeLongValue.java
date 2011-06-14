@@ -24,7 +24,7 @@ import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -163,7 +163,7 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
     	boolean bRet = true;
     	boolean bSplit = false;
 
-		if (StringUtils.contains(valueEntered, KNSConstants.BETWEEN_OPERATOR)) {
+		if (StringUtils.contains(valueEntered, KRADConstants.BETWEEN_OPERATOR)) {
 			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
 			for(String value : l){
 				bSplit = true;
@@ -172,9 +172,9 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
 				}
 			}
 		}
-		if (StringUtils.contains(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR)) {
-			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR)));
-			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR));
+		if (StringUtils.contains(valueEntered, KRADConstants.OR_LOGICAL_OPERATOR)) {
+			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KRADConstants.OR_LOGICAL_OPERATOR)));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KRADConstants.OR_LOGICAL_OPERATOR));
 			for(String value : l){
 				bSplit = true;
 				if(!isPassesDefaultValidation(value)){
@@ -182,9 +182,9 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
 				}
 			}
 		}
-		if (StringUtils.contains(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR)) {
-			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR)));
-			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR));
+		if (StringUtils.contains(valueEntered, KRADConstants.AND_LOGICAL_OPERATOR)) {
+			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KRADConstants.AND_LOGICAL_OPERATOR)));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KRADConstants.AND_LOGICAL_OPERATOR));
 			for(String value : l){
 				bSplit = true;
 				if(!isPassesDefaultValidation(value)){

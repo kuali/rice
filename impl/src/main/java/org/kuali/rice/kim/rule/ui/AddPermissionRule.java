@@ -18,7 +18,7 @@ package org.kuali.rice.kim.rule.ui;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
-import org.kuali.rice.kns.rule.BusinessRule;
+import org.kuali.rice.krad.rule.BusinessRule;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

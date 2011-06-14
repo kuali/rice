@@ -71,7 +71,7 @@ public class TestOJBTest extends BusinessObjectDaoTestCaseBase {
         System.err.println(fullQueryCriteria.toString());
 
         
-        QueryByCriteria q = new QueryByCriteria(KNSServiceLocatorInternal.getApplicationEntityManagerFactory().createEntityManager(), fullQueryCriteria);
+        QueryByCriteria q = new QueryByCriteria(KRADServiceLocatorInternal.getApplicationEntityManagerFactory().createEntityManager(), fullQueryCriteria);
        
         System.err.println(q.toString());
 

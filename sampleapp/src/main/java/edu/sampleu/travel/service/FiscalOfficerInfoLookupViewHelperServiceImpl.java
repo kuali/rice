@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kns.uif.service.impl.LookupViewHelperServiceImpl;
+import org.kuali.rice.krad.uif.service.impl.LookupViewHelperServiceImpl;
 
 /**
  * 

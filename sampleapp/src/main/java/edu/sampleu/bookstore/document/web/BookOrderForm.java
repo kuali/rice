@@ -1,6 +1,6 @@
 package edu.sampleu.bookstore.document.web;
 
-import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
+import org.kuali.rice.krad.web.struts.form.KualiTransactionalDocumentFormBase;
 import edu.sampleu.bookstore.bo.BookOrder;
 import edu.sampleu.bookstore.document.BookOrderDocument;
 

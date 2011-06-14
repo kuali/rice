@@ -19,13 +19,13 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.impl.component.ComponentBo;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.DataDictionaryException;
-import org.kuali.rice.kns.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.datadictionary.DataDictionaryException;
+import org.kuali.rice.krad.lookup.CollectionIncomplete;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.krad.lookup.LookupUtils;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -51,7 +51,7 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
 
         List<Component> components;
         try {
-        	components = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
+        	components = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
         }
         catch (DataDictionaryException ex) {
             throw new RuntimeException("Problem parsing data dictionary during full load required for lookup to function: " + ex.getMessage(), ex);
@@ -129,7 +129,7 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
     /**
      * Suppress the edit/copy links on synthetic detail types.
      * 
-     * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
+     * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.krad.bo.BusinessObject, java.util.List)
      */
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ksb.service.impl;
 
-import org.kuali.rice.kns.service.impl.ModuleServiceBase;
+import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 
 /**
  * The ModuleService for the KSB 

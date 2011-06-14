@@ -19,7 +19,7 @@ package org.kuali.rice.kim.impl.type;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.krad.service.BusinessObjectService;
 
 import java.util.ArrayList;
 import java.util.Collection;

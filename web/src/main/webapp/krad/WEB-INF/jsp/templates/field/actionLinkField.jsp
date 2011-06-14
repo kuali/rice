@@ -16,7 +16,7 @@
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <tiles:useAttribute name="field"
-	classname="org.kuali.rice.kns.uif.field.ActionField" />
+	classname="org.kuali.rice.krad.uif.field.ActionField" />
 
 <%--
     HTML Link to Submit Form Via JavaScript

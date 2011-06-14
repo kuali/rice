@@ -28,7 +28,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * A KeyValuePair that adds an id fields that makes it sufficient for storing in a database.

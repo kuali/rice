@@ -406,7 +406,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         Criteria crit = new Criteria();
         Map<String,Map<String,String>> critMap = setupCritMaps(fieldValues);
 
-//        BusinessObjectEntry boEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.impl.RoleImpl");
+//        BusinessObjectEntry boEntry = KRADServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.impl.RoleImpl");
 //      List lookupNames = boEntry.getLookupDefinition().getLookupFieldNames();
         Map<String,String> lookupNames = critMap.get("lookupNames");
         for (Entry<String, String> entry : lookupNames.entrySet()) {

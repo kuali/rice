@@ -28,7 +28,7 @@ import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.bo.Person
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes
 import org.kuali.rice.kim.api.services.KimApiServiceLocator

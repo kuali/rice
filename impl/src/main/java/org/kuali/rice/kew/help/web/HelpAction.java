@@ -26,7 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.web.impex.ExportServlet;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.help.HelpEntry;
@@ -34,9 +33,8 @@ import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Struts action for interfacing with the Help system.
@@ -56,7 +54,7 @@ public class HelpAction extends KewKualiAction {
         HelpForm helpForm = (HelpForm) form;
         HelpEntry helpEntry = helpForm.getHelpEntry();
         getHelpService().save(helpEntry);
-        GlobalVariables.getMessageMap().putInfo(KNSConstants.GLOBAL_MESSAGES, "helpentry.saved");
+        GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, "helpentry.saved");
         return mapping.findForward("summary");
     }
 
@@ -66,7 +64,7 @@ public class HelpAction extends KewKualiAction {
     	LOG.info(helpEntry.getHelpName());
     	getHelpService().delete(helpEntry);
         helpForm.setShowDelete("no");
-        GlobalVariables.getMessageMap().putInfo(KNSConstants.GLOBAL_MESSAGES, "helpentry.deleted");
+        GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, "helpentry.deleted");
     	return mapping.findForward("delete");
     }
 

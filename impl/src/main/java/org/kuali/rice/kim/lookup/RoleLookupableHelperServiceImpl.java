@@ -28,24 +28,24 @@ import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
-import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.service.ModuleService;
-import org.kuali.rice.kns.util.BeanPropertyComparator;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
-import org.kuali.rice.kns.web.struts.form.LookupForm;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.util.BeanPropertyComparator;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
+import org.kuali.rice.krad.web.struts.form.LookupForm;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.Row;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,17 +89,17 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     	String href = "";
 
         Properties parameters = new Properties();
-        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
+        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOC_HANDLER_METHOD);
+        parameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+        parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
         parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleImpl.getRoleId());
         if (StringUtils.isNotBlank(getReturnLocation())) {
-        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 		}
         href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
-        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
+        		KRADConstants.DOC_HANDLER_METHOD, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
         return anchorHtmlData;
     }
 
@@ -140,7 +140,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		// get the distinct list of type IDs from all roles in the system
         for (KimType kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasRoleTypeService(kimType)) {
-                String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
+                String value = kimType.getNamespaceCode().trim() + KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
                 options.add(new ConcreteKeyValue(kimType.getId(), value));
             }
         }
@@ -257,7 +257,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     	}
 
     	if (includeAttr) {
-        	ModuleService eboModuleService = KNSServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
+        	ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
         	BusinessObjectEntry ddEntry = eboModuleService.getExternalizableBusinessObjectDictionaryEntry(getBusinessObjectClass());
         	Map<String,String> filteredFieldValues = new HashMap<String, String>();
         	for (String fieldName : nonBlankFieldValues.keySet()) {
@@ -280,7 +280,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 	
 	private static final String ROLE_ID_URL_KEY = "&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=";
 	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
 	 */
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
@@ -311,7 +311,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		    if (idx2 < 0) {
 		    	idx2 = href.length();
 		    }
-	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
+	        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
 	        hrefPart = href.substring(idx1, idx2);
 	    }
 		return UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+docTypeAction, parameters)+hrefPart;

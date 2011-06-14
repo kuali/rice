@@ -18,7 +18,7 @@ package org.kuali.rice.core.framework.parameter
 
 import org.kuali.rice.core.api.parameter.EvaluationOperator
 import org.kuali.rice.core.api.parameter.ParameterContract
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 
 //@ToString
 class ParameterEbo implements ParameterContract, ExternalizableBusinessObject {

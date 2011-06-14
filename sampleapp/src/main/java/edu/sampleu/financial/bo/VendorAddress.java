@@ -17,17 +17,14 @@
 package edu.sampleu.financial.bo;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.shareddata.api.country.Country;
 import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
 import org.kuali.rice.shareddata.api.state.State;
@@ -212,8 +209,9 @@ public class VendorAddress extends PersistableBusinessObjectBase implements Inac
     }
 
     public Country getVendorCountry() {
-        String postalCountryCode = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE,
-                KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
+        String postalCountryCode = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
+                KRADConstants.KRAD_NAMESPACE,
+                KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
         vendorCountry = SharedDataApiServiceLocator.getCountryService().getCountry(postalCountryCode);
 
         return vendorCountry;

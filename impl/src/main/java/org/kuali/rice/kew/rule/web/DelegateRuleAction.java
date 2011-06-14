@@ -24,8 +24,8 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Struts action for handling the initial Delegate Rule screen for selecting
@@ -69,9 +69,9 @@ public class DelegateRuleAction extends KewKualiAction {
 	}
 	
 	protected String generateMaintenanceUrl(HttpServletRequest request, DelegateRuleForm form) {
-		return getApplicationBaseUrl() + "/kr/" + KNSConstants.MAINTENANCE_ACTION + "?" + 
-			KNSConstants.DISPATCH_REQUEST_PARAMETER + "=" + KNSConstants.START_METHOD + "&" +
-			KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE + "=" + RuleDelegation.class.getName() +  "&" +
+		return getApplicationBaseUrl() + "/kr/" + KRADConstants.MAINTENANCE_ACTION + "?" +
+			KRADConstants.DISPATCH_REQUEST_PARAMETER + "=" + KRADConstants.START_METHOD + "&" +
+			KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE + "=" + RuleDelegation.class.getName() +  "&" +
 			WebRuleUtils.RESPONSIBILITY_ID_PARAM + "=" + form.getParentResponsibilityId() + "&" +
 			WebRuleUtils.RULE_TEMPLATE_ID_PARAM + "=" + form.getParentRule().getRuleTemplate().getDelegationTemplateId() + "&" +
 			WebRuleUtils.DOCUMENT_TYPE_NAME_PARAM + "=" + form.getParentRule().getDocTypeName();

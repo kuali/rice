@@ -23,9 +23,7 @@ import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.impl.type.KimTypeBo
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.core.util.CollectionUtils
-import org.apache.commons.collections.CollectionUtils
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implements KimAttributeDataContract {
     private static final long serialVersionUID = 1L;

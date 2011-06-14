@@ -26,11 +26,11 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.lookup.CollectionIncomplete;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.Row;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,7 +85,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
         String attributeDetailValue = fieldValues.get(ATTRIBUTE_VALUE);
         String attributeDetailName = fieldValues.get(ATTRIBUTE_NAME);
         String detailCriteria = fieldValues.get( DETAIL_CRITERIA );
-        String active = fieldValues.get( KNSPropertyConstants.ACTIVE );
+        String active = fieldValues.get( KRADPropertyConstants.ACTIVE );
 
     	Map<String,String> searchCriteria = new HashMap<String, String>();
     	if(StringUtils.isNotEmpty(templateNamespaceCode)) {
@@ -110,7 +110,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
         	searchCriteria.put(DETAIL_CRITERIA, detailCriteria);
         }
         if ( StringUtils.isNotBlank( active ) ) {
-        	searchCriteria.put(KNSPropertyConstants.ACTIVE, active);
+        	searchCriteria.put(KRADPropertyConstants.ACTIVE, active);
         }
 
         return searchCriteria;
@@ -129,7 +129,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
      * - may need to do further restrictions once we see how this performs
      *  
      * @param fieldValues the values of the query
-     * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#validateSearchParameters(java.util.Map)
+     * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#validateSearchParameters(java.util.Map)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -259,7 +259,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getRows()
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getRows()
 	 */
 	@Override
 	public List<Row> getRows() {

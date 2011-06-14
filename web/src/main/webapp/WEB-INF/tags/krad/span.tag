@@ -17,7 +17,7 @@
 
 <%@ attribute name="component" required="true" 
               description="The UIF component for which the span will be wrapping." 
-              type="org.kuali.rice.kns.uif.core.Component"%>
+              type="org.kuali.rice.krad.uif.core.Component"%>
               
 <krad:attributeBuilder component="${component}"/>
 

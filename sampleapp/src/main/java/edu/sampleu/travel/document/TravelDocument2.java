@@ -16,8 +16,8 @@
 package edu.sampleu.travel.document;
 
 import edu.sampleu.travel.bo.TravelAccount;
-import org.kuali.rice.kns.document.SessionDocument;
-import org.kuali.rice.kns.document.TransactionalDocumentBase;
+import org.kuali.rice.krad.document.SessionDocument;
+import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
 import javax.persistence.*;
 import java.util.ArrayList;

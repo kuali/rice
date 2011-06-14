@@ -16,10 +16,8 @@
 
 package edu.sampleu.financial.bo;
 
-import java.util.LinkedHashMap;
-
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.document.DocumentBase;
+import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.document.DocumentBase;
 
 /**
  * Exclusive kinds of basic business organization that a vendor may have. Other broad exclusive categories for vendors can be

@@ -23,9 +23,9 @@ package org.kuali.rice.shareddata.impl.country
 import javax.persistence.Column
 import javax.persistence.Id
 import org.hibernate.annotations.Type
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
-import org.kuali.rice.kns.bo.Inactivateable
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
+import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.country.Country
 import org.kuali.rice.shareddata.api.country.CountryContract
 import javax.persistence.Entity

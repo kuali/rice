@@ -20,8 +20,8 @@ import java.util.Map;
 
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.impl.role.RoleBo;
-import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -42,7 +42,7 @@ public class RoleMemberInquirableImpl extends KualiInquirableImpl {
 	protected final String ATTRIBUTE_DATA_ID = "attributeDataId";
 
     protected String getKimAttributeLabelFromDD(String attributeName){
-    	return KNSServiceLocatorWeb.getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
+    	return KRADServiceLocatorWeb.getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
     }
 
     protected RoleBo getRoleImpl(String roleId){

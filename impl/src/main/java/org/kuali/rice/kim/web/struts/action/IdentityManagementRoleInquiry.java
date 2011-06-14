@@ -24,8 +24,8 @@ import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -52,7 +52,7 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
         	getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
         } else {
         	LOG.error("No records found for Role Inquiry.");
-            GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+            GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
         }
 	}
 	

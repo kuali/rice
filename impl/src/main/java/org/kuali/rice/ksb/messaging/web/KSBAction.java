@@ -32,12 +32,12 @@ import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSUtils;
+import org.kuali.rice.krad.exception.AuthorizationException;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.KualiModuleService;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 
 /**
  * An abstract super class for all Struts Actions in KEW.  Adds some custom
@@ -116,9 +116,9 @@ public abstract class KSBAction extends DispatchAction {
     {
     	String principalId = GlobalVariables.getUserSession().getPrincipalId();
     	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
-    	AttributeSet permissionDetails = KNSUtils.getNamespaceAndActionClass(this.getClass());
+    	AttributeSet permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
     	
-        if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
+        if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
         {
         	throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(), 
@@ -151,7 +151,7 @@ public abstract class KSBAction extends DispatchAction {
 	}
 	
 	protected static KualiModuleService getKualiModuleService() {
-        return KNSServiceLocatorWeb.getKualiModuleService();
+        return KRADServiceLocatorWeb.getKualiModuleService();
     }
 
 }

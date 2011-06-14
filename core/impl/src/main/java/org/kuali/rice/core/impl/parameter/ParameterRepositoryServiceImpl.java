@@ -26,8 +26,8 @@ import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.parameter.ParameterKey;
 import org.kuali.rice.core.api.parameter.ParameterQueryResults;
 import org.kuali.rice.core.api.parameter.ParameterRepositoryService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -94,8 +94,8 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
         map.put("componentCode", key.getComponentCode());
         ParameterBo bo =  businessObjectService.findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
 
-        if (bo == null & !KNSConstants.DEFAULT_PARAMETER_APPLICATION_ID.equals(key.getApplicationId())) {
-            map.put("applicationId", KNSConstants.DEFAULT_PARAMETER_APPLICATION_ID);
+        if (bo == null & !KRADConstants.DEFAULT_PARAMETER_APPLICATION_ID.equals(key.getApplicationId())) {
+            map.put("applicationId", KRADConstants.DEFAULT_PARAMETER_APPLICATION_ID);
             bo = businessObjectService.findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
         }
 

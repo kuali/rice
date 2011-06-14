@@ -42,7 +42,7 @@ import org.kuali.rice.kew.xml.export.RuleDelegationXmlExporter;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 
@@ -179,7 +179,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
     public List findByResponsibilityId(Long responsibilityId, boolean ignoreCache) {
     	if ( responsibilityId != null ) {
     		PerformanceLogger performanceLogger = new PerformanceLogger();
-    		Boolean cachingRules = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_DLGN_CACHE_IND);
+    		Boolean cachingRules = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_DLGN_CACHE_IND);
     		if (cachingRules.booleanValue()) {
     			List<RuleDelegation> rules = getListFromCache(responsibilityId);
     			if (rules != null && !ignoreCache) {

@@ -33,10 +33,10 @@ import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
-import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.krad.web.struts.form.KualiTableRenderFormMetadata;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -102,7 +102,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase#loadDocument(org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase)
+     * @see org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase#loadDocument(org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase)
      */
     @Override
     protected void loadDocument(KualiDocumentFormBase form)
@@ -122,7 +122,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase#createDocument(org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase)
+     * @see org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase#createDocument(org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase)
      */
     @Override
     protected void createDocument(KualiDocumentFormBase form)
@@ -205,7 +205,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	}
         }
         if(checkKimDocumentGroupMember(newMember) && 
-        		KNSServiceLocatorWeb.getKualiRuleService().applyRules(new AddGroupMemberEvent("", groupDocumentForm.getGroupDocument(), newMember))){
+        		KRADServiceLocatorWeb.getKualiRuleService().applyRules(new AddGroupMemberEvent("", groupDocumentForm.getGroupDocument(), newMember))){
         	newMember.setDocumentNumber(groupDocumentForm.getDocument().getDocumentNumber());
         	groupDocumentForm.getGroupDocument().addMember(newMember);
 	        groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());

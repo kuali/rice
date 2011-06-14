@@ -18,7 +18,7 @@ package org.kuali.rice.core.impl.namespace;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.namespace.NamespaceService;
-import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.krad.service.BusinessObjectService;
 
 import static java.util.Collections.singletonMap;
 

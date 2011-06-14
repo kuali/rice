@@ -29,7 +29,7 @@
     <property name="maintainableClass" value="org.kuali.rice.krms.impl.ui.EditorDocumentMaintainable"/>
     <property name="documentTypeName" value="EditorMaintenanceDocument"/>
     <property name="documentAuthorizerClass"
-              value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+              value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="lockingKeys">
       <list>
         <value>agenda.id</value>
@@ -229,7 +229,7 @@
               <constructor-arg value="org.kuali.rice.krms.impl.ui.AgendaTreeRuleNode"/>
             </bean>
           </key> 
-          <bean class="org.kuali.rice.kns.uif.container.TreeGroup.NodePrototype">
+          <bean class="org.kuali.rice.krad.uif.container.TreeGroup.NodePrototype">
             <property name="labelPrototype">
               <bean parent="MessageField"/>
             </property>
@@ -270,7 +270,7 @@
               <constructor-arg value="org.kuali.rice.krms.impl.ui.AgendaTreeLogicNode"/>
             </bean>
           </key> 
-          <bean class="org.kuali.rice.kns.uif.container.TreeGroup.NodePrototype">
+          <bean class="org.kuali.rice.krad.uif.container.TreeGroup.NodePrototype">
             <property name="labelPrototype">
               <bean parent="MessageField"/>
             </property>

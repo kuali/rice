@@ -80,7 +80,7 @@
    <bean id="DocAddress-addressTypeCode" parent="DocAddress-addressTypeCode-parentBean"/>
   <bean id="DocAddress-addressTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="addressTypeCode" p:forceUppercase="true" p:label="Address Type" p:shortLabel="Address Type" p:maxLength="40" p:required="false">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
     </property>
   </bean>
     

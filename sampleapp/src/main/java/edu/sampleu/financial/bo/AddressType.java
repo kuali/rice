@@ -16,10 +16,8 @@
 
 package edu.sampleu.financial.bo;
 
-import java.util.LinkedHashMap;
-
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * Address Types for Vendor Addresses. Used to distinguish the intended use of this address among the various addresses that a

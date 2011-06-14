@@ -20,9 +20,9 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -38,7 +38,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	/**
 	 * Saves the responsibility via the responsibility update service
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#saveBusinessObject()
 	 */
 	@Override
 	public void saveBusinessObject() {
@@ -64,7 +64,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#getBoClass()
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#getBoClass()
 	 */
 	@Override
 	public Class<? extends PersistableBusinessObject> getBoClass() {
@@ -74,7 +74,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
 	 */
 	@Override
 	public boolean isExternalBusinessObject() {
@@ -84,7 +84,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.kns.bo.BusinessObject)
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.krad.bo.BusinessObject)
 	 */
 	@Override
 	public void prepareBusinessObject(BusinessObject businessObject) {

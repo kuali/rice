@@ -49,7 +49,7 @@ public final class KSBConstants {
         public static final String USE_QUARTZ_DATABASE = "useQuartzDatabase";
         public static final String KSB_ALTERNATE_ENDPOINTS = "ksb.alternateEndpoints";
         public static final String KSB_ALTERNATE_ENDPOINT_LOCATIONS = "ksb.alternateEndpointLocations";
-        public static final String LOAD_KNS_MODULE_CONFIGURATION = "rice.ksb.loadKNSModuleConfiguration";
+        public static final String LOAD_KRAD_MODULE_CONFIGURATION = "rice.ksb.loadKRADModuleConfiguration";
         public static final String RESTFUL_SERVICE_PATH = "rice.ksb.restfulServicePath";
         public static final String INSTANCE_ID = "rice.ksb.bus.instanceId";
         public static final String REGISTRY_SERVICE_URL = "rice.ksb.registry.serviceUrl";

@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * This is the generic data access interface for business objects. 
  * This class was adapted from the Kuali Nervous System
- * (org.kuali.rice.kns.dao.BusinessObjectDao). 
+ * (org.kuali.rice.krad.dao.BusinessObjectDao).
  * It's not as generic as it could be as it relies on the OJB criteria object...
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)

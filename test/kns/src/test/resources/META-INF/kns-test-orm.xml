@@ -3,9 +3,9 @@
 	xmlns="http://java.sun.com/xml/ns/persistence/orm"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_1_0.xsd">
-	<entity class="org.kuali.rice.kns.test.document.bo.Account">
+	<entity class="org.kuali.rice.krad.test.document.bo.Account">
 		<attributes>
-			<one-to-one name="extension" fetch="EAGER" target-entity="org.kuali.rice.kns.test.document.bo.AccountExtension">
+			<one-to-one name="extension" fetch="EAGER" target-entity="org.kuali.rice.krad.test.document.bo.AccountExtension">
 				<join-column name="ACCT_NUM" insertable="false" updatable="false" />
 				<cascade>
 					<cascade-all />

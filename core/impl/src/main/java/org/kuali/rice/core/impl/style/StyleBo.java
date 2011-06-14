@@ -29,7 +29,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleContract;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * A BusinessObject implementation of the StyleContract which is mapped to the

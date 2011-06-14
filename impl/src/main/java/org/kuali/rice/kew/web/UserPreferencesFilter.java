@@ -32,8 +32,8 @@ import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.util.WebUtils;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.WebUtils;
 
 /**
  * This class establishes and initializes the KEW Preferences after a user logs in.

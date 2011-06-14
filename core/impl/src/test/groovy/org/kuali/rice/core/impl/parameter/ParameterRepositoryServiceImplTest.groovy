@@ -27,8 +27,8 @@ import org.kuali.rice.core.api.parameter.ParameterKey
 import org.kuali.rice.core.api.parameter.ParameterRepositoryService
 import org.kuali.rice.core.api.parameter.ParameterType
 import org.kuali.rice.core.api.parameter.ParameterTypeContract
-import org.kuali.rice.kns.bo.PersistableBusinessObject
-import org.kuali.rice.kns.service.BusinessObjectService
+import org.kuali.rice.krad.bo.PersistableBusinessObject
+import org.kuali.rice.krad.service.BusinessObjectService
 
 class ParameterRepositoryServiceImplTest {
     private MockFor mock

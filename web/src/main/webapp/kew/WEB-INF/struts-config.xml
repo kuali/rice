@@ -20,7 +20,7 @@
 
     <form-beans>
     	<!-- Begin required KNS forms -->
-        <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
+        <form-bean name="KualiForm" type="org.kuali.rice.krad.web.struts.form.KualiForm" />
     	<!-- End required KNS forms -->
 	    <form-bean name="RuleForm" type="org.kuali.rice.kew.rule.web.RuleForm" />
 	    <form-bean name="RuleQuickLinksForm" type="org.kuali.rice.kew.rule.web.RuleQuickLinksForm" />
@@ -34,7 +34,7 @@
 
         <!-- converted from en module -->
         <form-bean name="PreferencesForm" type="org.kuali.rice.kew.preferences.web.PreferencesForm" />
-        <form-bean name="BackdoorForm" type="org.kuali.rice.kns.web.struts.form.BackdoorForm" />
+        <form-bean name="BackdoorForm" type="org.kuali.rice.krad.web.struts.form.BackdoorForm" />
         <form-bean name="DocHandlerForm" type="org.kuali.rice.kew.routing.web.DocHandlerForm" />
         <form-bean name="SuperUserForm" type="org.kuali.rice.kew.superuser.web.SuperUserForm"/>
         <form-bean name="QuickLinksForm" type="org.kuali.rice.kew.quicklinks.web.QuickLinksForm"/>
@@ -47,10 +47,10 @@
 
 	<global-exceptions>
 		<exception type="java.lang.Throwable"
-			handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler"
+			handler="org.kuali.rice.krad.web.struts.pojo.StrutsExceptionIncidentHandler"
 			key="meaningless" />
-		<exception type="org.kuali.rice.kns.exception.AuthorizationException"
-            handler="org.kuali.rice.kns.web.struts.pojo.AuthorizationExceptionHandler"
+		<exception type="org.kuali.rice.krad.exception.AuthorizationException"
+            handler="org.kuali.rice.krad.web.struts.pojo.AuthorizationExceptionHandler"
             key="meaningless" /> 
 	</global-exceptions>
 
@@ -72,13 +72,13 @@
 
     <action-mappings>
        	<!-- Begin required KNS mappings -->
-        <action path="/portal" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
+        <action path="/portal" name="KualiForm" type="org.kuali.rice.krad.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
         </action>
-        <action path="/index" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
+        <action path="/index" name="KualiForm" type="org.kuali.rice.krad.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
         </action>
-        <action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase">
+        <action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase">
             <forward name="basic" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
         </action>
        	<action path="/DocumentSearch" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
@@ -233,7 +233,7 @@
 
 
 
-    <controller processorClass="org.kuali.rice.kns.web.struts.action.KualiRequestProcessor" />
-    <message-resources factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="" /> 
+    <controller processorClass="org.kuali.rice.krad.web.struts.action.KualiRequestProcessor" />
+    <message-resources factory="org.kuali.rice.krad.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="" />
 </struts-config>
 

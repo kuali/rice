@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class GenericTestDao extends PersistenceBrokerDaoSupport {
@@ -36,7 +36,7 @@ public class GenericTestDao extends PersistenceBrokerDaoSupport {
     }
 
     /**
-     * @see org.kuali.rice.kns.dao.BusinessObjectDao#deleteMatching(java.lang.Class, java.util.Map)
+     * @see org.kuali.rice.krad.dao.BusinessObjectDao#deleteMatching(java.lang.Class, java.util.Map)
      */
     public void deleteMatching(Class clazz, Map<String, ?> fieldValues) {
         Criteria criteria = buildCriteria(fieldValues);

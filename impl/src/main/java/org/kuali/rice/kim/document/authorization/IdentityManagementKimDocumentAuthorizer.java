@@ -25,8 +25,8 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.authorization.TransactionalDocumentAuthorizerBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

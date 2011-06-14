@@ -31,7 +31,7 @@ import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.permission.Permission
 import org.kuali.rice.kim.api.permission.PermissionContract
 import org.kuali.rice.kim.impl.role.RolePermissionBo
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_PERM_T")

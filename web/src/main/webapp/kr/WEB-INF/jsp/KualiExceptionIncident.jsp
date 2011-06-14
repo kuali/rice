@@ -14,19 +14,19 @@
  limitations under the License.
 --%>
 <%@ page
-	import="org.kuali.rice.kns.exception.KualiExceptionIncident"%>
+	import="org.kuali.rice.krad.exception.KualiExceptionIncident"%>
 <%@ include file="tldHeader.jsp"%>
 
 <c:set var="textAreaAttributes"
 	value="${DataDictionary.AttributeReferenceElements.attributes}" />
 
 <%
-Object incident=request.getAttribute("org.kuali.rice.kns.web.struts.pojo.KualiExceptionIncident");
+Object incident=request.getAttribute("org.kuali.rice.krad.web.struts.pojo.KualiExceptionIncident");
 request.setAttribute("test", incident);
 %>
 
 <c:set var="parameters"
-       value="<%=request.getAttribute(\"org.kuali.rice.kns.web.struts.action.KualiExceptionHandlerAction\")%>" />
+       value="<%=request.getAttribute(\"KualiExceptionHandlerAction\")%>" />
 
 <c:if test="${not empty parameters}">
 	<c:set var="documentId"       value="${parameters.documentId}" />

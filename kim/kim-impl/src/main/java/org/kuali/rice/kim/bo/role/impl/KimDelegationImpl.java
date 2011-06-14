@@ -23,7 +23,7 @@ import org.kuali.rice.kim.bo.role.KimDelegation;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;

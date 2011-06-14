@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.MessageField"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.MessageField"/>
 
 <%--
     Renders text in a span tag     

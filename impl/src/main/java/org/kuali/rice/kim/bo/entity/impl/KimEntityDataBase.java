@@ -20,8 +20,8 @@ import java.util.Set;
 
 import javax.persistence.MappedSuperclass;
 
-import org.kuali.rice.kns.bo.DefaultableInactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DefaultableInactivateable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="rice-standalone:war exploded">
-    <output-path>$PROJECT_DIR$/../../../standalone/target/rice-standalone-2.0.0-m5-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/../../../standalone/target/rice-standalone-2.0.0-m6-SNAPSHOT</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="rice-standalone/web/Web" />
       <element id="directory" name="WEB-INF">
@@ -8,15 +8,14 @@
           <element id="module-output" name="rice-standalone" />
         </element>
         <element id="directory" name="lib">
-          <element id="archive" name="rice-api-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-api-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-api" />
           </element>
-          <element id="archive" name="rice-core-api-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-api-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-api" />
           </element>
-          <element id="library" level="project" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" />
           <element id="library" level="project" name="Maven: asm:asm:3.2" />
-          <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.8.3" />
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
           <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
           <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.6" />
@@ -28,27 +27,28 @@
           <element id="library" level="project" name="Maven: xerces:xercesImpl:2.9.1" />
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.1" />
+          <element id="library" level="project" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
           <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" />
-          <element id="archive" name="rice-impl-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-impl-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-impl" />
           </element>
-          <element id="archive" name="rice-kim-impl-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-impl-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-impl" />
           </element>
-          <element id="archive" name="rice-kim-api-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-api-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-api" />
           </element>
-          <element id="archive" name="rice-kim-framework-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-framework-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-framework" />
           </element>
-          <element id="archive" name="krad-app-framework-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="krad-app-framework-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="krad-app-framework" />
           </element>
-          <element id="archive" name="rice-shareddata-api-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-shareddata-api-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-shareddata-api" />
           </element>
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" />
@@ -56,7 +56,7 @@
           <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" />
           <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
-          <element id="archive" name="rice-core-framework-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-framework-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-framework" />
           </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" />
@@ -81,10 +81,10 @@
           <element id="library" level="project" name="Maven: org.reflections:reflections:0.9.5-RC2" />
           <element id="library" level="project" name="Maven: com.google.collections:google-collections:1.0" />
           <element id="library" level="project" name="Maven: com.google.code.gson:gson:1.4" />
-          <element id="archive" name="krad-web-framework-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="krad-web-framework-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="krad-web-framework" />
           </element>
-          <element id="archive" name="rice-kew-framework-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-kew-framework-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-framework" />
           </element>
           <element id="library" level="project" name="Maven: displaytag:displaytag:1.2" />
@@ -108,10 +108,10 @@
           <element id="library" level="project" name="Maven: net.sf.jtidy:jtidy:r938" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.1" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.1" />
-          <element id="archive" name="rice-core-impl-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-impl-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-impl" />
           </element>
-          <element id="archive" name="rice-ksb-api-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-api-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-api" />
           </element>
           <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
@@ -162,22 +162,22 @@
           <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.2.2" />
           <element id="library" level="project" name="Maven: bsf:bsf:2.4.0" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.14.0-GA" />
-          <element id="archive" name="rice-core-web-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-web-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-web" />
           </element>
-          <element id="archive" name="rice-shareddata-framework-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-shareddata-framework-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-shareddata-framework" />
           </element>
-          <element id="archive" name="rice-shareddata-impl-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-shareddata-impl-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-shareddata-impl" />
           </element>
-          <element id="archive" name="rice-shareddata-web-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-shareddata-web-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-shareddata-web" />
           </element>
-          <element id="archive" name="rice-ksb-framework-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-framework-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-framework" />
           </element>
-          <element id="archive" name="rice-edl-framework-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-edl-framework-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-framework" />
           </element>
           <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.2.0" />
@@ -186,11 +186,12 @@
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.8" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-cas-client:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:3.0.5.RELEASE" />
-          <element id="archive" name="rice-edl-impl-2.0.0-m5-SNAPSHOT.jar">
+          <element id="archive" name="rice-edl-impl-2.0.0-m6-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-impl" />
           </element>
         </element>
       </element>
+      <element id="artifact" artifact-name="rice-web:war exploded" />
     </root>
   </artifact>
 </component>

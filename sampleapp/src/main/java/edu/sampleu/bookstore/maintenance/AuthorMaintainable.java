@@ -3,8 +3,8 @@ package edu.sampleu.bookstore.maintenance;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import edu.sampleu.bookstore.bo.Account;
 import edu.sampleu.bookstore.bo.Address;
 import edu.sampleu.bookstore.bo.Author;
@@ -37,16 +37,16 @@ public class AuthorMaintainable extends KualiMaintainableImpl {
 			}
 		}
 		
-		KNSServiceLocator.getBusinessObjectService().save(author);
+		KRADServiceLocator.getBusinessObjectService().save(author);
 		
 		if(account != null && account.getAuthorId() == null) {			
 			account.setAuthorId(author.getAuthorId());			
-			KNSServiceLocator.getBusinessObjectService().save(account);
+			KRADServiceLocator.getBusinessObjectService().save(account);
 		}
 		for(Address address : addresses){
 			if(address != null && address.getAuthorId() == null) {			
 				address.setAuthorId(author.getAuthorId());			
-				KNSServiceLocator.getBusinessObjectService().save(address);
+				KRADServiceLocator.getBusinessObjectService().save(address);
 			}
 		}
 	}

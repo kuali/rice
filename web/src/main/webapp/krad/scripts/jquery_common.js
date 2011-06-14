@@ -762,6 +762,9 @@ function createSuggest(controlId, options, queryFieldId, queryParameters) {
 	                   jq.ajax({
                           url: jq("form#kualiForm").attr("action"),
                           dataType: "json",
+                          beforeSend: null,
+                          complete: null,
+                          error: null,
                           data: queryData,
                           success: function ( data ) {
                              response( data.resultData );
@@ -815,6 +818,9 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                 url: jq("form#kualiForm").attr("action"),
                 dataType: "json",
                 data: queryData,
+                beforeSend: null,
+                complete: null,
+                error: null,
                 success: function (data) {
                     // write out return message (or blank)
                     var returnMessageSpan = jq("#" + queryFieldId + "_info_message");

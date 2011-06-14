@@ -44,15 +44,15 @@ import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.question.ConfirmationQuestion;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
-import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.question.ConfirmationQuestion;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.krad.web.struts.form.KualiTableRenderFormMetadata;
+import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -147,7 +147,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     /**
      * This overridden method ...
      *
-     * @see org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase#loadDocument(org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase)
+     * @see org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase#loadDocument(org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase)
      */
     @Override
     protected void loadDocument(KualiDocumentFormBase form)
@@ -170,7 +170,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     /**
      * This overridden method ...
      *
-     * @see org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase#createDocument(org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase)
+     * @see org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase#createDocument(org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase)
      */
     @Override
     protected void createDocument(KualiDocumentFormBase form)
@@ -265,11 +265,11 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         if(newResponsibility!=null && StringUtils.isNotBlank(newResponsibility.getResponsibilityId())){
         	Map<String, String> criteria = new HashMap<String, String>();
         	criteria.put(KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, newResponsibility.getResponsibilityId());
-        	ResponsibilityBo responsibilityImpl = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, criteria);
+        	ResponsibilityBo responsibilityImpl = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, criteria);
         	newResponsibility.setKimResponsibility(responsibilityImpl);
         }
 
-        if (KNSServiceLocatorWeb.getKualiRuleService().applyRules(new AddResponsibilityEvent("",roleDocumentForm.getRoleDocument(), newResponsibility))) {
+        if (KRADServiceLocatorWeb.getKualiRuleService().applyRules(new AddResponsibilityEvent("",roleDocumentForm.getRoleDocument(), newResponsibility))) {
             if (newResponsibility != null) {
                 newResponsibility.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
             }
@@ -290,7 +290,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     public ActionForward addPermission(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRolePermission newPermission = roleDocumentForm.getPermission();
-        if (KNSServiceLocatorWeb.getKualiRuleService().applyRules(new AddPermissionEvent("", roleDocumentForm.getRoleDocument(), newPermission))) {
+        if (KRADServiceLocatorWeb.getKualiRuleService().applyRules(new AddPermissionEvent("", roleDocumentForm.getRoleDocument(), newPermission))) {
         	newPermission.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
         	newPermission.setRoleId(roleDocumentForm.getRoleDocument().getRoleId());
 	        roleDocumentForm.getRoleDocument().getPermissions().add(newPermission);
@@ -324,7 +324,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         	}
         }
         if(checkKimDocumentRoleMember(newMember) &&
-        		KNSServiceLocatorWeb.getKualiRuleService().applyRules(new AddMemberEvent("", roleDocumentForm.getRoleDocument(), newMember))){
+        		KRADServiceLocatorWeb.getKualiRuleService().applyRules(new AddMemberEvent("", roleDocumentForm.getRoleDocument(), newMember))){
         	newMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
         	roleDocumentForm.getRoleDocument().addMember(newMember);
 	        roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
@@ -471,7 +471,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         	}
         }
 
-        if (checkDelegationMember(newDelegationMember) && KNSServiceLocatorWeb.getKualiRuleService().applyRules(
+        if (checkDelegationMember(newDelegationMember) && KRADServiceLocatorWeb.getKualiRuleService().applyRules(
         		new AddDelegationMemberEvent("", roleDocumentForm.getRoleDocument(), newDelegationMember))) {
         	newDelegationMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
         	roleDocumentForm.getRoleDocument().addDelegationMember(newDelegationMember);
@@ -489,7 +489,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     }
 
     /**
-     * @see org.kuali.rice.kns.web.struts.action.KualiTableRenderAction#switchToPage(org.apache.struts.action.ActionMapping,
+     * @see org.kuali.rice.krad.web.struts.action.KualiTableRenderAction#switchToPage(org.apache.struts.action.ActionMapping,
      *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ActionForward jumpToRoleMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -505,7 +505,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 
     protected String getDelegationRoleMemberToJumpTo(HttpServletRequest request) {
         String delegationRoleMemberIdToJumpTo = "";
-        String parameterName = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String parameterName = (String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isNotBlank(parameterName)) {
             delegationRoleMemberIdToJumpTo = StringUtils.substringBetween(parameterName, ".dmrmi", ".");
         }
@@ -564,9 +564,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 			if (question == null || !REMOVE_AFFECTED_DELEGATES_QUESTION_ID.equals(question)) {
 				return performQuestionWithoutInput(mapping, form, request, response, REMOVE_AFFECTED_DELEGATES_QUESTION_ID,
 						getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_ACTIVE_DELEGATES_FOR_INACTIVE_MEMBERS),
-						KNSConstants.CONFIRMATION_QUESTION, roleDocumentForm.getMethodToCall(), StringUtils.EMPTY);
+						KRADConstants.CONFIRMATION_QUESTION, roleDocumentForm.getMethodToCall(), StringUtils.EMPTY);
 			}
-			Object buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
+			Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
 			if ((REMOVE_AFFECTED_DELEGATES_QUESTION_ID.equals(question)) && ConfirmationQuestion.YES.equals(buttonClicked)) {
 				// the question was answered in the affirmative.
 		        // fall through, no special mapping to return

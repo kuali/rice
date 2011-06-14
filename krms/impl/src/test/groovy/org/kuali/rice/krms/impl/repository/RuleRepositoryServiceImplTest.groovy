@@ -16,22 +16,14 @@
 
 package org.kuali.rice.krms.impl.repository
 
-import java.util.List;
-
 import groovy.mock.interceptor.MockFor
-import org.junit.Assert
+
 import org.junit.Before
 import org.junit.BeforeClass
-import org.junit.Ignore
+
 import org.junit.Test
-import org.kuali.rice.kns.bo.PersistableBusinessObject
-import org.kuali.rice.kns.service.BusinessObjectService
-import org.kuali.rice.krms.api.repository.LogicalOperator;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract;
-import org.kuali.rice.krms.framework.engine.ComparisonOperator;
+
+import org.kuali.rice.krad.service.BusinessObjectService
 
 class RuleRepositoryServiceImplTest {
     private def MockFor mock

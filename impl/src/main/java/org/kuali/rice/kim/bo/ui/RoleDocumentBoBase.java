@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

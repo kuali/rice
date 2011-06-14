@@ -25,11 +25,11 @@ import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
-import org.kuali.rice.kns.web.ui.ExtraButton;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
+import org.kuali.rice.krad.web.ui.ExtraButton;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -318,7 +318,7 @@ public class ActionListForm extends KualiForm {
 	public String getMenuBar(){
 		String url = "";
 		Properties parameters = new Properties();
-		url = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+		url = UrlFactory.parameterizeUrl(KRADConstants.MAINTENANCE_ACTION, parameters);
 		String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
 		url = "<a href=\"" + url + "\"><img src=\""+krBaseUrl+"/images/tinybutton-preferences.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 		return url;
@@ -329,7 +329,7 @@ public class ActionListForm extends KualiForm {
         setHeaderButtons(getHeaderButtons());
 
         // take the UserSession from the HttpSession and add it to the request
-        request.setAttribute(KNSConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
+        request.setAttribute(KRADConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
 
         //refactor actionlist.jsp not to be dependent on this
         request.setAttribute("preferences", GlobalVariables.getUserSession().retrieveObject(KEWConstants.PREFERENCES));
@@ -344,17 +344,17 @@ public class ActionListForm extends KualiForm {
             request.setAttribute("helpDeskActionList", "true");
         }
         //String routeLogPopup = "false";
-        //boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
+        //boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
         //if (routeLogPopupInd) {
         //	routeLogPopup = "true";
         //}
         //String documentPopup = "false";
-        //boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND);
+        //boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND);
         //if (documentPopupInd) {
         //    documentPopup = "true";
         //}
-        setRouteLogPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND));
-        setDocumentPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND));
+        setRouteLogPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND));
+        setDocumentPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND));
         request.setAttribute("noRefresh", Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
 		super.populate(request);
 	}

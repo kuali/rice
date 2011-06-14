@@ -35,13 +35,13 @@ import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.lookup.CollectionIncomplete;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LookupService;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -64,7 +64,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.krad.bo.BusinessObject, java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -73,10 +73,10 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
     	// convert the PermissionImpl class into a GenericPermission object
     	businessObject = new GenericPermission( (PermissionImpl)businessObject );
         if (allowsMaintenanceEditAction(businessObject)) {
-        	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        	htmlDataList.add(getUrlData(businessObject, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
         }
         if (allowsMaintenanceNewOrCopyAction()) {
-        	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
+        	htmlDataList.add(getUrlData(businessObject, KRADConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
         }
         return htmlDataList;
 	}
@@ -84,21 +84,21 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
     @SuppressWarnings("unchecked")
 	protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
         Properties parameters = new Properties();
-        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
-        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
-        parameters.put(KNSConstants.OVERRIDE_KEYS, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
-        parameters.put(KNSConstants.COPY_KEYS, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
+        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
+        parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
+        parameters.put(KRADConstants.OVERRIDE_KEYS, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
+        parameters.put(KRADConstants.COPY_KEYS, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
         if (StringUtils.isNotBlank(getReturnLocation())) {
-        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 		}
         parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
-        return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+        return UrlFactory.parameterizeUrl(KRADConstants.MAINTENANCE_ACTION, parameters);
     }
 	
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getMaintenanceDocumentTypeName()
+	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getMaintenanceDocumentTypeName()
 	 */
 	@Override
 	protected String getMaintenanceDocumentTypeName() {
@@ -110,7 +110,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	}
 		
 	/**
-	 * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResults(java.util.Map)
+	 * @see org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl#getSearchResults(java.util.Map)
 	 */
 	@Override
 	protected List<? extends BusinessObject> getMemberSearchResults(Map<String, String> searchCriteria, boolean unbounded) {
@@ -270,7 +270,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	 */
 	public LookupService getLookupService() {
 		if ( lookupService == null ) {
-			lookupService = KNSServiceLocatorWeb.getLookupService();
+			lookupService = KRADServiceLocatorWeb.getLookupService();
 		}
 		return lookupService;
 	}

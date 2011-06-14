@@ -84,12 +84,12 @@
     </bean>
 
 	<bean id="rice.ksb.scheduler"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.scheduler" />
 	</bean>
 	
 	<bean id="rice.ksb.serviceBus"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 
@@ -148,7 +148,7 @@
         <property name="genericDao"><ref local="kcbGenericDao"/></property>
     </bean>
 
-    <bean id="mailer" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+    <bean id="mailer" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="mailer" />
     </bean>
     

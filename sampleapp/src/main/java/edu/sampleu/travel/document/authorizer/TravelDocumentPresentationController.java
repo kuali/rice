@@ -18,9 +18,9 @@ package edu.sampleu.travel.document.authorizer;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kuali.rice.kns.authorization.AuthorizationConstants;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase;
+import org.kuali.rice.krad.authorization.AuthorizationConstants;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.authorization.TransactionalDocumentPresentationControllerBase;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 

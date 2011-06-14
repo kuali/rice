@@ -55,17 +55,17 @@
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="jtaTransactionManager"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="jtaTransactionManager" />
 	</bean>
 	
 	<bean id="businessObjectService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectService" />
 	</bean>
 	
 	<bean id="kualiConfigurationService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="kualiConfigurationService" />
 	</bean>
 
@@ -95,7 +95,7 @@
 	</bean>
 
 	<bean id="dbPlatform"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="dbPlatform" />
 	</bean>
 
@@ -169,7 +169,7 @@
         Responsibility Service
   -->
   	<bean id="criteriaLookupService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="criteriaLookupService" />
 	</bean>
 
@@ -194,41 +194,41 @@
   <bean id="groupInternalService" class="org.kuali.rice.kim.service.impl.GroupInternalServiceImpl" />
   <bean id="responsibilityInternalService" class="org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalServiceImpl" />
 
-  <bean id="documentInitiatorRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
+  <bean id="documentInitiatorRoleTypeService" class="org.kuali.rice.krad.authorization.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-SYS" />
 	<property name="permissionTemplateName" value="Initiate Document" />
   </bean>
 
-  <bean id="documentEditorRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
+  <bean id="documentEditorRoleTypeService" class="org.kuali.rice.krad.authorization.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-NS" />
 	<property name="permissionTemplateName" value="Edit Document" />
   </bean>
 
-  <bean id="documentOpenerRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
+  <bean id="documentOpenerRoleTypeService" class="org.kuali.rice.krad.authorization.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-NS" />
 	<property name="permissionTemplateName" value="Open Document" />
   </bean>
 
-  <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl" />
+  <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.krad.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl" />
   <bean id="defaultPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" />
   <bean id="defaultResponsibilityTypeService" class="org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeServiceBase" />
 
-  <bean id="permissionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+  <bean id="permissionPermissionTypeService" class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="permissionName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
     </bean>
 
-  <bean id="responsibilityPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+  <bean id="responsibilityPermissionTypeService" class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="responsibilityName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
     </bean>
 
-  <bean id="rolePermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+  <bean id="rolePermissionTypeService" class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="roleName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
     </bean>
 
-  <bean id="groupPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+  <bean id="groupPermissionTypeService" class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="groupName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
     </bean>

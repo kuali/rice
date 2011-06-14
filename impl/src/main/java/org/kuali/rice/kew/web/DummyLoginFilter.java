@@ -32,8 +32,8 @@ import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.util.WebUtils;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.WebUtils;
 
 /**
  * A login filter which forwards to a login page that allows for the desired

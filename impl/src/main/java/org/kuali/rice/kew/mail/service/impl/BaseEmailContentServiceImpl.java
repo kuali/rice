@@ -31,8 +31,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.util.KNSConstants;
-
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Base EmailContentService implementation with a default email from address that can be
@@ -49,7 +48,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
 
     public String getApplicationEmailAddress() {
         // first check the configured value
-        String fromAddress = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
+        String fromAddress = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
         // if there's no value configured, use the default
         if (org.apache.commons.lang.StringUtils.isEmpty(fromAddress)) {
             fromAddress = defaultEmailFromAddress;
@@ -87,10 +86,10 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
     }
 
     protected String getActionListUrl() {
-        return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.WORKFLOW_URL_KEY) + "/" + "ActionList.do";
+        return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.WORKFLOW_URL_KEY) + "/" + "ActionList.do";
     }
 
     protected String getPreferencesUrl() {
-        return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.WORKFLOW_URL_KEY) + "/" + "Preferences.do";
+        return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.WORKFLOW_URL_KEY) + "/" + "Preferences.do";
     }
 }

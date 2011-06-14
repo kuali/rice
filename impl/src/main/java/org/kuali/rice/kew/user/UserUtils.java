@@ -20,7 +20,7 @@ import org.kuali.rice.kim.bo.Person;
 
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.krad.UserSession;
 
 /**
  * Provides some utility methods for translating user ID types.

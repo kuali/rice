@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import edu.sampleu.travel.bo.TravelAccountType;
 
@@ -30,7 +30,7 @@ public class AccountTypeKeyValues extends KeyValuesBase {
     public List getKeyValues() {
         List keyValues = new ArrayList();
 
-        Collection<TravelAccountType> bos = KNSServiceLocator.getBusinessObjectService().findAll( TravelAccountType.class );
+        Collection<TravelAccountType> bos = KRADServiceLocator.getBusinessObjectService().findAll( TravelAccountType.class );
         
         keyValues.add(new ConcreteKeyValue("", ""));
         for ( TravelAccountType typ : bos ) {

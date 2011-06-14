@@ -3,10 +3,10 @@ package edu.sampleu.bookstore.rule;
 import java.util.List;
 
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 
 import edu.sampleu.bookstore.bo.Author;
@@ -18,7 +18,7 @@ import edu.sampleu.bookstore.bo.Address;
  */
 
 public class AuthorMaintenanceDocumentRule extends MaintenanceDocumentRuleBase {
-	private static final String AUTHOR_ENTRIES_PROPERTY_PATH = KNSConstants.DOCUMENT_PROPERTY_NAME
+	private static final String AUTHOR_ENTRIES_PROPERTY_PATH = KRADConstants.DOCUMENT_PROPERTY_NAME
 			+ ".authorEntries";
 	private static final String NO_ADDRESS_TYPE_ERROR_KEY = RiceKeyConstants.ERROR_CUSTOM;
 	private static final String ERROR_MESSAGE_NO_ADDTYPE_FOUND = "You must add atleast one address for Author.";

@@ -37,7 +37,7 @@ import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
+import org.kuali.rice.krad.bo.TransientBusinessObjectBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;

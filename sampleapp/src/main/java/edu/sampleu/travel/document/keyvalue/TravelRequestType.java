@@ -20,11 +20,11 @@ import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 public class TravelRequestType extends KeyValuesBase {
 

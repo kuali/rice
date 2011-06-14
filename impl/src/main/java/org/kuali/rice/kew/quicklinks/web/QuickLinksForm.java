@@ -18,7 +18,7 @@ package org.kuali.rice.kew.quicklinks.web;
 
 import java.util.List;
 
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 /**
  * Struts ActionForm for the {@link QuickLinksAction}.

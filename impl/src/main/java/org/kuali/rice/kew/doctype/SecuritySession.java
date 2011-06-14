@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.krad.UserSession;
 
 
 /**

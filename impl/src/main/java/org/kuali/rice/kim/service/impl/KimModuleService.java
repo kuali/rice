@@ -31,9 +31,9 @@ import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.service.impl.ModuleServiceBase;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.service.impl.ModuleServiceBase;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,7 +56,7 @@ public class KimModuleService extends ModuleServiceBase {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObject(java.lang.Class, java.util.Map)
+	 * @see org.kuali.rice.krad.service.impl.ModuleServiceBase#getExternalizableBusinessObject(java.lang.Class, java.util.Map)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -91,7 +91,7 @@ public class KimModuleService extends ModuleServiceBase {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectsList(java.lang.Class, java.util.Map)
+	 * @see org.kuali.rice.krad.service.impl.ModuleServiceBase#getExternalizableBusinessObjectsList(java.lang.Class, java.util.Map)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -110,7 +110,7 @@ public class KimModuleService extends ModuleServiceBase {
 	}
 
 	/***
-	 * @see org.kuali.rice.kns.service.ModuleService#getExternalizableBusinessObjectsListForLookup(java.lang.Class, java.util.Map, boolean)
+	 * @see org.kuali.rice.krad.service.ModuleService#getExternalizableBusinessObjectsListForLookup(java.lang.Class, java.util.Map, boolean)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -130,7 +130,7 @@ public class KimModuleService extends ModuleServiceBase {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#listPrimaryKeyFieldNames(java.lang.Class)
+	 * @see org.kuali.rice.krad.service.impl.ModuleServiceBase#listPrimaryKeyFieldNames(java.lang.Class)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -189,20 +189,20 @@ public class KimModuleService extends ModuleServiceBase {
 				urlParameters.put(paramName, parameterValues[0]);
 			}
 		}
-		urlParameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObjectClassAttribute);
+		urlParameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObjectClassAttribute);
 		try{
 			Class inquiryBusinessObjectClass = Class.forName(businessObjectClassAttribute);
 			if(Role.class.isAssignableFrom(inquiryBusinessObjectClass) || 
 					Group.class.isAssignableFrom(inquiryBusinessObjectClass) || 
 					Person.class.isAssignableFrom(inquiryBusinessObjectClass)) {
-		        urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);			
+		        urlParameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
 			} else{
-		        urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL);
+		        urlParameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL);
 			}
 		} catch(Exception eix){
-			urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL);
+			urlParameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL);
 		}
-        urlParameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+        urlParameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
 		return urlParameters;
 	}
 

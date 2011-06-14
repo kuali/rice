@@ -26,8 +26,8 @@ import org.kuali.rice.kim.rule.ui.AddMemberRule;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.rules.DocumentRuleBase;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.rules.DocumentRuleBase;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -34,11 +34,11 @@ import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
-import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.struts.action.KualiTransactionalDocumentActionBase;
+import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.krad.web.struts.form.KualiTableRenderFormMetadata;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,7 +63,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
      * 
      * This overridden method is to add 'kim/" to the return path
      * 
-     * @see org.kuali.rice.kns.web.struts.action.KualiAction#performLookup(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     * @see org.kuali.rice.krad.web.struts.action.KualiAction#performLookup(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
 	@Override
 	public ActionForward performLookup(ActionMapping mapping, ActionForm form,
@@ -109,14 +109,14 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
     protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
         ActionForward dest = null;
         if (form.isReturnToActionList()) {
-            String workflowBase = getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY);
+            String workflowBase = getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY);
             String actionListUrl = workflowBase + "/ActionList.do";
 
             dest = new ActionForward(actionListUrl, true);
         } else if (StringUtils.isNotBlank(form.getBackLocation())){
         	dest = new ActionForward(form.getBackLocation(), true);
         } else {
-        	dest = mapping.findForward(KNSConstants.MAPPING_PORTAL);
+        	dest = mapping.findForward(KRADConstants.MAPPING_PORTAL);
             ActionForward newDest = new ActionForward();
             //why is this being done?
             KimCommonUtilsInternal.copyProperties(newDest, dest);

@@ -43,7 +43,7 @@ import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
@@ -106,7 +106,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	public String getApplicationEmailAddress() {
 		// first check the configured value
-		String fromAddress = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
+		String fromAddress = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
 		// if there's no value configured, use the default
 		if (org.apache.commons.lang.StringUtils.isEmpty(fromAddress)) {
 			fromAddress = DEFAULT_EMAIL_FROM_ADDRESS;
@@ -159,7 +159,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 						         false);
 			} else {
 				mailer.sendEmail(getEmailFrom(documentType),
-						         new EmailTo(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
+						         new EmailTo(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
 								 subject,
 								 body,
 								 false);
@@ -557,10 +557,10 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected boolean sendActionListEmailNotification() {
-        LOG.debug("actionlistsendconstant: " + CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+        LOG.debug("actionlistsendconstant: " + CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
 
         return KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
-		        .equals(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+		        .equals(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
 	}
 
 	public void scheduleBatchEmailReminders() throws Exception {
@@ -631,12 +631,12 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected String getActionListUrl() {
-		return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.WORKFLOW_URL_KEY)
+		return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.WORKFLOW_URL_KEY)
 				+ "/" + "ActionList.do";
 	}
 
 	protected String getPreferencesUrl() {
-		return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.WORKFLOW_URL_KEY)
+		return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.WORKFLOW_URL_KEY)
 				+ "/" + "Preferences.do";
 	}
 }

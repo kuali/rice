@@ -47,20 +47,20 @@
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml" />
 	
-	<bean id="kualiModuleService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="kualiModuleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="kualiModuleService" />
 	</bean>
 	
-	<bean id="dataDictionaryService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="dataDictionaryService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="dataDictionaryService" />
 	</bean>
 
-	<bean id="persistenceServiceOjb" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="persistenceServiceOjb" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="persistenceServiceOjb" />
 	</bean>
 
     <bean id="xmlImpexRegistry"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="xmlImpexRegistry" />
 	</bean>
 	
@@ -80,13 +80,13 @@
 	
 	<bean id="edlLookupHelperService" class="org.kuali.rice.edl.impl.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype" />
 
-	<bean id="edlLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+	<bean id="edlLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" scope="prototype">
 		<property name="lookupableHelperService">
 			<ref bean="edlLookupHelperService" />
 		</property>
 	</bean>
 	
-    <bean id="styleService"	class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+    <bean id="styleService"	class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="styleService" />
 	</bean>
 	
@@ -129,7 +129,7 @@
 		<property name="serverDataSource" value="true"/>
     </bean>
     
-	<bean id="edlModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+	<bean id="edlModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
 		<property name="namespaceCode" value="KR-EDL" />
 		<property name="dataSourceName" value="enWorkflowDataSource" />
 		<property name="entityManager" ref="edlEntityManager" />
@@ -226,27 +226,27 @@
 
 				<!-- from kns -->
 
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRoutePerson.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml
 				</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRouteWorkgroup.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml
 				</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Attachment.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/Attachment.xml
 				</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceDummy.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml
 				</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceElements.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml
 				</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/BusinessObjectAttributeEntry.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml
 				</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml
 				</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentHeader.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml
 				</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/Note.xml
 				</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/NoteType.xml
 				</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml
 				</value>
 			</list>
 		</property>

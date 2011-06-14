@@ -17,7 +17,7 @@ package org.kuali.rice.kew.exception;
 
 import java.util.Collection;
 
-import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.rice.krad.util.MessageMap;
 
 public interface WorkflowServiceError {
   public Collection getChildren();

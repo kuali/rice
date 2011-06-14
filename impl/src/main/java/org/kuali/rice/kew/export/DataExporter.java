@@ -30,9 +30,9 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.impl.group.GroupBo;
-import org.kuali.rice.kns.bo.Exporter;
-import org.kuali.rice.kns.exception.ExportNotSupportedException;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.bo.Exporter;
+import org.kuali.rice.krad.exception.ExportNotSupportedException;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * The DataExporter allows for exporting of KEW BusinessObjects to various
@@ -48,11 +48,11 @@ public class DataExporter implements Exporter {
 	private List<String> supportedFormats = new ArrayList<String>();
 
 	public DataExporter() {
-		supportedFormats.add(KNSConstants.XML_FORMAT);
+		supportedFormats.add(KRADConstants.XML_FORMAT);
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.bo.Exporter#getSupportedFormats(java.lang.Class)
+	 * @see org.kuali.rice.krad.bo.Exporter#getSupportedFormats(java.lang.Class)
 	 */
 	@Override
 	public List<String> getSupportedFormats(Class<?> dataObjectClass) {
@@ -90,12 +90,12 @@ public class DataExporter implements Exporter {
 	/**
 	 * Export the given List of Objects of the specified type to XML.
 	 * 
-	 * @see org.kuali.rice.kns.bo.Exporter#export(java.lang.Class, java.util.List, java.lang.String, java.io.OutputStream)
+	 * @see org.kuali.rice.krad.bo.Exporter#export(java.lang.Class, java.util.List, java.lang.String, java.io.OutputStream)
 	 */
 	@Override
 	public void export(Class<?> dataObjectClass, List<? extends Object> dataObjects, String exportFormat, OutputStream outputStream) throws IOException,
 			ExportNotSupportedException {
-		if (!KNSConstants.XML_FORMAT.equals(exportFormat)) {
+		if (!KRADConstants.XML_FORMAT.equals(exportFormat)) {
 			throw new ExportNotSupportedException("The given export format of "
 					+ exportFormat
 					+ " is not supported by the KEW XML Exporter!");

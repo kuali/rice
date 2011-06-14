@@ -18,9 +18,9 @@ package edu.sampleu.travel.service;
 import java.util.Map;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import edu.sampleu.travel.dto.FiscalOfficerInfo;
 
@@ -34,8 +34,8 @@ public class FiscalOfficerInfoMaintainableImpl extends KualiMaintainableImpl {
     
     @Override
     public void saveBusinessObject() {
-        if(getMaintenanceAction().equals(KNSConstants.MAINTENANCE_NEW_ACTION) ||
-                getMaintenanceAction().equals(KNSConstants.MAINTENANCE_COPY_ACTION)) {
+        if(getMaintenanceAction().equals(KRADConstants.MAINTENANCE_NEW_ACTION) ||
+                getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)) {
             getFiscalOfficerService().createFiscalOfficer((FiscalOfficerInfo)getDataObject());
         }
         else {

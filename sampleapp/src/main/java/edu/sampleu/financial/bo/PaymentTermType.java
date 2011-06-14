@@ -17,10 +17,9 @@
 package edu.sampleu.financial.bo;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashMap;
 
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * Types of Payment Terms for Vendor Contracts. Per contract as distinct from <code>ShippingPaymentTerms</code>.

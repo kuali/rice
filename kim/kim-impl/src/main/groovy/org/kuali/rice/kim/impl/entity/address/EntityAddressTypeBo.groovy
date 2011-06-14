@@ -4,7 +4,7 @@ import javax.persistence.Column
 import javax.persistence.Id
 
 import org.kuali.rice.kim.api.entity.Type
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import javax.persistence.Entity
 
 import javax.persistence.Table

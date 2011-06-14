@@ -18,7 +18,7 @@ package org.kuali.rice.kew.doctype.service;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.krad.UserSession;
 
 
 public interface DocumentSecurityService {

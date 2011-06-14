@@ -3,7 +3,7 @@ package edu.sampleu.bookstore.document;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.document.TransactionalDocumentBase;
+import org.kuali.rice.krad.document.TransactionalDocumentBase;
 import edu.sampleu.bookstore.bo.BookOrder;
 
 /*

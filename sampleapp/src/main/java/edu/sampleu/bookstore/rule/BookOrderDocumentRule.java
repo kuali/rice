@@ -3,11 +3,11 @@ package edu.sampleu.bookstore.rule;
 import java.util.List;
 
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.krad.document.Document;
 
-import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import edu.sampleu.bookstore.bo.BookOrder;
 import edu.sampleu.bookstore.document.BookOrderDocument;
 
@@ -19,7 +19,7 @@ import edu.sampleu.bookstore.document.BookOrderDocument;
 
 public class BookOrderDocumentRule extends TransactionalDocumentRuleBase {
 
-	private static final String BOOK_ORDERS_PROPERTY_PATH = KNSConstants.DOCUMENT_PROPERTY_NAME + ".bookOrders";
+	private static final String BOOK_ORDERS_PROPERTY_PATH = KRADConstants.DOCUMENT_PROPERTY_NAME + ".bookOrders";
 	private static final String NO_BOOK_ORDERS_ERROR_KEY = RiceKeyConstants.ERROR_CUSTOM;
 	private static final String ERROR_MESSAGE_NO_ORDERS = "You must add at least one entry to your book order.";
 	

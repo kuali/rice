@@ -18,9 +18,9 @@ package org.kuali.rice.krms.impl.ui;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.web.spring.controller.UifControllerBase;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.web.spring.controller.UifControllerBase;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.springframework.stereotype.Controller;
@@ -95,7 +95,7 @@ public class EditorController extends UifControllerBase {
 	}
 	
 	private BusinessObjectService getBoService() {
-	    return KNSServiceLocator.getBusinessObjectService();
+	    return KRADServiceLocator.getBusinessObjectService();
 	}
 
 }

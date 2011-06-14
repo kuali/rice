@@ -16,43 +16,43 @@
     </bean>
 
 	<!-- import beans from GlobalResourceLoader -->
-	<bean id="notificationAuthorizationService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="notificationAuthorizationService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="notificationAuthorizationService" />
 	</bean>
 	
-	<bean id="notificationService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="notificationService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="notificationService" />
 	</bean>
 	
-	<bean id="notificationWorkflowDocumentService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="notificationWorkflowDocumentService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="notificationWorkflowDocumentService" />
 	</bean>
 	
-	<bean id="notificationChannelService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="notificationChannelService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="notificationChannelService" />
 	</bean>
 	
-	<bean id="notificationRecipientService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="notificationRecipientService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="notificationRecipientService" />
 	</bean>
 	
-	<bean id="messageContentService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="messageContentService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="messageContentService" />
 	</bean>
 	
-	<bean id="kenGenericDao" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="kenGenericDao" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="kenGenericDao" />
 	</bean>
 	
-	<bean id="notificationMessageDeliveryService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="notificationMessageDeliveryService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="notificationMessageDeliveryService" />
 	</bean>
 	
-	<bean id="userPreferenceService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="userPreferenceService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="userPreferenceService" />
 	</bean>
 	
-	<bean id="notificationContentTypeService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="notificationContentTypeService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="notificationContentTypeService" />
 	</bean>
    

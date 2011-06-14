@@ -26,9 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 
 /**
@@ -77,14 +77,14 @@ public class StatsForm extends KualiForm {
 	/**
 	 * Retrieves the "returnLocation" parameter after calling "populate" on the superclass.
 	 * 
-	 * @see org.kuali.rice.kns.web.struts.form.KualiForm#populate(javax.servlet.http.HttpServletRequest)
+	 * @see org.kuali.rice.krad.web.struts.form.KualiForm#populate(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
 	public void populate(HttpServletRequest request) {
 		super.populate(request);
 		
-        if (getParameter(request, KNSConstants.RETURN_LOCATION_PARAMETER) != null) {
-            setBackLocation(getParameter(request, KNSConstants.RETURN_LOCATION_PARAMETER));
+        if (getParameter(request, KRADConstants.RETURN_LOCATION_PARAMETER) != null) {
+            setBackLocation(getParameter(request, KRADConstants.RETURN_LOCATION_PARAMETER));
         }
 	}
 	

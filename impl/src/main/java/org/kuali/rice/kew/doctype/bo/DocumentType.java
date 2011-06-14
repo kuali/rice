@@ -82,9 +82,9 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that
@@ -1569,7 +1569,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     /**
-     * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
+     * @see org.kuali.rice.krad.bo.Inactivateable#isActive()
      */
     public boolean isActive() {
         boolean bRet = false;
@@ -1582,7 +1582,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     /**
-     * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
+     * @see org.kuali.rice.krad.bo.Inactivateable#setActive(boolean)
      */
     public void setActive(boolean active) {
         this.active = Boolean.valueOf(active);

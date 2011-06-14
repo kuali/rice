@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivateable;
 
 
 /**

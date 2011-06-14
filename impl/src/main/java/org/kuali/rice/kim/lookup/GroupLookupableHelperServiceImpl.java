@@ -37,27 +37,27 @@ import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
-import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
-import org.kuali.rice.kns.web.struts.form.LookupForm;
-import org.kuali.rice.kns.web.ui.Column;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.ResultRow;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.krad.lookup.keyvalues.IndicatorValuesFinder;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.lookup.keyvalues.KimAttributeValuesFinder;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.comparator.CellComparatorHelper;
+import org.kuali.rice.krad.web.struts.form.LookupForm;
+import org.kuali.rice.krad.web.ui.Column;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.ResultRow;
+import org.kuali.rice.krad.web.ui.Row;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -103,17 +103,17 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     	String href = "";
 
         Properties parameters = new Properties();
-        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
+        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOC_HANDLER_METHOD);
+        parameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+        parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
         parameters.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupBo.getId());
         if (StringUtils.isNotBlank(getReturnLocation())) {
-        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 		}
         href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters);
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
-        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
+        		KRADConstants.DOC_HANDLER_METHOD, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
         return anchorHtmlData;
     }
 
@@ -239,8 +239,8 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 
     @Override
 	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
-        setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
-        setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
+        setBackLocation((String) lookupForm.getFieldsForLookup().get(KRADConstants.BACK_LOCATION));
+        setDocFormKey((String) lookupForm.getFieldsForLookup().get(KRADConstants.DOC_FORM_KEY));
         Collection displayList;
 
         // call search method to get results
@@ -283,7 +283,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                 Formatter formatter = col.getFormatter();
 
                 // pick off result column from result list, do formatting
-                String propValue = KNSConstants.EMPTY_STRING;
+                String propValue = KRADConstants.EMPTY_STRING;
                 Object prop = null;
                 if (col.getPropertyName().matches("\\w+\\.\\d+$")) {
                     String id = col.getPropertyName().substring(col.getPropertyName().lastIndexOf('.') + 1); //.split("\\d+$"))[1];
@@ -381,7 +381,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 		// get the distinct list of type IDs from all groups in the system
         for (KimType kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getId()) == null) {
-                String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
+                String value = kimType.getNamespaceCode().trim() + KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
                 options.add(new ConcreteKeyValue(kimType.getId(), value));
             }
         }

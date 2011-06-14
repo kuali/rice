@@ -19,8 +19,8 @@ import java.util.Map;
 
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -35,7 +35,7 @@ public class PersonInquirableImpl extends KualiInquirableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
+	 * @see org.kuali.rice.krad.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

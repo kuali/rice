@@ -20,8 +20,8 @@ import org.junit.Test;
 import org.kuali.rice.edl.framework.util.EDLFunctions;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

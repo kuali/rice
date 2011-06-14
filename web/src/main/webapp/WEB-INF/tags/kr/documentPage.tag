@@ -24,7 +24,7 @@
 <%@ attribute name="renderMultipart" required="false" description="Boolean value of whether the HTML form rendred on this page will be encoded to accept multipart - ie, uploaded attachment - input." %>
 <%@ attribute name="showTabButtons" required="false" description="Whether to show the show/hide all tabs buttons." %>
 <%@ attribute name="extraTopButtons" required="false" type="java.util.List" %>
-<%@ attribute name="headerDispatch" required="false" description="A List of org.kuali.rice.kns.web.ui.ExtraButton objects to display at the top of the page." %>
+<%@ attribute name="headerDispatch" required="false" description="A List of org.kuali.rice.krad.web.ui.ExtraButton objects to display at the top of the page." %>
 <%@ attribute name="headerTabActive" required="false" description="The name of the active header tab, if header navigation is used." %>
 <%@ attribute name="feedbackKey" required="false" description="application resources key that contains feedback contact address only used when lookup attribute is false" %>
 <%@ attribute name="auditCount" required="false" description="The number of audit errors displayed on this page." %>

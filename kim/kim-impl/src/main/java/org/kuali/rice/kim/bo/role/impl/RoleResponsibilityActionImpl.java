@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.role.impl;
 
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
 

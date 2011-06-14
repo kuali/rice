@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.rule.ui;
 
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
-import org.kuali.rice.kns.rule.BusinessRule;
+import org.kuali.rice.krad.rule.BusinessRule;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

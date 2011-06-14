@@ -67,7 +67,7 @@ Here is a partial, annotated directory structure for the source distribution:
   /ken  <-- Kuali Enterprise Notification unit tests
   /kew  <-- Kuali Enterprise Workflow unit tests
   /kim  <-- Kuail Identity Management unit tests
-  /kns  <-- Kuali Nervous System unit tests
+  /krad <-- Kuali Development Framework unit tests
   /ksb  <-- Kuali Service Bus unit tests
   /web  <-- content, configuration (Struts and Spring), and JSPs for the web 
       interface to Rice

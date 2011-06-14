@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kns.dto.InactiveableInfo;
+import org.kuali.rice.krad.dto.InactiveableInfo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

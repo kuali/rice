@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.ErrorsField"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.ErrorsField"/>
 
 <krad:div component="${field}">
 <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->

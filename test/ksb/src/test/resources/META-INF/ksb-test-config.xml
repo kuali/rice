@@ -60,7 +60,7 @@
     <param name="org.quartz.jobStore.isClustered">false</param>
     <param name="org.quartz.jobStore.tablePrefix">KRSB_QRTZ_</param>
      -->
-    <param name="rice.ksb.loadKNSModuleConfiguration">false</param>
+    <param name="rice.ksb.loadKRADModuleConfiguration">false</param>
 	
     <param name="config.location">${additional.config.locations}</param>
 	<param name="config.location">${alt.config.location}</param>

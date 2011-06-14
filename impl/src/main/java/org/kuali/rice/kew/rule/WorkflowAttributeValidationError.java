@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.rice.krad.util.MessageMap;
 
 
 /**

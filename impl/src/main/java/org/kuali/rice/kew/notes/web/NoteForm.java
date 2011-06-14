@@ -19,10 +19,7 @@ package org.kuali.rice.kew.notes.web;
 import java.util.List;
 
 import org.kuali.rice.kew.notes.Note;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 
 /**

@@ -21,13 +21,13 @@
   
     <form-beans>
     	<!-- Begin required KNS forms -->
-        <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
+        <form-bean name="KualiForm" type="org.kuali.rice.krad.web.struts.form.KualiForm" />
     	<!-- End required KNS forms -->
     </form-beans>
 
 	<global-exceptions>
 		<exception type="java.lang.Throwable"
-			handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler"
+			handler="org.kuali.rice.krad.web.struts.pojo.StrutsExceptionIncidentHandler"
 			key="meaningless" />
 	</global-exceptions>
 
@@ -47,19 +47,19 @@
     <action-mappings>
 		<!-- Rice Pass-through Actions : These delegate to the Rice (kr) struts module -->
         <action path="/kualiExceptionIncidentReport"
-                type="org.kuali.rice.kns.web.struts.action.KualiExceptionHandlerAction">
+                type="org.kuali.rice.krad.web.struts.action.KualiExceptionHandlerAction">
             <forward name="basic" path="/kr/kualiExceptionIncidentReport.do" />
         </action>        
 		<!-- End Rice Pass-through Actions -->
        	<!-- Begin required KNS mappings -->       
-        <action path="/portal" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
+        <action path="/portal" name="KualiForm" type="org.kuali.rice.krad.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
         </action>
-        <action path="/index" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
+        <action path="/index" name="KualiForm" type="org.kuali.rice.krad.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
         </action>
         <!-- KULRICE-2903: An action mapping to "/updateTextArea" is needed here when Javascript is enabled. -->
-        <action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase">
+        <action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase">
             <forward name="basic" path="/kr/WEB-INF/jsp/TextArea.jsp" />
         </action>
        	<!-- End required KNS mappings -->
@@ -69,7 +69,7 @@
 		</action>
     </action-mappings>
 
-    <controller processorClass="org.kuali.rice.kns.web.struts.action.KualiRequestProcessor" />
-    <message-resources factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="" /> 
+    <controller processorClass="org.kuali.rice.krad.web.struts.action.KualiRequestProcessor" />
+    <message-resources factory="org.kuali.rice.krad.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="" />
 </struts-config>
 

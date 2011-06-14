@@ -17,16 +17,16 @@ package org.kuali.rice.core.web.component;
 
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.impl.component.ComponentBo;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.DataDictionaryException;
-import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.datadictionary.DataDictionaryException;
+import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Since ParameterDetailType can be either DataDictionary or DB based, we need a custom {@link org.kuali.rice.kns.inquiry.Inquirable} to
+ * Since ParameterDetailType can be either DataDictionary or DB based, we need a custom {@link org.kuali.rice.krad.inquiry.Inquirable} to
  * check both.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -53,7 +53,7 @@ public class ComponentInquirableImpl extends KualiInquirableImpl {
 
 			List<Component> components;
 	        try {
-	        	components = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
+	        	components = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
 	        } catch (DataDictionaryException ex) {
 	            throw new RuntimeException(
 	            		"Problem parsing data dictionary during full load required for inquiry to function: " + 
@@ -75,7 +75,7 @@ public class ComponentInquirableImpl extends KualiInquirableImpl {
 	/**
 	 * This overridden method gets the BO for inquiries on {@link org.kuali.rice.core.impl.component.ComponentBo}
 	 * 
-	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
+	 * @see org.kuali.rice.krad.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
 	 */
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
@@ -93,7 +93,7 @@ public class ComponentInquirableImpl extends KualiInquirableImpl {
 
 			List<Component> components;
 	        try {
-	        	components = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
+	        	components = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
 	        } catch (DataDictionaryException ex) {
 	            throw new RuntimeException(
 	            		"Problem parsing data dictionary during full load required for inquiry to function: " + 

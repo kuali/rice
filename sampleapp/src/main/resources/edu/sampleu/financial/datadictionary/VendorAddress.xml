@@ -103,7 +103,7 @@
     <property name="shortLabel" value="Default Address"/>
     <property name="maxLength" value="1"/>
     <property name="controlField">
-      <!-- <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.IndicatorYNOnlyValuesFinder" p:includeKeyInLabel="false"/> -->
+      <!-- <bean parent="SelectControlDefinition" p:valuesFinderClass="IndicatorYNOnlyValuesFinder" p:includeKeyInLabel="false"/> -->
       <bean parent="CheckboxControl"/>
     </property>
   </bean>

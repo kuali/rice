@@ -18,7 +18,7 @@ package org.kuali.rice.kim.impl.common.active
 
 import java.sql.Timestamp
 import javax.persistence.Column
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 public abstract class ActiveFromToBo extends PersistableBusinessObjectBase {
     @Column(name = "ACTV_FRM_DT")

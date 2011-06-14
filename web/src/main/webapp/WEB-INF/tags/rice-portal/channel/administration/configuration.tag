@@ -37,7 +37,7 @@
 		</li>
     	<li>
 		<portal:portalLink displayTitle="true" title="Pessimistic Lock" 
-			url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.document.authorization.PessimisticLock&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" />
+			url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.krad.document.authorization.PessimisticLock&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" />
 		</li>		
 		<li>
 		<portal:portalLink displayTitle="true" title="Configuration Viewer"

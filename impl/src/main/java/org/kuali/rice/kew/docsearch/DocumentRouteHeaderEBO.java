@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 
 
 /**

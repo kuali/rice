@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kns.service.BusinessObjectService;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 

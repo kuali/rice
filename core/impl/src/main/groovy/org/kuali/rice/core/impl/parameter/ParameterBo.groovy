@@ -29,7 +29,7 @@ import org.kuali.rice.core.api.parameter.EvaluationOperator
 import org.kuali.rice.core.api.parameter.ParameterContract
 import org.kuali.rice.core.impl.component.ComponentBo
 import org.kuali.rice.core.impl.namespace.NamespaceBo
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @IdClass(ParameterId.class)
 @Entity

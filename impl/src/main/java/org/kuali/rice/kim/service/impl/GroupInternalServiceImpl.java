@@ -31,8 +31,8 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.service.GroupInternalService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
@@ -44,7 +44,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
  */
 public class GroupInternalServiceImpl implements GroupInternalService {
     protected BusinessObjectService getBusinessObjectService() {
-    	return KNSServiceLocator.getBusinessObjectService();
+    	return KRADServiceLocator.getBusinessObjectService();
     }
 
 

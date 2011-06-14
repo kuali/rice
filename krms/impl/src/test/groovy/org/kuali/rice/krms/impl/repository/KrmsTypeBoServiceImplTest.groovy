@@ -22,10 +22,10 @@ import groovy.mock.interceptor.MockFor
 import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
-import org.junit.Ignore
+
 import org.junit.Test
-import org.kuali.rice.kns.bo.PersistableBusinessObject
-import org.kuali.rice.kns.service.BusinessObjectService
+import org.kuali.rice.krad.bo.PersistableBusinessObject
+import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;

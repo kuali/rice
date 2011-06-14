@@ -30,31 +30,31 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
-import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
-import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
-import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
-import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
-import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.ErrorMessage;
-import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSUtils;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.web.comparator.StringValueComparator;
-import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
+import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
+import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
+import org.kuali.rice.krad.lookup.LookupUtils;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.lookup.keyvalues.KimAttributeValuesFinder;
+import org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.DictionaryValidationService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.ErrorMessage;
+import org.kuali.rice.krad.util.FieldUtils;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.web.comparator.StringValueComparator;
+import org.kuali.rice.krad.web.ui.Field;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -96,21 +96,21 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KRADServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
 
 	protected DictionaryValidationService getDictionaryValidationService() {
 		if ( dictionaryValidationService == null ) {
-			dictionaryValidationService = KNSServiceLocatorWeb.getDictionaryValidationService();
+			dictionaryValidationService = KRADServiceLocatorWeb.getDictionaryValidationService();
 		}
 		return dictionaryValidationService;
 	}
 
 	protected DataDictionaryService getDataDictionaryService() {
 		if ( dataDictionaryService == null ) {
-			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
+			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 		}
 		return this.dataDictionaryService;
 	}
@@ -226,7 +226,8 @@ public class KimTypeServiceBase implements KimTypeService {
 		if(propertyDescriptor!=null && attributeValue!=null){
 			Class<?> propertyType = propertyDescriptor.getPropertyType();
 			if(propertyType!=String.class){
-				attributeValueObject = KNSUtils.createObject(propertyType, new Class[]{String.class}, new Object[] {attributeValue});
+				attributeValueObject = KRADUtils
+                        .createObject(propertyType, new Class[]{String.class}, new Object[]{attributeValue});
 			} else {
 				attributeValueObject = attributeValue;
 			}
@@ -636,7 +637,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			if ( LOG.isDebugEnabled() ) {
 				LOG.debug( "Unable to find class " + componentClassName + " in available classloaders. Deferring to the service bus." );
 			}
-			baseDefinition = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getBusinessObjectAttributeDefinition(componentClassName, attributeName);
+			baseDefinition = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getBusinessObjectAttributeDefinition(componentClassName, attributeName);
 		}
 		
 		if (baseDefinition != null) {

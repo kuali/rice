@@ -436,6 +436,11 @@ h2 img.expand_collapse-buttons[alt="collapse"] {
 	background-repeat:no-repeat;
 }
 
+.group-actions {
+    float: right;
+    margin-bottom: 5px;
+}
+
 h3 img.expand_collapse-buttons[alt="expand"] {
 	background: url(../../images/h3_expand-back-kns.png);
 	background-repeat:no-repeat;

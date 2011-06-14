@@ -27,8 +27,8 @@ import org.kuali.rice.kim.api.group.GroupMember
 import org.kuali.rice.kim.api.group.GroupService
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.kim.util.KimConstants
-import org.kuali.rice.kns.service.BusinessObjectService
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
+import org.kuali.rice.krad.service.BusinessObjectService
+
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo
 
 

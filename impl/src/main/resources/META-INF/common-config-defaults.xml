@@ -20,7 +20,7 @@
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>
-    <param name="rice.struts.message.resources" override="false">org.kuali.rice.kns.ApplicationResources,org.kuali.rice.kns.KRAD-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources</param>
+    <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRAD-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources</param>
     <param name="http.port" override="false">8080</param>
     <param name="application.host" override="false">localhost</param>
     <param name="application.http.scheme" override="false">http</param>
@@ -211,15 +211,15 @@
     <param name="session.document.cache.size" override="false">100</param>
 
 
-    <param name="kns.cache.parameter.max.size" override="false">200</param>
-    <param name="kns.cache.parameter.max.age.seconds" override="false">3600</param>
-    <param name="kns.cache.nonDatabaseComponent.max.size" override="false">50</param>
-    <param name="kns.cache.nonDatabaseComponent.max.age.seconds" override="false">3600</param>
+    <param name="krad.cache.parameter.max.size" override="false">200</param>
+    <param name="krad.cache.parameter.max.age.seconds" override="false">3600</param>
+    <param name="krad.cache.nonDatabaseComponent.max.size" override="false">50</param>
+    <param name="krad.cache.nonDatabaseComponent.max.age.seconds" override="false">3600</param>
 
 	<param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
     <param name="attachments.pending.directory" override="false">${attachments.directory}/pending</param>
 
-    <param name="rice.kns.illegalBusinessObjectsForSave.applyCheck" override="false">true</param>
+    <param name="rice.krad.illegalBusinessObjectsForSave.applyCheck" override="false">true</param>
 
     <param name="kns.editable.properties.history.size" override="false">20</param>
     
@@ -263,14 +263,14 @@
 	<!-- End KSB-specific JPA parameters -->
 
 	<!-- KNS-specific JPA parameters -->
-	<param name="rice.kns.jpa.enabled" override="false">false</param>
-	<param name="rice.kns.application.jpa.PersistenceXmlLocation" override="false">META-INF/kns-persistence.xml</param>
-	<param name="rice.kns.application.jpa.PersistenceUnitName" override="false">kns-application-unit</param>
-	<param name="rice.kns.application.jpa.GenerateDdl" override="false">true</param>
+	<param name="rice.krad.jpa.enabled" override="false">false</param>
+	<param name="rice.krad.application.jpa.PersistenceXmlLocation" override="false">META-INF/krad-persistence.xml</param>
+	<param name="rice.krad.application.jpa.PersistenceUnitName" override="false">krad-application-unit</param>
+	<param name="rice.krad.application.jpa.GenerateDdl" override="false">true</param>
 
-	<param name="rice.kns.server.jpa.PersistenceXmlLocation" override="false">META-INF/kns-persistence.xml</param>
-	<param name="rice.kns.server.jpa.PersistenceUnitName" override="false">kns-server-unit</param>
-	<param name="rice.kns.server.jpa.GenerateDdl" override="false">true</param>
+	<param name="rice.krad.server.jpa.PersistenceXmlLocation" override="false">META-INF/krad-persistence.xml</param>
+	<param name="rice.krad.server.jpa.PersistenceUnitName" override="false">krad-server-unit</param>
+	<param name="rice.krad.server.jpa.GenerateDdl" override="false">true</param>
 
 	<!-- End KNS-specific JPA parameters -->
 
@@ -389,8 +389,8 @@
 	<param name="rice.kr.struts.config.files" override="false">/kr/WEB-INF/struts-config.xml</param>
 	<param name="kr.url" override="false">${application.url}/kr</param>
 	<param name="kr.mode" override="false">LOCAL</param>
-	<param name="knsServer.datasource.jndi.location" override="false"></param>
-	<param name="knsApplication.datasource.jndi.location" override="false"></param>
+	<param name="kradServer.datasource.jndi.location" override="false"></param>
+	<param name="kradApplication.datasource.jndi.location" override="false"></param>
 	<param name="rice.kr.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kr.expose.services.on.bus" override="false">true</param>
 	<param name="rice.kr.include.user.interface.components" override="false">true</param>

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.util;
 
-import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -37,7 +37,7 @@ public final class KIMPropertyConstants {
 		public static final String PRINCIPAL_ID = "principalId";
 		public static final String PRINCIPAL_NAME = "principalName";
 		public static final String PASSWORD = "password";
-		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
+		public static final String ACTIVE = KRADPropertyConstants.ACTIVE;
 		
 		private Principal() {
 			throw new UnsupportedOperationException("do not call");
@@ -52,9 +52,9 @@ public final class KIMPropertyConstants {
 		public static final String MIDDLE_NAME = "middleName";
 		public static final String LAST_NAME = "lastName";
 		public static final String NAME = "name";
-		public static final String EMAIL_ADDRESS = KNSPropertyConstants.EMAIL_ADDRESS;
+		public static final String EMAIL_ADDRESS = KRADPropertyConstants.EMAIL_ADDRESS;
 		public static final String PHONE_NUMBER = "phoneNumber";
-		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
+		public static final String ACTIVE = KRADPropertyConstants.ACTIVE;
 		public static final String EMPLOYEE_ID = "employeeId";
 		public static final String EMPLOYEE_STATUS_CODE = "employeeStatusCode";
 		public static final String EMPLOYEE_TYPE_CODE = "employeeTypeCode";
@@ -64,10 +64,10 @@ public final class KIMPropertyConstants {
 		public static final String ADDRESS_LINE_2 = "line2";
 		public static final String ADDRESS_LINE_3 = "line3";
 		public static final String CITY_NAME = "cityName";
-		public static final String STATE_CODE = KNSPropertyConstants.STATE_CODE;
-		public static final String POSTAL_CODE = KNSPropertyConstants.POSTAL_CODE;
-		public static final String COUNTRY_CODE = KNSPropertyConstants.COUNTY_CODE;
-		public static final String CAMPUS_CODE = KNSPropertyConstants.CAMPUS_CODE;
+		public static final String STATE_CODE = KRADPropertyConstants.STATE_CODE;
+		public static final String POSTAL_CODE = KRADPropertyConstants.POSTAL_CODE;
+		public static final String COUNTRY_CODE = KRADPropertyConstants.COUNTY_CODE;
+		public static final String CAMPUS_CODE = KRADPropertyConstants.CAMPUS_CODE;
 		public static final String AFFILIATION_TYPE_CODE = "affiliationTypeCode";
 		public static final String PRIMARY_DEPARTMENT_CODE = "primaryDepartmentCode";
 		public static final String BASE_SALARY_AMOUNT = "baseSalaryAmount";
@@ -98,7 +98,7 @@ public final class KIMPropertyConstants {
 		public static final String ROLE_ID = "roleId";
 		public static final String ROLE_NAME = "roleName";
 	    public static final String KIM_TYPE_ID = KimType.KIM_TYPE_ID;
-		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
+		public static final String ACTIVE = KRADPropertyConstants.ACTIVE;
 		
 		private Role() {
 			throw new UnsupportedOperationException("do not call");
@@ -158,7 +158,7 @@ public final class KIMPropertyConstants {
 	public static final class Delegation {
 		public static final String ROLE_ID = "roleId";
 		public static final String DELEGATION_ID = "delegationId";
-		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
+		public static final String ACTIVE = KRADPropertyConstants.ACTIVE;
 		
 		private Delegation() {
 			throw new UnsupportedOperationException("do not call");

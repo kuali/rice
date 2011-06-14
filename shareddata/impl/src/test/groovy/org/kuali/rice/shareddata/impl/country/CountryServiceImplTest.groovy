@@ -21,8 +21,8 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import org.kuali.rice.kns.service.BusinessObjectService
-import org.kuali.rice.kns.util.KNSPropertyConstants
+import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.krad.util.KRADPropertyConstants
 import org.kuali.rice.shareddata.api.country.Country
 import org.kuali.rice.shareddata.api.country.CountryService
 
@@ -73,7 +73,7 @@ class CountryServiceImplTest {
     @Test
     public void test_getCountry() {
         businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return sampleCountries.get(map.get(KNSPropertyConstants.POSTAL_COUNTRY_CODE))
+            Class clazz, Map map -> return sampleCountries.get(map.get(KRADPropertyConstants.POSTAL_COUNTRY_CODE))
         }
         injectBusinessObjectServiceIntoCountryService()
 
@@ -101,7 +101,7 @@ class CountryServiceImplTest {
         businessObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, Map map ->
             [sampleCountriesKeyedByAltCode.get(
-                    map.get(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE))]
+                    map.get(KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE))]
         }
         injectBusinessObjectServiceIntoCountryService()
 

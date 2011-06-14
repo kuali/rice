@@ -25,10 +25,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.util.BeanPropertyComparator;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.krad.util.BeanPropertyComparator;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * This is a description of what this class does - chb don't forget to fill this in.
@@ -45,14 +45,14 @@ public class DocumentTypeLookupableHelperServiceImpl extends
     /**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResultsHelper(java.util.Map, boolean)
+	 * @see org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl#getSearchResultsHelper(java.util.Map, boolean)
 	 */
 	@Override
 	protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded)
 	{
-        setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
-        setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
-        setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
+        setBackLocation(fieldValues.get(KRADConstants.BACK_LOCATION));
+        setDocFormKey(fieldValues.get(KRADConstants.DOC_FORM_KEY));
+        setReferencesToRefresh(fieldValues.get(KRADConstants.REFERENCES_TO_REFRESH));
 
         DocumentType documentType = loadDocumentTypeForSearch(fieldValues);
 

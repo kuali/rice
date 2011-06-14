@@ -17,7 +17,7 @@ package org.kuali.rice.kim.rule.ui;
 
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kns.rule.BusinessRule;
+import org.kuali.rice.krad.rule.BusinessRule;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 

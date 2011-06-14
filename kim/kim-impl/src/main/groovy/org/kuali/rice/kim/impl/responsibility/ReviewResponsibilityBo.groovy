@@ -18,7 +18,7 @@ package org.kuali.rice.kim.impl.responsibility
 
 import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.util.KimConstants
-import org.kuali.rice.kns.bo.BusinessObject
+import org.kuali.rice.krad.bo.BusinessObject
 
 class ReviewResponsibilityBo implements BusinessObject {
 

@@ -67,7 +67,7 @@
     <property name="businessObjectClass" value="edu.sampleu.bookstore.bo.Book"/>
     <property name="maintainableClass" value="edu.sampleu.bookstore.maintenance.BookMaintainable"/>
     <property name="documentTypeName" value="BookMaintenanceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="lockingKeys">
       <list>
         <value>id</value>

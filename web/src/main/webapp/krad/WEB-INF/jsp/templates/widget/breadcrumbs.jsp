@@ -16,7 +16,7 @@
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <tiles:useAttribute name="widget"
-	classname="org.kuali.rice.kns.uif.widget.BreadCrumbs" />
+	classname="org.kuali.rice.krad.uif.widget.BreadCrumbs" />
 	
 <c:set var="current" value="${KualiForm.formHistory.generatedCurrentBreadcrumb}"/>
 <c:set var="crumbs" value="${KualiForm.formHistory.generatedBreadcrumbs}"/> 

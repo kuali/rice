@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import org.kuali.rice.kns.bo.Defaultable;
-import org.kuali.rice.kns.bo.DefaultableInactivateable;
+import org.kuali.rice.krad.bo.Defaultable;
+import org.kuali.rice.krad.bo.DefaultableInactivateable;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

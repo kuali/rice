@@ -22,7 +22,7 @@ import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -123,7 +123,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		Map<String, Object> fieldValues = new HashMap<String, Object>();
 		fieldValues.put("namespaceCode", "KUALI");
 		fieldValues.put("name", "Default");
-		KimPermissionTemplateImpl template = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionTemplateImpl.class, fieldValues);
+		KimPermissionTemplateImpl template = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionTemplateImpl.class, fieldValues);
 		if (template == null) {
 			fail("Failed to locate the default Permission Template.");
 		}
@@ -143,7 +143,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 	}
 	
 	protected String getIdFromSequence(String sequenceName) {
-		Long sequenceId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
+		Long sequenceId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
 		return "" + sequenceId;
     }
 }

@@ -26,8 +26,8 @@ import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.rule.ui.AddPermissionRule;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.rules.DocumentRuleBase;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.rules.DocumentRuleBase;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

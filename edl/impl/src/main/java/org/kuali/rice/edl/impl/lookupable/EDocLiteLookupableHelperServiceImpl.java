@@ -19,12 +19,12 @@ package org.kuali.rice.edl.impl.lookupable;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.edl.impl.UserAction;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.struts.form.LookupForm;
 
 import java.util.ArrayList;
 import java.util.Collection;

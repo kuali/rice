@@ -22,9 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.core.util.type.KualiPercent;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.spring.controller.UifControllerBase;
-import org.kuali.rice.kns.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.spring.controller.UifControllerBase;
+import org.kuali.rice.krad.web.spring.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;

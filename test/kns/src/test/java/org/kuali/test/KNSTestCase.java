@@ -36,12 +36,12 @@ import java.util.List;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public abstract class KNSTestCase extends BaselineTestCase {
 
-	private static final String SQL_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.sql";
-	private static final String XML_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.xml";
-    private static final String KNS_MODULE_NAME = "kns";
+	private static final String SQL_FILE = "classpath:org/kuali/rice/krad/test/DefaultSuiteTestData.sql";
+	private static final String XML_FILE = "classpath:org/kuali/rice/krad/test/DefaultSuiteTestData.xml";
+    private static final String KRAD_MODULE_NAME = "krad";
 
     public KNSTestCase() {
-		super(KNS_MODULE_NAME);
+		super(KRAD_MODULE_NAME);
 	}
 
     @Override
@@ -59,7 +59,7 @@ public abstract class KNSTestCase extends BaselineTestCase {
 
 	@Override
 	protected Lifecycle getLoadApplicationLifecycle() {
-        SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KNSTestResourceLoader"), "classpath:KnsTestSpringBeans.xml", null);
+        SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KRADTestResourceLoader"), "classpath:KradTestSpringBeans.xml", null);
     	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
     	return springResourceLoader;
 	}

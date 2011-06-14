@@ -27,11 +27,11 @@ import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +67,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getName());
         allowsEdit = KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
         		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
-				KNSConstants.KNS_NAMESPACE,
+				KRADConstants.KRAD_NAMESPACE,
 				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
 				permissionDetails, null);
         
@@ -79,7 +79,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         List<? extends BusinessObject> results;
         
         // get the DD detail types
-        List<Component> ddDetailTypes = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
+        List<Component> ddDetailTypes = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
         if (fieldValues.containsKey(COMPONENT_NAME) && !StringUtils.isBlank(fieldValues.get(COMPONENT_NAME))) {
         	final Set<ComponentBo> matchingDetailTypes = new HashSet<ComponentBo>();
             // perform a basic database lookup for detail types codes

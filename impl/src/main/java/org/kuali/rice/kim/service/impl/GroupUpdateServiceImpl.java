@@ -37,8 +37,8 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 import javax.jws.WebService;
@@ -356,7 +356,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
 	protected SequenceAccessorService getSequenceAccessorService() {
 		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+			sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
 		}
 		return sequenceAccessorService;
 	}

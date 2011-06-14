@@ -57,51 +57,51 @@
 	<!-- hack start cannot use GRL to import b/c of Spring Inheritance -->
 
 	<bean id="persistenceStructureService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="persistenceStructureService" />
 	</bean>
 	
 	<bean id="businessObjectDictionaryService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectDictionaryService" />
 	</bean>
 	
 	<bean id="dataDictionaryService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="dataDictionaryService" />
 	</bean>
 	
 	<bean id="encryptionService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="encryptionService" />
 	</bean>
 	
 	<bean id="lookupService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="lookupService" />
 	</bean>
 	
 	<bean id="businessObjectMetaDataService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectMetaDataService" />
 	</bean>
 	
 	<bean id="sequenceAccessorService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="sequenceAccessorService" />
 	</bean>
 	
 	<bean id="lookupResultsService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="lookupResultsService" />
 	</bean>
 	
 	<bean id="businessObjectService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectService" />
 	</bean>
 
-	<bean id="lookupableHelperService" class="org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl">
+	<bean id="lookupableHelperService" class="org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl">
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService" />
 		</property>
@@ -131,7 +131,7 @@
 		</property>
 	</bean>
 	
-	<bean id="kualiLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+	<bean id="kualiLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" scope="prototype">
 		<property name="lookupableHelperService">
 			<ref bean="lookupableHelperService" />
 		</property>
@@ -159,7 +159,7 @@
         </property>
     </bean>
 
-    <bean id="roleMemberImplLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+    <bean id="roleMemberImplLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.RoleMemberImplLookupableHelperServiceImpl"
                 parent="lookupableHelperService">
@@ -188,14 +188,14 @@
         </property>
     </bean>
 
-	<bean id="kimTypeLookupableHelperServiceImpl" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+	<bean id="kimTypeLookupableHelperServiceImpl" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl" parent="lookupableHelperService">
             </bean>
         </property>
     </bean>
 
-	<bean id="kimDocumentRoleMemberLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+	<bean id="kimDocumentRoleMemberLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.KimDocumentRoleMemberLookupableHelperServiceImpl" parent="lookupableHelperService">
             </bean>

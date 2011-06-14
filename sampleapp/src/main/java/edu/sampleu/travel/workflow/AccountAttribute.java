@@ -23,8 +23,8 @@ import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.identity.PrincipalName;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.workflow.WorkflowUtils;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.workflow.WorkflowUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -57,7 +57,7 @@ public class AccountAttribute extends AbstractRoleAttribute {
         List<String> qualifiedRoleNames = new ArrayList<String>();
         XPath xpath = WorkflowUtils.getXPath(documentContent.getDocument());
         // This xpath stream needs updating when the TravelAccount is being updated
-        NodeList accountNums = (NodeList) xstreamSafeEval(xpath, "/documentContent/applicationContent/org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer/document/travelAccounts/vector/default/elementData/edu.sampleu.travel.bo.TravelAccount/number", documentContent.getDocument(), XPathConstants.NODESET);
+        NodeList accountNums = (NodeList) xstreamSafeEval(xpath, "/documentContent/applicationContent/org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer/document/travelAccounts/vector/default/elementData/edu.sampleu.travel.bo.TravelAccount/number", documentContent.getDocument(), XPathConstants.NODESET);
         for (int i = 0; i < accountNums.getLength(); i++) {
             Node accountNum = accountNums.item(i);
             String accuntNumVal = accountNum.getTextContent();
@@ -76,7 +76,7 @@ public class AccountAttribute extends AbstractRoleAttribute {
         String accountNum = qualifiedRole;
         TravelAccount account = new TravelAccount();
         account.setNumber(accountNum);
-        account = (TravelAccount) KNSServiceLocator.getBusinessObjectService().retrieve(account);
+        account = (TravelAccount) KRADServiceLocator.getBusinessObjectService().retrieve(account);
         if (account == null) {
             throw new RuntimeException("Account " + accountNum + " does not exist!");
         }

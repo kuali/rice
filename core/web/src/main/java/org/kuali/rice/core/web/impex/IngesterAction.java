@@ -31,11 +31,11 @@ import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSUtils;
-import org.kuali.rice.kns.web.struts.action.KualiAction;
+import org.kuali.rice.krad.exception.AuthorizationException;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.struts.action.KualiAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -209,9 +209,9 @@ public class IngesterAction extends KualiAction {
     {
     	String principalId = GlobalVariables.getUserSession().getPrincipalId();
     	AttributeSet roleQualifier = new AttributeSet();
-    	AttributeSet permissionDetails = KNSUtils.getNamespaceAndActionClass(this.getClass());
+    	AttributeSet permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
 
-        if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
+        if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))
         {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(),

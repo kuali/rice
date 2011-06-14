@@ -18,7 +18,7 @@ package org.kuali.rice.kim.impl.common.attribute
 
 import org.kuali.rice.kim.api.common.attribute.KimAttribute
 import org.kuali.rice.kim.api.common.attribute.KimAttributeContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 class KimAttributeBo extends PersistableBusinessObjectBase implements KimAttributeContract {
     private static final long serialVersionUID = 1L;

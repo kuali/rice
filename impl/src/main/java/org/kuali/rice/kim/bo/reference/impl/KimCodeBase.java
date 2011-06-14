@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.reference.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.reference.KimCode;
-import org.kuali.rice.kns.bo.KualiCodeBase;
+import org.kuali.rice.krad.bo.KualiCodeBase;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;

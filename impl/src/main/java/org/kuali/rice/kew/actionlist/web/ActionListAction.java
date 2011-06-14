@@ -49,11 +49,11 @@ import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.bo.Person;
 
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.struts.action.KualiAction;
-import org.kuali.rice.kns.web.ui.ExtraButton;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.exception.AuthorizationException;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.struts.action.KualiAction;
+import org.kuali.rice.krad.web.ui.ExtraButton;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -712,7 +712,7 @@ public class ActionListAction extends KualiAction {
 
     public ActionForward clearFilter(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("clearFilter ActionListAction");
-        final org.kuali.rice.kns.UserSession commonUserSession = getUserSession();
+        final org.kuali.rice.krad.UserSession commonUserSession = getUserSession();
         commonUserSession.removeObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
         KEWServiceLocator.getActionListService().saveRefreshUserOption(commonUserSession.getPrincipalId());

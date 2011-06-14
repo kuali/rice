@@ -1,7 +1,7 @@
 package org.kuali.rice.kim.framework.entity.citizenship
 
 import org.kuali.rice.kim.api.entity.TypeContract
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 import org.kuali.rice.kim.api.entity.Type
 
 class EntityCitizenshipStatusEbo implements TypeContract, ExternalizableBusinessObject {

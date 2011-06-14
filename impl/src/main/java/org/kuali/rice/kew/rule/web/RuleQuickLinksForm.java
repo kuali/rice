@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.rule.web.RuleQuickLinksAction.DocumentTypeQuickLinksStructure;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 /**
  * A Struts ActionForm for the {@link RuleQuickLinksAction}.

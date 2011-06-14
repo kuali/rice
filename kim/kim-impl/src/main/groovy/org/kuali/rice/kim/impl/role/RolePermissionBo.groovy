@@ -16,26 +16,21 @@
 
 package org.kuali.rice.kim.impl.role
 
-import java.util.List;
-
-import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.Id
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+
+
 import javax.persistence.OneToOne;
 import javax.persistence.Table
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.role.RolePermission
 import org.kuali.rice.kim.api.role.RolePermissionContract
 import org.kuali.rice.kim.impl.permission.PermissionBo
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.springframework.util.AutoPopulatingList;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_ROLE_PERM_T")

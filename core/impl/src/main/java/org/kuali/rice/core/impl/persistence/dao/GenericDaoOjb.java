@@ -38,7 +38,7 @@ import java.util.Map;
 /**
  * This class is the OJB implementation of the GenericDao interface. This
  * class was adapted from the Kuali Nervous System
- * (org.kuali.rice.kns.dao.impl.GenericDaoOjb).
+ * (org.kuali.rice.krad.dao.impl.GenericDaoOjb).
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

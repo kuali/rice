@@ -59,8 +59,7 @@ import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
-import org.kuali.rice.kns.util.KNSConstants;
-
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Default implementation of the {@link ActionRequestService}.
@@ -564,7 +563,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     		performanceLogger = new PerformanceLogger();
     	}
         Collection documentsAffected = getRouteHeaderService().findPendingByResponsibilityIds(responsibilityIds);
-        String cacheWaitValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CACHE_REQUEUE_DELAY);
+        String cacheWaitValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CACHE_REQUEUE_DELAY);
         Long cacheWait = KEWConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME;
         if (!org.apache.commons.lang.StringUtils.isEmpty(cacheWaitValue)) {
             try {

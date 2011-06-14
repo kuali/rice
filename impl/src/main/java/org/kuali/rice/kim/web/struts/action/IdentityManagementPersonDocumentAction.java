@@ -61,13 +61,13 @@ import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -122,7 +122,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase#loadDocument(org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase)
+	 * @see org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase#loadDocument(org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase)
 	 */
 	@Override
 	protected void loadDocument(KualiDocumentFormBase form)
@@ -155,7 +155,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase#createDocument(org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase)
+	 * @see org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase#createDocument(org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase)
 	 */
 	@Override
 	protected void createDocument(KualiDocumentFormBase form)
@@ -236,7 +236,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     
     protected String getSelectedParentChildIdx(HttpServletRequest request) {
     	String lineNumber = null;
-        String parameterName = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
+        String parameterName = (String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isNotBlank(parameterName)) {
             lineNumber = StringUtils.substringBetween(parameterName, ".line", ".");
         }
@@ -581,33 +581,33 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     protected ActionForward renderRoleMemberSelection(ActionMapping mapping, HttpServletRequest request, IdentityManagementPersonDocumentForm impdForm) {
         Properties props = new Properties();
 
-        props.put(KNSConstants.SUPPRESS_ACTIONS, Boolean.toString(true));
-        props.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, KimDocumentRoleMember.class.getName());
-        props.put(KNSConstants.LOOKUP_ANCHOR, KNSConstants.ANCHOR_TOP_OF_FORM);
-        props.put(KNSConstants.LOOKED_UP_COLLECTION_NAME, KimConstants.KimUIConstants.ROLE_MEMBERS_COLLECTION_NAME);
+        props.put(KRADConstants.SUPPRESS_ACTIONS, Boolean.toString(true));
+        props.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, KimDocumentRoleMember.class.getName());
+        props.put(KRADConstants.LOOKUP_ANCHOR, KRADConstants.ANCHOR_TOP_OF_FORM);
+        props.put(KRADConstants.LOOKED_UP_COLLECTION_NAME, KimConstants.KimUIConstants.ROLE_MEMBERS_COLLECTION_NAME);
 
-        String conversionPatttern = "{0}" + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + "{0}";
+        String conversionPatttern = "{0}" + KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR + "{0}";
         StringBuilder fieldConversion = new StringBuilder();
         fieldConversion.append(MessageFormat.format(conversionPatttern, 
-       		KimConstants.PrimaryKeyConstants.ROLE_ID)).append(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
+       		KimConstants.PrimaryKeyConstants.ROLE_ID)).append(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
         fieldConversion.append(MessageFormat.format(conversionPatttern, 
-           		KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID)).append(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
+           		KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID)).append(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
 
-        props.put(KNSConstants.CONVERSION_FIELDS_PARAMETER, fieldConversion);
+        props.put(KRADConstants.CONVERSION_FIELDS_PARAMETER, fieldConversion);
 
         props.put(KimConstants.PrimaryKeyConstants.ROLE_ID, impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
 
-        props.put(KNSConstants.RETURN_LOCATION_PARAMETER, this.getReturnLocation(request, mapping));
-        props.put(KNSConstants.BACK_LOCATION, this.getReturnLocation(request, mapping));
+        props.put(KRADConstants.RETURN_LOCATION_PARAMETER, this.getReturnLocation(request, mapping));
+        props.put(KRADConstants.BACK_LOCATION, this.getReturnLocation(request, mapping));
 
-        props.put(KNSConstants.LOOKUP_AUTO_SEARCH, "Yes");
-        props.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.SEARCH_METHOD);
+        props.put(KRADConstants.LOOKUP_AUTO_SEARCH, "Yes");
+        props.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.SEARCH_METHOD);
 
-        props.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(impdForm));
-        props.put(KNSConstants.DOC_NUM, impdForm.getDocument().getDocumentNumber());
+        props.put(KRADConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(impdForm));
+        props.put(KRADConstants.DOC_NUM, impdForm.getDocument().getDocumentNumber());
 
         // TODO: how should this forward be handled
-        String url = UrlFactory.parameterizeUrl(getApplicationBaseUrl() + "/kr/" + KNSConstants.LOOKUP_ACTION, props);
+        String url = UrlFactory.parameterizeUrl(getApplicationBaseUrl() + "/kr/" + KRADConstants.LOOKUP_ACTION, props);
 
         impdForm.registerEditableProperty("methodToCall");
 

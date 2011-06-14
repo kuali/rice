@@ -18,8 +18,8 @@ package org.kuali.rice.core.framework.namespace
 
 import org.kuali.rice.core.api.namespace.Namespace
 import org.kuali.rice.core.api.namespace.NamespaceContract
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
-import org.kuali.rice.kns.bo.Inactivateable
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
+import org.kuali.rice.krad.bo.Inactivateable
 
 //@ToString
 class NamespaceEbo implements NamespaceContract, Inactivateable, ExternalizableBusinessObject {

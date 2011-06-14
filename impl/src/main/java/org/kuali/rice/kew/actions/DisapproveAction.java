@@ -34,7 +34,7 @@ import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -170,7 +170,7 @@ public class DisapproveAction extends ActionTakenEvent {
     {
         String groupName = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
                 KEWConstants.KEW_NAMESPACE,
-                KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
+                KRADConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
                 KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
 
         Set<String> systemPrincipalIds = new HashSet<String>();

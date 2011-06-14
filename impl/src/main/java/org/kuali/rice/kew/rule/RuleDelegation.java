@@ -21,7 +21,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
 
@@ -131,8 +131,8 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
 	 * prior to the refresh() superclass call will be used as the delegationRuleBaseValues property's value. This override is necessary
 	 * in order to prevent certain exceptions during the cancellation of a rule delegation maintenance document.
 	 * 
-	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#refresh()
-	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#refreshReferenceObject(java.lang.String)
+	 * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refresh()
+	 * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refreshReferenceObject(java.lang.String)
 	 */
 	@Override
 	public void refresh() {

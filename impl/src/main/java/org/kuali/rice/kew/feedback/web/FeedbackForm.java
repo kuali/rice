@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.feedback.web;
 
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 /**
  * Struts ActionForm for {@link FeedbackAction}.

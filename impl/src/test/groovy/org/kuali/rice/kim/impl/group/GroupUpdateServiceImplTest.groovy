@@ -1,17 +1,13 @@
 package org.kuali.rice.kim.impl.group
 
 import org.junit.Test
-import org.junit.BeforeClass
-import java.sql.Timestamp
-import org.kuali.rice.kim.impl.type.KimTypeBo
+
 import groovy.mock.interceptor.MockFor
-import org.kuali.rice.kns.service.BusinessObjectService
+import org.kuali.rice.krad.service.BusinessObjectService
 import org.junit.Before
 import org.kuali.rice.kim.api.group.GroupService
 import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl
 import org.kuali.rice.kim.api.group.GroupUpdateService
-import org.kuali.rice.kns.bo.PersistableBusinessObject
-
 
 class GroupUpdateServiceImplTest {
 

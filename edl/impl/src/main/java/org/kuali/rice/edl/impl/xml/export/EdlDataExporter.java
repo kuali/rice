@@ -23,9 +23,9 @@ import java.util.List;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
-import org.kuali.rice.kns.bo.Exporter;
-import org.kuali.rice.kns.exception.ExportNotSupportedException;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.bo.Exporter;
+import org.kuali.rice.krad.exception.ExportNotSupportedException;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * An implementation of the {@link Exporter} class which facilitates exporting
@@ -40,7 +40,7 @@ public class EdlDataExporter implements Exporter {
 	private List<String> supportedFormats = new ArrayList<String>();
 
 	public EdlDataExporter() {
-		supportedFormats.add(KNSConstants.XML_FORMAT);
+		supportedFormats.add(KRADConstants.XML_FORMAT);
 	}
 
 	@Override
@@ -65,12 +65,12 @@ public class EdlDataExporter implements Exporter {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.bo.Exporter#export(java.lang.Class, java.util.List, java.lang.String, java.io.OutputStream)
+	 * @see org.kuali.rice.krad.bo.Exporter#export(java.lang.Class, java.util.List, java.lang.String, java.io.OutputStream)
 	 */
 	@Override
 	public void export(Class<?> dataObjectClass, List<? extends Object> dataObjects, String exportFormat, OutputStream outputStream) throws IOException,
 			ExportNotSupportedException {
-		if (!KNSConstants.XML_FORMAT.equals(exportFormat)) {
+		if (!KRADConstants.XML_FORMAT.equals(exportFormat)) {
 			throw new ExportNotSupportedException("The given export format of " + exportFormat + " is not supported by the EDocLite XML Exporter!");
 		}
 		ExportDataSet dataSet = buildExportDataSet(dataObjectClass, dataObjects);

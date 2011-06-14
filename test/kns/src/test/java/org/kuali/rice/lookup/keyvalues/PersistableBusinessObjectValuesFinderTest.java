@@ -18,9 +18,9 @@ package org.kuali.rice.lookup.keyvalues;
 import org.junit.Test;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
-import org.kuali.rice.kns.test.document.bo.AccountManager;
-import org.kuali.rice.kns.test.document.bo.AccountType;
+import org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
+import org.kuali.rice.krad.test.document.bo.AccountManager;
+import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.test.KNSTestCase;
 
 import java.util.ArrayList;

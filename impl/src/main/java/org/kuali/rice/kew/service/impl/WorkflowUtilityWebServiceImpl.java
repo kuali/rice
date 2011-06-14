@@ -77,10 +77,10 @@ import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.jws.WebService;
 import java.math.BigDecimal;
@@ -673,7 +673,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         // If this app constant is set to true, then we will attempt to simulate activation of non-active requests before
         // attempting to deactivate them, this is in order to address the force action issue reported by EPIC in issue
         // http://fms.dfa.cornell.edu:8080/browse/KULWF-366
-        Boolean activateFirst = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        Boolean activateFirst = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         if (activateFirst == null) {
             activateFirst = Boolean.FALSE;
         }

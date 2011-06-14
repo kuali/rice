@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.KrmsTypeBo;
 import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
@@ -36,7 +36,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 * @see BusinessObjectService#save(PersistableBusinessObject)
 	 */
 	@Override
 	public PersistableBusinessObject save(PersistableBusinessObject bo) {
@@ -44,7 +44,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#save(java.util.List)
+	 * @see BusinessObjectService#save(java.util.List)
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -61,7 +61,7 @@ public class TestBoService implements BusinessObjectService {
 
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#linkAndSave(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 * @see BusinessObjectService#linkAndSave(PersistableBusinessObject)
 	 */
 	@Override
 	public PersistableBusinessObject linkAndSave(
@@ -71,7 +71,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#linkAndSave(java.util.List)
+	 * @see BusinessObjectService#linkAndSave(java.util.List)
 	 */
 	@Override
 	public List<? extends PersistableBusinessObject> linkAndSave(
@@ -81,7 +81,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
+	 * @see BusinessObjectService#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
 	 */
 	@Override
 	public <T extends BusinessObject> T findBySinglePrimaryKey(
@@ -92,7 +92,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#findByPrimaryKey(java.lang.Class, java.util.Map)
+	 * @see BusinessObjectService#findByPrimaryKey(java.lang.Class, java.util.Map)
 	 */
 	@Override
 	public <T extends BusinessObject> T findByPrimaryKey(Class<T> clazz,
@@ -106,7 +106,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#retrieve(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 * @see BusinessObjectService#retrieve(PersistableBusinessObject)
 	 */
 	@Override
 	public PersistableBusinessObject retrieve(
@@ -116,7 +116,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#findAll(java.lang.Class)
+	 * @see BusinessObjectService#findAll(java.lang.Class)
 	 */
 	@Override
 	public <T extends BusinessObject> Collection<T> findAll(Class<T> clazz) {
@@ -125,7 +125,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#findAllOrderBy(java.lang.Class, java.lang.String, boolean)
+	 * @see BusinessObjectService#findAllOrderBy(java.lang.Class, java.lang.String, boolean)
 	 */
 	@Override
 	public <T extends BusinessObject> Collection<T> findAllOrderBy(
@@ -135,7 +135,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#findMatching(java.lang.Class, java.util.Map)
+	 * @see BusinessObjectService#findMatching(java.lang.Class, java.util.Map)
 	 */
 	@Override
 	public <T extends BusinessObject> Collection<T> findMatching(
@@ -144,7 +144,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#countMatching(java.lang.Class, java.util.Map)
+	 * @see BusinessObjectService#countMatching(java.lang.Class, java.util.Map)
 	 */
 	@Override
 	public int countMatching(Class clazz, Map<String, ?> fieldValues) {
@@ -152,7 +152,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#countMatching(java.lang.Class, java.util.Map, java.util.Map)
+	 * @see BusinessObjectService#countMatching(java.lang.Class, java.util.Map, java.util.Map)
 	 */
 	@Override
 	public int countMatching(Class clazz,
@@ -162,7 +162,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#findMatchingOrderBy(java.lang.Class, java.util.Map, java.lang.String, boolean)
+	 * @see BusinessObjectService#findMatchingOrderBy(java.lang.Class, java.util.Map, java.lang.String, boolean)
 	 */
 	@Override
 	public <T extends BusinessObject> Collection<T> findMatchingOrderBy(
@@ -172,7 +172,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#delete(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 * @see BusinessObjectService#delete(PersistableBusinessObject)
 	 */
 	@Override
 	public void delete(PersistableBusinessObject bo) {
@@ -180,7 +180,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#delete(java.util.List)
+	 * @see BusinessObjectService#delete(java.util.List)
 	 */
 	@Override
 	public void delete(List<? extends PersistableBusinessObject> boList) {
@@ -188,7 +188,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#deleteMatching(java.lang.Class, java.util.Map)
+	 * @see BusinessObjectService#deleteMatching(java.lang.Class, java.util.Map)
 	 */
     @Override
     @Transactional
@@ -197,7 +197,7 @@ public class TestBoService implements BusinessObjectService {
     }
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#getReferenceIfExists(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
+	 * @see BusinessObjectService#getReferenceIfExists(BusinessObject, java.lang.String)
 	 */
 	@Override
 	public BusinessObject getReferenceIfExists(BusinessObject bo,
@@ -206,7 +206,7 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#linkUserFields(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 * @see BusinessObjectService#linkUserFields(PersistableBusinessObject)
 	 */
 	@Override
 	public void linkUserFields(PersistableBusinessObject bo) {
@@ -214,14 +214,14 @@ public class TestBoService implements BusinessObjectService {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#linkUserFields(java.util.List)
+	 * @see BusinessObjectService#linkUserFields(java.util.List)
 	 */
 	@Override
 	public void linkUserFields(List<PersistableBusinessObject> bos) {
 		throw new UnsupportedOperationException();		}
 
 	/* (non-Javadoc)
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#manageReadOnly(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 * @see BusinessObjectService#manageReadOnly(PersistableBusinessObject)
 	 */
 	@Override
 	public PersistableBusinessObject manageReadOnly(

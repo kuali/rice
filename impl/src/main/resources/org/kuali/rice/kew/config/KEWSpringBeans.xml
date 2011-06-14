@@ -61,12 +61,12 @@
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 
     <bean id="mailer"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="mailer" />
 	</bean>
 
     <bean id="parameterService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="parameterService" />
 	</bean>
 	
@@ -361,7 +361,7 @@
 
     <bean id="docTypeLookupHelperService" class="org.kuali.rice.kew.doctype.DocumentTypeLookupableHelperServiceImpl" scope="prototype"/>
 
-    <bean id="docTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+    <bean id="docTypeLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" scope="prototype">
       <property name="lookupableHelperService">
         <ref local="docTypeLookupHelperService" />
       </property>
@@ -369,7 +369,7 @@
 
     <bean id="docRouteHeaderValueLookupHelperService" class="org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperServiceImpl" scope="prototype"/>
 
-    <bean id="docRouteHeaderValueLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+    <bean id="docRouteHeaderValueLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" scope="prototype">
       <property name="lookupableHelperService">
         <ref local="docRouteHeaderValueLookupHelperService" />
       </property>
@@ -377,7 +377,7 @@
 
     <bean id="docSearchCriteriaDTOLookupHelperService" class="org.kuali.rice.kew.bo.lookup.DocSearchCriteriaDTOLookupableHelperServiceImpl" scope="prototype"/>
 
-    <bean id="docSearchCriteriaDTOLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+    <bean id="docSearchCriteriaDTOLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" scope="prototype">
       <property name="lookupableHelperService">
         <ref local="docSearchCriteriaDTOLookupHelperService" />
       </property>
@@ -405,7 +405,7 @@
 
     <!-- some beans shared by client and server -->
    
-	<!-- <bean id="styleService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<!-- <bean id="styleService" class="GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="styleService" />
 	</bean>
 	
@@ -451,7 +451,7 @@
   <bean id="enWorkflowDocumentActionsService" class="org.kuali.rice.kew.service.impl.WorkflowDocumentActionsWebServiceImpl"  lazy-init="true"/>
 
   <bean id="xmlIngesterService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="xmlIngesterService" />
 	</bean>
 
@@ -515,17 +515,17 @@
     <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
 
 	<bean id="dataDictionaryService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="dataDictionaryService" />
 	</bean>
 	
 	<bean id="persistenceServiceOjb"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="persistenceServiceOjb" />
 	</bean>
 	
 	<bean id="kualiModuleService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="kualiModuleService" />
 	</bean>
 
@@ -534,7 +534,7 @@
     <property name="kualiModuleService" ref="kualiModuleService" />
   </bean>
 
-  <bean id="kewModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+  <bean id="kewModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
 		<property name="namespaceCode" value="KR-WKFLW" />
 		<property name="dataSourceName" value="enWorkflowDataSource"/>
 		<property name="entityManager" ref="kewEntityManager" />
@@ -624,17 +624,17 @@
                 
                 <!-- from kns -->
                 
-                <value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRoutePerson.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRouteWorkgroup.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Attachment.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceDummy.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceElements.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentHeader.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
+                <value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/Attachment.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/Note.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/NoteType.xml</value>
+				<value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">
@@ -676,7 +676,7 @@
   <bean id="documentTypeResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl" />
 
 
-  <bean class="org.kuali.rice.kns.util.spring.NamedOrderedListBean">
+  <bean class="org.kuali.rice.krad.util.spring.NamedOrderedListBean">
 		<property name="name" value="scriptConfigurationFilePaths" />
 		<property name="listItem" value="classpath:org/kuali/rice/kew/dwr-core.xml" />
 	</bean>
@@ -692,7 +692,7 @@
     </bean>
 
     <bean id="xmlImpexRegistry"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="xmlImpexRegistry" />
 	</bean>
 
@@ -728,7 +728,7 @@
 	
 	<!-- TODO moved these from CoreSpringBeans.xml for now because of dependency issues with the caching magic -->
 	
-	<bean id="serviceRegistry" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="serviceRegistry" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 	

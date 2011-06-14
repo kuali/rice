@@ -6,8 +6,8 @@ package edu.sampleu.bookstore.bo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * BookType Business Object class file relative to BookType maintenance Object.

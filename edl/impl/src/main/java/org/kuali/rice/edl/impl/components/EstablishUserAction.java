@@ -23,7 +23,7 @@ import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.edl.impl.UserAction;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -76,8 +76,8 @@ public class EstablishUserAction implements EDLModelComponent {
 		// from Document Search/Action List a command parameter is passed but we want to load the document
 		userAction = UserAction.ACTION_LOAD;
 	    } else {
-	    	String methodToCall = requestParser.getParameterValue(KNSConstants.DISPATCH_REQUEST_PARAMETER);
-			if (StringUtils.equals(methodToCall, KNSConstants.RETURN_METHOD_TO_CALL)) {
+	    	String methodToCall = requestParser.getParameterValue(KRADConstants.DISPATCH_REQUEST_PARAMETER);
+			if (StringUtils.equals(methodToCall, KRADConstants.RETURN_METHOD_TO_CALL)) {
 				userAction = UserAction.ACTION_REFRESH_FROM_LOOKUP;
 			}
 			else {

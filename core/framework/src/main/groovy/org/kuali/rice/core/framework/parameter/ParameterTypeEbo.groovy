@@ -18,8 +18,8 @@ package org.kuali.rice.core.framework.parameter
 
 import org.kuali.rice.core.api.parameter.ParameterType
 import org.kuali.rice.core.api.parameter.ParameterTypeContract
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
-import org.kuali.rice.kns.bo.Inactivateable
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
+import org.kuali.rice.krad.bo.Inactivateable
 
 //@ToString
 class ParameterTypeEbo implements ParameterTypeContract, Inactivateable, ExternalizableBusinessObject {

@@ -21,7 +21,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -30,7 +29,7 @@ import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.AttributeOverride;
@@ -137,7 +136,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+	 * @see org.kuali.rice.krad.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
 	 */
 	@Override
 	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {

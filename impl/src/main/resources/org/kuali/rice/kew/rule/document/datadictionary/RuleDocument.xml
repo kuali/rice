@@ -10,7 +10,7 @@
     <property name="documentTypeName" value="RoutingRuleDocument"/>
     <property name="documentClass" value="org.kuali.rice.kew.rule.document.RuleDocument"/>
     <!-- <property name="businessRulesClass" value="org.kuali.kfs.sys.document.validation.impl.AccountingRuleEngineRuleBase" /> -->
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.TransactionalDocumentAuthorizerBase"/>
     <property name="allowsCopy" value="true"/>
     <!-- 
     <property name="workflowProperties" >

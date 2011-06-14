@@ -20,9 +20,9 @@ import java.util.Map;
 
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
-import org.kuali.rice.kns.web.ui.Section;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
+import org.kuali.rice.krad.web.ui.Section;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -42,7 +42,7 @@ public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kns.inquiry.Inquirable#getBusinessObject(java.util.Map)
+	 * @see org.kuali.rice.krad.inquiry.Inquirable#getBusinessObject(java.util.Map)
 	 */
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		RuleDelegation rule = (RuleDelegation)super.getBusinessObject(fieldValues);
@@ -53,7 +53,7 @@ public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kns.inquiry.Inquirable#getSections(org.kuali.rice.kns.bo.BusinessObject)
+	 * @see org.kuali.rice.krad.inquiry.Inquirable#getSections(org.kuali.rice.krad.bo.BusinessObject)
 	 */
 	public List getSections(BusinessObject bo) {
 		List<Section> sections = super.getSections(bo);

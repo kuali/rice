@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.krad.bo.BusinessObject;
 
 /**
  * 

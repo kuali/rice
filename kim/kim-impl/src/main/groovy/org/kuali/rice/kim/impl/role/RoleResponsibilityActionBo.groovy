@@ -27,7 +27,7 @@ import javax.persistence.Table
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction
 import org.kuali.rice.kim.api.role.RoleResponsibilityActionContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

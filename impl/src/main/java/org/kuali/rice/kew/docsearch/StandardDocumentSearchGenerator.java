@@ -44,11 +44,11 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.MessageMap;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -267,7 +267,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 stringDate = stringDate + " 23:59:59";
             }
         } catch (Exception ex){
-            GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Date Input: " + stringDate });
+            GlobalVariables.getMessageMap().putError(KRADConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Date Input: " + stringDate });
         }
         return stringDate;
     }
@@ -290,7 +290,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         String sRet = propertyValue;
 
-        if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+        if (StringUtils.contains(propertyValue, KRADConstants.BETWEEN_OPERATOR)) {
             String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
             sRet = ObjectUtils.clean(rangeValues[0].trim())+ " .. " + cleanUpperBound(ObjectUtils.clean(rangeValues[1].trim()));
         }  else if (propertyValue.startsWith("<=")) {
@@ -768,7 +768,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             } else {
                 String sqlOperand = getSqlOperand(criteriaComponent.isRangeSearch(), criteriaComponent.isSearchInclusive(), (criteriaComponent.isRangeSearch() && criteriaComponent.isComponentLowerBoundValue()), usingWildcards);
               if(criteriaComponent.isAllowInlineRange()) {
-                for (String range : KNSConstants.RANGE_CHARACTERS) {
+                for (String range : KRADConstants.RANGE_CHARACTERS) {
                         int index = StringUtils.indexOf(attributeValueSearched, range);
                     if(index != -1) {
                             sqlOperand=range;
@@ -859,7 +859,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
 
         if(isAllowInlineRange) {
-            for (String range : KNSConstants.RANGE_CHARACTERS) {
+            for (String range : KRADConstants.RANGE_CHARACTERS) {
                 int index = StringUtils.indexOf(dateValueToSearch, range);
                 if(index != -1) {
                     sqlOperand=new StringBuffer(range);
@@ -1569,7 +1569,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             Map<String, String> m = new HashMap<String, String>();
             m.put("name", docTypeFullName);
 
-            Collection c = KNSServiceLocatorInternal.getBusinessObjectDao().findMatching(DocumentType.class, m);
+            Collection c = KRADServiceLocatorInternal.getBusinessObjectDao().findMatching(DocumentType.class, m);
 */
             DocumentTypeService docSrv = (DocumentTypeService) KEWServiceLocator.getDocumentTypeService();
             DocumentType docType = docSrv.findByName(docTypeFullName.trim());

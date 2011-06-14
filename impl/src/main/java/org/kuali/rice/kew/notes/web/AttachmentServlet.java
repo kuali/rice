@@ -24,8 +24,8 @@ import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -73,7 +73,7 @@ public class AttachmentServlet extends HttpServlet {
 			secureChecks = false;
 		}
 		try {
-			UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
+			UserSession userSession = (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
 			if (userSession != null) {// If we can get a valid userSession object off the Http request...
 				
 				NoteService noteService = KEWServiceLocator.getNoteService(); 

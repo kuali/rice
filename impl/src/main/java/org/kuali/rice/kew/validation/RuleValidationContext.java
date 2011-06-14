@@ -18,7 +18,7 @@ package org.kuali.rice.kew.validation;
 
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.krad.UserSession;
 
 
 /**

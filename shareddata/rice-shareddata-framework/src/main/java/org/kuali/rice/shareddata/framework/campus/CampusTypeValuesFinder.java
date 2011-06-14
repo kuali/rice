@@ -24,7 +24,7 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.shareddata.api.campus.CampusService;
 import org.kuali.rice.shareddata.api.campus.CampusType;
 import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
 
 public class CampusTypeValuesFinder extends KeyValuesBase {
 

@@ -45,7 +45,7 @@
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="requestType" column="request_trav" jdbc-type="VARCHAR"/>
 		<!--  object references -->
-		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
+		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.krad.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
 			auto-delete="object">
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
@@ -228,7 +228,7 @@
     	<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-    	<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true" >
+    	<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.krad.bo.DocumentHeader" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true" >
         	<foreignkey field-ref="documentNumber" />
     	</reference-descriptor>
     	<collection-descriptor

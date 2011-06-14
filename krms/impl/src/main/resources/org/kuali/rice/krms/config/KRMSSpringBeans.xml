@@ -36,7 +36,7 @@
     <!-- Heck, why doesn't this work? -->
 
     <bean id="businessObjectService"
-        class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
         <property name="serviceName" value="businessObjectService" />
     </bean>
 	 
@@ -46,7 +46,7 @@
 	   </property>
 	</bean -->
  	
-	<bean id="krmsModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+	<bean id="krmsModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
         <property name="namespaceCode" value="krms"/>
         <property name="initializeDataDictionary" value="true"/>
         <property name="dataDictionaryPackages">
@@ -72,7 +72,7 @@
         </property>
     </bean>
 
-    <bean id="krmsModuleService" class="org.kuali.rice.kns.service.impl.ModuleServiceBase">
+    <bean id="krmsModuleService" class="org.kuali.rice.krad.service.impl.ModuleServiceBase">
         <property name="moduleConfiguration" ref="krmsModuleConfiguration" />
     </bean>
 

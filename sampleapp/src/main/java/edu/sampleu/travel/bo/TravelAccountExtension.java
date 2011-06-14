@@ -16,7 +16,7 @@
 
 package edu.sampleu.travel.bo;
 
-import org.kuali.rice.kns.bo.PersistableBusinessObjectExtensionBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtensionBase;
 
 import javax.persistence.*;
 

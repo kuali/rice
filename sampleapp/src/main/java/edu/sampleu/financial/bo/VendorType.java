@@ -16,10 +16,8 @@
 
 package edu.sampleu.financial.bo;
 
-import java.util.LinkedHashMap;
-
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * Major classification of Vendors according to whether they are sufficiently set up to provide for an interaction via Purchase

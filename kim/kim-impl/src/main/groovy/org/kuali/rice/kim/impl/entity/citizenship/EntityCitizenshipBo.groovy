@@ -11,7 +11,7 @@ import javax.persistence.FetchType
 import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenship
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name = "KRIM_ENTITY_CTZNSHP_T")

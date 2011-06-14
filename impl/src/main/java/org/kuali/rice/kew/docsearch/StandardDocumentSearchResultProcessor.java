@@ -27,10 +27,10 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.ui.Column;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.ui.Column;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.Row;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,7 +94,7 @@ public class StandardDocumentSearchResultProcessor implements
 		for (Column column : columns) {
 			if (column instanceof Column) {
 				Column dsColumn = (Column) column;
-				for (org.kuali.rice.kns.web.ui.Field field : getFields(criteria)) {
+				for (org.kuali.rice.krad.web.ui.Field field : getFields(criteria)) {
 					if (field instanceof Field) {
 						Field dsField = (Field) field;
 						dsColumn.setFormatter((Formatter)dsField.getFormatter());
@@ -386,7 +386,7 @@ public class StandardDocumentSearchResultProcessor implements
 							}
 						} else {
 							throw new RiceRuntimeException(
-									"Fields must be of type org.kuali.rice.kns.Field");
+									"Fields must be of type org.kuali.rice.krad.Field");
 						}
 					}
 				}
@@ -751,14 +751,14 @@ public class StandardDocumentSearchResultProcessor implements
 	public boolean isDocumentHandlerPopup() {
 	    return CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                 KEWConstants.KEW_NAMESPACE,
-                KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
+                KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
                 KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND);
 	}
 
 	public boolean isRouteLogPopup() {
 		return CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                 KEWConstants.KEW_NAMESPACE,
-                KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
+                KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
                 KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND);
 	}
 

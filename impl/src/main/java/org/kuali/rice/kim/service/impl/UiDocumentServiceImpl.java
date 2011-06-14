@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.entity.address.EntityAddress;
 import org.kuali.rice.kim.api.entity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.entity.email.EntityEmail;
@@ -110,19 +109,19 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
+import org.kuali.rice.krad.datadictionary.control.TextControlDefinition;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.DocumentHelperService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 import javax.xml.namespace.QName;
@@ -1470,7 +1469,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KRADServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
@@ -1498,7 +1497,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
-	        documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
+	        documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
 		}
 	    return this.documentHelperService;
 	}
@@ -2305,7 +2304,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @param roleMemberAttributeData a role member qualifier attribute to update
 	 */
 	protected void updateAttrValIfNecessary(RoleMemberAttributeDataImpl roleMemberAttributeData) {
-		final AttributeDefinition attributeDefinition = getKNSAttributeDefinition(roleMemberAttributeData.getKimTypeId(), roleMemberAttributeData.getKimAttributeId());
+		final AttributeDefinition attributeDefinition = getAttributeDefinition(roleMemberAttributeData.getKimTypeId(),
+                roleMemberAttributeData.getKimAttributeId());
 		if (attributeDefinition != null) {
 			if (attributeDefinition.getControl() != null && attributeDefinition.getControl().isCheckbox()) {
 				convertCheckboxAttributeData(roleMemberAttributeData);
@@ -2314,7 +2314,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected void formatAttrValIfNecessary(KimDocumentRoleQualifier roleQualifier) {
-		final AttributeDefinition attributeDefinition = getKNSAttributeDefinition(roleQualifier.getKimTypId(), roleQualifier.getKimAttrDefnId());
+		final AttributeDefinition attributeDefinition = getAttributeDefinition(roleQualifier.getKimTypId(),
+                roleQualifier.getKimAttrDefnId());
 		if (attributeDefinition != null) {
 			if (attributeDefinition.getControl() != null && attributeDefinition.getControl().isCheckbox()) {
 				formatCheckboxAttributeData(roleQualifier);
@@ -2335,7 +2336,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 *
      * @return the KNS attribute used to render that qualifier, or null if the AttributeDefinition cannot be determined
 	 */
-	protected AttributeDefinition getKNSAttributeDefinition(String kimTypId, String attrDefnId) {
+	protected AttributeDefinition getAttributeDefinition(String kimTypId, String attrDefnId) {
 		final KimType type = getKimTypeInfoService().getKimType(kimTypId);
 		if (type != null) {
 			final KimTypeService typeService = (KimTypeService) KIMServiceLocatorInternal.getBean(type.getServiceName());

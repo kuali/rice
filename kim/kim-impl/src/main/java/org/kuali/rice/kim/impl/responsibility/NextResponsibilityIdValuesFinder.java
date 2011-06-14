@@ -17,7 +17,7 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.lookup.valuefinder.SequenceValueFinder;
+import org.kuali.rice.krad.lookup.valuefinder.SequenceValueFinder;
 
 public final class NextResponsibilityIdValuesFinder extends SequenceValueFinder {
     public NextResponsibilityIdValuesFinder() {

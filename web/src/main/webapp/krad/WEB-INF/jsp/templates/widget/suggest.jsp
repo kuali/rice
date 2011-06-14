@@ -15,8 +15,8 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.Suggest"/>
-<tiles:useAttribute name="parent" classname="org.kuali.rice.kns.uif.field.AttributeField"/>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.Suggest"/>
+<tiles:useAttribute name="parent" classname="org.kuali.rice.krad.uif.field.AttributeField"/>
 
 <%--
     Invokes JS method to implement suggest (autocomplete) functionality

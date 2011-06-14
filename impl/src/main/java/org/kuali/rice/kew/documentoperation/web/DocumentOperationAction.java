@@ -74,7 +74,7 @@ import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 

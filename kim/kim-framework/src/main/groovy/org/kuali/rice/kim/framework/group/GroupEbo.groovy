@@ -20,7 +20,7 @@ import org.kuali.rice.kim.api.common.attribute.KimAttributeData
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupContract
 import org.kuali.rice.kim.api.group.GroupMember
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 import org.kuali.rice.core.api.mo.common.Attributes
 
 //@ToString

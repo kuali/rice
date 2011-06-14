@@ -10,7 +10,7 @@
                         http://www.springframework.org/schema/context/spring-context-3.0.xsd
                         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-  <context:component-scan base-package="org.kuali.rice.kns" />
+  <context:component-scan base-package="org.kuali.rice.krad" />
   <context:component-scan base-package="edu.sampleu.travel.krad" />
   <context:component-scan base-package="org.kuali.rice.krms" />
 
@@ -26,11 +26,11 @@
     </property>
   </bean>
 
-  <bean id="uifControllerHandlerInterceptor" class="org.kuali.rice.kns.web.spring.UifControllerHandlerInterceptor" />
+  <bean id="uifControllerHandlerInterceptor" class="org.kuali.rice.krad.web.spring.UifControllerHandlerInterceptor" />
   
-  <bean id="exceptionResolver" class="org.kuali.rice.kns.web.spring.UifHandlerExceptionResolver"/>
+  <bean id="exceptionResolver" class="org.kuali.rice.krad.web.spring.UifHandlerExceptionResolver"/>
   
-  <bean class="org.kuali.rice.kns.web.spring.UifAnnotationMethodHandleAdapter">
+  <bean class="org.kuali.rice.krad.web.spring.UifAnnotationMethodHandleAdapter">
     <property name="webBindingInitializer">
       <ref bean="kradConfigurableWebBindingInitializer"/>
     </property>
@@ -46,7 +46,7 @@
     </property>
   </bean>
 
-  <bean id="kradConfigurableWebBindingInitializer" class="org.kuali.rice.kns.web.spring.UifConfigurableWebBindingInitializer"/>
+  <bean id="kradConfigurableWebBindingInitializer" class="org.kuali.rice.krad.web.spring.UifConfigurableWebBindingInitializer"/>
 
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     <property name="maxUploadSize" value="500000"/>

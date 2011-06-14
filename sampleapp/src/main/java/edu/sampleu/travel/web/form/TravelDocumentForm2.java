@@ -18,9 +18,9 @@ package edu.sampleu.travel.web.form;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
-import org.kuali.rice.kns.web.ui.HeaderField;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+import org.kuali.rice.krad.web.struts.form.KualiTransactionalDocumentFormBase;
+import org.kuali.rice.krad.web.ui.HeaderField;
+import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 
 import edu.sampleu.travel.bo.TravelAccount;
 import edu.sampleu.travel.document.TravelDocument2;

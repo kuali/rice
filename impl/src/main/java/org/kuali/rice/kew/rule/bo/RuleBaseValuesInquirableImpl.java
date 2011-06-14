@@ -20,11 +20,11 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.web.ui.Section;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.krad.web.ui.Section;
 
 import java.util.List;
 import java.util.Map;
@@ -49,7 +49,7 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.inquiry.Inquirable#getBusinessObject(java.util.Map)
+	 * @see org.kuali.rice.krad.inquiry.Inquirable#getBusinessObject(java.util.Map)
 	 */
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		RuleBaseValues rule = (RuleBaseValues)super.getBusinessObject(fieldValues);
@@ -60,7 +60,7 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.inquiry.Inquirable#getSections(org.kuali.rice.kns.bo.BusinessObject)
+	 * @see org.kuali.rice.krad.inquiry.Inquirable#getSections(org.kuali.rice.krad.bo.BusinessObject)
 	 */
 	public List getSections(BusinessObject bo) {
 		List<Section> sections = super.getSections(bo);
@@ -71,7 +71,7 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 	
    	
 	/**
-     * @see org.kuali.kfs.sys.businessobject.inquiry.KfsInquirableImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject,
+     * @see org.kuali.kfs.sys.businessobject.inquiry.KfsInquirableImpl#getInquiryUrl(org.kuali.rice.krad.bo.BusinessObject,
      *      java.lang.String, boolean)
      */
     @Override

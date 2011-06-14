@@ -27,9 +27,9 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.test.bo.BOContainingPerson;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.Lookupable;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.lookup.Lookupable;
+import org.kuali.rice.krad.service.*;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.AutoPopulatingList;
 
@@ -66,7 +66,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		//insert external identifier
 		Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal("p1");
 		
-		SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
+		SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
 		Long externalIdentifierId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_EXT_ID_ID_S", KimEntityExternalIdentifierImpl.class);
 		KimEntityExternalIdentifierImpl externalIdentifier = new KimEntityExternalIdentifierImpl();
 		externalIdentifier.setEntityExternalIdentifierId(externalIdentifierId.toString());
@@ -74,7 +74,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		externalIdentifier.setEntityId(principal.getEntityId());
 		externalIdentifier.setExternalId("000-00-0000");
 		externalIdentifier.setExternalIdentifierTypeCode("SSN");
-		KNSServiceLocator.getBusinessObjectService().save(externalIdentifier);
+		KRADServiceLocator.getBusinessObjectService().save(externalIdentifier);
 		
 		List<Person> people = personService.getPersonByExternalIdentifier( "SSN", "000-00-0000" );
 		assertNotNull( "result object must not be null", people );
@@ -168,8 +168,8 @@ public class PersonServiceImplTest extends KIMTestCase {
 	@Test
 	public void testResolvePrincipalNamesToPrincipalIds() throws Exception {
 		
-		KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" );
-		KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
+		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" );
+		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
 
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put( "anAttribute", "aValue" );
@@ -225,9 +225,9 @@ public class PersonServiceImplTest extends KIMTestCase {
         DescriptorRepository dr = mm.readDescriptorRepository(is);
         mm.mergeDescriptorRepository(dr);
 		
-		KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
-		KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
-		BusinessObjectService bos = KNSServiceLocator.getBusinessObjectService();
+		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
+		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
+		BusinessObjectService bos = KRADServiceLocator.getBusinessObjectService();
 		bos.delete( new ArrayList(bos.findAll( BOContainingPerson.class )) );
 		BOContainingPerson bo = new BOContainingPerson();
 		bo.setBoPrimaryKey( "ONE" );
@@ -238,7 +238,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		bo.setPrincipalId( "p2" );
 		bos.save( bo );
 
-		Lookupable l = KNSServiceLocatorInternal.getKualiLookupable();
+		Lookupable l = KRADServiceLocatorInternal.getKualiLookupable();
 		l.setBusinessObjectClass( BOContainingPerson.class );
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put( "person.principalName", "principal1" );
@@ -255,7 +255,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 //		HashMap<String,String> criteria = new HashMap<String,String>();
 //		criteria.put( "lastName", "HUNTLEY" );
 //		criteria.put( "firstName", "KEISHA" );
-//		Collection<Person> people = (Collection<Person>)KNSServiceLocatorInternal.getLookupService().findCollectionBySearchUnbounded(Person.class, criteria);
+//		Collection<Person> people = (Collection<Person>)KRADServiceLocatorInternal.getLookupService().findCollectionBySearchUnbounded(Person.class, criteria);
 //		personService.findPeople( criteria );
 //		assertNotNull( "result must not be null", people );
 //		assertEquals( "wrong number of people returned", 1, people.size() );
@@ -263,7 +263,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 //		assertEquals( "principal name does not match", "khuntley", p.getPrincipalName() );
 //
 //		criteria.put( "principalName", "kuluser" );
-//		people = people = (Collection<Person>)KNSServiceLocatorInternal.getLookupService().findCollectionBySearchUnbounded(Person.class, criteria);
+//		people = people = (Collection<Person>)KRADServiceLocatorInternal.getLookupService().findCollectionBySearchUnbounded(Person.class, criteria);
 //		assertNotNull( "result must not be null", people );
 //		assertEquals( "wrong number of people returned", 1, people.size() );
 //		p = people.iterator().next();

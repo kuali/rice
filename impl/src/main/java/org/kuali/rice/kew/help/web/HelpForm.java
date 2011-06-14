@@ -16,9 +16,8 @@
  */
 package org.kuali.rice.kew.help.web;
 
-import org.apache.struts.action.ActionForm;
 import org.kuali.rice.kew.help.HelpEntry;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 
 /**

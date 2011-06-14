@@ -30,8 +30,8 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.entity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -94,7 +94,7 @@ public class UserXmlParser {
     }
     
     protected KimEntityImpl constructEntity(Element userElement) {
-        SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
     	
     	String firstName = userElement.getChildTextTrim(GIVEN_NAME_ELEMENT, NAMESPACE);
         String lastName = userElement.getChildTextTrim(LAST_NAME_ELEMENT, NAMESPACE);
@@ -152,7 +152,7 @@ public class UserXmlParser {
 			List<EntityEmailBo> emailAddresses = new ArrayList<EntityEmailBo>(1);
 			emailAddresses.add(EntityEmailBo.from(email.build()));
 			entityType.setEmailAddresses(emailAddresses);
-			//email = (KimEntityEmailImpl)KNSServiceLocatorInternal.getBusinessObjectService().save(email);
+			//email = (KimEntityEmailImpl)KRADServiceLocatorInternal.getBusinessObjectService().save(email);
 		}
 		List<EntityTypeDataBo> entityTypes = new ArrayList<EntityTypeDataBo>(1);
 		entityTypes.add(entityType);
@@ -175,7 +175,7 @@ public class UserXmlParser {
 			entity.getNames().add(name);
 		}
 
-		entity = (KimEntityImpl) KNSServiceLocator.getBusinessObjectService().save(entity);
+		entity = (KimEntityImpl) KRADServiceLocator.getBusinessObjectService().save(entity);
 		
 		return entity;
     }
@@ -195,7 +195,7 @@ public class UserXmlParser {
 		principal.setPrincipalId(principalId);
 		principal.setPrincipalName(principalName);
 		principal.setEntityId(entityId);
-		principal = (PrincipalBo) KNSServiceLocator.getBusinessObjectService().save(principal);
+		principal = (PrincipalBo) KRADServiceLocator.getBusinessObjectService().save(principal);
 		
 		return principal;
     }

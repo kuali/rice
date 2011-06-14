@@ -18,7 +18,7 @@ package org.kuali.rice.kim.bo.role.dto;
 import java.io.Serializable;
 
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kns.dto.InactiveableInfo;
+import org.kuali.rice.krad.dto.InactiveableInfo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

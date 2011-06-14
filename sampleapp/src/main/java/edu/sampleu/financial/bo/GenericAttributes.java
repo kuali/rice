@@ -15,7 +15,7 @@
  */
 package edu.sampleu.financial.bo;
 
-import org.kuali.rice.kns.bo.AttributeReferenceDummy;
+import org.kuali.rice.krad.bo.AttributeReferenceDummy;
 
 public class GenericAttributes extends AttributeReferenceDummy {
 

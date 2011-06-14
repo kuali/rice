@@ -41,7 +41,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -153,7 +153,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     
     protected List<ActionRequestValue> generateKimExceptionRequests(RouteContext routeContext) throws Exception {
     	RoleRouteModule roleRouteModule = new RoleRouteModule();
-    	roleRouteModule.setNamespace(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
+    	roleRouteModule.setNamespace(KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
     	roleRouteModule.setResponsibilityTemplateName(KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
     	List<ActionRequestValue> requests = roleRouteModule.findActionRequests(routeContext);
     	processExceptionRequests(requests);

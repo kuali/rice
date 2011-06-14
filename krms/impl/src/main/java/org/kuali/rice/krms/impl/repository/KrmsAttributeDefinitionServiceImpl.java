@@ -23,12 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
 
@@ -206,12 +204,12 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
 
     /**
      * This method returns a reference to the businessObjectService.
-     * If the businessObjectService is not set, get it from the KNSServiceLocator.
+     * If the businessObjectService is not set, get it from the KRADServiceLocator.
      * @return businessObjectService
      */
     protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KRADServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

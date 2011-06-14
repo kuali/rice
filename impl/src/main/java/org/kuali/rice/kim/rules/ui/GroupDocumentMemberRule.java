@@ -28,8 +28,8 @@ import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.api.group.GroupService;
 //import org.kuali.rice.kim.api.group.GroupServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.rules.DocumentRuleBase;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.rules.DocumentRuleBase;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

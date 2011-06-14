@@ -20,9 +20,9 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.lookup.KualiLookupableImpl;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.krad.lookup.KualiLookupableImpl;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -36,7 +36,7 @@ public class PermissionLookupableImpl extends KualiLookupableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.lookup.KualiLookupableImpl#getCreateNewUrl()
+	 * @see org.kuali.rice.krad.lookup.KualiLookupableImpl#getCreateNewUrl()
 	 */
 	@Override
 	public String getCreateNewUrl() {
@@ -44,12 +44,12 @@ public class PermissionLookupableImpl extends KualiLookupableImpl {
 
         if (getLookupableHelperService().allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_PERMISSION_DOCUMENT_TYPE_NAME)) {
             Properties parameters = new Properties();
-            parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
-            parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, GenericPermission.class.getName());
+            parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
+            parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, GenericPermission.class.getName());
 	        if (StringUtils.isNotBlank(getReturnLocation())) {
-	        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
+	        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 	        	}
-            url = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+            url = UrlFactory.parameterizeUrl(KRADConstants.MAINTENANCE_ACTION, parameters);
             url = "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
         }
 

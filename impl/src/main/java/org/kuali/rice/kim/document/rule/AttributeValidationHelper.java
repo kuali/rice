@@ -23,11 +23,11 @@ import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +113,7 @@ public class AttributeValidationHelper {
 	
 	public BusinessObjectService getBusinessObjectService() {
 		if(businessObjectService == null){
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KRADServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
@@ -131,14 +131,14 @@ public class AttributeValidationHelper {
 	public AttributeSet convertErrorsForMappedFields(String errorPath, AttributeSet localErrors) {
 		AttributeSet errors = new AttributeSet();
 		if (errorPath == null) {
-			errorPath = KNSConstants.EMPTY_STRING;
+			errorPath = KRADConstants.EMPTY_STRING;
 		}
 		else if (StringUtils.isNotEmpty(errorPath)) {
 			errorPath = errorPath + ".";
 		}
 		for ( String key : localErrors.keySet() ) {
 			Map<String,String> criteria = new HashMap<String,String>();
-			criteria.put(KNSPropertyConstants.ATTRIBUTE_NAME, key);
+			criteria.put(KRADPropertyConstants.ATTRIBUTE_NAME, key);
 			KimAttributeBo attribute = (KimAttributeBo) getBusinessObjectService().findByPrimaryKey(KimAttributeBo.class, criteria);
 			String attributeDefnId = attribute==null?"":attribute.getId();
 			errors.put(errorPath+"qualifier("+attributeDefnId+").attrVal", localErrors.get(key));
@@ -149,7 +149,7 @@ public class AttributeValidationHelper {
 	public AttributeSet convertErrors(String errorPath, AttributeSet attrIdxMap, AttributeSet localErrors) {
 		AttributeSet errors = new AttributeSet();
 		if (errorPath == null) {
-			errorPath = KNSConstants.EMPTY_STRING;
+			errorPath = KRADConstants.EMPTY_STRING;
 		}
 		else if (StringUtils.isNotEmpty(errorPath)) {
 			errorPath = errorPath + ".";

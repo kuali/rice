@@ -40,7 +40,7 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.edl.framework.extract.DumpDTO;
 import org.kuali.rice.edl.framework.extract.FieldDTO;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 /**
  *
@@ -83,7 +83,7 @@ public class Dump {
 
     //@PrePersist
     public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+        OrmUtils.populateAutoIncValue(this, KRADServiceLocator.getEntityManagerFactory().createEntityManager());
     }
 
 

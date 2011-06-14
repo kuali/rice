@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import edu.sampleu.bookstore.bo.BookType;
 
@@ -30,7 +30,7 @@ public class BookTypeKeyValues extends KeyValuesBase {
     public List getKeyValues() {
         List keyValues = new ArrayList();
 
-        Collection<BookType> bos = KNSServiceLocator.getBusinessObjectService().findAll(BookType.class );
+        Collection<BookType> bos = KRADServiceLocator.getBusinessObjectService().findAll(BookType.class );
         
         keyValues.add(new ConcreteKeyValue("", ""));
         for ( BookType typ : bos ) {

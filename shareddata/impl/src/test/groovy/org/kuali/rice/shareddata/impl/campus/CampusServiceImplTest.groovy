@@ -23,7 +23,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import org.kuali.rice.kns.service.BusinessObjectService
+import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.shareddata.api.campus.Campus
 import org.kuali.rice.shareddata.api.campus.CampusService
 import org.kuali.rice.shareddata.api.campus.CampusType

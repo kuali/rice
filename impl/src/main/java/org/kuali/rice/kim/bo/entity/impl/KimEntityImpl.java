@@ -23,7 +23,7 @@ import org.kuali.rice.kim.impl.entity.personal.EntityBioDemographicsBo;
 import org.kuali.rice.kim.impl.entity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.*;

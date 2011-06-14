@@ -26,7 +26,7 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.rule.web.DocumentConfigurationViewAction.PermissionForDisplay;
 import org.kuali.rice.kew.rule.web.DocumentConfigurationViewAction.ResponsibilityForDisplay;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

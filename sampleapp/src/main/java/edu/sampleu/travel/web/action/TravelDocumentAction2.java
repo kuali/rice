@@ -26,11 +26,11 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
+import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.struts.action.KualiTransactionalDocumentActionBase;
 
 import edu.sampleu.travel.bo.TravelAccount;
 import edu.sampleu.travel.document.TravelDocument2;
@@ -40,7 +40,7 @@ public class TravelDocumentAction2 extends KualiTransactionalDocumentActionBase 
 
     public ActionForward insertAccount(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         TravelDocumentForm2 travelForm = (TravelDocumentForm2) form;
-        TravelAccount travAcct = (TravelAccount) KNSServiceLocator.getBusinessObjectService().retrieve(travelForm.getTravelAccount());
+        TravelAccount travAcct = (TravelAccount) KRADServiceLocator.getBusinessObjectService().retrieve(travelForm.getTravelAccount());
         // Make sure a travel account was actually retrieved.
         if (travAcct == null) {
         	GlobalVariables.getMessageMap().putError("travelAccount.number", RiceKeyConstants.ERROR_CUSTOM, "Invalid travel account number");
@@ -64,8 +64,8 @@ public class TravelDocumentAction2 extends KualiTransactionalDocumentActionBase 
     public ActionForward deleteAccount(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	// Remove the travel account at the index specified in the "methodToCall" parameter.
     	TravelDocumentForm2 travelForm = (TravelDocumentForm2) form;
-    	String strIndex = StringUtils.substringBetween((String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE),
-        		KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
+    	String strIndex = StringUtils.substringBetween((String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE),
+        		KRADConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
     	if (StringUtils.isNotBlank(strIndex)) {
     		((TravelDocument2) travelForm.getDocument()).getTravelAccounts().remove(Integer.parseInt(strIndex));
     	}

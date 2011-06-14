@@ -57,7 +57,7 @@
 
   <!-- Can only load the KSB Module Configuration when the KNS is available and loaded -->
   
-  <bean id="rice.ksb.moduleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+  <bean id="rice.ksb.moduleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
 		<property name="namespaceCode" value="KR-BUS" />
 		<property name="initializeDataDictionary" value="false"/>
 		<property name="dataDictionaryService" ref="dataDictionaryService" />

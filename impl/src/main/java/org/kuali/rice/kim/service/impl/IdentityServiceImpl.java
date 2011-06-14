@@ -56,11 +56,11 @@ import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
-import org.kuali.rice.kns.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.lookup.CollectionIncomplete;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.jws.WebService;
 import java.util.ArrayList;
@@ -200,9 +200,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
 	protected Collection lookupEntityImpls(Map<String,String> searchCriteria, boolean unbounded) {
 		if ( unbounded ) {
-			return KNSServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria );
+			return KRADServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria );
 		} else {
-			return KNSServiceLocatorWeb.getLookupService().findCollectionBySearch( KimEntityImpl.class, searchCriteria );
+			return KRADServiceLocatorWeb.getLookupService().findCollectionBySearch( KimEntityImpl.class, searchCriteria );
 		}
 	}
 
@@ -311,7 +311,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 */
 	@SuppressWarnings("unchecked")
 	protected List<KimEntityImpl> lookupEntitys(Map<String, String> searchCriteria) {
-		return new ArrayList(KNSServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria ));
+		return new ArrayList(KRADServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria ));
 	}
 
 	/**
@@ -464,7 +464,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KRADServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

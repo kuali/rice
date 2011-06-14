@@ -103,7 +103,7 @@
 	
 	<!-- TODO moved these to KEWSpringBeans.xml for now because of dependency issues with the caching magic
 	
-	<bean id="serviceRegistry" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+	<bean id="serviceRegistry" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 	

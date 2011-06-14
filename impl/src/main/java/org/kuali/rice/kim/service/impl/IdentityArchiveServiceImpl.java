@@ -25,8 +25,8 @@ import org.kuali.rice.kim.api.entity.services.IdentityArchiveService;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -258,7 +258,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 				// the strategy is to grab chunks of entities, dedupe & sort them, and insert them in a big
 				// batch to reduce transaction overhead.  Sorting is done so insertion order is guaranteed, which
 				// prevents deadlocks between concurrent writers to the database.
-				PlatformTransactionManager transactionManager = KNSServiceLocatorInternal.getTransactionManager();
+				PlatformTransactionManager transactionManager = KRADServiceLocatorInternal.getTransactionManager();
 				TransactionTemplate template = new TransactionTemplate(transactionManager);
 				template.execute(new TransactionCallback() {
 					@Override

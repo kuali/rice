@@ -21,16 +21,16 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 
   <persistence-unit name="kns-application-unit" transaction-type="JTA">
-    <mapping-file>META-INF/kns-orm.xml</mapping-file>
+    <mapping-file>META-INF/krad-orm.xml</mapping-file>
     <mapping-file>META-INF/kns-test-orm.xml</mapping-file>
-    <class>org.kuali.rice.kns.test.document.AccountRequestDocument</class>
-    <class>org.kuali.rice.kns.test.document.AccountRequestDocumentWithCyclicalReference</class>
-    <class>org.kuali.rice.kns.test.document.bo.AccountManager</class>
-    <class>org.kuali.rice.kns.test.document.bo.Account</class>
-    <class>org.kuali.rice.kns.test.document.bo.AccountType</class>
-    <class>org.kuali.rice.kns.test.document.bo.AccountExtension</class>
-    <class>org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument</class>
-    <class>org.kuali.rice.kns.test.document.SearchAttributeIndexTestDocument</class>
+    <class>org.kuali.rice.krad.test.document.AccountRequestDocument</class>
+    <class>org.kuali.rice.krad.test.document.AccountRequestDocumentWithCyclicalReference</class>
+    <class>org.kuali.rice.krad.test.document.bo.AccountManager</class>
+    <class>org.kuali.rice.krad.test.document.bo.Account</class>
+    <class>org.kuali.rice.krad.test.document.bo.AccountType</class>
+    <class>org.kuali.rice.krad.test.document.bo.AccountExtension</class>
+    <class>org.kuali.rice.krad.test.document.AccountWithDDAttributesDocument</class>
+    <class>org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocument</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
   

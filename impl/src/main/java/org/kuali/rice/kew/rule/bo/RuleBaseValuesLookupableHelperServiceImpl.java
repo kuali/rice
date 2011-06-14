@@ -42,23 +42,23 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.lookup.LookupableHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
-import org.kuali.rice.kns.web.struts.form.LookupForm;
-import org.kuali.rice.kns.web.ui.Column;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.ResultRow;
-import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.lookup.HtmlData;
+import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.krad.lookup.LookupableHelperService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.web.comparator.CellComparatorHelper;
+import org.kuali.rice.krad.web.struts.form.LookupForm;
+import org.kuali.rice.krad.web.ui.Column;
+import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.krad.web.ui.ResultRow;
+import org.kuali.rice.krad.web.ui.Row;
 
 import java.sql.Date;
 import java.util.*;
@@ -452,8 +452,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             Collection resultTable, boolean bounded) {
         // TODO jjhanso - THIS METHOD NEEDS JAVADOCS
         //return super.performLookup(lookupForm, resultTable, bounded);
-        setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
-        setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
+        setBackLocation((String) lookupForm.getFieldsForLookup().get(KRADConstants.BACK_LOCATION));
+        setDocFormKey((String) lookupForm.getFieldsForLookup().get(KRADConstants.DOC_FORM_KEY));
         Collection displayList;
 
         // call search method to get results
@@ -499,7 +499,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 Formatter formatter = col.getFormatter();
 
                 // pick off result column from result list, do formatting
-                String propValue = KNSConstants.EMPTY_STRING;
+                String propValue = KRADConstants.EMPTY_STRING;
                 Object prop = null;
                 boolean skipPropTypeCheck = false;
                 //try to get value elsewhere
@@ -627,9 +627,9 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         			BusinessObject ruleDelegation = (BusinessObject) delegationList.get(0);
     				// Retrieve the rule delegation lookupable helper service and the primary key names, if they have not been obtained yet.
         	        if (ruleDelegationLookupableHelperService == null) {
-        				ruleDelegationLookupableHelperService = KNSServiceLocatorWeb.getLookupable(
-                                KNSServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(
-                                        ruleDelegation.getClass())).getLookupableHelperService();
+        				ruleDelegationLookupableHelperService = KRADServiceLocatorWeb.getLookupable(
+                                KRADServiceLocatorWeb.getBusinessObjectDictionaryService()
+                                        .getLookupableID(ruleDelegation.getClass())).getLookupableHelperService();
         				if (ruleDelegationLookupableHelperService.getBusinessObjectClass() == null) {
         					ruleDelegationLookupableHelperService.setBusinessObjectClass(ruleDelegation.getClass());
         				}
@@ -641,10 +641,10 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         	} else {
         		// Otherwise, have the links open the regular routing rule maintenance document screen.
         		if (allowsMaintenanceEditAction(businessObject)) {
-        			htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        			htmlDataList.add(getUrlData(businessObject, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
         		}
         		if (allowsMaintenanceNewOrCopyAction()) {
-                	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
+                	htmlDataList.add(getUrlData(businessObject, KRADConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
             	}
         	}
         }

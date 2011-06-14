@@ -2,7 +2,7 @@ package org.kuali.rice.kim.api.entity;
 
 
 import org.apache.commons.collections.CollectionUtils;
-import org.kuali.rice.kns.bo.DefaultableInactivateable;
+import org.kuali.rice.krad.bo.DefaultableInactivateable;
 
 import java.util.Collection;
 

@@ -94,7 +94,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiMaintenanceDocument</description>
 			<label>KualiMaintenanceDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -123,7 +123,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiFinancialDocument</description>
 			<label>KualiFinancialDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -159,7 +159,7 @@
 			<parent>KualiFinancialDocument</parent>
 			<description>KualiInternalBillingDocument</description>
 			<label>KualiInternalBillingDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
 			<docHandler>http://localhost:8080/kuali-dev/financialInternalBilling.do?methodToCall=docHandler</docHandler>
@@ -170,7 +170,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiProjectCodeMaintenanceDocument</description>
 			<label>KualiProjectCodeMaintenanceDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -181,7 +181,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiDistIncExpDocument</description>
 			<label>KualiDistIncExpDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -192,7 +192,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiAccountMaintenanceDocument</description>
 			<label>KualiAccountMaintenanceDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -203,7 +203,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiYearEndDistIncExpDocument</description>
 			<label>KualiYearEndDistIncExpDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -214,7 +214,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiServiceBillingDocument</description>
 			<label>KualiServiceBillingDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -225,7 +225,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiTransferOfFundsDocument</description>
 			<label>KualiTransferOfFundsDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -236,7 +236,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiYearEndTransferOfFundsDocument</description>
 			<label>KualiYearEndTransferOfFundsDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -247,7 +247,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiAuxiliaryVoucherDocument</description>
 			<label>KualiAuxiliaryVoucherDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -258,7 +258,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiGeneralErrorCorrectionDocument</description>
 			<label>KualiGeneralErrorCorrectionDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
@@ -269,7 +269,7 @@
 			<parent>KualiBaseDocument</parent>
 			<description>KualiYearEndGeneralErrorCorrectionDocument</description>
 			<label>KualiYearEndGeneralErrorCorrectionDocument</label>
-			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>

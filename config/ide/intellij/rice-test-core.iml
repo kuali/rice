@@ -9,14 +9,13 @@
     <output url="file://$MODULE_DIR$/../../../test/core/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../test/core/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../test/core">
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/core/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/test/resources/META-INF" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/core/target/generated-sources/test-annotations" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -31,7 +30,7 @@
     <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-core-api" />
-    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
@@ -44,7 +43,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: xerces:xercesImpl:2.9.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.doctype.bo;
 
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.
@@ -54,7 +54,7 @@ public interface DocumentTypeEBO extends ExternalizableBusinessObject{
 	 * In order to make this object Inactivateable. Not sure if I
 	 * should remove the getActive method.
 	 *
-	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
+	 * @see org.kuali.rice.krad.bo.Inactivateable#isActive()
 	 */
 	public boolean isActive();
 

@@ -22,7 +22,7 @@ def metaInf = 'META-INF/'
 def schemaName = "RICE110DEV"
 
 def repositories = [
-		'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns-test.xml'
+		'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/krad/config/OJB-repository-krad-test.xml'
 		]
 
 def sourceDirectories = [

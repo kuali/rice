@@ -19,7 +19,7 @@
 
   <bean id="TravelAccountMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.KualiMaintainableImpl"/>
     <property name="defaultExistenceChecks">
       <list>
         <bean parent="ReferenceDefinition" p:attributeName="extension.accountType" p:attributeToHighlightOnFail="extension.accountTypeCode"/>
@@ -32,7 +32,7 @@
     </property>
     <property name="documentTypeName" value="TravelAccountMaintenanceDocument"/>
     <property name="businessRulesClass" value="edu.sampleu.travel.bo.TravelAccountRules"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     
   </bean>
 

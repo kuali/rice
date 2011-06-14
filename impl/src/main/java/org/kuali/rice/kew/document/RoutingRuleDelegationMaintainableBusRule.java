@@ -17,7 +17,7 @@ package org.kuali.rice.kew.document;
 
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.krad.document.MaintenanceDocument;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.

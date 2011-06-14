@@ -17,7 +17,7 @@
 
 <%@ attribute name="group" required="true"
               description="The group instance that is being rendered"
-              type="org.kuali.rice.kns.uif.container.Group"%>
+              type="org.kuali.rice.krad.uif.container.Group"%>
 <%@ attribute name="groupBodyIdSuffix" required="false"
               description="String to append to the div id for the group body" %>
 

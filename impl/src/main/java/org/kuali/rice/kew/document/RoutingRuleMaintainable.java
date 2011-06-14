@@ -26,12 +26,12 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.document.MaintenanceLock;
-import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.web.ui.Section;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.document.MaintenanceLock;
+import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.krad.web.ui.Section;
 
 /**
  * This class is the maintainable implementation for Routing Rules 
@@ -162,7 +162,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#prepareForSave()
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#prepareForSave()
 	 */
 	@Override
 	public void prepareForSave() {
@@ -171,7 +171,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	}
 
     /**
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#setNewCollectionLineDefaultValues(java.lang.String, org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#setNewCollectionLineDefaultValues(java.lang.String, org.kuali.rice.krad.bo.PersistableBusinessObject)
 	 */
 	@Override
 	protected void setNewCollectionLineDefaultValues(String collectionName,

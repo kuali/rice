@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.devtools.pdle;
 
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 
 import java.util.Set;
 

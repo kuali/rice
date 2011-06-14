@@ -98,7 +98,7 @@
     <tag>
         <name>button</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELButtonTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELButtonTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELButtonTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -415,7 +415,7 @@
     <tag>
         <name>cancel</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELCancelTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELCancelTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELCancelTag</tag-class>
         <description>
             <![CDATA[
           <p><strong>Render a Cancel Button</strong></p>
@@ -722,7 +722,7 @@
     <tag>
         <name>checkbox</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELCheckboxTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELCheckboxTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELCheckboxTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -1282,7 +1282,7 @@
     <tag>
         <name>file</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELFileTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELFileTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELFileTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -2800,7 +2800,7 @@
     <tag>
         <name>image</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELImageTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELImageTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELImageTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -4733,7 +4733,7 @@
     <tag>
         <name>multibox</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELMultiboxTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELMultiboxTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELMultiboxTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -5574,7 +5574,7 @@
     <tag>
         <name>password</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELPasswordTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELPasswordTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELPasswordTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -6039,7 +6039,7 @@
     <tag>
         <name>radio</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELRadioTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELRadioTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELRadioTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -7003,7 +7003,7 @@
     <tag>
         <name>select</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELSelectTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELSelectTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELSelectTag</tag-class>
         <body-content>JSP</body-content>
         <description>
             <![CDATA[
@@ -7441,7 +7441,7 @@
     <tag>
         <name>submit</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELSubmitTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELSubmitTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELSubmitTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -7750,7 +7750,7 @@
     <tag>
         <name>text</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELTextTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELTextTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELTextTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>
@@ -8192,7 +8192,7 @@
     <tag>
         <name>textarea</name>
         <!--<tag-class>org.apache.strutsel.taglib.html.ELTextareaTag</tag-class>-->
-        <tag-class>org.kuali.rice.kns.web.taglib.html.KNSELTextareaTag</tag-class>
+        <tag-class>org.kuali.rice.krad.web.taglib.html.KNSELTextareaTag</tag-class>
         <description>
             <![CDATA[
             <p><strong>

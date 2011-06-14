@@ -18,9 +18,7 @@ package org.kuali.rice.kew.engine.node;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
@@ -44,7 +42,7 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
@@ -124,7 +122,7 @@ public class RoleNode extends RequestsNode {
 		while ( docType != null ) {
 			QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
             Predicate p = and(
-                equal("template.namespaceCode", KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
+                equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
                 equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
                 equal("active", "Y"),
                 equal("attributes[documentTypeName]", docType.getName()),

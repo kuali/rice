@@ -17,8 +17,8 @@ package org.kuali.rice.maintainable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.test.KNSTestCase;
 
 import static org.junit.Assert.assertFalse;

@@ -6,11 +6,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiPercent;
-import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.web.struts.action.KualiTransactionalDocumentActionBase;
+import org.kuali.rice.krad.web.struts.form.KualiForm;
 import edu.sampleu.bookstore.bo.Book;
 import edu.sampleu.bookstore.bo.BookOrder;
 import edu.sampleu.bookstore.document.BookOrderDocument;
@@ -31,7 +30,7 @@ public class BookOrderAction extends KualiTransactionalDocumentActionBase {
         
 		for (BookOrder entry : document.getBookOrders()) {
 			if (entry.getBookId() != null) {
-				Book book = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class, entry.getBookId());
+				Book book = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class, entry.getBookId());
 
 				entry.setUnitPrice(book.getPrice());
 				Double totalPrice = 0.0d;
@@ -68,7 +67,7 @@ public class BookOrderAction extends KualiTransactionalDocumentActionBase {
         BookOrderDocument document = form.getBookOrderDocument();
         for (BookOrder entry : document.getBookOrders()) {
         	if(entry.getBookId() != null){
-        	Book book = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class, entry.getBookId());        	
+        	Book book = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class, entry.getBookId());
         	entry.setUnitPrice(book.getPrice());
 			Double totalPrice = 0.0d;
 			if (book.getPrice() != null && entry.getQuantity() != null) {

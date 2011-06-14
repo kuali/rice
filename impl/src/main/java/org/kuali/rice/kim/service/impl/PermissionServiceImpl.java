@@ -37,12 +37,12 @@ import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.lookup.Lookupable;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.lookup.CollectionIncomplete;
+import org.kuali.rice.krad.lookup.Lookupable;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 import javax.jws.WebService;
 import java.util.ArrayList;
@@ -433,7 +433,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( "template.namespaceCode", namespaceCode );
 	    	pk.put( "template.name", permissionTemplateName );
-			pk.put( KNSPropertyConstants.ACTIVE, "Y" );
+			pk.put( KRADPropertyConstants.ACTIVE, "Y" );
 	    	permissions = (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
 	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
     	}
@@ -448,7 +448,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
 	    	pk.put( KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName );
-			pk.put( KNSPropertyConstants.ACTIVE, "Y" );
+			pk.put( KRADPropertyConstants.ACTIVE, "Y" );
 	    	permissions = (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
 	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
     	}
@@ -485,9 +485,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	@SuppressWarnings("unchecked")
 	public List<KimPermissionInfo> lookupPermissions(Map<String, String> searchCriteria, boolean unbounded ){
 		Collection baseResults = null;
-		Lookupable permissionLookupable = KNSServiceLocatorWeb.getLookupable(
-                KNSServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
-        );
+		Lookupable permissionLookupable = KRADServiceLocatorWeb.getLookupable(
+                KRADServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class));
 		permissionLookupable.setBusinessObjectClass(PermissionImpl.class);
 		if ( unbounded ) {
 		    baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );
@@ -559,7 +558,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	public List<KimPermissionTemplateInfo> getAllTemplates() {
 		if ( allTemplates == null ) {
 			Map<String,String> criteria = new HashMap<String,String>(1);
-			criteria.put( KNSPropertyConstants.ACTIVE, "Y" );
+			criteria.put( KRADPropertyConstants.ACTIVE, "Y" );
 			List<KimPermissionTemplateImpl> impls = (List<KimPermissionTemplateImpl>)getBusinessObjectService().findMatching( KimPermissionTemplateImpl.class, criteria );
 			List<KimPermissionTemplateInfo> infos = new ArrayList<KimPermissionTemplateInfo>( impls.size() );
 			for ( KimPermissionTemplateImpl impl : impls ) {
@@ -587,7 +586,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	private DataDictionaryService dataDictionaryService;
 	protected DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
-			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
+			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}

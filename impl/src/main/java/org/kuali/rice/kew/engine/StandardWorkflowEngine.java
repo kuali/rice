@@ -45,7 +45,7 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -727,7 +727,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	}
 
     private boolean isRunawayProcessDetected(EngineState engineState) throws NumberFormatException {
-	    String maxNodesConstant = getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.MAX_NODES_BEFORE_RUNAWAY_PROCESS);
+	    String maxNodesConstant = getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.MAX_NODES_BEFORE_RUNAWAY_PROCESS);
 	    int maxNodes = (org.apache.commons.lang.StringUtils.isEmpty(maxNodesConstant)) ? 50 : Integer.valueOf(maxNodesConstant);
 	    return engineState.getCompleteNodeInstances().size() > maxNodes;
 	}

@@ -26,18 +26,18 @@
   
   <form-beans>
     <!-- Begin required KNS forms -->
-    <form-bean name="BackdoorForm" type="org.kuali.rice.kns.web.struts.form.BackdoorForm" />
-    <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
-    <form-bean name="KualiLogoutForm" type="org.kuali.rice.kns.web.struts.form.KualiLogoutForm" />
+    <form-bean name="BackdoorForm" type="org.kuali.rice.krad.web.struts.form.BackdoorForm" />
+    <form-bean name="KualiForm" type="org.kuali.rice.krad.web.struts.form.KualiForm" />
+    <form-bean name="KualiLogoutForm" type="org.kuali.rice.krad.web.struts.form.KualiLogoutForm" />
     <!-- End required KNS forms -->
   </form-beans>
 
   <global-exceptions>
     <exception type="java.lang.Throwable"
-		handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler"
+		handler="org.kuali.rice.krad.web.struts.pojo.StrutsExceptionIncidentHandler"
 		key="meaningless" />
-	<exception type="org.kuali.rice.kns.exception.AuthorizationException"
-    	handler="org.kuali.rice.kns.web.struts.pojo.AuthorizationExceptionHandler"
+	<exception type="org.kuali.rice.krad.exception.AuthorizationException"
+    	handler="org.kuali.rice.krad.web.struts.pojo.AuthorizationExceptionHandler"
         key="meaningless" /> 
   </global-exceptions>
 
@@ -57,28 +57,28 @@
   <action-mappings>
     <!-- Begin required KNS mappings -->
     <action path="/portal" name="KualiForm"
-     type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
+     type="org.kuali.rice.krad.web.struts.action.KualiSimpleAction">
       <forward name="basic" path="/portal.jsp" />
     </action>
 
     <action path="/backdoorlogin" name="BackdoorForm" scope="request"
             parameter="methodToCall"
             input="/WEB-INF/jsp/backdoor/index.jsp"
-            type="org.kuali.rice.kns.web.struts.action.BackdoorAction">
+            type="org.kuali.rice.krad.web.struts.action.BackdoorAction">
       <forward name="basic" path="/portal.jsp" />
       <forward name="viewPortal" path="/portal.jsp" />
       <forward name="logout" path="/logout.do" />
     </action>
         
-    <action path="/logout" name="KualiLogoutForm" type="org.kuali.rice.kns.web.struts.action.KualiLogoutAction" />
+    <action path="/logout" name="KualiLogoutForm" type="org.kuali.rice.krad.web.struts.action.KualiLogoutAction" />
 
     <action path="/index" name="KualiForm"
-            type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
+            type="org.kuali.rice.krad.web.struts.action.KualiSimpleAction">
       <forward name="basic" path="/portal.jsp" />
     </action>
     <!-- An action mapping to "/updateTextArea" is needed here when Javascript is enabled. -->
     <action path="/updateTextArea" name="KualiForm"
-            type="org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase">
+            type="org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase">
       <forward name="basic" path="/kr/WEB-INF/jsp/TextArea.jsp" />
     </action>
     <!-- End required KNS mappings -->
@@ -86,7 +86,7 @@
 
   <!-- The standard Struts Request Processor for the KNS -->
   <controller
-    processorClass="org.kuali.rice.kns.web.struts.action.KualiRequestProcessor" />
+    processorClass="org.kuali.rice.krad.web.struts.action.KualiRequestProcessor" />
     
   <!-- Replace this with the path to your own ApplicationResources.properties file which
   	   contains externalized messages for internationalization purposes
@@ -95,6 +95,6 @@
   	   
    -->
   <message-resources
-   factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory"
+   factory="org.kuali.rice.krad.web.struts.action.KualiPropertyMessageResourcesFactory"
    parameter="my.app.package.ApplicationResources" />
 </struts-config>

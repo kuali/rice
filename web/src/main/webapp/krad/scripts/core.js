@@ -667,7 +667,8 @@ function coerceValue(name){
 /**
  * Gets the actual attribute id to use element manipulation related to this attribute.
  * This method is necessary due to radio/checkboxes appending an additional suffix to the
- * id, and the hook being the base id without this suffix.
+ * id, and the hook being the base id without this suffix
+ *
  * @param elementId
  * @param elementType
  * @returns
@@ -691,7 +692,6 @@ function getAttributeId(elementId, elementType){
  * @returns true if the form has dirty fields
  */
 function checkDirty(event){
-
 	var validateDirty = jq("[name='validateDirty']").val()
 	var dirty = jq(".field_attribute").find("input.dirty")
 	
@@ -722,7 +722,8 @@ function checkDirty(event){
 
 /**
  * Same as setupRefreshCheck except the condition will alwasy be true (always refresh when
- * value changed on control).
+ * value changed on control)
+ *
  * @param controlName
  * @param refreshId
  */
@@ -734,7 +735,8 @@ function setupOnChangeRefresh(controlName, refreshId){
  * Sets up the conditional refresh mechanism in js by adding a change handler to the control
  * which may satisfy the conditional refresh condition passed in.  When the condition is satisfied,
  * refresh the necessary content specified by id by making a server call to retrieve a new instance
- * of that component.
+ * of that component
+ *
  * @param controlName
  * @param disclosureId
  * @param condition - function which returns true to refresh, false otherwise
@@ -792,10 +794,11 @@ function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetri
 }
 
 /**
- * Disables clientside validation on any inputs within the element(by id) passed in , if
+ * Disables client side validation on any inputs within the element(by id) passed in , if
  * that element is hidden.  Otherwise, it turns input validation back on if the element and
- * its children are visible.
- * @param id
+ * its children are visible
+ *
+ * @param id - id for the component for which the input hiddens should be processed
  */
 function hiddenInputValidationToggle(id){
 	var element = jq("#" + id);
@@ -819,8 +822,9 @@ function hiddenInputValidationToggle(id){
  * Retrieves the component with the matching id from the server and replaces a matching
  * _refreshWrapper marker span with the same id with the result.  In addition, if the result contains a label
  * and a displayWith marker span has a matching id, that span will be replaced with the label content
- * and removed from the component.  This allows for label and component content seperation on fields.
- * @param id
+ * and removed from the component.  This allows for label and component content seperation on fields
+ *
+ * @param id - id for the component to retrieve
  */
 function retrieveComponent(id){
 	var actualId = retrieveOriginalId(id);
@@ -888,6 +892,58 @@ function retrieveComponent(id){
 }
 
 /**
+ * Invoked when the Show/Hide Inactive button is clicked for a collection to toggle the
+ * display of inactive records within the collection. A request is made with ajax to update
+ * the collection flag on the server and render the collection group. The updated collection
+ * groups contents are then updated in the dom
+ *
+ * @param collectionGroupId - id for the collection group to update
+ * @param showInactive - boolean indicating whether inactive records should be displayed (true) or
+ * not displayed (false)
+ */
+function toggleInactiveRecordDisplay(collectionGroupId, showInactive) {
+    var elementToBlock = jq("#" + collectionGroupId + "_div");
+
+	jq("#kualiForm").ajaxSubmit({
+		data: {methodToCall: "toggleInactiveRecordDisplay", reqComponentId: collectionGroupId,
+               skipViewInit: "true", showInactiveRecords : showInactive},
+		beforeSend: function() {
+		     elementToBlock.block({
+	            message: '<img src="/kr-dev/krad/images/loader.gif" alt="working..." /> Updating...',
+	            fadeIn:  400,
+	            fadeOut:  800,
+	            overlayCSS:  {
+	                opacity: 0.3
+	            }
+	         });
+		},
+		complete: null,
+		error: function(){
+			elementToBlock.unblock();
+		},
+		success: function(response){
+			jq("#formComplete").html("");
+
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = response;
+			var hasError = handleIncidentReport(response);
+			if(!hasError){
+				var component = jq("#" + collectionGroupId + "_div", tempDiv);
+
+				elementToBlock.unblock({onUnblock: function(){
+						//replace component
+						if(jq("#" + collectionGroupId + "_div").length){
+							jq("#" + collectionGroupId + "_div").replaceWith(component);
+						}
+						runHiddenScripts(collectionGroupId + "_div");
+					}
+				});
+			}
+		}
+	});
+}
+
+/**
  * Retrieves the original dictionary based id that was used to generate this component and/or its
  * children/parent.  Basically removes everything after the first "_" in the idString passed in. 
  * Check if it is part of collections or old/new values of maintanance document to check
@@ -916,7 +972,8 @@ function retrieveOriginalId(idString){
 
 /**
  * If the content is an incident report view, replaces the current view with the incident report and
- * returns true, otherwise returns false.
+ * returns true, otherwise returns false
+ *
  * @param content
  * @returns {Boolean} true if there was an incident, false otherwise
  */
@@ -1005,6 +1062,7 @@ function setupValidator(){
 /**
  * Runs the validation script if the validator is already setup, otherwise adds a handler
  * to the document which will run once when the 'validationSetup' event is fired
+ *
  * @param scriptFunction
  */
 function runValidationScript(scriptFunction){
@@ -1049,7 +1107,8 @@ function dependsOnCheck(element){
 /**
  * Sets up a req indicator check for the controlName, when it changes, checks to see if it satisfies
  * some booleanFunction and then shows an indicator on the now required field (identified by requiredName).
- * If not satisfied, removes the indicator.
+ * If not satisfied, removes the indicator
+ *
  * @param controlName
  * @param requiredName
  * @param booleanFunction

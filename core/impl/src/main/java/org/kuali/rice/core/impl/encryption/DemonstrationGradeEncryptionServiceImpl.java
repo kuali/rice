@@ -207,7 +207,7 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
     /** Hash the value by converting to a string, running the hash algorithm, and then base64'ng the results.
      * Returns a blank string if any problems occur or the input value is null or empty.
      * 
-     * @see org.kuali.rice.kns.service.EncryptionService#hash(java.lang.Object)
+     * @see org.kuali.rice.krad.service.EncryptionService#hash(java.lang.Object)
      */
     public String hash(Object valueToHide) throws GeneralSecurityException {
         if ( valueToHide == null || StringUtils.isEmpty( valueToHide.toString() ) ) {

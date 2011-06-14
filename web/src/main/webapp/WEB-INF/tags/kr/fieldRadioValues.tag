@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="field" required="true" type="org.kuali.rice.kns.web.ui.Field" description="The field to render radio button options for." %>
+<%@ attribute name="field" required="true" type="org.kuali.rice.krad.web.ui.Field" description="The field to render radio button options for." %>
 <%@ attribute name="onblur" required="false" description="Javascript code which will be executed with the input field's onblur event is triggered." %>
 <%@ attribute name="onchange" required="false" description="Javascript code which will be executed with the input field's onchange event is triggered." %>
 <%@ attribute name="tabIndex" required="false" description="Tab index to use for next field" %>

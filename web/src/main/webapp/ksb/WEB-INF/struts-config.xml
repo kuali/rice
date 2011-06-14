@@ -20,7 +20,7 @@
     <form-beans >
 		<!-- Begin required KNS forms -->
 		<form-bean name="KualiForm"
-			type="org.kuali.rice.kns.web.struts.form.KualiForm" />
+			type="org.kuali.rice.krad.web.struts.form.KualiForm" />
 		<!-- End required KNS forms -->
 		<form-bean name="MessageQueueForm" type="org.kuali.rice.ksb.messaging.web.MessageQueueForm" />
 		<form-bean name="ServiceRegistryForm" type="org.kuali.rice.ksb.messaging.web.ServiceRegistryForm" />
@@ -33,10 +33,10 @@
 	<global-exceptions>
 		<!-- Begin required KNS exceptions -->
 		<exception type="java.lang.Throwable"
-			handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler"
+			handler="org.kuali.rice.krad.web.struts.pojo.StrutsExceptionIncidentHandler"
 			key="meaningless" />
-		<exception type="org.kuali.rice.kns.exception.AuthorizationException"
-            handler="org.kuali.rice.kns.web.struts.pojo.AuthorizationExceptionHandler"
+		<exception type="org.kuali.rice.krad.exception.AuthorizationException"
+            handler="org.kuali.rice.krad.web.struts.pojo.AuthorizationExceptionHandler"
             key="meaningless" /> 
 		<!-- End required KNS exceptions -->
 	</global-exceptions>
@@ -57,16 +57,16 @@
 	<action-mappings>
 		<!--  Required KNS Action Mappings -->
 		<action path="/portal" name="KualiForm"
-			type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
+			type="org.kuali.rice.krad.web.struts.action.KualiSimpleAction">
 			<forward name="basic" path="/portal.jsp" />
 		</action>
 
 		<action path="/index" name="KualiForm"
-			type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
+			type="org.kuali.rice.krad.web.struts.action.KualiSimpleAction">
 			<forward name="basic" path="/portal.jsp" />
 		</action>
 		
-		<action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase">
+		<action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase">
             <forward name="basic" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
         </action>
 		<!--  End Required KNS Action Mappings -->
@@ -106,6 +106,6 @@
 
 	<controller processorClass="org.kuali.rice.ksb.messaging.web.KSBStrutsRequestProcessor" />
 
-	<message-resources factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="" /> 
+	<message-resources factory="org.kuali.rice.krad.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="" />
 
 </struts-config>

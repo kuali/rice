@@ -15,8 +15,8 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.uif.control.CheckboxControl"/>
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.AttributeField"/>
+<tiles:useAttribute name="control" classname="org.kuali.rice.krad.uif.control.CheckboxControl"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.AttributeField"/>
 
 <%--
     Standard HTML Checkbox Input

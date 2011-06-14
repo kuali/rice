@@ -6,7 +6,7 @@ import javax.persistence.Id
 import javax.persistence.Column
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.entity.principal.PrincipalContract
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.entity.principal.Principal
 
 /**

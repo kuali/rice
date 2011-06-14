@@ -19,7 +19,7 @@ import org.kuali.rice.core.framework.component.ComponentEbo;
 import org.kuali.rice.core.framework.namespace.NamespaceEbo;
 import org.kuali.rice.core.framework.parameter.ParameterEbo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
+import org.kuali.rice.krad.bo.TransientBusinessObjectBase;
 import org.kuali.rice.shareddata.framework.campus.CampusEbo;
 
 /**

@@ -19,7 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.Type;
-import org.kuali.rice.kns.bo.Defaultable;
+import org.kuali.rice.krad.bo.Defaultable;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

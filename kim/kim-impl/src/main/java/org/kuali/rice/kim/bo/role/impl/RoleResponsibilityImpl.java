@@ -19,7 +19,7 @@ import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.RoleResponsibility;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

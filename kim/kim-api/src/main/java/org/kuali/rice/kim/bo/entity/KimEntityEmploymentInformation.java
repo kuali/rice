@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.bo.entity;
 
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivateable;
 
 /**
  * employment information for a KIM entity

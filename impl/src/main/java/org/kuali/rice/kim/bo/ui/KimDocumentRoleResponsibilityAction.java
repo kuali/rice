@@ -22,8 +22,8 @@ import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -161,7 +161,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 			//TODO: this needs to be changed to use the KimResponsibilityInfo object
 			// but the changes are involved in the UiDocumentService based on the copyProperties method used
 			// to move the data to/from the document/real objects
-			roleResponsibility = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(RoleResponsibilityImpl.class, getRoleResponsibilityId());
+			roleResponsibility = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(RoleResponsibilityImpl.class, getRoleResponsibilityId());
 		}
 		return roleResponsibility;
 	}

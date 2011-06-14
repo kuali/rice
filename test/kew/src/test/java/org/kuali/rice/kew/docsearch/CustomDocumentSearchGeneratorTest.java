@@ -29,7 +29,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import static org.junit.Assert.assertEquals;
 
@@ -73,7 +73,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName)));
 
-        Parameter orig = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        Parameter orig = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
 
         String origValue = orig.getValue();
         // adjust the app constant to be greater than custom generator value
@@ -81,21 +81,21 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
 
-        orig = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        orig = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
         // adjust the app constant to be less than custom generator value
         int newLimit = CustomDocumentSearchGenerator.RESULT_SET_LIMIT - 1;
         adjustResultSetCapApplicationConstantValue(orig, newLimit);
         KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshold().intValue());
 
-        orig = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        orig = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
         // reset the parameter
         Parameter.Builder pb = Parameter.Builder.create(orig);
         pb.setValue(origValue);
         CoreFrameworkServiceLocator.getParameterService().updateParameter(pb.build());
 
         // old parameter value will still be cached, let's flush the cache
-        //KNSServiceLocator.getParameterService().clearCache();
+        //KRADServiceLocator.getParameterService().clearCache();
         
         KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
@@ -109,7 +109,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         ps.setValue(newValue.toString());
         //ps.setParameterType(ParameterType.Builder.create("CONFG"));
         //ps.setVersionNumber(p.getVersionNumber());
-        //ps.setComponentCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
+        //ps.setComponentCode(KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
         //ps.setEvaluationOperator(EvaluationOperator.ALLOW);
         CoreFrameworkServiceLocator.getParameterService().updateParameter(ps.build());
     }

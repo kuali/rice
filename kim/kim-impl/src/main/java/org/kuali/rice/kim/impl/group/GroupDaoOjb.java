@@ -34,10 +34,10 @@ import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -51,7 +51,7 @@ public class GroupDaoOjb extends PlatformAwareDaoBaseOjb implements GroupDao  {
 
     public List<GroupBo> getGroups(Map<String,String> fieldValues) {
         Criteria crit = new Criteria();
-        BusinessObjectEntry boEntry = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.impl.group.GroupBo");
+        BusinessObjectEntry boEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.impl.group.GroupBo");
         List lookupNames = boEntry.getLookupDefinition().getLookupFieldNames();
         String kimTypeId = null;
         for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
@@ -69,7 +69,7 @@ public class GroupDaoOjb extends PlatformAwareDaoBaseOjb implements GroupDao  {
 
                     // obey the DD forceUppercase attribute and allow the OR operator
                     // subCrit.addLike("attributeValue",value);
-                    String[] values = StringUtils.split(value, KNSConstants.OR_LOGICAL_OPERATOR);
+                    String[] values = StringUtils.split(value, KRADConstants.OR_LOGICAL_OPERATOR);
                     boolean valuesCriterionAdded = false;
                     if (values.length > 0) {
                         if (definitions == null) {
@@ -111,7 +111,7 @@ public class GroupDaoOjb extends PlatformAwareDaoBaseOjb implements GroupDao  {
         		} else {
         			if (lookupNames.contains(entry.getKey())) {
             			String value = entry.getValue().replace('*', '%');
-                        String[] values = StringUtils.split(value, KNSConstants.OR_LOGICAL_OPERATOR);
+                        String[] values = StringUtils.split(value, KRADConstants.OR_LOGICAL_OPERATOR);
                         Criteria valuesCrit = new Criteria();
                         for (int i = 0; i < values.length; i++) {
                             String subValue = values[i];

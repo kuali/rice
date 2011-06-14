@@ -18,12 +18,12 @@ package org.kuali.rice.kim.lookup;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.krad.document.authorization.DocumentPresentationController;
+import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.krad.service.DocumentHelperService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
@@ -51,7 +51,7 @@ public class KimLookupableHelperServiceImpl extends KualiLookupableHelperService
 
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
-	        documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
+	        documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
 		}
 	    return documentHelperService;
 	}

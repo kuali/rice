@@ -19,10 +19,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.PagingBannerUtils;
-import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
-import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.PagingBannerUtils;
+import org.kuali.rice.krad.web.struts.form.KualiTableRenderFormMetadata;
+import org.kuali.rice.krad.web.struts.form.KualiTransactionalDocumentFormBase;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 	protected static final String CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL = "methodToCall.changeDelegationRoleMember";
 
     /**
-     * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#populate(javax.servlet.http.HttpServletRequest)
+     * @see org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase#populate(javax.servlet.http.HttpServletRequest)
      */
     @SuppressWarnings("unchecked")
 	@Override
@@ -56,14 +56,14 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 
         memberTableMetadata = new KualiTableRenderFormMetadata();
 
-        if (KNSConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD.equals(getMethodToCall())) {
-            final String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD + ".";
+        if (KRADConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD.equals(getMethodToCall())) {
+            final String paramPrefix = KRADConstants.DISPATCH_REQUEST_PARAMETER + "." + KRADConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD + ".";
             memberTableMetadata.setSwitchToPageNumber(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
             if (memberTableMetadata.getSwitchToPageNumber() == -1) {
                 throw new RuntimeException("Couldn't find page number");
             }
-        } else if (KNSConstants.TableRenderConstants.SORT_METHOD.equals(getMethodToCall())) {
-            final String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SORT_METHOD + ".";
+        } else if (KRADConstants.TableRenderConstants.SORT_METHOD.equals(getMethodToCall())) {
+            final String paramPrefix = KRADConstants.DISPATCH_REQUEST_PARAMETER + "." + KRADConstants.TableRenderConstants.SORT_METHOD + ".";
             memberTableMetadata.setColumnToSortIndex(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
             if (memberTableMetadata.getColumnToSortIndex() == -1) {
                 throw new RuntimeException("Couldn't find page number");
@@ -82,16 +82,16 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 
 	public int getRecordsPerPage() {
 		if ( recordsPerPage == -1 ) {
-			Parameter param = CoreFrameworkServiceLocator.getParameterService().getParameter(KimConstants.NAMESPACE_CODE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, MAX_MEMBERS_PER_PAGE_PARM);
+			Parameter param = CoreFrameworkServiceLocator.getParameterService().getParameter(KimConstants.NAMESPACE_CODE, KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, MAX_MEMBERS_PER_PAGE_PARM);
 			if ( param != null ) {
 				try {
 					recordsPerPage = Integer.parseInt( param.getValue() );
 				} catch ( NumberFormatException ex ) {
-					LOG.error( "Unable to parse parameter " + KimConstants.NAMESPACE_CODE+"/"+KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE+"/"+MAX_MEMBERS_PER_PAGE_PARM + "(+"+param.getValue()+") as an int - defaulting to 1." );
+					LOG.error( "Unable to parse parameter " + KimConstants.NAMESPACE_CODE+"/"+ KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE+"/"+MAX_MEMBERS_PER_PAGE_PARM + "(+"+param.getValue()+") as an int - defaulting to 1." );
 					recordsPerPage = 1;
 				}
 			} else {
-				LOG.error( "Unable to find " + KimConstants.NAMESPACE_CODE+"/"+KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE+"/"+MAX_MEMBERS_PER_PAGE_PARM + " - defaulting to 1." );
+				LOG.error( "Unable to find " + KimConstants.NAMESPACE_CODE+"/"+ KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE+"/"+MAX_MEMBERS_PER_PAGE_PARM + " - defaulting to 1." );
 				recordsPerPage = 1;
 			}
 		}

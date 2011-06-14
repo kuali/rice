@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.reference.dto;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.reference.KimCode;
-import org.kuali.rice.kns.bo.KualiCode;
+import org.kuali.rice.krad.bo.KualiCode;
 
 import javax.xml.bind.annotation.XmlTransient;
 

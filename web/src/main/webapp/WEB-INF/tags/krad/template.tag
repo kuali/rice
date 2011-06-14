@@ -19,7 +19,7 @@
 
 <%@ attribute name="component" required="true"
 	description="The UIF component for which the template will be generated"
-	type="org.kuali.rice.kns.uif.core.Component"%>
+	type="org.kuali.rice.krad.uif.core.Component"%>
 
 <%-- verify the component is not null and should be rendered --%>
 
@@ -29,13 +29,11 @@ still render, but render in a hidden container --%>
 	test="${!empty component && (component.render || (!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender))}">
 
 	<c:choose>
-		<c:when
-			test="${!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender}">
+		<c:when	test="${!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender}">
 			<div style="display: none;" id="${component.id}_refreshWrapper" class="refreshWrapper">
 		</c:when>
 		<c:otherwise>
-			<c:if
-				test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged}">
+			<c:if test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged}">
 				<div id="${component.id}_refreshWrapper" class="refreshWrapper">
 			</c:if>
 		</c:otherwise>
@@ -50,11 +48,9 @@ still render, but render in a hidden container --%>
 		<%-- render component through template --%>
 		<c:otherwise>
 			<tiles:insertTemplate template="${component.template}">
-				<tiles:putAttribute name="${component.componentTypeName}"
-					value="${component}" />
+				<tiles:putAttribute name="${component.componentTypeName}" value="${component}" />
 				<c:forEach items="${templateParameters}" var="parameter">
-					<tiles:putAttribute name="${parameter.key}"
-						value="${parameter.value}" />
+					<tiles:putAttribute name="${parameter.key}"	value="${parameter.value}" />
 				</c:forEach>
 			</tiles:insertTemplate>
 		</c:otherwise>
@@ -63,8 +59,7 @@ still render, but render in a hidden container --%>
 	<%-- generate event code for component --%>
 	<krad:eventScript component="${component}" />
 	
-	<c:if
-		test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged}">
+	<c:if test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged}">
 		</div>
 	</c:if>
 </c:if>
@@ -77,37 +72,28 @@ still render, but render in a hidden container --%>
 	</c:if>
 
 	<%-- setup progressive handlers for each control which may satisfy a disclosure condition --%>
-	<c:forEach items="${component.progressiveDisclosureControlNames}"
-		var="cName">
+	<c:forEach items="${component.progressiveDisclosureControlNames}" var="cName">
 		<krad:script
-			value="
-			var condition = function(){return (${component.progressiveDisclosureConditionJs});};
+			value="var condition = function(){return (${component.progressiveDisclosureConditionJs});};
 			setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', condition, ${component.progressiveRenderAndRefresh});" />
 	</c:forEach>
-	<krad:script
-			value="
-			hiddenInputValidationToggle('${component.id}_refreshWrapper');" />
+	<krad:script value="hiddenInputValidationToggle('${component.id}_refreshWrapper');" />
 
 </c:if>
 
 <%-- Conditional Refresh setup --%>
 <c:if test="${!empty component.conditionalRefresh}">
-	<c:forEach items="${component.conditionalRefreshControlNames}"
-		var="cName">
+	<c:forEach items="${component.conditionalRefreshControlNames}" var="cName">
 		<krad:script
-			value="
-		var condition = function(){return (${component.conditionalRefreshConditionJs});};
+			value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
 		setupRefreshCheck('${cName}', '${component.id}', condition);" />
 	</c:forEach>
 </c:if>
 
 <%-- Refresh when changed setup --%>
 <c:if test="${!empty component.refreshWhenChanged}">
-	<c:forEach items="${component.refreshWhenChangedControlNames}"
-		var="cName">
-		<krad:script
-			value="
-		setupOnChangeRefresh('${cName}', '${component.id}');" />
+	<c:forEach items="${component.refreshWhenChangedControlNames}" var="cName">
+		<krad:script value="setupOnChangeRefresh('${cName}', '${component.id}');" />
 	</c:forEach>
 </c:if>
 

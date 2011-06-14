@@ -20,8 +20,8 @@ import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.service.impl.ModuleServiceBase;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class KEWModuleService extends ModuleServiceBase {
 	 * These are the "primary" keys for the DocTypeService. We are considering both
 	 * name and documentTypeId to be unique.
 	 *
-	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#listPrimaryKeyFieldNames(java.lang.Class)
+	 * @see org.kuali.rice.krad.service.impl.ModuleServiceBase#listPrimaryKeyFieldNames(java.lang.Class)
 	 */
 	@Override
 	public List<String> listPrimaryKeyFieldNames(Class businessObjectInterfaceClass) {
@@ -62,7 +62,7 @@ public class KEWModuleService extends ModuleServiceBase {
 	 * This overridden method calls the DocumentTypeService instead of the underlying
 	 * KNS service.  Allows you to search on name and docTypeId
 	 *
-	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObject(java.lang.Class, java.util.Map)
+	 * @see org.kuali.rice.krad.service.impl.ModuleServiceBase#getExternalizableBusinessObject(java.lang.Class, java.util.Map)
 	 */
 	@Override
 	public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(
@@ -154,7 +154,7 @@ public class KEWModuleService extends ModuleServiceBase {
 	/**
 	 * This overridden method rewrites the URL.
 	 *
-	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectInquiryUrl(java.lang.Class, java.util.Map)
+	 * @see org.kuali.rice.krad.service.impl.ModuleServiceBase#getExternalizableBusinessObjectInquiryUrl(java.lang.Class, java.util.Map)
 	 */
 	@Override
 	public String getExternalizableBusinessObjectInquiryUrl(
@@ -186,7 +186,7 @@ public class KEWModuleService extends ModuleServiceBase {
 	/**
 	 * We want to be able to use name as an alternate key
 	 *
-	 * @see org.kuali.rice.kns.service.ModuleService#listAlternatePrimaryKeyFieldNames(java.lang.Class)
+	 * @see org.kuali.rice.krad.service.ModuleService#listAlternatePrimaryKeyFieldNames(java.lang.Class)
 	 */
 	public List<List<String>> listAlternatePrimaryKeyFieldNames(
 			Class businessObjectInterfaceClass) {

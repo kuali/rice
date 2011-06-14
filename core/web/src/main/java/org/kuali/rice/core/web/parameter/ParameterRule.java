@@ -22,13 +22,13 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.datadictionary.DataDictionaryException;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.krad.datadictionary.DataDictionaryException;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +45,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.kns.document.MaintenanceDocument)
+	 * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.krad.document.MaintenanceDocument)
 	 */
 	@Override
 	protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
@@ -70,7 +70,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getName());
 	        allowsEdit = KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
 	        				GlobalVariables.getUserSession().getPerson().getPrincipalId(),
-	        				KNSConstants.KNS_NAMESPACE,
+	        				KRADConstants.KRAD_NAMESPACE,
 	        				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
 	        				permissionDetails, null);
 	        if(!allowsEdit){
@@ -85,7 +85,8 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
         boolean result = false;
 
         try {
-            List<Component> dataDictionaryAndSpringComponents = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
+            List<Component> dataDictionaryAndSpringComponents = KRADServiceLocatorWeb
+                    .getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
             for (Component pdt : dataDictionaryAndSpringComponents) {
                 if (namespace.equals(pdt.getNamespaceCode()) && component.equals(pdt.getCode())) {
                     result = true;

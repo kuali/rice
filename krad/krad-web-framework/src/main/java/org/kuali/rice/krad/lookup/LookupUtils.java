@@ -237,7 +237,7 @@ public class LookupUtils {
     /**
      * This method the maximum rows per page in a multiple value lookup
      *
-     * @see org.kuali.KNSConstants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
+     * @see org.kuali.KRADConstants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE
      * @return
      */
     public static Integer getApplicationMaximumSearchResulsPerPageForMultipleValueLookups() {

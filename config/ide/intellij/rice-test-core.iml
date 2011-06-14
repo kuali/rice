@@ -16,6 +16,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/test/resources/META-INF" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

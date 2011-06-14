@@ -37,6 +37,7 @@ import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.exception.LockingException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -44,7 +45,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 
 
 public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
@@ -218,9 +218,9 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 
         String query = "SELECT DISTINCT(doc_hdr_id) FROM KREW_ACTN_RQST_T "+
         	"WHERE (STAT_CD='" +
-        	KEWConstants.ACTION_REQUEST_INITIALIZED+
+        	ActionRequestStatus.INITIALIZED.getCode()+
         	"' OR STAT_CD='"+
-        	KEWConstants.ACTION_REQUEST_ACTIVATED+
+        	ActionRequestStatus.ACTIVATED.getCode()+
         	"') AND RSP_ID IN "+respIds;
 
         LOG.debug("Query to find pending documents for requeue: " + query);

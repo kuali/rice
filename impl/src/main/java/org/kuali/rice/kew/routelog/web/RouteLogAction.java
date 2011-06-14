@@ -37,6 +37,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -56,7 +57,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowUtility;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.krad.UserSession;
@@ -132,9 +132,9 @@ public class RouteLogAction extends KewKualiAction {
             if (actionRequest.isPending()) {
                 arCount++;
 
-                if (KEWConstants.ACTION_REQUEST_INITIALIZED.equals(actionRequest.getStatus())) {
+                if (ActionRequestStatus.INITIALIZED.getCode().equals(actionRequest.getStatus())) {
                     actionRequest.setDisplayStatus("PENDING");
-                } else if (KEWConstants.ACTION_REQUEST_ACTIVATED.equals(actionRequest.getStatus())) {
+                } else if (ActionRequestStatus.ACTIVATED.getCode().equals(actionRequest.getStatus())) {
                     actionRequest.setDisplayStatus("IN ACTION LIST");
                 }
             }
@@ -239,9 +239,9 @@ public class RouteLogAction extends KewKualiAction {
             if (actionRequest.isPending()) {
                 pendingActionRequestCount++;
 
-                if (KEWConstants.ACTION_REQUEST_INITIALIZED.equals(actionRequest.getStatus())) {
+                if (ActionRequestStatus.INITIALIZED.getCode().equals(actionRequest.getStatus())) {
                     actionRequest.setDisplayStatus("PENDING");
-                } else if (KEWConstants.ACTION_REQUEST_ACTIVATED.equals(actionRequest.getStatus())) {
+                } else if (ActionRequestStatus.ACTIVATED.getCode().equals(actionRequest.getStatus())) {
                     actionRequest.setDisplayStatus("IN ACTION LIST");
                 }
             }

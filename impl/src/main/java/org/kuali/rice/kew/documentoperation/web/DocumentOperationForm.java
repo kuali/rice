@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -59,7 +60,6 @@ public class DocumentOperationForm extends KualiForm {
     private String lookupType;
     private Map docStatuses = KEWConstants.DOCUMENT_STATUSES;
     private Map actionRequestCds = KEWConstants.ACTION_REQUEST_CD;
-    private Map actionRequestStatuses = KEWConstants.ACTION_REQUEST_STATUS;
     private Map actionTakenCds = KEWConstants.ACTION_TAKEN_CD;
     private List routeModules;
     private String routeModuleName;
@@ -297,7 +297,11 @@ public class DocumentOperationForm extends KualiForm {
     	}
         return actionRequestRecipientTypes;
     }
-    public Map getActionRequestStatuses() {
+    public Map<String, String> getActionRequestStatuses() {
+        Map<String, String> actionRequestStatuses = new HashMap<String, String>();
+    	for (ActionRequestStatus requestStatus : ActionRequestStatus.values()) {
+    		actionRequestStatuses.put(requestStatus.getCode(), requestStatus.getLabel());
+    	}
         return actionRequestStatuses;
     }
 

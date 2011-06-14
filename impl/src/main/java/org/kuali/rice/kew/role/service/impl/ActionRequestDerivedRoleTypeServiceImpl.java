@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -79,7 +80,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 				if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequestDTO ar : actionRequests ) {
 						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_APPROVE_REQ )
-								&& ar.getStatus().equals( KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+								&& ar.getStatus().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || (NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) && !ar.isAdHocRequest());
 						}
 					}
@@ -88,7 +89,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 				if (ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequestDTO ar : actionRequests ) {
 						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ ) 
-							&& ar.getStatus().equals( KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+							&& ar.getStatus().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return true;
 						}
 					}
@@ -97,7 +98,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 				if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequestDTO ar : actionRequests ) {
 						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_FYI_REQ ) 
-							&& ar.getStatus().equals( KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+							&& ar.getStatus().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return true;
 						}
 					}

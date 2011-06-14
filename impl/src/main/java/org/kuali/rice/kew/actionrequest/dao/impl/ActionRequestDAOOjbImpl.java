@@ -30,6 +30,7 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -64,10 +65,10 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         Criteria crit = new Criteria();
         Criteria statusCriteria = new Criteria();
         Criteria activatedCriteria = new Criteria();
-        activatedCriteria.addEqualTo("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
+        activatedCriteria.addEqualTo("status", ActionRequestStatus.ACTIVATED.getCode());
 
         Criteria initializedCriteria = new Criteria();
-        initializedCriteria.addEqualTo("status", KEWConstants.ACTION_REQUEST_INITIALIZED);
+        initializedCriteria.addEqualTo("status", ActionRequestStatus.INITIALIZED.getCode());
 
         statusCriteria.addOrCriteria(activatedCriteria);
         statusCriteria.addOrCriteria(initializedCriteria);
@@ -104,7 +105,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
             actionRequest.setForceAction(Boolean.FALSE);
         }
         if (actionRequest.getStatus() == null) {
-            actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
+            actionRequest.setStatus(ActionRequestStatus.INITIALIZED.getCode());
         }
         if (actionRequest.getPriority() == null) {
             actionRequest.setPriority(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY);
@@ -125,7 +126,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     public List findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel) {
         Criteria crit = new Criteria();
         crit.addEqualTo("routeLevel", routeLevel);
-        crit.addNotEqualTo("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
+        crit.addNotEqualTo("status", ActionRequestStatus.DONE.getCode());
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", Boolean.TRUE);
         crit.addIsNull("parentActionRequest");
@@ -135,7 +136,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     public List findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
         Criteria crit = new Criteria();
         crit.addLessOrEqualThan("routeLevel", routeLevel);
-        crit.addNotEqualTo("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
+        crit.addNotEqualTo("status", ActionRequestStatus.DONE.getCode());
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", true);
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
@@ -144,7 +145,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
         Criteria crit = new Criteria();
         crit.addLessOrEqualThan("routeLevel", routeLevel);
-        crit.addNotEqualTo("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
+        crit.addNotEqualTo("status", ActionRequestStatus.DONE.getCode());
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", true);
         crit.addIsNull("parentActionRequest");
@@ -159,10 +160,10 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 
     public List findAllPendingByDocId(String documentId) {
         Criteria initializedStatCriteria = new Criteria();
-        initializedStatCriteria.addEqualTo("status", KEWConstants.ACTION_REQUEST_INITIALIZED);
+        initializedStatCriteria.addEqualTo("status", ActionRequestStatus.INITIALIZED.getCode());
 
         Criteria activatedStatCriteria = new Criteria();
-        activatedStatCriteria.addEqualTo("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
+        activatedStatCriteria.addEqualTo("status", ActionRequestStatus.ACTIVATED.getCode());
 
         Criteria statusCriteria = new Criteria();
         statusCriteria.addOrCriteria(initializedStatCriteria);
@@ -201,9 +202,9 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     private Criteria getPendingCriteria() {
         Criteria pendingCriteria = new Criteria();
         Criteria activatedCriteria = new Criteria();
-        activatedCriteria.addEqualTo("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
+        activatedCriteria.addEqualTo("status", ActionRequestStatus.ACTIVATED.getCode());
         Criteria initializedCriteria = new Criteria();
-        initializedCriteria.addEqualTo("status", KEWConstants.ACTION_REQUEST_INITIALIZED);
+        initializedCriteria.addEqualTo("status", ActionRequestStatus.INITIALIZED.getCode());
         pendingCriteria.addOrCriteria(activatedCriteria);
         pendingCriteria.addOrCriteria(initializedCriteria);
         return pendingCriteria;
@@ -280,7 +281,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 	 */
 	public List findActivatedByGroup(String groupId) {
         Criteria statusCriteria = new Criteria();
-        statusCriteria.addEqualTo("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
+        statusCriteria.addEqualTo("status", ActionRequestStatus.ACTIVATED.getCode());
         Criteria crit = new Criteria();
         crit.addEqualTo("groupId", groupId);
         crit.addEqualTo("currentIndicator", true);

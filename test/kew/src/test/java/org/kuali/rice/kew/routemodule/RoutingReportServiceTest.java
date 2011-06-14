@@ -17,10 +17,18 @@
 package org.kuali.rice.kew.routemodule;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Collection;
+import java.util.List;
+
 import org.junit.Test;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
-
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -28,11 +36,6 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import java.util.Collection;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class RoutingReportServiceTest extends KEWTestCase {
     
@@ -79,27 +82,27 @@ public class RoutingReportServiceTest extends KEWTestCase {
             String netId = getPrincipalNameForId(requestVO.getPrincipalId()); 
             if (netId.equals("bmcgough")) {
                 assertEquals("Should be approve.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
-                assertEquals("Should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
+                assertEquals("Should be activated.", ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
                 assertEquals("Wrong node name", SeqSetup.WORKFLOW_DOCUMENT_NODE, requestVO.getNodeName());
                 approveToBmcgough = true;
             } else if (netId.equals("rkirkend")) {
                 assertEquals("Should be approve.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
-                assertEquals("Should be activated.", KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
+                assertEquals("Should be activated.", ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
                 assertEquals("Wrong node name", SeqSetup.WORKFLOW_DOCUMENT_NODE, requestVO.getNodeName());
                 approveToRkirkend = true;
             } else if (netId.equals("pmckown")) {
                 assertEquals("Should be approve.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
-                assertEquals("Should be initialized.", KEWConstants.ACTION_REQUEST_INITIALIZED, requestVO.getStatus());
+                assertEquals("Should be initialized.", ActionRequestStatus.INITIALIZED.getCode(), requestVO.getStatus());
                 assertEquals("Wrong node name", SeqSetup.WORKFLOW_DOCUMENT_2_NODE, requestVO.getNodeName());
                 approveToPmckown = true;
             } else if (netId.equals("temay")) {
                 assertEquals("Should be acknowledge.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                assertEquals("Should be initialized.", KEWConstants.ACTION_REQUEST_INITIALIZED, requestVO.getStatus());
+                assertEquals("Should be initialized.", ActionRequestStatus.INITIALIZED.getCode(), requestVO.getStatus());
                 assertEquals("Wrong node name", SeqSetup.ACKNOWLEDGE_1_NODE, requestVO.getNodeName());
                 ackToTemay = true;
             } else if (netId.equals("jhopf")) {
                 assertEquals("Should be acknowledge.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                assertEquals("Should be initialized.", KEWConstants.ACTION_REQUEST_INITIALIZED, requestVO.getStatus());
+                assertEquals("Should be initialized.", ActionRequestStatus.INITIALIZED.getCode(), requestVO.getStatus());
                 assertEquals("Wrong node name", SeqSetup.ACKNOWLEDGE_2_NODE, requestVO.getNodeName());
                 ackToJhopf = true;
             } 

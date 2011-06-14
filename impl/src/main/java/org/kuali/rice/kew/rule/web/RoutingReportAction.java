@@ -16,6 +16,22 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -23,6 +39,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.ActivationContext;
@@ -49,12 +66,6 @@ import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.Row;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 
 /**
@@ -276,7 +287,7 @@ public class RoutingReportAction extends KewKualiAction {
 		for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
 			ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
 			populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(routeLevel, actionRequest.getChildrenRequests(), magicCounter);
-			actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
+			actionRequest.setStatus(ActionRequestStatus.INITIALIZED.getCode());
 //			actionRequest.setRouteMethodName(routeLevel.getRouteMethodName());
 			RouteNodeInstance routeNode = new RouteNodeInstance();
 			routeNode.setRouteNode(routeLevel);

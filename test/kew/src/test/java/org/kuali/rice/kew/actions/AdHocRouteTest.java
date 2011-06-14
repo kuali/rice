@@ -15,11 +15,22 @@
  */
 package org.kuali.rice.kew.actions;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
-
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -31,13 +42,6 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.test.BaselineTestCase;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import static org.junit.Assert.*;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class AdHocRouteTest extends KEWTestCase {
 
@@ -482,7 +486,7 @@ public class AdHocRouteTest extends KEWTestCase {
 		ActionRequestValue actionRequest = actionRequests.get(0);
 		assertEquals("Should be an approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
 		assertEquals("Invalid request label", label, actionRequest.getRequestLabel());
-		assertEquals("Request should be initialized", KEWConstants.ACTION_REQUEST_INITIALIZED, actionRequest.getStatus());
+		assertEquals("Request should be initialized", ActionRequestStatus.INITIALIZED.getCode(), actionRequest.getStatus());
 		
 		// now route the document, it should activate the request and create an action item
 		doc.routeDocument("");
@@ -506,7 +510,7 @@ public class AdHocRouteTest extends KEWTestCase {
 		ActionRequestValue actionRequest = actionRequests.get(0);
 		assertEquals("Should be an approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
 		assertEquals("Invalid request label", label, actionRequest.getRequestLabel());
-		assertEquals("Request should be initialized", KEWConstants.ACTION_REQUEST_INITIALIZED, actionRequest.getStatus());
+		assertEquals("Request should be initialized", ActionRequestStatus.INITIALIZED.getCode(), actionRequest.getStatus());
 		
 		// now route the document, it should activate the request and create action items
 		doc.routeDocument("");
@@ -532,7 +536,7 @@ public class AdHocRouteTest extends KEWTestCase {
 	        ActionRequestValue actionRequest = actionRequests.get(0);
 	        assertEquals("Should be a FYI request", KEWConstants.ACTION_REQUEST_FYI_REQ, actionRequest.getActionRequested());
 	        assertEquals("Invalid request label", label, actionRequest.getRequestLabel());
-	        assertEquals("Request should be initialized", KEWConstants.ACTION_REQUEST_INITIALIZED, actionRequest.getStatus());
+	        assertEquals("Request should be initialized", ActionRequestStatus.INITIALIZED.getCode(), actionRequest.getStatus());
 	        
 	        // now route the document, it should activate the request and create an action item
 	        doc.routeDocument("");

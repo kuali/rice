@@ -42,6 +42,7 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -147,7 +148,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         actionRequest.setDocVersion(document.getDocVersion());
         actionRequest.setRouteLevel(document.getDocRouteLevel());
         actionRequest.setNodeInstance(nodeInstance);
-        actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
+        actionRequest.setStatus(ActionRequestStatus.INITIALIZED.getCode());
     }
 
 
@@ -239,7 +240,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (deactivateOnEmptyGroup(actionRequest, activationContext)) {
         	return;
         }
-        actionRequest.setStatus(KEWConstants.ACTION_REQUEST_ACTIVATED);
+        actionRequest.setStatus(ActionRequestStatus.ACTIVATED.getCode());
         if (!activationContext.isSimulation()) {
             saveActionRequest(actionRequest);
             activationContext.getGeneratedActionItems().addAll(generateActionItems(actionRequest, activationContext));
@@ -436,7 +437,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 || haltForAllApprove(actionRequest, deactivationRequester)) {
             return;
         }
-        actionRequest.setStatus(KEWConstants.ACTION_REQUEST_DONE_STATE);
+        actionRequest.setStatus(ActionRequestStatus.DONE.getCode());
         actionRequest.setActionTaken(actionTaken);
         if (actionTaken != null) {
             actionTaken.getActionRequests().add(actionRequest);
@@ -510,13 +511,13 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      */
     public List<ActionRequestValue> findAllPendingRequests(String documentId) {
     	ActionRequestDAO arDAO = getActionRequestDAO();
-        List<ActionRequestValue> pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, documentId);
+        List<ActionRequestValue> pendingArs = arDAO.findByStatusAndDocId(ActionRequestStatus.ACTIVATED.getCode(), documentId);
         return pendingArs;
     }
 
     public List findAllValidRequests(String principalId, String documentId, String requestCode) {
         ActionRequestDAO arDAO = getActionRequestDAO();
-        Collection pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, documentId);
+        Collection pendingArs = arDAO.findByStatusAndDocId(ActionRequestStatus.ACTIVATED.getCode(), documentId);
         return findAllValidRequests(principalId, pendingArs, requestCode);
     }
 
@@ -794,7 +795,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     public boolean isDuplicateRequest(ActionRequestValue actionRequest) {
         List<ActionRequestValue> requests = findAllRootActionRequestsByDocumentId(actionRequest.getDocumentId());
         for (ActionRequestValue existingRequest : requests) {
-            if (existingRequest.getStatus().equals(KEWConstants.ACTION_REQUEST_DONE_STATE)
+            if (existingRequest.getStatus().equals(ActionRequestStatus.DONE.getCode())
                     && existingRequest.getRouteLevel().equals(actionRequest.getRouteLevel())
                     && ObjectUtils.equals(existingRequest.getPrincipalId(), actionRequest.getPrincipalId())
                     && ObjectUtils.equals(existingRequest.getGroupId(), actionRequest.getGroupId())
@@ -877,7 +878,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (actionRequestStatus == null || actionRequestStatus.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest status null.", "actionrequest.actionrequeststatus.empty",
                     actionRequest.getActionRequestId().toString()));
-        } else if (!KEWConstants.ACTION_REQUEST_STATUS.containsKey(actionRequestStatus)) {
+        } else if (ActionRequestStatus.fromCode(actionRequestStatus) == null) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest status invalid.",
                     "actionrequest.actionrequeststatus.invalid", actionRequest.getActionRequestId().toString()));
         }

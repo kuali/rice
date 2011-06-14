@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -96,7 +97,7 @@ public class RequestActivationNode extends RequestActivationNodeBase {
         	for (ActionRequestValue ar : context.getDocument().getActionRequests()) {
         		// logic check below duplicates behavior of the ActionRequestService.findPendingRootRequestsByDocIdAtRouteNode(documentId, routeNodeInstanceId) method
 				if (ar.getCurrentIndicator()
-						&& (KEWConstants.ACTION_REQUEST_INITIALIZED.equals(ar.getStatus()) || KEWConstants.ACTION_REQUEST_ACTIVATED.equals(ar.getStatus()))
+						&& (ActionRequestStatus.INITIALIZED.getCode().equals(ar.getStatus()) || ActionRequestStatus.ACTIVATED.getCode().equals(ar.getStatus()))
 						&& ar.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())
 						&& ar.getParentActionRequest() == null) {
 					requests.add(ar);

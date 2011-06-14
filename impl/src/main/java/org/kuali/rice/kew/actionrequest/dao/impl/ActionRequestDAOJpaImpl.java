@@ -30,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -88,7 +89,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindActivatedByGroup");
         query.setParameter("groupId", group.getId());
         query.setParameter("currentIndicator", Boolean.TRUE);
-        query.setParameter("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
+        query.setParameter("status", ActionRequestStatus.ACTIVATED.getCode());
         
         return query.getResultList();
     }
@@ -105,6 +106,8 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindAllPendingByDocId");
         query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
+        query.setParameter("actionRequestStatus1", ActionRequestStatus.INITIALIZED.getCode());
+        query.setParameter("actionRequestStatus2", ActionRequestStatus.ACTIVATED.getCode());
         
         return query.getResultList();
     }
@@ -140,6 +143,8 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("actionRequested", actionRequestedCd);
+        query.setParameter("actionRequestStatus1", ActionRequestStatus.INITIALIZED.getCode());
+        query.setParameter("actionRequestStatus2", ActionRequestStatus.ACTIVATED.getCode());
         
         return query.getResultList();
     }
@@ -149,7 +154,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("routeLevel", routeLevel);
-        query.setParameter("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
+        query.setParameter("status", ActionRequestStatus.DONE.getCode());
         
         return query.getResultList();
     }
@@ -168,7 +173,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindPendingRootRequestsByDocIdAtOrBelowRouteLevel");
         query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
-        query.setParameter("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
+        query.setParameter("status", ActionRequestStatus.DONE.getCode());
         query.setParameter("routeLevel", routeLevel);
         
         return query.getResultList();
@@ -178,7 +183,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteLevel");
         query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
-        query.setParameter("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
+        query.setParameter("status", ActionRequestStatus.DONE.getCode());
         query.setParameter("routeLevel", routeLevel);
         
         return query.getResultList();
@@ -189,6 +194,8 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("routeNodeInstanceId", nodeInstanceId);
+        query.setParameter("actionRequestStatus1", ActionRequestStatus.INITIALIZED.getCode());
+        query.setParameter("actionRequestStatus2", ActionRequestStatus.ACTIVATED.getCode());
         
         return query.getResultList();
     }
@@ -197,6 +204,8 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindPendingRootRequestsByDocumentType");
         query.setParameter("documentTypeId", documentTypeId);
         query.setParameter("currentIndicator", Boolean.TRUE);
+        query.setParameter("actionRequestStatus1", ActionRequestStatus.INITIALIZED.getCode());
+        query.setParameter("actionRequestStatus2", ActionRequestStatus.ACTIVATED.getCode());
         
         return query.getResultList();
     }
@@ -244,7 +253,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
             actionRequest.setForceAction(Boolean.FALSE);
         }
         if (actionRequest.getStatus() == null) {
-            actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
+            actionRequest.setStatus(ActionRequestStatus.INITIALIZED.getCode());
         }
         if (actionRequest.getPriority() == null) {
             actionRequest.setPriority(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY);
@@ -263,7 +272,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
     
 	public List findActivatedByGroup(String groupId) {
 		Query query = entityManager.createNamedQuery("ActionRequestValue.FindByStatusAndGroupId");
-        query.setParameter("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
+        query.setParameter("status", ActionRequestStatus.ACTIVATED.getCode());
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("groupId", groupId);
         

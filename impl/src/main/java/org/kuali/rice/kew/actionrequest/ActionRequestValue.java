@@ -47,6 +47,7 @@ import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -78,16 +79,15 @@ import org.kuali.rice.kim.bo.Person;
   @NamedQuery(name="ActionRequestValue.GetUserRequestCount", query="select count(arv) from ActionRequestValue arv where arv.documentId = :documentId and arv.recipientTypeCd = :recipientTypeCd and arv.principalId = :principalId and arv.currentIndicator = :currentIndicator"),
   @NamedQuery(name="ActionRequestValue.FindActivatedByGroup", query="select count(arv) from ActionRequestValue arv where arv.groupId = :groupId and arv.currentIndicator = :currentIndicator and arv.status = :status"),
   @NamedQuery(name="ActionRequestValue.FindAllByDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator"),
-  @NamedQuery(name="ActionRequestValue.FindAllPendingByDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
+  @NamedQuery(name="ActionRequestValue.FindAllPendingByDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and (arv.status = :actionRequestStatus1 or arv.status = :actionRequestStatus2)"),
   @NamedQuery(name="ActionRequestValue.FindAllRootByDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null"),
   @NamedQuery(name="ActionRequestValue.FindByStatusAndDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.status = :status"),
-  @NamedQuery(name="ActionRequestValue.FindPendingByActionRequestedAndDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.actionRequested = :actionRequested and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
+  @NamedQuery(name="ActionRequestValue.FindPendingByActionRequestedAndDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.actionRequested = :actionRequested and (arv.status = :actionRequestStatus1 or arv.status = :actionRequestStatus2)"),
   @NamedQuery(name="ActionRequestValue.FindPendingByDocIdAtOrBelowRouteLevel", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.status <> :status and arv.routeLevel <= :routeLevel"),
-  @NamedQuery(name="ActionRequestValue.FindPendingByResponsibilityIds", query="select arv from ActionRequestValue arv where arv.responsibilityId in (:responsibilityIds) and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
   @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtOrBelowRouteLevel", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.status <> :status and routeLevel <= :routeLevel"),
   @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteLevel", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.status <> :status and routeLevel = :routeLevel"),
-  @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteNode", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
-  @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocumentType", query="select arv from ActionRequestValue arv where arv.documentId in (select drhv.documentId from DocumentRouteHeaderValue drhv where drhv.documentTypeId = :documentTypeId) and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
+  @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteNode", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId and (arv.status = :actionRequestStatus1 or arv.status = :actionRequestStatus2)"),
+  @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocumentType", query="select arv from ActionRequestValue arv where arv.documentId in (select drhv.documentId from DocumentRouteHeaderValue drhv where drhv.documentTypeId = :documentTypeId) and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and (arv.status = :actionRequestStatus1 or arv.status = :actionRequestStatus2)"),
   @NamedQuery(name="ActionRequestValue.FindRootRequestsByDocIdAtRouteNode", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId"),
   @NamedQuery(name="ActionRequestValue.GetRequestGroupIds", query="select arv.groupId from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.recipientTypeCd = :recipientTypeCd"),
   @NamedQuery(name="ActionRequestValue.FindByStatusAndGroupId", query="select arv from ActionRequestValue arv where arv.groupId = :groupId and arv.currentIndicator = :currentIndicator and arv.status = :status")
@@ -269,7 +269,7 @@ public class ActionRequestValue implements Serializable {
     }
 
     public boolean isPending() {
-        return KEWConstants.ACTION_REQUEST_INITIALIZED.equals(getStatus()) || KEWConstants.ACTION_REQUEST_ACTIVATED.equals(getStatus());
+        return ActionRequestStatus.INITIALIZED.getCode().equals(getStatus()) || ActionRequestStatus.ACTIVATED.getCode().equals(getStatus());
     }
 
     public String getStatusLabel() {
@@ -522,11 +522,11 @@ public class ActionRequestValue implements Serializable {
     }
 
     public boolean isInitialized() {
-        return KEWConstants.ACTION_REQUEST_INITIALIZED.equals(getStatus());
+        return ActionRequestStatus.INITIALIZED.getCode().equals(getStatus());
     }
 
     public boolean isActive() {
-        return KEWConstants.ACTION_REQUEST_ACTIVATED.equals(getStatus());
+        return ActionRequestStatus.ACTIVATED.getCode().equals(getStatus());
     }
 
     public boolean isApproveOrCompleteRequest() {
@@ -534,7 +534,7 @@ public class ActionRequestValue implements Serializable {
     }
 
     public boolean isDone() {
-        return KEWConstants.ACTION_REQUEST_DONE_STATE.equals(getStatus());
+        return ActionRequestStatus.DONE.getCode().equals(getStatus());
     }
 
     public boolean isReviewerUser() {
@@ -761,7 +761,7 @@ public class ActionRequestValue implements Serializable {
     }
 
     public boolean isDeactivated() {
-        return KEWConstants.ACTION_REQUEST_DONE_STATE.equals(getStatus());
+        return ActionRequestStatus.DONE.getCode().equals(getStatus());
     }
 
     public boolean hasParent() {

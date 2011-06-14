@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +29,7 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
@@ -43,9 +47,6 @@ import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * A node implementation which provides integration with KIM Roles for routing.
@@ -179,7 +180,7 @@ public class RoleNode extends RequestsNode {
 				// ActionRequestService.findPendingRootRequestsByDocIdAtRouteNode(documentId,
 				// routeNodeInstanceId) method
 				if ( ar.getCurrentIndicator()
-						&& (KEWConstants.ACTION_REQUEST_INITIALIZED.equals( ar.getStatus() ) || KEWConstants.ACTION_REQUEST_ACTIVATED
+						&& (ActionRequestStatus.INITIALIZED.getCode().equals( ar.getStatus() ) || ActionRequestStatus.ACTIVATED.getCode()
 								.equals( ar.getStatus() ))
 						&& ar.getNodeInstance().getRouteNodeInstanceId().equals(
 								nodeInstance.getRouteNodeInstanceId() )

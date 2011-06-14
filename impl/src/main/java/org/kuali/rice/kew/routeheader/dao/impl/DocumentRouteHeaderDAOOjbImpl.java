@@ -35,11 +35,12 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.exception.LockingException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -47,7 +48,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
@@ -216,9 +216,9 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             respIds += ")";
             String query = "SELECT DISTINCT(doc_hdr_id) FROM KREW_ACTN_RQST_T "+
             	"WHERE (STAT_CD='" +
-            	KEWConstants.ACTION_REQUEST_INITIALIZED+
+            	ActionRequestStatus.INITIALIZED.getCode()+
             	"' OR STAT_CD='"+
-            	KEWConstants.ACTION_REQUEST_ACTIVATED+
+            	ActionRequestStatus.ACTIVATED.getCode()+
             	"') AND RSP_ID IN "+respIds;
             LOG.debug("Query to find pending documents for requeue: " + query);
             statement = conn.createStatement();

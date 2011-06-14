@@ -19,6 +19,7 @@ package org.kuali.rice.kew.dto;
 import java.io.Serializable;
 import java.util.Calendar;
 
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.util.KEWConstants;
 
@@ -233,15 +234,15 @@ public class ActionRequestDTO implements Serializable {
     }
 
     public boolean isInitialized() {
-        return KEWConstants.ACTION_REQUEST_INITIALIZED.equals(status);
+        return ActionRequestStatus.INITIALIZED.getCode().equals(status);
     }
 
     public boolean isActivated() {
-        return KEWConstants.ACTION_REQUEST_ACTIVATED.equals(status);
+        return ActionRequestStatus.ACTIVATED.getCode().equals(status);
     }
 
     public boolean isDone() {
-        return KEWConstants.ACTION_REQUEST_DONE_STATE.equals(status);
+        return ActionRequestStatus.DONE.getCode().equals(status);
     }
 
     public boolean isUserRequest() {

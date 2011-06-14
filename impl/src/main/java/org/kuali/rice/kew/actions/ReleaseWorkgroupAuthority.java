@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -105,7 +106,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
                         return "User attempting to release workgroup authority did not take it.";
                     } else if (!forValidationOnly)
                     {
-                        actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);//to circumvent check in service during activation
+                        actionRequest.setStatus(ActionRequestStatus.INITIALIZED.getCode());//to circumvent check in service during activation
                         getActionRequestService().activateRequest(actionRequest);
                     }
                 }

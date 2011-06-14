@@ -19,7 +19,6 @@ package org.kuali.rice.kew.actions;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +26,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.reflect.DataDefinition;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -135,7 +133,7 @@ public class ActionRegistryImpl implements ActionRegistry {
         ValidActions validActions = new ValidActions();
         ArrayList<ActionRequestValue> activeRequests = new ArrayList<ActionRequestValue>();
         for ( ActionRequestValue ar : document.getActionRequests() ) {
-        	if ( (ar.getCurrentIndicator() != null && ar.getCurrentIndicator()) && StringUtils.equals( ar.getStatus(), KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+        	if ( (ar.getCurrentIndicator() != null && ar.getCurrentIndicator()) && StringUtils.equals( ar.getStatus(), ActionRequestStatus.ACTIVATED.getCode() ) ) {
         		activeRequests.add(ar);
         	}
         }

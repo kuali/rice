@@ -27,6 +27,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
@@ -96,7 +97,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
             for (ActionRequestValue actionRequest : actionRequests) {
                 if (actionRequest.isActive()) {
-                    actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
+                    actionRequest.setStatus(ActionRequestStatus.INITIALIZED.getCode());
                     for (ActionItem actionItem : actionRequest.getActionItems()) {
                         KEWServiceLocator.getActionListService().deleteActionItem(actionItem);
                     }

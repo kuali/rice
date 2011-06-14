@@ -16,13 +16,25 @@
  */
 package org.kuali.rice.kew.rule;
 
+import java.lang.reflect.Method;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.actionrequest.*;
+import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -41,13 +53,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
-
-import java.lang.reflect.Method;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -431,7 +436,7 @@ public class FlexRM {
 	}
 
 	private boolean isDuplicateActionRequestDetected(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, RuleResponsibility resp, String qualifiedRoleName) {
-		List<ActionRequestValue> requests = getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, routeHeader.getDocumentId());
+		List<ActionRequestValue> requests = getActionRequestService().findByStatusAndDocId(ActionRequestStatus.DONE.getCode(), routeHeader.getDocumentId());
         for (ActionRequestValue request : requests)
         {
             if (((nodeInstance != null && request.getNodeInstance() != null && request.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())) || request

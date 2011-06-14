@@ -506,20 +506,6 @@ public final class KEWConstants {
      */
     public static final int ACTION_REQUEST_ADHOC_PRIORITY = 1000;
     
-    // TODO: Should be able to remove entries after this because they were moved to ActionRequestStatus
-    
-    public static final String ACTION_REQUEST_DONE_STATE_LABEL = "DONE";
-    /** code to indicate the request has been satisfied */
-    public static final String ACTION_REQUEST_DONE_STATE = "D";
-    public static final String ACTION_REQUEST_ACTIVATED_LABEL = "ACTIVATED";
-    /** Code to indicate the request is currently active */
-    public static final String ACTION_REQUEST_ACTIVATED = "A";
-    public static final String ACTION_REQUEST_INITIALIZED_LABEL = "INITIALIZED";
-    /** Code to indicate the request has not been activated */
-    public static final String ACTION_REQUEST_INITIALIZED = "I";
-    
-    // TODO: Should be able to remove entries before this because they were moved to ActionRequestStatus
-    
     public static final String ACTION_REQUEST_CANCEL_REQ_LABEL = "CANCEL";
     /**
      * Requested action is to Cancel document
@@ -669,14 +655,6 @@ public final class KEWConstants {
         ACTION_REQUEST_CD.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
         ACTION_REQUEST_CD.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, KEWConstants.ACTION_REQUEST_COMPLETE_REQ_LABEL);
         ACTION_REQUEST_CD.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
-    }
-
-    public static final Map<String, String> ACTION_REQUEST_STATUS;
-    static {
-        ACTION_REQUEST_STATUS = new HashMap<String, String>();
-        ACTION_REQUEST_STATUS.put(KEWConstants.ACTION_REQUEST_ACTIVATED, KEWConstants.ACTIVE_LABEL);
-        ACTION_REQUEST_STATUS.put(KEWConstants.ACTION_REQUEST_INITIALIZED, KEWConstants.ACTION_REQUEST_INITIALIZED_LABEL);
-        ACTION_REQUEST_STATUS.put(KEWConstants.ACTION_REQUEST_DONE_STATE, KEWConstants.ACTION_REQUEST_DONE_STATE_LABEL);
     }
 
     public static final Map<String, String> ACTION_TAKEN_CD;

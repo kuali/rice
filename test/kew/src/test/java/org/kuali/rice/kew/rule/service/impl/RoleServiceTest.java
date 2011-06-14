@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -239,8 +240,8 @@ public class RoleServiceTest extends KEWTestCase {
 		assertEquals("Incorrect role name.", roleName, request.getRoleName());
 		assertEquals("Incorrect qualified role name.", qualifiedRoleName, request.getQualifiedRoleName());
 		assertEquals("Incorrect qualified role name label.", qualifiedRoleName, request.getQualifiedRoleNameLabel());
-		assertTrue("Request should be activated or done.", KEWConstants.ACTION_REQUEST_ACTIVATED.equals(request.getStatus()) ||
-				KEWConstants.ACTION_REQUEST_DONE_STATE.equals(request.getStatus()));
+		assertTrue("Request should be activated or done.", ActionRequestStatus.ACTIVATED.getCode().equals(request.getStatus()) ||
+				ActionRequestStatus.DONE.getCode().equals(request.getStatus()));
 	}
 
 	private boolean containsUser(List<String> principalIds, String principalId) throws Exception {
@@ -253,7 +254,7 @@ public class RoleServiceTest extends KEWTestCase {
 	 */
 	private void assertInitiatorRequestDone(String roleName, String qualifiedRoleNameLabel) throws Exception {
         Principal initiator = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
-		List requests = KEWServiceLocator.getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, documentId);
+		List requests = KEWServiceLocator.getActionRequestService().findByStatusAndDocId(ActionRequestStatus.DONE.getCode(), documentId);
 		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();
 			if (!initiator.getPrincipalId().equals(request.getPrincipalId())) {

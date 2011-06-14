@@ -17,19 +17,21 @@
 package org.kuali.rice.kew.engine;
 
 
-import org.junit.Test;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
+import org.junit.Test;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class SequentialRoutingTest extends KEWTestCase {
     
@@ -83,12 +85,12 @@ public class SequentialRoutingTest extends KEWTestCase {
                 toTemay = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
                 assertEquals(new Integer(2), requestVO.getRouteLevel());
-                assertEquals(KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
+                assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
             } else if (requestVO.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 toJhopf = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
                 assertEquals(new Integer(3), requestVO.getRouteLevel());
-                assertEquals(KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
+                assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
             }
         }
         assertTrue("Should be an acknowledge to temay", toTemay);
@@ -107,12 +109,12 @@ public class SequentialRoutingTest extends KEWTestCase {
             if (requestVO.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 toTemay = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                assertEquals(KEWConstants.ACTION_REQUEST_DONE_STATE, requestVO.getStatus());
+                assertEquals(ActionRequestStatus.DONE.getCode(), requestVO.getStatus());
             } else if (requestVO.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 toJhopf = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
                 assertEquals(new Integer(3), requestVO.getRouteLevel());
-                assertEquals(KEWConstants.ACTION_REQUEST_ACTIVATED, requestVO.getStatus());
+                assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
             }
         }
         assertTrue("Should be a DONE acknowledge to temay", toTemay);

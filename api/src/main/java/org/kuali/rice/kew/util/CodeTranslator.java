@@ -19,6 +19,8 @@ package org.kuali.rice.kew.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
+
 
 /**
  * Utility class to translate the various codes into labels and vice versa.
@@ -74,11 +76,11 @@ public class CodeTranslator {
         return newArLabels;
     }
 
-    private static Map getArStatusLabels() {
-        Map newArStatusLabels = new HashMap();
-        newArStatusLabels.put(KEWConstants.ACTION_REQUEST_ACTIVATED, KEWConstants.ACTIVE_LABEL);
-        newArStatusLabels.put(KEWConstants.ACTION_REQUEST_INITIALIZED, KEWConstants.ACTION_REQUEST_INITIALIZED_LABEL);
-        newArStatusLabels.put(KEWConstants.ACTION_REQUEST_DONE_STATE, KEWConstants.ACTION_REQUEST_DONE_STATE_LABEL);
+    private static Map<String, String> getArStatusLabels() {
+        Map<String, String> newArStatusLabels = new HashMap<String, String>();
+        newArStatusLabels.put(ActionRequestStatus.ACTIVATED.getCode(), KEWConstants.ACTIVE_LABEL);
+        newArStatusLabels.put(ActionRequestStatus.INITIALIZED.getCode(), ActionRequestStatus.INITIALIZED.getLabel());
+        newArStatusLabels.put(ActionRequestStatus.DONE.getCode(), ActionRequestStatus.DONE.getLabel());
         return newArStatusLabels;
     }
 

@@ -30,6 +30,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -243,7 +244,7 @@ public class ActionRequestFactory {
         	actionRequest.setNodeInstance(routeNode);
         }
         actionRequest.setJrfVerNbr(0);
-        actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
+        actionRequest.setStatus(ActionRequestStatus.INITIALIZED.getCode());
         actionRequest.setRouteHeader(document);
         actionRequest.setDocumentId(document.getDocumentId());
     }

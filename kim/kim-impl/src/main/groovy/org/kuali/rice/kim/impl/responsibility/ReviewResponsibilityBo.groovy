@@ -18,9 +18,10 @@ package org.kuali.rice.kim.impl.responsibility
 
 import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.util.KimConstants
-import org.kuali.rice.krad.bo.BusinessObject
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
-class ReviewResponsibilityBo implements BusinessObject {
+//strange - hacky non-PBO
+class ReviewResponsibilityBo extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 1L
 

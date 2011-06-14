@@ -88,7 +88,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 							if (attributeValue != null && StringUtils.isNotBlank(attributeValue.toString())) {
 				    			Class<?> propertyType = ObjectUtils.getPropertyType(object, itemDefinitionName, persistenceStructureService);
 				    			attributeTypeMap.put(itemDefinitionName, propertyType);
-				    			if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
+				    			if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType) || TypeUtils.isBooleanClass(propertyType)) {
 					                // check value format against dictionary
 				                    if (!TypeUtils.isTemporalClass(propertyType)) {
 				                    	attributeValueMap.put(itemDefinitionName, attributeValue);

@@ -791,45 +791,45 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 				.getMaintainableSections(docTypeName);
 		Map defaultValues = new HashMap();
 
-		try {
-			// iterate through section definitions
-			for (Iterator iter = sectionDefinitions.iterator(); iter.hasNext();) {
+        // iterate through section definitions
+        for (Iterator iter = sectionDefinitions.iterator(); iter.hasNext();) {
 
-				MaintainableSectionDefinition maintSectionDef = (MaintainableSectionDefinition) iter.next();
-				Collection maintItems = maintSectionDef.getMaintainableItems();
-				for (Iterator iterator = maintItems.iterator(); iterator.hasNext();) {
-					MaintainableItemDefinition item = (MaintainableItemDefinition) iterator.next();
+            MaintainableSectionDefinition maintSectionDef = (MaintainableSectionDefinition) iter.next();
+            Collection maintItems = maintSectionDef.getMaintainableItems();
+            for (Iterator iterator = maintItems.iterator(); iterator.hasNext();) {
+                MaintainableItemDefinition item = (MaintainableItemDefinition) iterator.next();
 
-					if (item instanceof MaintainableFieldDefinition) {
-						MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
+                if (item instanceof MaintainableFieldDefinition) {
+                    MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
 
-						String defaultValue = maintainableFieldDefinition.getDefaultValue();
-						if (defaultValue != null) {
-							if (defaultValue.equals("true")) {
-								defaultValue = "Yes";
-							}
-							else if (defaultValue.equals("false")) {
-								defaultValue = "No";
-							}
-						}
+                    String defaultValue = maintainableFieldDefinition.getDefaultValue();
+                    if (defaultValue != null) {
+                        if (defaultValue.equals("true")) {
+                            defaultValue = "Yes";
+                        }
+                        else if (defaultValue.equals("false")) {
+                            defaultValue = "No";
+                        }
+                    }
 
-						Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
-						if (defaultValueFinderClass != null) {
-							defaultValue = ((ValueFinder) defaultValueFinderClass.newInstance()).getValue();
+                    Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
+                    if (defaultValueFinderClass != null) {
+                        try {
+                            defaultValue = ((ValueFinder) defaultValueFinderClass.newInstance()).getValue();
+                        } catch (InstantiationException e) {
+                            throw new RuntimeException("Unable to set default value" + e.getMessage(), e);
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException("Unable to set default value" + e.getMessage(), e);
+                        }
 
-						}
-						if (defaultValue != null) {
-							defaultValues.put(item.getName(), defaultValue);
-						}
-					}
-				}
-			}
-			Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), defaultValues);
-		}
-		catch (Exception e) {
-			LOG.error("Unable to set default value " + e.getMessage(), e);
-			throw new RuntimeException("Unable to set default value" + e.getMessage(), e);
-		}
+                    }
+                    if (defaultValue != null) {
+                        defaultValues.put(item.getName(), defaultValue);
+                    }
+                }
+            }
+        }
+        FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), defaultValues);
 
 	}
 

@@ -88,7 +88,7 @@ public class KualiRuleServiceImpl implements KualiRuleService {
             // report failures
             if (!success) {
             	if ( LOG.isDebugEnabled() ) { // NO, this is not a type - only log if in debug mode - this is not an error in production
-            		LOG.error(event.getName() + " businessRule " + rule.getClass().getName() + " failed");
+            		LOG.debug(event.getName() + " businessRule " + rule.getClass().getName() + " failed");
             	}
             }
             else {

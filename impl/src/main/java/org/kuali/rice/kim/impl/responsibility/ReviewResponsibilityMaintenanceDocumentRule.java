@@ -33,6 +33,7 @@ import java.util.List;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.notEqual;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -69,10 +70,7 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
 				GlobalVariables.getMessageMap().putError( "documentTypeName", ERROR_DUPLICATE_RESPONSIBILITY );
 				rulesPassed = false;
 			}
-		} catch ( RuntimeException ex ) {
-			LOG.error( "Error in processCustomRouteDocumentBusinessRules()", ex );
-			throw ex;
-		} finally {
+        } finally {
 			GlobalVariables.getMessageMap().removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
 		}
 		return rulesPassed;
@@ -108,6 +106,7 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
 	protected boolean checkForDuplicateResponsibility( ReviewResponsibilityBo resp ) {
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         Predicate p = and(
+            notEqual("id", resp.getResponsibilityId()),
             equal("template.namespaceCode", KEWConstants.KEW_NAMESPACE ),
             equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
             equal("attributes[documentTypeName]", resp.getDocumentTypeName()),
@@ -115,6 +114,6 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
         );
         builder.setPredicates(p);
         ResponsibilityQueryResults results = KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build());
-		return results.getResults().isEmpty() || results.getResults().get(0).getId().equals( resp.getResponsibilityId() );
+		return results.getResults().isEmpty();
 	}
 }

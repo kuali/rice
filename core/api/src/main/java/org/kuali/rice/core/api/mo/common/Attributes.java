@@ -37,7 +37,7 @@ public final class Attributes implements Serializable {
 
     private final Map<String, String> keyValues;
 
-    //should only be reassigned on deserialization
+    //should only be reassigned on deserialization, can't be final b/c of deserialization hook
     private transient Object lock = new Object();
     private transient Set<Map.Entry<String, String>> cache;
 

@@ -61,7 +61,7 @@
     <!-- project dependencies -->
     <antlr.version>2.7.7</antlr.version>
     <aopalliance.version>1.0</aopalliance.version>
-    <asm.version>3.3</asm.version>
+    <asm.version>3.3.1</asm.version>
     <bcprov.version>1.46</bcprov.version>
 
     <!-- the 3.x codebase is completely different - switching will require rewriting much code -->

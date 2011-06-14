@@ -1,5 +1,7 @@
 package org.kuali.rice.kew.api.document.actions;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 
@@ -33,6 +35,28 @@ public interface ActionRequestContract extends Identifiable {
 	
 	ActionRequestPolicy getRequestPolicy();
 	
-	// TODO finish contract for ActionRequest
+	String getResponsibilityDescription();
 	
+	boolean isForceAction();
+	
+	String getPrincipalId();
+	
+	// TODO delegation type enum
+	
+	String getParentActionRequestId();
+	
+	String getRoleName();
+	
+	String getQualifiedRoleName();
+	
+	String getQualifiedRoleNameLabel();
+	
+	String getNodeName();
+	
+	String getRequestLabel();
+	
+	ActionTakenContract getActionTaken();
+	
+	List<? extends ActionRequestContract> getChildrenRequests();
+		
 }

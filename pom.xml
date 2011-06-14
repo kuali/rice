@@ -39,6 +39,7 @@
     <kuali.compile.target>1.5</kuali.compile.target>
     <kuali.clover.generate.info.phase>none</kuali.clover.generate.info.phase>
     <kuali.javadoc.report.2>javadoc</kuali.javadoc.report.2>
+    <kuali.site.plugin.version>2.3</kuali.site.plugin.version>
     
     <!-- must provide an explicit pattern - surefire default does not work
 			b/c of non-unit test classes that are included in default expression -->

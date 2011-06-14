@@ -19,6 +19,7 @@ package org.kuali.rice.kew.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 
 
@@ -28,17 +29,17 @@ import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CodeTranslator {
-    public static final Map arLabels = getArLabels();
-    public static final Map atLabels = getAtLabels();
-    public static final Map arStatusLabels = getArStatusLabels();
-    public static final Map routeStatusLabels = getRouteStatusLabels();
-    public static final Map activeIndicatorLabels = getActiveIndicatorLabels();
-    public static final Map activationPolicyLabels = getActivationPolicyLabels();
-    public static final Map policyLabels = getPolicyLabels();
-    public static final Map approvePolicyLabels = getApprovePolicyLabels();
+    public static final Map<String, String> arLabels = getArLabels();
+    public static final Map<String, String> atLabels = getAtLabels();
+    public static final Map<String, String> arStatusLabels = getArStatusLabels();
+    public static final Map<String, String> routeStatusLabels = getRouteStatusLabels();
+    public static final Map<Boolean, String> activeIndicatorLabels = getActiveIndicatorLabels();
+    public static final Map<String, String> activationPolicyLabels = getActivationPolicyLabels();
+    public static final Map<String, String> policyLabels = getPolicyLabels();
+    public static final Map<String, String> approvePolicyLabels = getApprovePolicyLabels();
 
-    private static Map getAtLabels() {
-        Map newAtLabels = new HashMap();
+    private static Map<String, String> getAtLabels() {
+    	Map<String, String> newAtLabels = new HashMap<String, String>();
         newAtLabels.put(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KEWConstants.ACTION_TAKEN_ACKNOWLEDGED);
         newAtLabels.put(KEWConstants.ACTION_TAKEN_ADHOC_CD, KEWConstants.ACTION_TAKEN_ADHOC);
         newAtLabels.put(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, KEWConstants.ACTION_TAKEN_ADHOC_REVOKED);
@@ -67,8 +68,8 @@ public class CodeTranslator {
         return newAtLabels;
     }
 
-    private static Map getArLabels() {
-        Map newArLabels = new HashMap();
+    private static Map<String, String> getArLabels() {
+    	Map<String, String> newArLabels = new HashMap<String, String>();
         newArLabels.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
         newArLabels.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
         newArLabels.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, KEWConstants.ACTION_REQUEST_COMPLETE_REQ_LABEL);
@@ -84,8 +85,8 @@ public class CodeTranslator {
         return newArStatusLabels;
     }
 
-    private static Map getRouteStatusLabels() {
-        Map newRouteStatusLabels = new HashMap();
+    private static Map<String, String> getRouteStatusLabels() {
+    	Map<String, String> newRouteStatusLabels = new HashMap<String, String>();
         newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_APPROVED_CD, KEWConstants.ROUTE_HEADER_APPROVED_LABEL);
         newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_CANCEL_CD, KEWConstants.ROUTE_HEADER_CANCEL_LABEL);
         newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, KEWConstants.ROUTE_HEADER_DISAPPROVED_LABEL);
@@ -98,32 +99,32 @@ public class CodeTranslator {
         return newRouteStatusLabels;
     }
 
-    private static Map getActiveIndicatorLabels() {
-        Map newActiveIndicatorLabels = new HashMap();
+    private static Map<Boolean, String> getActiveIndicatorLabels() {
+    	Map<Boolean, String> newActiveIndicatorLabels = new HashMap<Boolean, String>();
         newActiveIndicatorLabels.put(Boolean.TRUE, KEWConstants.ACTIVE_LABEL_LOWER);
         newActiveIndicatorLabels.put(Boolean.FALSE, KEWConstants.INACTIVE_LABEL_LOWER);
         return newActiveIndicatorLabels;
     }
 
-    private static Map getPolicyLabels() {
-        Map newDocTypeActiveIndicatorLabels = new HashMap();
+    private static Map<String, String> getPolicyLabels() {
+    	Map<String, String> newDocTypeActiveIndicatorLabels = new HashMap<String, String>();
         newDocTypeActiveIndicatorLabels.put(KEWConstants.TRUE_CD, KEWConstants.YES_LABEL);
         newDocTypeActiveIndicatorLabels.put(KEWConstants.FALSE_CD, KEWConstants.NO_LABEL);
         newDocTypeActiveIndicatorLabels.put(KEWConstants.INHERITED_CD, KEWConstants.INHERITED_LABEL);
         return newDocTypeActiveIndicatorLabels;
     }
 
-    private static Map getActivationPolicyLabels() {
-        Map newActivationPolicyLabels = new HashMap();
+    private static Map<String, String> getActivationPolicyLabels() {
+    	Map<String, String> newActivationPolicyLabels = new HashMap<String, String>();
         newActivationPolicyLabels.put(KEWConstants.ROUTE_LEVEL_PARALLEL, KEWConstants.ROUTE_LEVEL_PARALLEL_LABEL);
         newActivationPolicyLabels.put(KEWConstants.ROUTE_LEVEL_SEQUENCE, KEWConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
         return newActivationPolicyLabels;
     }
 
-    private static Map getApprovePolicyLabels() {
-        Map approvePolicyLabels = new HashMap();
-        approvePolicyLabels.put(KEWConstants.APPROVE_POLICY_ALL_APPROVE, KEWConstants.APPROVE_POLICY_ALL_APPROVE_LABEL);
-        approvePolicyLabels.put(KEWConstants.APPROVE_POLICY_FIRST_APPROVE, KEWConstants.APPROVE_POLICY_FIRST_APPROVE_LABEL);
+    private static Map<String, String> getApprovePolicyLabels() {
+        Map<String, String> approvePolicyLabels = new HashMap<String, String>();
+        approvePolicyLabels.put(ActionRequestPolicy.ALL.getCode(), ActionRequestPolicy.ALL.getLabel());
+        approvePolicyLabels.put(ActionRequestPolicy.FIRST.getCode(), ActionRequestPolicy.FIRST.getLabel());
         return approvePolicyLabels;
     }
 

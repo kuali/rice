@@ -479,18 +479,6 @@ public final class KEWConstants {
     public static final String ROUTE_LEVEL_PARALLEL_NAME = "Parallel";
     public static final String ROUTE_LEVEL_PARALLEL_LABEL = "PARALLEL";
 
-    public static final String APPROVE_POLICY_FIRST_APPROVE = "F";
-    public static final String APPROVE_POLICY_ALL_APPROVE = "A";
-
-    public static final String APPROVE_POLICY_ALL_APPROVE_LABEL = "ALL";
-    public static final String APPROVE_POLICY_FIRST_APPROVE_LABEL = "FIRST";
-
-    public static final Map<String, String> APPROVE_POLICIES = new HashMap<String, String>();
-    static {
-    	APPROVE_POLICIES.put(APPROVE_POLICY_FIRST_APPROVE, APPROVE_POLICY_FIRST_APPROVE_LABEL);
-    	APPROVE_POLICIES.put(APPROVE_POLICY_ALL_APPROVE, APPROVE_POLICY_ALL_APPROVE_LABEL);
-    }
-
     public static final boolean ACTION_REQUEST_FORCE_ACTION = true;
     public static final boolean ACTION_REQUEST_PREV_ACTION_AWARE = false;
         

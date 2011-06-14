@@ -42,6 +42,7 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.ActivationContext;
@@ -59,7 +60,6 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**
@@ -459,7 +459,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * @return
      */
     private boolean haltForAllApprove(ActionRequestValue actionRequest, ActionRequestValue deactivationRequester) {
-        if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(actionRequest.getApprovePolicy())
+        if (ActionRequestPolicy.ALL.getCode().equals(actionRequest.getApprovePolicy())
                 && actionRequest.hasChild(deactivationRequester)) {
             boolean allDeactivated = true;
             for (ActionRequestValue childRequest : actionRequest.getChildrenRequests())

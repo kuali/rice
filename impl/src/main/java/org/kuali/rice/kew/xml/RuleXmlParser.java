@@ -68,6 +68,7 @@ import org.jdom.JDOMException;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -79,9 +80,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
-
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.xml.sax.SAXException;
 
 /**
@@ -106,7 +106,7 @@ public class RuleXmlParser {
     /**
      * Default approve policy, if omitted; defaults to FIRST_APPROVE, the request will be satisfied by the first approval
      */
-    private static final String DEFAULT_APPROVE_POLICY = KEWConstants.APPROVE_POLICY_FIRST_APPROVE;
+    private static final String DEFAULT_APPROVE_POLICY = ActionRequestPolicy.FIRST.getCode();
     /**
      * Default action requested, if omitted; defaults to "A"pprove
      */
@@ -421,7 +421,7 @@ public class RuleXmlParser {
         if (StringUtils.isBlank(approvePolicy)) {
             approvePolicy = DEFAULT_APPROVE_POLICY;
         }
-        if (!approvePolicy.equals(KEWConstants.APPROVE_POLICY_ALL_APPROVE) && !approvePolicy.equals(KEWConstants.APPROVE_POLICY_FIRST_APPROVE)) {
+        if (!approvePolicy.equals(ActionRequestPolicy.ALL.getCode()) && !approvePolicy.equals(ActionRequestPolicy.FIRST.getCode())) {
             throw new XmlException("Invalid approve policy '" + approvePolicy + "'");
         }
         Integer priorityNumber = Integer.valueOf(priority);
@@ -434,7 +434,7 @@ public class RuleXmlParser {
         	throw new XmlException("Could not locate a valid responsibility declaration on a responsibility on rule with description '" + rule.getDescription() + "'");
         }
         if (responsibilityNameAndType.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID)
-        		&& responsibility.getApprovePolicy().equals(KEWConstants.APPROVE_POLICY_ALL_APPROVE)) {
+        		&& responsibility.getApprovePolicy().equals(ActionRequestPolicy.ALL.getCode())) {
         	throw new XmlException("Invalid approve policy '" + approvePolicy + "'.  This policy is not supported with Groups.");
         }
         responsibility.setRuleResponsibilityName(responsibilityNameAndType.getRuleResponsibilityName());

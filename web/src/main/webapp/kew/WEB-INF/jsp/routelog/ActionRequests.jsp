@@ -13,7 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
+<%@ page import="org.kuali.rice.kew.api.document.actions.ActionRequestPolicy" %>
+
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
+
+<c:set var="ACTION_REQUEST_FIRST"><%= ActionRequestPolicy.FIRST.getCode() %></c:set>
+<c:set var="ACTION_REQUEST_ALL"><%= ActionRequestPolicy.ALL.getCode() %></c:set>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding: 0; border: 0;">
     <c:if test="${level == 0}">
@@ -29,10 +34,10 @@
         <th><bean-el:message key="routeLog.ActionRequests.actionRequest.label.approvePolicy"/></th>
                         <td class="datacell1">
                             <c:choose>
-                              <c:when test="${actionRequest.approvePolicy == KEWConstants.APPROVE_POLICY_ALL_APPROVE}">
+                              <c:when test="${actionRequest.approvePolicy == ACTION_REQUEST_ALL}">
                                 <bean-el:message key="routeLog.ActionRequests.actionRequest.label.allApprove"/>
                               </c:when>
-                              <c:when test="${actionRequest.approvePolicy == KEWConstants.APPROVE_POLICY_FIRST_APPROVE}">
+                              <c:when test="${actionRequest.approvePolicy == ACTION_REQUEST_FIRST}">
                                 <bean-el:message key="routeLog.ActionRequests.actionRequest.label.firstApprove"/>
                               </c:when>
                             </c:choose>

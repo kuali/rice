@@ -30,6 +30,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
 import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -233,7 +234,7 @@ public class ActionRequestFactory {
 
     private void setDefaultProperties(ActionRequestValue actionRequest) {
     	if (actionRequest.getApprovePolicy() == null) {
-    		actionRequest.setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
+    		actionRequest.setApprovePolicy(ActionRequestPolicy.FIRST.getCode());
     	}
         actionRequest.setCreateDate(new Timestamp(System.currentTimeMillis()));
         actionRequest.setCurrentIndicator(Boolean.TRUE);
@@ -412,7 +413,7 @@ public class ActionRequestFactory {
 			        // If not nested in a parent action request, ensure that the request
 			        // is first approve so delegations of this request do not require 
 			        // ALL_APPROVE as well
-			        (responsibilities.size() == 1)?KEWConstants.APPROVE_POLICY_FIRST_APPROVE:approvePolicy, 
+			        (responsibilities.size() == 1)?ActionRequestPolicy.FIRST.getCode():approvePolicy, 
 			        null, // ruleId
 			        annotationStr);
 			// if there is only a single request, don't create the nesting structure

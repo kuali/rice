@@ -28,6 +28,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -96,7 +97,7 @@ public class RoleRouteModule implements RouteModule {
 				for (ResponsibilitySet responsibilitySet : responsibilitySets) {
 					String approvePolicy = responsibilitySet.getApprovePolicy();
 					// if all must approve, add the responsibilities individually so that the each get their own approval graph
-					if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(approvePolicy)) {
+					if (ActionRequestPolicy.ALL.getCode().equals(approvePolicy)) {
 						for (ResponsibilityAction responsibility : responsibilitySet.getResponsibilities()) {
 							arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
 						}

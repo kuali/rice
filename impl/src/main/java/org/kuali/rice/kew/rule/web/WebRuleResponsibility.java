@@ -16,11 +16,18 @@
 
 package org.kuali.rice.kew.rule.web;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExtension;
@@ -32,14 +39,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -95,7 +95,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 
 	public WebRuleResponsibility() {
 		setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-		setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
+		setApprovePolicy(ActionRequestPolicy.FIRST.getCode());
 	}
 
 	public void initialize() throws Exception {

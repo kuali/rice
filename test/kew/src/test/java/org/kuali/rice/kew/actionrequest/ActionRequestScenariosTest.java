@@ -16,18 +16,22 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.Test;
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-import java.util.Iterator;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * This test exercises various Action Request graph scenarios and tests them for correctness.
@@ -229,9 +233,9 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();
 			assertTrue("Request should be deactivated.", request.isDeactivated());
 			if (request.isRoleRequest()) {
-				assertEquals("Should be all approve request", KEWConstants.APPROVE_POLICY_ALL_APPROVE, request.getApprovePolicy());
+				assertEquals("Should be all approve request", ActionRequestPolicy.ALL.getCode(), request.getApprovePolicy());
 			} else {
-				assertEquals("Should not have first approve policy set", KEWConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
+				assertEquals("Should not have first approve policy set", ActionRequestPolicy.FIRST.getCode(), request.getApprovePolicy());
 			}
 		}
 
@@ -278,15 +282,15 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();
 			assertTrue("Request should be deactivated.", request.isDeactivated());
 			if (request.isRoleRequest() && request.getRoleName().equals(RoleToRoleDelegationRole.MAIN_ROLE)) {
-				assertEquals("Should be all approve request", KEWConstants.APPROVE_POLICY_ALL_APPROVE, request.getApprovePolicy());
+				assertEquals("Should be all approve request", ActionRequestPolicy.ALL.getCode(), request.getApprovePolicy());
 			} else if (request.isRoleRequest() && request.getRoleName().equals(RoleToRoleDelegationRole.PRIMARY_DELEGATE_ROLE)) {
-				assertEquals("Should be first approve request", KEWConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
+				assertEquals("Should be first approve request", ActionRequestPolicy.FIRST.getCode(), request.getApprovePolicy());
 			} else if (request.isRoleRequest() && request.getRoleName().equals(RoleToRoleDelegationRole.SECONDARY_DELEGATE_ROLE)) {
-				assertEquals("Should be first approve request", KEWConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
+				assertEquals("Should be first approve request", ActionRequestPolicy.FIRST.getCode(), request.getApprovePolicy());
 			} else if (request.isRoleRequest()) {
 				fail("the roles have been messed up");
 			} else {
-				assertEquals("Should not have first approve policy set", KEWConstants.APPROVE_POLICY_FIRST_APPROVE, request.getApprovePolicy());
+				assertEquals("Should not have first approve policy set", ActionRequestPolicy.FIRST.getCode(), request.getApprovePolicy());
 			}
 		}
 
@@ -314,7 +318,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 //        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdFromPrincipalName("user1"), "testGroupAllApprovePolicy");
 //        document.routeDocument("");
 //        
-//        assertTrue("Should have approval policy of All", document.getActionRequests()[0].getApprovePolicy().equals(KEWConstants.APPROVE_POLICY_ALL_APPROVE));
+//        assertTrue("Should have approval policy of All", document.getActionRequests()[0].getApprovePolicy().equals(ActionRequestPolicy.ALL.getCode()));
 //        
 //    	document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getDocumentId());
 //		assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());

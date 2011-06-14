@@ -17,6 +17,8 @@
 <%@ page import="org.kuali.rice.kew.api.document.actions.RecipientType" %>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
+<c:set var="RECIPIENT_TYPE_PRINCIPAL"><%= RecipientType.PRINCIPAL.getCode() %></c:set>
+
 <script language="javascript" src="scripts/superuser-common.js"></script>
 
 <c:if test="${! empty SuperUserForm.actionRequests}">
@@ -98,7 +100,6 @@
 						</c:if>											
 						<tr>
 	                        <td height="30" colspan="2" class="headercell1" align="center">
-	                          <c:set var="RECIPIENT_TYPE_PRINCIPAL"><%= RecipientType.PRINCIPAL.getCode() %></c:set>
 	                          <c:choose>
 	                            <c:when test="${actionRequest.recipientTypeCd == RECIPIENT_TYPE_PRINCIPAL}" >
 	                              <c:set var="username" value="${actionRequest.principal.principalName}" />

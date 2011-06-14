@@ -43,6 +43,7 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.CollectionUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -80,7 +81,6 @@ import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -867,7 +867,7 @@ public class RuleServiceImpl implements RuleService {
                 errors.add(new WorkflowServiceErrorImpl("User is invalid", "routetemplate.ruleservice.user.invalid"));
                 LOG.error("User is invalid");
             } else if (responsibility.isUsingRole()) {
-                if (responsibility.getApprovePolicy() == null || !(responsibility.getApprovePolicy().equals(KEWConstants.APPROVE_POLICY_ALL_APPROVE) || responsibility.getApprovePolicy().equals(KEWConstants.APPROVE_POLICY_FIRST_APPROVE))) {
+                if (responsibility.getApprovePolicy() == null || !(responsibility.getApprovePolicy().equals(ActionRequestPolicy.ALL.getCode()) || responsibility.getApprovePolicy().equals(ActionRequestPolicy.FIRST.getCode()))) {
                     errors.add(new WorkflowServiceErrorImpl("Approve Policy is Invalid", "routetemplate.ruleservice.approve.policy.invalid"));
                     LOG.error("Approve Policy is Invalid");
                 }

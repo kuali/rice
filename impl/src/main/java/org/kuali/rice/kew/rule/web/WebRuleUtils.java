@@ -29,6 +29,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
 import org.kuali.rice.kew.rule.PersonRuleResponsibility;
@@ -48,7 +49,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
-
 import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.Row;
 import org.kuali.rice.krad.web.ui.Section;
@@ -399,7 +399,7 @@ public final class WebRuleUtils {
 			ruleResponsibility.setRuleResponsibilityName(principalId);
 			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 			// default the approve policy to First Approve
-			ruleResponsibility.setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
+			ruleResponsibility.setApprovePolicy(ActionRequestPolicy.FIRST.getCode());
 			rule.getResponsibilities().add(ruleResponsibility);
 		}
 		for (GroupRuleResponsibility responsibility : rule.getGroupResponsibilities()) {
@@ -413,7 +413,7 @@ public final class WebRuleUtils {
 			Group group = KEWServiceLocator.getIdentityHelperService().getGroupByName(responsibility.getNamespaceCode(), responsibility.getName());
 			ruleResponsibility.setRuleResponsibilityName(group.getId());
 			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
-			ruleResponsibility.setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
+			ruleResponsibility.setApprovePolicy(ActionRequestPolicy.FIRST.getCode());
 			rule.getResponsibilities().add(ruleResponsibility);
 		}
 		for (RoleRuleResponsibility responsibility : rule.getRoleResponsibilities()) {

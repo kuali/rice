@@ -15,8 +15,20 @@
  */
 package org.kuali.rice.kew.role;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -27,7 +39,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
-
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -46,14 +57,6 @@ import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests Role-based routing integration between KEW and KIM.
@@ -408,7 +411,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction1.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
         roleResponsibilityAction1.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction1.setActionPolicyCode(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
+        roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction1.setPriorityNumber(1);
         roleResponsibilityAction1 = (RoleResponsibilityActionImpl) KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction1);
 
@@ -418,7 +421,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
         roleResponsibilityAction2.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction2.setActionPolicyCode(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
+        roleResponsibilityAction2.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction2.setPriorityNumber(1);
         roleResponsibilityAction2 = (RoleResponsibilityActionImpl) KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction2);
 
@@ -428,7 +431,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
         roleResponsibilityAction3.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction3.setActionPolicyCode(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
+        roleResponsibilityAction3.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction3.setPriorityNumber(1);
         roleResponsibilityAction3 = (RoleResponsibilityActionImpl) KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);
 
@@ -519,7 +522,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction1.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
         roleResponsibilityAction1.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction1.setActionPolicyCode(KEWConstants.APPROVE_POLICY_ALL_APPROVE);
+        roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction1.setPriorityNumber(1);
         roleResponsibilityAction1 = (RoleResponsibilityActionImpl) KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction1);
 
@@ -529,7 +532,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
         roleResponsibilityAction2.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction2.setActionPolicyCode(KEWConstants.APPROVE_POLICY_ALL_APPROVE);
+        roleResponsibilityAction2.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction2.setPriorityNumber(1);
         roleResponsibilityAction2 = (RoleResponsibilityActionImpl) KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction2);
 
@@ -539,7 +542,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
         roleResponsibilityAction3.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction3.setActionPolicyCode(KEWConstants.APPROVE_POLICY_ALL_APPROVE);
+        roleResponsibilityAction3.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction3.setPriorityNumber(1);
         roleResponsibilityAction3 = (RoleResponsibilityActionImpl) KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);
 	}
@@ -627,7 +630,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		for (ActionRequestDTO actionRequest : actionRequests) {
 			// each of these should be "first approve"
 			if (actionRequest.getApprovePolicy() != null) {
-				assertEquals(KEWConstants.APPROVE_POLICY_FIRST_APPROVE, actionRequest.getApprovePolicy());
+				assertEquals(ActionRequestPolicy.FIRST.getCode(), actionRequest.getApprovePolicy());
 			}
 			if (actionRequest.getParentActionRequestId() == null) {
 				numRoots++;
@@ -677,7 +680,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		int numRoots = 0;
 		for (ActionRequestDTO actionRequest : actionRequests) {
 			if (actionRequest.getApprovePolicy() != null) {
-				assertEquals(KEWConstants.APPROVE_POLICY_ALL_APPROVE, actionRequest.getApprovePolicy());
+				assertEquals(ActionRequestPolicy.ALL.getCode(), actionRequest.getApprovePolicy());
 			}
 			if (actionRequest.getParentActionRequestId() == null) {
 				numRoots++;

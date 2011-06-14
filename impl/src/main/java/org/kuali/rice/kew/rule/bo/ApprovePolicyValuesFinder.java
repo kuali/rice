@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
 import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
 
 /**
@@ -31,18 +31,18 @@ import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
  */
 public class ApprovePolicyValuesFinder extends KeyValuesBase {
 
-	private static final List<KeyValue> APPROVED_PROLICIES;
+	private static final List<KeyValue> REQUEST_POLICIES;
 	static {
 		final List<KeyValue> temp = new ArrayList<KeyValue>();
-		for (String delegationType : KEWConstants.APPROVE_POLICIES.keySet()) {
-			temp.add(new ConcreteKeyValue(delegationType, KEWConstants.APPROVE_POLICIES.get(delegationType)));
+		for (ActionRequestPolicy policy : ActionRequestPolicy.values()) {
+			temp.add(new ConcreteKeyValue(policy.getCode(), policy.getLabel()));
 		}
-		APPROVED_PROLICIES = Collections.unmodifiableList(temp);
+		REQUEST_POLICIES = Collections.unmodifiableList(temp);
 	}
 	
 	@Override
 	public List<KeyValue> getKeyValues() {
-		return APPROVED_PROLICIES;
+		return REQUEST_POLICIES;
 	}
 
 }

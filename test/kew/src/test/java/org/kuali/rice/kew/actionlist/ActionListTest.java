@@ -17,11 +17,27 @@
 package org.kuali.rice.kew.actionlist;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.Recipient;
-
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -38,12 +54,6 @@ import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import java.sql.*;
-import java.util.*;
-import java.util.Date;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -420,7 +430,7 @@ public class ActionListTest extends KEWTestCase {
         routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
         routeHeader.setDocTitle("Test");
         routeHeader.setDocumentTypeId((long) 1);
-        routeHeader.setDocVersion(KEWConstants.CURRENT_DOCUMENT_VERSION);
+        routeHeader.setDocVersion(KewApiConstants.DocumentContentVersions.CURRENT);
         routeHeader.setRouteStatusDate(new Timestamp(new Date().getTime()));
         routeHeader.setStatusModDate(new Timestamp(new Date().getTime()));
         routeHeader.setInitiatorWorkflowId("someone");

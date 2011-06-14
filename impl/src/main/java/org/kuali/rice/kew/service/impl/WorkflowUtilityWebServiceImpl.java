@@ -16,6 +16,22 @@
 
 package org.kuali.rice.kew.service.impl;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.jws.WebService;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -28,6 +44,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -76,26 +93,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-
-import javax.jws.WebService;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @SuppressWarnings({"unchecked"})
 @WebService(endpointInterface = KEWWebServiceConstants.WorkflowUtility.INTERFACE_CLASS,
@@ -777,7 +778,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         routeHeader.setDocumentId("");
         routeHeader.setDocumentTypeId(documentType.getDocumentTypeId());
         routeHeader.setDocRouteLevel(routeLevel);
-        routeHeader.setDocVersion(new Integer(KEWConstants.CURRENT_DOCUMENT_VERSION));
+        routeHeader.setDocVersion(new Integer(KewApiConstants.DocumentContentVersions.CURRENT));
 
         if (node.getRuleTemplate() != null && node.isFlexRM()) {
             String ruleTemplateName = node.getRuleTemplate().getName();

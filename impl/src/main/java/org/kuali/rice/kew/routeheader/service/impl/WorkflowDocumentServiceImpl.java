@@ -24,6 +24,7 @@ import org.kuali.rice.kew.actions.*;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -222,7 +223,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
 		}
 		if (routeHeader.getDocVersion() == null) {
-			routeHeader.setDocVersion(Integer.valueOf(KEWConstants.CURRENT_DOCUMENT_VERSION));
+			routeHeader.setDocVersion(Integer.valueOf(KewApiConstants.DocumentContentVersions.CURRENT));
 		}
 		if (routeHeader.getDocContent() == null) {
 			routeHeader.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);

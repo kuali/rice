@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -57,7 +58,7 @@ public final class CompatUtils {
         if (node.getRouteNodeName().equals(nodeName)) {
             return currentLevel;
         }
-        List nextNodes = node.getNextNodes();
+        List<RouteNode> nextNodes = node.getNextNodes();
         if (nextNodes.isEmpty()) {
             throw new WorkflowRuntimeException("Could not locate node with name '"+nodeName+"'");
         }
@@ -89,7 +90,7 @@ public final class CompatUtils {
         if (currentLevel.equals(routeLevel)) {
             return new Object[] { node, currentLevel };
         }
-        List nextNodes = node.getNextNodes();
+        List<RouteNode> nextNodes = node.getNextNodes();
         if (nextNodes.isEmpty()) {
             return new Object[] { null, currentLevel };
         }
@@ -109,37 +110,37 @@ public final class CompatUtils {
     }
     
     public static boolean isNodalDocument(DocumentRouteHeaderValue document) {
-        return KEWConstants.DOCUMENT_VERSION_NODAL == document.getDocVersion().intValue();
+        return KewApiConstants.DocumentContentVersions.NODAL == document.getDocVersion().intValue();
     }
     
     public static boolean isNodalRequest(ActionRequestValue request) {
-        return KEWConstants.DOCUMENT_VERSION_NODAL == request.getDocVersion().intValue();
+        return KewApiConstants.DocumentContentVersions.NODAL == request.getDocVersion().intValue();
     }
     
     public static boolean isRouteLevelDocument(DocumentRouteHeaderValue document) {
-        return KEWConstants.DOCUMENT_VERSION_ROUTE_LEVEL == document.getDocVersion().intValue();
+        return KewApiConstants.DocumentContentVersions.ROUTE_LEVEL == document.getDocVersion().intValue();
     }
     
     public static boolean isRouteLevelRequest(ActionRequestValue request) {
-        return KEWConstants.DOCUMENT_VERSION_ROUTE_LEVEL == request.getDocVersion().intValue();
+        return KewApiConstants.DocumentContentVersions.ROUTE_LEVEL == request.getDocVersion().intValue();
     }
     
     /**
      * Returns a list of RouteNodes in a flat list which is equivalent to the route level concept of
      * Workflow <= version 2.0.  If the document type is not route level compatible, then this method will throw an error.
      */
-    public static List getRouteLevelCompatibleNodeList(DocumentType documentType) {
+    public static List<RouteNode> getRouteLevelCompatibleNodeList(DocumentType documentType) {
         if (!isRouteLevelCompatible(documentType)) {
             throw new WorkflowRuntimeException("Attempting to invoke a 'route level' operation on a document which is not route level compatible.");
         }
         Process primaryProcess = documentType.getPrimaryProcess();
         RouteNode routeNode = primaryProcess.getInitialRouteNode();
-        List nodes = new ArrayList();
+        List<RouteNode> nodes = new ArrayList<RouteNode>();
         int count = 0;
         int maxCount = 100;
         while (true) {
             nodes.add(routeNode);
-            List nextNodes = routeNode.getNextNodes();
+            List<RouteNode> nextNodes = routeNode.getNextNodes();
             if (nextNodes.size() == 0) {
                 break;
             }
@@ -149,7 +150,7 @@ public final class CompatUtils {
             if (count >= maxCount) {
                 throw new RuntimeException("A runaway loop was detected when attempting to create route level compatible node graph.  documentType=" + documentType.getDocumentTypeId()+","+documentType.getName());
             }
-            routeNode = (RouteNode) nextNodes.iterator().next();
+            routeNode = nextNodes.iterator().next();
         }
         return nodes;
     }

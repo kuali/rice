@@ -493,12 +493,18 @@ public final class KEWConstants {
 
     public static final boolean ACTION_REQUEST_FORCE_ACTION = true;
     public static final boolean ACTION_REQUEST_PREV_ACTION_AWARE = false;
+    
+    // TODO: Should be able to remove entries after this because they were moved to RecipientType
+    
     /** Action Request is for a workgroup. */
     public static final String ACTION_REQUEST_GROUP_RECIPIENT_CD = "W";
     /** Action Request is for a user only */
     public static final String ACTION_REQUEST_USER_RECIPIENT_CD = "U";
     /** Action Request is for a role */
     public static final String ACTION_REQUEST_ROLE_RECIPIENT_CD = "R";
+    
+    // TODO: Should be able to remove entries before this because they were moved to RecipientType
+    
     /** Priority used if no priority is specified */
     public static final int ACTION_REQUEST_DEFAULT_PRIORITY = 1;
 
@@ -510,6 +516,9 @@ public final class KEWConstants {
      * Priority level that indicates an ad hoc request. If the priority is above this value, then the request is considered an ad hoc request and is processed accordingly. This is used most often when an ad hoc request must follow the end of a route level. For example, if a user wants the ad hoc to happen after all requests at route level 3 have been processed, but before any requests at route level 4. This is also the upper, exclusive bound for normal request priorities.
      */
     public static final int ACTION_REQUEST_ADHOC_PRIORITY = 1000;
+    
+    // TODO: Should be able to remove entries after this because they were moved to ActionRequestStatus
+    
     public static final String ACTION_REQUEST_DONE_STATE_LABEL = "DONE";
     /** code to indicate the request has been satisfied */
     public static final String ACTION_REQUEST_DONE_STATE = "D";
@@ -519,6 +528,9 @@ public final class KEWConstants {
     public static final String ACTION_REQUEST_INITIALIZED_LABEL = "INITIALIZED";
     /** Code to indicate the request has not been activated */
     public static final String ACTION_REQUEST_INITIALIZED = "I";
+    
+    // TODO: Should be able to remove entries before this because they were moved to ActionRequestStatus
+    
     public static final String ACTION_REQUEST_CANCEL_REQ_LABEL = "CANCEL";
     /**
      * Requested action is to Cancel document
@@ -818,11 +830,6 @@ public final class KEWConstants {
     public static final String ROUTING_VERSION_ROUTE_LEVEL = "1";
     public static final String ROUTING_VERSION_NODAL = "2";
     public static final String CURRENT_ROUTING_VERSION = ROUTING_VERSION_NODAL;
-
-    // Document and Action Request versions
-    public static final int DOCUMENT_VERSION_ROUTE_LEVEL = 0;
-    public static final int DOCUMENT_VERSION_NODAL = 1;
-    public static final int CURRENT_DOCUMENT_VERSION = DOCUMENT_VERSION_NODAL;
 
     public static final String EDL_ATTRIBUTE_GLOBAL_ERROR_KEY = "global";
     public static final String POST_PROCESSOR_FAILURE_MESSAGE = "PostProcessor failed to process document: ";

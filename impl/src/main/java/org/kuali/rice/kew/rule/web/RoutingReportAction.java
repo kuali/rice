@@ -22,6 +22,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.ActivationContext;
@@ -133,7 +134,7 @@ public class RoutingReportAction extends KewKualiAction {
 		routeHeader.setDocumentId("");
 		routeHeader.setDocumentTypeId(docType.getDocumentTypeId());
 		routeHeader.setDocRouteLevel(new Integer(0));
-        routeHeader.setDocVersion(new Integer(KEWConstants.CURRENT_DOCUMENT_VERSION));
+        routeHeader.setDocVersion(new Integer(KewApiConstants.DocumentContentVersions.CURRENT));
 
         List<RouteReportRuleTemplateContainer> ruleTemplateContainers = new ArrayList<RouteReportRuleTemplateContainer>();
 		if (routingForm.getReportType().equals(DOC_TYPE_REPORTING)) {

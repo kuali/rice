@@ -15,6 +15,29 @@
  */
 package org.kuali.rice.kew.routeheader;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -29,6 +52,7 @@ import org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -53,12 +77,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.entity.principal.Principal;
-
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.*;
 
 
 
@@ -131,7 +150,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
     @Column(name="APP_DOC_ID")
 	private java.lang.String appDocId;
     @Column(name="DOC_VER_NBR")
-    private java.lang.Integer docVersion = new Integer(KEWConstants.DOCUMENT_VERSION_NODAL);
+    private java.lang.Integer docVersion = new Integer(KewApiConstants.DocumentContentVersions.NODAL);
     @Column(name="INITR_PRNCPL_ID")
 	private java.lang.String initiatorWorkflowId;
     @Column(name="RTE_PRNCPL_ID")

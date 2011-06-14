@@ -41,7 +41,7 @@ public interface ActionRequestContract extends Identifiable {
 	
 	String getPrincipalId();
 	
-	// TODO delegation type enum
+	DelegationType getDelegationType();
 	
 	String getParentActionRequestId();
 	

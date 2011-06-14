@@ -116,8 +116,9 @@ public class View extends ContainerBase {
     private String viewMenuGrouping;
 
     private boolean validateDirty;
-
-    @RequestParameter
+    protected boolean translateCodes;
+    
+	@RequestParameter
     private boolean dialogMode;
 
     @RequestParameter
@@ -129,6 +130,7 @@ public class View extends ContainerBase {
     public View() {
         dialogMode = false;
         singlePageView = false;
+        translateCodes = false;
         viewTypeName = ViewType.DEFAULT;
         viewStatus = UifConstants.ViewStatus.CREATED;
 
@@ -1005,12 +1007,14 @@ public class View extends ContainerBase {
 
     /**
      * 
-     * Indicates whether the form should be validated for dirtyness. For FormView, it's necessary to 
-     * validate when the user tries to navigate out of the form. If set, all the AttributeFields
+     * Indicates whether the form should be validated for dirtyness. 
+     * 
+     * <p>For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the AttributeFields
      * will be validated on refresh, navigate, cancel or close Action or on form unload and if dirty, displays a message and user
      * can decide whether to continue with the action or stay on the form. For lookup and inquiry, it's not needed to validate.
+     * </p>
      * 
-     * @return validateDirty 
+     * @return true if dirty validation is set
      */
     public boolean isValidateDirty() {
         return this.validateDirty;
@@ -1023,6 +1027,24 @@ public class View extends ContainerBase {
         this.validateDirty = validateDirty;
     }
 
+	/**
+	 * Indicates whether the Name of the Code should be displayed when a property is of type <code>KualiCode</code>
+	 * 
+	 * @param translateCodes - indicates whether <code>KualiCode</code>'s name should be included
+	 */
+	public void setTranslateCodes(boolean translateCodes) {
+		this.translateCodes = translateCodes;
+	}
+	
+	/**
+	 * Returns whether the current view supports displaying <code>KualiCode</code>'s name as additional display value 
+	 * 
+	 * @return true if the current view supports
+	 */
+	public boolean isTranslateCodes() {
+		return translateCodes;
+	}
+	
     /**
      * @return the viewLabelFieldPropertyName
      */

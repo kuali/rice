@@ -225,11 +225,11 @@ public class ComponentUtils {
         
         if (field instanceof AttributeField){
         	AttributeField attrfield = (AttributeField)field;
-        	if (StringUtils.isNotBlank(attrfield.getAdditionalDisplayAttributeName())){
-        		attrfield.getAdditionalDisplayAttributeBindingInfo().setBindByNamePrefix(bindingPrefix);
+        	if (StringUtils.isNotBlank(attrfield.getAdditionalDisplayPropertyName())){
+        		attrfield.getAdditionalDisplayPropertyBindingInfo().setBindByNamePrefix(bindingPrefix);
         	}
-        	if (StringUtils.isNotBlank(attrfield.getAlternateDisplayAttributeName())){
-        		attrfield.getAlternateDisplayAttributeBindingInfo().setBindByNamePrefix(bindingPrefix);
+        	if (StringUtils.isNotBlank(attrfield.getAlternateDisplayPropertyName())){
+        		attrfield.getAlternateDisplayPropertyBindingInfo().setBindByNamePrefix(bindingPrefix);
         	}
         }
     }

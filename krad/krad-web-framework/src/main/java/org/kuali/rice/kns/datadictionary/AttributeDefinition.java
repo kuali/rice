@@ -43,7 +43,6 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConst
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.uif.control.Control;
-import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**

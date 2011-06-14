@@ -50,6 +50,7 @@
         <ref bean="TravelAccount-extension.accountTypeCode"/>
         <ref bean="TravelAccount-extension.accountType.codeAndDescription"/>
         <ref bean="TravelAccount-foId"/>
+        <ref bean="TravelAccount-foName"/>
       </list>
     </property>
   </bean>
@@ -140,7 +141,6 @@
     <property name="shortLabel" value="Date Created"/>
     <property name="label" value="Date Created"/>
     <property name="description" value="Date Created"/>
-    <property name="alternateDisplayAttributeName" value="name"/>
     <property name="controlField">
       <bean parent="DateControl"/>
     </property>     
@@ -176,10 +176,17 @@
 
   <bean id="TravelAccount-foId-parentBean" abstract="true" parent="FiscalOfficer-id">
     <property name="name" value="foId"/>
+    <property name="additionalDisplayAttributeName" value="fiscalOfficer.userName"/>
     <property name="controlField">
       <bean parent="TextControl" p:size="5"/>
     </property>
     <property name="summary" value="Responsbile for aproving account expenses"/>
+  </bean>
+  
+  <bean id="TravelAccount-foName" parent="TravelAccount-foName-parentBean"/>
+
+  <bean id="TravelAccount-foName-parentBean" abstract="true" parent="FiscalOfficer-userName">
+    <property name="name" value="fiscalOfficer.userName"/>
   </bean>
 
 <!-- Business Object Inquiry Definition -->
@@ -202,6 +209,7 @@
               <bean parent="FieldDefinition" p:attributeName="createDate"/>
               <bean parent="FieldDefinition" p:attributeName="subsidizedPercent"/>
               <bean parent="FieldDefinition" p:attributeName="foId" p:forceInquiry="true"/>
+              <bean parent="FieldDefinition" p:attributeName="fiscalOfficer.userName"/>
             </list>
           </property>
           <property name="title" value="Account Information"/>

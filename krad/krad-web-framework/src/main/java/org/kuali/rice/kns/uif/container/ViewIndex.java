@@ -17,18 +17,12 @@ package org.kuali.rice.kns.uif.container;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.AttributeField;
-import org.kuali.rice.kns.uif.field.Field;
-import org.kuali.rice.kns.uif.field.GroupField;
-import org.kuali.rice.kns.uif.util.ComponentUtils;
 
 /**
  * Holds field indexes of a <code>View</code> instance for retrieval
@@ -163,45 +157,54 @@ public class ViewIndex implements Serializable {
 	}
 
     /**
-     * Finds the attribute field based on the binding path. First, it tries
-     * to find in the attribute collection. If not present there, search in the collection
-     *
-     * @param bindingInfo based on this this, attribute field will be return
-     * @return AttributeField
+     * Searches for the <code>AttributeField</code> based on the given binding path. 
+     * 
+     * <p>It first searches for the matching <code>AttributeField</code> by path. If not
+     * matching field found, it searches in the <code>CollectionGroup</code>
+     * </p>
+     * 
+     * @param bindingInfo - <code>AttributeField</code> will be searched based on this binding path
+     * @return the attribute field for the binding path
      */
-    public AttributeField getAttributeField(BindingInfo bindingInfo) {
-        // Find in the attribute index first.
-        AttributeField attributeField = getAttributeFieldByPath(bindingInfo.getBindingPath());
+	public AttributeField getAttributeField(BindingInfo bindingInfo) {
+		// Find in the attribute index first.
+		AttributeField attributeField = getAttributeFieldByPath(bindingInfo.getBindingPath());
 
-        if (attributeField == null) {
-            // Lets search the collections (by collection's binding path)
-            String path = bindingInfo.getBindingObjectPath() + "." + bindingInfo.getBindByNamePrefix();
+		if (attributeField == null) {
+			// Lets search the collections (by collection's binding path)
+			String path = bindingInfo.getBindingObjectPath() + "." + bindingInfo.getBindByNamePrefix();
 
-            CollectionGroup collectionGroup = getCollectionGroupByPath(stripIndexesFromPropertyPath(path));
-            if (collectionGroup != null) {
-                for (Component item : ((CollectionGroup) collectionGroup).getItems()) {
-                    if (item instanceof AttributeField) {
-                        if (StringUtils
-                                .equals(((AttributeField) item).getPropertyName(), bindingInfo.getBindingName())) {
-                            attributeField = (AttributeField) item;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+			CollectionGroup collectionGroup = getCollectionGroupByPath(stripIndexesFromPropertyPath(path));
+			if (collectionGroup != null) {
+				for (Component item : ((CollectionGroup) collectionGroup).getItems()) {
+					if (item instanceof AttributeField) {
+						if (StringUtils.equals(((AttributeField) item).getPropertyName(),bindingInfo.getBindingName())) {
+							attributeField = (AttributeField) item;
+							break;
+						}
+					}
+				}
+			}
+		}
 
-        return attributeField;
-    }
+		return attributeField;
+	}
 	
 	/**
-     * Strips indexes from the property path. 
-     * bo.fiscalOfficer.accounts[0].name returns bo.fiscalOfficer.accounts.name which can be used 
-     * to find the components from the CollectionGroup index
+     * Strips indexes from the property path.
+     * 
+     * <p> For example, it returns bo.fiscalOfficer.accounts.name for the input bo.fiscalOfficer.accounts[0].name, 
+     * which can be used to find the components from the CollectionGroup index
+     * </p>
+     * 
+     * @param propertyPath - property path
+     * @return the stripped index path
      */
     private String stripIndexesFromPropertyPath(String propertyPath){
+    	
     	String returnValue = propertyPath;
     	String index = StringUtils.substringBetween(propertyPath, "[", "]");
+    	
     	if (StringUtils.isNotBlank(index)){
     		returnValue = StringUtils.remove(propertyPath, "[" + index + "]");
     		return stripIndexesFromPropertyPath(returnValue);

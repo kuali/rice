@@ -47,6 +47,7 @@ public class InquiryView extends FormView {
 
         setViewTypeName(ViewType.INQUIRY);
         setValidateDirty(false);
+        setTranslateCodes(true);
     }
 
     /**

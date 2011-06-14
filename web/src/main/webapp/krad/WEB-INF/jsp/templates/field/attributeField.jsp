@@ -28,42 +28,42 @@
   </c:if>
 
   <%-- render field value (if read-only) or control (if edit) --%>
-  <c:choose>
-    <c:when test="${field.readOnly}">
-      <c:if test="${field.fieldInquiry.render}">
-        <krad:template component="${field.fieldInquiry}" componentId="${field.id}"/>
-      </c:if>
-      
-      <c:if test="${!field.fieldInquiry.render}">
-         <%-- Display alternate display value if it's set --%>
-         <c:if test="${not empty field.alternateDisplayValue}">
-  	     	<c:out value="${field.alternateDisplayValue}"/>
-  	     </c:if>
+	<c:choose>
+		<c:when test="${field.readOnly}">
+			<c:if test="${field.fieldInquiry.render}">
+				<krad:template component="${field.fieldInquiry}" componentId="${field.id}" />
+			</c:if>
 
-  	     <c:if test="${empty field.alternateDisplayValue}">
-  	        <%-- If alternate display value is not present, look for additional property to display --%>
-  	        <c:if test="${not empty field.additionalDisplayValue}">
-  	        	<s:bind path="${field.bindingInfo.bindingPath}">${status.value} - </s:bind>
-  	        	<c:out value="${field.additionalDisplayValue}"/>
-  	        </c:if>
+			<c:if test="${!field.fieldInquiry.render}">
+				<%-- Display alternate display value if it's set --%>
+				<c:if test="${not empty field.alternateDisplayValue}">
+					<c:out value="${field.alternateDisplayValue}" />
+				</c:if>
 
-  	        <%-- If either alternate value or additional property not preset, display the actual property value --%>
-  	        <c:if test="${empty field.additionalDisplayValue}">
-  	     		<s:bind path="${field.bindingInfo.bindingPath}">${status.value}</s:bind>
-  	     	</c:if>
-  	     </c:if>
-       </c:if> 
-    </c:when>
-  
-    <c:otherwise>          
-      <%-- render field summary --%>
-      <krad:template component="${field.summaryMessageField}"/>
-      
-      <krad:template component="${field.control}" field="${field}"/>
-    </c:otherwise>
-  </c:choose>
+				<c:if test="${empty field.alternateDisplayValue}">
+					<%-- If alternate display value is not present, look for additional property to display --%>
+					<c:if test="${not empty field.additionalDisplayValue}">
+						<s:bind path="${field.bindingInfo.bindingPath}">${status.value} *-* </s:bind>
+						<c:out value="${field.additionalDisplayValue}" />
+					</c:if>
 
-  <%-- render field quickfinder --%>
+					<%-- If either alternate value or additional property not preset, display the actual property value --%>
+					<c:if test="${empty field.additionalDisplayValue}">
+						<s:bind path="${field.bindingInfo.bindingPath}">${status.value}</s:bind>
+					</c:if>
+				</c:if>
+			</c:if>
+		</c:when>
+
+		<c:otherwise>
+			<%-- render field summary --%>
+			<krad:template component="${field.summaryMessageField}" />
+
+			<krad:template component="${field.control}" field="${field}" />
+		</c:otherwise>
+	</c:choose>
+
+	<%-- render field quickfinder --%>
   <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
 
   <%-- render field direct inquiry if field is editable --%>

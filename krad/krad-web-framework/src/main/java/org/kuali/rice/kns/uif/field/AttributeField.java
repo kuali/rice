@@ -18,9 +18,11 @@ package org.kuali.rice.kns.uif.field;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.kns.bo.BusinessObjectRelationship;
+import org.kuali.rice.kns.bo.KualiCode;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
@@ -30,6 +32,7 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.control.Control;
@@ -44,6 +47,7 @@ import org.kuali.rice.kns.uif.widget.DirectInquiry;
 import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.uif.widget.QuickFinder;
 import org.kuali.rice.kns.uif.widget.Suggest;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -105,18 +109,19 @@ public class AttributeField extends FieldBase implements DataBinding {
     private MessageField summaryMessageField;
     private MessageField constraintMessageField;
 
-    private String alternateDisplayAttributeName;
-    private String additionalDisplayAttributeName;
+    //Alternate and additional display properties
+    protected String alternateDisplayPropertyName;
+    protected String additionalDisplayPropertyName;
     
-    private BindingInfo alternateDisplayAttributeBindingInfo;
-	private BindingInfo additionalDisplayAttributeBindingInfo;
-	
-	private String alternateDisplayValue;
+    private String alternateDisplayValue;
 	private String additionalDisplayValue;
     
     private List<String> informationalDisplayPropertyNames;
 
     private AttributeQuery fieldAttributeQuery;
+	
+    private BindingInfo alternateDisplayPropertyBindingInfo;
+	private BindingInfo additionalDisplayPropertyBindingInfo;
 	
     // widgets
     private Inquiry fieldInquiry;
@@ -178,17 +183,6 @@ public class AttributeField extends FieldBase implements DataBinding {
             constraintMessageField.setMessageText(constraint);
         }
 
-        /**
-         * Additional and Alternate display value 
-         */
-        setAlternateAndAdditionalDisplayValue(view,model);
-        	
-        // if read only or the control is not set no need to set client side
-        // validation
-        if (isReadOnly() || getControl() == null) {
-            return;
-        }
-
         setupInformationalFieldQuery();
 
         // TODO: remove later, this should be done within the service lifecycle
@@ -197,6 +191,15 @@ public class AttributeField extends FieldBase implements DataBinding {
             if ((multiValueControl.getOptions() == null) || multiValueControl.getOptions().isEmpty()) {
                 multiValueControl.setOptions(optionsFinder.getKeyValues());
             }
+        }
+        
+        //Additional and Alternate display value
+       	setAlternateAndAdditionalDisplayValue(view,model);
+        
+        // if read only or the control is not set no need to set client side
+        // validation
+        if (isReadOnly() || getControl() == null) {
+            return;
         }
         
         ClientValidationUtils.processAndApplyConstraints(this, view);            
@@ -236,100 +239,113 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * This method sets the alternate display value to be displayed when the field is readonly. This is how the code decides the alternate value
+     * Sets alternate and additional property value for this field.
      * 
-     * 1. If alternate field is present, check whether security exists for that field. If present, display the value based on that fields security. Otherwise, that fields value will be displayed
-     * 2. If alternate field not present, check for this fields security. If present, display based on this security.
-     * 3. If alternate field not present or this field doesnt have any security, check for the options finder configured. If present, display the options value
+     * <p>
+     * If <code>AttributeSecurity</code> present in this field, make sure the current user has permission to view the field value. If user doesn't 
+     * have permission to view the value, mask the value as configured and set it as alternate value for display. If security doesn't exists for
+     * this field but <code>alternateDisplayPropertyName</code> present, get its value and format it based on that fields formatting and set for display.
+     * </p>
      * 
-     * If nothing is present, then additional display field property would be considered for presentation.
+     * <p>
+     * For additional display value, if <code>AttributeSecurity</code> not present, sets the value if <code>additionalDisplayPropertyName</code> present. 
+     * If not present, check whether this field is a <code>KualiCode</code> and get the relationship configured in the datadictionary file and set the name 
+     * additional display value which will be displayed along with the code. If additional display property not present, check whether this field is has 
+     * <code>MultiValueControlBase</code>. If yes, get the Label for the value and set it as additional display value.
+     * </p>
      * 
-     * @param view
-     * @param model
+     * @param view - the current view instance
+     * @param model - model instance
      */
     private void setAlternateAndAdditionalDisplayValue(View view, Object model){
     	
-    	boolean alternateValueSet = false;
+    	boolean isSecure = false;
     	boolean additionalValueSet = false;
+    	boolean alternateValueSet = false;
     	
-        /**
-         * If additional display property name set, get the field value and set it in additionalDisplayValue sothat jsp can display 
-         * this value when the field or view is readonly 
-         */
+    	Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
     	
-        if (additionalDisplayAttributeBindingInfo != null &&
-                StringUtils.isNotBlank(getAdditionalDisplayAttributeName())) {
-            
-        	additionalDisplayAttributeBindingInfo.setDefaults(view, getAdditionalDisplayAttributeName());
-            
-        	String fieldValue = (String)ObjectPropertyUtils.getPropertyValue(model, additionalDisplayAttributeBindingInfo.getBindingPath());
-        	additionalValueSet = true;
-        	
-        	if (StringUtils.isNotBlank(fieldValue)){
-            	additionalDisplayValue = fieldValue;
-            }
-        }
-
-        if (alternateDisplayAttributeBindingInfo != null &&
-                StringUtils.isNotBlank(getAlternateDisplayAttributeName())) {
-            alternateDisplayAttributeBindingInfo.setDefaults(view, getAlternateDisplayAttributeName());
-        }
-        
-    	/**
-    	 * If alternate display property is set, Check that field first
-    	 */
-    	if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())){
-    		AttributeField alternateField = view.getViewIndex().getAttributeField(getAlternateDisplayAttributeBindingInfo());
+    	if (getAttributeSecurity() != null){
+    		//TODO: Check authorization
+    		// if (attributeSecurity.isMask() && !boAuthzService.canFullyUnmaskField(user,businessObjectClass, field.getPropertyName(), null)) {
     		
-			if (alternateField != null){
-				Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getAlternateDisplayAttributeBindingInfo().getBindingPath());
+			alternateDisplayValue = getSecuredFieldValue(attributeSecurity, fieldValue);
+			setReadOnly(true);
+			isSecure = true;
+    	}
+    	
+    	//If not read only, return without trying to set alternate and additional values 
+    	if (!isReadOnly()){
+    		return;
+    	}
+    	
+    	// If AttributeSecurity not found, check for AlternateDisplayPropertyName
+    	if (!isSecure && StringUtils.isNotBlank(getAlternateDisplayPropertyName())){
+    		alternateDisplayPropertyBindingInfo.setDefaults(view, getAlternateDisplayPropertyName());
+    		AttributeField alternateField = view.getViewIndex().getAttributeField(getAlternateDisplayPropertyBindingInfo());
     		
-				/**
-				 * If security present in that field, set the alternate value based on that masking
-				 */
-				if (alternateField.getAttributeSecurity() != null){
-    				alternateDisplayValue = getSecuredFieldValue(attributeSecurity, fieldValue);
+    		if (alternateField != null){
+    			Object alterateFieldValue = ObjectPropertyUtils.getPropertyValue(model, getAlternateDisplayPropertyBindingInfo().getBindingPath());
+    			if (alternateField.getFormatter() != null){
+    				alternateDisplayValue = (String)alternateField.getFormatter().formatForPresentation(alterateFieldValue);
     			}else{
-    				/**
-    				 * If no security present, set the alternate field's value
-    				 */
-    				alternateDisplayValue = (String)fieldValue;
+    				alternateDisplayValue = org.apache.commons.lang.ObjectUtils.toString(alterateFieldValue);
     			}
-				
-				alternateValueSet = true;
-    			
-    		}
-		}
-    	
-    	if (!alternateValueSet){
-    		/**
-    		 * Check this field has security. If present, mask this fields value based on that.
-    		 */
-    		if (getAttributeSecurity() != null){
-    			Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-    			alternateDisplayValue = getSecuredFieldValue(attributeSecurity, fieldValue);
     			alternateValueSet = true;
     		}
     	}
-    	
-    	/**
-    	 * If additional display property not set, we can check for optionsFinder
-    	 */
-    	if (!additionalValueSet && !alternateValueSet && optionsFinder != null){
-    		String fieldValue = (String)ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-    		/**
-    		 * If the field value is empty, dont set it
-    		 */
-        	if (fieldValue != null){
-        		String keyLabel = optionsFinder.getKeyLabel(fieldValue);
-        		if (StringUtils.isNotBlank(keyLabel)){
-        			alternateDisplayValue = keyLabel;
+
+    	if (!isSecure){
+    		
+    		//If additional display property name present, set it to display 
+    		if (StringUtils.isNotBlank(getAdditionalDisplayPropertyName())) {
+        		additionalDisplayPropertyBindingInfo.setDefaults(view, getAdditionalDisplayPropertyName());
+        		AttributeField additionalPropertyField = view.getViewIndex().getAttributeField(getAdditionalDisplayPropertyBindingInfo());
+        		Object additionalFieldValue = ObjectPropertyUtils.getPropertyValue(model, additionalDisplayPropertyBindingInfo.getBindingPath());
+        		additionalValueSet = true;
+        		if (additionalPropertyField != null && additionalPropertyField.getFormatter() != null){
+        			additionalDisplayValue = (String)additionalPropertyField.getFormatter().formatForPresentation(additionalFieldValue);
+        		}else {
+        			additionalDisplayValue = org.apache.commons.lang.ObjectUtils.toString(additionalFieldValue);
         		}
-        	}
+    		}else if (view.isTranslateCodes()){
+    			//If translate code is enabled, check for any relationship present for this field and it's of type KualiCode
+        		BusinessObjectRelationship relationship = KNSServiceLocatorWeb.getDataObjectMetaDataService().getDataObjectRelationship(model,model.getClass(),getBindingInfo().getBindingPath(),"",true,true,true);
+        		if (relationship != null && getPropertyName().startsWith(relationship.getParentAttributeName())
+    					&& KualiCode.class.isAssignableFrom(relationship.getRelatedClass())) {
+        			additionalDisplayPropertyName = relationship.getParentAttributeName() + "." + KNSPropertyConstants.NAME;
+        			additionalDisplayPropertyBindingInfo.setDefaults(view, getAdditionalDisplayPropertyName());
+        			Object value = ObjectPropertyUtils.getPropertyValue(model, additionalDisplayPropertyBindingInfo.getBindingPath());
+        			additionalDisplayValue = org.apache.commons.lang.ObjectUtils.toString(value);;
+        			additionalValueSet = true;
+    			}
+    		}
+    		
+    		// alternateValue and additionalValue not set yet? Check whether the field has multi value control
+    		if (!alternateValueSet && !additionalValueSet && (control != null && control instanceof MultiValueControlBase)){
+    			MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
+    			if (multiValueControl.getOptions() != null){
+    				for (KeyValue keyValue : multiValueControl.getOptions()) {
+						if (StringUtils.equals((String)fieldValue, keyValue.getKey())){
+							alternateDisplayValue = keyValue.getValue();
+							break;
+						}
+					}
+    			}
+    		}
+    		
     	}
+    	
     }
 
     
+    /**
+     * Helper method which returns the masked value based on the <code>AttributeSecurity</code>
+     * 
+     * @param attributeSecurity attribute security to check
+     * @param fieldValue field value
+     * @return masked value
+     */
     private String getSecuredFieldValue(AttributeSecurity attributeSecurity, Object fieldValue){
     	if(attributeSecurity.isMask()){
 			return attributeSecurity.getMaskFormatter().maskValue(fieldValue);
@@ -462,15 +478,13 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
 
         //alternate property name and binding object
-        if (getAlternateDisplayAttributeName() == null &&
-                StringUtils.isNotBlank(attributeDefinition.getAlternateDisplayAttributeName())) {
-            setAlternateDisplayAttributeName(attributeDefinition.getAlternateDisplayAttributeName());
+        if (getAlternateDisplayPropertyName() == null && StringUtils.isNotBlank(attributeDefinition.getAlternateDisplayAttributeName())){
+        	setAlternateDisplayPropertyName(attributeDefinition.getAlternateDisplayAttributeName());
         }
 
         //additional property display name and binding object
-        if (getAdditionalDisplayAttributeName() == null &&
-                StringUtils.isNotBlank(attributeDefinition.getAdditionalDisplayAttributeName())) {
-            setAdditionalDisplayAttributeName(attributeDefinition.getAdditionalDisplayAttributeName());
+        if (getAdditionalDisplayPropertyName() == null && StringUtils.isNotBlank(attributeDefinition.getAdditionalDisplayAttributeName())){
+        	setAdditionalDisplayPropertyName(attributeDefinition.getAdditionalDisplayAttributeName());
         }
 
         if (getFormatter() == null && StringUtils.isNotBlank(attributeDefinition.getFormatterClass())) {
@@ -1138,83 +1152,82 @@ public class AttributeField extends FieldBase implements DataBinding {
      * Additional display attribute name, which will be displayed next to the actual field value 
      * when the field is readonly with hypen inbetween like PropertyValue - AdditionalPropertyValue 
      * 
-     * @param additionalDisplayAttributeName
+     * @param additionalDisplayPropertyName - Name of the additional display property
      */
-	public void setAdditionalDisplayAttributeName(String additionalDisplayAttributeName) {
-		this.additionalDisplayAttributeName = additionalDisplayAttributeName;
+	public void setAdditionalDisplayPropertyName(String additionalDisplayPropertyName) {
+		this.additionalDisplayPropertyName = additionalDisplayPropertyName;
 	}
 	
 	/**
 	 * Returns the additional display attribute name to be displayed when the field is readonly
 	 * 
-	 * @return additionalDisplayAttributeName Additional Display Attribute Name
+	 * @return Additional Display Attribute Name
 	 */
-	public String getAdditionalDisplayAttributeName() {
-		return this.additionalDisplayAttributeName;
+	public String getAdditionalDisplayPropertyName() {
+		return this.additionalDisplayPropertyName;
 	}
 
 	/**
      * Additional display attribute's binding info. Based on the object path, the additional display
-     * attribute's value will be used to display it when the field is readonly  
+     * attribute's value will be used to display when the field is readonly  
      * 
-     * @param additionalDisplayAttributeBindingInfo
+     * @param alternateDisplayPropertyBindingInfo - <code>BindingInfo</code> for the additional display property to set
      */
-	public void setAdditionalDisplayAttributeBindingInfo(BindingInfo additionalDisplayAttributeBindingInfo) {
-		this.additionalDisplayAttributeBindingInfo = additionalDisplayAttributeBindingInfo;
+	public void setAdditionalDisplayPropertyBindingInfo(BindingInfo additionalDisplayPropertyBindingInfo) {
+		this.additionalDisplayPropertyBindingInfo = additionalDisplayPropertyBindingInfo;
 	}
 	
 	/**
+	 * Returns the additional display attribute's binding info object
 	 * 
-	 * This method returns the additional display attribute's binding info object
-	 * 
-	 * @return additionalDisplayAttributeBindingInfo
+	 * @return <code>BindingInfo</code> of the additional display property
 	 */
-	public BindingInfo getAdditionalDisplayAttributeBindingInfo() {
-		return this.additionalDisplayAttributeBindingInfo;
+	public BindingInfo getAdditionalDisplayPropertyBindingInfo() {
+		return this.additionalDisplayPropertyBindingInfo;
 	}
 	
 	/**
 	 * Sets the alternate display attribute name to be displayed when the field is readonly.
 	 * This properties value will be displayed instead of actual fields value when the field is readonly. 
 	 * 
-	 * @param alternateDisplayAttributeName
+	 * @param alternateDisplayPropertyName - alternate display property name
 	 */
-	public void setAlternateDisplayAttributeName(String alternateDisplayAttributeName) {
-		this.alternateDisplayAttributeName = alternateDisplayAttributeName;
+	public void setAlternateDisplayPropertyName(String alternateDisplayPropertyName) {
+		this.alternateDisplayPropertyName = alternateDisplayPropertyName;
 	}
 	
 	/**
 	 * Returns the alternate display attribute name to be displayed when the field is readonly.
 	 * 
-	 * @return alternateDisplayAttributeName
+	 * @return alternate Display Property Name
 	 */
-	public String getAlternateDisplayAttributeName() {
-		return this.alternateDisplayAttributeName;
+	public String getAlternateDisplayPropertyName() {
+		return this.alternateDisplayPropertyName;
 	}
 
 	/**
 	 * Sets the binding info for the alternate display attribute name. If it's set, it's object path
 	 * will be used to determine the alternate display attributes value.
 	 * 
-	 * @param alternateDisplayAttributeBindingInfo
+	 * @param alternateDisplayPropertyBindingInfo - <code>BindingInfo</code> of the alternate display property to set
 	 */
-	public void setAlternateDisplayAttributeBindingInfo(BindingInfo alternateDisplayAttributeBindingInfo) {
-		this.alternateDisplayAttributeBindingInfo = alternateDisplayAttributeBindingInfo;
+	public void setAlternateDisplayPropertyBindingInfo(BindingInfo alternateDisplayPropertyBindingInfo) {
+		this.alternateDisplayPropertyBindingInfo = alternateDisplayPropertyBindingInfo;
 	}
 	
 	/**
 	 * Returns the binding info object of the alternate display attribute 
 	 * 
-	 * @return
+	 * @return <code>BindingInfo</code> of the alternate display property
 	 */
-	public BindingInfo getAlternateDisplayAttributeBindingInfo() {
-		return this.alternateDisplayAttributeBindingInfo;
+	public BindingInfo getAlternateDisplayPropertyBindingInfo() {
+		return this.alternateDisplayPropertyBindingInfo;
 	}
 	
 	/**
 	 * Returns the alternate display value
 	 * 
-	 * @return alternateDisplayValue
+	 * @return the alternate display value set for this field
 	 */
 	public String getAlternateDisplayValue(){
 		return alternateDisplayValue;
@@ -1225,7 +1238,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 	/**
 	 * Returns the additional display value.
 	 * 
-	 * @return additionalDisplayValue
+	 * @return the additional display value set for this field
 	 */
 	public String getAdditionalDisplayValue(){
 		return additionalDisplayValue;

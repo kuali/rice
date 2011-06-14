@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:p="http://www.springframework.org/schema/p" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans         
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+  <!-- Base Fields -->
+  
+  <bean id="AttributeField" abstract="true" parent="AttributeField-parentBean"/>
+  <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AttributeField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/attributeField.jsp"/>
+      <property name="styleClasses" value="field_attribute"/>
+	  <property name="errorsField">
+        <bean parent="ErrorsField"/>
+      </property>
+      <property name="labelField">
+        <bean parent="LabelField"/>
+      </property>      
+      <property name="bindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
+      <property name="alternateDisplayPropertyBindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
+      <property name="additionalDisplayPropertyBindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
+      <property name="fieldLookup">
+        <bean parent="QuickFinder"/>
+      </property> 
+      <property name="fieldInquiry">
+        <bean parent="Inquiry"/>
+      </property> 
+      <property name="fieldDirectInquiry">
+        <bean parent="DirectInquiry"/>
+      </property>
+      <property name="fieldSuggest">
+        <bean parent="Suggest" p:render="false"/>
+      </property>
+      <property name="summaryMessageField">
+        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
+      </property>
+      <property name="constraintMessageField">
+        <bean parent="MessageField" p:messageType="CONSTRAINT" p:styleClasses="constraint"/>
+      </property>  
+      <property name="conditionalReadOnly" value="#parent.readOnly"/>         
+  </bean>  
+  
+  <bean id="AttributeField_Form" parent="AttributeField_Form-parentBean"/>
+  <bean id="AttributeField_Form-parentBean" abstract="true" parent="AttributeField">
+      <property name="bindingInfo.bindToForm" value="true"/>
+      <property name="alternateDisplayPropertyBindingInfo.bindToForm" value="true"/>
+      <property name="additionalDisplayPropertyBindingInfo.bindToForm" value="true"/>
+  </bean>    
+  
+  <bean id="LookupCriteriaAttributeField" abstract="true" parent="LookupCriteriaAttributeField-parentBean"/>
+  <bean id="LookupCriteriaAttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LookupCriteriaAttributeField" parent="AttributeField">
+<!--
+      <property name="summaryMessageField.render" value="false"/>
+      <property name="constraintMessageField.render" value="false"/>
+-->
+      <property name="bindingInfo.bindToMap" value="true"/>
+      <property name="alternateDisplayPropertyBindingInfo.bindToForm" value="true"/>
+      <property name="additionalDisplayPropertyBindingInfo.bindToForm" value="true"/>
+  </bean>
+  
+  <bean id="LabelField" parent="LabelField-parentBean"/>
+  <bean id="LabelField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LabelField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/labelField.jsp"/>
+      <property name="styleClasses" value="desc"/>
+      <property name="requiredMessageField">
+        <bean parent="MessageField" p:messageText="*" p:messageType="REQUIRED" p:styleClasses="required"/>
+      </property>   
+  </bean>  
+  
+  <bean id="ErrorsField" parent="ErrorsField-parentBean"/>
+  <bean id="ErrorsField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ErrorsField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/errorsField.jsp"/>
+      <property name="styleClasses" value="errorsField"/>
+      <property name="displayErrorTitle" value="false"/>
+	  <property name="displayWarningTitle" value="false"/> 
+	  <property name="displayInfoTitle" value="false"/> 
+	  <property name="displayFieldLabelWithMessages" value="true"/>
+	  <property name="displayNestedMessages" value="false"/> 
+	  <property name="displayFieldErrorIcon" value="false"/>
+	  <property name="highlightOnError" value="true"/>
+	  <property name="combineMessages" value="true"/> 
+	  <property name="allowMessageRepeat" value="true"/>
+	  <property name="displayMessages" value="true"/>
+	  <property name="displayErrorMessages" value="true"/>
+	  <property name="displayWarningMessages" value="true"/>
+	  <!-- Note that we are not displaying Info messages because they are shown through growls by default
+	  if Growls are turned off, info messages needs to be turned back on 
+	  (optional for fields, but should be true at least on the page level) -->
+	  <property name="displayInfoMessages" value="false"/>
+	  <property name="displayCounts" value="false"/>
+  </bean>
+  
+  <bean id="ErrorsField_Group" parent="ErrorsField">
+      <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+      <property name="displayErrorTitle" value="false"/>
+	  <property name="displayWarningTitle" value="false"/> 
+	  <property name="displayInfoTitle" value="false"/> 
+	  <property name="displayFieldLabelWithMessages" value="true"/>
+	  <property name="displayNestedMessages" value="true"/> 
+	  <property name="highlightOnError" value="false"/>
+	  <property name="combineMessages" value="true"/> 
+	  <property name="allowMessageRepeat" value="true"/>
+	  <!--note global display flag is false by default, but others are true by default, 
+	  no messages will be displayed by default in groups, but all can easily be turned on-->
+	  <property name="displayMessages" value="false"/>
+	  <property name="displayCounts" value="true"/>
+  </bean>
+  
+    <bean id="ErrorsField_Page" parent="ErrorsField">
+      <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+	  <property name="additionalKeysToMatch">
+	  	<list>
+	  		<value>GLOBAL_ERRORS</value>
+			<value>GLOBAL_WARNINGS</value>
+			<value>GLOBAL_INFO</value>
+	  	</list>
+	  </property>
+      <property name="displayErrorTitle" value="true"/>
+	  <property name="displayWarningTitle" value="true"/> 
+	  <property name="displayInfoTitle" value="true"/> 
+	  <property name="displayFieldLabelWithMessages" value="true"/>
+	  <property name="displayNestedMessages" value="true"/> 
+	  <property name="highlightOnError" value="false"/>
+	  <property name="combineMessages" value="true"/> 
+	  <property name="allowMessageRepeat" value="true"/>
+	  <property name="displayMessages" value="true"/>
+	  <property name="displayErrorMessages" value="true"/>
+	  <property name="displayWarningMessages" value="true"/>
+	  <!-- Note that we are not displaying Info messages because they are shown through growls by default
+	  if growls are turned off, view info message display needs to be turned back on (required at least at page level) -->
+	  <property name="displayInfoMessages" value="false"/>
+	  <property name="displayCounts" value="true"/>
+  </bean>
+  
+  <!-- No longer used - views cannot update errors if page retrieval is through ajax -->
+  <bean id="ErrorsField_View" parent="ErrorsField">
+      <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+	  <property name="additionalKeysToMatch">
+	  	<list>
+	  		<value>GLOBAL_ERRORS</value>
+			<value>GLOBAL_WARNINGS</value>
+			<value>GLOBAL_INFO</value>
+	  	</list>
+	  </property>
+      <property name="displayErrorTitle" value="true"/>
+	  <property name="displayWarningTitle" value="true"/> 
+	  <property name="displayInfoTitle" value="true"/> 
+	  <property name="displayFieldLabelWithMessages" value="true"/>
+	  <property name="displayNestedMessages" value="true"/> 
+	  <property name="highlightOnError" value="false"/>
+	  <property name="combineMessages" value="true"/> 
+	  <property name="allowMessageRepeat" value="true"/>
+	  <property name="displayMessages" value="true"/>
+	  <property name="displayErrorMessages" value="true"/>
+	  <property name="displayWarningMessages" value="true"/>
+	  <property name="displayInfoMessages" value="false"/>
+	  <property name="displayCounts" value="true"/>
+  </bean>
+  
+  <bean id="ActionField" parent="ActionField-parentBean"/>
+  <bean id="ActionField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
+      <property name="styleClasses" value="button-primary"/>
+  </bean>  
+  
+  <bean id="ActionField_Secondary" parent="ActionField_Secondary-parentBean"/>
+  <bean id="ActionField_Secondary-parentBean" abstract="true" parent="ActionField">
+      <property name="styleClasses" value="button-secondary1"/>
+  </bean>  
+  
+  <bean id="ActionField_Small" parent="ActionField_Small-parentBean"/>
+  <bean id="ActionField_Small-parentBean" abstract="true" parent="ActionField">
+      <property name="styleClasses" value="ui-priority-secondary-sm"/>
+  </bean>  
+  
+  <bean id="ActionField_SmallSecondary" parent="ActionField_SmallSecondary-parentBean"/>
+  <bean id="ActionField_SmallSecondary-parentBean" abstract="true" parent="ActionField">
+      <property name="styleClasses" value="ui-priority-secondary-sm"/>
+  </bean>  
+  
+  <bean id="ActionLinkField" parent="ActionLinkField-parentBean"/>
+  <bean id="ActionLinkField-parentBean" abstract="true" parent="ActionField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionLinkField.jsp"/>
+      <property name="styleClasses" value="action"/>
+  </bean> 
+  
+<!-- RECOMMENDED: Use the navigation action fields to scroll to the top of the page when a navigation completes
+  rather than to the element that initiated the navigation, for general use in Navigation menus and actions which 
+  perform page navigation-->
+  <bean id="NavigationActionLinkField" abstract="true" parent="NavigationActionLinkField-parentBean"/>
+  <bean id="NavigationActionLinkField-parentBean" abstract="true" parent="ActionLinkField" scope="prototype">
+      <property name="jumpToIdAfterSubmit" value="TOP" />
+      <property name="focusOnAfterSubmit" value="FIRST" />
+      <property name="clientSideJs" value="submitForm();"/>
+  </bean>
+  
+  <bean id="NavigationActionField" abstract="true" parent="NavigationActionField-parentBean"/>
+  <bean id="NavigationActionField-parentBean" abstract="true" parent="ActionField" scope="prototype">
+      <property name="jumpToIdAfterSubmit" value="TOP" />
+      <property name="focusOnAfterSubmit" value="FIRST" />
+      <property name="clientSideJs" value="submitForm();"/>
+  </bean>
+  
+  <bean id="NavigationActionField_Secondary" abstract="true" parent="NavigationActionField_Secondary-parentBean"/>
+  <bean id="NavigationActionField_Secondary-parentBean" abstract="true" parent="ActionField_Secondary" scope="prototype">
+      <property name="jumpToIdAfterSubmit" value="TOP" />
+      <property name="focusOnAfterSubmit" value="FIRST" />
+      <property name="clientSideJs" value="submitForm();"/>
+  </bean>
+  
+  <bean id="LinkField" parent="LinkField-parentBean"/>
+  <bean id="LinkField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/linkField.jsp"/>
+      <property name="target" value="_blank"/>
+  </bean>  
+  
+  <bean id="MessageField" parent="MessageField-parentBean"/>
+  <bean id="MessageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>
+  </bean> 
+  
+  <bean id="IframeField" parent="IframeField-parentBean"/>
+  <bean id="IframeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.IframeField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/iframeField.jsp"/>
+  </bean>  
+  
+  <bean id="ImageField" parent="ImageField-parentBean"/>
+  <bean id="ImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ImageField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/image.jsp"/>
+  </bean> 
+  
+  <bean id="GeneratedField" parent="GeneratedField-parentBean"/>
+  <bean id="GeneratedField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.GeneratedField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/generated.jsp"/>
+      <property name="labelField">
+        <bean parent="LabelField"/>
+      </property>  
+  </bean> 
+  
+  <bean id="BlankField" parent="BlankField-parentBean"/>
+  <bean id="BlankField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.BlankField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/blank.jsp"/>
+  </bean>
+  
+  <bean id="GenericField" parent="GenericField-parentBean"/>
+  <bean id="GenericField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.GenericField" scope="prototype"/>
+  
+  <bean id="GroupField" parent="GroupField-parentBean"/>
+  <bean id="GroupField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.GroupField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/groupField.jsp"/>
+      <property name="group">
+         <bean parent="Group"/>
+      </property>
+      <property name="labelField">
+        <bean parent="LabelField"/>
+      </property>        
+  </bean>    
+  
+  <bean id="FieldGroup" parent="FieldGroup-parentBean"/>
+  <bean id="FieldGroup-parentBean" abstract="true" parent="GroupField">
+      <property name="group">
+         <bean parent="GroupBodyOnly" p:fieldContainer="true" p:layoutManager.padding="3px"/>
+      </property>  
+  </bean> 
+  
+  <!-- Common Fields -->
+  
+  <bean id="MessageField_RequiredIndicator" parent="MessageField" p:messageText="* indicates required field" 
+        p:messageType="REQUIRED" p:id="msg_reqind"/>
+        
+  <bean id="ActionLinkField_JumpToTop" parent="ActionLinkField" p:clientSideJs="jumpToTop();" 
+        p:actionLabel="Top" p:id="top_action"/>
+  
+  <bean id="ActionLinkField_JumpToBottom" parent="ActionLinkField" p:clientSideJs="jumpToBottom();" 
+        p:actionLabel="Bottom" p:id="bottom_action"/>
+  
+  <bean id="ActionField_ExpandAccordions" parent="ActionField_SmallSecondary" p:clientSideJs="expandAccordions();" 
+        p:actionLabel="expand all" p:id="actn_expn"/>
+                 
+  <bean id="ActionField_CollapseAccordions" parent="ActionField_SmallSecondary" p:clientSideJs="collapseAccordions();" 
+        p:actionLabel="collapse all" p:id="actn_cllps"/>
+        
+  <bean id="AttributeField_DocumentNumber" parent="AttributeField" p:propertyName="documentNumber" 
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
+        
+  <bean id="AttributeField_DocumentStatus" parent="AttributeField" p:propertyName="documentHeader.workflowDocument.statusDisplayValue" 
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="workflowDocumentStatus"/>
+        
+  <bean id="AttributeField_FormDocumentInitiatorNetworkId" parent="AttributeField_Form" p:propertyName="documentInitiatorNetworkId" 
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="initiatorNetworkId"/>
+        
+  <bean id="AttributeField_FormDocumentCreateDate" parent="AttributeField_Form" p:propertyName="documentCreateDate" 
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="createDate"/>
+        
+  <bean id="AttributeField_DocumentTemplateNumber" parent="AttributeField" p:propertyName="documentTemplateNumber" 
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
+        
+  <bean id="AttributeField_DocumentDescription" parent="AttributeField" p:propertyName="documentDescription" 
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
+        
+  <bean id="AttributeField_Explanation" parent="AttributeField" p:propertyName="explanation" 
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
+        
+  <bean id="AttributeField_OrganizationDocumentNumber" parent="AttributeField" p:propertyName="organizationDocumentNumber" 
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
+        
+  <bean id="QuickFinderImageField" parent="ImageField" p:source="/kr-dev/krad/images/searchicon.gif"
+        p:altText="Search Field" p:title="Search Field"/>
+        
+  <bean id="DirectInquiryImageField" parent="ImageField" p:source="/kr-dev/krad/images/book_open.png"
+        p:altText="Direct Inquiry" p:title="Direct Inquiry"/>                                                                                     
+        
+  <bean id="ActionLinkField_CreateNew" parent="GeneratedField" p:label="Create New" p:renderingMethodToCall="getCreateNewUrl" 
+        p:styleClasses="action"
+        p:conditionalRender="!#view.suppressActions and #view.showMaintenanceLinks" />
+
+  <bean id="ActionField_ShowInactive" parent="ActionField_SmallSecondary" p:methodToCall="toggleInactiveRecordDisplay"
+        p:actionLabel="show inactive" p:clientSideJs="toggleInactiveRecordDisplay('{@#component.context['collectionGroup'].id}', true);"/>
+
+  <bean id="ActionField_HideInactive" parent="ActionField_SmallSecondary" p:methodToCall="toggleInactiveRecordDisplay"
+        p:actionLabel="hide inactive" p:clientSideJs="toggleInactiveRecordDisplay('{@#component.context['collectionGroup'].id}', false);"/>
+</beans>

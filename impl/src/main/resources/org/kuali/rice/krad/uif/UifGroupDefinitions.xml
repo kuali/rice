@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:p="http://www.springframework.org/schema/p" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans         
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+  <!-- Base Groups -->
+  
+  <bean id="Group" abstract="true" parent="Group-parentBean"/>
+  <bean id="Group-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
+	  <property name="errorsField">
+        <bean parent="ErrorsField_Group"/>
+      </property>
+      <property name="header">
+        <bean parent="HeaderTwo"/>
+      </property> 
+      <property name="accordion">
+        <bean parent="Accordion"/>
+      </property>       
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
+      </property>  
+      <property name="summaryMessageField">
+        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
+      </property> 
+      <property name="conditionalReadOnly" value="#parent.readOnly"/>           
+  </bean>
+  
+  <bean id="PageGroup" abstract="true" parent="PageGroup-parentBean"/>
+  <bean id="PageGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.PageGroup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
+	  <property name="errorsField">
+        <bean parent="ErrorsField_Page"/>
+      </property>
+      <property name="header">
+        <bean parent="HeaderTwo"/>
+      </property> 
+      <property name="accordion">
+        <bean parent="Accordion"/>
+      </property>       
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
+      </property>  
+      <property name="summaryMessageField">
+        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
+      </property> 
+      <property name="conditionalReadOnly" value="#parent.readOnly"/>           
+  </bean>
+  
+  <bean id="GroupGridLayout" abstract="true" parent="GroupGridLayout-parentBean"/>
+  <bean id="GroupGridLayout-parentBean" abstract="true" parent="Group">
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager"/>
+      </property>
+      <property name="componentModifiers">
+         <list>
+            <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
+         </list>
+      </property>
+  </bean>
+  
+  <bean id="GroupBodyOnly" abstract="true" parent="GroupBodyOnly-parentBean"/>
+  <bean id="GroupBodyOnly-parentBean" abstract="true" parent="Group">
+      <property name="renderHeader" value="false"/>
+      <property name="renderFooter" value="false"/>
+      <property name="accordion.render" value="false"/>
+  </bean>  
+  
+  <bean id="GroupGridBodyOnly" abstract="true" parent="GroupGridBodyOnly-parentBean"/>
+  <bean id="GroupGridBodyOnly-parentBean" abstract="true" parent="GroupBodyOnly">
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager"/>
+      </property>
+      <property name="componentModifiers">
+         <list>
+            <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
+         </list>
+      </property>  
+  </bean>
+  
+  <bean id="TabGroup" abstract="true" parent="TabGroup-parentBean"/>
+  <bean id="TabGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.TabGroup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/tabGroup.jsp"/>
+	  <property name="accordion">
+        <bean parent="Accordion" p:render="false"/>
+      </property>  
+	  <property name="tabsWidget">
+        <bean parent="Tabs"/>
+      </property>
+  </bean>
+  
+  <bean id="NavigationGroup" abstract="true" parent="NavigationGroup-parentBean"/>
+  <bean id="NavigationGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.NavigationGroup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/navigationGroup.jsp"/>
+  </bean>
+  
+  <bean id="NavigationGroupMenu" abstract="true" parent="NavigationGroupMenu-parentBean"/>
+  <bean id="NavigationGroupMenu-parentBean" abstract="true" parent="NavigationGroup">
+      <property name="navigationType" value="VERTICAL_MENU"/>
+  </bean>
+  
+  <bean id="NavigationGroupTabMenu" abstract="true" parent="NavigationGroupTabMenu-parentBean"/>
+  <bean id="NavigationGroupTabMenu-parentBean" abstract="true" parent="NavigationGroup">
+      <property name="navigationType" value="TAB_MENU"/>
+  </bean>
+
+  <bean id="TreeGroup" abstract="true" parent="TreeGroup-parentBean"/>
+  <bean id="TreeGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.TreeGroup" parent="Group">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/treeGroup.jsp"/>
+      <property name="bindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
+      <property name="nodeProtypeMap">
+        <map/>
+      </property>
+      <property name="defaultNodePrototype">
+        <bean class="org.kuali.rice.krad.uif.container.TreeGroup.NodePrototype">
+            <property name="labelPrototype">
+                <bean parent="MessageField"/>
+            </property>
+            <property name="dataGroupPrototype">
+                <bean parent="Group"/>
+            </property>
+        </bean>
+      </property>
+      <property name="treeWidget">
+        <bean parent="TreeWidget"/>
+      </property>
+  </bean>
+  
+  <bean id="GroupSection" abstract="true" parent="GroupSection-parentBean"/>
+  <bean id="GroupSection-parentBean" abstract="true" parent="Group">
+      <property name="styleClasses" value="wrap"/>
+      <property name="header">
+        <bean parent="HeaderTwo" p:styleClasses="grouping-header-expandable"/>
+      </property> 
+      <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
+      <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
+      </property> 
+  </bean>   
+  
+  <bean id="GroupSectionGridLayout" abstract="true" parent="GroupSectionGridLayout-parentBean"/>
+  <bean id="GroupSectionGridLayout-parentBean" abstract="true" parent="GroupSection">
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager"/>
+      </property>  
+      <property name="componentModifiers">
+         <list>
+            <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
+         </list>
+      </property>      
+  </bean>    
+  
+  <bean id="CollectionGroup" abstract="true" parent="CollectionGroup-parentBean"/>
+  <bean id="CollectionGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.CollectionGroup" parent="Group">
+      <property name="bindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
+      <property name="addLineBindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>      
+      <property name="addLineLabelField">
+        <bean parent="LabelField" p:labelText="add" p:requiredMessageField.render="false"/>
+      </property>  
+      <property name="addLineActionFields">
+        <list>
+          <bean parent="ActionField_Small" p:methodToCall="addLine" p:actionLabel="add"/>
+        </list>
+      </property>          
+      <property name="actionFields">
+        <list>
+          <bean parent="ActionField_SmallSecondary" p:methodToCall="deleteLine" p:actionLabel="delete"/>
+        </list>
+      </property>
+      <property name="header.group">
+         <bean parent="Group_ShowHideInactive" p:styleClasses="group-actions"/>
+      </property>
+      <property name="layoutManager">
+        <bean parent="StackedLayoutManager"/>
+      </property> 
+  </bean>
+
+  <bean id="CollectionGroupSection" abstract="true" parent="CollectionGroupSection-parentBean"/>
+  <bean id="CollectionGroupSection-parentBean" parent="CollectionGroup">
+    <property name="styleClasses" value="wrap"/>
+    <property name="header.styleClasses" value="grouping-header-expandable"/>
+    <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
+    <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
+  </bean>  
+  
+  <bean id="CollectionGroupTableLayout" abstract="true" parent="CollectionGroupTableLayout-parentBean"/>
+  <bean id="CollectionGroupTableLayout-parentBean" abstract="true" parent="CollectionGroup">
+      <property name="layoutManager">
+        <bean parent="TableLayoutManager"/>
+      </property> 
+  </bean>
+  
+  <bean id="CollectionGroupSectionTableLayout" abstract="true" parent="CollectionGroupSectionTableLayout-parentBean"/>
+  <bean id="CollectionGroupSectionTableLayout-parentBean" parent="CollectionGroupTableLayout">
+    <property name="styleClasses" value="wrap"/>
+    <property name="header.styleClasses" value="grouping-header-expandable"/>
+    <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
+    <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
+  </bean>   
+  
+  <bean id="MaintenanceGroupSectionGridLayout" abstract="true" parent="MaintenanceGroupSectionGridLayout-parentBean"/>
+  <bean id="MaintenanceGroupSectionGridLayout-parentBean" parent="GroupSectionGridLayout">  
+    <property name="layoutManager.conditionalNumberOfColumns" value="maintenanceAction eq 'Edit' ? 4 : 2"/>
+    <property name="componentModifiers">
+       <list merge="true">
+         <bean parent="MaintenanceCompareModifier" p:runPhase="APPLY_MODEL" p:runCondition="maintenanceAction eq 'Edit'"/>
+       </list>
+    </property>
+  </bean>
+  
+  <bean id="MaintenanceGroupSection" abstract="true" parent="MaintenanceGroupSection-parentBean"/>
+  <bean id="MaintenanceGroupSection-parentBean" parent="GroupSection" />
+  
+  <bean id="MaintenanceCollectionGroupSection" abstract="true" parent="MaintenanceCollectionGroupSection-parentBean"/>
+  <bean id="MaintenanceCollectionGroupSection-parentBean" parent="CollectionGroupSection">  
+    <property name="layoutManager.lineGroupPrototype">   
+       <bean parent="StackedGroupPrototype">          
+         <property name="layoutManager.conditionalNumberOfColumns" value="maintenanceAction eq 'Edit' ? 4 : 2"/>
+         <property name="componentModifiers">
+            <list merge="true">
+              <bean parent="MaintenanceCompareModifier" p:runPhase="APPLY_MODEL" p:runCondition="maintenanceAction eq 'Edit'"/>
+            </list>
+        </property>
+      </bean>
+    </property>
+    <property name="activeCollectionFilter">
+      <bean class="org.kuali.rice.krad.uif.core.MaintenanceActiveCollectionFilter"
+            p:oldBindingObjectPath="document.oldMaintainableObject.dataObject" />
+    </property>
+  </bean>
+
+  <bean id="MaintenanceSubCollectionGroup" abstract="true" parent="MaintenanceSubCollectionGroup-parentBean"/>
+  <bean id="MaintenanceSubCollectionGroup-parentBean" parent="MaintenanceCollectionGroupSection">
+     <property name="header.render" value="false"/>
+     <property name="accordion.render" value="false"/>
+  </bean>
+  
+  <!-- Common Groups -->
+  
+  <bean id="Group_LookupHeader" parent="GroupBodyOnly">
+      <property name="styleClasses" value="group_expandclose"/>
+      <property name="items">
+         <list> 
+           <bean parent="ActionLinkField_CreateNew"/>
+         </list>
+      </property>
+      <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+  </bean>
+  
+  <bean id="Group_ExpandCloseActions" parent="GroupBodyOnly">
+      <property name="styleClasses" value="group_expandclose"/>
+      <property name="items">
+         <list> 
+           <bean parent="ActionField_ExpandAccordions"/>
+           <bean parent="ActionField_CollapseAccordions"/>
+         </list>
+      </property>
+      <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+  </bean>
+  
+  <bean id="Group_ExpandCloseActionsRequired" parent="GroupBodyOnly">
+      <property name="styleClasses" value="group_expandclose"/>
+      <property name="items">
+         <list> 
+           <bean parent="ActionField_ExpandAccordions"/>
+           <bean parent="ActionField_CollapseAccordions"/>
+           <bean parent="MessageField_RequiredIndicator"/>
+         </list>
+      </property>
+      <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+  </bean>
+
+  <bean id="Group_ShowHideInactive" parent="GroupBodyOnly"
+        p:conditionalRender="#isAssignableFrom(T(org.kuali.rice.krad.bo.Inactivateable),
+    #collectionGroup.collectionObjectClass)">
+    <property name="items">
+      <list>
+        <bean parent="ActionField_ShowInactive" p:conditionalRender="!#collectionGroup.showInactive"/>
+        <bean parent="ActionField_HideInactive" p:conditionalRender="#collectionGroup.showInactive"/>
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="Group_DocumentHeader" parent="GroupGridBodyOnly" p:conditionalReadOnly="true">
+      <property name="id" value="group_docheader"/>
+      <property name="items">
+         <list> 
+           <bean parent="AttributeField_DocumentNumber"/>
+           <bean parent="AttributeField_DocumentStatus"/>
+           <bean parent="AttributeField_FormDocumentInitiatorNetworkId"/>
+           <bean parent="AttributeField_FormDocumentCreateDate"/>
+         </list>
+      </property>
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager" p:numberOfColumns="4" p:styleClasses="" p:applyDefaultCellWidths="false"/>
+      </property>
+      <property name="fieldBindingObjectPath" value="document"/>
+      <property name="errorsField.render" value="false"/>
+  </bean>   
+  
+  <bean id="Group_DocumentOverview" parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="4"  p:layoutManager.applyDefaultCellWidths="false">
+      <property name="id" value="group_docoverview"/>
+      <property name="title" value="Document Overview"/>
+      <property name="items">
+         <list> 
+           <bean parent="AttributeField_DocumentDescription" p:required="true" p:label="Description"/>
+           <bean parent="AttributeField_Explanation" p:rowSpan="2" p:labelField.rowSpan="2"/>
+           <bean parent="AttributeField_OrganizationDocumentNumber"/>
+         </list>
+      </property>
+      <property name="fieldBindingObjectPath" value="document.documentHeader"/>
+  </bean>
+
+	<bean id="Group_DocumentNotes" parent="CollectionGroupSectionTableLayout" p:layoutManager.suppressLineWrapping="true">
+		<property name="id" value="group_docnotes" />
+		<property name="title"
+			value="Notes @{#DocumentEntry.allowsNoteAttachments ? 'and Attachments' : ''} (@{document.notes.size()})" />
+		<property name="propertyName" value="notes" />
+		<property name="styleClasses" value="tableborders wrap" />
+		<property name="collectionObjectClass" value="org.kuali.rice.krad.bo.Note" />
+		<property name="layoutManager.generateAutoSequence" value="true" />
+		<property name="layoutManager.tableTools.render" value="false" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField" p:propertyName="notePostedTimestamp" p:conditionalReadOnly="true"/>
+				<bean parent="AttributeField" p:propertyName="authorUniversal.principalName" p:conditionalReadOnly="true"/>
+				<bean parent="AttributeField" p:propertyName="noteTopicText" p:conditionalRender="#DocumentEntry.displayTopicFieldInNotes" />
+				<bean parent="AttributeField" p:propertyName="noteText" />
+				<bean parent="FieldGroup" p:label="Attached File" p:conditionalRender="#DocumentEntry.allowsNoteAttachments">
+					<property name="items">
+						<list>
+							<bean parent="AttributeField_Form" p:propertyName="attachmentFile" 
+							      p:bindingInfo.bindingPath="attachmentFile" p:labelField.render="false">
+							  <property name="control">
+							    <bean parent="FileControl" p:size="15"/>
+							  </property>
+							</bean>
+							<bean parent="ActionField" p:methodToCall="cancelBOAttachment"
+								p:actionLabel="cancel" p:title="Cancel Attachment" />
+						</list>
+					</property>
+					<property name="propertyReplacers">
+						<list>
+							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and #line.attachment?.complete" >
+								<property name="replacement">
+								  <list>
+						            <bean parent="ActionField" p:methodToCall="downloadBOAttachment"
+								          p:actionLabel="download attachment" p:title="download attachment" />
+								    <bean parent="AttributeField" p:propertyName="attachment.attachmentFileName"/> 
+                                    <bean parent="MessageField" 
+                                          p:messageText="(@{#line.attachment.attachmentFileSizeWithUnits}, @{#line.attachment.attachmentMimeTypeCode})" />   
+						          </list>
+								</property>
+							</bean>	
+							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and !#line.attachment?.complete" >
+								<property name="replacement">
+								  <list>
+								    <bean parent="BlankField" />
+								  </list>
+								</property>
+							</bean>	  							
+						</list>
+					</property>
+				</bean>
+				<!-- TODO: field needs translation to options label when read-only -->
+				<bean parent="AttributeField" p:propertyName="attachment.attachmentTypeCode" p:conditionalRender="#DocumentEntry.allowsNoteAttachments" />
+				<bean parent="AttributeField" p:propertyName="adHocRouteRecipient.id"  p:conditionalReadOnly="!#isAddLine"
+				      p:conditionalRender="#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]" />
+			</list>
+		</property>
+		<property name="bindingInfo.bindingObjectPath" value="document" />
+		<property name="accordion.conditionalDefaultOpen"
+			value="!document.notes.empty or #component.defaultOpen" />
+		<property name="errorsField.additionalKeysToMatch" value="attachmentFile" />
+	    <property name="addLineActionFields">
+		   <list>
+			   <bean parent="ActionField_Small" p:methodToCall="insertBONote" p:actionLabel="add" p:title="Add a Note" />
+		   </list>
+	    </property>
+	    <property name="actionFields">
+	  	   <list>
+			  <bean parent="ActionField_Small" p:methodToCall="deleteBONote" p:actionLabel="delete" p:title="Delete a Note"/>
+			  <bean parent="ActionField_Small" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="send" p:title="Send FYI"
+			        p:conditionalRender="#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]"/>
+		   </list>
+	    </property>
+	</bean>    
+  
+  <bean id="Group_DocumentRouteLog" parent="GroupSection">
+      <property name="id" value="group_docroutelog"/>
+      <property name="title" value="Route Log"/>
+      <property name="items">
+         <list> 
+           <bean parent="IframeField" p:height="500" p:width="95%" p:vspace="0" p:hspace="0" p:frameborder="0">
+             <property name="id" value="routeLogIFrame"/>
+             <property name="source" value="@{#ConfigProperties['workflow.url']}/RouteLog.do?documentId=@{workflowDocument.documentId}"/>
+             <property name="onLoadScript" value="setRouteLogIframeDimensions();"/>
+           </bean>
+         </list>
+      </property>
+  </bean>    
+  
+</beans>  

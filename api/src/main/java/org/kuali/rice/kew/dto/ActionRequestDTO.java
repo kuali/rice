@@ -19,6 +19,7 @@ package org.kuali.rice.kew.dto;
 import java.io.Serializable;
 import java.util.Calendar;
 
+import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -244,15 +245,15 @@ public class ActionRequestDTO implements Serializable {
     }
 
     public boolean isUserRequest() {
-        return KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return RecipientType.PRINCIPAL.getCode().equals(getRecipientTypeCd());
     }
 
     public boolean isGroupRequest() {
-        return KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return RecipientType.GROUP.getCode().equals(getRecipientTypeCd());
     }
 
     public boolean isRoleRequest() {
-        return KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return RecipientType.ROLE.getCode().equals(getRecipientTypeCd());
     }
 
     public String getPrincipalId() {

@@ -17,25 +17,30 @@
 package org.kuali.rice.kew.rule.service.impl;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-
+import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routemodule.*;
+import org.kuali.rice.kew.routemodule.TestDocContent;
+import org.kuali.rice.kew.routemodule.TestRecipient;
+import org.kuali.rice.kew.routemodule.TestResponsibility;
+import org.kuali.rice.kew.routemodule.TestRouteLevel;
+import org.kuali.rice.kew.routemodule.TestRouteModuleXMLHelper;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.entity.principal.Principal;
-
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests the role re-resolving.  This test depends on the route queue being synchronous.
@@ -282,7 +287,7 @@ public class RoleServiceTest extends KEWTestCase {
 		responsibility1.setPriority(1);
 		TestRecipient recipient1 = new TestRecipient();
 		recipient1.setId(getPrincipalIdForName("rkirkend"));
-		recipient1.setType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+		recipient1.setType(RecipientType.PRINCIPAL.getCode());
 		responsibility1.setRecipient(recipient1);
 		responsibilities.add(responsibility1);
 		return docContent;

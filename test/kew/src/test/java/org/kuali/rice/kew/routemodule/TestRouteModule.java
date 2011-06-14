@@ -28,12 +28,12 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 
 
@@ -77,9 +77,9 @@ public class TestRouteModule implements RouteModule {
 
     public Recipient getRealRecipient(TestRecipient recipient) throws WorkflowException {
         Recipient realRecipient = null;
-        if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+        if (recipient.getType().equals(RecipientType.PRINCIPAL.getCode())) {
         	realRecipient = new KimPrincipalRecipient(recipient.getId());
-        } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD)) {
+        } else if (recipient.getType().equals(RecipientType.GROUP.getCode())) {
         	realRecipient = new KimGroupRecipient(recipient.getId());
         } else {
         	throw new WorkflowException("Could not resolve recipient with type " + recipient.getType());
@@ -93,11 +93,11 @@ public class TestRouteModule implements RouteModule {
             return null;
         }
         ResponsibleParty responsibleParty = new ResponsibleParty();
-        if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD)) {
+        if (recipient.getType().equals(RecipientType.PRINCIPAL.getCode())) {
             responsibleParty.setPrincipalId(recipient.getId());
-        } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD)) {
+        } else if (recipient.getType().equals(RecipientType.GROUP.getCode())) {
         	responsibleParty.setGroupId(recipient.getId());
-        } else if (recipient.getType().equals(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD)) {
+        } else if (recipient.getType().equals(RecipientType.ROLE.getCode())) {
             responsibleParty.setRoleName(recipient.getId());
         } else {
             throw new WorkflowException("Invalid recipient type code of '"+recipient.getType()+"' for responsibility id "+responsibilityId);

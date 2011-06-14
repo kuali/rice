@@ -493,18 +493,7 @@ public final class KEWConstants {
 
     public static final boolean ACTION_REQUEST_FORCE_ACTION = true;
     public static final boolean ACTION_REQUEST_PREV_ACTION_AWARE = false;
-    
-    // TODO: Should be able to remove entries after this because they were moved to RecipientType
-    
-    /** Action Request is for a workgroup. */
-    public static final String ACTION_REQUEST_GROUP_RECIPIENT_CD = "W";
-    /** Action Request is for a user only */
-    public static final String ACTION_REQUEST_USER_RECIPIENT_CD = "U";
-    /** Action Request is for a role */
-    public static final String ACTION_REQUEST_ROLE_RECIPIENT_CD = "R";
-    
-    // TODO: Should be able to remove entries before this because they were moved to RecipientType
-    
+        
     /** Priority used if no priority is specified */
     public static final int ACTION_REQUEST_DEFAULT_PRIORITY = 1;
 
@@ -672,14 +661,6 @@ public final class KEWConstants {
     public static final String DELETE = "delete";
     public static final String TIMESTAMP_DATE_FORMAT_PATTERN = "yyyy-mm-dd hh:mm:ss.fffffffff";
     public static final String TIMESTAMP_DATE_FORMAT_PATTERN2 = "MM/dd/yyyy hh:mm a";
-
-    public static final Map<String, String> ACTION_REQUEST_RECIPIENT_TYPE;
-    static {
-        ACTION_REQUEST_RECIPIENT_TYPE = new HashMap<String, String>();
-        ACTION_REQUEST_RECIPIENT_TYPE.put(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD, KEWConstants.WORKGROUP);
-        ACTION_REQUEST_RECIPIENT_TYPE.put(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD, KEWConstants.PERSON);
-        ACTION_REQUEST_RECIPIENT_TYPE.put(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD, KEWConstants.ROLE);
-    }
 
     public static final Map<String, String> ACTION_REQUEST_CD;
     static{

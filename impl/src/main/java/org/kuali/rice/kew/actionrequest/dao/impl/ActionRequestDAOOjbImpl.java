@@ -16,6 +16,13 @@
  */
 package org.kuali.rice.kew.actionrequest.dao.impl;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
@@ -23,12 +30,10 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
+import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
-
-import java.sql.Timestamp;
-import java.util.*;
 
 
 /**
@@ -244,7 +249,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     public boolean doesDocumentHaveUserRequest(String principalId, String documentId) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("documentId", documentId);
-    	crit.addEqualTo("recipientTypeCd", KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+    	crit.addEqualTo("recipientTypeCd", RecipientType.PRINCIPAL.getCode());
     	crit.addEqualTo("principalId", principalId);
     	crit.addEqualTo("currentIndicator", Boolean.TRUE);
     	int count = getPersistenceBrokerTemplate().getCount(new QueryByCriteria(ActionRequestValue.class, crit));
@@ -254,7 +259,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     public List<String> getRequestGroupIds(String documentId) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("documentId", documentId);
-    	crit.addEqualTo("recipientTypeCd", KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
+    	crit.addEqualTo("recipientTypeCd", RecipientType.GROUP.getCode());
     	crit.addEqualTo("currentIndicator", Boolean.TRUE);
 
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionRequestValue.class, crit);

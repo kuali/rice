@@ -16,21 +16,23 @@
  */
 package org.kuali.rice.kew.actionrequest.dao.impl;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.group.Group;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
+import org.kuali.rice.kew.api.document.actions.RecipientType;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.group.Group;
 
 /**
  * This is a description of what this class does - sgibson don't forget to fill this in.
@@ -75,7 +77,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         Query query = entityManager.createNamedQuery("ActionRequestValue.GetUserRequestCount");
         query.setParameter("principalId", principalId);
         query.setParameter("documentId", documentId);
-        query.setParameter("recipientTypeCd", KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+        query.setParameter("recipientTypeCd", RecipientType.PRINCIPAL.getCode());
         query.setParameter("currentIndicator", Boolean.TRUE);
         
         return ((Long)query.getSingleResult()) > 0;
@@ -217,7 +219,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         Query query = entityManager.createNamedQuery("ActionRequestValue.GetRequestGroupIds");
         query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
-        query.setParameter("recipientTypeCd", KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
+        query.setParameter("recipientTypeCd", RecipientType.GROUP.getCode());
         
         return query.getResultList();
     }

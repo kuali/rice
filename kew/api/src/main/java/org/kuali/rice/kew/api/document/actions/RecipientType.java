@@ -11,20 +11,26 @@ import org.kuali.rice.core.api.mo.common.Coded;
 @XmlType(name = "RecipientTypeType")
 @XmlEnum
 public enum RecipientType implements Coded {
-
-	@XmlEnumValue("W") GROUP("W"),
-	@XmlEnumValue("U") PRINCIPAL("U"),
-	@XmlEnumValue("R") ROLE("R");
+	
+	@XmlEnumValue("U") PRINCIPAL("U", "principal"),
+	@XmlEnumValue("W") GROUP("W", "group"),
+	@XmlEnumValue("R") ROLE("R", "role");
 	
 	private final String code;
+	private final String label;
 	
-	RecipientType(String code) {
+	RecipientType(String code, String label) {
 		this.code = code;
+		this.label = label;
 	}
 	
 	@Override
 	public String getCode() {
 		return code;
+	}
+	
+	public String getLabel() {
+		return label;
 	}
 		
 	public static RecipientType fromCode(String code) {

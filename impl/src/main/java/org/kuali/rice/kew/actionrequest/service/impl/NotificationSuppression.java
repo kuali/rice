@@ -24,12 +24,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * This utility class encapsulates functions used to provide notification suppression
@@ -180,9 +179,9 @@ public class NotificationSuppression {
 		List<String> results = Collections.emptyList(); 
 		if (a != null) {
 			results = new ArrayList<String>(3);
-			addSuppressNotifyNodeStateKey(results, KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD, a.getPrincipalId());
-			addSuppressNotifyNodeStateKey(results, KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD, a.getGroupId());
-			addSuppressNotifyNodeStateKey(results, KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD, a.getQualifiedRoleName());
+			addSuppressNotifyNodeStateKey(results, RecipientType.PRINCIPAL.getCode(), a.getPrincipalId());
+			addSuppressNotifyNodeStateKey(results, RecipientType.GROUP.getCode(), a.getGroupId());
+			addSuppressNotifyNodeStateKey(results, RecipientType.ROLE.getCode(), a.getQualifiedRoleName());
 		}
 		return results;
     }
@@ -198,9 +197,9 @@ public class NotificationSuppression {
 		List<String> results = Collections.emptyList(); 
 		if (a != null) {
 			results = new ArrayList<String>(3);
-			addSuppressNotifyNodeStateKey(results, KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD, a.getPrincipalId());
-			addSuppressNotifyNodeStateKey(results, KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD, a.getGroupId());
-			addSuppressNotifyNodeStateKey(results, KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD, a.getQualifiedRoleName());
+			addSuppressNotifyNodeStateKey(results, RecipientType.PRINCIPAL.getCode(), a.getPrincipalId());
+			addSuppressNotifyNodeStateKey(results, RecipientType.GROUP.getCode(), a.getGroupId());
+			addSuppressNotifyNodeStateKey(results, RecipientType.ROLE.getCode(), a.getQualifiedRoleName());
 		}
 		return results;
 	}

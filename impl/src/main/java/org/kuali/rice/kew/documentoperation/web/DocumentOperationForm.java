@@ -17,11 +17,13 @@
 package org.kuali.rice.kew.documentoperation.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
+import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -58,7 +60,6 @@ public class DocumentOperationForm extends KualiForm {
     private Map docStatuses = KEWConstants.DOCUMENT_STATUSES;
     private Map actionRequestCds = KEWConstants.ACTION_REQUEST_CD;
     private Map actionRequestStatuses = KEWConstants.ACTION_REQUEST_STATUS;
-    private Map actionRequestRecipientTypes = KEWConstants.ACTION_REQUEST_RECIPIENT_TYPE;
     private Map actionTakenCds = KEWConstants.ACTION_TAKEN_CD;
     private List routeModules;
     private String routeModuleName;
@@ -289,7 +290,11 @@ public class DocumentOperationForm extends KualiForm {
     public Map getActionRequestCds() {
         return actionRequestCds;
     }
-    public Map getActionRequestRecipientTypes() {
+    public Map<String, String> getActionRequestRecipientTypes() {
+    	Map<String, String> actionRequestRecipientTypes = new HashMap<String, String>();
+    	for (RecipientType recipientType : RecipientType.values()) {
+    		actionRequestRecipientTypes.put(recipientType.getCode(), recipientType.getLabel());
+    	}
         return actionRequestRecipientTypes;
     }
     public Map getActionRequestStatuses() {

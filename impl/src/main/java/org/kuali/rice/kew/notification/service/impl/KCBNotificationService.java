@@ -16,20 +16,21 @@
 
 package org.kuali.rice.kew.notification.service.impl;
 
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.util.KCBConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import javax.xml.namespace.QName;
-import java.util.List;
 
 
 /**
@@ -45,7 +46,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         String enableKENNotificationValue = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ENABLE_KEN_NOTIFICATION);
         boolean enableKENNotification = Boolean.parseBoolean(enableKENNotificationValue);
         // we only send per-user messages to KCB
-        if (!enableKENNotification || !KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(actionItem.getRecipientTypeCode()))
+        if (!enableKENNotification || !RecipientType.PRINCIPAL.getCode().equals(actionItem.getRecipientTypeCode()))
             return;
 
 

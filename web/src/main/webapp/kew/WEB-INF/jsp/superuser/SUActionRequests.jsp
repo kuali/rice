@@ -14,6 +14,7 @@
  limitations under the License.
 --%>
 <%@ page import="org.apache.commons.beanutils.BeanUtils" %>
+<%@ page import="org.kuali.rice.kew.api.document.actions.RecipientType" %>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <script language="javascript" src="scripts/superuser-common.js"></script>
@@ -97,8 +98,9 @@
 						</c:if>											
 						<tr>
 	                        <td height="30" colspan="2" class="headercell1" align="center">
+	                          <c:set var="RECIPIENT_TYPE_PRINCIPAL"><%= RecipientType.PRINCIPAL.getCode() %></c:set>
 	                          <c:choose>
-	                            <c:when test="${actionRequest.recipientTypeCd == Constants.ACTION_REQUEST_USER_RECIPIENT_CD}" >
+	                            <c:when test="${actionRequest.recipientTypeCd == RECIPIENT_TYPE_PRINCIPAL}" >
 	                              <c:set var="username" value="${actionRequest.principal.principalName}" />
 	                            </c:when>
 	                            <c:otherwise>

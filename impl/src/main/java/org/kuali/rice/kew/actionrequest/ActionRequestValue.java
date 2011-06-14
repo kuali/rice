@@ -16,6 +16,26 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -27,6 +47,7 @@ import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -38,17 +59,9 @@ import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -525,7 +538,7 @@ public class ActionRequestValue implements Serializable {
     }
 
     public boolean isReviewerUser() {
-        return KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return RecipientType.PRINCIPAL.getCode().equals(getRecipientTypeCd());
     }
 
     public boolean isRecipientRoutedRequest(String principalId) {
@@ -593,11 +606,11 @@ public class ActionRequestValue implements Serializable {
     }
 
     public boolean isGroupRequest(){
-    	return KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD.equals(getRecipientTypeCd());
+    	return RecipientType.GROUP.getCode().equals(getRecipientTypeCd());
     }
 
     public boolean isRoleRequest() {
-        return KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD.equals(getRecipientTypeCd());
+        return RecipientType.ROLE.getCode().equals(getRecipientTypeCd());
     }
 
     public boolean isAcknowledgeRequest() {
@@ -809,7 +822,7 @@ public class ActionRequestValue implements Serializable {
 	}
 
 	public String getRecipientTypeLabel() {
-        return (String) KEWConstants.ACTION_REQUEST_RECIPIENT_TYPE.get(getRecipientTypeCd());
+		return RecipientType.fromCode(getRecipientTypeCd()).getLabel();
     }
 
     public RuleBaseValues getRuleBaseValues(){

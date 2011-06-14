@@ -16,12 +16,21 @@
 
 package org.kuali.rice.kew.actionrequest;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.document.actions.RecipientType;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.identity.Id;
@@ -47,14 +56,6 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -249,15 +250,15 @@ public class ActionRequestFactory {
 
     private static void resolveRecipient(ActionRequestValue actionRequest, Recipient recipient) {
     	if (recipient instanceof KimPrincipalRecipient) {
-    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
+    		actionRequest.setRecipientTypeCd(RecipientType.PRINCIPAL.getCode());
     		actionRequest.setPrincipalId(((KimPrincipalRecipient)recipient).getPrincipal().getPrincipalId());
     	}  else if (recipient instanceof KimGroupRecipient) {
     		KimGroupRecipient kimGroupRecipient = (KimGroupRecipient)recipient;
-    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
+    		actionRequest.setRecipientTypeCd(RecipientType.GROUP.getCode());
     		actionRequest.setGroupId(kimGroupRecipient.getGroup().getId());
     	} else if (recipient instanceof RoleRecipient){
     		RoleRecipient role = (RoleRecipient)recipient;
-    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
+    		actionRequest.setRecipientTypeCd(RecipientType.ROLE.getCode());
     		actionRequest.setRoleName(role.getRoleName());
     		actionRequest.setQualifiedRoleName(role.getQualifiedRoleName());
     		ResolvedQualifiedRole qualifiedRole = role.getResolvedQualifiedRole();
@@ -274,7 +275,7 @@ public class ActionRequestFactory {
     		}
     	} else if (recipient instanceof KimRoleRecipient) {
     		KimRoleRecipient roleRecipient = (KimRoleRecipient)recipient;
-    		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
+    		actionRequest.setRecipientTypeCd(RecipientType.ROLE.getCode());
     		actionRequest.setRoleName(roleRecipient.getResponsibilities().get(0).getRoleId());
     		actionRequest.setQualifiedRoleName(roleRecipient.getResponsibilities().get(0).getResponsibilityName());
     		// what about qualified role name label?

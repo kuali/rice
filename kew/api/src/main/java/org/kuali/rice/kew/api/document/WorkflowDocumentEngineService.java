@@ -2,6 +2,7 @@ package org.kuali.rice.kew.api.document;
 
 import java.util.List;
 
+import org.kuali.rice.kew.api.document.actions.ActionRequest;
 import org.kuali.rice.kew.api.document.actions.AdHocRevokeFromGroup;
 import org.kuali.rice.kew.api.document.actions.AdHocRevokeFromPrincipal;
 import org.kuali.rice.kew.api.document.actions.AdHocToGroup;
@@ -12,7 +13,7 @@ import org.kuali.rice.kew.api.document.actions.ValidActions;
 
 // TODO still need to add JAX-WS annotations to this class
 
-public interface WorkflowDocumentService {
+public interface WorkflowDocumentEngineService {
 
 	public Document createDocument(String documentTypeName, String initiatorPrincipalId, String title, DocumentContentUpdate documentContent);
 	
@@ -80,6 +81,6 @@ public interface WorkflowDocumentService {
     
     public void placeInExceptionRouting(String documentId, String principalId);
     
-    //public List<ActionRequest> getActionRequests(String documentId);
+    public List<ActionRequest> getActionRequests(String documentId);
 	
 }

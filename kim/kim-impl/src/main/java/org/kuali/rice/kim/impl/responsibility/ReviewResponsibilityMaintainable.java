@@ -45,8 +45,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	private static final Logger LOG = Logger.getLogger( ReviewResponsibilityMaintainable.class );
 	private static final long serialVersionUID = -8102504656976243468L;
 
-    //FIXME: this seems really dubious
-	protected static Template reviewTemplate = null;
+	private static Template REVIEW_TEMPLATE;
 
     public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
         List<Section> sections = super.getSections(document, oldMaintainable);
@@ -65,7 +64,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
     }
                 
 	/**
-	 * Saves the responsibility via the responsibility update service
+	 * Saves the responsibility via the responsibility service
 	 * 
 	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#saveBusinessObject()
 	 */
@@ -74,10 +73,8 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
         if ( LOG.isInfoEnabled() ) {
             LOG.info( "Attempting to save ReviewResponsibilityBo BO via ResponsibilityService:" + getBusinessObject() );
         }
-        // find the template ID if needed
-        if ( reviewTemplate == null ) {
-            populateReviewTemplateInfo();
-        }
+        populateReviewTemplateInfo();
+
         ReviewResponsibilityBo resp = (ReviewResponsibilityBo)getBusinessObject();
         // build the AttributeSet with the details
         AttributeSet details = new AttributeSet();
@@ -89,31 +86,27 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
             details.put( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
         }
 
-        Responsibility.Builder b = Responsibility.Builder.create(resp);
-        KimApiServiceLocator.getResponsibilityService().updateResponsibility(b.build());
+        Responsibility.Builder b = Responsibility.Builder.create(resp.getNamespaceCode(), resp.getName(), Template.Builder.create(REVIEW_TEMPLATE));
+        b.setDescription(resp.getDescription());
+        b.setAttributes(resp.getAttributes());
+        b.setActive(resp.isActive());
+
+        KimApiServiceLocator.getResponsibilityService().createResponsibility(b.build());
 	}
 	
-	protected void populateReviewTemplateInfo() {
-		List<Template> template = KimApiServiceLocator.getResponsibilityService().findRespTemplatesByNamespaceCodeAndName(KEWConstants.KEW_NAMESPACE, KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
+	private static synchronized void populateReviewTemplateInfo() {
+		if ( REVIEW_TEMPLATE == null ) {
+            List<Template> template = KimApiServiceLocator.getResponsibilityService().findRespTemplatesByNamespaceCodeAndName(KEWConstants.KEW_NAMESPACE, KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
 		
-		reviewTemplate = template.get(0);
+		    REVIEW_TEMPLATE = template.get(0);
+        }
 	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#getBoClass()
-	 */
+
 	@Override
 	public Class<? extends BusinessObject> getBoClass() {
 		return ReviewResponsibilityBo.class;
 	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.krad.bo.BusinessObject)
-	 */
+
 	@Override
 	public void prepareBusinessObject(BusinessObject businessObject) {
         if ( businessObject == null ) {

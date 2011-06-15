@@ -17,9 +17,6 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -27,13 +24,8 @@ import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
 import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.notEqual;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -45,26 +37,14 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
 		MaintenanceDocumentRuleBase {
 
 	protected static final String ERROR_MESSAGE_PREFIX = "error.document.kim.reviewresponsibility.";
-	protected static final String ERROR_INVALID_ROUTE_NODE = ERROR_MESSAGE_PREFIX + "invalidroutenode";
 	protected static final String ERROR_DUPLICATE_RESPONSIBILITY = ERROR_MESSAGE_PREFIX + "duplicateresponsibility";
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.krad.document.MaintenanceDocument)
-	 */
 	@Override
 	protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
 		boolean rulesPassed = true;
 		GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
 		try {
 			ReviewResponsibilityBo resp = (ReviewResponsibilityBo)document.getNewMaintainableObject().getBusinessObject();
-			// check the route level exists on the document or a child
-			HashSet<String> routeNodeNames = getAllPossibleRouteNodeNames( resp.getDocumentTypeName() );
-			//if ( !routeNodeNames.contains( resp.getRouteNodeName() ) ) {
-			//	GlobalVariables.getMessageMap().putError( "routeNodeName", ERROR_INVALID_ROUTE_NODE, resp.getRouteNodeName() );
-			//	rulesPassed = false;
-			//}
 			// check for creation of a duplicate node
 			if ( !checkForDuplicateResponsibility( resp ) ) {
 				GlobalVariables.getMessageMap().putError( "documentTypeName", ERROR_DUPLICATE_RESPONSIBILITY );
@@ -75,38 +55,10 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
 		}
 		return rulesPassed;
 	}
-	
-	protected HashSet<String> getAllPossibleRouteNodeNames( String documentTypeName ) {
-		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName( documentTypeName );
-		HashSet<String> routeNodeNames = new HashSet<String>();
-		if ( docType != null ) {
-			addNodesForDocType( docType, routeNodeNames );
-			addNodesForChildDocTypes( docType, routeNodeNames );
-		}
-		return routeNodeNames;
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected void addNodesForDocType( DocumentType docType, HashSet<String> routeNodeNames ) {
-		List<RouteNode> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes( docType, true );
-		for ( RouteNode node : routeNodes ) {
-			// only add request nodes (not split or join nodes)
-			if ( node.isRoleNode() ) {
-				routeNodeNames.add( node.getRouteNodeName() );
-			}
-		}
-	}
-	@SuppressWarnings("unchecked")
-	protected void addNodesForChildDocTypes( DocumentType docType, HashSet<String> routeNodeNames ) {
-		for ( DocumentType childDocType : (Collection<DocumentType>)docType.getChildrenDocTypes() ) {
-			addNodesForDocType( childDocType, routeNodeNames );
-			addNodesForChildDocTypes( childDocType, routeNodeNames );
-		}
-	}
+
 	protected boolean checkForDuplicateResponsibility( ReviewResponsibilityBo resp ) {
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         Predicate p = and(
-            notEqual("id", resp.getId()),
             equal("template.namespaceCode", KEWConstants.KEW_NAMESPACE ),
             equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
             equal("attributes[documentTypeName]", resp.getDocumentTypeName()),

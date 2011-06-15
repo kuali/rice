@@ -228,7 +228,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         private String objectId;
         private boolean active;
 
-        private Builder(String id, String namespaceCode, String name, Template.Builder template) {
+        private Builder(String namespaceCode, String name, Template.Builder template) {
             setId(id);
             setNamespaceCode(namespaceCode);
             setName(name);
@@ -238,15 +238,15 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         /**
          * Creates a Responsibility with the required fields.
          */
-        public static Builder create(String id, String namespaceCode, String name, Template.Builder template) {
-            return new Builder(id, namespaceCode, name, template);
+        public static Builder create(String namespaceCode, String name, Template.Builder template) {
+            return new Builder(namespaceCode, name, template);
         }
 
         /**
          * Creates a Responsibility from an existing {@link ResponsibilityContract}.
          */
         public static Builder create(ResponsibilityContract contract) {
-            Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), Template.Builder.create(contract.getTemplate()));
+            Builder builder = new Builder(contract.getNamespaceCode(), contract.getName(), Template.Builder.create(contract.getTemplate()));
             builder.setDescription(contract.getDescription());
             builder.setAttributes(contract.getAttributes());
             builder.setActive(contract.isActive());
@@ -262,9 +262,6 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         }
 
         public void setId(final String id) {
-        	if (StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("id is blank");
-            }
         	this.id = id;
         }
         

@@ -41,16 +41,16 @@ class ReviewResponsibilityBo extends ResponsibilityBo {
 
     public void loadFromKimResponsibility(ResponsibilityBo resp) {
         resp.metaClass.properties.each {
-            if (this.metaClass.hasProperty(this, it.name)) {
+            if (this.metaClass.respondsTo(this, MetaProperty.getSetterName(it.name))) {
                 this.setProperty(it.name, resp.getProperty(it.name))
             }
         }
 
         Attributes respDetails = resp.getAttributes()
-        setDocumentTypeName(respDetails.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME))
-        setRouteNodeName(respDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME))
-        setActionDetailsAtRoleMemberLevel(Boolean.valueOf(respDetails.get(KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL)))
-        setRequired(Boolean.valueOf(respDetails.get(KimConstants.AttributeConstants.REQUIRED)))
-        setQualifierResolverProvidedIdentifier(respDetails.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER))
+        documentTypeName = respDetails.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME)
+        routeNodeName = respDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME)
+        actionDetailsAtRoleMemberLevel = Boolean.valueOf(respDetails.get(KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL))
+        required = Boolean.valueOf(respDetails.get(KimConstants.AttributeConstants.REQUIRED))
+        qualifierResolverProvidedIdentifier = respDetails.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER)
     }
 }

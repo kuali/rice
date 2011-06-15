@@ -22,9 +22,6 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
-import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
-import org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.inquiry.RoleMemberInquirableImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
@@ -47,7 +44,7 @@ import java.util.Map;
 public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 
 	protected final String KIM_RESPONSIBILITY_REQUIRED_ATTRIBUTE_ID = "kimResponsibilityRequiredAttributeId";
-	protected final String RESPONSIBILITY_ID = "responsibilityId";
+	protected final String RESPONSIBILITY_ID = "id";
 	transient private static ResponsibilityService responsibilityService;
 
 	@Override
@@ -138,17 +135,12 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     	return getBusinessObject(fieldValues);
     }
 
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.krad.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
-		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("responsibilityId", fieldValues.get("responsibilityId").toString());
-		ResponsibilityBo responsibilityImpl = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, criteria);
+		ResponsibilityBo responsibilityImpl
+                = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, Collections.singletonMap(
+                "id", fieldValues.get("id").toString()));
 		return getResponsibilitiesSearchResultsCopy(responsibilityImpl);
 	}
 
@@ -165,11 +157,10 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		try{
 			PropertyUtils.copyProperties(responsibilitySearchResultCopy, responsibilitySearchResult);
 		} catch(Exception ex){
-			//TODO: remove this
-			ex.printStackTrace();
+            throw new RuntimeException(ex);
 		}
 		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("id", responsibilitySearchResultCopy.getId());
+		criteria.put("responsibilityId", responsibilitySearchResultCopy.getId());
 		List<RoleResponsibilityImpl> roleResponsibilitys =
 			(List<RoleResponsibilityImpl>) KRADServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityImpl.class, criteria);
 		List<RoleBo> assignedToRoles = new ArrayList<RoleBo>();

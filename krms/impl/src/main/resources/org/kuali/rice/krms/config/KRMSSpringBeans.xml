@@ -55,6 +55,7 @@
                 <value>classpath:org/kuali/rice/krms/datadictionary/AgendaBo.xml</value>
                 <value>classpath:org/kuali/rice/krms/datadictionary/AgendaMaintenance.xml</value>
                 <value>classpath:org/kuali/rice/krms/datadictionary/AgendaItemBo.xml</value>
+                <value>classpath:org/kuali/rice/krms/datadictionary/RuleBo.xml</value>
                 <value>classpath:org/kuali/rice/krms/uif/EditorDocumentView.xml</value>
                 <value>classpath:org/kuali/rice/krms/uif/EditorView.xml</value>
             </list>

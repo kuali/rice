@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+  <bean id="RuleBo" parent="RuleBo-parentBean"/>
+  <bean id="RuleBo-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
+    <property name="titleAttribute" value="id"/>
+    <property name="attributes">
+      <list>
+        <ref bean="RuleBo-id"/>
+        <ref bean="RuleBo-name"/>
+        <ref bean="RuleBo-namespace"/>
+        <ref bean="RuleBo-typeId"/>
+      </list>
+    </property>
+    <property name="objectLabel" value="Rule"/>
+  </bean>
+
+<!-- Attribute Definitions -->
+
+
+  <bean id="RuleBo-id" parent="RuleBo-id-parentBean"/>
+  <bean id="RuleBo-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Rule Id"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="id"/>
+    <property name="label" value="Rule Id"/>
+  </bean>  
+  
+  <bean id="RuleBo-name" parent="RuleBo-name-parentBean"/>
+  <bean id="RuleBo-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Name"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="100"/>
+    </property>
+    <property name="name" value="name"/>
+    <property name="label" value="Rule Name"/>
+  </bean>  
+  
+  <bean id="RuleBo-namespace" parent="RuleBo-namespace-parentBean"/>
+  <bean id="RuleBo-namespace-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Namespace"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="namespace"/>
+    <property name="label" value="Rule Namespace"/>
+  </bean>  
+  
+  <bean id="RuleBo-typeId" parent="RuleBo-typeId-parentBean"/>
+  <bean id="RuleBo-typeId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Type Id"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="typeId"/>
+    <property name="label" value="Rule Type Id"/>
+  </bean>
+    
+  <bean id="RuleBo-LookupView" parent="LookupView">
+    <property name="title" value="Rule Lookup" />
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo" />
+    <property name="criteriaFields">
+      <list>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="typeId" />        
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="AttributeField" p:propertyName="id" />
+        <bean parent="AttributeField" p:propertyName="name" />
+        <bean parent="AttributeField" p:propertyName="namespace" />
+        <bean parent="AttributeField" p:propertyName="typeId" />
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="RuleBo-InquiryView" parent="InquiryView">
+    <property name="title" value="Rule Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
+    <property name="singlePageView" value="true"/>
+    <property name="items">
+        <list>
+            <bean parent="Page" p:id="page1">
+                <property name="items">
+                    <list>
+					  <bean parent="GroupSectionGridLayout">
+					      <property name="layoutManager.numberOfColumns" value="2"/>
+					      <property name="items">
+					        <list>
+					          <bean parent="AttributeField" p:propertyName="id"/>
+					          <bean parent="AttributeField" p:propertyName="name"/>
+					          <bean parent="AttributeField" p:propertyName="namespace"/>
+					        </list>
+					      </property>
+					      <property name="title" value="Rule Attributes"/>
+					  </bean>
+                      <bean parent="GroupSectionGridLayout">
+                          <property name="layoutManager.numberOfColumns" value="2"/>
+                          <property name="items">
+                            <list>
+                              <bean parent="AttributeField" p:propertyName="typeId"/>
+                            </list>
+                          </property>
+                          <property name="title" value="Rule Type"/>
+                      </bean>
+                    </list>
+                </property>
+            </bean>
+        </list>
+    </property>
+  </bean>
+  
+
+</beans>

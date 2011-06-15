@@ -89,16 +89,10 @@ public final class KEWConstants {
     public static final String EMAIL_ATTRIBUTE_CLASS_PROPERTY = "customEmailAttributeClassName";
     public static final String NOTE_ATTRIBUTE_CLASS_PROPERTY = "customNoteAttributeClassName";
 
-    // Delegation Constants
-//    public static final String DELEGATION_PRIMARY = "P";
-//    public static final String DELEGATION_SECONDARY = "S";
     /**
      * This is a UI option, not valid data for a delgationType value.
      */
     public static final String DELEGATION_BOTH = "E";
-
-//    public static final String DELEGATION_PRIMARY_LABEL = "Primary";
-//    public static final String DELEGATION_SECONDARY_LABEL = "Secondary";
     public static final String DELEGATION_BOTH_LABEL = "Both";
 
     public static final String FLEX_RM_NAME = "FRM";

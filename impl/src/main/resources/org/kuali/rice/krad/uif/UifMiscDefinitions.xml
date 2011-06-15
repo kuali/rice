@@ -120,7 +120,6 @@
   <bean id="LightBoxLookup" parent="LightBoxLookup-parentBean"/>
   <bean id="LightBoxLookup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBoxLookup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBoxLookup.jsp"/>
-      <!-- <property name="styleClasses" value="calendar"/>  -->
       <property name="componentOptions">
           <map>
               <entry key="autoScale" value="false"/>              
@@ -140,7 +139,6 @@
 <bean id="LightBoxDirectInquiry" parent="LightBoxDirectInquiry-parentBean"/>
   <bean id="LightBoxDirectInquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBox" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBox.jsp"/>
-      <property name="styleClasses" value="calendar"/> 
       <property name="componentOptions">
           <map>
               <entry key="autoScale" value="false"/>              

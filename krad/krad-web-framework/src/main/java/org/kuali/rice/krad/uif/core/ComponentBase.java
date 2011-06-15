@@ -1240,6 +1240,10 @@ public abstract class ComponentBase implements Component {
             else if (optionValue.equalsIgnoreCase("false") || optionValue.equalsIgnoreCase("true")) {
                 sb.append(optionValue);
             }
+            // if it is a call back function, do not add the quotes
+            else if (StringUtils.startsWith(optionValue, "function") && StringUtils.endsWith(optionValue, "}")) {
+                sb.append(optionValue);
+            }
             // for numerics
             else if (isNumber) {
                 sb.append(optionValue);

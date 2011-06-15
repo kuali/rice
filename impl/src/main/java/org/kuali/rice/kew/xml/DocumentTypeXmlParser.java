@@ -76,7 +76,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.core.util.xml.XmlJotter;

@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.logic.LogicalOperator;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;

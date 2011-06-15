@@ -24,8 +24,8 @@ import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.mail.EmailBody;
 import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.core.mail.EmailFrom;

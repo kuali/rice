@@ -18,7 +18,7 @@ package org.kuali.rice.kim.bo.entity.impl;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;

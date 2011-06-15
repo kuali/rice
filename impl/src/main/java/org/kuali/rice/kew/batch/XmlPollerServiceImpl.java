@@ -30,12 +30,12 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.xml.DirectoryXmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.XmlIngesterService;
 import org.kuali.rice.core.api.impex.xml.ZipXmlDocCollection;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 
 
 /**

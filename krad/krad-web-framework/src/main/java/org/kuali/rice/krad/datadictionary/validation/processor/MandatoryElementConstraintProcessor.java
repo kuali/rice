@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.datetime.DateTimeService;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;

@@ -31,10 +31,10 @@ import java.util.Map;
 import javax.xml.transform.Templates;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleService;
 import org.kuali.rice.core.util.xml.XmlJotter;

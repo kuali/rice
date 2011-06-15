@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.namespace.Namespace;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;

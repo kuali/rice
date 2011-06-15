@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.krad.bo.BusinessObject;

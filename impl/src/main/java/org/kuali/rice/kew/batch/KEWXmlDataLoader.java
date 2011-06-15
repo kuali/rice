@@ -17,11 +17,11 @@
 package org.kuali.rice.kew.batch;
 
 import org.apache.commons.io.IOUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.XmlDoc;
 import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;

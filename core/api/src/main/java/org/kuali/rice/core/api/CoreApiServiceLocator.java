@@ -1,6 +1,5 @@
-package org.kuali.rice.core.api.services;
+package org.kuali.rice.core.api;
 
-import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.impex.xml.XmlExporterService;

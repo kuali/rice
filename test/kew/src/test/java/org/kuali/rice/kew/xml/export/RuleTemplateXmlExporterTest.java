@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;

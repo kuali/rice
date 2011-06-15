@@ -20,8 +20,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.rule.RuleBaseValues;

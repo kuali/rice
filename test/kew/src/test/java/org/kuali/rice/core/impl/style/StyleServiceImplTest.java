@@ -37,10 +37,10 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleService;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;

@@ -16,9 +16,9 @@
 
 package org.kuali.rice.core.web.impex;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.impex.xml.XmlExporterService;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

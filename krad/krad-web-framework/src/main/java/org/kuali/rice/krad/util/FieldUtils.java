@@ -17,8 +17,8 @@ package org.kuali.rice.krad.util;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.util.KEWConstants;

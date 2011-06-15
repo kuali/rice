@@ -24,8 +24,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;

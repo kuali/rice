@@ -17,7 +17,7 @@ package org.kuali.rice.kim.impl.group;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.entity.principal.Principal;

@@ -18,7 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 

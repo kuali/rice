@@ -17,7 +17,7 @@ package org.kuali.rice.core.framework.persistence.jpa.type;
 
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 
 import java.security.GeneralSecurityException;
 import java.sql.PreparedStatement;

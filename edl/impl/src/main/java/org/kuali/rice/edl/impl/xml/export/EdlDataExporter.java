@@ -20,8 +20,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.exception.ExportNotSupportedException;

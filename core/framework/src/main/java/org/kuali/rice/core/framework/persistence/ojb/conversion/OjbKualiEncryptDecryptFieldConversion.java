@@ -18,7 +18,7 @@ package org.kuali.rice.core.framework.persistence.ojb.conversion;
 import java.security.GeneralSecurityException;
 
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 
 /**
  * This class calls core service to encrypt values going to the database and decrypt values coming back from the database.

@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.util;
 
 import org.apache.commons.lang.text.StrSubstitutor;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;

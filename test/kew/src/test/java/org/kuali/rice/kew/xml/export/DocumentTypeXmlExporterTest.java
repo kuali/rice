@@ -31,7 +31,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.BranchPrototype;

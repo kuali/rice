@@ -24,8 +24,8 @@ import java.sql.Types;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 
 /**
  * This class calls core service to hash values going to the database

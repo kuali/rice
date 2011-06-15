@@ -18,13 +18,13 @@ package org.kuali.rice.kew.docsearch.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceConstants;

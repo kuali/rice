@@ -17,8 +17,8 @@
 package org.kuali.rice.krad.dao.proxy;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.dao.LookupDao;

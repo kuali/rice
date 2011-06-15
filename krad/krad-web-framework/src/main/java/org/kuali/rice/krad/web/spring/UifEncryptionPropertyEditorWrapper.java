@@ -19,7 +19,7 @@ import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.security.GeneralSecurityException;
 
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 
 /**
  * A property editor 

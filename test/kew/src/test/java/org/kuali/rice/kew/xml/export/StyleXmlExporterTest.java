@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.jdom.Document;
 import org.junit.Test;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.impl.style.StyleBo;
 import org.kuali.rice.core.impl.style.StyleExportDataSet;

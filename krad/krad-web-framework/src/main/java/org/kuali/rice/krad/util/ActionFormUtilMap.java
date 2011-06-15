@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder;

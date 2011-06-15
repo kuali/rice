@@ -18,8 +18,8 @@ package org.kuali.rice.kew.rule;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;

@@ -18,8 +18,8 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.datetime.DateTimeService;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;

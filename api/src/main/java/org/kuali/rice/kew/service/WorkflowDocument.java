@@ -1149,16 +1149,6 @@ public class WorkflowDocument implements java.io.Serializable {
     }
 
 
-
-    // DEPRECATED: as of Workflow 2.1
-
-    /**
-     * @deprecated use getNodeNames() instead
-     */
-    public Integer getDocRouteLevel() {
-        return routeHeader.getDocRouteLevel();
-    }
-
     /**
      * @deprecated use returnToPreviousNode(String annotation, String nodeName) instead
      */

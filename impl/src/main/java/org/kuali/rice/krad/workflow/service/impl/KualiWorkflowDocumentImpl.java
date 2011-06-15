@@ -330,11 +330,6 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         return workflowDocument.isBlanketApproveCapable();
     }
 
-    @SuppressWarnings("deprecation")
-    public Integer getDocRouteLevel() {
-        return workflowDocument.getDocRouteLevel();
-    }
-
     /**
      * @param annotation
      * @throws InvalidActionTakenException

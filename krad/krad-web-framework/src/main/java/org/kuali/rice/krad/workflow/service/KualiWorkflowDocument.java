@@ -205,8 +205,6 @@ public interface KualiWorkflowDocument {
      */
     public boolean isStandardSaveAllowed();
 
-    public abstract Integer getDocRouteLevel();
-
     /**
      * @param annotation
      * @throws InvalidActionTakenException

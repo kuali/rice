@@ -16,10 +16,9 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
-import static org.kuali.rice.kns.util.KNSConstants.METHOD_TO_CALL_ATTRIBUTE;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -398,49 +397,28 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	public ActionForward downloadAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
 		MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
-		PersistableAttachment attachment;
-		String collectionBo = getSelectedCollectionBo(request);
-		if (StringUtils.isBlank(collectionBo)) {
-		    attachment = (PersistableAttachment) document.getNewMaintainableObject().getBusinessObject();
+		//document.refreshReferenceObject("attachment");
+		PersistableAttachment attachment = (PersistableAttachment) document.getNewMaintainableObject().getBusinessObject();
 		    
-		    if (attachment.getFileName() == null) {
-		        PersistableBusinessObject pBo = (PersistableBusinessObject) document.getNewMaintainableObject().getBusinessObject();
-		        pBo.populateAttachmentForBO();
-		    }
+	    if (attachment.getFileName() == null) {
+	        PersistableBusinessObject pBo = (PersistableBusinessObject) document.getNewMaintainableObject().getBusinessObject();
+	        document.populateAttachmentForBO();
+	    }
 
-		    // TODO: Needed only for 1.0.3.1 compatibility.  (Documents stored in workflow during upgrade still have attachments stored
-		    //       the old way.)
-		    if (attachment.getFileName() == null)  {
-		        DocumentAttachment documentAttachment = document.getAttachment();
-		        if(documentAttachment != null) {
-		            streamToResponse(documentAttachment.getAttachmentContent(), documentAttachment.getFileName(), documentAttachment.getContentType(), response); 
-		        }
-		        return null;
-		    }
+	    // TODO: Needed only for 1.0.3.1 compatibility.  (Documents stored in workflow during upgrade still have attachments stored
+	    //       the old way.)
+	    if (attachment.getFileName() == null)  {
+	        DocumentAttachment documentAttachment = document.getAttachment();
+	        if(documentAttachment != null) {
+	            streamToResponse(documentAttachment.getAttachmentContent(), documentAttachment.getFileName(), documentAttachment.getContentType(), response); 
+	        }
+	        return null;
+	    }
 
-		} else {
-            attachment = (PersistableAttachment) PropertyUtils.getProperty(document.getNewMaintainableObject().getBusinessObject(), collectionBo);
-		}
 		if (StringUtils.isNotBlank(attachment.getFileName())) {
 		    streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response);
 		}
 		return null;
-	}
-
-    /**
-     * This method returns the BO of the collection in the maintenance document based on the request's method to call attribute.
-     * Null is returned when no collection is involved or the request attribute is not set.
-     * 
-     * @param request
-     * @return the selected BO of the collection or null
-     */
-	private String getSelectedCollectionBo(HttpServletRequest request) {
-        String parameterName = (String) request.getAttribute(METHOD_TO_CALL_ATTRIBUTE);
-	    if (StringUtils.isNotBlank(parameterName)) {
-	        return StringUtils.substringBetween(parameterName, "document.newMaintainableObject.", ".attachmentFile");
-	    } else {
-	        return null;
-	    }
 	}
 
 	/**
@@ -457,27 +435,38 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 			HttpServletResponse response) throws Exception {
 		KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
 		MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
-  
+		  
         // TODO: Needed only for 1.0.3.1 compatibility.  (Documents stored in workflow during upgrade still have attachments stored
         //       the old way.)
         document.refreshReferenceObject("attachment");
         getBusinessObjectService().delete(document.getAttachment());
 
-        PersistableAttachment attachment;
-        PersistableBusinessObject pBo;
-        String collectionBo = getSelectedCollectionBo(request);
-        if (StringUtils.isBlank(collectionBo)) {
-            attachment = (PersistableAttachment) document.getNewMaintainableObject().getBusinessObject();
-            pBo = document.getNewMaintainableObject().getBusinessObject();
-        } else {
-            attachment = (PersistableAttachment) PropertyUtils.getProperty(document.getNewMaintainableObject().getBusinessObject(), collectionBo);
-            pBo = (PersistableBusinessObject) PropertyUtils.getProperty(document.getNewMaintainableObject().getBusinessObject(), collectionBo);
-        }
+        PersistableAttachment attachment = (PersistableAttachment) document.getNewMaintainableObject().getBusinessObject();
+        //PersistableBusinessObject pBo = document.getNewMaintainableObject().getBusinessObject();
         
         attachment.setAttachmentContent(null);
         attachment.setContentType(null);
         attachment.setFileName(null);
-        pBo.setAttachmentFile(null);
+        //pBo.setAttachmentFile(null);
+
+        String attachmentPropNm = document.getAttachmentPropertyName();
+		String attachmentPropNmSetter = "set" + attachmentPropNm.substring(0, 1).toUpperCase() + attachmentPropNm.substring(1, attachmentPropNm.length());
+        Class propNameSetterSig = null;
+
+		try {
+			Method[] methods = attachment.getClass().getMethods();
+			for (Method method : methods) {
+				if (method.getName().equals(attachmentPropNmSetter)) {
+					propNameSetterSig = method.getParameterTypes()[0];
+					attachment.getClass().getDeclaredMethod(attachmentPropNmSetter, propNameSetterSig).invoke(attachment, (Object) null);
+					break;
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Not able to get the attachment " + e.getMessage());
+			throw new RuntimeException(
+					"Not able to get the attachment  " + e.getMessage());
+		}
 
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
@@ -500,15 +489,22 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		ActionForward forward = super.route(mapping, form, request, response);
 		PersistableBusinessObject businessObject = document.getNewMaintainableObject().getBusinessObject();
 		if(businessObject instanceof PersistableAttachment) {
-			businessObject.populateAttachmentForBO();
+			document.populateAttachmentForBO();
 			String fileName = ((PersistableAttachment) businessObject).getFileName();
 			if(StringUtils.isEmpty(fileName)) {
-				PersistableAttachment existingBO = (PersistableAttachment) getBusinessObjectService().retrieve(document.getNewMaintainableObject().getBusinessObject());
-				fileName = (existingBO != null ? existingBO.getFileName() : "") ;
+				PersistableAttachment existingBO = (PersistableAttachment) getBusinessObjectService().retrieve(document.getNewMaintainableObject().getBusinessObject());		
+				if (existingBO == null) {
+					if (document.getAttachment() != null) {
+						fileName = document.getAttachment().getFileName();
+					} else {
+						fileName = "";
+					}
+				} else {
+					fileName = (existingBO != null ? existingBO.getFileName() : "");
+				}
+				request.setAttribute("fileName", fileName);
 			}
-			request.setAttribute("fileName", fileName);
 		}
-
 		return forward;
 	}
 
@@ -549,7 +545,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
 
-    /**
+	/**
 	 * Called on return from a lookup.
 	 */
 	@Override
@@ -1039,7 +1035,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
 		maintainable.processAfterPost(document, request.getParameterMap() );
 	}
-
 	protected void doProcessingAfterPost( KualiForm form, Map<String,String[]> parameters ) {
 		MaintenanceDocument document = (MaintenanceDocument) ((KualiMaintenanceForm)form).getDocument();
 		Maintainable maintainable = document.getNewMaintainableObject();
@@ -1048,6 +1043,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		getBusinessObjectService().linkUserFields(bo);
 
 		maintainable.processAfterPost(document, parameters );
+
 	}
 
 	protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
@@ -1060,6 +1056,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		maintenanceForm.setReadOnly(!formBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_EDIT));
 		MaintenanceDocumentRestrictions maintenanceDocumentAuthorizations = getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(maintenanceDocument, user);
 		maintenanceForm.setAuthorizations(maintenanceDocumentAuthorizations);
+
 	}
 
 	public LookupService getLookupService() {

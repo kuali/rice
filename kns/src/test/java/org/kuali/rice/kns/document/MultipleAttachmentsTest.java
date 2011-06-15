@@ -43,9 +43,10 @@ import edu.sampleu.travel.bo.MultiAttachmentSample;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+
 @KNSWithTestSpringContext
 public class MultipleAttachmentsTest extends KNSTestCase {
-
+	/**
 	MaintenanceDocument document;
     
     @Override
@@ -118,5 +119,6 @@ public class MultipleAttachmentsTest extends KNSTestCase {
         	i++;
         }
     }
-	
+  	 */
 }
+

@@ -15,7 +15,7 @@
         <property name="maintainableSections">
             <list>
                 <ref bean="AttachmentSampleMaintenanceDocument-DocumentMaintenance" />
-                <ref bean="MultiAttachmentSampleMaintenanceDocument-AttachmentList" />
+                <!--<ref bean="MultiAttachmentSampleMaintenanceDocument-AttachmentList" />-->
             </list>
         </property>
         <property name="lockingKeys">

@@ -805,8 +805,6 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         if ( addLine != null ) {
             // mark the isNewCollectionRecord so the option to delete this line will be presented
             addLine.setNewCollectionRecord(true);
-            
-            addLine.populateAttachmentForBO();
 
             //if we add back add button on sub collection of an "add line" we may need extra logic here
 

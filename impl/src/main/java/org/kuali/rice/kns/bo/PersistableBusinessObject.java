@@ -18,7 +18,6 @@ package org.kuali.rice.kns.bo;
 import java.util.List;
 
 import org.apache.ojb.broker.PersistenceBrokerAware;
-import org.apache.struts.upload.FormFile;
 
 /**
  * Declares common methods for all persistable objects.
@@ -48,21 +47,6 @@ public interface PersistableBusinessObject extends BusinessObject, PersistenceBr
      * @param objectId
      */
     public void setObjectId(String objectId);
-
-    /**
-     * 
-     * This method sets the attachment file of the persistable object.
-     * 
-     * @param attachmentFile
-     */
-    public void setAttachmentFile(FormFile attachmentFile);
-    
-    /**
-     * 
-     * This method populates the BO with the attachment file data from the transient FormFile of the maintenance document.
-     *
-     */
-    public void populateAttachmentForBO();
 
     public abstract boolean isBoNotesSupport();
     

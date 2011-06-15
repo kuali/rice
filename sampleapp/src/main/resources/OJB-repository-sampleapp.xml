@@ -104,10 +104,6 @@
         <field-descriptor name="attachmentContent" column="attachment_file" jdbc-type="LONGVARBINARY"/>
         <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR" index="true" />
         <field-descriptor name="versionNumber" column="ver_nbr" jdbc-type="BIGINT" locking="true" />
-
-        <collection-descriptor name="multiAttachment" element-class-ref="edu.sampleu.travel.bo.MultiAttachmentSample" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="true" auto-delete="false" >
-            <inverse-foreignkey field-ref="id" />
-        </collection-descriptor>
     </class-descriptor>
 	
     <class-descriptor class="edu.sampleu.travel.bo.MultiAttachmentSample" table="TRV_MULTI_ATTACH_SAMPLE_T">

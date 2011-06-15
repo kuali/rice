@@ -62,7 +62,7 @@ public class AttachmentServiceImpl implements AttachmentService {
           LOG.debug("Mime Type not found, could not convert to correct Icon Path, check spring configuration");
         }
         // if the spring bean mapping is corrupted return the default clip image
-        return "static/images/clip.gif";
+        return "clip.gif";
     }
 
     /**

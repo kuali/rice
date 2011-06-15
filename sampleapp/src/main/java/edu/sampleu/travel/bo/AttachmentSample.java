@@ -48,6 +48,9 @@ public class AttachmentSample extends PersistableBusinessObjectBase implements P
     @Column(name="attachment_file")
     private byte[] attachmentContent;
     
+    private transient FormFile attachmentFile;
+
+    
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="attachment_id", insertable=false, updatable=false)
     private List<MultiAttachmentSample> multiAttachment;
@@ -96,9 +99,13 @@ public class AttachmentSample extends PersistableBusinessObjectBase implements P
     }
 
     public FormFile getAttachmentFile() {
-        return super.getAttachmentFile();
+        return getAttachmentFile();
     }
-
+    
+    public void setAttachmentFile(FormFile attachmentFile) {
+        this.attachmentFile = attachmentFile;
+    }  
+    
     public List<MultiAttachmentSample> getMultiAttachment() {
         return this.multiAttachment;
     }

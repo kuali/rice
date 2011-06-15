@@ -361,6 +361,7 @@ public class WebUtils {
                 // Initialize multipart request class handler
                 multipartHandler.handleRequest(request);
                
+                Collection<FormFile> files = multipartHandler.getFileElements().values();
                 Enumeration keys = multipartHandler.getFileElements().keys();
                 
                 

@@ -445,6 +445,7 @@ public class SectionBridge {
                             }
 
                             String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject, collectionField.getName());
+                            
 
                             // For files the FormFile is not being persisted instead the file data is stored in
                             // individual fields as defined by PersistableAttachment.  However, newly added rows contain all data
@@ -455,8 +456,7 @@ public class SectionBridge {
                             } else {
                                 collField.setPropertyValue(propertyValue);
                             }
-
-
+                            
                             if (StringUtils.isNotBlank(collField.getAlternateDisplayPropertyName())) {
                                 String alternateDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject,
                                         collField.getAlternateDisplayPropertyName());

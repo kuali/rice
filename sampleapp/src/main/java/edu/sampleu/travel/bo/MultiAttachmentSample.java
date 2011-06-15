@@ -42,6 +42,8 @@ public class MultiAttachmentSample extends PersistableBusinessObjectBase impleme
 	@Column(name="attachment_file")
     private byte[] attachmentContent;
     
+    private transient FormFile attachmentFile;
+	
     public Long getGenId() {
         return this.genId;
     }
@@ -83,8 +85,12 @@ public class MultiAttachmentSample extends PersistableBusinessObjectBase impleme
     }
 
     public FormFile getAttachmentFile() {
-        return super.getAttachmentFile();
+        return getAttachmentFile();
     }
+    
+    public void setAttachmentFile(FormFile attachmentFile) {
+        this.attachmentFile = attachmentFile;
+    } 
 
     @Override
     protected LinkedHashMap toStringMapper() {

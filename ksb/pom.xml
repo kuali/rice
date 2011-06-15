@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice</artifactId>
-    <version>1.0.3.2-m4-SNAPSHOT</version>
+    <version>1.0.3.2-m4</version>
   </parent>
   <artifactId>rice-ksb</artifactId>
 

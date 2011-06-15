@@ -13,8 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali</groupId>
@@ -25,7 +24,7 @@
   <artifactId>rice</artifactId>
   <packaging>pom</packaging>
   <name>Kuali Rice</name>
-  <version>1.0.3.2-m4-SNAPSHOT</version>
+  <version>1.0.3.2-m4</version>
   <description>
         The Kuali Rice effort provides an enterprise class
 		middleware suite of integrated products that allows both Kuali and
@@ -845,8 +844,8 @@
   </dependencyManagement>
 
   <scm>
-    <connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-3-2-br</connection>
-    <developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-3-2-br</developerConnection>
-    <url>https://test.kuali.org/svn/rice/branches/rice-release-1-0-3-2-br</url>
+    <connection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-1.0.3.2-m4</connection>
+    <developerConnection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-1.0.3.2-m4</developerConnection>
+    <url>https://test.kuali.org/svn/rice/tags/rice-1.0.3.2-m4</url>
   </scm>
 </project>

@@ -144,8 +144,7 @@
     <bean id="groupLookupable" class="org.kuali.rice.kim.lookup.GroupLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.GroupLookupableHelperServiceImpl"
-                parent="lookupableHelperService"
-                p:groupDao-ref="kimGroupDao">
+                parent="lookupableHelperService">
             </bean>
         </property>
     </bean>

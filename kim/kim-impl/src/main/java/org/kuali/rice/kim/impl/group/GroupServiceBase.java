@@ -17,13 +17,22 @@
 package org.kuali.rice.kim.impl.group;
 
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.LookupCustomizer;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.group.GroupMemberQueryResults;
+import org.kuali.rice.kim.api.group.GroupQueryResults;
+import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +45,7 @@ import java.util.Set;
 
 public abstract class GroupServiceBase {
     protected BusinessObjectService businessObjectService;
+    private CriteriaLookupService criteriaLookupService;
 
     //@Override
     public Group getGroup(String groupId) {
@@ -74,22 +84,16 @@ public abstract class GroupServiceBase {
      */
     //@Override
     public Map<String, Group> getGroups(Collection<String> groupIds) {
-        //todo: This is a prime candidate for the new criteria builder
-        //CriteriaBuilder<GroupBo> criteriaBuilder = CriteriaBuilder.newCriteriaBuilder(GroupBo.class);
-        //criteriaBuilder.in("id", new ArrayList(groupIds));
-        //QueryByCriteria.Builder<GroupBo> qbcBuilder = QueryByCriteria.Builder.create(GroupBo.class);
-        //qbcBuilder.set
-
         Map<String, Group> result = new HashMap<String, Group>();
-
-        //todo: hopefully there is an efficient orm way to do this
-        for (String s : groupIds) {
-            Group group = getGroup(s);
-            if (group != null) {
-                result.put(s, group);
-            }
+        if (CollectionUtils.isEmpty(groupIds)) {
+            return result;
         }
-
+        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(and(in("id", groupIds.toArray()), equal("active", "Y")));
+        GroupQueryResults qr = findGroups(builder.build());
+        for (Group group : qr.getResults()) {
+            result.put(group.getId(), group);
+        }
         return result;
     }
 
@@ -107,6 +111,50 @@ public abstract class GroupServiceBase {
 		}
 		return null;
     }
+
+    public GroupQueryResults findGroups(final QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria is null");
+        }
+
+        LookupCustomizer.Builder<GroupBo> lc = LookupCustomizer.Builder.create();
+        lc.setPredicateTransform(AttributeTransform.getInstance());
+
+        GenericQueryResults<GroupBo> results = criteriaLookupService.lookup(GroupBo.class, queryByCriteria, lc.build());
+
+        GroupQueryResults.Builder builder = GroupQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<Group.Builder> ims = new ArrayList<Group.Builder>();
+        for (GroupBo bo : results.getResults()) {
+            ims.add(Group.Builder.create(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
+
+    public GroupMemberQueryResults findGroupMembers(final QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria is null");
+        }
+
+        GenericQueryResults<GroupMemberBo> results = criteriaLookupService.lookup(GroupMemberBo.class, queryByCriteria);
+
+        GroupMemberQueryResults.Builder builder = GroupMemberQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<GroupMember.Builder> ims = new ArrayList<GroupMember.Builder>();
+        for (GroupMemberBo bo : results.getResults()) {
+            ims.add(GroupMember.Builder.create(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
+
 
     public boolean isMemberOfGroupInternal(String memberId, String groupId, Set<String> visitedGroupIds, String memberType) {
 		if ( memberId == null || groupId == null ) {
@@ -194,6 +242,15 @@ public abstract class GroupServiceBase {
      */
     public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
+    }
+
+    /**
+     * Sets the criteriaLookupService attribute value.
+     *
+     * @param criteriaLookupService The criteriaLookupService to set.
+     */
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
     }
 
     protected List<Group> toGroupList(List<GroupBo> groupBos) {

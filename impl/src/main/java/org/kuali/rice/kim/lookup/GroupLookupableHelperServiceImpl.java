@@ -17,6 +17,8 @@ package org.kuali.rice.kim.lookup;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
@@ -26,12 +28,12 @@ import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.impl.group.GroupBo;
-import org.kuali.rice.kim.impl.group.GroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -58,9 +60,12 @@ import org.kuali.rice.krad.web.ui.Column;
 import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.ResultRow;
 import org.kuali.rice.krad.web.ui.Row;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -84,7 +89,6 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     private static String KIM_TYPE_ID_PROPERTY_NAME = "kimTypeId";
 	private List<Row> grpRows = new ArrayList<Row>();
 	private List<Row> attrRows = new ArrayList<Row>();
-	private GroupDao groupDao;
 	private String typeId = "";
 	private AttributeDefinitionMap attrDefinitions;
 	private Map<String, String> groupTypeValuesCache = new HashMap<String, String>();
@@ -118,24 +122,55 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     }
 
     /**
-     * Converts GroupInfo objects to GroupImpl objects.
+     * Converts GroupInfo objects to GroupBo objects.
      * 
      * @param  fieldValues  names and values returned by the Group Lookup screen
      * @return  groupImplList  a list of GroupImpl objects
      */
     @Override
     public List<GroupBo> getSearchResults(java.util.Map<String,String> fieldValues)  {
-    	List<? extends Group> groupInfoObjs = KimApiServiceLocator.getGroupService().lookupGroups(fieldValues);
-    	List<GroupBo> groupBoList = new ArrayList<GroupBo>();
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        Map<String, String> criteriaMap = new HashMap<String, String>(fieldValues);
+        criteriaMap.remove(KRADConstants.BACK_LOCATION);
+        criteriaMap.remove(KRADConstants.DOC_FORM_KEY);
+        if (!criteriaMap.isEmpty()) {
+            List<Predicate> predicates = new ArrayList<Predicate>();
+            for (String key : criteriaMap.keySet()) {
+                if (StringUtils.isNotEmpty(criteriaMap.get(key))) {
+                    if (key.equals("principalName")) {
+                        //get principalId, which we can actually use
+                        Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                        String principalId = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(criteriaMap.get(key)).getPrincipalId();
+                        predicates.add(
+                                and(
+                                    equal("members.memberId", principalId),
+                                    equal("members.typeCode", KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE),
+                                    and(
+                                        or(isNull(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE), greaterThanOrEqual(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE, currentTime)),
+                                        or(isNull(KIMPropertyConstants.KimMember.ACTIVE_TO_DATE), lessThan(KIMPropertyConstants.KimMember.ACTIVE_TO_DATE, currentTime))
+                                       )
+                                ));
+                    } else {
+                        predicates.add(like(key, criteriaMap.get(key)));
+                    }
+                }
+            }
+            if (!predicates.isEmpty()) {
+                criteria.setPredicates(and(predicates.toArray(new Predicate[] {})));
+            }
+        }
 
-    	for(Group g : groupInfoObjs){
-            groupBoList.add(GroupBo.from(g));
-    		/*GroupImpl impl = new GroupImpl();
-    		impl = KimCommonUtilsInternal.copyInfoToGroup(g, impl);
-    		impl.setGroupAttributes(KimCommonUtilsInternal.copyInfoAttributesToGroupAttributes(g.getAttributes(), g.getGroupId(), g.getKimTypeId()));
-    		groupImplList.add(impl);*/
-    	}
-    	return groupBoList;
+    	GroupQueryResults groupResults = KimApiServiceLocator.getGroupService().findGroups(criteria.build());
+    	List<Group> groups = groupResults.getResults();
+
+        //have to convert back to Bos :(
+        List<GroupBo> groupBos = new ArrayList<GroupBo>(groups.size());
+        for (Group group : groups) {
+            groupBos.add(GroupBo.from(group));
+        }
+
+
+    	return groupBos;
     }
 
     @Override
@@ -493,14 +528,6 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 
 	public void setGrpRows(List<Row> grpRows) {
 		this.grpRows = grpRows;
-	}
-
-	public GroupDao getGroupDao() {
-		return this.groupDao;
-	}
-
-	public void setGroupDao(GroupDao groupDao) {
-		this.groupDao = groupDao;
 	}
 
 	public AttributeDefinitionMap getAttrDefinitions() {

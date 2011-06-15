@@ -18,9 +18,11 @@ package org.kuali.rice.kim.lookup;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.entity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -32,12 +34,17 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.Row;
 
+import javax.management.Query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.like;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -174,11 +181,12 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
         if(StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isEmpty(assignedToGroupName) ||
         		StringUtils.isEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName) ||
         		StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName)){
-        	searchCriteria = new HashMap<String, String>();
-        	searchCriteria.put(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode));
-        	searchCriteria.put(GROUP_NAME, getQueryString(assignedToGroupName));
-        	groups = (List<Group>) KimApiServiceLocator.getGroupService().lookupGroups(searchCriteria);
-        	if(CollectionUtils.isEmpty(groups))
+            QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        	builder.setPredicates(and(
+                            like(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode)),
+                            like(GROUP_NAME, getQueryString(assignedToGroupName))));
+        	GroupQueryResults qr = KimApiServiceLocator.getGroupService().findGroups(builder.build());
+        	if(qr.getTotalRowCount() == 0)
         		return null;
         }
 

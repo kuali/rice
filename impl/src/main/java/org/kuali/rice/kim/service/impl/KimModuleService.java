@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import com.google.common.base.Predicates;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -35,10 +38,17 @@ import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.notEqual;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -103,7 +113,18 @@ public class KimModuleService extends ModuleServiceBase {
 		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
 		} else if ( Group.class.isAssignableFrom(externalizableBusinessObjectClass) ) {
-			return (List)getGroupService().lookupGroups( (Map)fieldValues );
+            QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+
+
+            Set<Predicate> preds = new HashSet<Predicate>();
+            for (String key : fieldValues.keySet()) {
+                preds.add(equal(key, fieldValues.get(key)));
+            }
+            Predicate[] predicates = new Predicate[0];
+            predicates = preds.toArray(predicates);
+            Predicate p = and(predicates);
+            builder.setPredicates(p);
+			return (List)getGroupService().findGroups(builder.build());
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues );

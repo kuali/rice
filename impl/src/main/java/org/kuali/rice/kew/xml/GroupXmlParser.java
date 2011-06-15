@@ -323,13 +323,6 @@ public class GroupXmlParser {
             for (String groupName : groupNames) {
                 Group group = identityManagementService.getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
                 if (group != null) {
-                    //TODO HACK!!!!!!! Use IDMService.addPrincipalToGroup
-                    /*GroupMemberBo groupMember = new GroupMemberBo();
-                    groupMember.setGroupId(groupInfo.getId());
-                    groupMember.setTypeCode( KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE );
-                    groupMember.setMemberId(group.getId());
-
-                    groupMember = (GroupMemberBo)KRADServiceLocator.getBusinessObjectService().save(groupMember);*/
                 	identityManagementService.addGroupToGroup(group.getId(), groupInfo.getId());
                 } else {
                     throw new XmlException("Group "+groupName+" cannot be found.");
@@ -339,14 +332,6 @@ public class GroupXmlParser {
         List<String> principalIds = memberPrincipalIds.get(key);
         if (principalIds != null) {
             for (String principalId : principalIds) {
-                //TODO HACK!!!!!!! Use IDMService.addPrincipalToGroup
-                /*GroupMemberBo groupMember = new GroupMemberBo();
-                groupMember.setGroupId(groupInfo.getId());
-                groupMember.setTypeCode(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
-                groupMember.setMemberId(principalId);
-
-                groupMember = (GroupMemberBo)KRADServiceLocator.getBusinessObjectService().save(groupMember);*/
-
             	identityManagementService.addPrincipalToGroup(principalId, groupInfo.getId());
             }
         }

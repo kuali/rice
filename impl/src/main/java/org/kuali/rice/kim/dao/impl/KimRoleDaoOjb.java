@@ -26,7 +26,9 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
@@ -671,18 +673,22 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
     private ReportQueryByCriteria setupGroupCriteria(Map<String,String> groupCrit) {
 
-    	Map<String,String> searchCrit = new HashMap<String, String>();
+    	//Map<String,String> searchCrit = new HashMap<String, String>();
+        final QueryByCriteria.Builder searchCrit = QueryByCriteria.Builder.create();
         for (Entry<String, String> entry : groupCrit.entrySet()) {
         		if (entry.getKey().equals(KimConstants.AttributeConstants.GROUP_NAME)) {
-        			searchCrit.put(entry.getKey(), entry.getValue());
+        			//searchCrit.put(entry.getKey(), entry.getValue());
+                    searchCrit.setPredicates(equal(entry.getKey(), entry.getValue()));
         		} else { // the namespace code for the group field is named something besides the default. Set it to the default.
-        			searchCrit.put(KimConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue());
+        			//searchCrit.put(KimConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue());
+                    searchCrit.setPredicates(equal(KimConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue()));
+
         		}
         }
 
         Criteria crit = new Criteria();
 
-        List<String> groupIds = KimApiServiceLocator.getGroupService().lookupGroupIds(searchCrit);
+        List<String> groupIds = KimApiServiceLocator.getGroupService().findGroupIds(searchCrit.build());
 
         if(groupIds == null || groupIds.isEmpty()){
         	groupIds = new ArrayList<String>();
@@ -809,10 +815,13 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
     private List<String> getRoleMembersGroupIds(String memberNamespaceCode, String memberName){
 
-    	Map<String,String> searchCrit = new HashMap<String, String>();
+    	/*Map<String,String> searchCrit = new HashMap<String, String>();
     	searchCrit.put(KimConstants.AttributeConstants.GROUP_NAME, memberName);
-    	searchCrit.put(KimConstants.AttributeConstants.NAMESPACE_CODE, memberNamespaceCode);
-
-    	return KimApiServiceLocator.getGroupService().lookupGroupIds(searchCrit);
+    	searchCrit.put(KimConstants.AttributeConstants.NAMESPACE_CODE, memberNamespaceCode);*/
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(and(
+                    like(KimConstants.AttributeConstants.GROUP_NAME, memberName),
+                    like(KimConstants.AttributeConstants.NAMESPACE_CODE, memberNamespaceCode)));
+         return KimApiServiceLocator.getGroupService().findGroupIds(builder.build());
     }
 }

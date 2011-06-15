@@ -18,10 +18,12 @@ package org.kuali.rice.kim.impl.group;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
@@ -37,7 +39,6 @@ import java.util.Set;
 
 
 public class GroupServiceImpl extends GroupServiceBase implements GroupService {
-    private GroupDao groupDao;
 
     @Override
     public List<Group> getGroupsForPrincipal(String principalId) throws RiceIllegalArgumentException {
@@ -63,18 +64,18 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
     @Override
-    public List<String> lookupGroupIds(Map<String, String> searchCriteria) {
-        List<Group> groupList = this.lookupGroups(searchCriteria);
+    public List<String> findGroupIds(final QueryByCriteria queryByCriteria) {
+        GroupQueryResults results = this.findGroups(queryByCriteria);
         List<String> result = new ArrayList<String>();
 
-        for (Group group : groupList) {
+        for (Group group : results.getResults()) {
             result.add(group.getId());
         }
 
         return result;
     }
 
-    @Override
+    /*@Override
     public List<Group> lookupGroups(Map<String, String> searchCriteria) {
         List<GroupBo> groupBos = groupDao.getGroups(searchCriteria);
         List<Group> groups = toGroupList(groupBos);
@@ -82,7 +83,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             return Collections.emptyList();
         }
         return groups;
-    }
+    }*/
 
     @Override
     public boolean isDirectMemberOfGroup(String principalId, String groupId) throws RiceIllegalArgumentException {
@@ -368,8 +369,4 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		}
 		return result;
 	}
-
-    public void setGroupDao(final GroupDao groupDao) {
-        this.groupDao = groupDao;
-    }
 }

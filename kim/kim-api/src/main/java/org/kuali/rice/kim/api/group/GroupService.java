@@ -16,6 +16,7 @@
 
 package org.kuali.rice.kim.api.group;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
@@ -76,13 +77,13 @@ public interface GroupService {
      * This method returns it's results as a List of group ids that match the given search criteria.
      * </p>
      *
-     * @param searchCriteria Map<String, String> of search criteria
+     * @param queryByCriteria the criteria.  Cannot be null.
      * @return a list of groupId Strings in which the given criteria match Group properties.  An empty list is returned if an invalid or
      *         non-existent criteria is supplied.
      */
-    @WebMethod(operationName = "lookupGroupIds")
-    @WebResult(name = "lookupGroupIds")
-    List<String> lookupGroupIds(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria);
+    @WebMethod(operationName = "findGroupIds")
+    @WebResult(name = "findGroupIds")
+    List<String> findGroupIds(@WebParam(name = "query") QueryByCriteria queryByCriteria);
 
     /**
      * Query for groups based on the given search criteria which is a Map of group field names to values.
@@ -97,14 +98,28 @@ public interface GroupService {
      * This method returns it's results as a List of Groups that match the given search criteria.
      * </p>
      *
-     * @param searchCriteria Map<String, String> of search criteria
+     * @param queryByCriteria the criteria.  Cannot be null.
      * @return a list of Group objects in which the given criteria match Group properties.  An empty list is returned if an invalid or
      *         non-existent criteria is supplied.
      */
-    @WebMethod(operationName = "lookupGroups")
-    @WebResult(name = "lookupGroup")
-    List<? extends Group> lookupGroups(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria);
+    @WebMethod(operationName = "findGroups")
+    @WebResult(name = "findGroup")
+    GroupQueryResults findGroups(@WebParam(name = "query") QueryByCriteria queryByCriteria);
 
+    /**
+     * Query for group members based on the given search criteria which is a Map of group member field names to values.
+     *
+     * <p>
+     * This method returns it's results as a List of GroupMemberss that match the given search criteria.
+     * </p>
+     *
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return a list of GroupMember objects in which the given criteria match Group properties.  An empty list is returned if an invalid or
+     *         non-existent criteria is supplied.
+     */
+    @WebMethod(operationName = "findGroupMembers")
+    @WebResult(name = "findGroupMember")
+    GroupMemberQueryResults findGroupMembers(@WebParam(name = "query") QueryByCriteria queryByCriteria);
     /**
      * Lookup a Group based on the passed in id.
      *

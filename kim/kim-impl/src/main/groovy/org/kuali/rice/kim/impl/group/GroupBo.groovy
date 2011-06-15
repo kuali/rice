@@ -76,11 +76,11 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
     @Transient
     private List<GroupBo> memberGroups
 
-    //@Transient
-    //Attributes attributes
+    @Transient
+    Attributes attributes
 
     Attributes getAttributes() {
-        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : Attributes.empty()
+        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 
     /**
@@ -113,7 +113,7 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         bo.description = im.description
         bo.active = im.active
         bo.kimTypeId = im.kimTypeId
-        //bo.attributes = im.attributes
+        bo.attributes = im.attributes
         //bo.attributeDetails = KimAttributeDataBo.createFrom(GroupAttributeBo.class, im.attributes, im.kimTypeId )
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;

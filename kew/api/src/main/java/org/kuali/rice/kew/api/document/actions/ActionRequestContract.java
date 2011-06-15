@@ -26,12 +26,12 @@ public interface ActionRequestContract extends Identifiable {
 	int getPriority();
 	
 	String getAnnotation();
+		
+	RecipientType getRecipientType();
 	
-	String getActionTakenId();
+	String getPrincipalId();
 	
 	String getGroupId();
-	
-	RecipientType getRecipientType();
 	
 	ActionRequestPolicy getRequestPolicy();
 	
@@ -39,11 +39,7 @@ public interface ActionRequestContract extends Identifiable {
 	
 	boolean isForceAction();
 	
-	String getPrincipalId();
-	
 	DelegationType getDelegationType();
-	
-	String getParentActionRequestId();
 	
 	String getRoleName();
 	
@@ -54,6 +50,8 @@ public interface ActionRequestContract extends Identifiable {
 	String getNodeName();
 	
 	String getRequestLabel();
+	
+	String getParentActionRequestId();
 	
 	ActionTakenContract getActionTaken();
 	

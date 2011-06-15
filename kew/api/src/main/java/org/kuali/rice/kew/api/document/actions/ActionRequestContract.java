@@ -47,6 +47,8 @@ public interface ActionRequestContract extends Identifiable {
 	
 	String getQualifiedRoleNameLabel();
 	
+	String getRouteNodeInstanceId();
+	
 	String getNodeName();
 	
 	String getRequestLabel();
@@ -55,6 +57,6 @@ public interface ActionRequestContract extends Identifiable {
 	
 	ActionTakenContract getActionTaken();
 	
-	List<? extends ActionRequestContract> getChildrenRequests();
+	List<? extends ActionRequestContract> getChildRequests();
 		
 }

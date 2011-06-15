@@ -10,6 +10,8 @@ import org.kuali.rice.kew.api.document.actions.MovePoint;
 import org.kuali.rice.kew.api.document.actions.ReturnPoint;
 import org.kuali.rice.kew.api.document.actions.ValidActions;
 
+// TODO still need to add JAX-WS annotations to this class
+
 public interface WorkflowDocumentService {
 
 	public Document createDocument(String documentTypeName, String initiatorPrincipalId, String title, DocumentContentUpdate documentContent);

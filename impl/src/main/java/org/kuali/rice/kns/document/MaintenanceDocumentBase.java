@@ -619,8 +619,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
         
-        populateDocumentAttachment();
-        populateAttachmentForBO();
+        if (this instanceof PersistableAttachment) {
+        	populateDocumentAttachment();
+        	populateAttachmentForBO();
+        }
         populateXmlDocumentContentsFromMaintainables();
     }
     
@@ -642,6 +644,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     
     public void populateAttachmentForBO() {
     	refreshAttachment();
+    	
         PersistableAttachment boAttachment = (PersistableAttachment) newMaintainableObject.getBusinessObject();
 
     	if (ObjectUtils.isNotNull(getAttachmentPropertyName())) {

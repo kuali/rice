@@ -18,6 +18,7 @@ package org.kuali.rice.kns.document;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.UserSession;
@@ -45,8 +46,9 @@ import edu.sampleu.travel.bo.MultiAttachmentSample;
  */
 
 @KNSWithTestSpringContext
+@Ignore("KULRICE-5200")
 public class MultipleAttachmentsTest extends KNSTestCase {
-	/**
+	
 	MaintenanceDocument document;
     
     @Override
@@ -119,6 +121,5 @@ public class MultipleAttachmentsTest extends KNSTestCase {
         	i++;
         }
     }
-  	 */
 }
 

@@ -622,9 +622,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
         
-        if(newMaintainableObject.getBusinessObject() instanceof PersistableAttachment) {
+        if(this.getNewMaintainableObject().getBusinessObject() instanceof PersistableAttachment) {
         	populateDocumentAttachment();
-        	populateAttachmentForBO();
         }
         populateXmlDocumentContentsFromMaintainables();
     }
@@ -677,21 +676,17 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
       }
 		        
       if((boAttachment.getFileName() == null) && (boAttachment instanceof PersistableAttachment) && (attachment != null)) {
-
-      if(attachment != null) {
-            byte[] fileContents;
-            fileContents = attachment.getAttachmentContent();
-            if (fileContents.length > 0) {
-                boAttachment.setAttachmentContent(fileContents);
-                boAttachment.setFileName(attachment.getFileName());
-                boAttachment.setContentType(attachment.getContentType());
-            }
-         }      
-      }
+    	  byte[] fileContents;
+          fileContents = attachment.getAttachmentContent();
+          if (fileContents.length > 0) {
+              boAttachment.setAttachmentContent(fileContents);
+              boAttachment.setFileName(attachment.getFileName());
+              boAttachment.setContentType(attachment.getContentType());
+          }
+       }      
     }
     
-    public void populateDocumentAttachment() {
-    	    	
+    public void populateDocumentAttachment() {  	    	
     	refreshAttachment();
         
         if(fileAttachment != null && StringUtils.isNotEmpty(fileAttachment.getFileName())) {

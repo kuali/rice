@@ -519,11 +519,6 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 				String collectionName = parseAddCollectionName(propertyName);
 				propertyName = propertyName.substring(collectionName.length()); // remove collectionName from pN
 
-				while (getCollectionClass(maintDoc, collectionName) == null && propertyName.indexOf('.') > -1) {
-					String nextPart = "." + parseAddCollectionName(propertyName);
-					collectionName = collectionName + nextPart;
-					propertyName = propertyName.substring(nextPart.length()); // remove collectionName from pN
-				}						
 				if (propertyName.startsWith(".")) { propertyName = propertyName.substring(1); } // strip beginning "."
 				PersistableBusinessObject newCollectionLine = 
 					maintDoc.getNewMaintainableObject().getNewCollectionLine(collectionName);
@@ -551,18 +546,6 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 		return super.retrieveFormValueForLookupInquiryParameters(parameterName, parameterValueLocation);
 	}
 
-	/**
-	 * @param maintDoc
-	 * @param collectionName
-	 */
-	protected Class<PersistableBusinessObject> getCollectionClass(MaintenanceDocument maintDoc,
-			String collectionName) {
-		return KNSServiceLocator.getMaintenanceDocumentDictionaryService()
-			.getCollectionBusinessObjectClass(
-				maintDoc.getDocumentHeader().getWorkflowDocument().getDocumentType(),
-				collectionName);
-	}
-	
 	/**
 	 * This method returns the collection name (including nested collections) from a propertyName string
 	 * 

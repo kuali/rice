@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;

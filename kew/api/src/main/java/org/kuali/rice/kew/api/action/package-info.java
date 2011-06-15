@@ -15,7 +15,7 @@
  */
 
 @javax.xml.bind.annotation.XmlSchema(namespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, elementFormDefault = XmlNsForm.QUALIFIED)
-package org.kuali.rice.kew.api.document.actions;
+package org.kuali.rice.kew.api.action;
 import javax.xml.bind.annotation.XmlNsForm;
 
 import org.kuali.rice.kew.api.KewApiConstants;

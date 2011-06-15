@@ -37,7 +37,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.dto.ActionRequestDTO;

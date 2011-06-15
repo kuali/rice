@@ -29,7 +29,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
+import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
 import org.kuali.rice.kew.rule.PersonRuleResponsibility;

@@ -30,7 +30,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.api.document.actions.DelegationType;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.util.KimConstants;

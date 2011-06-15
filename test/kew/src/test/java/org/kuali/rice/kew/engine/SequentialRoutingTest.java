@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;

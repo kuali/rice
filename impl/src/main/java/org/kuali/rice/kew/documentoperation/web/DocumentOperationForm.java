@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
-import org.kuali.rice.kew.api.document.actions.RecipientType;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;

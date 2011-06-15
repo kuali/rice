@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ page import="org.kuali.rice.kew.api.document.actions.ActionRequestPolicy" %>
+<%@ page import="org.kuali.rice.kew.api.action.ActionRequestPolicy" %>
 
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 

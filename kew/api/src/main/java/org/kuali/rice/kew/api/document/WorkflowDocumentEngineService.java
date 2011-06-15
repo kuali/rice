@@ -2,14 +2,14 @@ package org.kuali.rice.kew.api.document;
 
 import java.util.List;
 
-import org.kuali.rice.kew.api.document.actions.ActionRequest;
-import org.kuali.rice.kew.api.document.actions.AdHocRevokeFromGroup;
-import org.kuali.rice.kew.api.document.actions.AdHocRevokeFromPrincipal;
-import org.kuali.rice.kew.api.document.actions.AdHocToGroup;
-import org.kuali.rice.kew.api.document.actions.AdHocToPrincipal;
-import org.kuali.rice.kew.api.document.actions.MovePoint;
-import org.kuali.rice.kew.api.document.actions.ReturnPoint;
-import org.kuali.rice.kew.api.document.actions.ValidActions;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.AdHocRevokeFromGroup;
+import org.kuali.rice.kew.api.action.AdHocRevokeFromPrincipal;
+import org.kuali.rice.kew.api.action.AdHocToGroup;
+import org.kuali.rice.kew.api.action.AdHocToPrincipal;
+import org.kuali.rice.kew.api.action.MovePoint;
+import org.kuali.rice.kew.api.action.ReturnPoint;
+import org.kuali.rice.kew.api.action.ValidActions;
 
 // TODO still need to add JAX-WS annotations to this class
 

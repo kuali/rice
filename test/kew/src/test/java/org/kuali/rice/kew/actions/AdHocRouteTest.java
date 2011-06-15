@@ -29,7 +29,7 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;

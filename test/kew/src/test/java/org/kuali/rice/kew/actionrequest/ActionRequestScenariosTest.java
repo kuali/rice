@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
+import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;

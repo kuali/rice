@@ -27,8 +27,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
-import org.kuali.rice.kew.api.document.actions.RecipientType;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routemodule.TestDocContent;

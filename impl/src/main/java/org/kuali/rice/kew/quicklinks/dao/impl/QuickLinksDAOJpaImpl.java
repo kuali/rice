@@ -18,7 +18,7 @@ package org.kuali.rice.kew.quicklinks.dao.impl;
 
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kew.api.document.actions.DelegationType;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;

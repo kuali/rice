@@ -19,7 +19,7 @@ package org.kuali.rice.krad.web.format;
 // end Kuali Foundation modification
 
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kew.api.document.actions.DelegationType;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.util.KEWConstants;
 
 /**

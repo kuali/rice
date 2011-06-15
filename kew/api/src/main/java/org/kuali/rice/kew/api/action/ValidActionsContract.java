@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.api.document.actions;
+package org.kuali.rice.kew.api.action;
 
 import java.util.Set;
 

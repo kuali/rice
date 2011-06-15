@@ -29,7 +29,7 @@ import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;

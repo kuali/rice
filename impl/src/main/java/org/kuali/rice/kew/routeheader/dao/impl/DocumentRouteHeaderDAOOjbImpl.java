@@ -40,7 +40,7 @@ import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.exception.LockingException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;

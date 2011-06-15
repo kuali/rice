@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;

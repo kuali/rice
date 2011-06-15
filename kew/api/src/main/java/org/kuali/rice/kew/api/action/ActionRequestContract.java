@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.document.actions;
+package org.kuali.rice.kew.api.action;
 
 import java.util.List;
 

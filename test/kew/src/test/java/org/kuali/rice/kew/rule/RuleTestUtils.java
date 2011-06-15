@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.kuali.rice.kew.api.document.actions.DelegationType;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;

@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.document.actions;
+package org.kuali.rice.kew.api.action;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.document.actions;
+package org.kuali.rice.kew.api.action;
 
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.Identifiable;

@@ -14,7 +14,7 @@
  limitations under the License.
 --%>
 <%@ page import="org.apache.commons.beanutils.BeanUtils" %>
-<%@ page import="org.kuali.rice.kew.api.document.actions.RecipientType" %>
+<%@ page import="org.kuali.rice.kew.api.action.RecipientType" %>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="RECIPIENT_TYPE_PRINCIPAL"><%= RecipientType.PRINCIPAL.getCode() %></c:set>

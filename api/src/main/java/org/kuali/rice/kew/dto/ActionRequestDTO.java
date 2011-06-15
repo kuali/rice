@@ -19,8 +19,8 @@ package org.kuali.rice.kew.dto;
 import java.io.Serializable;
 import java.util.Calendar;
 
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
-import org.kuali.rice.kew.api.document.actions.RecipientType;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

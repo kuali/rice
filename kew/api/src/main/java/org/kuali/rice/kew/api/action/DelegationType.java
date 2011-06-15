@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.document.actions;
+package org.kuali.rice.kew.api.action;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
@@ -7,18 +7,18 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.kuali.rice.core.api.mo.common.Coded;
 
-@XmlRootElement(name = "actionRequestPolicy")
-@XmlType(name = "ActionRequestPolicyType")
+@XmlRootElement(name = "delegationType")
+@XmlType(name = "DelegationTypeType")
 @XmlEnum
-public enum ActionRequestPolicy implements Coded {	
+public enum DelegationType implements Coded {	
 	
-	@XmlEnumValue("F") FIRST("F", "FIRST"),
-	@XmlEnumValue("A") ALL("A", "ALL");
+	@XmlEnumValue("P") PRIMARY("P", "Primary"),
+	@XmlEnumValue("S") SECONDARY("S", "Secondary");
 	
 	private final String code;
 	private final String label;
 	
-	ActionRequestPolicy(String code, String label) {
+	DelegationType(String code, String label) {
 		this.code = code;
 		this.label = label;
 	}
@@ -32,16 +32,16 @@ public enum ActionRequestPolicy implements Coded {
 		return label;
 	}
 		
-	public static ActionRequestPolicy fromCode(String code) {
+	public static DelegationType fromCode(String code) {
 		if (code == null) {
 			return null;
 		}
-		for (ActionRequestPolicy value : values()) {
+		for (DelegationType value : values()) {
 			if (value.code.equals(code)) {
 				return value;
 			}
 		}
-		throw new IllegalArgumentException("Failed to locate the ActionRequestPolicy with the given code: " + code);
+		throw new IllegalArgumentException("Failed to locate the DelegationType with the given code: " + code);
 	}
 	
 }

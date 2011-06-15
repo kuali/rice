@@ -33,7 +33,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.api.document.actions.DelegationType;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;

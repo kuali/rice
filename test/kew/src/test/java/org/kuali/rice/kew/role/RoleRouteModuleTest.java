@@ -28,8 +28,8 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
-import org.kuali.rice.kew.api.document.actions.DelegationType;
+import org.kuali.rice.kew.api.action.ActionRequestPolicy;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;

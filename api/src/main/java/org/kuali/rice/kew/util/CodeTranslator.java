@@ -19,8 +19,8 @@ package org.kuali.rice.kew.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
-import org.kuali.rice.kew.api.document.actions.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.ActionRequestPolicy;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
 
 
 /**

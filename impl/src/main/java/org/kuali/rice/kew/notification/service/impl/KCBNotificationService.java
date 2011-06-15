@@ -28,7 +28,7 @@ import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.util.KCBConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.api.document.actions.RecipientType;
+import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 

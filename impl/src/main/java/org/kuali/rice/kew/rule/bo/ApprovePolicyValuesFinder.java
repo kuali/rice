@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kew.api.document.actions.ActionRequestPolicy;
+import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
 
 /**

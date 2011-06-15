@@ -486,6 +486,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         if (newMaintainableObject != null) {
         	newMaintainableObject.setDocumentNumber(documentNumber);
             newMaintainableObject.processAfterRetrieve();
+            if(newMaintainableObject.getBusinessObject() instanceof PersistableAttachment) {
+               	populateAttachmentForBO();
+            }
             // If a maintenance lock exists, warn the user.
             checkForLockingDocument(false);
         }
@@ -619,7 +622,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
         
-        if (this instanceof PersistableAttachment) {
+        if(newMaintainableObject.getBusinessObject() instanceof PersistableAttachment) {
         	populateDocumentAttachment();
         	populateAttachmentForBO();
         }
@@ -658,20 +661,24 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     				for (Method method : methods) {
     					if (method.getName().equals(attachmentPropNmSetter)) {
     						attachmentFromBusinessObject =  (FormFile)(boAttachment.getClass().getDeclaredMethod(attachmentPropNmSetter).invoke(boAttachment));
-    						boAttachment.setAttachmentContent(attachmentFromBusinessObject.getFileData());
-    						boAttachment.setFileName(attachmentFromBusinessObject.getFileName());
-    						boAttachment.setContentType(attachmentFromBusinessObject.getContentType());
+    						if (attachmentFromBusinessObject != null) {
+    							boAttachment.setAttachmentContent(attachmentFromBusinessObject.getFileData());
+    							boAttachment.setFileName(attachmentFromBusinessObject.getFileName());
+    							boAttachment.setContentType(attachmentFromBusinessObject.getContentType());
+    						}
     						break;
     					}
     				}
-    			} catch (Exception e) {
+    		   } catch (Exception e) {
     				LOG.error("Not able to get the attachment " + e.getMessage());
     				throw new RuntimeException("Not able to get the attachment " + e.getMessage());
-    			}
-    		}
-        }
+    		   }
+    	  }
+      }
 		        
-        if((boAttachment.getFileName() == null) && (boAttachment instanceof PersistableAttachment) && (attachment != null)) {
+      if((boAttachment.getFileName() == null) && (boAttachment instanceof PersistableAttachment) && (attachment != null)) {
+
+      if(attachment != null) {
             byte[] fileContents;
             fileContents = attachment.getAttachmentContent();
             if (fileContents.length > 0) {
@@ -679,36 +686,12 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                 boAttachment.setFileName(attachment.getFileName());
                 boAttachment.setContentType(attachment.getContentType());
             }
-       }      
-        
-        Map properties = null; 
-        try {
-            properties = PropertyUtils.describe(this);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-      
-        Iterator propIter = properties.entrySet().iterator();
-    
-        while (propIter.hasNext()) {
-            Map.Entry entry = (Map.Entry) propIter.next();
-            Object value = entry.getValue();
-            if(value instanceof List) {
-                List valueList = (List) value;
-                for (Object element : valueList) {
-                    if(element instanceof PersistableBusinessObjectBase && element instanceof PersistableAttachment) {
-                        ((MaintenanceDocumentBase) element).populateAttachmentForBO();
-                    }
-                }
-            }
-        }
+         }      
+      }
     }
     
     public void populateDocumentAttachment() {
+    	    	
     	refreshAttachment();
         
         if(fileAttachment != null && StringUtils.isNotEmpty(fileAttachment.getFileName())) {

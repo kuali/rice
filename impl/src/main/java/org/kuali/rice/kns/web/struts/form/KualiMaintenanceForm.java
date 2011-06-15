@@ -165,15 +165,15 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
                 if(propertyValue != null && propertyValue instanceof FormFile) {
                     populateAttachmentFile(maintenanceDocument, propertyName, (FormFile) propertyValue);
 
-//                    if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
-  //                      maintenanceDocument.setFileAttachment((FormFile) propertyValue);
-    //                }
+                    if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
+                        maintenanceDocument.setFileAttachment((FormFile) propertyValue);
+                    }
                     maintenanceDocument.setAttachmentPropertyName(propertyName);
                 }
             }
         }
     }
-    
+        
     private void populateAttachmentFile(MaintenanceDocumentBase maintenanceDocument, String propertyName, FormFile propertyValue) {
         if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
             PersistableBusinessObject boClass;

@@ -343,6 +343,7 @@ Navigation Slide Control
 }
 .ui-datepicker-trigger, .ui-datepicker-buttonpane button {            /* make sure the icons appear clickable*/
     cursor:pointer;
+	background-image:url(../../images/cal_ks.gif)
 }
 .ui-datepicker-header {
     background-image:-moz-linear-gradient(top, #99DE80, #62D255);

@@ -233,15 +233,6 @@ public interface KualiWorkflowDocument {
      */
     public void returnToPreviousNode(String annotation, ReturnPointDTO returnPoint) throws WorkflowException;
 
-    /**
-     * @param annotation
-     * @param destRouteLevel
-     * @throws WorkflowException
-     * @throws InvalidActionTakenException
-     * @throws ResourceUnavailableException
-     */
-    public abstract void returnToPreviousRouteLevel(String annotation, Integer destRouteLevel) throws WorkflowException;
-
     public abstract void logDocumentAction(String annotation) throws WorkflowException;
 
     /**

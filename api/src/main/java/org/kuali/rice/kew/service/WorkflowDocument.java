@@ -1148,16 +1148,6 @@ public class WorkflowDocument implements java.io.Serializable {
     	documentContentDirty = true;
     }
 
-
-    /**
-     * @deprecated use returnToPreviousNode(String annotation, String nodeName) instead
-     */
-    public void returnToPreviousRouteLevel(String annotation, Integer destRouteLevel) throws WorkflowException {
-    	createDocumentIfNeccessary();
-    	getWorkflowDocumentActions().returnDocumentToPreviousRouteLevel(principalId, getRouteHeader(), destRouteLevel, annotation);
-    	documentContentDirty = true;
-    }
-
     /**
      * Returns a list of NoteVO representing the notes on the document
      * @return a list of NoteVO representing the notes on the document

@@ -364,19 +364,6 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         workflowDocument.returnToPreviousNode(annotation, returnPoint);
     }
 
-    /**
-     * @param annotation
-     * @param destRouteLevel
-     * @throws WorkflowException
-     * @throws InvalidActionTakenException
-     * @throws ResourceUnavailableException
-     * @deprecated
-     */
-    @SuppressWarnings("deprecation")
-    public void returnToPreviousRouteLevel(String annotation, Integer destRouteLevel) throws WorkflowException {
-        workflowDocument.returnToPreviousRouteLevel(annotation, destRouteLevel);
-    }
-
     public void logDocumentAction(String annotation) throws WorkflowException {
         workflowDocument.logDocumentAction(annotation);
     }

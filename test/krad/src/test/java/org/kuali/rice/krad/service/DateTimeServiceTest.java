@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.service;
 
 import org.junit.Test;
-import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.test.KRADTestCase;
 
 import java.text.ParseException;

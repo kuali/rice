@@ -33,7 +33,7 @@
     </property>-->
     <property name="lockingKeys">
       <list>
-        <value>responsibilityId</value>
+        <value>id</value>
       </list>
     </property>
     
@@ -55,7 +55,7 @@
   <bean id="ReviewResponsibilityMaintenanceDocument-Main-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition" p:name="responsibilityId"
+        <bean parent="MaintainableFieldDefinition" p:name="id"
             p:unconditionallyReadOnly="true" p:required="true" 
             p:defaultValueFinderClass="org.kuali.rice.kim.impl.responsibility.NextResponsibilityIdValuesFinder" />
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="namespaceCode"/>

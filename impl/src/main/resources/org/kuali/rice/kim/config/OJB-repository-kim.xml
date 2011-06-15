@@ -1180,7 +1180,7 @@
   <!-- ******************************************************************* -->
 
   <class-descriptor class="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo" table="KRIM_RSP_T">
-    <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="RSP_ID" jdbc-type="VARCHAR" primarykey="true" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.impl.GenericPermission" table="KRIM_PERM_T">

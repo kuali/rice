@@ -18,20 +18,13 @@ package org.kuali.rice.kim.impl.responsibility
 
 import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.util.KimConstants
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 //strange - hacky non-PBO
-class ReviewResponsibilityBo extends PersistableBusinessObjectBase {
+class ReviewResponsibilityBo extends ResponsibilityBo {
 
     private static final long serialVersionUID = 1L
 
     public static final String ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL_FIELD_NAME = "actionDetailsAtRoleMemberLevel"
-
-    String responsibilityId
-    String namespaceCode
-    String name
-    String description
-    boolean active
 
     String documentTypeName
     String routeNodeName
@@ -47,19 +40,17 @@ class ReviewResponsibilityBo extends PersistableBusinessObjectBase {
     }
 
     public void loadFromKimResponsibility(ResponsibilityBo resp) {
-        setResponsibilityId(resp.getId())
-        setNamespaceCode(resp.getNamespaceCode())
-        setName(resp.getName())
-        setDescription(resp.getDescription())
-        setActive(resp.isActive())
+        resp.metaClass.properties.each {
+            if (this.metaClass.hasProperty(this, it.name)) {
+                this.setProperty(it.name, resp.getProperty(it.name))
+            }
+        }
+
         Attributes respDetails = resp.getAttributes()
         setDocumentTypeName(respDetails.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME))
         setRouteNodeName(respDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME))
         setActionDetailsAtRoleMemberLevel(Boolean.valueOf(respDetails.get(KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL)))
         setRequired(Boolean.valueOf(respDetails.get(KimConstants.AttributeConstants.REQUIRED)))
         setQualifierResolverProvidedIdentifier(respDetails.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER))
-    }
-
-    public void refresh() {
     }
 }

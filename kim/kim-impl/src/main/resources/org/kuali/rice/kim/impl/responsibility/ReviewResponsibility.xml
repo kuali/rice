@@ -19,7 +19,7 @@
 
   <bean id="ReviewResponsibility-parentBean" abstract="true" parent="BusinessObjectEntry" 
         p:businessObjectClass="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo"
-        p:titleAttribute="responsibilityId" 
+        p:titleAttribute="id"
         p:objectLabel="Review Responsibility">
     <property name="attributes">
       <list>
@@ -50,7 +50,7 @@
     </property>-->
   </bean>
 
-  <bean id="ReviewResponsibility-responsibilityId" parent="ResponsibilityImpl-id" p:name="responsibilityId" />
+  <bean id="ReviewResponsibility-responsibilityId" parent="ResponsibilityImpl-id" p:name="id" />
   
   <bean id="ReviewResponsibility-namespaceCode" parent="ReviewResponsibility-namespaceCode-parentBean"/>
   <bean id="ReviewResponsibility-namespaceCode-parentBean" parent="Namespace-code" abstract="true" 

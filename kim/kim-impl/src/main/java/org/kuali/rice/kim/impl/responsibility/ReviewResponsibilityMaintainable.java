@@ -17,7 +17,6 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.common.template.Template;
@@ -90,11 +89,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
             details.put( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
         }
 
-        Responsibility.Builder b = Responsibility.Builder.create(resp.getResponsibilityId(), resp.getNamespaceCode(), resp.getName(), Template.Builder.create(reviewTemplate));
-        b.setActive(resp.isActive());
-        b.setDescription(resp.getDescription());
-        b.setAttributes(Attributes.fromMap(details));
-
+        Responsibility.Builder b = Responsibility.Builder.create(resp);
         KimApiServiceLocator.getResponsibilityService().updateResponsibility(b.build());
 	}
 	
@@ -117,16 +112,6 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
-	 */
-	@Override
-	public boolean isExternalBusinessObject() {
-		return true;
-	}
-	
-	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.krad.bo.BusinessObject)
 	 */
 	@Override
@@ -137,15 +122,9 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
         if ( businessObject instanceof ResponsibilityBo ) {
             ResponsibilityBo resp = getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, ((ResponsibilityBo)businessObject).getId() );
             businessObject = new ReviewResponsibilityBo( resp );
-        } else if ( businessObject instanceof ReviewResponsibilityBo ) {
-            // lookup the KimResponsibilityImpl and convert to a ReviewResponsibilityBo
-            ResponsibilityBo resp = getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, ((ReviewResponsibilityBo)businessObject).getResponsibilityId() );
-            ((ReviewResponsibilityBo)businessObject).loadFromKimResponsibility(resp);
+            setBusinessObject( (PersistableBusinessObject)businessObject );
         } else {
             throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityBoMaintainable passed an unsupported object type: " + businessObject.getClass() );
-        }
-        if ( businessObject instanceof PersistableBusinessObject ) {
-            setBusinessObject( (PersistableBusinessObject)businessObject );
         }
         super.prepareBusinessObject(businessObject);
 	}

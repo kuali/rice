@@ -106,7 +106,7 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
 	protected boolean checkForDuplicateResponsibility( ReviewResponsibilityBo resp ) {
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         Predicate p = and(
-            notEqual("id", resp.getResponsibilityId()),
+            notEqual("id", resp.getId()),
             equal("template.namespaceCode", KEWConstants.KEW_NAMESPACE ),
             equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
             equal("attributes[documentTypeName]", resp.getDocumentTypeName()),

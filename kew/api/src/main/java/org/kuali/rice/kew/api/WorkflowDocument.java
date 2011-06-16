@@ -29,36 +29,12 @@ import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 
-/**
- * Represents a document in Workflow from the perspective of the client.  This class is one of two
- * (Java) client interfaces to the KEW system (the other being {@link WorkflowInfo} class).  The
- * first time an instance of this class is created, it will read the client configuration to determine
- * how to connect to KEW.
- *
- * <p>This class is used by creating new instances using the appropriate constructor.  To create a new
- * document in KEW, create an instance of this class passing a UserIdVO and a
- * document type name.  To load an existing document, create an instance of this class passing a
- * UserIdVO and a document ID number.
- *
- * <p>Internally, this wrapper interacts with the {@link WorkflowDocumentActions} service exported
- * over the KSB, maintaining state.
- *
- * <p>This class is not thread safe and must by synchronized externally for concurrent access.
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
 public class WorkflowDocument implements java.io.Serializable {
 
 	private static final long serialVersionUID = -3672966990721719088L;
 
-	/**
-	 * The principal ID of the user as whom actions will be taken on the KEW document
-	 */
     private String principalId;
     
-    /**
-     * Document this WorkflowDocument represents
-     */
     private Document document;
     
     private ModifiableDocumentContent documentContent;
@@ -71,14 +47,6 @@ public class WorkflowDocument implements java.io.Serializable {
     	return createDocument(principalId, documentTypeName, title, null);
     }
     
-    /**
-     * This method constructs a WorkflowDocument representing a new document in the 
-     * workflow system.  Creation/committing of the new document is deferred until
-     *  the first action is taken on the document.
-     * 
-     * @param principalId the user as which to take actions on the document
-     * @param documentType the type of the document to create
-     */
 	public static WorkflowDocument createDocument(String principalId, String documentTypeName, String title, DocumentContentUpdate documentContentUpdate) {
 		if (StringUtils.isBlank(principalId)) {
 			throw new IllegalArgumentException("principalId was null or blank");
@@ -90,17 +58,6 @@ public class WorkflowDocument implements java.io.Serializable {
 		return new WorkflowDocument(principalId, document);
 	}
 	
-    /**
-     * This method loads a workflow document with the given document ID for the 
-     * given principalId.
-     * 
-     * @param principalId the user as which to take actions on the document
-     * @param documentId the document id of the document to load
-     * 
-     * @throws IllegalArgumentException if principalId is null or a blank value
-     * @throws IllegalArgumentException if documentId is null or a blank value
-     * @throws IllegalArgumentException if no document could be found for the given id
-     */
 	public static WorkflowDocument loadDocument(String principalId, String documentId) {
 		if (StringUtils.isBlank(principalId)) {
 			throw new IllegalArgumentException("principalId was null or blank");
@@ -115,7 +72,7 @@ public class WorkflowDocument implements java.io.Serializable {
 		return new WorkflowDocument(principalId, document);
 	}
 	
-	private WorkflowDocument(String principalId, Document document) {
+	protected WorkflowDocument(String principalId, Document document) {
 		if (StringUtils.isBlank("principalId")) {
 			throw new IllegalArgumentException("principalId was null or blank");
 		}
@@ -142,190 +99,85 @@ public class WorkflowDocument implements java.io.Serializable {
     	return workflowDocumentService;
     }
     
-    /**
-     * Returns the Document for the workflow document this WorkflowDocument represents.
-     */
+    public String getDocumentId() {
+    	return getDocument().getDocumentId();
+    }
+    
     public Document getDocument() {
         return document;
     }
 
     protected ModifiableDocumentContent getModifiableDocumentContent() {
     	if (this.documentContent == null) {
-    		DocumentContent documentContent = getWorkflowDocumentService().getDocumentContent(getDocument().getDocumentId());
+    		DocumentContent documentContent = getWorkflowDocumentService().getDocumentContent(getDocumentId());
     		if (documentContent == null) {
-    			throw new IllegalStateException("Failed to load document content for documentId: " + getDocument().getDocumentId());
+    			throw new IllegalStateException("Failed to load document content for documentId: " + getDocumentId());
     		}
     		this.documentContent = new ModifiableDocumentContent(documentContent);
     	}
     	return this.documentContent;
     }
     
-    /**
-     * Returns an up-to-date DocumentContent of this document.
-     */
     public DocumentContent getDocumentContent() {
     	return getModifiableDocumentContent().getDocumentContent();
     }
 
-    /**
-     * Returns the application specific section of the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     *
-     * For documents routed prior to Workflow 2.0:
-     * If the application did NOT use attributes for XML generation, this method will
-     * return the entire document content XML.  Otherwise it will return the empty string.
-     * @see DocumentContentDTO#getApplicationContent()
-     */
     public String getApplicationContent() {
         return getDocumentContent().getApplicationContent();
     }
 
-    /**
-     * Sets the application specific section of the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     */
     public void setApplicationContent(String applicationContent) {
     	getModifiableDocumentContent().setApplicationContent(applicationContent);
     }
 
-    /**
-     * Clears all attribute document content from the document.
-     * Typically, this will be used if it is necessary to update the attribute doc content on
-     * the document.  This can be accomplished by clearing the content and then adding the
-     * desired attribute definitions.
-     *
-     * This is a convenience method that delegates to the {@link DocumentContentDTO}.
-     *
-     * In order for these changes to take effect, an action must be performed on the document (such as "save").
-     */
     public void clearAttributeContent() {
     	getModifiableDocumentContent().setAttributeContent("");
     }
 
-    /**
-     * Returns the attribute-generated section of the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     * @see DocumentContentDTO#getAttributeContent()
-     */
     public String getAttributeContent() {
         return getDocumentContent().getAttributeContent();
     }
 
-    /**
-     * Adds an attribute definition which defines creation parameters for a WorkflowAttribute
-     * implementation.  The created attribute will be used to generate attribute document content.
-     * When the document is sent to the server, this will be appended to the existing attribute
-     * doc content.  If it is required to replace the attribute document content, then the
-     * clearAttributeContent() method should be invoked prior to adding attribute definitions.
-     *
-     * This is a convenience method that delegates to the {@link DocumentContentDTO}.
-     * @see DocumentContentDTO#addAttributeDefinition(WorkflowAttributeDefinitionDTO)
-     */
     public void addAttributeDefinition(WorkflowAttributeDefinition attributeDefinition) {
     	getModifiableDocumentContent().addAttributeDefinition(attributeDefinition);
     }
 
-    /**
-     * Removes an attribute definition from the document content.  This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     * @param attributeDefinition the attribute definition VO to remove
-     */
     public void removeAttributeDefinition(WorkflowAttributeDefinition attributeDefinition) {
     	getModifiableDocumentContent().removeAttributeDefinition(attributeDefinition);
     }
 
-    /**
-     * Removes all attribute definitions from the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     */
     public void clearAttributeDefinitions() {
     	getAttributeDefinitions().clear();
     }
 
-    /**
-     * Returns the attribute definition VOs currently defined on the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     * @return the attribute definition VOs currently defined on the document content.
-     * @see DocumentContentDTO#getAttributeDefinitions()
-     */
     public List<WorkflowAttributeDefinition> getAttributeDefinitions() {
         return getModifiableDocumentContent().getAttributeDefinitions();
     }
 
-    /**
-     * Adds a searchable attribute definition which defines creation parameters for a SearchableAttribute
-     * implementation.  The created attribute will be used to generate searchable document content.
-     * When the document is sent to the server, this will be appended to the existing searchable
-     * doc content.  If it is required to replace the searchable document content, then the
-     * clearSearchableContent() method should be invoked prior to adding definitions. This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     */
     public void addSearchableDefinition(WorkflowAttributeDefinition searchableDefinition) {
     	getModifiableDocumentContent().addSearchableDefinition(searchableDefinition);
     }
 
-    /**
-     * Removes a searchable attribute definition from the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     * @param searchableDefinition the searchable attribute definition to remove
-     */
     public void removeSearchableDefinition(WorkflowAttributeDefinition searchableDefinition) {
     	getModifiableDocumentContent().removeSearchableDefinition(searchableDefinition);
     }
 
-    /**
-     * Removes all searchable attribute definitions from the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     */
     public void clearSearchableDefinitions() {
     	getSearchableDefinitions().clear();
     }
 
-    /**
-     * Clears the searchable content from the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     */
     public void clearSearchableContent() {
     	getModifiableDocumentContent().setSearchableContent("");
     }
 
-    /**
-     * Returns the searchable attribute definitions on the document content. This is
-     * a convenience method that delegates to the {@link DocumentContentDTO}.
-     * @return the searchable attribute definitions on the document content.
-     * @see DocumentContentDTO#getSearchableDefinitions()
-     */
     public List<WorkflowAttributeDefinition> getSearchableDefinitions() {
         return getModifiableDocumentContent().getSearchableDefinitions();
     }
     
-    /**
-     * Validate the WorkflowAttributeDefinition against it's attribute on the server.  This will validate
-     * the inputs that will eventually become xml.
-     *
-     * Only applies to attributes implementing WorkflowAttributeXmlValidator.
-     *
-     * This is a call through to the WorkflowInfo object and is here for convenience.
-     *
-     * @param attributeDefinition the workflow attribute definition VO to validate
-     * @return WorkflowAttributeValidationErrorVO[] of error from the attribute
-     * @throws WorkflowException when attribute doesn't implement WorkflowAttributeXmlValidator
-     * @see WorkflowUtility#validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO)
-     */
     public List<WorkflowAttributeValidationError> validateAttributeDefinition(WorkflowAttributeDefinition attributeDefinition) {
     	return getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attributeDefinition);
     }
 
-//    /**
-//     * Returns the id of the workflow document this WorkflowDocument represents.  If this is a new document
-//     * that has not yet been created, the document is first created (and therefore this will return a new id)
-//     * @return the id of the workflow document this WorkflowDocument represents
-//     * @throws WorkflowException if an error occurs during document creation
-//     */
-//    public String getDocumentId() throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	return getRouteHeader().getDocumentId();
-//    }
 //
 //    /**
 //     * Returns VOs of the pending ActionRequests on this document.  If this object represents a new document

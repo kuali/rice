@@ -97,9 +97,9 @@
 }
 
 
-.fl-font-serif, .fl-font-serif * {font-family: Georgia, Times, "Times New Roman", "Book Antiqua", serif !important;}
-.fl-font-sans, .fl-font-sans * {font-family: Tahoma, Verdana, Helvetica, sans-serif !important;}
-.fl-font-monospace, .fl-font-monospace * {font-family: "Courier New, Courier", monospace !important;}
+.fl-font-serif, .fl-font-serif {font-family: Georgia, Times, "Times New Roman", "Book Antiqua", serif;}
+.fl-font-sans, .fl-font-sans {font-family: Tahoma, Verdana, Helvetica, sans-serif;}
+.fl-font-monospace, .fl-font-monospace {font-family: "Courier New, Courier", monospace !important;}
 
 .fl-font-arial, .fl-font-arial * {font-family: "Arial" !important;}
 .fl-font-verdana, .fl-font-verdana * {font-family: "Verdana" !important;}

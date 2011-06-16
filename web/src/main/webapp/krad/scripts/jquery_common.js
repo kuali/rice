@@ -932,7 +932,7 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 				if(hasErrors){
 					tabAnchor.addClass("clientError");
 					if(errorIcon.length == 0){
-						tabAnchor.append("<img id='"+ tabId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+						tabAnchor.append("<img id='"+ tabId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.png'>");
 					}
 				}
 				else if(!hasErrors){
@@ -959,13 +959,13 @@ function showFieldIcon(errorsDivId, errorCount){
 			
 			if (div.length > 0 && div.hasClass("addFieldIcon") && errorCount && errorIcon.length == 0) {
 				if (input.length > 0) {
-					input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+					input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.png'>");
 				}
 				else {
 					// try for radios and checkboxes
 					input = jq("#" + errorDivId.replace("errors_div", "attribute1"));
 					if (input.length > 0) {
-						input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+						input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.png'>");
 					}
 				}
 			}

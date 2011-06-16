@@ -60,7 +60,7 @@
 	   <display:column sortable="false" title="<div align=&quot;center&quot;><input type=&quot;checkbox&quot; id=&quot;masterWorkgroupCheckbox&quot; onclick=&quot;javascript:selectAllWorkgroupCheckboxes(${fn:length(RemoveReplaceForm.workgroups)})&quot;></div>" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
 	     <div align="center">
 	        <c:if test="${workgroup.disabled}">
-	          <img src="images/errormark.gif" alt="warning" width="10" height="10">
+	          <img src="images/errormark.png" alt="warning" width="10" height="10">
 	        </c:if>
 	        <c:if test="${!workgroup.disabled}">
 	     	  <html-el:checkbox styleId="${wgProp}.selected" property="${wgProp}.selected"/>
@@ -73,7 +73,7 @@
        <display:column sortable="true" title="Name" property="name" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
        <display:column sortable="true" title="Type" property="type" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
 	   <display:column sortable="true" title="Warnings" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
-	     <c:if test="${!empty workgroup.warning}"><img src="images/errormark.gif" alt="warning" width="10" height="10"> <c:out value="${workgroup.warning}"/></c:if>
+	     <c:if test="${!empty workgroup.warning}"><img src="images/errormark.png" alt="warning" width="10" height="10"> <c:out value="${workgroup.warning}"/></c:if>
 	   </display:column>
 
        <c:set var="workgroupIndex" value="${workgroupIndex + 1}"/>

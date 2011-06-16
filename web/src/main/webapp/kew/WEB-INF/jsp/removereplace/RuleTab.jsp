@@ -74,7 +74,7 @@
 	   <display:column sortable="false" title="<div align=&quot;center&quot;><input type=&quot;checkbox&quot; id=&quot;masterRuleCheckbox&quot; onclick=&quot;javascript:selectAllRuleCheckboxes(${fn:length(RemoveReplaceForm.rules)})&quot;></div>" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
 	     <div align="center">
 	        <c:if test="${rule.disabled}">
-	          <img src="images/errormark.gif" alt="warning" width="10" height="10">
+	          <img src="images/errormark.png" alt="warning" width="10" height="10">
 	        </c:if>
 	        <c:if test="${!rule.disabled}">
 	     	  <html-el:checkbox styleId="${ruleProp}.selected" property="${ruleProp}.selected"/>
@@ -90,7 +90,7 @@
        <display:column sortable="true" title="Active" property="rule.activeInd" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
        <display:column sortable="true" title="Delegate Rule" property="rule.delegateRule" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
 	   <display:column sortable="true" title="Warnings" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
-	     <c:if test="${!empty rule.warning}"><img src="images/errormark.gif" alt="warning" width="10" height="10"> <c:out value="${rule.warning}"/></c:if>
+	     <c:if test="${!empty rule.warning}"><img src="images/errormark.png" alt="warning" width="10" height="10"> <c:out value="${rule.warning}"/></c:if>
 	   </display:column>
 
        <c:set var="ruleIndex" value="${ruleIndex + 1}"/>

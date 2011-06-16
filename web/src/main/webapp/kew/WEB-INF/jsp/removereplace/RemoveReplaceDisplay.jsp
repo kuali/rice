@@ -92,7 +92,7 @@
        <display:column sortable="true" title="Active" property="rule.activeInd" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
        <display:column sortable="true" title="Delegate Rule" property="rule.delegateRule" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
 	   <display:column sortable="true" title="Warnings" property="warning" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
-	     <c:if test="${!empty rule.warning}"><img src="images/errormark.gif" alt="warning" width="10" height="10"> <c:out value="${rule.warning}"/></c:if>
+	     <c:if test="${!empty rule.warning}"><img src="images/errormark.png" alt="warning" width="10" height="10"> <c:out value="${rule.warning}"/></c:if>
 	   </display:column>
   </display:table>
   </div>
@@ -132,7 +132,7 @@
        <display:column sortable="true" title="Name" property="name" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
        <display:column sortable="true" title="Type" property="type" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
 	   <display:column sortable="true" title="Warnings" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
-	     <c:if test="${!empty workgroup.warning}"><img src="images/errormark.gif" alt="warning" width="10" height="10"> <c:out value="${workgroup.warning}"/></c:if>
+	     <c:if test="${!empty workgroup.warning}"><img src="images/errormark.png" alt="warning" width="10" height="10"> <c:out value="${workgroup.warning}"/></c:if>
 	   </display:column>
   </display:table>
 	  </div>

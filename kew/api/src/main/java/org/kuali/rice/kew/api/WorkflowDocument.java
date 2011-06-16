@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
@@ -178,42 +180,14 @@ public class WorkflowDocument implements java.io.Serializable {
     	return getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attributeDefinition);
     }
 
-//
-//    /**
-//     * Returns VOs of the pending ActionRequests on this document.  If this object represents a new document
-//     * that has not yet been created, then an empty array will be returned.  The ordering of ActionRequests
-//     * returned by this method is not guaranteed.
-//     *
-//     * This method relies on the WorkflowUtility service
-//     *
-//     * @return VOs of the pending ActionRequests on this document
-//     * @throws WorkflowException if an error occurs obtaining the pending action requests for this document
-//     * @see WorkflowUtility#getActionRequests(Long)
-//     */
-//    public ActionRequestDTO[] getActionRequests() throws WorkflowException {
-//        if (getDocumentId() == null) {
-//            return new ActionRequestDTO[0];
-//        }
-//        return getWorkflowUtility().getAllActionRequests(getDocumentId());
-//    }
-//
-//    /**
-//     * Returns VOs of the actions taken on this document.  If this object represents a new document
-//     * that has not yet been created, then an empty array will be returned.  The ordering of actions taken
-//     * returned by this method is not guaranteed.
-//     *
-//     * This method relies on the WorkflowUtility service
-//     *
-//     * @return VOs of the actions that have been taken on this document
-//     * @throws WorkflowException if an error occurs obtaining the actions taken on this document
-//     * @see WorkflowUtility#getActionsTaken(Long)
-//     */
-//    public ActionTakenDTO[] getActionsTaken() throws WorkflowException {
-//        if (getDocumentId() == null) {
-//            return new ActionTakenDTO[0];
-//        }
-//        return getWorkflowUtility().getActionsTaken(getDocumentId());
-//    }
+    public List<ActionRequest> getActionRequests() {
+    	return getWorkflowDocumentService().getActionRequests(getDocumentId());
+    }
+
+    public List<ActionTaken> getActionsTaken() {
+    	return getWorkflowDocumentService().getActionsTaken(getDocumentId());
+    }
+    
 //
 //    /**
 //     * Sets the "application doc id" on the document

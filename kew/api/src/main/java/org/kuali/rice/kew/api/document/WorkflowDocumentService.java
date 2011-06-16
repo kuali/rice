@@ -1,5 +1,12 @@
 package org.kuali.rice.kew.api.document;
 
+import java.util.List;
+
+import javax.jws.WebParam;
+
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionTaken;
+
 
 public interface WorkflowDocumentService {
 	
@@ -8,6 +15,11 @@ public interface WorkflowDocumentService {
 	Document getDocument(String documentId);
 	
 	DocumentContent getDocumentContent(String documentId);
+	
+	List<ActionRequest> getActionRequests(@WebParam(name = "documentId") String documentId);
+
+	List<ActionTaken> getActionsTaken(@WebParam(name = "documentId") String documentId);
+
 	
 //    public DocumentDetailDTO getDocumentDetailFromAppId(String documentTypeName, String appId) throws WorkflowException;
 //
@@ -30,18 +42,11 @@ public interface WorkflowDocumentService {
 //
 //	public Long getNewResponsibilityId() throws WorkflowException;
 //	
-//	public ActionRequestDTO[] getAllActionRequests(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
 //
 //	public ActionRequestDTO[] getActionRequests(
 //			@WebParam(name = "documentId") String documentId,
 //			@WebParam(name = "nodeName") String nodeName,
 //			@WebParam(name = "principalId") String principalId)
-//			throws WorkflowException;
-//
-//	public ActionTakenDTO[] getActionsTaken(
-//			@WebParam(name = "documentId") String documentId)
 //			throws WorkflowException;
 //
 //	public String getAppDocId(

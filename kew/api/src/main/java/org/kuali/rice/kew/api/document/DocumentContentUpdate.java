@@ -14,6 +14,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.w3c.dom.Element;
@@ -100,6 +103,21 @@ public final class DocumentContentUpdate implements Serializable {
 	public List<WorkflowAttributeDefinition> getSearchableDefinitions() {
 		return Collections.unmodifiableList(searchableDefinitions);
 	}
+	
+	@Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 	
 	/**
 	 * A builder which can be used to construct {@link DocumentContentUpdate} instances.

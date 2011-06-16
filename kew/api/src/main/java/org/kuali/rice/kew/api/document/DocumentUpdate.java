@@ -1,0 +1,149 @@
+package org.kuali.rice.kew.api.document;
+
+import java.io.Serializable;
+import java.util.Collection;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.w3c.dom.Element;
+
+/**
+ * Defines an update to document content on a particular workflow document.
+ * Contains general application content as well as a list of attribute
+ * definitions and searchable definitions.  When passed to the appropriate
+ * workflow services to perform an update on document content, if any of the
+ * internal content or definitions on this object have not been set then they
+ * will not be updated.  This allows for this data structure to be used to only
+ * update the portion of the document content that is desired to be updated.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * 
+ */
+@XmlRootElement(name = DocumentUpdate.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = DocumentUpdate.Constants.TYPE_NAME, propOrder = {
+    DocumentUpdate.Elements.APPLICATION_DOCUMENT_ID,
+    DocumentUpdate.Elements.TITLE,
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
+public final class DocumentUpdate implements Serializable {
+
+	private static final long serialVersionUID = 608839901744771499L;
+
+	@XmlElement(name = Elements.APPLICATION_DOCUMENT_ID, required = false)
+	private final String applicationDocumentId;
+	
+	@XmlElement(name = Elements.TITLE, required = false)
+	private final String title;
+    
+	@SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+    
+    private DocumentUpdate(Builder builder) {
+    	this.applicationDocumentId = builder.getApplicationDocumentId();
+    	this.title = builder.getTitle();
+    }
+        
+	public String getApplicationDocumentId() {
+		return applicationDocumentId;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	@Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+		
+	/**
+	 * A builder which can be used to construct {@link DocumentUpdate} instances.
+	 */
+	public final static class Builder implements Serializable, ModelBuilder {
+
+		private static final long serialVersionUID = 2220000561051177421L;
+
+		private String applicationDocumentId;
+		private String title;
+
+		private Builder() {
+			this.applicationDocumentId = "";
+			this.title = "";
+		}
+
+		public static Builder create() {
+			return new Builder();
+		}
+
+		public static Builder create(Document document) {
+			if (document == null) {
+				throw new IllegalArgumentException("document was null");
+			}
+			Builder builder = create();
+			builder.setApplicationDocumentId(document.getApplicationDocumentId());
+			builder.setTitle(document.getTitle());
+			return builder;
+		}
+
+		public DocumentUpdate build() {
+			return new DocumentUpdate(this);
+		}
+
+		public String getApplicationDocumentId() {
+			return applicationDocumentId;
+		}
+
+		public void setApplicationDocumentId(String applicationDocumentId) {
+			this.applicationDocumentId = applicationDocumentId;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public void setTitle(String title) {
+			this.title = title;
+		}
+
+	}
+	
+    /**
+     * Defines some internal constants used on this class.
+     */
+    static class Constants {
+        final static String ROOT_ELEMENT_NAME = "documentUpdate";
+        final static String TYPE_NAME = "DocumentUpdateType";
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] { CoreConstants.CommonElements.FUTURE_ELEMENTS };
+    }
+
+    /**
+     * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
+     */
+    static class Elements {
+        final static String APPLICATION_DOCUMENT_ID = "applicationDocumentId";
+        final static String TITLE = "title";
+    }
+
+}

@@ -35,18 +35,13 @@ import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-/**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupableHelperServiceImpl {
 
 	private static final Logger LOG = Logger.getLogger( ResponsibilityLookupableHelperServiceImpl.class );
@@ -58,11 +53,6 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	private static boolean reviewResponsibilityDocumentTypeNameLoaded = false;
 	private static String reviewResponsibilityDocumentTypeName = null;
 	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.krad.bo.BusinessObject, java.util.List)
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
@@ -96,11 +86,6 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
         return UrlFactory.parameterizeUrl(KRADConstants.MAINTENANCE_ACTION, parameters);
     }
 	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getMaintenanceDocumentTypeName()
-	 */
 	@Override
 	protected String getMaintenanceDocumentTypeName() {
 		if ( !reviewResponsibilityDocumentTypeNameLoaded ) {
@@ -110,9 +95,6 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		return reviewResponsibilityDocumentTypeName;
 	}
 	
-	/**
-	 * @see org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl#getSearchResults(java.util.Map)
-	 */
 	@Override
 	protected List<? extends BusinessObject> getMemberSearchResults(Map<String, String> searchCriteria, boolean unbounded) {
 		Map<String, String> responsibilitySearchCriteria = buildSearchCriteria(searchCriteria);
@@ -253,13 +235,18 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 				new ArrayList<UberResponsibilityBo>(), getActualSizeIfTruncated(responsibilitySearchResults));
 		for(ResponsibilityBo responsibilityImpl: responsibilitySearchResults){
 			UberResponsibilityBo responsibilityCopy = new UberResponsibilityBo();
-			try{
-				PropertyUtils.copyProperties(responsibilityCopy, responsibilityImpl);
-			} catch(Exception ex){
-				LOG.error( "Unable to copy properties from KimUberResponsibilityBo to UberResponsibilityBo, skipping.", ex );
-				continue;
-			}
-			responsibilitySearchResultsCopy.add(responsibilityCopy);
+
+            try {
+                PropertyUtils.copyProperties(responsibilityCopy, responsibilityImpl);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("unable to copy properties");
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException("unable to copy properties");
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException("unable to copy properties");
+            }
+
+            responsibilitySearchResultsCopy.add(responsibilityCopy);
 		}
 		return responsibilitySearchResultsCopy;
 	}

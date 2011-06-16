@@ -17,6 +17,7 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.common.template.Template;
@@ -32,14 +33,10 @@ import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.Row;
 import org.kuali.rice.krad.web.ui.Section;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 
 	private static final Logger LOG = Logger.getLogger( ReviewResponsibilityMaintainable.class );
@@ -77,7 +74,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 
         ReviewResponsibilityBo resp = (ReviewResponsibilityBo)getBusinessObject();
         // build the AttributeSet with the details
-        AttributeSet details = new AttributeSet();
+        Map<String, String> details = new HashMap<String, String>();
         details.put( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, resp.getDocumentTypeName() );
         details.put( KimConstants.AttributeConstants.ROUTE_NODE_NAME, resp.getRouteNodeName() );
         details.put( KimConstants.AttributeConstants.REQUIRED, resp.isRequired()?"true":"false" );
@@ -88,7 +85,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 
         Responsibility.Builder b = Responsibility.Builder.create(resp.getNamespaceCode(), resp.getName(), Template.Builder.create(REVIEW_TEMPLATE));
         b.setDescription(resp.getDescription());
-        b.setAttributes(resp.getAttributes());
+        b.setAttributes(Attributes.fromMap(details));
         b.setActive(resp.isActive());
 
         KimApiServiceLocator.getResponsibilityService().createResponsibility(b.build());

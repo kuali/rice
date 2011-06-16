@@ -135,7 +135,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 		return attributeDetails.collect {it.attributeValue}.join(",")
 	}
 
-    public String getDetailObjectsToDisplay() {
+    String getDetailObjectsToDisplay() {
 		final KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 
         return attributeDetails.collect {

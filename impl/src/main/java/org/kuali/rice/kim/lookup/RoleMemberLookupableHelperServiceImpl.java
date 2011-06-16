@@ -44,12 +44,6 @@ import java.util.Map;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.like;
 
-/**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupableHelperServiceImpl {
 
 	protected static final String DETAIL_CRITERIA = "detailCriteria";
@@ -128,31 +122,6 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
     		return WILDCARD+parameter+WILDCARD;
     }
     
-    /**
-     * - detail value: 
-     * if this is provided a full (template namespace and template name) or namespace must be supplied 
-     * - may need to do further restrictions once we see how this performs
-     *  
-     * @param fieldValues the values of the query
-     * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#validateSearchParameters(java.util.Map)
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public void validateSearchParameters(Map fieldValues) {
-        super.validateSearchParameters(fieldValues);
-/*
-        String valueTemplateNamespaceCode = (String) fieldValues.get(TEMPLATE_NAMESPACE_CODE);
-        String valueTemplateName = (String) fieldValues.get(TEMPLATE_NAME);
-        String name = (String) fieldValues.get(NAME);
-        
-        if (!((StringUtils.isNotEmpty(valueTemplateNamespaceCode) && StringUtils.isNotEmpty(valueTemplateName)) 
-        		|| StringUtils.isNotEmpty(name))){
-            throw new ValidationException("For a search to be performed on an attribute detail value, " +
-            		"a combination of template namespace and template name, or a namespace must be supplied");
-        }
-        */
-    }
-
     @SuppressWarnings({ "unchecked" })
 	protected Map<String, String> buildRoleSearchCriteria(Map<String, String> fieldValues){
        	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
@@ -262,11 +231,6 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
 	}
 	
 	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getRows()
-	 */
 	@Override
 	public List<Row> getRows() {
 		List<Row> rows = super.getRows();

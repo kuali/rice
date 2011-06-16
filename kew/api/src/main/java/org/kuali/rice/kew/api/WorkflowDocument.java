@@ -27,6 +27,7 @@ import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
@@ -37,8 +38,7 @@ public class WorkflowDocument implements java.io.Serializable {
 
     private String principalId;
     
-    private Document document;
-    
+    private ModifiableDocument document;    
     private ModifiableDocumentContent documentContent;
 
     public static WorkflowDocument createDocument(String principalId, String documentTypeName) {
@@ -82,7 +82,7 @@ public class WorkflowDocument implements java.io.Serializable {
 			throw new IllegalArgumentException("document was null");
 		}
 		this.principalId = principalId;
-		this.document = document;
+		this.document = new ModifiableDocument(document);
     }
 
     private static WorkflowDocumentActionsService getWorkflowDocumentActionsService() {
@@ -102,11 +102,11 @@ public class WorkflowDocument implements java.io.Serializable {
     }
     
     public String getDocumentId() {
-    	return getDocument().getDocumentId();
+    	return document.getDocumentId();
     }
     
     public Document getDocument() {
-        return document;
+        return document.getDocument();
     }
 
     protected ModifiableDocumentContent getModifiableDocumentContent() {
@@ -1300,4 +1300,55 @@ public class WorkflowDocument implements java.io.Serializable {
 	   	   
    }
 
+	protected static class ModifiableDocument implements Serializable {
+
+		private static final long serialVersionUID = -3234793238863410378L;
+
+		private boolean dirty;
+		private Document originalDocument;
+		private DocumentUpdate.Builder builder;
+
+		protected ModifiableDocument(Document document) {
+			this.dirty = false;
+			this.originalDocument = document;
+			this.builder = DocumentUpdate.Builder.create(document);
+		}
+
+		protected Document getDocument() {
+			if (!dirty) {
+				return originalDocument;
+			}
+			Document.Builder documentBuilder = Document.Builder.create(originalDocument);
+			documentBuilder.setApplicationDocumentId(builder.getApplicationDocumentId());
+			documentBuilder.setTitle(builder.getTitle());
+			return documentBuilder.build();
+		}
+
+		protected DocumentUpdate.Builder getBuilder() {
+			return builder;
+		}
+		
+		/**
+		 * Immutable value which is accessed frequently, provide direct access to it.
+		 */
+		protected String getDocumentId() {
+			return originalDocument.getDocumentId();
+		}
+
+		protected void setApplicationDocumentId(String applicationDocumentId) {
+			builder.setApplicationDocumentId(applicationDocumentId);
+			dirty = true;
+		}
+
+		protected void setTitle(String title) {
+			builder.setTitle(title);
+			dirty = true;
+		}
+
+		boolean isDirty() {
+			return dirty;
+		}
+
+	}
+   
 }

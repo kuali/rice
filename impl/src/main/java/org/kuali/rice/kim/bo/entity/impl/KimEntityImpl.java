@@ -17,12 +17,14 @@ package org.kuali.rice.kim.bo.entity.impl;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipBo;
-import org.kuali.rice.kim.impl.entity.personal.EntityBioDemographicsBo;
-import org.kuali.rice.kim.impl.entity.principal.PrincipalBo;
-import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
-import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
+import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo;
+import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
+import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo;
+import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
+import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
+import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.util.AutoPopulatingList;
 
@@ -51,7 +53,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityNameImpl> names = new AutoPopulatingList(KimEntityNameImpl.class);
+	protected List<EntityNameBo> names = new AutoPopulatingList(EntityNameBo.class);
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
@@ -277,11 +279,11 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 		return null;
 	}
 
-	public List<KimEntityNameImpl> getNames() {
+	public List<EntityNameBo> getNames() {
 		return this.names;
 	}
 
-	public void setNames(List<KimEntityNameImpl> names) {
+	public void setNames(List<EntityNameBo> names) {
 		this.names = names;
 	}	
 	
@@ -290,8 +292,8 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getDefaultName()
 	 */
-	public KimEntityNameImpl getDefaultName() {
-		return (KimEntityNameImpl)getDefaultItem( names );
+	public EntityNameBo getDefaultName() {
+		return (EntityNameBo)getDefaultItem( names );
 	}
 
 	/**

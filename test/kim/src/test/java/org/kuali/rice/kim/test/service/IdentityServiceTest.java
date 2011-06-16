@@ -18,9 +18,10 @@ package org.kuali.rice.kim.test.service;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
-import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.entity.services.IdentityService;
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
+import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.services.IdentityService;
+import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import org.kuali.rice.kim.bo.entity.dto.*;
@@ -67,7 +68,7 @@ public class IdentityServiceTest extends KIMTestCase {
 			entityIds.add(entityInfo.getEntityId());
 		}
 		
-		Map<String,KimEntityNameInfo> results = identityService.getDefaultNamesForEntityIds(entityIds);
+		Map<String,EntityName> results = identityService.getDefaultNamesForEntityIds(entityIds);
 		assertEquals(2,results.size());
 		for (String entityId : entityIds) {
 			assertTrue(results.containsKey(entityId));

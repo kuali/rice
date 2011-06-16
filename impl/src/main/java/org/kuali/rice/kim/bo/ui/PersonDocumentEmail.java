@@ -17,8 +17,8 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.api.entity.TypeContract;
-import org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo;
+import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
 
 
 import javax.persistence.*;
@@ -60,35 +60,35 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.email.EntityEmailContract#getEmailAddress()
+	 * @see org.kuali.rice.kim.api.identity.email.EntityEmailContract#getEmailAddress()
 	 */
 	public String getEmailAddress() {
 		return emailAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.email.EntityEmailContract#getEmailType()
+	 * @see org.kuali.rice.kim.api.identity.email.EntityEmailContract#getEmailType()
 	 */
 	public String getEmailTypeCode() {
 		return emailTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.email.EntityEmailContract#getId()
+	 * @see org.kuali.rice.kim.api.identity.email.EntityEmailContract#getId()
 	 */
 	public String getEntityEmailId() {
 		return entityEmailId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.email.EntityEmailContract#setEmailAddress(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.email.EntityEmailContract#setEmailAddress(java.lang.String)
 	 */
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.email.EntityEmailContract#setEmailType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.email.EntityEmailContract#setEmailType(java.lang.String)
 	 */
 	public void setEmailTypeCode(String emailTypeCode) {
 		this.emailTypeCode = emailTypeCode;

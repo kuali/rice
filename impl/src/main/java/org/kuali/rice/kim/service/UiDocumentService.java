@@ -55,7 +55,7 @@ public interface UiDocumentService {
     Map<String,Object> getAttributeEntries( AttributeDefinitionMap definitions );
 	/**
 	 * 
-	 * This method is to load entity to person document pending Bos when user 'initiate' a document for 'editing' entity.
+	 * This method is to load identity to person document pending Bos when user 'initiate' a document for 'editing' identity.
 	 * 
 	 * @param identityManagementPersonDocument
 	 * @param kimEntity

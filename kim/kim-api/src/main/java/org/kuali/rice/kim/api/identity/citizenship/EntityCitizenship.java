@@ -1,0 +1,316 @@
+package org.kuali.rice.kim.api.identity.citizenship;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
+import org.kuali.rice.kim.api.identity.Type;
+import org.w3c.dom.Element;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Collection;
+
+@XmlRootElement(name = EntityCitizenship.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = EntityCitizenship.Constants.TYPE_NAME, propOrder = {
+    EntityCitizenship.Elements.ID,
+    EntityCitizenship.Elements.ENTITY_ID,
+    EntityCitizenship.Elements.STATUS,
+    EntityCitizenship.Elements.COUNTRY_CODE,
+    EntityCitizenship.Elements.START_DATE,
+    EntityCitizenship.Elements.END_DATE,
+    CoreConstants.CommonElements.VERSION_NUMBER,
+    CoreConstants.CommonElements.OBJECT_ID,
+    EntityCitizenship.Elements.ACTIVE,
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
+public final class EntityCitizenship
+    implements ModelObjectComplete, EntityCitizenshipContract
+{
+    @XmlElement(name = Elements.ID, required = false)
+    private final String id;
+    @XmlElement(name = Elements.ENTITY_ID, required = false)
+    private final String entityId;
+    @XmlElement(name = Elements.STATUS, required = false)
+    private final Type status;
+    @XmlElement(name = Elements.COUNTRY_CODE, required = false)
+    private final String countryCode;
+    @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
+    @XmlElement(name = Elements.START_DATE, required = false)
+    private final Timestamp startDate;
+    @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
+    @XmlElement(name = Elements.END_DATE, required = false)
+    private final Timestamp endDate;
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+    @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
+    private final String objectId;
+    @XmlElement(name = Elements.ACTIVE, required = false)
+    private final boolean active;
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
+    /**
+     * Private constructor used only by JAXB.
+     * 
+     */
+    private EntityCitizenship() {
+        this.status = null;
+        this.countryCode = null;
+        this.startDate = null;
+        this.endDate = null;
+        this.versionNumber = null;
+        this.objectId = null;
+        this.active = false;
+        this.id = null;
+        this.entityId = null;
+    }
+
+    private EntityCitizenship(Builder builder) {
+        this.status = builder.getStatus() != null ? builder.getStatus().build() : null;
+        this.countryCode = builder.getCountryCode();
+        this.startDate = builder.getStartDate();
+        this.endDate = builder.getEndDate();
+        this.versionNumber = builder.getVersionNumber();
+        this.objectId = builder.getObjectId();
+        this.active = builder.isActive();
+        this.id = builder.getId();
+        this.entityId = builder.getEntityId();
+    }
+
+    @Override
+    public String getEntityId() {
+        return this.entityId;
+    }
+
+    @Override
+    public Type getStatus() {
+        return this.status;
+    }
+
+    @Override
+    public String getCountryCode() {
+        return this.countryCode;
+    }
+
+    @Override
+    public Timestamp getStartDate() {
+        return this.startDate;
+    }
+
+    @Override
+    public Timestamp getEndDate() {
+        return this.endDate;
+    }
+
+    @Override
+    public Long getVersionNumber() {
+        return this.versionNumber;
+    }
+
+    @Override
+    public String getObjectId() {
+        return this.objectId;
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.active;
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
+
+    /**
+     * A builder which can be used to construct {@link EntityCitizenship} instances.  Enforces the constraints of the {@link EntityCitizenshipContract}.
+     * 
+     */
+    public final static class Builder
+        implements Serializable, ModelBuilder, EntityCitizenshipContract
+    {
+        private String entityId;
+        private Type.Builder status;
+        private String countryCode;
+        private Timestamp startDate;
+        private Timestamp endDate;
+        private Long versionNumber;
+        private String objectId;
+        private boolean active;
+        private String id;
+
+        private Builder() {
+        }
+
+        public static Builder create() {
+            return new Builder();
+        }
+
+        public static Builder create(EntityCitizenshipContract contract) {
+            if (contract == null) {
+                throw new IllegalArgumentException("contract was null");
+            }
+            Builder builder = create();
+            builder.setEntityId(contract.getEntityId());
+            if (contract.getStatus() != null) {
+                builder.setStatus(Type.Builder.create(contract.getStatus()));
+            }
+            builder.setCountryCode(contract.getCountryCode());
+            builder.setStartDate(contract.getStartDate());
+            builder.setEndDate(contract.getEndDate());
+            builder.setVersionNumber(contract.getVersionNumber());
+            builder.setObjectId(contract.getObjectId());
+            builder.setActive(contract.isActive());
+            builder.setId(contract.getId());
+            return builder;
+        }
+
+        public EntityCitizenship build() {
+            return new EntityCitizenship(this);
+        }
+
+        @Override
+        public String getEntityId() {
+            return this.entityId;
+        }
+
+        @Override
+        public Type.Builder getStatus() {
+            return this.status;
+        }
+
+        @Override
+        public String getCountryCode() {
+            return this.countryCode;
+        }
+
+        @Override
+        public Timestamp getStartDate() {
+            return this.startDate;
+        }
+
+        @Override
+        public Timestamp getEndDate() {
+            return this.endDate;
+        }
+
+        @Override
+        public Long getVersionNumber() {
+            return this.versionNumber;
+        }
+
+        @Override
+        public String getObjectId() {
+            return this.objectId;
+        }
+
+        @Override
+        public boolean isActive() {
+            return this.active;
+        }
+
+        @Override
+        public String getId() {
+            return this.id;
+        }
+
+        public void setEntityId(String entityId) {
+            this.entityId = entityId;
+        }
+        public void setStatus(Type.Builder status) {
+            this.status = status;
+        }
+
+        public void setCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+        }
+
+        public void setStartDate(Timestamp startDate) {
+            this.startDate = startDate;
+        }
+
+        public void setEndDate(Timestamp endDate) {
+            this.endDate = endDate;
+        }
+
+        public void setVersionNumber(Long versionNumber) {
+            this.versionNumber = versionNumber;
+        }
+
+        public void setObjectId(String objectId) {
+            this.objectId = objectId;
+        }
+
+        public void setActive(boolean active) {
+            this.active = active;
+        }
+
+        public void setId(String id) {
+            if (StringUtils.isWhitespace(id)) {
+                throw new IllegalArgumentException("id is blank");
+            }
+            this.id = id;
+        }
+
+    }
+
+
+    /**
+     * Defines some internal constants used on this class.
+     * 
+     */
+    static class Constants {
+
+        final static String ROOT_ELEMENT_NAME = "entityCitizenship";
+        final static String TYPE_NAME = "EntityCitizenshipType";
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
+
+    }
+
+
+    /**
+     * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
+     * 
+     */
+    static class Elements {
+        final static String ENTITY_ID = "entityId";
+        final static String STATUS = "status";
+        final static String COUNTRY_CODE = "countryCode";
+        final static String START_DATE = "startDate";
+        final static String END_DATE = "endDate";
+        final static String ACTIVE = "active";
+        final static String ID = "id";
+
+    }
+
+}

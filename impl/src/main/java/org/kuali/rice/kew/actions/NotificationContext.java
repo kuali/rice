@@ -17,8 +17,7 @@
 package org.kuali.rice.kew.actions;
 
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
-import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
 /**

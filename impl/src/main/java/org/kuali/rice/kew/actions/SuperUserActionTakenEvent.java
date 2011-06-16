@@ -25,7 +25,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
 import java.util.ArrayList;

@@ -23,7 +23,7 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;

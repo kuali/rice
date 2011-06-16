@@ -74,7 +74,7 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 
 /**

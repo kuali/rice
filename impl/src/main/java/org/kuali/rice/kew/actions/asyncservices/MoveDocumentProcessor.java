@@ -21,7 +21,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 
 
 import java.util.Set;

@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;

@@ -16,10 +16,10 @@
 package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
+import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;

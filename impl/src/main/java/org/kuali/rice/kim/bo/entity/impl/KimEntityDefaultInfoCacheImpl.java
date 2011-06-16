@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import org.kuali.rice.kim.api.entity.address.EntityAddress;
-import org.kuali.rice.kim.api.entity.email.EntityEmail;
-import org.kuali.rice.kim.api.entity.phone.EntityPhone;
-import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
+import org.kuali.rice.kim.api.identity.address.EntityAddress;
+import org.kuali.rice.kim.api.identity.email.EntityEmail;
+import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.kim.api.identity.phone.EntityPhone;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
@@ -119,7 +119,7 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 	public KimEntityDefaultInfo convertCacheToEntityDefaultInfo() {
 		KimEntityDefaultInfo info = new KimEntityDefaultInfo();
 		
-		// entity info
+		// identity info
 		info.setEntityId( this.getEntityId() );
 		info.setActive( this.isActive() );
 
@@ -132,13 +132,14 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 		((ArrayList<Principal>)info.getPrincipals()).add(principalInfo.build());
 
 		// name info
-		KimEntityNameInfo nameInfo = new KimEntityNameInfo();
+		EntityName.Builder nameInfo = EntityName.Builder.create();
+        nameInfo.setEntityId( this.getEntityId());
 		nameInfo.setFirstName( this.getFirstName() );
 		nameInfo.setLastName( this.getLastName() );
 		nameInfo.setMiddleName( this.getMiddleName() );
-		info.setDefaultName(nameInfo);
+		info.setDefaultName(nameInfo.build());
 
-		// entity type information
+		// identity type information
 		ArrayList<EntityTypeDataDefault> entityTypesInfo = new ArrayList<EntityTypeDataDefault>( 1 );
 		info.setEntityTypes( entityTypesInfo );
 		EntityTypeDataDefault entityTypeInfo = new EntityTypeDataDefault(this.getEntityTypeCode(),

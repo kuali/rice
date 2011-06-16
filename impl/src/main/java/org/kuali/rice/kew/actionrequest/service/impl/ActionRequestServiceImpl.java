@@ -58,7 +58,7 @@ import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -505,7 +505,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
     
     /**
-     * Returns all pending requests for a given routing entity
+     * Returns all pending requests for a given routing identity
      * @param documentId the id of the document header being routed
      * @return a List of all pending ActionRequestValues for the document
      */

@@ -29,7 +29,7 @@ import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.config.ThinClientResourceLoader;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 
 

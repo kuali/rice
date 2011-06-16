@@ -17,7 +17,7 @@
 
   <bean id="EmailType" parent="EmailType-parentBean"/>
   <bean id="EmailType-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo"/>
     <property name="inquiryDefinition">
       <ref bean="EmailType-inquiryDefinition"/>
     </property>

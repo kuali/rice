@@ -17,8 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.api.entity.TypeContract;
-import org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo;
+import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -77,7 +77,7 @@ import org.kuali.rice.kew.validation.RuleValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;

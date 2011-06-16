@@ -22,35 +22,35 @@
   
   <persistence-unit name="kim-unit" transaction-type="JTA">
     <mapping-file>META-INF/kim-orm.xml</mapping-file>
-    <class>org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo</class>
     <class>org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl</class>
-    <class>org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipStatusBo</class>
-    <class>org.kuali.rice.kim.impl.entity.email.EntityEmailBo</class>
+    <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo</class>
+    <class>org.kuali.rice.kim.impl.identity.email.EntityEmailBo</class>
     <class>org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl</class>
     <class>org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl</class>
-    <class>org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl</class>
-    <class>org.kuali.rice.kim.impl.entity.EntityTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.EntityTypeBo</class>
     <class>org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl</class>
-    <class>org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo</class>
     <class>org.kuali.rice.kim.impl.type.KimTypeBo</class>
     <class>org.kuali.rice.kim.impl.common.attribute.KimAttributeBo</class>
     <class>org.kuali.rice.kim.impl.type.KimTypeAttributeBo</class>
-    <class>org.kuali.rice.kim.impl.entity.principal.PrincipalBo</class>
+    <class>org.kuali.rice.kim.impl.identity.principal.PrincipalBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl</class>
-    <class>org.kuali.rice.kim.impl.entity.personal.EntityBioDemographicsBo</class>
-    <class>org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipBo</class>
+    <class>org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo</class>
+    <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl</class>
-    <class>org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl</class>
+    <class>org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo</class>
+    <class>org.kuali.rice.kim.impl.identity.name.EntityNameBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityVisaImpl</class>
-    <class>org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo</class>
-    <class>org.kuali.rice.kim.impl.entity.address.EntityAddressBo</class>
-    <class>org.kuali.rice.kim.impl.entity.email.EntityEmailBo</class>
-    <class>org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo</class>
+    <class>org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo</class>
+    <class>org.kuali.rice.kim.impl.identity.address.EntityAddressBo</class>
+    <class>org.kuali.rice.kim.impl.identity.email.EntityEmailBo</class>
+    <class>org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo</class>
     <class>org.kuali.rice.kim.impl.group.GroupBo</class>
     <class>org.kuali.rice.kim.impl.group.GroupMemberBo</class>
     <class>org.kuali.rice.kim.impl.group.GroupAttributeBo</class>

@@ -17,7 +17,7 @@
 
   <bean id="CitizenshipStatus" parent="CitizenshipStatus-parentBean"/>
   <bean id="CitizenshipStatus-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipStatusBo"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo"/>
     <property name="inquiryDefinition">
       <ref bean="CitizenshipStatus-inquiryDefinition"/>
     </property>

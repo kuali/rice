@@ -20,10 +20,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
+import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
@@ -95,7 +95,7 @@ public class PersonServiceImpl implements PersonService {
 	protected ArrayList<String> personCachePropertyNames = new ArrayList<String>();
 	{
 		// init the criteria which will need to be applied to every lookup against
-		// the entity data tables
+		// the identity data tables
 		baseLookupCriteria.put( KIMPropertyConstants.Person.ACTIVE, "Y" );
 		baseLookupCriteria.put( ENTITY_TYPE_PROPERTY_PREFIX + KRADPropertyConstants.ACTIVE, "Y" );
 		
@@ -153,11 +153,11 @@ public class PersonServiceImpl implements PersonService {
 		KimEntityDefaultInfo entity = null;
 		// get the corresponding principal
 		Principal principal = getIdentityManagementService().getPrincipal( principalId );
-		// get the entity
+		// get the identity
 		if ( principal != null ) {
 			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
 		}
-		// convert the principal and entity to a Person
+		// convert the principal and identity to a Person
 		// skip if the person was created from the DB cache
 		if (entity != null ) {
 			person = convertEntityToPerson( entity, principal );
@@ -171,11 +171,11 @@ public class PersonServiceImpl implements PersonService {
 			// get the EntityEntityType for the EntityType corresponding to a Person
 			for ( String entityTypeCode : personEntityTypeCodes ) {
 				EntityTypeDataDefault entType = entity.getEntityType( entityTypeCode );
-				// if no "person" entity type present for the given principal, skip to the next type in the list
+				// if no "person" identity type present for the given principal, skip to the next type in the list
 				if ( entType == null ) {
 					continue;
 				}
-				// attach the principal and entity objects
+				// attach the principal and identity objects
 				// PersonImpl has logic to pull the needed elements from the KimEntity-related classes
 				return new PersonImpl( principal, entity, entityTypeCode );
 			}
@@ -244,11 +244,11 @@ public class PersonServiceImpl implements PersonService {
 		KimEntityDefaultInfo entity = null;
 		// get the corresponding principal
 		Principal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
-		// get the entity
+		// get the identity
 		if ( principal != null ) {
 			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
 		}
-		// convert the principal and entity to a Person
+		// convert the principal and identity to a Person
 		if ( entity != null ) {
 			person = convertEntityToPerson( entity, principal );
 		}
@@ -380,7 +380,7 @@ public class PersonServiceImpl implements PersonService {
 		List<? extends KimEntityDefaultInfo> entities = getIdentityManagementService().lookupEntityDefaultInfo( entityCriteria, unbounded );
 
 		for ( KimEntityDefaultInfo e : entities ) {
-			// get to get all principals for the entity as well
+			// get to get all principals for the identity as well
 			for ( Principal p : e.getPrincipals() ) {
 				people.add( convertEntityToPerson( e, p ) );
 			}

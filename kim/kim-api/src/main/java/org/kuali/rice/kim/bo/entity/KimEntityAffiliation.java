@@ -19,7 +19,7 @@ import org.kuali.rice.krad.bo.DefaultableInactivateable;
 
 
 /**
- * an affiliation for a KIM entity
+ * an affiliation for a KIM identity
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

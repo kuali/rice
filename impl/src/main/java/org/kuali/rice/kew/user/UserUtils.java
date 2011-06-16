@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.user;
 
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.bo.Person;
 
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;

@@ -19,16 +19,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.api.entity.address.EntityAddressContract;
-import org.kuali.rice.kim.api.entity.email.EntityEmailContract;
-import org.kuali.rice.kim.api.entity.phone.EntityPhoneContract;
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
+import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
+import org.kuali.rice.kim.api.identity.name.EntityNameContract;
+import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmail;
@@ -38,8 +38,8 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
-import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
+import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
+import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
@@ -96,7 +96,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
 		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));
 		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), entityType.getEmailAddresses().get(0));
-		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (KimEntityNameImpl)entity.getNames().get(0));
+		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), entity.getNames().get(0));
 		assertPrincipalTrue(personDoc, entity.getPrincipals().get(0));
 
 		assertAffiliationTrue(personDoc.getAffiliations().get(0), entity.getAffiliations().get(0));
@@ -111,7 +111,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
         assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType2.getAddresses().get(0));
         assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType2.getPhoneNumbers().get(0));
         assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), entityType2.getEmailAddresses().get(0));
-        assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (KimEntityNameImpl)entity2.getNames().get(0));
+        assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), entity2.getNames().get(0));
         assertPrincipalTrue(personDoc, entity2.getPrincipals().get(0));
 
 
@@ -140,8 +140,8 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
 		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));
 		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), entityType.getEmailAddresses().get(0));
-		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (KimEntityNameImpl)entity.getNames().get(0));
-		//assertPrincipalTrue(personDoc, entity.getPrincipals().get(0));
+		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), entity.getNames().get(0));
+		//assertPrincipalTrue(personDoc, identity.getPrincipals().get(0));
 		assertAffiliationTrue(personDoc.getAffiliations().get(0), entity.getAffiliations().get(0));
 		assertEmpInfoTrue(personDoc.getAffiliations().get(0).getEmpInfos().get(0), entity.getEmploymentInformation().get(0));
 
@@ -232,7 +232,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();
 			PersonDocumentName docName = new PersonDocumentName();
 			docName.setEntityNameId("nameId123");
-			docName.setNameTypeCode("PREFERRED");
+			docName.setNameTypeCode("PRFR");
 			docName.setFirstName("John");
 			docName.setLastName("Doe");
 			docName.setMiddleName("M");
@@ -359,11 +359,11 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEquals(docPhone.getPhoneTypeCode(), entityPhone.getPhoneType().getCode());
 	}
 
-	private void assertNameTrue(PersonDocumentName docName, KimEntityNameImpl entityName) {
-		assertEquals(docName.getEntityNameId(), entityName.getEntityNameId());
+	private void assertNameTrue(PersonDocumentName docName, EntityNameContract entityName) {
+		assertEquals(docName.getEntityNameId(), entityName.getId());
 		assertEquals(docName.getFirstName(), entityName.getFirstName());
 		assertEquals(docName.getLastName(), entityName.getLastName());
-		assertEquals(docName.getNameTypeCode(), entityName.getNameTypeCode());
+		assertEquals(docName.getNameTypeCode(), entityName.getNameType().getCode());
 		assertEquals(docName.getSuffix(), entityName.getSuffix());
 		assertEquals(docName.getTitle(), entityName.getTitle());
 	}

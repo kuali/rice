@@ -18,8 +18,8 @@ package org.kuali.rice.kim.bo.ui;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.api.entity.TypeContract;
-import org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo;
+import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

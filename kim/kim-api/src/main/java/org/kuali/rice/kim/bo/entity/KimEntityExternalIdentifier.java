@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.bo.entity;
 
 /**
- * an external identifier for a KIM entity 
+ * an external identifier for a KIM identity
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

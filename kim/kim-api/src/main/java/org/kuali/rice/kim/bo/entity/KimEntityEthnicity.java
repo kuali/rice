@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.entity;
 
 
 /**
- * ethnicity information for a KIM entity 
+ * ethnicity information for a KIM identity
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -31,8 +31,8 @@ public interface KimEntityEthnicity {
 	String getId();
 	
 	/**
-     * Gets this {@link KimEntityEthnicity}'s entity id.
-     * @return the entity id for this {@link KimEntityEthnicity}, or null if none has been assigned.
+     * Gets this {@link KimEntityEthnicity}'s identity id.
+     * @return the identity id for this {@link KimEntityEthnicity}, or null if none has been assigned.
      */
 	String getEntityId();
 	

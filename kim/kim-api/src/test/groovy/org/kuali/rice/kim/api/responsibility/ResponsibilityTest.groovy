@@ -95,22 +95,22 @@ class ResponsibilityTest {
 	
     @Test
     void happy_path() {
-        Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE)
+        Responsibility.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE)
     }
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_null() {
-		Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(null);
+		Responsibility.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_less_than_1() {
-		Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(-1);
+		Responsibility.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(-1);
 	}
 	
 	@Test
 	void test_copy() {
-		def o1b = Responsibility.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE)
+		def o1b = Responsibility.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE)
 		o1b.description = DESCRIPTION
 
 		def o1 = o1b.build()

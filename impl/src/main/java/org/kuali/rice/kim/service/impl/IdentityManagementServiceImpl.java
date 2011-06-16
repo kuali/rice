@@ -21,11 +21,11 @@ import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
-import org.kuali.rice.kim.api.entity.Type;
-import org.kuali.rice.kim.api.entity.TypeContract;
-import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
-import org.kuali.rice.kim.api.entity.services.IdentityService;
+import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
@@ -40,16 +40,16 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
-import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.KimCodeInfoBase;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.impl.entity.EntityTypeBo;
-import org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo;
-import org.kuali.rice.kim.impl.entity.citizenship.EntityCitizenshipStatusBo;
-import org.kuali.rice.kim.impl.entity.email.EntityEmailTypeBo;
-import org.kuali.rice.kim.impl.entity.phone.EntityPhoneTypeBo;
+import org.kuali.rice.kim.impl.identity.EntityTypeBo;
+import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
+import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo;
+import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
+import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.PermissionService;
@@ -980,11 +980,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return type;
 	}
-	public EntityNameTypeInfo getEntityNameType( String code ) {
-		EntityNameTypeInfo type = (EntityNameTypeInfo)kimReferenceTypeCache.get(EntityNameTypeInfo.class.getSimpleName()+"-"+code);
+	public Type getEntityNameType( String code ) {
+		Type type = (Type)kimReferenceTypeCacheMap.get(EntityNameTypeBo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
 			type = getIdentityService().getEntityNameType(code);
-			kimReferenceTypeCache.put(EntityNameTypeInfo.class.getSimpleName()+"-"+code, type);
+			kimReferenceTypeCacheMap.put(EntityNameTypeBo.class.getSimpleName()+"-"+code, type);
 		}
 		return type;
 	}

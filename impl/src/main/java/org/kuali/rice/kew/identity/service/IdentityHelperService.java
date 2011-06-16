@@ -18,7 +18,7 @@ package org.kuali.rice.kew.identity.service;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.workgroup.GroupId;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 

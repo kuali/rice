@@ -17,7 +17,7 @@
 
   <bean id="EntityType" parent="EntityType-parentBean"/>
   <bean id="EntityType-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.entity.EntityTypeBo"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
     <property name="inquiryDefinition">
       <ref bean="EntityType-inquiryDefinition"/>
     </property>

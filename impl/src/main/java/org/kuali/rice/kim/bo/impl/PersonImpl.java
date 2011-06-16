@@ -17,20 +17,19 @@ package org.kuali.rice.kim.bo.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.kim.api.entity.address.EntityAddressContract;
-import org.kuali.rice.kim.api.entity.email.EntityEmailContract;
-import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.KimEntityName;
-
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.api.entity.phone.EntityPhoneContract;
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
+import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
+import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
+import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
+import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
@@ -174,7 +173,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	protected void populateNameInfo( String entityTypeCode, KimEntityDefaultInfo entity, Principal principal ) {
 		if(entity!=null){
-			KimEntityName entityName = entity.getDefaultName();
+			EntityName entityName = entity.getDefaultName();
 			if ( entityName != null ) {
 				firstName = unNullify( entityName.getFirstName());
 				middleName = unNullify( entityName.getMiddleName() );
@@ -465,7 +464,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	/**
-	 * Pulls the campus code from the default affiliation for the entity.
+	 * Pulls the campus code from the default affiliation for the identity.
 	 * Returns null if no default affiliation is set.
 	 * @see org.kuali.rice.kim.bo.Person#getCampusCode()
 	 */

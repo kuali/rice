@@ -22,7 +22,7 @@ import java.util.Map;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
 

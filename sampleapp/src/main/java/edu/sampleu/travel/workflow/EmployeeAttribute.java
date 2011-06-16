@@ -35,7 +35,7 @@ import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import org.kuali.rice.krad.web.ui.Field;

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
+import org.kuali.rice.kim.api.identity.name.EntityNameContract;
+
 /**
  * DTO interface to be used for caching default EntityNames with the PrincipalName
  * 
@@ -24,10 +26,10 @@ package org.kuali.rice.kim.bo.entity;
 public interface KimEntityNamePrincipalName {
     
     /**
-     * Gets this {@link KimEntityNamePrincipalName}'s {@link KimEntityName}.
+     * Gets this {@link KimEntityNamePrincipalName}'s {@link EntityNameContract}.
      * @return the {@link KimEntityName} for this {@link KimEntityNamePrincipalName}, or null if none has been assigned.
      */
-	public KimEntityName getDefaultEntityName();
+	public EntityNameContract getDefaultEntityName();
 	
 	/**
      * Gets this {@link KimEntityNamePrincipalName}'s principal name.

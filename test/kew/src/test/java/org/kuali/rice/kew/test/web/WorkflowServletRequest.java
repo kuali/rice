@@ -19,7 +19,7 @@ package org.kuali.rice.kew.test.web;
 
 import javax.servlet.ServletContext;
 
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import org.kuali.rice.krad.UserSession;

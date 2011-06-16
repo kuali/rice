@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
 /**

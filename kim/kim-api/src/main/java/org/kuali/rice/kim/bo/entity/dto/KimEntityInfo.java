@@ -15,30 +15,30 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenship;
-import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract;
-import org.kuali.rice.kim.api.entity.personal.EntityBioDemographics;
-import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
-import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.entity.type.EntityTypeData;
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
+import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
+import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
+import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.kim.api.identity.name.EntityNameContract;
+import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.api.identity.type.EntityTypeData;
+import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.entity.KimEntityResidency;
 import org.kuali.rice.kim.bo.entity.KimEntityVisa;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This is a data transfer object containing all information related to a KIM
- * entity.
+ * identity.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
@@ -53,7 +53,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     private String entityId;
     private List<EntityTypeData> entityTypes;
     private List<KimEntityExternalIdentifierInfo> externalIdentifiers;
-    private List<KimEntityNameInfo> names;
+    private List<EntityName> names;
     private List<Principal> principals;
     private EntityPrivacyPreferences privacyPreferences;
     private List<KimEntityEthnicityInfo> ethnicities;
@@ -98,11 +98,10 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
                 privacyPreferences = EntityPrivacyPreferences.Builder.create(entity.getPrivacyPreferences()).build();
             }
 
-            names = deriveCollection(entity.getNames(), new XForm<KimEntityName, KimEntityNameInfo>() {
-                public KimEntityNameInfo xform(KimEntityName source) {
-                    return new KimEntityNameInfo(source);
-                } 
-            });
+            names = new ArrayList<EntityName>();
+            for (EntityNameContract name : entity.getNames()) {
+                names.add(EntityName.Builder.create(name).build());
+            }
 
             entityTypes = new ArrayList<EntityTypeData>();
             for (EntityTypeDataContract contract : entity.getEntityTypes()) {
@@ -267,7 +266,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     }
 
     /** 
-     * Setter for this {@link KimEntityInfo}'s entity id.  Note the behavior of 
+     * Setter for this {@link KimEntityInfo}'s identity id.  Note the behavior of
      * {@link #getEntityId()} if this is set to null;
      */
     public void setEntityId(String entityId) {
@@ -284,7 +283,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     }
 
     /** 
-     * Setter for this {@link KimEntityInfo}'s entity types.  Note the behavior of 
+     * Setter for this {@link KimEntityInfo}'s identity types.  Note the behavior of
      * {@link #getEntityTypes()} if this is set to null;
      */
     public void setEntityTypes(List<EntityTypeData> entityTypes) {
@@ -313,16 +312,16 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getNames()
      */
-    public List<KimEntityNameInfo> getNames() {
+    public List<EntityName> getNames() {
         // If our reference is null, assign and return an empty List
-        return (names != null) ? names : (names = new ArrayList<KimEntityNameInfo>());
+        return (names != null) ? names : (names = new ArrayList<EntityName>());
     }
 
     /** 
      * Setter for this {@link KimEntityInfo}'s names.  Note the behavior of 
      * {@link #getNames()} if this is set to null;
      */
-    public void setNames(List<KimEntityNameInfo> names) {
+    public void setNames(List<EntityName> names) {
         this.names = names;
     }
 
@@ -330,9 +329,9 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getDefaultName()
      */
-    public KimEntityNameInfo getDefaultName() {
-        KimEntityNameInfo result = null;
-        for (KimEntityNameInfo name : this.getNames()) {
+    public EntityName getDefaultName() {
+        EntityName result = null;
+        for (EntityName name : this.getNames()) {
             if (result == null) {
                 result = name;
             }
@@ -464,10 +463,10 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     /*
         // utility method converts this monstrous block:
         
-        if (entity.getEntityTypes() != null) {
-            entityTypes = new ArrayList<KimEntityEntityTypeInfo>(entity.getEntityTypes().size());
+        if (identity.getEntityTypes() != null) {
+            entityTypes = new ArrayList<KimEntityEntityTypeInfo>(identity.getEntityTypes().size());
 
-            for (KimEntityEntityType entityEntityType : entity.getEntityTypes()) if (entityEntityType != null) {
+            for (KimEntityEntityType entityEntityType : identity.getEntityTypes()) if (entityEntityType != null) {
                 entityTypes.add(new KimEntityEntityTypeInfo(entityEntityType));
             }
         } else {
@@ -476,7 +475,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
         
         // to this:
         
-        entityTypes = deriveCollection(entity.getEntityTypes(), new XForm<KimEntityEntityType, KimEntityEntityTypeInfo>() {
+        entityTypes = deriveCollection(identity.getEntityTypes(), new XForm<KimEntityEntityType, KimEntityEntityTypeInfo>() {
             public KimEntityEntityTypeInfo xform(KimEntityEntityType source) {
                 return new KimEntityEntityTypeInfo(source);
             }

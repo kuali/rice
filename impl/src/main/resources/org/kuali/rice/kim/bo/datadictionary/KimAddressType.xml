@@ -17,7 +17,7 @@
 
   <bean id="KimAddressType" parent="KimAddressType-parentBean"/>
   <bean id="KimAddressType-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.entity.address.EntityAddressTypeBo"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo"/>
     <property name="inquiryDefinition">
       <ref bean="KimAddressType-inquiryDefinition"/>
     </property>

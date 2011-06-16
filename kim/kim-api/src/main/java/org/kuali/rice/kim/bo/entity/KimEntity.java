@@ -17,11 +17,12 @@ package org.kuali.rice.kim.bo.entity;
 
 import java.util.List;
 
-import org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract;
-import org.kuali.rice.kim.api.entity.personal.EntityBioDemographicsContract;
-import org.kuali.rice.kim.api.entity.principal.PrincipalContract;
-import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract;
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataContract;
+import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
+import org.kuali.rice.kim.api.identity.name.EntityNameContract;
+import org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract;
+import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
 import org.kuali.rice.krad.bo.Inactivateable;
 
 
@@ -34,13 +35,13 @@ import org.kuali.rice.krad.bo.Inactivateable;
 public interface KimEntity extends Inactivateable {
 	
     /**
-     * Gets this {@link KimEntity}'s entity id.
+     * Gets this {@link KimEntity}'s identity id.
      * @return the id for this {@link KimEntity}, or null if none has been assigned.
      */
 	String getEntityId();
 	
 	/**
-	 * Gets this {@link KimEntity}'s entity types
+	 * Gets this {@link KimEntity}'s identity types
 	 * @return the List of {@link EntityTypeDataContract}S for this {@link KimEntity}.
 	 * The returned List will never be null, an empty List will be assigned and returned if needed. 
 	 */
@@ -70,10 +71,10 @@ public interface KimEntity extends Inactivateable {
 
 	/**
 	 * Gets this {@link KimEntity}'s names
-	 * @return the List of {@link KimEntityName}S for this {@link KimEntity}.
+	 * @return the List of {@link EntityNameContract}S for this {@link KimEntity}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
 	 */
-	List<? extends KimEntityName> getNames();
+	List<? extends EntityNameContract> getNames();
 	
 	
     /**
@@ -85,7 +86,7 @@ public interface KimEntity extends Inactivateable {
 
     /**
      * Gets this {@link KimEntity}'s privacy preferences
-     * @return the {@link org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences} for this {@link KimEntity},
+     * @return the {@link org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences} for this {@link KimEntity},
      * or null if none has been assigned.
      */	
 	EntityPrivacyPreferencesContract getPrivacyPreferences();
@@ -105,10 +106,10 @@ public interface KimEntity extends Inactivateable {
 	List<? extends EntityCitizenshipContract> getCitizenships();
 	
 	/**
-	 * Gets this {@link KimEntity}'s entity type for the given type code
+	 * Gets this {@link KimEntity}'s identity type for the given type code
 	 * @param entityTypeCode the type code
 	 * @return the EntityEntityType object corresponding to the given code or null if this
-	 * entity does not have data for that type.
+	 * identity does not have data for that type.
 	 */
 	EntityTypeDataContract getEntityType( String entityTypeCode );
 	
@@ -121,7 +122,7 @@ public interface KimEntity extends Inactivateable {
 
 	/**
 	 * Gets this {@link KimEntity}'s default affiliation
-     * @return the default {@link KimEntityAffiliation} for the entity.  If no default is defined, then
+     * @return the default {@link KimEntityAffiliation} for the identity.  If no default is defined, then
      * it returns the first one found.  If none are defined, it returns null.
      */
 	KimEntityAffiliation getDefaultAffiliation();
@@ -135,10 +136,10 @@ public interface KimEntity extends Inactivateable {
 	
 	/** 
 	 * Gets this {@link KimEntity}'s default name
-	 * @return the default {@link KimEntityName} record for the entity.  If no default is defined, then
+	 * @return the default {@link EntityNameContract} record for the identity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.
 	 */
-	KimEntityName getDefaultName();
+	EntityNameContract getDefaultName();
 
     /**
      * Gets this {@link KimEntity}'s ethnicities

@@ -22,19 +22,20 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.entity.address.EntityAddress;
-import org.kuali.rice.kim.api.entity.address.EntityAddressContract;
-import org.kuali.rice.kim.api.entity.email.EntityEmail;
-import org.kuali.rice.kim.api.entity.email.EntityEmailContract;
-import org.kuali.rice.kim.api.entity.phone.EntityPhone;
-import org.kuali.rice.kim.api.entity.phone.EntityPhoneContract;
-import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.entity.services.IdentityService;
-import org.kuali.rice.kim.api.entity.type.EntityTypeData;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.identity.address.EntityAddress;
+import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
+import org.kuali.rice.kim.api.identity.email.EntityEmail;
+import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
+import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.kim.api.identity.phone.EntityPhone;
+import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.api.identity.services.IdentityService;
+import org.kuali.rice.kim.api.identity.type.EntityTypeData;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -47,11 +48,9 @@ import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -87,15 +86,16 @@ import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.kim.impl.entity.address.EntityAddressBo;
-import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
-import org.kuali.rice.kim.impl.entity.phone.EntityPhoneBo;
-import org.kuali.rice.kim.impl.entity.principal.PrincipalBo;
-import org.kuali.rice.kim.impl.entity.privacy.EntityPrivacyPreferencesBo;
-import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.impl.group.GroupAttributeBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
+import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
+import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
+import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
+import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
+import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
+import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
@@ -170,7 +170,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			origEntity = new KimEntityImpl();
 			kimEntity.setActive(true);
 		} else {
-			// TODO : in order to resolve optimistic locking issue. has to get entity and set the version number if entity records matched
+			// TODO : in order to resolve optimistic locking issue. has to get identity and set the version number if identity records matched
 			// Need to look into this.
 			//kimEntity = origEntity;
 			kimEntity.setActive(origEntity.isActive());
@@ -194,7 +194,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityTypes.add(entityType);
 			EntityTypeDataBo origEntityType = new EntityTypeDataBo();
 			for (EntityTypeDataBo type : origEntity.getEntityTypes()) {
-				// should check entity.entitytypeid, but it's not persist in persondoc yet
+				// should check identity.entitytypeid, but it's not persist in persondoc yet
 				if (type.getEntityTypeCode()!=null && StringUtils.equals(type.getEntityTypeCode(), entityType.getEntityTypeCode())) {
 					origEntityType = type;
 					entityType.setVersionNumber(type.getVersionNumber());
@@ -786,13 +786,15 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	return docRoleQualifiers;
     }
 
-    protected List<PersonDocumentName> loadNames( IdentityManagementPersonDocument personDoc, String principalId, List <KimEntityNameInfo> names, boolean suppressDisplay ) {
+    protected List<PersonDocumentName> loadNames( IdentityManagementPersonDocument personDoc, String principalId, List <EntityName> names, boolean suppressDisplay ) {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();
 		if(ObjectUtils.isNotNull(names)){
-			for (KimEntityNameInfo name: names) {
+			for (EntityName name: names) {
 				if(name.isActive()){
 					PersonDocumentName docName = new PersonDocumentName();
-					docName.setNameTypeCode(name.getNameTypeCode());
+                    if (name.getNameType() != null) {
+					    docName.setNameTypeCode(name.getNameType().getCode());
+                    }
 
 					//We do not need to check the privacy setting here - The UI should care of it
 					docName.setFirstName(name.getFirstNameUnmasked());
@@ -804,7 +806,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docName.setActive(name.isActive());
 					docName.setDflt(name.isDefaultValue());
 					docName.setEdit(true);
-					docName.setEntityNameId(name.getEntityNameId());
+					docName.setEntityNameId(name.getId());
 					docNames.add(docName);
 				}
 			}
@@ -945,13 +947,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return docPrivacy;
 	}
 
-    protected void setupName(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<KimEntityNameImpl> origNames) {
+    protected void setupName(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<EntityNameBo> origNames) {
     	if ( !identityManagementPersonDocument.getPrivacy().isSuppressName() ||
     			canOverrideEntityPrivacyPreferences( getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId() ) ) {
-	    	List<KimEntityNameImpl> entityNames = new ArrayList<KimEntityNameImpl>();
+	    	List<EntityNameBo> entityNames = new ArrayList<EntityNameBo>();
 			if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getNames())){
 				for (PersonDocumentName name : identityManagementPersonDocument.getNames()) {
-					KimEntityNameImpl entityName = new KimEntityNameImpl();
+				    EntityNameBo entityName = new EntityNameBo();
 					entityName.setNameTypeCode(name.getNameTypeCode());
 					entityName.setFirstName(name.getFirstName());
 					entityName.setLastName(name.getLastName());
@@ -960,11 +962,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					entityName.setSuffix(name.getSuffix());
 					entityName.setActive(name.isActive());
 					entityName.setDefaultValue(name.isDflt());
-					entityName.setEntityNameId(name.getEntityNameId());
+					entityName.setId(name.getEntityNameId());
 					entityName.setEntityId(identityManagementPersonDocument.getEntityId());
 					if(ObjectUtils.isNotNull(origNames)){
-						for (KimEntityNameImpl origName : origNames) {
-							if (origName.getEntityNameId()!=null && StringUtils.equals(origName.getEntityNameId(), entityName.getEntityNameId())) {
+						for (EntityNameBo origName : origNames) {
+							if (origName.getId()!=null && StringUtils.equals(origName.getId(), entityName.getId())) {
 								entityName.setVersionNumber(origName.getVersionNumber());
 							}
 

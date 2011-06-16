@@ -20,8 +20,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.entity.services.IdentityArchiveService;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.services.IdentityArchiveService;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.util.KimConstants;
@@ -217,7 +217,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 			}
 
 			/**
-			 * This method builds a newline delimited String containing the entity's principal IDs in sorted order
+			 * This method builds a newline delimited String containing the identity's principal IDs in sorted order
 			 *
 			 * @param entity
 			 * @return

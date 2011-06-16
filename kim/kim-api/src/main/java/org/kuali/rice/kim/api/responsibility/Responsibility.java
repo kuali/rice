@@ -247,6 +247,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
          */
         public static Builder create(ResponsibilityContract contract) {
             Builder builder = new Builder(contract.getNamespaceCode(), contract.getName(), Template.Builder.create(contract.getTemplate()));
+            builder.setId(contract.getId());
             builder.setDescription(contract.getDescription());
             builder.setAttributes(contract.getAttributes());
             builder.setActive(contract.isActive());

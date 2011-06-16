@@ -19,7 +19,7 @@ import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.krad.bo.Inactivateable;
 
 /**
- * employment information for a KIM entity
+ * employment information for a KIM identity
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -32,8 +32,8 @@ public interface KimEntityEmploymentInformation extends Inactivateable {
 	String getEntityEmploymentId();
 	
 	/**
-     * Gets this {@link KimEntityEmploymentInformation}'s entity affiliation id.
-     * @return the entity affiliation id for this {@link KimEntityEmploymentInformation}, or null if none has been assigned.
+     * Gets this {@link KimEntityEmploymentInformation}'s identity affiliation id.
+     * @return the identity affiliation id for this {@link KimEntityEmploymentInformation}, or null if none has been assigned.
      */
 	String getEntityAffiliationId();
 	

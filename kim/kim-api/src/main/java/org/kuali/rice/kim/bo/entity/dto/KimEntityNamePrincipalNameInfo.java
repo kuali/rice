@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntityNamePrincipalName;
 
 /**
@@ -25,21 +26,21 @@ import org.kuali.rice.kim.bo.entity.KimEntityNamePrincipalName;
  */
 public class KimEntityNamePrincipalNameInfo implements KimEntityNamePrincipalName {
 
-	protected KimEntityNameInfo defaultEntityName;
+	protected EntityName defaultEntityName;
 	protected String principalName;
 	
 	/**
 	 * {@inheritDoc} 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityNamePrincipalName#getDefaultEntityName()
 	 */
-	public KimEntityNameInfo getDefaultEntityName() {
+	public EntityName getDefaultEntityName() {
 		return defaultEntityName;
 	}
 	
 	/**
 	 * @param defaultEntityName the defaultEntityName to set
 	 */
-	public void setDefaultEntityName(KimEntityNameInfo defaultEntityName) {
+	public void setDefaultEntityName(EntityName defaultEntityName) {
 		this.defaultEntityName = defaultEntityName;
 	}
 	

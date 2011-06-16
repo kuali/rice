@@ -57,49 +57,49 @@ public class PersonDocumentCitizenship extends KimDocumentBoActivatableEditableB
 
 	
 	/**
-	 * @see org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract#getCitizenshipStatusCode()
+	 * @see org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract#getCitizenshipStatusCode()
 	 */
 	public String getCitizenshipStatusCode() {
 		return citizenshipStatusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract#getEndDate()
+	 * @see org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract#getEndDate()
 	 */
 	public Date getEndDate() {
 		return endDate;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract#getId()
+	 * @see org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract#getId()
 	 */
 	public String getEntityCitizenshipId() {
 		return entityCitizenshipId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract#getStartDate()
+	 * @see org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract#getStartDate()
 	 */
 	public Date getStartDate() {
 		return startDate;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract#setStatusCode(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract#setStatusCode(java.lang.String)
 	 */
 	public void setCitizenshipStatusCode(String citizenshipStatusCode) {
 		this.citizenshipStatusCode = citizenshipStatusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract#setEndDate(java.util.Date)
+	 * @see org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract#setEndDate(java.util.Date)
 	 */
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.entity.citizenship.EntityCitizenshipContract#startDate(java.util.Date)
+	 * @see org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract#startDate(java.util.Date)
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;

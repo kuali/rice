@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.kuali.rice.kim.api.identity.name.EntityName;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Do jax-ws mapping of Map<String, String> for KIM service method parameters, etc.
@@ -28,7 +27,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<StringEntityNameInfoMapEntry[], Map<String, KimEntityNameInfo>> {
+public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<StringEntityNameInfoMapEntry[], Map<String, EntityName>> {
 
 	/**
 	 * This overridden method ...
@@ -36,11 +35,11 @@ public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<StringEntity
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
 	 */
 	@Override
-	public StringEntityNameInfoMapEntry[] marshal(Map<String, KimEntityNameInfo> map) throws Exception {
+	public StringEntityNameInfoMapEntry[] marshal(Map<String, EntityName> map) throws Exception {
 		if(null == map) return null;
 		StringEntityNameInfoMapEntry[] entryArray = new StringEntityNameInfoMapEntry[map.size()];
 		int i = 0;
-		for (Map.Entry<String, KimEntityNameInfo> e : map.entrySet()) {
+		for (Map.Entry<String, EntityName> e : map.entrySet()) {
 			entryArray[i] = new StringEntityNameInfoMapEntry(e.getKey(), e.getValue());
 			i++;
 		}
@@ -53,9 +52,9 @@ public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<StringEntity
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
 	 */
 	@Override
-	public Map<String, KimEntityNameInfo> unmarshal(StringEntityNameInfoMapEntry[] entryArray) throws Exception {
+	public Map<String, EntityName> unmarshal(StringEntityNameInfoMapEntry[] entryArray) throws Exception {
 		if (null == entryArray) return null;
-		Map<String, KimEntityNameInfo> resultMap = new HashMap<String, KimEntityNameInfo>(entryArray.length);
+		Map<String, EntityName> resultMap = new HashMap<String, EntityName>(entryArray.length);
 		for (int i = 0; i < entryArray.length; i++) {
 			StringEntityNameInfoMapEntry entry = entryArray[i];
 			resultMap.put(entry.key, entry.value);

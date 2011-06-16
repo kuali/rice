@@ -17,7 +17,7 @@
 
   <bean id="EntityNameType" parent="EntityNameType-parentBean"/>
   <bean id="EntityNameType-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl"/>
+    <property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo"/>
     <property name="inquiryDefinition">
       <ref bean="EntityNameType-inquiryDefinition"/>
     </property>
@@ -67,7 +67,7 @@
   
   <bean id="EntityNameType-displaySortCode" parent="EntityNameType-displaySortCode-parentBean"/>
   <bean id="EntityNameType-displaySortCode-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="displaySortCode"/>
+    <property name="name" value="sortCode"/>
     <property name="label" value="Display Sort Code"/>
     <property name="shortLabel" value="Sort"/>
     <property name="maxLength" value="1"/>
@@ -97,7 +97,7 @@
             <list>
               <bean parent="FieldDefinition" p:attributeName="code"/>
               <bean parent="FieldDefinition" p:attributeName="name"/>
-              <bean parent="FieldDefinition" p:attributeName="displaySortCode"/>
+              <bean parent="FieldDefinition" p:attributeName="sortCode"/>
               <bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
           </property>
@@ -123,7 +123,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="code"/>
         <bean parent="FieldDefinition" p:attributeName="name"/>
-		<bean parent="FieldDefinition" p:attributeName="displaySortCode"/>
+		<bean parent="FieldDefinition" p:attributeName="sortCode"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>

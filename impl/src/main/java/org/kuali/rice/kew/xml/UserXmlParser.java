@@ -22,14 +22,14 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.kim.api.entity.Type;
-import org.kuali.rice.kim.api.entity.email.EntityEmail;
+import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
-import org.kuali.rice.kim.impl.entity.email.EntityEmailBo;
-import org.kuali.rice.kim.impl.entity.principal.PrincipalBo;
-import org.kuali.rice.kim.impl.entity.type.EntityTypeDataBo;
+import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
+import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
+import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
+import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.xml.sax.SAXException;
@@ -130,7 +130,7 @@ public class UserXmlParser {
 		entity.setEmploymentInformation(emplInfos);
 		
 		EntityTypeDataBo entityType = new EntityTypeDataBo();
-		//entity.getEntityTypes().add(entityType);
+		//identity.getEntityTypes().add(entityType);
 		entityType.setEntityTypeCode(entityTypeCode);
 		entityType.setEntityId(entity.getEntityId());
 		entityType.setActive(true);
@@ -160,10 +160,10 @@ public class UserXmlParser {
 		
 		if (!StringUtils.isBlank(firstName) || !StringUtils.isBlank(lastName)) {
 			Long entityNameId = sas.getNextAvailableSequenceNumber(
-					"KRIM_ENTITY_NM_ID_S", KimEntityNameImpl.class);
-			KimEntityNameImpl name = new KimEntityNameImpl();
+					"KRIM_ENTITY_NM_ID_S", EntityNameBo.class);
+			EntityNameBo name = new EntityNameBo();
 			name.setActive(true);
-			name.setEntityNameId("" + entityNameId);
+			name.setId("" + entityNameId);
 			name.setEntityId(entity.getEntityId());
 			// must be in krim_ent_nm_typ_t.ent_nm_typ_cd
 			name.setNameTypeCode("PRFR");

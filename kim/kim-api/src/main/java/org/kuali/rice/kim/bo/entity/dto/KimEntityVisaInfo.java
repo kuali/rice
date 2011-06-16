@@ -18,7 +18,7 @@ package org.kuali.rice.kim.bo.entity.dto;
 import org.kuali.rice.kim.bo.entity.KimEntityVisa;
 
 /**
- * DTO for visa information associated with a KIM entity
+ * DTO for visa information associated with a KIM identity
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

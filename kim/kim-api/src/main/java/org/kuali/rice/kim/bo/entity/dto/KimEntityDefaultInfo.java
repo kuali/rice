@@ -15,19 +15,18 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kim.api.entity.principal.Principal;
-import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.entity.privacy.EntityPrivacyPreferencesContract;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.api.entity.type.EntityTypeDataDefault;
-
 /**
- * default information for a KIM entity
+ * default information for a KIM identity
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
@@ -36,7 +35,7 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 
     private static final long serialVersionUID = 7930630152792502380L;
     protected String entityId;
-    protected KimEntityNameInfo defaultName;
+    protected EntityName defaultName;
     protected List<Principal> principals;
     protected List<EntityTypeDataDefault> entityTypes;
     protected List<KimEntityAffiliationInfo> affiliations;
@@ -46,8 +45,8 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
     protected EntityPrivacyPreferences privacyPreferences;
 
     /**
-     * Gets this {@link KimEntityDefaultInfo}'s entity id.
-     * @return the entity id for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
+     * Gets this {@link KimEntityDefaultInfo}'s identity id.
+     * @return the identity id for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
      */
     public String getEntityId() {
         return this.entityId;
@@ -61,20 +60,11 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
      * Gets this {@link KimEntityDefaultInfo}'s default name.
      * @return the default name for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
      */
-    public KimEntityNameInfo getDefaultName() {
+    public EntityName getDefaultName() {
         return defaultName;
     }
 
-    public void setDefaultName(KimEntityName defaultName) {
-        if (defaultName instanceof KimEntityNameInfo) {
-            this.defaultName = (KimEntityNameInfo) defaultName;
-        }
-        else {
-            this.defaultName = new KimEntityNameInfo(defaultName);
-        }
-    }
-
-    public void setDefaultName(KimEntityNameInfo defaultName) {
+    public void setDefaultName(EntityName defaultName) {
         this.defaultName = defaultName;
     }
 

@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.entity;
 
 
 /**
- * visa information for a KIM entity 
+ * visa information for a KIM identity
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -31,8 +31,8 @@ public interface KimEntityVisa {
 	String getId();
 	
 	/**
-     * Gets this {@link KimEntityVisa}'s entity id.
-     * @return the entity id for this {@link KimEntityVisa}, or null if none has been assigned.
+     * Gets this {@link KimEntityVisa}'s identity id.
+     * @return the identity id for this {@link KimEntityVisa}, or null if none has been assigned.
      */
 	String getEntityId();
 	

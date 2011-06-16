@@ -17,10 +17,18 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.bo.reference.EntityNameType;
-import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
+import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -64,58 +72,58 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	@Column(name = "SUFFIX_NM")
 	protected String suffix;
 	
-	@ManyToOne(targetEntity=EntityNameTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EntityNameTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "NM_TYP_CD", insertable = false, updatable = false)
-	protected EntityNameType entityNameType;
+	protected EntityNameTypeBo entityNameType;
 
 	public PersonDocumentName() {
 		this.active = true;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getEntityNameId()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getEntityNameId()
 	 */
 	public String getEntityNameId() {
 		return entityNameId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFirstName()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getFirstName()
 	 */
 	public String getFirstName() {
 		return firstName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getLastName()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getLastName()
 	 */
 	public String getLastName() {
 		return lastName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getMiddleName()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getMiddleName()
 	 */
 	public String getMiddleName() {
 		return middleName;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getNameTypeCode()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getNameTypeCode()
 	 */
 	public String getNameTypeCode() {
 		return nameTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getSuffix()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getSuffix()
 	 */
 	public String getSuffix() {
 		return suffix;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getTitle()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getTitle()
 	 */
 	public String getTitle() {
 		return title;
@@ -148,7 +156,7 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	/**
 	 * This default implementation formats the name as LAST, FIRST MIDDLE.
 	 * 
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFormattedName()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getFormattedName()
 	 */
 	public String getFormattedName() {
 		return getLastName() + ", " + getFirstName() + " " + getMiddleName();
@@ -162,11 +170,11 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 		this.entityId = entityId;
 	}
 
-	public EntityNameType getEntityNameType() {
+	public EntityNameTypeBo getEntityNameType() {
 		return this.entityNameType;
 	}
 
-	public void setEntityNameType(EntityNameType entityNameType) {
+	public void setEntityNameType(EntityNameTypeBo entityNameType) {
 		this.entityNameType = entityNameType;
 	}
 

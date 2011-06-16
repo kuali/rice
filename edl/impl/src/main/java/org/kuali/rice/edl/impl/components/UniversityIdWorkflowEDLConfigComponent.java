@@ -18,7 +18,7 @@ package org.kuali.rice.edl.impl.components;
 
 import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import org.w3c.dom.Element;

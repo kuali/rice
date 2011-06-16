@@ -41,7 +41,7 @@ import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.entity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;

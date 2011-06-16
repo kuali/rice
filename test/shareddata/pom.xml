@@ -7,7 +7,7 @@
         <version>2.0.0-m6-SNAPSHOT</version>
     </parent>
     <artifactId>rice-test-shareddata</artifactId>
-    <name>Rice Test Shared Data</name>
+    <name>Rice Integration Test Shared Data</name>
 
     <dependencies>
         <dependency>

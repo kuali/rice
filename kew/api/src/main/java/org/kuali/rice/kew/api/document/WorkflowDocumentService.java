@@ -5,6 +5,10 @@ public interface WorkflowDocumentService {
 	
 	// TODO implement the following methods on this service
 	
+	Document getDocument(String documentId);
+	
+	DocumentContent getDocumentContent(String documentId);
+	
 //    public DocumentDetailDTO getDocumentDetailFromAppId(String documentTypeName, String appId) throws WorkflowException;
 //
 //	public RouteHeaderDTO getRouteHeaderWithPrincipal(

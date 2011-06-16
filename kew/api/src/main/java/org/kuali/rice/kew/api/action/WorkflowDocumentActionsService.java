@@ -2,9 +2,13 @@ package org.kuali.rice.kew.api.action;
 
 import java.util.List;
 
+import javax.jws.WebParam;
+
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
 
 // TODO still need to add JAX-WS annotations to this class
 
@@ -74,10 +78,9 @@ public interface WorkflowDocumentActionsService {
     
     // TODO add the following methods to this service
     
-//	public WorkflowAttributeValidationErrorDTO[] validateWorkflowAttributeDefinitionVO(
-//			@WebParam(name = "definition") WorkflowAttributeDefinitionDTO definition)
-//			throws WorkflowException;
-//
+	public List<WorkflowAttributeValidationError> validateWorkflowAttributeDefinition(
+			@WebParam(name = "definition") WorkflowAttributeDefinition definition);
+
 //	public boolean isUserInRouteLog(
 //			@WebParam(name = "documentId") String documentId,
 //			@WebParam(name = "principalId") String principalId,

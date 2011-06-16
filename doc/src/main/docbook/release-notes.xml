@@ -20,7 +20,12 @@
             public collaboration mailing list at <email>rice.collab@kuali.org</email></para>
         <itemizedlist>
             <title>Highlights of this release include:</title>
-            <listitem><para>Support for Tomcat 7</para></listitem>
+            <listitem>
+                <para>Support for Tomcat 7</para>
+            </listitem>
+            <listitem>
+                <para>Performance fixes </para>
+            </listitem>
             <listitem><para>Numerous bug fixes</para></listitem>
         </itemizedlist>
         <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>

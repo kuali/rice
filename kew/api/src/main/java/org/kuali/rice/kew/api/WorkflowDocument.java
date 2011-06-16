@@ -38,8 +38,8 @@ public class WorkflowDocument implements java.io.Serializable {
 
     private String principalId;
     
-    private ModifiableDocument document;    
-    private ModifiableDocumentContent documentContent;
+    private ModifiableDocument modifiableDocument;    
+    private ModifiableDocumentContent modifiableDocumentContent;;
 
     public static WorkflowDocument createDocument(String principalId, String documentTypeName) {
     	return createDocument(principalId, documentTypeName, null);
@@ -82,7 +82,7 @@ public class WorkflowDocument implements java.io.Serializable {
 			throw new IllegalArgumentException("document was null");
 		}
 		this.principalId = principalId;
-		this.document = new ModifiableDocument(document);
+		this.modifiableDocument = new ModifiableDocument(document);
     }
 
     private static WorkflowDocumentActionsService getWorkflowDocumentActionsService() {
@@ -101,23 +101,27 @@ public class WorkflowDocument implements java.io.Serializable {
     	return workflowDocumentService;
     }
     
-    public String getDocumentId() {
-    	return document.getDocumentId();
+    protected ModifiableDocument getModifiableDocument() {
+    	return modifiableDocument;
     }
     
-    public Document getDocument() {
-        return document.getDocument();
-    }
-
     protected ModifiableDocumentContent getModifiableDocumentContent() {
-    	if (this.documentContent == null) {
+    	if (this.modifiableDocumentContent == null) {
     		DocumentContent documentContent = getWorkflowDocumentService().getDocumentContent(getDocumentId());
     		if (documentContent == null) {
     			throw new IllegalStateException("Failed to load document content for documentId: " + getDocumentId());
     		}
-    		this.documentContent = new ModifiableDocumentContent(documentContent);
+    		this.modifiableDocumentContent = new ModifiableDocumentContent(documentContent);
     	}
-    	return this.documentContent;
+    	return this.modifiableDocumentContent;
+    }
+    
+    public String getDocumentId() {
+    	return getModifiableDocument().getDocumentId();
+    }
+    
+    public Document getDocument() {
+        return getModifiableDocument().getDocument();
     }
     
     public DocumentContent getDocumentContent() {
@@ -188,23 +192,16 @@ public class WorkflowDocument implements java.io.Serializable {
     	return getWorkflowDocumentService().getActionsTaken(getDocumentId());
     }
     
-//
-//    /**
-//     * Sets the "application doc id" on the document
-//     * @param appDocId the "application doc id" to set on the workflow document
-//     */
-//    public void setAppDocId(String appDocId) {
-//        routeHeader.setAppDocId(appDocId);
-//    }
-//
-//    /**
-//     * Returns the "application doc id" set on this workflow document (if any)
-//     * @return the "application doc id" set on this workflow document (if any)
-//     */
-//    public String getAppDocId() {
-//        return routeHeader.getAppDocId();
-//    }
-//
+
+    public void setApplicationDocumentId(String applicationDocumentId) {
+    	getModifiableDocument().setApplicationDocumentId(applicationDocumentId);
+    }
+
+    public String getApplicationDocumentId() {
+    	return getModifiableDocument().getApplicationDocumentId();
+    }
+
+    //
 //    /**
 //     * Returns the date/time the document was created, or null if the document has not yet been created
 //     * @return the date/time the document was created, or null if the document has not yet been created
@@ -1335,11 +1332,19 @@ public class WorkflowDocument implements java.io.Serializable {
 			return originalDocument.getDocumentId();
 		}
 
+		protected String getApplicationDocumentId() {
+			return builder.getApplicationDocumentId();
+		}
+		
 		protected void setApplicationDocumentId(String applicationDocumentId) {
 			builder.setApplicationDocumentId(applicationDocumentId);
 			dirty = true;
 		}
 
+		protected String getTitle() {
+			return builder.getTitle();
+		}
+		
 		protected void setTitle(String title) {
 			builder.setTitle(title);
 			dirty = true;

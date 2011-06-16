@@ -30,6 +30,10 @@ table td, table th {
     margin: 0px;
     padding: 15px 15px 15px 0px;
 }
+.boxLayoutHorizontalItem {
+    float:left;
+    display:block;
+}
 
 /*  -------------------  BUTTON STYLES  -------------------  */
 
@@ -174,18 +178,31 @@ table td, table th {
     .field_attribute label {
         margin: 0px 5px 0px 5px;
     }
+    .field_attribute .labelTop label{
+        margin: 5px 5px 0px 0px;  /* field top labels should not have left-margins  -David */
+    }
     .field_attribute span {
         clear:left;
-        float:left;
+        /*float:left;       removing for non-table display, but may possibly break elsewhere - David */
     }
     .field_attribute input {
-        float:left;
+        /*float:left;        removing for non-table display. Not sure why we need to pull input from inline flow */
     }
     .field-attribute .summry {
         line-height: 18px;
     }
+    .desc {
+        display:block;
+    }
+    .labelTop {
+        float:none;
+        display:block;
+    }
+    .labelTop label {
+        font-weight:bold;
+    }
     .constraint {
-        float:left;
+        /*float:left;        removing for non-table display, but may possibly break elsewhere - David */
     }
     .errorMessages {
         background-color: #FFE0EC;
@@ -194,7 +211,9 @@ table td, table th {
     .page-action h2 {
         clear:left;
     }
-
+    .boxLayoutHorizontalItem  {
+        margin-right:25px;
+    }
 
 .navigation-parent-div{
 	margin-left: 225px;
@@ -259,6 +278,10 @@ ul.basic-navigation li.basic-element a.current, ul.basic-navigation li.basic-ele
 /*
 Animated Navigation Menu
 */
+.animated-navigation h2.fl-font-serif {
+    font-family:arial, sans-serif;
+    font-size: 12px;
+}
 ul.animated-navigation {
     list-style: none outside none;
     padding: 0;
@@ -435,4 +458,22 @@ Navigation Slide Control
 }
 .ui-datepicker-calendar tbody{
     border-bottom: none;
+}
+
+/* Tab Styles */
+.ui-tabs .ui-tabs-nav li {
+    border-bottom: 1px solid #000 !important; /* over-writing the style that removes it in tabs.css */
+}
+.ui-tabs-nav li.ui-state-hover {
+    /*defines gradient background*/
+	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#07662a', EndColorStr='#044d1f')";
+	color: #ffffff;
+	background-color:#060;
+
+}
+
+.ui-tabs-nav li.ui-state-hover a{
+    color: #ffffff;
 }

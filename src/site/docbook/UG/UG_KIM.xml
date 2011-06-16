@@ -58,9 +58,6 @@
                                 <para>PermissionService </para>
                             </listitem>
                             <listitem>
-                                <para>PermissionUpdateService </para>
-                            </listitem>
-                            <listitem>
                                 <para>PersonService </para>
                             </listitem>
                             <listitem>

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.api.permission;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
@@ -64,7 +66,31 @@ import java.util.Map;
 @WebService(name = "PermissionService", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PermissionService {
-            
+
+    /**
+     * This will create a {@link Permission} exactly like the permission passed in.
+     *
+     * @param permission the permission to create
+     * @return the id of the newly created object.  will never be null.
+     * @throws IllegalArgumentException if the permission is null
+     * @throws IllegalStateException if the permission is already existing in the system
+     */
+    @WebMethod(operationName="createPermission")
+    @WebResult(name = "id")
+    String createPermission(@WebParam(name = "permission") Permission permission)
+            throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
+     * This will update a {@link Permission}.
+     *
+     * @param permission the permission to update
+     * @throws IllegalArgumentException if the permission is null
+     * @throws IllegalStateException if the permission does not exist in the system
+     */
+    @WebMethod(operationName="updatePermission")
+    void updatePermission(@WebParam(name = "permission") Permission permission)
+            throws RiceIllegalArgumentException, RiceIllegalStateException;
+
     // --------------------
     // Authorization Checks
     // --------------------

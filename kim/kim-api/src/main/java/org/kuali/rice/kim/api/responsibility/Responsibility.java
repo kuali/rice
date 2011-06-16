@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.kim.api.responsibility;
 
-import java.io.Serializable;
-import java.util.Collection;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -35,6 +25,15 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.w3c.dom.Element;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * An immutable representation of a {@link ResponsibilityContract}.
@@ -76,7 +75,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
     @XmlElement(name = Responsibility.Elements.TEMPLATE, required = true)
     private final Template template;
 
-    @XmlElement(name = Elements.ATTRIBUTES, required = false)
+    @XmlElement(name = Responsibility.Elements.ATTRIBUTES, required = false)
     private final Attributes attributes;
 
     @XmlElement(name = Responsibility.Elements.ACTIVE, required = false)
@@ -174,7 +173,6 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
 	}
 
 	/**
-	 * This overridden method ...
 	 *
 	 * @see ResponsibilityContract#getAttributes()
 	 */
@@ -229,7 +227,6 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
         private boolean active;
 
         private Builder(String namespaceCode, String name, Template.Builder template) {
-            setId(id);
             setNamespaceCode(namespaceCode);
             setName(name);
             setTemplate(template);
@@ -301,13 +298,13 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
 
 		@Override
 		public Template.Builder getTemplate() {
-			if (template == null) {
-                throw new IllegalArgumentException("template is null");
-            }
 			return template;
 		}
 		
 		public void setTemplate(final Template.Builder template) {
+			if (template == null) {
+                throw new IllegalArgumentException("template is null");
+            }
 			this.template = template;
 		}
 		

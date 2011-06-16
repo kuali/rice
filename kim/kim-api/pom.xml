@@ -80,20 +80,6 @@
                     </execution>
 
                     <execution>
-                        <id>permissionUpdateService-wsdl</id>
-                        <phase>${rice.java2ws.phase}</phase>
-                        <configuration>
-                            <className>org.kuali.rice.kim.api.permission.PermissionUpdateService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/PermissionUpdateService.wsdl
-                            </outputFile>
-                            <serviceName>PermissionUpdateService</serviceName>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-
-                    <execution>
                         <id>roleService-wsdl</id>
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>

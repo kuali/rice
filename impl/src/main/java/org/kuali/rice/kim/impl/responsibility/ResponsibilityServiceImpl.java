@@ -55,7 +55,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     private RoleService roleService;
 
     @Override
-    public void createResponsibility(final Responsibility responsibility) throws RiceIllegalArgumentException, RiceIllegalStateException {
+    public String createResponsibility(final Responsibility responsibility) throws RiceIllegalArgumentException, RiceIllegalStateException {
         if (responsibility == null) {
             throw new RiceIllegalArgumentException("responsibility is null");
         }
@@ -66,7 +66,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
         bo.setAttributeDetails(attrBos);
-        businessObjectService.save(bo);
+        return ((ResponsibilityBo) businessObjectService.save(bo)).getId();
     }
 
     @Override

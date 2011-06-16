@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.impl.permission;
 
-import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.lookup.valuefinder.SequenceValueFinder;
 

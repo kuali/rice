@@ -31,7 +31,7 @@ class PermissionBoTest {
 	
 	@Test
 	public void testNotEqualsWithPermission() {
-    Permission immutable = Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE).build()
+    Permission immutable = Permission.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE).build()
     PermissionBo bo = PermissionBo.from(immutable)
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

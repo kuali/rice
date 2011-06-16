@@ -62,11 +62,13 @@ public interface ResponsibilityService {
      * This will create a {@link Responsibility} exactly like the responsibility passed in.
      *
      * @param responsibility the responsibility to create
+     * @return the id of the newly created object.  will never be null.
      * @throws IllegalArgumentException if the responsibility is null
      * @throws IllegalStateException if the responsibility is already existing in the system
      */
     @WebMethod(operationName="createResponsibility")
-    void createResponsibility(@WebParam(name = "responsibility") Responsibility responsibility)
+    @WebResult(name = "id")
+    String createResponsibility(@WebParam(name = "responsibility") Responsibility responsibility)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**

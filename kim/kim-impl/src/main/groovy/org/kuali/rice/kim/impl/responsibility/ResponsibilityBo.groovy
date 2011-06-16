@@ -41,9 +41,6 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.service.DataDictionaryService
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb
 
-/**
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
 @Entity
 @Table(name = "KRIM_RSP_T")
 public class ResponsibilityBo extends PersistableBusinessObjectBase implements ResponsibilityContract {
@@ -117,11 +114,11 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
         bo.name = im.name
         bo.description = im.description
         bo.active = im.active
-        bo.template = ResponsibilityTemplateBo.from(im.template);
-        bo.templateId = im.template.id;
+        bo.templateId = im.template.getId()
+        bo.template = ResponsibilityTemplateBo.from(im.template)
         bo.attributes = im.attributes
         bo.versionNumber = im.versionNumber
-        bo.objectId = im.objectId;
+		bo.objectId = im.objectId;
 
         return bo
     }

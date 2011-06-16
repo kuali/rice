@@ -18,7 +18,6 @@ package org.kuali.rice.kim.api.responsibility
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
-
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.api.mo.common.Attributes

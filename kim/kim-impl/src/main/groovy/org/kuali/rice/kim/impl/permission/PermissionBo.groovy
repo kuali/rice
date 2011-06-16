@@ -28,8 +28,10 @@ import javax.persistence.Table
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
+import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.permission.Permission
 import org.kuali.rice.kim.api.permission.PermissionContract
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.role.RolePermissionBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
@@ -64,14 +66,17 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
 	
 	@OneToMany(targetEntity=PermissionAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
 	@Fetch(value = FetchMode.SELECT)
-	List<PermissionAttributeBo> attributes
+	List<PermissionAttributeBo> attributeDetails
 	
 	@OneToMany(targetEntity=RolePermissionBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
 	List<RolePermissionBo> rolePermissions
 
-    PermissionTemplateBo getTemplate() {
-        return template;
+
+    Attributes attributes
+
+    Attributes getAttributes() {
+        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 
     /**
@@ -105,13 +110,15 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         bo.active = im.active
         bo.templateId = im.template.getId()
         bo.template = PermissionTemplateBo.from(im.template)
-        bo.attributes = im.attributes.collect {
-            PermissionAttributeBo.from(it)
-        }
+        bo.attributes = im.attributes
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;
 
         return bo
+    }
+
+    PermissionTemplateBo getTemplate() {
+        return template;
     }
 
 }

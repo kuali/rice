@@ -20,12 +20,11 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
+import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.common.attribute.KimAttribute
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData
-import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
-import org.kuali.rice.kim.api.type.KimType
 import org.kuali.rice.kim.api.common.template.Template
 import org.kuali.rice.kim.api.common.template.TemplateTest
+import org.kuali.rice.kim.api.type.KimType
 
 class PermissionTest {
 
@@ -69,7 +68,7 @@ class PermissionTest {
 	}
 	
 	private static final String XML = """
-		<permission xmlns="http://rice.kuali.org/kim/v2_0">
+		<permission xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/kim/v2_0">
 			<id>${ID}</id>
 			<namespaceCode>${NAMESPACE_CODE}</namespaceCode>
 			<name>${NAME}</name>
@@ -84,30 +83,9 @@ class PermissionTest {
 			    <versionNumber>${TemplateTest.VERSION_NUMBER}</versionNumber>
 			    <objectId>${TemplateTest.OBJECT_ID}</objectId>
 			</template>
-			<attributes>
-			    <attribute>
-	                <id>${ATTRIBUTES_1_ID}</id>
-	                <attributeValue>${ATTRIBUTES_1_VALUE}</attributeValue>
-	                <assignedToId>${ATTRIBUTES_1_PERMISSION_ID}</assignedToId>
-	                <versionNumber>${VERSION_NUMBER}</versionNumber>
-	                <objectId>${ATTRIBUTES_1_OBJ_ID}</objectId>
-	                <kimTypeId>${KIM_TYPE_1_ID}</kimTypeId>
-	                <kimType>
-	                    <id>${KIM_TYPE_1_ID}</id>
-	                    <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
-	                    <active>${ACTIVE}</active>
-	                    <versionNumber>${VERSION_NUMBER}</versionNumber>
-	                    <objectId>${KIM_TYPE_1_OBJ_ID}</objectId>
-	                </kimType>
-	                <kimAttribute>
-                    	<id>${KIM_ATTRIBUTE_1_ID}</id>
-                    	<componentName>${KIM_ATTRIBUTE_1_COMPONENT_NAME}</componentName>
-						<attributeName>${KIM_ATTRIBUTE_1_NAME}</attributeName>
-						<namespaceCode>${NAMESPACE_CODE}</namespaceCode>
-						<versionNumber>${VERSION_NUMBER}</versionNumber>
-					</kimAttribute>					
-				</attribute>  
-			</attributes>
+            <attributes>
+                <ns2:entry key="${KIM_ATTRIBUTE_1_NAME}">${ATTRIBUTES_1_VALUE}</ns2:entry>
+            </attributes>
 			<active>${ACTIVE}</active>
 			<versionNumber>${VERSION_NUMBER}</versionNumber>
         	<objectId>${OBJECT_ID}</objectId>
@@ -116,22 +94,22 @@ class PermissionTest {
 	
     @Test
     void happy_path() {
-        Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE)
+        Permission.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE)
     }
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_null() {
-		Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(null);
+		Permission.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_less_than_1() {
-		Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(-1);
+		Permission.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(-1);
 	}
 	
 	@Test
 	void test_copy() {
-		def o1b = Permission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE)
+		def o1b = Permission.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE)
 		o1b.description = DESCRIPTION
 
 		def o1 = o1b.build()
@@ -150,7 +128,6 @@ class PermissionTest {
 	  Permission permission = this.create()
 	  marshaller.marshal(permission,sw)
 	  String xml = sw.toString()
-      println(xml)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
 	  Object actual = unmarshaller.unmarshal(new StringReader(xml))
 	  Object expected = unmarshaller.unmarshal(new StringReader(XML))
@@ -164,16 +141,7 @@ class PermissionTest {
 			String getName() {PermissionTest.NAME}
 			String getDescription() {PermissionTest.DESCRIPTION}
 			Template getTemplate() {PermissionTest.TEMPLATE.build()}
-			List<KimAttributeData> getAttributes() {[
-				KimAttributeData.Builder.create(new KimAttributeDataContract() {
-					 String getId() {PermissionTest.ATTRIBUTES_1_ID}
-					 String getAttributeValue() {PermissionTest.ATTRIBUTES_1_VALUE}
-                     String getAssignedToId() {PermissionTest.ATTRIBUTES_1_PERMISSION_ID}
-					 Long getVersionNumber() {PermissionTest.ATTRIBUTES_1_VER_NBR}
-                     String getKimTypeId() {PermissionTest.KIM_TYPE_1_ID}
-					 KimType getKimType() {PermissionTest.KIM_TYPE_1}
-                     KimAttribute getKimAttribute() {PermissionTest.KIM_ATTRIBUTE_1}
-                     String getObjectId() {PermissionTest.ATTRIBUTES_1_OBJ_ID}}).build() ]}			
+            Attributes getAttributes() { Attributes.fromStrings(PermissionTest.KIM_ATTRIBUTE_1_NAME, PermissionTest.ATTRIBUTES_1_VALUE)}
 			boolean isActive() {PermissionTest.ACTIVE.toBoolean()}
 			Long getVersionNumber() {PermissionTest.VERSION_NUMBER}
 			String getObjectId() {PermissionTest.OBJECT_ID}

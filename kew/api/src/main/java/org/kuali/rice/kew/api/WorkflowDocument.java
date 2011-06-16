@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
@@ -191,7 +192,6 @@ public class WorkflowDocument implements java.io.Serializable {
     public List<ActionTaken> getActionsTaken() {
     	return getWorkflowDocumentService().getActionsTaken(getDocumentId());
     }
-    
 
     public void setApplicationDocumentId(String applicationDocumentId) {
     	getModifiableDocument().setApplicationDocumentId(applicationDocumentId);
@@ -201,26 +201,36 @@ public class WorkflowDocument implements java.io.Serializable {
     	return getModifiableDocument().getApplicationDocumentId();
     }
 
-    //
-//    /**
-//     * Returns the date/time the document was created, or null if the document has not yet been created
-//     * @return the date/time the document was created, or null if the document has not yet been created
-//     */
-//    public Timestamp getDateCreated() {
-//    	if (routeHeader.getDateCreated() == null) {
-//    		return null;
-//    	}
-//    	return new Timestamp(routeHeader.getDateCreated().getTime().getTime());
-//    }
-//
-//    /**
-//     * Returns the title of the document
-//     * @return the title of the document
-//     */
-//    public String getTitle() {
-//        return getRouteHeader().getDocTitle();
-//    }
-//
+    public DateTime getDateCreated() {
+    	return getModifiableDocument().getDateCreated();
+    }
+
+    public String getTitle() {
+        return getModifiableDocument().getTitle();
+    }
+    
+    protected DocumentUpdate getDocumentUpdateIfDirty() {
+    	if (getModifiableDocument().isDirty()) {
+    		return getModifiableDocument().getBuilder().build();
+    	}
+    	return null;
+    }
+    
+    protected DocumentContentUpdate getDocumentContentUpdateIfDirty() {
+    	if (getModifiableDocumentContent().isDirty()) {
+    		return getModifiableDocumentContent().getBuilder().build();
+    	}
+    	return null;
+    }
+    
+    protected void resetStateAfterAction() {
+    	if (getModifiableDocument().isDirty()) {
+    		this.modifiableDocument = new ModifiableDocument(getWorkflowDocumentService().getDocument(getDocumentId()));
+    	}
+    	// regardless of whether modifiable document content is dirty, we null it out so it will be re-fetched next time it's needed
+    	this.modifiableDocumentContent = null;
+    }
+    
 //    /**
 //     * Performs the 'save' action on the document this WorkflowDocument represents.  If this is a new document,
 //     * the document is created first.
@@ -234,18 +244,12 @@ public class WorkflowDocument implements java.io.Serializable {
 //    	documentContentDirty = true;
 //    }
 //
-//    /**
-//     * Performs the 'route' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs routing the document
-//     * @see WorkflowDocumentActions#routeDocument(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void routeDocument(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().routeDocument(principalId, routeHeader, annotation);
-//    	documentContentDirty = true;
-//    }
+
+    public void route(String annotation) {
+    	getWorkflowDocumentActionsService().route(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction();
+    }
+    
 //
 //    /**
 //     * Performs the 'disapprove' action on the document this WorkflowDocument represents.  If this is a new document,
@@ -1330,6 +1334,13 @@ public class WorkflowDocument implements java.io.Serializable {
 		 */
 		protected String getDocumentId() {
 			return originalDocument.getDocumentId();
+		}
+		
+		/**
+		 * Immutable value which is accessed frequently, provide direct access to it.
+		 */
+		protected DateTime getDateCreated() {
+			return originalDocument.getDateCreated();
 		}
 
 		protected String getApplicationDocumentId() {

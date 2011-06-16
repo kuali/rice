@@ -44,7 +44,7 @@
   <bean id="DocAffiliation-affiliationTypeCode" parent="DocAffiliation-affiliationTypeCode-parentBean"/>
   <bean id="DocAffiliation-affiliationTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="affiliationTypeCode" p:forceUppercase="true" p:label="Affiliation Type" p:shortLabel="Affiliation Type" p:maxLength="40" p:required="true">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeBlankRow="true" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeBlankRow="true" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
     </property>
   </bean>
  

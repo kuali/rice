@@ -278,11 +278,11 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	boolean valid = true;
     	int i = 0;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
-    		if (affiliation.getAffiliationType() != null && !affiliation.getAffiliationTypeCode().equals(affiliation.getAffiliationType().getAffiliationTypeCode())) {
+    		if (affiliation.getAffiliationType() != null && !affiliation.getAffiliationTypeCode().equals(affiliation.getAffiliationType().getCode())) {
     			PersonDocumentAffiliation copiedAffiliation = (PersonDocumentAffiliation)ObjectUtils.deepCopy(affiliation);
     			copiedAffiliation.refreshReferenceObject("affiliationType");
     			if (!copiedAffiliation.getAffiliationType().isEmploymentAffiliationType() && affiliation.getAffiliationType().isEmploymentAffiliationType() && !copiedAffiliation.getEmpInfos().isEmpty()) {
-		     		GlobalVariables.getMessageMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_EMPLOYMENT_AFFILIATION_TYPE,new String[] {affiliation.getAffiliationType().getAffiliationTypeName(), copiedAffiliation.getAffiliationType().getAffiliationTypeName()});
+		     		GlobalVariables.getMessageMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_EMPLOYMENT_AFFILIATION_TYPE,new String[] {affiliation.getAffiliationType().getName(), copiedAffiliation.getAffiliationType().getName()});
 		     		valid = false;
 	    		}
     		}
@@ -331,7 +331,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     		int j = 0;
         	for (PersonDocumentAffiliation affiliation1 : affiliations) {
 	    		if (j > i && affiliation.getAffiliationTypeCode() .equals(affiliation1.getAffiliationTypeCode()) && affiliation.getCampusCode().equals(affiliation1.getCampusCode())) {
-			     		GlobalVariables.getMessageMap().putError("affiliations[" + j + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_UNIQUE_AFFILIATION_TYPE_PER_CAMPUE, affiliation.getAffiliationType().getAffiliationTypeName());
+			     		GlobalVariables.getMessageMap().putError("affiliations[" + j + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_UNIQUE_AFFILIATION_TYPE_PER_CAMPUE, affiliation.getAffiliationType().getName());
 			     		valid = false;
 	    		}
 	    		j++;

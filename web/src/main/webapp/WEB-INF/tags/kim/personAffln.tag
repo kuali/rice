@@ -66,7 +66,7 @@
 					<th rowspan="${rowSpan}" class="infoline">
 						<c:out value="${status.index+1}" />
 					</th>
-					<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${status.index}].affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(affln.affiliationType.affiliationTypeName)}" disabled="true" readOnly="false" />
+					<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${status.index}].affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(affln.affiliationType.name)}" disabled="true" readOnly="false" />
 					<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${status.index}].campusCode" attributeEntry="${docAffiliationAttributes.campusCode}" readOnly="${readOnlyEntity}" />
 					<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${status.index}].dflt" attributeEntry="${docAffiliationAttributes.dflt}" readOnly="${readOnlyEntity}" />
 

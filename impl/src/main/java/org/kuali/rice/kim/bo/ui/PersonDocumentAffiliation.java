@@ -19,10 +19,22 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
 import org.kuali.rice.krad.util.ObjectUtils;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,9 +65,9 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	@Column(name = "CAMPUS_CD")
 	protected String campusCode;
 
-	@ManyToOne(targetEntity=AffiliationTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EntityAffiliationTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "AFLTN_TYP_CD", insertable = false, updatable = false)
-	protected AffiliationTypeImpl affiliationType;
+	protected EntityAffiliationTypeBo affiliationType;
 	@Transient
 	protected PersonDocumentEmploymentInfo newEmpInfo;
 
@@ -75,7 +87,7 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getAffiliationTypeCode()
+	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#getAffiliationTypeCode()
 	 */
 	public String getAffiliationTypeCode() {
 		if(ObjectUtils.isNull(affiliationTypeCode))
@@ -84,14 +96,14 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getCampusCode()
+	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#getCampusCode()
 	 */
 	public String getCampusCode() {
 		return campusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getEntityAffiliationId()
+	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
 		if(ObjectUtils.isNull(entityAffiliationId))
@@ -100,14 +112,14 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#setAffiliationTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#setAffiliationTypeCode(java.lang.String)
 	 */
 	public void setAffiliationTypeCode(String affiliationTypeCode) {
 		this.affiliationTypeCode = affiliationTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#setCampusCode(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#setCampusCode(java.lang.String)
 	 */
 	public void setCampusCode(String campusCode) {
 		this.campusCode = campusCode;
@@ -133,7 +145,7 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 		this.empInfos = empInfos;
 	}
 
-	public AffiliationTypeImpl getAffiliationType() {
+	public EntityAffiliationTypeBo getAffiliationType() {
 		if(ObjectUtils.isNull(affiliationType))
 			return null;
 		return this.affiliationType;
@@ -145,7 +157,7 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 		return this.affiliationType.isEmploymentAffiliationType();
 	}
 	 
-	public void setAffiliationType(AffiliationTypeImpl affiliationType) {
+	public void setAffiliationType(EntityAffiliationTypeBo affiliationType) {
 		this.affiliationType = affiliationType;
 	}
 

@@ -27,6 +27,7 @@ import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.name.EntityName;
@@ -44,11 +45,8 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -90,6 +88,7 @@ import org.kuali.rice.kim.impl.group.GroupAttributeBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
@@ -849,17 +848,17 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return rulePassed;
 	}
 
-	protected List<PersonDocumentAffiliation> loadAffiliations(List <KimEntityAffiliationInfo> affiliations, List<KimEntityEmploymentInformationInfo> empInfos) {
+	protected List<PersonDocumentAffiliation> loadAffiliations(List <EntityAffiliation> affiliations, List<KimEntityEmploymentInformationInfo> empInfos) {
 		List<PersonDocumentAffiliation> docAffiliations = new ArrayList<PersonDocumentAffiliation>();
 		if(ObjectUtils.isNotNull(affiliations)){
-			for (KimEntityAffiliation affiliation: affiliations) {
+			for (EntityAffiliation affiliation: affiliations) {
 				if(affiliation.isActive()){
 					PersonDocumentAffiliation docAffiliation = new PersonDocumentAffiliation();
-					docAffiliation.setAffiliationTypeCode(affiliation.getAffiliationTypeCode());
+					docAffiliation.setAffiliationTypeCode(affiliation.getAffiliationType().getCode());
 					docAffiliation.setCampusCode(affiliation.getCampusCode());
 					docAffiliation.setActive(affiliation.isActive());
 					docAffiliation.setDflt(affiliation.isDefaultValue());
-					docAffiliation.setEntityAffiliationId(affiliation.getEntityAffiliationId());
+					docAffiliation.setEntityAffiliationId(affiliation.getId());
 					docAffiliation.refreshReferenceObject("affiliationType");
 					// EntityAffiliationImpl does not define empinfos as collection
 					docAffiliations.add(docAffiliation);
@@ -979,26 +978,26 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	}
 	}
 
-    protected void setupAffiliation(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity,List<KimEntityAffiliationImpl> origAffiliations, List<KimEntityEmploymentInformationImpl> origEmpInfos) {
-		List<KimEntityAffiliationImpl> entityAffiliations = new ArrayList<KimEntityAffiliationImpl>();
+    protected void setupAffiliation(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity,List<EntityAffiliationBo> origAffiliations, List<KimEntityEmploymentInformationImpl> origEmpInfos) {
+		List<EntityAffiliationBo> entityAffiliations = new ArrayList<EntityAffiliationBo>();
 		// employment informations
 		List<KimEntityEmploymentInformationImpl> entityEmploymentInformations = new ArrayList<KimEntityEmploymentInformationImpl>();
 		if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getAffiliations())){
 			for (PersonDocumentAffiliation affiliation : identityManagementPersonDocument.getAffiliations()) {
-				KimEntityAffiliationImpl entityAffiliation = new KimEntityAffiliationImpl();
+				EntityAffiliationBo entityAffiliation = new EntityAffiliationBo();
 				entityAffiliation.setAffiliationTypeCode(affiliation.getAffiliationTypeCode());
 				entityAffiliation.setCampusCode(affiliation.getCampusCode());
 				entityAffiliation.setActive(affiliation.isActive());
 				entityAffiliation.setDefaultValue(affiliation.isDflt());
 				entityAffiliation.setEntityId(identityManagementPersonDocument.getEntityId());
-				entityAffiliation.setEntityAffiliationId(affiliation.getEntityAffiliationId());
+				entityAffiliation.setId(affiliation.getEntityAffiliationId());
 				if(ObjectUtils.isNotNull(origAffiliations)){
 				// EntityAffiliationImpl does not define empinfos as collection
-					for (KimEntityAffiliationImpl origAffiliation : origAffiliations) {
+					for (EntityAffiliationBo origAffiliation : origAffiliations) {
 						if(isSameAffiliation(origAffiliation, entityAffiliation)){
-							entityAffiliation.setEntityAffiliationId(origAffiliation.getEntityAffiliationId());
+							entityAffiliation.setId(origAffiliation.getId());
 						}
-						if (origAffiliation.getEntityAffiliationId()!=null && StringUtils.equals(origAffiliation.getEntityAffiliationId(), entityAffiliation.getEntityAffiliationId())) {
+						if (origAffiliation.getId()!=null && StringUtils.equals(origAffiliation.getId(), entityAffiliation.getId())) {
 							entityAffiliation.setVersionNumber(origAffiliation.getVersionNumber());
 						}
 					}
@@ -1044,7 +1043,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimEntity.setAffiliations(entityAffiliations);
 	}
 
-   private boolean isSameAffiliation(KimEntityAffiliationImpl origAffiliation, KimEntityAffiliationImpl entityAffiliation){
+   private boolean isSameAffiliation(EntityAffiliationBo origAffiliation, EntityAffiliationBo entityAffiliation){
     	//entityId
     	//affiliationTypeCode
     	//campusCode

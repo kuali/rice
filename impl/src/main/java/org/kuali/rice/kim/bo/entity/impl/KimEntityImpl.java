@@ -17,8 +17,10 @@ package org.kuali.rice.kim.bo.entity.impl;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo;
@@ -68,7 +70,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@Fetch(value = FetchMode.SELECT)
 	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityAffiliationImpl> affiliations; // = new AutoPopulatingList(KimEntityAffiliationImpl.class);
+	protected List<EntityAffiliationBo> affiliations; // = new AutoPopulatingList(KimEntityAffiliationImpl.class);
 
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
 	@Fetch(value = FetchMode.SELECT)
@@ -192,9 +194,9 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @return the affiliations
 	 */
-	public List<KimEntityAffiliationImpl> getAffiliations() {
+	public List<EntityAffiliationBo> getAffiliations() {
 		if (this.affiliations == null) {
-			return new ArrayList<KimEntityAffiliationImpl>();
+			return new ArrayList<EntityAffiliationBo>();
 		}
 		return this.affiliations;
 	}
@@ -203,7 +205,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @param affiliations
 	 *            the affiliations to set
 	 */
-	public void setAffiliations(List<KimEntityAffiliationImpl> affiliations) {
+	public void setAffiliations(List<EntityAffiliationBo> affiliations) {
 		this.affiliations = affiliations;
 	}
 
@@ -247,8 +249,8 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getDefaultAffiliation()
 	 */
-	public KimEntityAffiliationImpl getDefaultAffiliation() {
-		return (KimEntityAffiliationImpl)getDefaultItem( affiliations );
+	public EntityAffiliationBo getDefaultAffiliation() {
+		return EntityUtils.getDefaultItem( affiliations );
 	}
 	
 	/**
@@ -293,7 +295,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getDefaultName()
 	 */
 	public EntityNameBo getDefaultName() {
-		return (EntityNameBo)getDefaultItem( names );
+		return EntityUtils.getDefaultItem(names);
 	}
 
 	/**

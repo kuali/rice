@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
-import org.kuali.rice.krad.bo.DefaultableInactivateable;
+import org.kuali.rice.core.api.mo.common.Defaultable;
+import org.kuali.rice.krad.bo.Inactivateable;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -23,7 +24,7 @@ import org.kuali.rice.krad.bo.DefaultableInactivateable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimDefaultableEntityTypeData extends DefaultableInactivateable {
+public interface KimDefaultableEntityTypeData extends Defaultable, Inactivateable {
 
 	String getEntityTypeCode();
 

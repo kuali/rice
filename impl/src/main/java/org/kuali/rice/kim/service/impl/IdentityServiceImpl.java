@@ -17,31 +17,31 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
-import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.impl.identity.EntityTypeBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
@@ -238,10 +238,10 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 			entityTypesInfo.add( EntityTypeDataBo.toDefault(entityTypeDataBo) );
 		}
 		
-		ArrayList<KimEntityAffiliationInfo> affInfo = new ArrayList<KimEntityAffiliationInfo>( entity.getAffiliations().size() );
+		ArrayList<EntityAffiliation> affInfo = new ArrayList<EntityAffiliation>( entity.getAffiliations().size() );
 		info.setAffiliations( affInfo );
-		for ( KimEntityAffiliation aff : entity.getAffiliations() ) {
-			affInfo.add( new KimEntityAffiliationInfo( aff ) );
+		for ( EntityAffiliationBo aff : entity.getAffiliations() ) {
+			affInfo.add( EntityAffiliationBo.to(aff) );
 			if ( aff.isActive() && aff.isDefaultValue() ) {
 				info.setDefaultAffiliation( affInfo.get( affInfo.size() - 1 ) );
 			}
@@ -478,12 +478,12 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		return EntityAddressTypeBo.to(impl);
 	}
 	
-	public AffiliationTypeInfo getAffiliationType( String code ) {
-		AffiliationTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(AffiliationTypeImpl.class, code);
+	public EntityAffiliationType getAffiliationType( String code ) {
+		EntityAffiliationTypeBo impl = getBusinessObjectService().findBySinglePrimaryKey(EntityAffiliationTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
-		return impl.toInfo();
+		return EntityAffiliationTypeBo.to(impl);
 	}
 
 	public Type getCitizenshipStatus( String code ) {

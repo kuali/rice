@@ -26,7 +26,6 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.group.GroupAttributeBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
@@ -304,7 +303,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         for (GroupAttributeBo groupAttribute : groupAttributes) {
         	if (groupAttribute.getId() == null) {
         		groupAttribute.setId(sas.getNextAvailableSequenceNumber(
-                        "KRIM_GRP_ATTR_DATA_ID_S", KimEntityAffiliationImpl.class).toString());
+                        "KRIM_GRP_ATTR_DATA_ID_S", GroupAttributeBo.class).toString());
         	}
         }
         this.businessObjectService.save( groupAttributes );

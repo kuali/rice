@@ -22,8 +22,15 @@ import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -81,10 +88,10 @@ public class KimEntityEmploymentInformationImpl extends KimInactivatableEntityDa
 	@JoinColumn(name="EMP_STAT_CD", insertable = false, updatable = false)
 	protected EmploymentStatusImpl employmentStatus;
 	
-	@ManyToOne(targetEntity=KimEntityAffiliationImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EntityAffiliationBo.class, fetch = FetchType.EAGER, cascade = {})
 	//@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_AFLTN_ID", insertable = false, updatable = false)
-	protected KimEntityAffiliationImpl affiliation; // = new KimEntityAffiliationImpl();
+	protected EntityAffiliationBo affiliation; // = new KimEntityAffiliationImpl();
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getBaseSalaryAmount()
@@ -200,11 +207,11 @@ public class KimEntityEmploymentInformationImpl extends KimInactivatableEntityDa
 		this.employmentRecordId = employmentRecordId;
 	}
 
-	public KimEntityAffiliationImpl getAffiliation() {
+	public EntityAffiliationBo getAffiliation() {
 		return this.affiliation;
 	}
 
-	public void setAffiliation(KimEntityAffiliationImpl affiliation) {
+	public void setAffiliation(EntityAffiliationBo affiliation) {
 		this.affiliation = affiliation;
 	}
 

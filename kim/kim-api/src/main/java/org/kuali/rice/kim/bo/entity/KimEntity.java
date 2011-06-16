@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.entity;
 
 import java.util.List;
 
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract;
@@ -64,10 +65,10 @@ public interface KimEntity extends Inactivateable {
 
     /**
      * Gets this {@link KimEntity}'s affiliations
-     * @return the List of {@link KimEntityAffiliation}S for this {@link KimEntity}.
+     * @return the List of {@link EntityAffiliationContract}S for this {@link KimEntity}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
-	List<? extends KimEntityAffiliation> getAffiliations();
+	List<? extends EntityAffiliationContract> getAffiliations();
 
 	/**
 	 * Gets this {@link KimEntity}'s names
@@ -122,10 +123,10 @@ public interface KimEntity extends Inactivateable {
 
 	/**
 	 * Gets this {@link KimEntity}'s default affiliation
-     * @return the default {@link KimEntityAffiliation} for the identity.  If no default is defined, then
+     * @return the default {@link EntityAffiliationContract} for the identity.  If no default is defined, then
      * it returns the first one found.  If none are defined, it returns null.
      */
-	KimEntityAffiliation getDefaultAffiliation();
+	EntityAffiliationContract getDefaultAffiliation();
 	
 	/**
 	 * Gets this {@link KimEntity}'s external identifier for the given type code

@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
@@ -24,7 +25,6 @@ import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
@@ -69,7 +69,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	/**
 	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getAffiliationType(java.lang.String)
 	 */
-	public AffiliationTypeInfo getAffiliationType(String code) {
+	public EntityAffiliationType getAffiliationType(String code) {
 		return getInnerIdentityService().getAffiliationType(code);
 	}
 

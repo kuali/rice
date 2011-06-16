@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 
 import java.util.ArrayList;
@@ -38,8 +38,8 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
     protected EntityName defaultName;
     protected List<Principal> principals;
     protected List<EntityTypeDataDefault> entityTypes;
-    protected List<KimEntityAffiliationInfo> affiliations;
-    protected KimEntityAffiliationInfo defaultAffiliation;
+    protected List<EntityAffiliation> affiliations;
+    protected EntityAffiliation defaultAffiliation;
     protected KimEntityEmploymentInformationInfo primaryEmployment;
     protected List<KimEntityExternalIdentifierInfo> externalIdentifiers;
     protected EntityPrivacyPreferences privacyPreferences;
@@ -83,16 +83,16 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
     }
 
     /**
-     * Gets this {@link KimEntityDefaultInfo}'s List of {@link KimEntityAffiliationInfo}S.
-     * @return the List of {@link KimEntityAffiliationInfo}S for this {@link KimEntityDefaultInfo}.
+     * Gets this {@link KimEntityDefaultInfo}'s List of {@link EntityAffiliation}S.
+     * @return the List of {@link EntityAffiliation}S for this {@link KimEntityDefaultInfo}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
-    public List<KimEntityAffiliationInfo> getAffiliations() {
+    public List<EntityAffiliation> getAffiliations() {
         // If our reference is null, assign and return an empty List
-        return (affiliations != null) ? affiliations : (affiliations = new ArrayList<KimEntityAffiliationInfo>());
+        return (affiliations != null) ? affiliations : (affiliations = new ArrayList<EntityAffiliation>());
     }
 
-    public void setAffiliations(List<KimEntityAffiliationInfo> affiliations) {
+    public void setAffiliations(List<EntityAffiliation> affiliations) {
         this.affiliations = affiliations;
     }
 
@@ -100,22 +100,11 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
      * Gets this {@link KimEntityDefaultInfo}'s affiliation info.
      * @return the affiliation info for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
      */
-    public KimEntityAffiliationInfo getDefaultAffiliation() {
+    public EntityAffiliation getDefaultAffiliation() {
         return defaultAffiliation;
     }
 
-    public void setDefaultAffiliation(KimEntityAffiliation defaultAffiliation) {
-        if (defaultAffiliation != null) {
-            if (defaultAffiliation instanceof KimEntityAffiliationInfo) {
-                this.defaultAffiliation = (KimEntityAffiliationInfo) defaultAffiliation;
-            }
-            else {
-                this.defaultAffiliation = new KimEntityAffiliationInfo(defaultAffiliation);
-            }
-        }
-    }
-
-    public void setDefaultAffiliation(KimEntityAffiliationInfo defaultAffiliation) {
+    public void setDefaultAffiliation(EntityAffiliation defaultAffiliation) {
         this.defaultAffiliation = defaultAffiliation;
     }
 

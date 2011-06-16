@@ -17,6 +17,7 @@ package org.kuali.rice.kim.api.identity.services;
 
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
@@ -25,7 +26,6 @@ import org.kuali.rice.kim.api.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
@@ -161,7 +161,7 @@ public interface IdentityService {
     /**
      * Gets the affiliation type for the given affiliation type code.
      */
-	public AffiliationTypeInfo getAffiliationType( @WebParam(name="code") String code );
+	public EntityAffiliationType getAffiliationType( @WebParam(name="code") String code );
 	
 	/**
 	 * Gets the citizenship status for the given citizenship status code.

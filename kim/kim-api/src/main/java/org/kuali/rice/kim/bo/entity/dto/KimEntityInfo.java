@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import org.kuali.rice.kim.api.identity.EntityUtils;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.identity.name.EntityName;
@@ -26,7 +29,6 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.type.EntityTypeData;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
 import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
@@ -46,7 +48,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private List<KimEntityAffiliationInfo> affiliations;
+    private List<EntityAffiliation> affiliations;
     private EntityBioDemographics bioDemographics;
     private List<EntityCitizenship> citizenships;
     private List<KimEntityEmploymentInformationInfo> employmentInformation;
@@ -108,11 +110,10 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
                 entityTypes.add(EntityTypeData.Builder.create(contract).build());
             }
 
-            affiliations = deriveCollection(entity.getAffiliations(), new XForm<KimEntityAffiliation, KimEntityAffiliationInfo>() {
-                public KimEntityAffiliationInfo xform(KimEntityAffiliation source) {
-                    return new KimEntityAffiliationInfo(source);
-                }
-            });
+            affiliations = new ArrayList<EntityAffiliation>();
+            for (EntityAffiliationContract contract : entity.getAffiliations()) {
+                affiliations.add(EntityAffiliation.Builder.create(contract).build());
+            }
 
             employmentInformation = deriveCollection(entity.getEmploymentInformation(), 
                     new XForm<KimEntityEmploymentInformation, KimEntityEmploymentInformationInfo>() {
@@ -157,9 +158,9 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getAffiliations()
      */
-    public List<KimEntityAffiliationInfo> getAffiliations() {
+    public List<EntityAffiliation> getAffiliations() {
         // If our reference is null, assign and return an empty List
-        return (affiliations != null) ? affiliations : (affiliations = new ArrayList<KimEntityAffiliationInfo>());
+        return (affiliations != null) ? affiliations : (affiliations = new ArrayList<EntityAffiliation>());
 
     }
 
@@ -167,7 +168,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * Setter for this {@link KimEntityInfo}'s affiliations.  Note the behavior of {@link #getAffiliations()} if
      * this is set to null;
      */
-    public void setAffiliations(List<KimEntityAffiliationInfo> affiliations) {
+    public void setAffiliations(List<EntityAffiliation> affiliations) {
         this.affiliations = affiliations;
     }
 
@@ -175,19 +176,8 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getDefaultAffiliation()
      */
-    public KimEntityAffiliationInfo getDefaultAffiliation() {
-        KimEntityAffiliationInfo result = null;
-        if (affiliations != null)
-            for (KimEntityAffiliationInfo affiliation : affiliations) {
-                if (result == null) {
-                    result = affiliation;
-                }
-                if (affiliation.isDefaultValue()) {
-                    result = affiliation;
-                    break;
-                }
-            }
-        return result;
+    public EntityAffiliation getDefaultAffiliation() {
+        return EntityUtils.getDefaultItem(affiliations);
     }
 
     /** 

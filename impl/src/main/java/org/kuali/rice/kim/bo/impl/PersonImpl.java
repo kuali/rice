@@ -18,6 +18,8 @@ package org.kuali.rice.kim.bo.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
@@ -26,7 +28,6 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -90,7 +91,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected boolean suppressPersonal = false;
 	protected boolean suppressEmail = false;
 	// affiliation data
-	protected List<? extends KimEntityAffiliation> affiliations;
+	protected List<? extends EntityAffiliationContract> affiliations;
 	
 	protected String campusCode = "";
 	//protected Campus campus;
@@ -133,7 +134,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		campusCode = p.getCampusCode();
 		primaryDepartmentCode = p.getPrimaryDepartmentCode();
 		employeeId = p.getEmployeeId();
-		affiliations = new ArrayList<KimEntityAffiliation>( 0 );
+		affiliations = new ArrayList<EntityAffiliation>( 0 );
 		externalIdentifiers = new HashMap<String,String>( 0 );
 	}
 
@@ -260,7 +261,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected void populateAffiliationInfo( KimEntityDefaultInfo entity ) {
 		if(entity!=null){
 			affiliations = entity.getAffiliations();
-			KimEntityAffiliation defaultAffiliation = entity.getDefaultAffiliation();
+			EntityAffiliation defaultAffiliation = entity.getDefaultAffiliation();
 			if ( defaultAffiliation != null  ) {
 				campusCode = unNullify( defaultAffiliation.getCampusCode() );
 			} else {
@@ -429,7 +430,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	    return emailAddress;
 	}
 	
-	public List<? extends KimEntityAffiliation> getAffiliations() {
+	public List<? extends EntityAffiliationContract> getAffiliations() {
 		return affiliations;
 	}
 	
@@ -448,8 +449,8 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		if ( affiliationTypeCode == null ) {
 			return campusCodes;
 		}
-		for ( KimEntityAffiliation a : getAffiliations() ) {
-			if ( a.getAffiliationTypeCode().equals(affiliationTypeCode)  ) {
+		for ( EntityAffiliationContract a : getAffiliations() ) {
+			if ( a.getAffiliationType().getCode().equals(affiliationTypeCode)  ) {
 				campusCodes.add( a.getCampusCode() );
 			}
 		}

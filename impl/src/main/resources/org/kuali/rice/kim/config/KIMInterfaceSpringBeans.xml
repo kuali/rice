@@ -205,7 +205,7 @@
              <entry key="org.kuali.rice.kim.api.group.GroupContract" value="org.kuali.rice.kim.framework.group.GroupEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.email.EntityEmailTypeContractEbo" value="org.kuali.rice.kim.framework.identity.email.EntityEmailTypeEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.address.EntityAddressTypeContractEbo" value="org.kuali.rice.kim.framework.identity.address.EntityAddressTypeEbo" />
-             <entry key="org.kuali.rice.kim.bo.reference.AffiliationType" value="org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl" />
+             <entry key="org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeContract" value="org.kuali.rice.kim.framework.identity.affiliation.EntityAffiliationTypeEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.citizenship.EntityCitizenshipStatusContractEbo" value="org.kuali.rice.kim.framework.identity.citizenship.EntityCitizenshipStatusEbo" />
              <entry key="org.kuali.rice.kim.bo.reference.EmploymentStatus" value="org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl" />
              <entry key="org.kuali.rice.kim.bo.reference.EmploymentType" value="org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl" />

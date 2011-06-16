@@ -27,7 +27,6 @@ import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
@@ -38,6 +37,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
@@ -368,10 +368,10 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEquals(docName.getTitle(), entityName.getTitle());
 	}
 
-	private void assertAffiliationTrue(PersonDocumentAffiliation docAffln, KimEntityAffiliationImpl entityAffln) {
+	private void assertAffiliationTrue(PersonDocumentAffiliation docAffln, EntityAffiliationBo entityAffln) {
 		assertEquals(docAffln.getAffiliationTypeCode(), entityAffln.getAffiliationTypeCode());
 		assertEquals(docAffln.getCampusCode(), entityAffln.getCampusCode());
-		assertEquals(docAffln.getEntityAffiliationId(), entityAffln.getEntityAffiliationId());
+		assertEquals(docAffln.getEntityAffiliationId(), entityAffln.getId());
 	}
 
 	private void assertEmpInfoTrue(PersonDocumentEmploymentInfo docEmpInfo, KimEntityEmploymentInformation entityEmpInfo) {

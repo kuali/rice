@@ -1,13 +1,13 @@
 package org.kuali.rice.kim.api.identity.email;
 
-
+import org.kuali.rice.core.api.mo.common.Defaultable;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.TypeContract;
-import org.kuali.rice.krad.bo.DefaultableInactivateable;
 
-public interface EntityEmailContract extends Versioned, GloballyUnique, DefaultableInactivateable, Identifiable {
+public interface EntityEmailContract extends Versioned, GloballyUnique, Defaultable, Inactivatable, Identifiable {
        /**
      * Gets this id of the parent identity object.
      * @return the identity id for this {@link EntityEmailContract}

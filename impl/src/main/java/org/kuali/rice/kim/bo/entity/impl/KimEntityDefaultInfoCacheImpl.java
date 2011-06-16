@@ -16,12 +16,12 @@
 package org.kuali.rice.kim.bo.entity.impl;
 
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
@@ -150,12 +150,13 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 		info.setEntityTypes(entityTypesInfo);
 
 		// affiliations
-		ArrayList<KimEntityAffiliationInfo> affInfo = new ArrayList<KimEntityAffiliationInfo>( 1 );
+		ArrayList<EntityAffiliation> affInfo = new ArrayList<EntityAffiliation>( 1 );
 		info.setAffiliations( affInfo );
-		KimEntityAffiliationInfo aff = new KimEntityAffiliationInfo();
+		EntityAffiliation.Builder aff = EntityAffiliation.Builder.create();
 		aff.setCampusCode(this.getCampusCode());
 		aff.setDefaultValue(true);
-		info.setDefaultAffiliation(aff);
+        aff.setEntityId(info.getEntityId());
+		info.setDefaultAffiliation(aff.build());
 		info.setAffiliations(affInfo);
 
 		// employment information

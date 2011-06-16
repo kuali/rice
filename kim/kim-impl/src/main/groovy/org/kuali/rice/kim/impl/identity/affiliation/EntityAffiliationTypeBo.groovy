@@ -7,10 +7,12 @@ import javax.persistence.Table
 import org.kuali.rice.kim.api.identity.Type
 import org.kuali.rice.kim.api.identity.TypeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeContract
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType
 
 @Entity
 @Table(name="KRIM_AFLTN_TYP_T")
-public class EntityAffiliationTypeBo extends PersistableBusinessObjectBase implements TypeContract {
+public class EntityAffiliationTypeBo extends PersistableBusinessObjectBase implements EntityAffiliationTypeContract {
     @Id
     @Column(name="EMP_TYP_CD")
     String code;
@@ -21,35 +23,35 @@ public class EntityAffiliationTypeBo extends PersistableBusinessObjectBase imple
     boolean active;
     @Column(name="DISPLAY_SORT_CD")
     String sortCode;
-
-    //TODO: need to create contract that includes this field
+    
     @org.hibernate.annotations.Type(type="yes_no")
     @Column(name="EMP_AFLTN_TYP_IND")
-    protected boolean employmentAffiliationType;
+    boolean employmentAffiliationType;
 
 
     /**
-   * Converts a mutable AddressTypeBo to an immutable AddressType representation.
+   * Converts a mutable EntityAffiliationTypeBo to an immutable EntityAffiliationType representation.
    * @param bo
-   * @return an immutable AddressType
+   * @return an immutable EntityAffiliationType
    */
-  static Type to(EntityAffiliationTypeBo bo) {
+  static EntityAffiliationType to(EntityAffiliationTypeBo bo) {
     if (bo == null) { return null }
-    return Type.Builder.create(bo).build()
+    return EntityAffiliationType.Builder.create(bo).build()
   }
 
   /**
-   * Creates a AddressType business object from an immutable representation of a AddressType.
-   * @param an immutable AddressType
-   * @return a AddressTypeBo
+   * Creates a EntityAffiliationType business object from an immutable representation of a EntityAffiliationType.
+   * @param an immutable EntityAffiliationType
+   * @return a EntityAffiliationTypeBo
    */
-  static EntityAffiliationTypeBo from(Type immutable) {
+  static EntityAffiliationTypeBo from(EntityAffiliationType immutable) {
     if (immutable == null) {return null}
 
     EntityAffiliationTypeBo bo = new EntityAffiliationTypeBo()
     bo.code = immutable.code
     bo.name = immutable.name
     bo.sortCode = immutable.sortCode
+    bo.employmentAffiliationType = immutable.employmentAffiliationType
     bo.active = immutable.active
     bo.versionNumber = immutable.versionNumber
     bo.objectId = immutable.objectId

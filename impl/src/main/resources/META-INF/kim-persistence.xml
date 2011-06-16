@@ -23,7 +23,7 @@
   <persistence-unit name="kim-unit" transaction-type="JTA">
     <mapping-file>META-INF/kim-orm.xml</mapping-file>
     <class>org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo</class>
-    <class>org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl</class>
+    <class>org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo</class>
     <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo</class>
     <class>org.kuali.rice.kim.impl.identity.email.EntityEmailBo</class>
     <class>org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl</class>

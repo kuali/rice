@@ -42,9 +42,9 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl" table="KRIM_AFLTN_TYP_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo" table="KRIM_AFLTN_TYP_T">
     <field-descriptor name="code" column="AFLTN_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="displaySortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="sortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="employmentAffiliationType" column="EMP_AFLTN_TYP_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
@@ -209,7 +209,7 @@
     <collection-descriptor name="externalIdentifiers" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
-    <collection-descriptor name="affiliations" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="affiliations" element-class-ref="org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
     <collection-descriptor name="employmentInformation" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
@@ -229,8 +229,8 @@
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl" table="KRIM_ENTITY_AFLTN_T">
-    <field-descriptor name="entityAffiliationId" column="ENTITY_AFLTN_ID" jdbc-type="VARCHAR" primarykey="true"  />
+  <class-descriptor class="org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo" table="KRIM_ENTITY_AFLTN_T">
+    <field-descriptor name="id" column="ENTITY_AFLTN_ID" jdbc-type="VARCHAR" primarykey="true"  />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="affiliationTypeCode" column="AFLTN_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR"  />
@@ -238,8 +238,8 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
-    <reference-descriptor name="affiliationType" class-ref="org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="affiliationTypeCode" />
+    <reference-descriptor name="affiliationType" class-ref="org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="affiliationTypeCode" target-field-ref="code"/>
     </reference-descriptor>
   </class-descriptor>
 
@@ -294,7 +294,7 @@
     <reference-descriptor name="employmentStatus" class-ref="org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="employeeStatusCode" />
     </reference-descriptor>
-    <reference-descriptor name="affiliation" class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+    <reference-descriptor name="affiliation" class-ref="org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="entityAffiliationId" />
     </reference-descriptor>
   </class-descriptor>
@@ -803,8 +803,8 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
     <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
-    <reference-descriptor name="affiliationType" class-ref="org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="affiliationTypeCode" />
+    <reference-descriptor name="affiliationType" class-ref="org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="affiliationTypeCode" target-field-ref="code"/>
     </reference-descriptor>
     <collection-descriptor name="empInfos" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="false" proxy="false">
       <inverse-foreignkey field-ref="entityAffiliationId" />

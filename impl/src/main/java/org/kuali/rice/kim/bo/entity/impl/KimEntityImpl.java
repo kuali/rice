@@ -18,7 +18,6 @@ package org.kuali.rice.kim.bo.entity.impl;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.api.identity.EntityUtils;
-import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo;
@@ -27,10 +26,19 @@ import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
+import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.util.AutoPopulatingList;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,10 +113,10 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityResidencyImpl> residencies = new AutoPopulatingList(KimEntityResidencyImpl.class);
 
-	@OneToMany(targetEntity = KimEntityVisaImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = EntityVisaBo.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityVisaImpl> visas = new AutoPopulatingList(KimEntityVisaImpl.class);
+	protected List<EntityVisaBo> visas = new AutoPopulatingList(EntityVisaBo.class);
 
 	/**
 	 * @return the entityId
@@ -343,14 +351,14 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @return the visas
 	 */
-	public List<KimEntityVisaImpl> getVisas() {
+	public List<EntityVisaBo> getVisas() {
 		return this.visas;
 	}
 
 	/**
 	 * @param visas the visas to set
 	 */
-	public void setVisas(List<KimEntityVisaImpl> visas) {
+	public void setVisas(List<EntityVisaBo> visas) {
 		this.visas = visas;
 	}
 

@@ -28,12 +28,13 @@ import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.type.EntityTypeData;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
+import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
+import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityResidency;
-import org.kuali.rice.kim.bo.entity.KimEntityVisa;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     private EntityPrivacyPreferences privacyPreferences;
     private List<KimEntityEthnicityInfo> ethnicities;
     private List<KimEntityResidencyInfo> residencies;
-    private List<KimEntityVisaInfo> visas;
+    private List<EntityVisa> visas;
 
     /**
      * This constructs an empty KimEntityInfo
@@ -146,11 +147,10 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
                 }
             });
 
-            visas = deriveCollection(entity.getVisas(), new XForm<KimEntityVisa, KimEntityVisaInfo>() {
-                public KimEntityVisaInfo xform(KimEntityVisa source) {
-                    return new KimEntityVisaInfo(source);
-                }
-            });
+            visas = new ArrayList<EntityVisa>();
+            for (EntityVisaContract contract : entity.getVisas()) {
+                visas.add(EntityVisa.Builder.create(contract).build());
+            }
         }
     }
 
@@ -404,16 +404,16 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getVisas()
      */
-    public List<KimEntityVisaInfo> getVisas() {
+    public List<EntityVisa> getVisas() {
         // If our reference is null, assign and return an empty List
-        return (visas != null) ? visas : (visas = new ArrayList<KimEntityVisaInfo>());
+        return (visas != null) ? visas : (visas = new ArrayList<EntityVisa>());
     }
 
     /** 
      * Setter for this {@link KimEntityInfo}'s visas.  Note the behavior of 
      * {@link #getVisas()} if this is set to null;
      */
-    public void setVisas(List<KimEntityVisaInfo> visas) {
+    public void setVisas(List<EntityVisa> visas) {
         this.visas = visas;
     }
 

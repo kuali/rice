@@ -24,6 +24,7 @@ import org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
+import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
 import org.kuali.rice.krad.bo.Inactivateable;
 
 
@@ -158,9 +159,9 @@ public interface KimEntity extends Inactivateable {
 
     /**
      * Gets this {@link KimEntity}'s visas
-     * @return the List of {@link KimEntityVisa}S for this {@link KimEntity}.
+     * @return the List of {@link org.kuali.rice.kim.api.identity.visa.EntityVisaContract}S for this {@link KimEntity}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
-	public List<? extends KimEntityVisa> getVisas();
+	public List<? extends EntityVisaContract> getVisas();
 
 }

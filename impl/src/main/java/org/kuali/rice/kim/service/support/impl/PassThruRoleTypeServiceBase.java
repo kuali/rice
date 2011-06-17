@@ -21,6 +21,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService {
@@ -58,7 +59,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     }
 
     public List<String> getAcceptedAttributeNames() {
-        return new ArrayList<String>(0);
+        return Collections.emptyList();
     }
 
     @Override
@@ -76,7 +77,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
      */
     @Override
 	public List<String> getWorkflowRoutingAttributes(String routeLevel) {
-    	return new ArrayList<String>(0);
+    	return Collections.emptyList();
     }
 
     public boolean supportsAttributes(List<String> attributeNames) {
@@ -125,7 +126,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     
     @Override
 	public List<String> getUniqueAttributes(String kimTypeId){
-        return new ArrayList<String>();
+        return Collections.emptyList();
     }
     
 	@Override

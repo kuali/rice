@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
@@ -61,6 +62,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -540,8 +542,8 @@ public class KimTypeServiceBase implements KimTypeService {
 		return new ArrayList<String>();
 	}
 
-	protected List<KeyValue> getLocalDataDictionaryAttributeValues(KimTypeAttribute attr) throws ClassNotFoundException {
-		List<KeyValue> pairs = new ArrayList<KeyValue>();
+	protected List<ConcreteKeyValue> getLocalDataDictionaryAttributeValues(KimTypeAttribute attr) throws ClassNotFoundException {
+		List<ConcreteKeyValue> pairs = new ArrayList<ConcreteKeyValue>();
 		BusinessObjectEntry entry = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attr.getKimAttribute().getComponentName());
 		if ( entry == null ) {
 			LOG.warn( "Unable to obtain BusinessObjectEntry for component name: " + attr.getKimAttribute().getComponentName() );
@@ -565,7 +567,11 @@ public class KimTypeServiceBase implements KimTypeService {
 	                }
 	                ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(definition.getControl().getIncludeKeyInLabel());
 				}
-				pairs = finder.getKeyValues();
+
+                for (KeyValue pair : finder.getKeyValues()) {
+                    pairs.add(new ConcreteKeyValue(pair));
+                }
+
 			} catch ( ClassNotFoundException ex ) {
 				LOG.info( "Unable to find class: " + keyValuesFinderName + " in the current context." );
 				throw ex;
@@ -578,12 +584,12 @@ public class KimTypeServiceBase implements KimTypeService {
 		return pairs;
 	}
 
-	protected List<KeyValue> getCustomValueFinderValues(KimTypeAttribute attrib) {
-		return new ArrayList<KeyValue>(0);
+	protected List<ConcreteKeyValue> getCustomValueFinderValues(KimTypeAttribute attrib) {
+		return Collections.emptyList();
 	}
 
 	@Override
-	public List<KeyValue> getAttributeValidValues(String kimTypeId, String attributeName) {
+	public List<ConcreteKeyValue> getAttributeValidValues(String kimTypeId, String attributeName) {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "getAttributeValidValues(" + kimTypeId + "," + attributeName + ")");			
 		}
@@ -591,7 +597,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "Found Attribute definition: " + attrib );
 		}
-		List<KeyValue> pairs = null;
+		List<ConcreteKeyValue> pairs = null;
 		if ( StringUtils.isNotBlank(attrib.getKimAttribute().getComponentName()) ) {
 			try {
 				Class.forName(attrib.getKimAttribute().getComponentName());
@@ -599,7 +605,7 @@ public class KimTypeServiceBase implements KimTypeService {
 					pairs = getLocalDataDictionaryAttributeValues(attrib);
 				} catch ( ClassNotFoundException ex ) {
 					LOG.error( "Got a ClassNotFoundException resolving a values finder - since this should have been executing in the context of the host system - this should not happen.");
-					pairs = new ArrayList<KeyValue>(0);
+					pairs = Collections.emptyList();
 				}
 			} catch ( ClassNotFoundException ex ) {
 				LOG.error( "Got a ClassNotFoundException resolving a component name (" + attrib.getKimAttribute().getComponentName() + ") - since this should have been executing in the context of the host system - this should not happen.");
@@ -607,7 +613,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		} else {
 			pairs = getCustomValueFinderValues(attrib);
 		}
-        return pairs;
+        return Collections.unmodifiableList(pairs);
 	}
 
 	/**
@@ -828,7 +834,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	 */
 	@Override
 	public List<String> getWorkflowRoutingAttributes(String routeLevel) {
-		return workflowRoutingAttributes;
+		return Collections.unmodifiableList(workflowRoutingAttributes);
 	}
 	
 	@Override
@@ -909,7 +915,7 @@ public class KimTypeServiceBase implements KimTypeService {
         } else {
         	LOG.error("Unable to retrieve a KimTypeInfo for a null kimTypeId in getUniqueAttributes()");
         }
-        return uniqueAttributes;
+        return Collections.unmodifiableList(uniqueAttributes);
 	}
 
 	@Override

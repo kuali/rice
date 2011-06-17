@@ -5,11 +5,11 @@
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../../../api/pom-javadoc.jar!/" />
-      <root url="jar://$M2_REPO$/org/kuali/rice/rice-api/2.0.0-m5-SNAPSHOT/rice-api-2.0.0-m5-SNAPSHOT-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/rice/rice-api/2.0.0-m5-SNAPSHOT/rice-api-2.0.0-m5-SNAPSHOT-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/../../../api/pom-sources.jar!/" />
-      <root url="jar://$M2_REPO$/org/kuali/rice/rice-api/2.0.0-m5-SNAPSHOT/rice-api-2.0.0-m5-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/rice/rice-api/2.0.0-m5-SNAPSHOT/rice-api-2.0.0-m5-SNAPSHOT-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

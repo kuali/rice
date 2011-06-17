@@ -788,11 +788,10 @@
     <module>impl</module>
     <module>krms</module>
     <module>web</module>
-    <module>internal-test-tools</module>
     <module>development-tools</module>
     <module>sampleapp</module>
     <module>standalone</module>
-    <module>test</module>
+    <module>it</module>
     <module>client-contrib</module>
     <module>dist</module>
   </modules>

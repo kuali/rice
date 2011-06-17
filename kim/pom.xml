@@ -7,7 +7,7 @@
         <groupId>org.kuali.rice</groupId>
         <version>2.0.0-m6-SNAPSHOT</version>
     </parent>
-    <artifactId>kim</artifactId>
+    <artifactId>rice-kim</artifactId>
 
     <packaging>pom</packaging>
     <modules>

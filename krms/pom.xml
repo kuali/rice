@@ -14,7 +14,6 @@
     <module>api</module>
     <module>framework</module>
     <module>impl</module>
-    <module>test</module>
   </modules>
 
 </project>

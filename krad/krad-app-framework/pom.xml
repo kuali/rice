@@ -3,11 +3,11 @@
     <name>Rice KRAD Application Framework</name>
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>krad</artifactId>
+        <artifactId>rice-krad</artifactId>
         <groupId>org.kuali.rice</groupId>
         <version>2.0.0-m6-SNAPSHOT</version>
     </parent>
-    <artifactId>krad-app-framework</artifactId>
+    <artifactId>rice-krad-app-framework</artifactId>
 
     <dependencies>
         <!-- Rice Deps -->

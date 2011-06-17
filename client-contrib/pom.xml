@@ -7,7 +7,7 @@
     <version>2.0.0-m6-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>client-contrib</artifactId>
+  <artifactId>rice-client-contrib</artifactId>
   <properties>
     <acegi.version>1.0.7</acegi.version>
     <casclient.version>2.1.1</casclient.version>

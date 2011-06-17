@@ -3,11 +3,11 @@
     <name>Rice KRAD Web Framework</name>
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>krad</artifactId>
+        <artifactId>rice-krad</artifactId>
         <groupId>org.kuali.rice</groupId>
         <version>2.0.0-m6-SNAPSHOT</version>
     </parent>
-    <artifactId>krad-web-framework</artifactId>
+    <artifactId>rice-krad-web-framework</artifactId>
 
     <dependencies>
         <dependency>

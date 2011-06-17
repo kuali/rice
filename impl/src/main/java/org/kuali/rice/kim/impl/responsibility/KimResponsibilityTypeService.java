@@ -17,7 +17,7 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
-import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.api.type.KimTypeService;
 
 import java.util.List;
 

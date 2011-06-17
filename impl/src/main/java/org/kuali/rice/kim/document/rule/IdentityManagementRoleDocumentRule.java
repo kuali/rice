@@ -23,6 +23,7 @@ import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
@@ -39,7 +40,7 @@ import org.kuali.rice.kim.impl.responsibility.AddResponsibilityRule;
 import org.kuali.rice.kim.impl.responsibility.KimDocumentResponsibilityRule;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
-import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
+import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
@@ -56,7 +57,6 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.impl.RoleServiceBase;
-import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.document.Document;
@@ -119,7 +119,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         IdentityManagementRoleDocument roleDoc = (IdentityManagementRoleDocument)document;
 
         boolean valid = true;
-        boolean validateRoleAssigneesAndDelegations = !KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDoc.getKimType());
+        boolean validateRoleAssigneesAndDelegations = !KimTypeLookupableHelperServiceImpl
+                .hasDerivedRoleTypeService(roleDoc.getKimType());
         GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         valid &= validDuplicateRoleName(roleDoc);
         valid &= validPermissions(roleDoc);

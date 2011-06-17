@@ -189,7 +189,7 @@
 
 	<bean id="kimTypeLookupableHelperServiceImpl" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
-            <bean class="org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl" parent="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl" parent="lookupableHelperService">
             </bean>
         </property>
     </bean>

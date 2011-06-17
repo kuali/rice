@@ -19,8 +19,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.support.KimTypeService;
 
 import java.util.ArrayList;
 import java.util.Collections;

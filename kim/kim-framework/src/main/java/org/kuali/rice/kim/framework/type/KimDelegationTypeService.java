@@ -15,11 +15,8 @@
  */
 package org.kuali.rice.kim.framework.type;
 
-import java.util.List;
-
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
-import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.api.type.KimTypeService;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support.impl;
+package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -28,8 +28,8 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
+import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
@@ -118,7 +118,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	/**
 	 * Returns null, to indicate that there is no custom workflow document needed for this type.
 	 *
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowDocumentTypeName()
+	 * @see org.kuali.rice.kim.api.type.KimTypeService#getWorkflowDocumentTypeName()
 	 */
 	@Override
 	public String getWorkflowDocumentTypeName() {
@@ -165,7 +165,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * validate it there.  No combination validation is done.  That should be done
 	 * by overriding this method.
 	 *
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#validateAttributes(AttributeSet)
+	 * @see org.kuali.rice.kim.api.type.KimTypeService#validateAttributes(AttributeSet)
 	 */
 	@Override
 	public AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes) {
@@ -824,7 +824,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * Returns an empty list, indicating that no attributes from this
      * type should be passed to workflow.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowRoutingAttributes(java.lang.String)
+	 * @see org.kuali.rice.kim.api.type.KimTypeService#getWorkflowRoutingAttributes(java.lang.String)
 	 */
 	@Override
 	public List<String> getWorkflowRoutingAttributes(String routeLevel) {
@@ -968,4 +968,18 @@ public class KimTypeServiceBase implements KimTypeService {
 		return getClosestParentDocumentTypeName(documentType
 				.getParentDocType(), potentialParentDocumentTypeNames);
 	}
+
+    public static class KimTypeAttributeValidationException extends RuntimeException {
+
+        public KimTypeAttributeValidationException(String message) {
+            super( message );
+        }
+
+        public KimTypeAttributeValidationException( String message, Throwable cause ) {
+            super( message, cause );
+        }
+
+        private static final long serialVersionUID = 8220618846321607801L;
+
+    }
 }

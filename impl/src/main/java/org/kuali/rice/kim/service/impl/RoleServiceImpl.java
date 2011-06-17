@@ -15,20 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
-
-import javax.jws.WebParam;
-import javax.jws.WebService;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -36,10 +22,8 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
-import org.kuali.rice.kim.framework.type.KimRoleTypeService;
-import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
@@ -51,15 +35,30 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
+import org.kuali.rice.kim.framework.type.KimRoleTypeService;
+import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
+
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.

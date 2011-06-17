@@ -24,8 +24,8 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
+import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Role;
-
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -38,7 +38,6 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.RoleUpdateService;
-import org.kuali.rice.kim.service.support.KimTypeService;
 import org.springframework.beans.factory.InitializingBean;
 
 import javax.jws.WebParam;

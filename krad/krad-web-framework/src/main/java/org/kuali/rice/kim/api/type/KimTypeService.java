@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support;
-
-import java.util.List;
+package org.kuali.rice.kim.api.type;
 
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+
+import java.util.List;
 
 /**
  *  This is the base service interface for handling type-specific behavior.  Types can be attached

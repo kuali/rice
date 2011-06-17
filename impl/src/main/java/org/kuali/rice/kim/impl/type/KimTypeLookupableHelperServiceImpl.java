@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.lookup;
+package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
-import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimGroupTypeService;
-import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -117,17 +116,17 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
         return href;
     }
 
-	static boolean hasRoleTypeService(KimType kimType){
+	public static boolean hasRoleTypeService(KimType kimType){
 		return (kimType!=null && kimType.getServiceName()==null) ||
 					(KIMServiceLocatorWeb.getKimTypeService(kimType) instanceof KimRoleTypeService);
 	}
 
-	static boolean hasRoleTypeService(KimType kimType, KimTypeService kimTypeService){
+	public static boolean hasRoleTypeService(KimType kimType, KimTypeService kimTypeService){
 		return (kimType!=null && kimType.getServiceName()==null) ||
 					(kimTypeService instanceof KimRoleTypeService);
 	}
 	
-    static boolean hasGroupTypeService(KimType kimType){
+    public static boolean hasGroupTypeService(KimType kimType){
 		return (kimType!=null && kimType.getServiceName()==null) ||
 					(KIMServiceLocatorWeb.getKimTypeService(kimType) instanceof KimGroupTypeService);
     }

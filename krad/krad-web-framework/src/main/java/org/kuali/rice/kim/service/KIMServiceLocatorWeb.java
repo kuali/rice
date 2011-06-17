@@ -20,9 +20,9 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kim.api.type.KimTypeUtils;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.api.type.KimTypeService;
+import org.kuali.rice.kim.api.type.KimTypeUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.xml.namespace.QName;

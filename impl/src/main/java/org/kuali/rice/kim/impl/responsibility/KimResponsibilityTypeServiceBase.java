@@ -15,13 +15,12 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
-import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService;
-import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 

@@ -17,7 +17,7 @@ package org.kuali.rice.kew.role;
 
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
-import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 
 public class KimDelegationTypeServiceBase extends KimTypeServiceBase implements KimDelegationTypeService {
 

@@ -15,7 +15,19 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.List;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
+import org.kuali.rice.kim.util.KimConstants;
+import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,20 +41,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.document.KimTypeAttributesHelper;
-import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kim.util.KimConstants;
-import org.springframework.util.AutoPopulatingList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

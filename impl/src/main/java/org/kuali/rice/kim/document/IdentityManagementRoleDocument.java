@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
+import org.kuali.rice.kim.impl.type.IdentityManagementTypeAttributeTransactionalDocument;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;

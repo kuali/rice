@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
+import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 import org.kuali.rice.kim.service.support.KimGroupTypeService;
 
 /**

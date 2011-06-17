@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 

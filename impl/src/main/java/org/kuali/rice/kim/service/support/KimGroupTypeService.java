@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.support;
 
+import org.kuali.rice.kim.api.type.KimTypeService;
 
 /**
  * This is a service interface that must be used for a service related to a role type.

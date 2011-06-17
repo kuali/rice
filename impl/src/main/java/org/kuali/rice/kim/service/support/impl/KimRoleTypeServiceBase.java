@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
@@ -25,6 +22,10 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
+import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

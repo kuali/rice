@@ -29,7 +29,7 @@ public class CampusRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#getAttributeDefinitions(java.lang.String)
+	 * @see org.kuali.rice.kim.impl.type.KimTypeServiceBase#getAttributeDefinitions(java.lang.String)
 	 */
 	@Override
 	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {

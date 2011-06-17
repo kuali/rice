@@ -31,11 +31,12 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
@@ -60,7 +61,6 @@ import org.kuali.rice.krad.web.ui.Column;
 import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.ResultRow;
 import org.kuali.rice.krad.web.ui.Row;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -74,6 +74,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.

@@ -27,6 +27,7 @@ import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
+import org.kuali.rice.kim.impl.type.IdentityManagementTypeAttributeTransactionalDocument;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.SequenceAccessorService;

@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService {
 
@@ -72,7 +72,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     }
     
     /**
-     * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowRoutingAttributes(java.lang.String)
+     * @see org.kuali.rice.kim.api.type.KimTypeService#getWorkflowRoutingAttributes(java.lang.String)
      */
     @Override
 	public List<String> getWorkflowRoutingAttributes(String routeLevel) {

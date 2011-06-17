@@ -34,8 +34,7 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
 
@@ -405,14 +404,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     }
     
     protected void setAttrDefnIdForDelMemberQualifier(RoleDocumentDelegationMemberQualifier qualifier,AttributeDefinition definition) {
-    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
-    		qualifier.setKimAttrDefnId(((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
-    		//qualifier.refreshReferenceObject("kimAttribute");
-    	} else {
-    		qualifier.setKimAttrDefnId(((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
-    		//qualifier.refreshReferenceObject("kimAttribute");
-
-    	}
+   		qualifier.setKimAttrDefnId(((KimAttributeDefinition)definition).getKimAttrDefnId());
     }
     
     /**

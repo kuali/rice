@@ -33,8 +33,7 @@ import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.lookup.HtmlData;
 import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -155,12 +154,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 	}
 
 	private String getAttrDefnId(AttributeDefinition definition) {
-    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
-    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	} else {
-    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-
-    	}
+        return ((KimAttributeDefinition)definition).getKimAttrDefnId();
     }
 	
 	public List<Row> getRoleRows() {

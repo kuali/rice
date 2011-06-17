@@ -34,8 +34,8 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
@@ -740,7 +740,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 
 	protected AttributeDefinition getNonDataDictionaryAttributeDefinition(KimTypeAttribute typeAttribute) {
-		KimNonDataDictionaryAttributeDefinition definition = new KimNonDataDictionaryAttributeDefinition();
+		KimAttributeDefinition definition = new KimAttributeDefinition();
 		definition.setName(typeAttribute.getKimAttribute().getAttributeName());
 		definition.setLabel(typeAttribute.getKimAttribute().getAttributeLabel());
 		definition.setSortCode(typeAttribute.getSortCode());

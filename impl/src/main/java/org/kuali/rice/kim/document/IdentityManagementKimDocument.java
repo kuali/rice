@@ -15,7 +15,17 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.List;
+import org.apache.log4j.Logger;
+import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
+import org.kuali.rice.krad.document.TransactionalDocumentBase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
@@ -28,19 +38,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
-import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
-import org.kuali.rice.krad.document.TransactionalDocumentBase;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.SequenceAccessorService;
-import org.springframework.util.AutoPopulatingList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -151,11 +149,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	}
 
     public String getKimAttributeDefnId(AttributeDefinition definition){
-    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
-    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	} else {
-    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	}
+   		return ((KimAttributeDefinition)definition).getKimAttrDefnId();
     }
 
 }

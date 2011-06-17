@@ -111,8 +111,8 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.krad.document.Document;
@@ -630,10 +630,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     }
 
 	protected String getAttributeDefnId(AttributeDefinition definition) {
-    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
-    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	}
-    	return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
+    	return ((KimAttributeDefinition)definition).getKimAttrDefnId();
     }
 
 	private PrincipalBo getPrincipalImpl(String principalId) {
@@ -734,12 +731,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(definitions!=null){
 			for (String key : definitions.keySet()) {
 				AttributeDefinition definition = definitions.get(key);
-				String attrDefId=null;
-				if (definition instanceof KimDataDictionaryAttributeDefinition) {
-					attrDefId = ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-				} else {
-					attrDefId = ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-				}
+				String attrDefId=((KimAttributeDefinition)definition).getKimAttrDefnId();
 				boolean qualifierFound = false;
 				if(ObjectUtils.isNotNull(qualifiers)){
 					for (RoleMemberAttributeDataImpl qualifier : qualifiers) {

@@ -25,8 +25,7 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 
 import java.io.Serializable;
 import java.util.List;
@@ -78,10 +77,7 @@ public class KimTypeAttributesHelper implements Serializable {
 	}
 
     public String getKimAttributeDefnId(AttributeDefinition definition){
-    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
-    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	} 
-    	return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
+    	return ((KimAttributeDefinition)definition).getKimAttrDefnId();
     }
     
 	/**

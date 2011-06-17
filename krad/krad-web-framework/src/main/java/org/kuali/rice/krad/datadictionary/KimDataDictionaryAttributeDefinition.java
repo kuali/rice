@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import java.util.Map;
-
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
-import org.kuali.rice.krad.datadictionary.mask.Mask;
+
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -30,7 +29,6 @@ import org.kuali.rice.krad.datadictionary.mask.Mask;
 public class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition {
 	private static final long serialVersionUID = 7006569761728813805L;
 	
-	protected Mask mask;
 	protected Map<String, String> lookupInputPropertyConversions;
 	protected Map<String, String> lookupReturnPropertyConversions;
 	protected String lookupBoClass;

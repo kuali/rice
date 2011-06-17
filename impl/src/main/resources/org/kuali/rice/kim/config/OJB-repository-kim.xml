@@ -224,7 +224,7 @@
     <collection-descriptor name="residencies" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
-    <collection-descriptor name="visas" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityVisaImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="visas" element-class-ref="org.kuali.rice.kim.impl.identity.visa.EntityVisaBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
   </class-descriptor>
@@ -358,7 +358,7 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityVisaImpl" table="KRIM_ENTITY_VISA_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.identity.visa.EntityVisaBo" table="KRIM_ENTITY_VISA_T">
     <field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ENTITY_VISA_ID_S" />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="visaTypeKey" column="VISA_TYPE_KEY" jdbc-type="VARCHAR"  />

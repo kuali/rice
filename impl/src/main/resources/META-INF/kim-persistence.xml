@@ -46,7 +46,7 @@
     <class>org.kuali.rice.kim.impl.identity.name.EntityNameBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityVisaImpl</class>
+    <class>org.kuali.rice.kim.impl.identity.visa.EntityVisaBo</class>
     <class>org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo</class>
     <class>org.kuali.rice.kim.impl.identity.address.EntityAddressBo</class>
     <class>org.kuali.rice.kim.impl.identity.email.EntityEmailBo</class>

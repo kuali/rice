@@ -356,7 +356,7 @@ Tab menu
 
 .action {
 	text-decoration:underline;
-	font-size: .7em;
+	/* [disabled]font-size: 0.8em; */
 }
 
 input.amount
@@ -451,6 +451,7 @@ h3 img.expand_collapse-buttons[alt="collapse"] {
 	background: url(../../images/h3_collapse-back-kns.png);
 	background-repeat:no-repeat;
 }
-
-
-
+#IncidentStackGroup_layout {
+	font-size:.7em;
+	overflow: auto;
+}

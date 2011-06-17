@@ -30,12 +30,12 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>krad-app-framework</artifactId>
+            <artifactId>rice-krad-app-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>krad-web-framework</artifactId>
+            <artifactId>rice-krad-web-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
 

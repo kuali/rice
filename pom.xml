@@ -26,7 +26,7 @@
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
   <packaging>pom</packaging>
-  <name>Kuali Rice</name>
+  <name>Rice</name>
   <version>2.0.0-m6-SNAPSHOT</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows

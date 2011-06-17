@@ -43,7 +43,7 @@
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" level="project" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-kew-api" />
-    <orderEntry type="library" name="Maven: org.kuali.rice:krad-app-framework:2.0.0-m6-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-krad-app-framework" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />

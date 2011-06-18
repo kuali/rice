@@ -71,6 +71,7 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.service.impl.DocumentViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.FieldUtils;
@@ -89,7 +90,7 @@ import org.kuali.rice.krad.web.ui.SectionBridge;
 /**
  * Base Maintainable class to hold things common to all maintainables.
  */
-public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Maintainable {
+public class KualiMaintainableImpl extends DocumentViewHelperServiceImpl implements Maintainable {
 	private static final long serialVersionUID = 4814145799502207182L;
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintainableImpl.class);

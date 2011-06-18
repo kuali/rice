@@ -154,6 +154,8 @@
 			value="org.kuali.rice.krad.uif.authorization.DocumentPresentationControllerBase" />
 		<property name="authorizerClass"
 			value="org.kuali.rice.krad.uif.authorization.DocumentAuthorizerBase" />
+        <property name="viewHelperServiceClassName"
+			value="org.kuali.rice.krad.uif.service.impl.DocumentViewHelperServiceImpl" />
 		<property name="singlePageView" value="true" />
 		<property name="header">
 			<bean parent="HeaderViewDocument" />
@@ -170,8 +172,9 @@
 				<bean parent="Group_DocumentOverview" p:order="10" />
 				<bean parent="Group_DocumentNotes" p:accordion.defaultOpen="false"
 					p:order="30" />
+                <bean parent="Group_DocumentAdHocRecipients" p:accordion.defaultOpen="false" p:order="40" />
 				<bean parent="Group_DocumentRouteLog" p:accordion.defaultOpen="false"
-					p:order="40" />
+					p:order="50" />
 			</list>
 		</property>
 	</bean>

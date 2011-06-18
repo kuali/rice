@@ -71,12 +71,18 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="12"/>
+    </property>
   </bean>
   
     <bean id="DocGroup-namespaceCode" parent="DocGroup-namespaceCode-parentBean"/>
   <bean id="DocGroup-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="namespaceCode" p:forceUppercase="true" p:label="Namespace Code" p:shortLabel="Namespace Code" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="12"/>
     </property>
   </bean>
   

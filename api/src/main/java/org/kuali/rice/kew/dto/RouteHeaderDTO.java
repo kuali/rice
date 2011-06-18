@@ -56,7 +56,7 @@ public class RouteHeaderDTO implements Serializable {
     private boolean approveRequested;
     private boolean completeRequested;
     private boolean userBlanketApprover;
-    private Long docTypeId;
+    private String docTypeId;
     private ValidActionsDTO validActions;
 
     private NoteDTO[] notes = null;
@@ -252,11 +252,11 @@ public class RouteHeaderDTO implements Serializable {
     }
 
 
-    public Long getDocTypeId() {
+    public String getDocTypeId() {
         return docTypeId;
     }
 
-    public void setDocTypeId(Long docTypeId) {
+    public void setDocTypeId(String docTypeId) {
         this.docTypeId = docTypeId;
     }
 

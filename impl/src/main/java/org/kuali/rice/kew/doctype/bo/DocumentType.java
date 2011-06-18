@@ -114,9 +114,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
             @Parameter(name = "value_column", value = "id")
     })
     @Column(name = "DOC_TYP_ID")
-    private Long documentTypeId;
+    private String documentTypeId;
     @Column(name = "PARNT_ID")
-    private Long docTypeParentId;
+    private String docTypeParentId;
     @Column(name = "DOC_TYP_NM")
     private String name;
     @Column(name = "DOC_TYP_VER_NBR")
@@ -130,7 +130,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     @Column(name = "LBL")
     private String label;
     @Column(name = "PREV_DOC_TYP_VER_NBR")
-    private Long previousVersionId;
+    private String previousVersionId;
     @Column(name = "DOC_HDR_ID")
     private String documentId;
 
@@ -485,11 +485,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         return childrenDocTypes;
     }
 
-    public java.lang.Long getDocTypeParentId() {
+    public String getDocTypeParentId() {
         return docTypeParentId;
     }
 
-    public void setDocTypeParentId(java.lang.Long docTypeParentId) {
+    public void setDocTypeParentId(String docTypeParentId) {
         this.docTypeParentId = docTypeParentId;
     }
 
@@ -836,11 +836,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         // do nothing
     }
 
-    public java.lang.Long getPreviousVersionId() {
+    public String getPreviousVersionId() {
         return previousVersionId;
     }
 
-    public void setPreviousVersionId(java.lang.Long previousVersionId) {
+    public void setPreviousVersionId(String previousVersionId) {
         this.previousVersionId = previousVersionId;
     }
 
@@ -860,11 +860,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         this.version = version;
     }
 
-    public java.lang.Long getDocumentTypeId() {
+    public String getDocumentTypeId() {
         return documentTypeId;
     }
 
-    public void setDocumentTypeId(java.lang.Long docTypeGrpId) {
+    public void setDocumentTypeId(String docTypeGrpId) {
         this.documentTypeId = docTypeGrpId;
     }
 

@@ -39,9 +39,9 @@ public interface KualiWorkflowInfo {
 
     public abstract RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException;
 
-    public abstract DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException;
+    public abstract DocumentTypeDTO getDocTypeById(String documentTypeId) throws WorkflowException;
 
-    public abstract DocumentTypeDTO getDocType(String documentTypeName) throws WorkflowException;
+    public abstract DocumentTypeDTO getDocTypeByName(String documentTypeName) throws WorkflowException;
 
     public abstract Long getNewResponsibilityId() throws WorkflowException;
 

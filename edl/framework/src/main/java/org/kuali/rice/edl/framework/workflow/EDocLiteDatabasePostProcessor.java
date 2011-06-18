@@ -118,7 +118,7 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
 	    private void extractEDLData(String documentId, String[] nodeNames, Document documentContent) {
 	    	try {
 	    	RouteHeaderDTO routeHeader = new WorkflowInfo().getRouteHeader(documentId);
-	    	DocumentTypeDTO documentType = new WorkflowInfo().getDocType(routeHeader.getDocTypeId());
+	    	DocumentTypeDTO documentType = new WorkflowInfo().getDocTypeById(routeHeader.getDocTypeId());
 	    	DumpDTO dump = getExtractService().getDumpByDocumentId(routeHeader.getDocumentId());
 	    	if (dump == null) {
 	    		dump = new DumpDTO();

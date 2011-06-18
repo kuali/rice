@@ -200,7 +200,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return query.getResultList();
     }
 
-    public List findPendingRootRequestsByDocumentType(Long documentTypeId) {
+    public List findPendingRootRequestsByDocumentType(String documentTypeId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindPendingRootRequestsByDocumentType");
         query.setParameter("documentTypeId", documentTypeId);
         query.setParameter("currentIndicator", Boolean.TRUE);

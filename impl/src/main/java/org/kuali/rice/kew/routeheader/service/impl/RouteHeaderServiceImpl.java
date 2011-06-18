@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
@@ -149,7 +150,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
             }
         }
 
-        if(routeHeader.getDocumentTypeId() != null && routeHeader.getDocumentTypeId().intValue() != 0){
+        if(!StringUtils.isBlank(routeHeader.getDocumentTypeId())){
             DocumentType docType = KEWServiceLocator.getDocumentTypeService().findById(routeHeader.getDocumentTypeId());
             if(docType == null){
                 errors.add(new WorkflowServiceErrorImpl("RouteHeader document type id invalid.", "routeheader.doctypeid.invalid"));

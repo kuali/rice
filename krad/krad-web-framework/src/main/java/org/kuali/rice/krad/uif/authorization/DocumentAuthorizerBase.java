@@ -220,7 +220,7 @@ public class DocumentAuthorizerBase extends AuthorizerBase {
 	protected final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
 		if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
 		    try {
-                DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocType(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+                DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
                 ProcessDTO process = docType.getRoutePath().getPrimaryProcess();
                 if (process != null) {
                     if (process.getInitialRouteNode() == null) {

@@ -16,6 +16,14 @@
  */
 package org.kuali.rice.kew.doctype.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
@@ -30,15 +38,6 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 
 public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implements DocumentTypeDAO {
 
@@ -48,7 +47,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		this.getPersistenceBrokerTemplate().delete(documentType);
 	}
 
-	public DocumentType findById(Long docTypeId) {
+	public DocumentType findById(String docTypeId) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("documentTypeId", docTypeId);
 		return (DocumentType) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentType.class, crit));
@@ -74,18 +73,19 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		return getMostRecentDocType(docTypeName).getVersion();
 	}
 
-	public List getChildDocumentTypeIds(Long parentDocumentTypeId) {
-		List<Long> childrenIds = new ArrayList<Long>();
+	public List<String> getChildDocumentTypeIds(String parentDocumentTypeId) {
+		List<String> childrenIds = new ArrayList<String>();
 		PersistenceBroker broker = getPersistenceBroker(false);
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			conn = broker.serviceConnectionManager().getConnection();
-			st = conn.createStatement();
-			rs = st.executeQuery("select DOC_TYP_ID from KREW_DOC_TYP_T where CUR_IND = 1 and PARNT_ID = " + parentDocumentTypeId);
+			st = conn.prepareStatement("select DOC_TYP_ID from KREW_DOC_TYP_T where CUR_IND = 1 and PARNT_ID = ?");
+			st.setString(1, parentDocumentTypeId);
+			rs = st.executeQuery();
 			while (rs.next()) {
-				childrenIds.add(new Long(rs.getLong("DOC_TYP_ID")));
+				childrenIds.add(rs.getString("DOC_TYP_ID"));
 			}
 		} catch (Exception e) {
 			LOG.error("Error occured fetching children document type ids for document type " + parentDocumentTypeId, e);
@@ -114,7 +114,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		return childrenIds;
 	}
 
-	public DocumentType getMostRecentDocType(String docTypeName) {
+	protected DocumentType getMostRecentDocType(String docTypeName) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("name", docTypeName);
 		QueryByCriteria query = new QueryByCriteria(DocumentType.class, crit);
@@ -188,7 +188,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		return (Collection<DocumentType>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
 	}
 
-    private void addParentIdOrCriteria(Long parentId, Criteria mainCriteria) {
+    private void addParentIdOrCriteria(String parentId, Criteria mainCriteria) {
         Criteria parentCriteria = new Criteria();
         parentCriteria.addEqualTo("docTypeParentId", parentId);
         mainCriteria.addOrCriteria(parentCriteria);
@@ -203,19 +203,6 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 				assembleChildrenCriteria(child.getChildrenDocTypes(), crit);
 			}
 		}
-	}
-
-	public DocumentType getMostRecentDocType(Long documentTypeId) {
-		Criteria crit = new Criteria();
-		crit.addEqualTo("documentTypeId", documentTypeId);
-		QueryByCriteria query = new QueryByCriteria(DocumentType.class, crit);
-		query.addOrderByDescending("version");
-
-		Iterator docTypes = this.getPersistenceBrokerTemplate().getCollectionByQuery(query).iterator();
-		while (docTypes.hasNext()) {
-			return (DocumentType) docTypes.next();
-		}
-		return null;
 	}
 
 	public List findAllCurrentRootDocuments() {
@@ -256,7 +243,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     	return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentTypeAttribute.class, crit));
     }
 
-    public Long findDocumentTypeIdByDocumentId(String documentId) {
+    public String findDocumentTypeIdByDocumentId(String documentId) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("documentId", documentId);
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
@@ -265,8 +252,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
     	while (iter.hasNext()) {
     	    Object[] row = (Object[]) iter.next();
-    	    BigDecimal id = (BigDecimal)row[0];
-    	    return new Long(id.longValue());
+    	    return (String)row[0];
     	}
     	return null;
     }

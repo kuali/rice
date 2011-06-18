@@ -25,7 +25,7 @@ import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
  */
 public interface DocumentTypeEBO extends ExternalizableBusinessObject{
 
-	public Long getDocTypeParentId();
+	public String getDocTypeParentId();
 
 	public String getDescription();
 
@@ -39,7 +39,7 @@ public interface DocumentTypeEBO extends ExternalizableBusinessObject{
 
 	public String getName();
 
-	public Long getDocumentTypeId();
+	public String getDocumentTypeId();
 
 	/**
 	 * Returns the application id for this DocumentType which can be specified on the document type itself,

@@ -262,7 +262,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 			return this.baseNode.getDocumentType();
 		}
 
-		public Long getDocumentTypeId() {
+		public String getDocumentTypeId() {
 			return this.baseNode.getDocumentTypeId();
 		}
 		public Group getExceptionWorkgroup() {

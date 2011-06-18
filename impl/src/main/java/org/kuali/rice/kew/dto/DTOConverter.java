@@ -16,34 +16,64 @@
  */
 package org.kuali.rice.kew.dto;
 
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.PropertyDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.reflect.DataDefinition;
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionrequest.*;
+import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.AdHocRevoke;
 import org.kuali.rice.kew.actions.MovePoint;
 import org.kuali.rice.kew.actions.ValidActions;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.definition.AttributeDefinition;
-import org.kuali.rice.kew.docsearch.*;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchResult;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
-import org.kuali.rice.kew.engine.node.*;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.State;
 import org.kuali.rice.kew.engine.simulation.SimulationActionToTake;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
@@ -51,12 +81,25 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.service.NoteService;
-import org.kuali.rice.kew.postprocessor.*;
+import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
+import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
+import org.kuali.rice.kew.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
+import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
-import org.kuali.rice.kew.rule.*;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
+import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -64,19 +107,14 @@ import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.web.KeyValueSort;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.sql.Timestamp;
-import java.util.*;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -398,6 +436,192 @@ public class DTOConverter {
         return contentSectionElement;
     }
 
+    /**
+     * New in Rice 2.0
+     */
+    public static String buildUpdatedDocumentContent(String existingDocContent, DocumentContentUpdate documentContentUpdate, String documentTypeName) {
+    	if (existingDocContent == null) {
+    		existingDocContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
+    	}
+        String documentContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
+        StandardDocumentContent standardDocContent = new StandardDocumentContent(existingDocContent);
+        try {
+        	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        	Document document = builder.newDocument();
+        	Element root = document.createElement(KEWConstants.DOCUMENT_CONTENT_ELEMENT);
+        	document.appendChild(root);
+        	Element applicationContentElement = standardDocContent.getApplicationContent();
+        	if (documentContentUpdate.getApplicationContent() != null) {
+        		// application content has changed
+        		if (!StringUtils.isEmpty(documentContentUpdate.getApplicationContent())) {
+        			applicationContentElement = document.createElement(KEWConstants.APPLICATION_CONTENT_ELEMENT);
+        			XmlHelper.appendXml(applicationContentElement, documentContentUpdate.getApplicationContent());
+        		} else {
+        			// they've cleared the application content
+        			applicationContentElement = null;
+        		}
+        	}
+        	Element attributeContentElement = createDocumentContentSection(document, standardDocContent.getAttributeContent(), documentContentUpdate.getAttributeDefinitions(), documentContentUpdate.getAttributeContent(), KEWConstants.ATTRIBUTE_CONTENT_ELEMENT, documentTypeName);
+        	Element searchableContentElement = createDocumentContentSection(document, standardDocContent.getSearchableContent(), documentContentUpdate.getSearchableDefinitions(), documentContentUpdate.getSearchableContent(), KEWConstants.SEARCHABLE_CONTENT_ELEMENT, documentTypeName);
+        	if (applicationContentElement != null) {
+        		root.appendChild(applicationContentElement);
+        	}
+        	if (attributeContentElement != null) {
+        		root.appendChild(attributeContentElement);
+        	}
+        	if (searchableContentElement != null) {
+        		root.appendChild(searchableContentElement);
+        	}
+        	documentContent = XmlJotter.jotNode(document);
+        } catch (ParserConfigurationException e) {
+        	throw new RiceRuntimeException("Failed to initialize XML parser.", e);
+        } catch (SAXException e) {
+        	throw new RiceRuntimeException("Failed to parse XML.", e);
+		} catch (IOException e) {
+			throw new RiceRuntimeException("Failed to parse XML.", e);
+		} catch (TransformerException e) {
+			throw new RiceRuntimeException("Failed to parse XML.", e);
+		}
+        return documentContent;
+    }
+    
+    /**
+     * New in Rice 2.0
+     * @throws TransformerException 
+     * @throws ParserConfigurationException 
+     * @throws IOException 
+     * @throws SAXException 
+     */
+    private static Element createDocumentContentSection(Document document, Element existingAttributeElement, List<WorkflowAttributeDefinition> definitions, String content, String elementName, String documentTypeName) throws TransformerException, SAXException, IOException, ParserConfigurationException {
+        Element contentSectionElement = existingAttributeElement;
+        // if they've updated the content, we're going to re-build the content section element from scratch
+        if (content != null) {
+            if (!org.apache.commons.lang.StringUtils.isEmpty(content)) {
+                contentSectionElement = document.createElement(elementName);
+                // if they didn't merely clear the content, let's build the content section element by combining the children
+                // of the incoming XML content
+                Element incomingAttributeElement = XmlHelper.readXml(content).getDocumentElement();
+                NodeList children = incomingAttributeElement.getChildNodes();
+                for (int index = 0; index < children.getLength(); index++) {
+                    contentSectionElement.appendChild(document.importNode(children.item(index), true));
+                }
+            } else {
+                contentSectionElement = null;
+            }
+        }
+        // if they have new definitions we're going to append those to the existing content section
+        if (definitions != null && !definitions.isEmpty()) {
+            String errorMessage = "";
+            boolean inError = false;
+            if (contentSectionElement == null) {
+                contentSectionElement = document.createElement(elementName);
+            }
+            for (WorkflowAttributeDefinition definitionVO : definitions) {
+                AttributeDefinition definition = convertWorkflowAttributeDefinition(definitionVO);
+                RuleAttribute ruleAttribute = definition.getRuleAttribute();
+                Object attribute = GlobalResourceLoader.getResourceLoader().getObject(definition.getObjectDefinition());
+                boolean propertiesAsMap = false;
+                if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                    ((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
+                    propertiesAsMap = true;
+                } else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                    ((GenericXMLSearchableAttribute) attribute).setRuleAttribute(ruleAttribute);
+                    propertiesAsMap = true;
+                }
+                if (propertiesAsMap) {
+                    for (org.kuali.rice.kew.api.document.PropertyDefinition propertyDefinitionVO : definitionVO.getPropertyDefinitions()) {
+                        if (attribute instanceof GenericXMLRuleAttribute) {
+                            ((GenericXMLRuleAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(), propertyDefinitionVO.getValue());
+                        } else if (attribute instanceof GenericXMLSearchableAttribute) {
+                            ((GenericXMLSearchableAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(), propertyDefinitionVO.getValue());
+                        }
+                    }
+                }
+
+                // validate inputs from client application if the attribute is capable
+                if (attribute instanceof WorkflowAttributeXmlValidator) {
+                    List<WorkflowAttributeValidationError> errors = ((WorkflowAttributeXmlValidator) attribute).validateClientRoutingData();
+                    if (!errors.isEmpty()) {
+                        inError = true;
+                        errorMessage += "Error validating attribute " + definitionVO.getAttributeName() + " ";
+                        for (WorkflowAttributeValidationError error : errors) {
+                            errorMessage += error.getMessage() + " ";
+                        }
+                    }
+                }
+                // dont add to xml if attribute is in error
+                if (!inError) {
+                    if (attribute instanceof WorkflowAttribute) {
+                        String attributeDocContent = ((WorkflowAttribute) attribute).getDocContent();
+                        if (!StringUtils.isEmpty(attributeDocContent)) {
+                            XmlHelper.appendXml(contentSectionElement, attributeDocContent);
+                        }
+                    } else if (attribute instanceof SearchableAttribute) {
+                        String searcheAttributeContent =
+                        	((SearchableAttribute) attribute).getSearchContent(DocSearchUtils.getDocumentSearchContext("", documentTypeName, ""));
+                        if (!StringUtils.isEmpty(searcheAttributeContent)) {
+                            XmlHelper.appendXml(contentSectionElement, searcheAttributeContent);
+                        }
+                    }
+                }
+            }
+            if (inError) {
+                throw new WorkflowRuntimeException(errorMessage);
+            }
+
+        }
+        if (contentSectionElement != null) {
+            // always be sure and import the element into the new document, if it originated from the existing doc content
+            // and
+            // appended to it, it will need to be imported
+            contentSectionElement = (Element) document.importNode(contentSectionElement, true);
+        }
+        return contentSectionElement;
+    }
+    
+
+    /**
+     * New for Rice 2.0
+     */
+    public static AttributeDefinition convertWorkflowAttributeDefinition(WorkflowAttributeDefinition definition) {
+        if (definition == null) {
+            return null;
+        }
+        // get the rule attribute so we can get's it's message antity and not blow up if it's remote
+        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByClassName(definition.getAttributeName());
+        if (ruleAttribute == null) {
+            ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(definition.getAttributeName());
+        }
+        if (ruleAttribute == null) {
+            throw new WorkflowRuntimeException("Attribute " + definition.getAttributeName() + " not found");
+        }
+
+        ObjectDefinition objectDefinition = new ObjectDefinition(ruleAttribute.getClassName());
+        if (definition.getParameters() != null) {
+        	for (String parameter : definition.getParameters()) {
+        		objectDefinition.addConstructorParameter(new DataDefinition(parameter, String.class));
+        	}
+        }
+        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
+        if (!propertiesAsMap && definition.getPropertyDefinitions() != null) {
+        	for (org.kuali.rice.kew.api.document.PropertyDefinition propertyDefinition : definition.getPropertyDefinitions()) {
+                objectDefinition.addProperty(new PropertyDefinition(propertyDefinition.getName(), new DataDefinition(propertyDefinition.getValue(), String.class)));
+            }
+        }
+
+//        // this is likely from an EDL validate call and ME may needed to be added to the AttDefinitionVO.
+//        if (ruleAttribute.getApplicationId() != null) {
+//            definition.setApplicationId(ruleAttribute.getApplicationId());
+//        } else {
+//            // get the me from the document type if it's been passed in - the document is having action taken on it.
+//            if (documentType != null) {
+//                definition.setApplicationId(documentType.getApplicationId());
+//            }
+//        }
+
+        return new AttributeDefinition(ruleAttribute, objectDefinition);
+    }
+    
     public static DocumentContentDTO convertDocumentContent(String documentContentValue, String documentId) throws WorkflowException {
         if (documentContentValue == null) {
             return null;

@@ -78,7 +78,7 @@ public interface WorkflowUtility {
 			throws WorkflowException;
 
 	public DocumentTypeDTO getDocumentType(
-			@WebParam(name = "documentTypeId") Long documentTypeId)
+			@WebParam(name = "documentTypeId") String documentTypeId)
 			throws WorkflowException;
 
 	public DocumentTypeDTO getDocumentTypeByName(
@@ -154,7 +154,7 @@ public interface WorkflowUtility {
 
 	public boolean isSuperUserForDocumentType(
 			@WebParam(name = "principalId") String principalId,
-			@WebParam(name = "documentTypeId") Long documentTypeId)
+			@WebParam(name = "documentTypeId") String documentTypeId)
 			throws WorkflowException;
 
 	public String getAppDocId(

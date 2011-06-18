@@ -24,7 +24,7 @@ public class RouteNodeDTO implements java.io.Serializable, Cloneable {
     private static final long serialVersionUID = 6547166752590755847L;
     
     private Long routeNodeId;
-    private Long documentTypeId;
+    private String documentTypeId;
     private String routeNodeName;
     private String routeMethodName;
     private String routeMethodCode;
@@ -51,10 +51,10 @@ public class RouteNodeDTO implements java.io.Serializable, Cloneable {
     public void setBranchName(String branchName) {
         this.branchName = branchName;
     }
-    public Long getDocumentTypeId() {
+    public String getDocumentTypeId() {
         return documentTypeId;
     }
-    public void setDocumentTypeId(Long documentTypeId) {
+    public void setDocumentTypeId(String documentTypeId) {
         this.documentTypeId = documentTypeId;
     }
     public String getExceptionGroupId() {

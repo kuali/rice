@@ -216,11 +216,10 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
 
-    public List findPendingRootRequestsByDocumentType(Long documentTypeId) {
+    public List findPendingRootRequestsByDocumentType(String documentTypeId) {
     	Criteria routeHeaderCrit = new Criteria();
     	routeHeaderCrit.addEqualTo("documentTypeId", documentTypeId);
     	Criteria crit = new Criteria();
-        //crit.addEqualTo("routeHeader.documentTypeId", documentTypeId);
     	crit.addIn("documentId", new ReportQueryByCriteria(DocumentRouteHeaderValue.class, new String[] {"documentId"}, routeHeaderCrit));
         crit.addAndCriteria(getPendingCriteria());
         crit.addEqualTo("currentIndicator", Boolean.TRUE);

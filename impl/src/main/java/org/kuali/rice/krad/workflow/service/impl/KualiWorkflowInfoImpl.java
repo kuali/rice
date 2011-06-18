@@ -69,12 +69,12 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     	return getWorkflowUtility().getRouteHeader(principal.getPrincipalId(), documentId);
     }
 
-    public DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException {
-    	return getWorkflowUtility().getDocType(documentTypeId);
+    public DocumentTypeDTO getDocTypeById(String documentTypeId) throws WorkflowException {
+    	return getWorkflowUtility().getDocTypeById(documentTypeId);
     }
 
-    public DocumentTypeDTO getDocType(String documentTypeName) throws WorkflowException {
-    	return getWorkflowUtility().getDocType(documentTypeName);
+    public DocumentTypeDTO getDocTypeByName(String documentTypeName) throws WorkflowException {
+    	return getWorkflowUtility().getDocTypeByName(documentTypeName);
     }
 
     public Long getNewResponsibilityId() throws WorkflowException {

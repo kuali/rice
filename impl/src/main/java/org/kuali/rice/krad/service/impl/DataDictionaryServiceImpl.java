@@ -781,7 +781,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         String label = null;
         if (StringUtils.isNotBlank(documentTypeName)) {
             try {
-                DocumentTypeDTO documentType = getWorkflowInfoService().getDocType(documentTypeName);
+                DocumentTypeDTO documentType = getWorkflowInfoService().getDocTypeByName(documentTypeName);
                 if (documentType != null) {
                     label = documentType.getDocTypeLabel();
                 }

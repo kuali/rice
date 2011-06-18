@@ -29,7 +29,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
  */
 public interface DocumentTypeQueryService extends XmlLoader {
 
-    public DocumentType findById(Long documentTypeId);
+    public DocumentType findById(String documentTypeId);
     
     public DocumentType findByName(String name);
 

@@ -124,7 +124,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the document type
      * @see WorkflowUtility#getDocumentType(Long)
      */
-    public DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException {
+    public DocumentTypeDTO getDocTypeById(String documentTypeId) throws WorkflowException {
     	return getWorkflowUtility().getDocumentType(documentTypeId);
     }
 
@@ -135,7 +135,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining the document type
      * @see WorkflowUtility#getDocumentTypeByName(String)
      */
-    public DocumentTypeDTO getDocType(String documentTypeName) throws WorkflowException {
+    public DocumentTypeDTO getDocTypeByName(String documentTypeName) throws WorkflowException {
     	return getWorkflowUtility().getDocumentTypeByName(documentTypeName);
     }
 

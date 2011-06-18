@@ -26,15 +26,15 @@ import javax.persistence.Embeddable;
 public class ApplicationDocumentStatusId implements Serializable {
 
     @Column(name="DOC_TYP_ID")
-    private Long documentTypeId;
+    private String documentTypeId;
     @Column(name="DOC_STAT_NM")
     private String statusName;
 
     public ApplicationDocumentStatusId() {}
 
-    public Long getDocumentTypeId() { return documentTypeId; }
+    public String getDocumentTypeId() { return documentTypeId; }
 
-    public void setDocumentTypeId(Long documentTypeId) { this.documentTypeId = documentTypeId; }
+    public void setDocumentTypeId(String documentTypeId) { this.documentTypeId = documentTypeId; }
     
     public String getStatusName() { return statusName; }
 

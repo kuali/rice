@@ -131,14 +131,14 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
 		return (NodeState) query.getSingleResult();
     }
 
-    public RouteNode findRouteNodeByName(Long documentTypeId, String name) {
+    public RouteNode findRouteNodeByName(String documentTypeId, String name) {
     	Query query = entityManager.createNamedQuery("RouteNode.FindRouteNodeByName");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_TYPE_ID, documentTypeId);
     	query.setParameter(KEWPropertyConstants.ROUTE_NODE_NAME, name);
 		return (RouteNode)query.getSingleResult();    	
     }
 
-    public List findFinalApprovalRouteNodes(Long documentTypeId) {
+    public List findFinalApprovalRouteNodes(String documentTypeId) {
     	Query query = entityManager.createNamedQuery("RouteNode.FindApprovalRouteNodes");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_TYPE_ID, documentTypeId);
     	query.setParameter(KEWPropertyConstants.FINAL_APPROVAL, Boolean.TRUE);

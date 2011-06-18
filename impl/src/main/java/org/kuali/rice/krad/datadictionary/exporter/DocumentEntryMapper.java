@@ -30,7 +30,7 @@ public abstract class DocumentEntryMapper {
     
     protected DocumentTypeDTO getDocumentType(String documentTypeName) {
         try {
-            return KRADServiceLocatorWeb.getWorkflowInfoService().getDocType(documentTypeName);
+            return KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(documentTypeName);
         } catch (WorkflowException e) {
             throw new RuntimeException("Caught Exception trying to get the Workflow Document Type", e);
         }

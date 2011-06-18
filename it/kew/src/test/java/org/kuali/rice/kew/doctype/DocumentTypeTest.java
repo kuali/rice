@@ -97,13 +97,13 @@ public class DocumentTypeTest extends KEWTestCase {
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
 
         WorkflowInfo info = new WorkflowInfo();
-        Integer version1 = info.getDocType(document.getDocumentType()).getDocTypeVersion();
+        Integer version1 = info.getDocTypeByName(document.getDocumentType()).getDocTypeVersion();
 
         //update the document type
         loadXmlFile("DoctypeSecondVersion.xml");
 
         //verify that we have a new documenttypeid and its a newer version
-        Integer version2 = info.getDocType(document.getDocumentType()).getDocTypeVersion();
+        Integer version2 = info.getDocTypeByName(document.getDocumentType()).getDocTypeVersion();
 
         assertTrue("Version2 should be larger than verison1", version2.intValue() > version1.intValue());
 
@@ -114,7 +114,7 @@ public class DocumentTypeTest extends KEWTestCase {
         document.approve("");
 
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
-        Integer versionDocument = info.getDocType(document.getRouteHeader().getDocTypeId()).getDocTypeVersion();
+        Integer versionDocument = info.getDocTypeById(document.getRouteHeader().getDocTypeId()).getDocTypeVersion();
 
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
         //make sure our document still represents the accurate version
@@ -672,7 +672,7 @@ public class DocumentTypeTest extends KEWTestCase {
                 }
 			}
 		}
-    	Set<Long> rootDocIds = new HashSet<Long>();
+    	Set<String> rootDocIds = new HashSet<String>();
     	// verify the hierarchy
     	for (DocumentType leaf : leafs) {
 			verifyHierarchy(leaf, rootDocIds);
@@ -684,7 +684,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	assertEquals("Should have the same number of roots", numRoots, rootDocIds.size());
     }
     
-    protected void verifyHierarchy(DocumentType docType, Set<Long> rootDocIds) {
+    protected void verifyHierarchy(DocumentType docType, Set<String> rootDocIds) {
     	assertTrue("DocumentType " + docType.getName() + " should be current.", docType.getCurrentInd().booleanValue());
     	if (docType.getParentDocType() == null) {
     		rootDocIds.add(docType.getDocumentTypeId());

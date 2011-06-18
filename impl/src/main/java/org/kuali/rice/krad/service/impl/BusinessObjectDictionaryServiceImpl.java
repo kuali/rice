@@ -442,7 +442,7 @@ public class BusinessObjectDictionaryServiceImpl implements
         try {
             MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(businessObjectClass);
             if (entry != null) {
-                label = KRADServiceLocatorWeb.getWorkflowInfoService().getDocType(entry.getDocumentTypeName()).getDocTypeLabel();
+                label = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(entry.getDocumentTypeName()).getDocTypeLabel();
             }
 
         } catch (WorkflowException e) {

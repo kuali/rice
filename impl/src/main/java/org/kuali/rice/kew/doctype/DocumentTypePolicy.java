@@ -47,7 +47,7 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
 	private DocumentType documentType;
     
     @Transient
-    private Long documentTypeId;
+    private String documentTypeId;
     @Transient
     private String policyName;
 
@@ -102,11 +102,11 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
         return KEWConstants.DISAPPROVE_POLICY.equals(this.getPolicyName());
     }
 
-    public Long getDocumentTypeId() {
+    public String getDocumentTypeId() {
         return (getDocumentTypePolicyId().getDocumentTypeId() != null) ? getDocumentTypePolicyId().getDocumentTypeId() : this.documentTypeId;
     }
 
-    public void setDocumentTypeId(Long documentTypeId) {
+    public void setDocumentTypeId(String documentTypeId) {
     	this.documentTypeId = documentTypeId;
         this.getDocumentTypePolicyId().setDocumentTypeId(documentTypeId);
     }
@@ -149,7 +149,7 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
         DocumentTypePolicy clone = new DocumentTypePolicy();
 
         if(preserveKeys && this.getDocumentTypeId() != null){
-            clone.setDocumentTypeId(new Long(this.getDocumentTypeId().longValue()));
+            clone.setDocumentTypeId(this.getDocumentTypeId());
         }
         if(this.getPolicyName() != null){
             clone.setPolicyName(new String(this.getPolicyName()));

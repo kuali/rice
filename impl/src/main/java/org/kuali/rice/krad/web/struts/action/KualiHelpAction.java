@@ -16,6 +16,9 @@
 
 package org.kuali.rice.krad.web.struts.action;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -43,9 +46,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.struts.form.KualiHelpForm;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class handles requests for help text.
@@ -232,7 +232,7 @@ public class KualiHelpAction extends KualiAction {
         HelpDefinition helpDefinition = null;
         String apcHelpUrl = null;
         if (entry != null) {
-            DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocType(entry.getDocumentTypeName());
+            DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(entry.getDocumentTypeName());
             label = docType.getDocTypeLabel();
             description = docType.getDocTypeDescription();
             if (StringUtils.isNotBlank(docType.getHelpDefinitionUrl())) {
@@ -426,7 +426,7 @@ public class KualiHelpAction extends KualiAction {
     	}
     	// handle doc search custom help urls
     	if (!StringUtils.isEmpty(helpForm.getSearchDocumentTypeName())) {
-    	    DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocType(helpForm.getSearchDocumentTypeName());
+    	    DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(helpForm.getSearchDocumentTypeName());
     	    if (!StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
     	        String docSearchHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getDocSearchHelpUrl();
 

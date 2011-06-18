@@ -45,6 +45,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
@@ -53,6 +54,10 @@ import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.document.DocumentContract;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.DocumentVariable;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -123,14 +128,14 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 	@NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query="SELECT NEW org.kuali.rice.kew.quicklinks.WatchedDocument(documentId, docRouteStatus, docTitle) FROM DocumentRouteHeaderValue WHERE initiatorWorkflowId = :initiatorWorkflowId AND docRouteStatus IN ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY createDate DESC"),
 	@NamedQuery(name="DocumentRouteHeaderValue.GetAppDocId", query="SELECT d.appDocId from DocumentRouteHeaderValue as d where d.documentId = :documentId")
 })
-public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
+public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase implements DocumentContract {
     private static final long serialVersionUID = -4700736340527913220L;
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
 
     public static final String CURRENT_ROUTE_NODE_NAME_DELIMITER = ", ";
     
     @Column(name="DOC_TYP_ID")
-	private java.lang.Long documentTypeId;
+	private String documentTypeId;
     @Column(name="DOC_HDR_STAT_CD")
 	private java.lang.String docRouteStatus;
     @Column(name="RTE_LVL")
@@ -431,12 +436,13 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
         this.docTitle = docTitle;
     }
 
-    public java.lang.Long getDocumentTypeId() {
+    @Override
+    public String getDocumentTypeId() {
         return documentTypeId;
     }
 
-    public void setDocumentTypeId(java.lang.Long docTypeId) {
-        this.documentTypeId = docTypeId;
+    public void setDocumentTypeId(String documentTypeId) {
+        this.documentTypeId = documentTypeId;
     }
 
     public java.lang.Integer getDocVersion() {
@@ -474,7 +480,8 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
         this.routedByUserWorkflowId = routedByUserWorkflowId;
     }
 
-    public java.lang.String getDocumentId() {
+    @Override
+    public String getDocumentId() {
         return documentId;
     }
 
@@ -1050,4 +1057,113 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
 			List<DocumentStatusTransition> appDocStatusHistory) {
 		this.appDocStatusHistory = appDocStatusHistory;
 	}
+	
+	@Override
+	public DocumentStatus getStatus() {
+		return DocumentStatus.fromCode(getAppDocStatus());
+	}
+	
+	@Override
+	public DateTime getDateCreated() {
+		if (getCreateDate() == null) {
+			return null;
+		}
+		return new DateTime(getCreateDate().getTime());
+	}
+	
+	@Override
+	public DateTime getDateLastModified() {
+		if (getStatusModDate() == null) {
+			return null;
+		}
+		return new DateTime(getStatusModDate().getTime());
+	}
+
+	@Override
+	public DateTime getDateApproved() {
+		if (getApprovedDate() == null) {
+			return null;
+		}
+		return new DateTime(getApprovedDate().getTime());
+	}
+
+	@Override
+	public DateTime getDateFinalized() {
+		if (getFinalizedDate() == null) {
+			return null;
+		}
+		return new DateTime(getFinalizedDate().getTime());
+	}
+	
+	@Override
+	public String getTitle() {
+		return docTitle;
+	}
+
+	@Override
+	public String getApplicationDocumentId() {
+		return appDocId;
+	}
+
+	@Override
+	public String getInitiatorPrincipalId() {
+		return initiatorWorkflowId;
+	}
+
+	@Override
+	public String getRoutedByPrincipalId() {
+		return routedByUserWorkflowId;
+	}
+	
+	@Override
+	public String getDocumentTypeName() {
+		return getDocumentType().getName();
+	}
+	
+	@Override
+	public String getDocumentHandlerUrl() {
+		return getDocumentType().getDocHandlerUrl();
+	}
+	
+	@Override
+	public String getApplicationDocumentStatus() {
+		return appDocStatus;
+	}
+	
+	@Override
+	public DateTime getApplicationDocumentStatusDate() {
+		if (appDocStatusDate == null) {
+			return null;
+		}
+		return new DateTime(appDocStatusDate.getTime());
+	}
+	
+	@Override
+	public List<DocumentVariable> getVariables() {
+		List<DocumentVariable> documentVariables = new ArrayList<DocumentVariable>();
+		/* populate the routeHeaderVO with the document variables */
+        // FIXME: we assume there is only one for now
+        Branch routeNodeInstanceBranch = getRootBranch();
+        // Ok, we are using the "branch state" as the arbitrary convenient repository for flow/process/edoc variables
+        // so we need to stuff them into the VO
+        if (routeNodeInstanceBranch != null) {
+            List<BranchState> listOfBranchStates = routeNodeInstanceBranch.getBranchState();
+            for (BranchState bs : listOfBranchStates) {
+                if (bs.getKey() != null && bs.getKey().startsWith(BranchState.VARIABLE_PREFIX)) {
+                    LOG.debug("Setting branch state variable on vo: " + bs.getKey() + "=" + bs.getValue());
+                    documentVariables.add(DocumentVariable.Builder.create(bs.getKey().substring(BranchState.VARIABLE_PREFIX.length()), bs.getValue()).build());
+                }
+            }
+        }
+        return documentVariables;
+	}
+
+	public static Document to(DocumentRouteHeaderValue documentBo) {
+		if (documentBo == null) {
+			return null;
+		}
+		Document.Builder builder = Document.Builder.create(documentBo);
+		return builder.build();
+	}
+	
 }

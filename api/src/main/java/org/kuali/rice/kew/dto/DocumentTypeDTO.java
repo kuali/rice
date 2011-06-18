@@ -25,7 +25,7 @@ import java.io.Serializable;
 public class DocumentTypeDTO implements Serializable {
     static final long serialVersionUID = 5266872451859573823L;
 
-    private Long docTypeParentId;
+    private String docTypeParentId;
     private String docTypeParentName;
     private boolean docTypeActiveInd;
     private boolean docTypeActiveInherited;
@@ -35,7 +35,7 @@ public class DocumentTypeDTO implements Serializable {
     // this value is the resolved and potentially inherited value
     private String helpDefinitionUrl;
     private String docSearchHelpUrl;
-    private Long docTypeId;
+    private String docTypeId;
     private String docTypeLabel;
     private String name;
     private Integer docTypeVersion = new Integer(0);
@@ -63,7 +63,7 @@ public class DocumentTypeDTO implements Serializable {
         return docTypeDefaultApprovePolicy;
     }
 
-    public Long getDocTypeParentId() {
+    public String getDocTypeParentId() {
         return docTypeParentId;
     }
 
@@ -83,7 +83,7 @@ public class DocumentTypeDTO implements Serializable {
         return docTypeHandlerUrl;
     }
 
-    public Long getDocTypeId() {
+    public String getDocTypeId() {
         return docTypeId;
     }
 
@@ -115,7 +115,7 @@ public class DocumentTypeDTO implements Serializable {
         this.name = docTypeShortname;
     }
 
-    public void setDocTypeId(Long docTypeId) {
+    public void setDocTypeId(String docTypeId) {
         this.docTypeId = docTypeId;
     }
 
@@ -135,7 +135,7 @@ public class DocumentTypeDTO implements Serializable {
         this.docTypeActiveInd = docTypeActiveInd;
     }
 
-    public void setDocTypeParentId(Long docGrpId) {
+    public void setDocTypeParentId(String docGrpId) {
         this.docTypeParentId = docGrpId;
     }
 

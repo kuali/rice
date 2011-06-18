@@ -13,6 +13,10 @@
  */
 package org.kuali.rice.kew.engine.node.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -24,10 +28,6 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
 public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements RouteNodeDAO {
@@ -127,14 +127,14 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
 	return (NodeState) getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(NodeState.class, criteria));
     }
 
-    public RouteNode findRouteNodeByName(Long documentTypeId, String name) {
+    public RouteNode findRouteNodeByName(String documentTypeId, String name) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo(ROUTE_NODE_NAME, name);
 	criteria.addEqualTo(DOCUMENT_TYPE_ID, documentTypeId);
 	return (RouteNode) getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RouteNode.class, criteria));
     }
 
-    public List findFinalApprovalRouteNodes(Long documentTypeId) {
+    public List findFinalApprovalRouteNodes(String documentTypeId) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo(DOCUMENT_TYPE_ID, documentTypeId);
 	criteria.addEqualTo(FINAL_APPROVAL, Boolean.TRUE);

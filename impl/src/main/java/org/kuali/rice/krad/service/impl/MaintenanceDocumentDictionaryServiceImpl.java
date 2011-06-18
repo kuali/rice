@@ -59,7 +59,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
      */
     protected DocumentTypeDTO getDocumentType(String documentTypeName) {
         try {
-            return KRADServiceLocatorWeb.getWorkflowInfoService().getDocType(documentTypeName);
+            return KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(documentTypeName);
         } catch (WorkflowException e) {
             throw new RuntimeException("Caught exception attempting to get document type for doc type name '" + documentTypeName + "'", e);
         }

@@ -85,7 +85,7 @@ public class RouteNode implements Serializable {
 	@Column(name="RTE_NODE_ID")
 	private Long routeNodeId;
     @Column(name="DOC_TYP_ID",insertable=false, updatable=false)
-	private Long documentTypeId;
+	private String documentTypeId;
     @Column(name="NM")
 	private String routeNodeName;
     @Column(name="RTE_MTHD_NM")
@@ -242,11 +242,11 @@ public class RouteNode implements Serializable {
         this.routeMethodName = routeMethodName;
     }
 
-    public Long getDocumentTypeId() {
+    public String getDocumentTypeId() {
         return documentTypeId;
     }
 
-    public void setDocumentTypeId(Long documentTypeId) {
+    public void setDocumentTypeId(String documentTypeId) {
         this.documentTypeId = documentTypeId;
     }
 

@@ -104,11 +104,7 @@ public class DocumentTypeLookupableHelperServiceImpl extends
         }
 
         if (documentTypeId != null && !"".equals(documentTypeId.trim())) {
-            try {
-                documentType.setDocumentTypeId(new Long(documentTypeId.trim()));
-            } catch (NumberFormatException e) {
-                documentType.setDocumentTypeId(new Long(-1));
-            }
+        	documentType.setDocumentTypeId(documentTypeId.trim());
         }
         if (!StringUtils.isBlank(applicationId)) {
             documentType.setActualApplicationId(applicationId);

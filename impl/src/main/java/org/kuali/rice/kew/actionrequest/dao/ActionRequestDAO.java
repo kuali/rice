@@ -59,7 +59,7 @@ public interface ActionRequestDAO {
 
     public  void deleteByDocumentId(String documentId);
 
-    public List findPendingRootRequestsByDocumentType(Long documentTypeId);
+    public List findPendingRootRequestsByDocumentType(String documentTypeId);
 
     public List findPendingRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId);
 

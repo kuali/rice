@@ -29,16 +29,18 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DocumentTypePolicyId implements Serializable {
 
+    private static final long serialVersionUID = -8024479878884387727L;
+	
     @Column(name="DOC_TYP_ID")
-    private Long documentTypeId;
+    private String documentTypeId;
     @Column(name="DOC_PLCY_NM")
     private String policyName;
 
     public DocumentTypePolicyId() {}
 
-    public Long getDocumentTypeId() { return documentTypeId; }
+    public String getDocumentTypeId() { return documentTypeId; }
     
-    public void setDocumentTypeId(Long documentTypeId) { this.documentTypeId = documentTypeId; }
+    public void setDocumentTypeId(String documentTypeId) { this.documentTypeId = documentTypeId; }
 
     public String getPolicyName() { return policyName; }
 
@@ -88,22 +90,6 @@ public class DocumentTypePolicyId implements Serializable {
 			return false;
 		return true;
 	}
-
-/*
-    public boolean equals(Object o) {
-        if (o == this) return true;
-        if (!(o instanceof DocumentTypePolicyId)) return false;
-        if (o == null) return false;
-        DocumentTypePolicyId pk = (DocumentTypePolicyId) o;
-        // TODO: Finish implementing this method.  Compare o to pk and return true or false.
-        throw new UnsupportedOperationException("Please implement me!");
-    }
-
-    public int hashCode() {
-        // TODO: Implement this method
-        throw new UnsupportedOperationException("Please implement me!");
-    }
-*/    
 
 }
 

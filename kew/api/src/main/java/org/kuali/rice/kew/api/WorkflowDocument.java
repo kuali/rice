@@ -43,21 +43,23 @@ public class WorkflowDocument implements java.io.Serializable {
     private ModifiableDocumentContent modifiableDocumentContent;;
 
     public static WorkflowDocument createDocument(String principalId, String documentTypeName) {
-    	return createDocument(principalId, documentTypeName, null);
+    	return createDocument(principalId, documentTypeName, null, null);
     }
     
     public static WorkflowDocument createDocument(String principalId, String documentTypeName, String title) {
-    	return createDocument(principalId, documentTypeName, title, null);
+    	DocumentUpdate.Builder builder = DocumentUpdate.Builder.create();
+    	builder.setTitle(title);
+    	return createDocument(principalId, documentTypeName, builder.build(), null);
     }
     
-	public static WorkflowDocument createDocument(String principalId, String documentTypeName, String title, DocumentContentUpdate documentContentUpdate) {
+	public static WorkflowDocument createDocument(String principalId, String documentTypeName, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
 		if (StringUtils.isBlank(principalId)) {
 			throw new IllegalArgumentException("principalId was null or blank");
 		}
 		if (StringUtils.isBlank(documentTypeName)) {
 			throw new IllegalArgumentException("documentTypeName was null or blank");
 		}
-		Document document = getWorkflowDocumentActionsService().create(documentTypeName, principalId, title, documentContentUpdate);
+		Document document = getWorkflowDocumentActionsService().create(documentTypeName, principalId, documentUpdate, documentContentUpdate);
 		return new WorkflowDocument(principalId, document);
 	}
 	

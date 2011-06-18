@@ -42,9 +42,9 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
     public boolean isLockedForRouting(DocumentType documentType) {
         return false;
     }
-    private Map documentsById = new HashMap();
-    private Map documentsByName = new HashMap();
-    private Map postProcessors = new HashMap();
+    private Map<String, DocumentType> documentsById = new HashMap<String, DocumentType>();
+    private Map<String, DocumentType> documentsByName = new HashMap<String, DocumentType>();
+    private Map<String, PostProcessor> postProcessors = new HashMap<String, PostProcessor>();
 
     public void makeCurrent(List documentTypes) {
         throw new UnsupportedOperationException("not yet implmeneted");
@@ -63,7 +63,7 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
     public Integer getMaxVersionNumber(String name){
         return new Integer(0);
     }
-    public DocumentType findById(Long documentTypeId) {
+    public DocumentType findById(String documentTypeId) {
         return (DocumentType) documentsById.get(documentTypeId);
     }
 
@@ -79,11 +79,11 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         addDocumentType(documentType, new MockPostProcessor(true));
     }
 
-    public PostProcessor getPostProcessor(Long documentTypeId) {
+    public PostProcessor getPostProcessor(String documentTypeId) {
         return (PostProcessor) postProcessors.get(documentTypeId);
     }
 
-    public Collection findRouteLevels(Long documentTypeId) {
+    public Collection findRouteLevels(String documentTypeId) {
         return (Collection) ((DocumentType)documentsById.get(documentTypeId)).getRouteLevels();
     }
 
@@ -106,19 +106,16 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
     public List findAllCurrentRootDocuments() {
         return null;
     }
-    public DocumentType getMostRecentDocType(Long documentTypeId) {
-        return null;
-    }
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.doctype.DocumentTypeService#getDocumentTypeVO(java.lang.Long)
      */
-    public DocumentTypeDTO getDocumentTypeVO(Long documentTypeId) {
+    public DocumentTypeDTO getDocumentTypeVOById(String documentTypeId) {
         return null;
     }
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.doctype.DocumentTypeService#getDocumentTypeVO(java.lang.String)
      */
-    public DocumentTypeDTO getDocumentTypeVO(String documentTypeName) {
+    public DocumentTypeDTO getDocumentTypeVOByName(String documentTypeName) {
         return null;
     }
     /* (non-Javadoc)
@@ -140,10 +137,10 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
 	public List findAllCurrent() {
         return null;
     }
-	public List getChildDocumentTypes(Long documentTypeId) {
+	public List getChildDocumentTypes(String documentTypeId) {
 		return null;
 	}
-	public DocumentType findByNameIgnoreCache(Long documentTypeId) {
+	public DocumentType findByNameIgnoreCache(String documentTypeId) {
 		return null;
 	}
 	public void save(DocumentType documentType) {

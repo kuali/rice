@@ -52,7 +52,7 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
 	private DocumentType documentType;
 
 	@Transient
-	private Long documentTypeId;
+	private String documentTypeId;
 	@Transient
 	private String statusName;
 	
@@ -67,11 +67,11 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
 		this.applicationDocumentStatusId = documentStatusId;
 	}
 
-	public Long getDocumentTypeId() {
+	public String getDocumentTypeId() {
 		return (this.getApplicationDocumentStatusId().getDocumentTypeId() != null) ? this.getApplicationDocumentStatusId().getDocumentTypeId() : this.documentTypeId;
 	}
 
-	public void setDocumentTypeId(Long documentTypeId) {
+	public void setDocumentTypeId(String documentTypeId) {
 		this.documentTypeId = documentTypeId;
 		this.getApplicationDocumentStatusId().setDocumentTypeId(documentTypeId);
 	}

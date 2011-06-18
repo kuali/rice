@@ -23,7 +23,7 @@
 <class-descriptor class="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" table="KREW_DOC_HDR_T" >
     <field-descriptor name="documentId" column="DOC_HDR_ID" jdbc-type="VARCHAR"
       primarykey="true" autoincrement="true" sequence-name="KREW_DOC_HDR_S" />
-    <field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="BIGINT" />
+    <field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="docRouteStatus" column="DOC_HDR_STAT_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="docRouteLevel" column="RTE_LVL" jdbc-type="INTEGER" />
     <field-descriptor name="appDocStatus" column="APP_DOC_STAT" jdbc-type="VARCHAR" />
@@ -123,7 +123,7 @@
   <class-descriptor class="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" table="KREW_DOC_HDR_T" >
     <field-descriptor name="documentId" column="DOC_HDR_ID" jdbc-type="VARCHAR"
       primarykey="true" autoincrement="true" sequence-name="KREW_DOC_HDR_S" />
-    <field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="BIGINT" />
+    <field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="docRouteStatus" column="DOC_HDR_STAT_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="docRouteLevel" column="RTE_LVL" jdbc-type="INTEGER" />
     <field-descriptor name="appDocStatus" column="APP_DOC_STAT" jdbc-type="VARCHAR" />
@@ -354,16 +354,16 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.doctype.bo.DocumentType" table="KREW_DOC_TYP_T">
-    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" primarykey="true"
+    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" primarykey="true"
          autoincrement="true" sequence-name="KREW_DOC_HDR_S" />
-    <field-descriptor column="PARNT_ID" name="docTypeParentId" jdbc-type="BIGINT" />
+    <field-descriptor column="PARNT_ID" name="docTypeParentId" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_TYP_NM" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="DOC_TYP_VER_NBR" name="version" jdbc-type="INTEGER"/>
     <field-descriptor column="ACTV_IND" name="active" jdbc-type="BIT"/>
     <field-descriptor column="CUR_IND" name="currentInd" jdbc-type="BIT"/>
     <field-descriptor column="DOC_TYP_DESC" name="description" jdbc-type="VARCHAR"/>
     <field-descriptor column="LBL" name="label" jdbc-type="VARCHAR"/>
-    <field-descriptor column="PREV_DOC_TYP_VER_NBR" name="previousVersionId" jdbc-type="BIGINT"/>
+    <field-descriptor column="PREV_DOC_TYP_VER_NBR" name="previousVersionId" jdbc-type="VARCHAR"/>
     <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="VARCHAR"/>
     <field-descriptor column="DOC_HDLR_URL" name="unresolvedDocHandlerUrl" jdbc-type="VARCHAR"/>
     <field-descriptor column="HELP_DEF_URL" name="unresolvedHelpDefinitionUrl" jdbc-type="VARCHAR"/>
@@ -405,7 +405,7 @@
 
 
   <class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypePolicy" table="KREW_DOC_TYP_PLCY_RELN_T">
-    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" primarykey="true"/>
+    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="DOC_PLCY_NM" name="policyName" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="PLCY_NM" name="policyValue" jdbc-type="BIT"/>
     <field-descriptor column="PLCY_VAL" name="policyStringValue" jdbc-type="VARCHAR"/>
@@ -419,7 +419,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.doctype.ApplicationDocumentStatus" table="KREW_DOC_TYP_APP_DOC_STAT_T">
-    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" primarykey="true"/>
+    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="DOC_STAT_NM" name="statusName" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
@@ -451,7 +451,7 @@
   <class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypeAttribute" table="KREW_DOC_TYP_ATTR_T">
     <field-descriptor column="DOC_TYP_ATTRIB_ID" name="documentTypeAttributeId" jdbc-type="BIGINT"
       primarykey="true" autoincrement="true" sequence-name="KREW_DOC_TYP_ATTR_S"/>
-    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" access="anonymous"/>
+    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" access="anonymous"/>
     <field-descriptor column="RULE_ATTR_ID" name="ruleAttributeId" jdbc-type="BIGINT"/>
     <field-descriptor column="ORD_INDX" name="orderIndex" jdbc-type="INTEGER"/>
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="ruleAttribute" auto-delete="false" auto-retrieve="true" auto-update="false">
@@ -687,7 +687,7 @@
 
   <class-descriptor class="org.kuali.rice.kew.engine.node.RouteNode" table="KREW_RTE_NODE_T">
     <field-descriptor column="RTE_NODE_ID" name="routeNodeId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_RTE_NODE_S"/>
-    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" />
+    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" />
     <field-descriptor column="NM" name="routeNodeName" jdbc-type="VARCHAR" />
     <field-descriptor column="TYP" name="nodeType" jdbc-type="VARCHAR" />
     <field-descriptor column="RTE_MTHD_NM" name="routeMethodName" jdbc-type="VARCHAR" />
@@ -853,7 +853,7 @@
 
   <class-descriptor class="org.kuali.rice.kew.engine.node.Process" table="KREW_DOC_TYP_PROC_T">
     <field-descriptor column="DOC_TYP_PROC_ID" name="processId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_RTE_NODE_S"/>
-  	<field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" access="anonymous"/>
+  	<field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" access="anonymous"/>
   	<field-descriptor column="INIT_RTE_NODE_ID" name="initialRouteNodeId" jdbc-type="BIGINT" access="anonymous"/>
   	<field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
   	<field-descriptor column="INIT_IND" name="initial" jdbc-type="BIT"/>

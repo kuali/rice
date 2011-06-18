@@ -14,11 +14,7 @@ import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
 
 public interface WorkflowDocumentActionsService {
 
-	public Document create(String documentTypeName, String initiatorPrincipalId, String title, DocumentContentUpdate documentContent);
-
-	public void updateDocumentData(String documentId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
-	
-	public void updateDocumentContent(String documentId, DocumentContentUpdate documentContent);
+	public Document create(String documentTypeName, String initiatorPrincipalId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
 	
 	public ValidActions determineValidActions(String documentId, String principalId);
 

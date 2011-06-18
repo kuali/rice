@@ -16,6 +16,15 @@
  */
 package org.kuali.rice.kew.doctype.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
@@ -25,14 +34,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 
 public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
@@ -62,7 +63,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		entityManager.remove(documentType);
 	}
 
-	public DocumentType findById(Long docTypeId) {
+	public DocumentType findById(String docTypeId) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		crit.eq("documentTypeId", docTypeId);
 			return (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
@@ -89,14 +90,14 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		return getMostRecentDocType(docTypeName).getVersion();
 	}
 
-	public List getChildDocumentTypeIds(Long parentDocumentTypeId) {
-		List childrenIds = new ArrayList();
+	public List<String> getChildDocumentTypeIds(String parentDocumentTypeId) {
+		List<String> childrenIds = new ArrayList<String>();
 		try {
 			String sql = "select DOC_TYP_ID from KREW_DOC_TYP_T where CUR_IND = 1 and PARNT_ID = " + parentDocumentTypeId;
 			Query query = entityManager.createNativeQuery(sql);
 			List resultIds = query.getResultList();
-			for (Object id:resultIds){
-				childrenIds.add(new Long(id.toString()));
+			for (Object id : resultIds){
+				childrenIds.add(id.toString());
 			}
 
 		} catch (Exception e) {
@@ -107,7 +108,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		return childrenIds;
 	}
 
-	public DocumentType getMostRecentDocType(String docTypeName) {
+	protected DocumentType getMostRecentDocType(String docTypeName) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		crit.eq("name", docTypeName);
 		crit.orderBy("version", false);
@@ -184,7 +185,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 
-    private void addParentIdOrCriteria(Long parentId, Criteria mainCriteria) {
+    private void addParentIdOrCriteria(String parentId, Criteria mainCriteria) {
         Criteria parentCriteria = new Criteria(DocumentType.class.getName());
         parentCriteria.eq("docTypeParentId", parentId);
         mainCriteria.or(parentCriteria);
@@ -201,17 +202,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		}
 	}
 
-	public DocumentType getMostRecentDocType(Long documentTypeId) {
-		Criteria crit = new Criteria(DocumentType.class.getName());
-		crit.eq("documentTypeId", documentTypeId);
-		crit.orderBy("version", false);
-
-		Iterator docTypes = new QueryByCriteria(entityManager, crit).toQuery().getResultList().iterator();
-		while (docTypes.hasNext()) {
-			return (DocumentType) docTypes.next();
-		}
-		return null;
-	}
+	
 
 	public List findAllCurrentRootDocuments() {
 		Criteria crit = new Criteria(DocumentType.class.getName());
@@ -253,7 +244,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
     	return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    public Long findDocumentTypeIdByDocumentId(String documentId) {
+    public String findDocumentTypeIdByDocumentId(String documentId) {
     	Criteria crit = new Criteria(DocumentRouteHeaderValue.class.getName());
     	crit.eq("documentId", documentId);
 

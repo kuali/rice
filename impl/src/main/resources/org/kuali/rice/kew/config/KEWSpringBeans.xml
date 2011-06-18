@@ -771,5 +771,11 @@
 		   </list>
 		</property>
 	</bean>
+	
+	
+	<!-- New beans added for KEW version compatibility refactoring Rice 2.0 -->
+	
+	<bean id="rice.kew.workflowDocumentActionsService" class="org.kuali.rice.kew.impl.action.WorkflowDocumentActionsServiceImpl" />
+	
     
 </beans>

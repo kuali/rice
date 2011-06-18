@@ -697,7 +697,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return getActionRequestDAO().findPendingRootRequestsByDocIdAtRouteLevel(documentId, routeLevel);
     }
 
-    public List findPendingRootRequestsByDocumentType(Long documentTypeId) {
+    public List findPendingRootRequestsByDocumentType(String documentTypeId) {
         return getActionRequestDAO().findPendingRootRequestsByDocumentType(documentTypeId);
     }
 

@@ -190,7 +190,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue createDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws DocumentTypeNotFoundException, WorkflowException {
+	public DocumentRouteHeaderValue createDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws WorkflowException {
 
 		LOG.debug("Rmi createDocument() with "); // add some sort of a
 													// routeheader logger

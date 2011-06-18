@@ -77,7 +77,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         return documentTypes;
     }
 
-    public DocumentType findById(Long documentTypeId) {
+    public DocumentType findById(String documentTypeId) {
     	if (documentTypeId == null) {
     		return null;
     	}
@@ -93,7 +93,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	if (documentId == null) {
     		return null;
     	}
-    	Long documentTypeId = getDocumentTypeDAO().findDocumentTypeIdByDocumentId(documentId);
+    	String documentTypeId = getDocumentTypeDAO().findDocumentTypeIdByDocumentId(documentId);
     	return findById(documentTypeId);
     }
 
@@ -163,15 +163,15 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
      * Fetches the DocumentType from the cache with the given document type id.  If there is no entry in the cache for the given
      * document type id, null is returned.
      */
-    protected DocumentType fetchFromCacheById(Long documentTypeId) {
+    protected DocumentType fetchFromCacheById(String documentTypeId) {
     	return (DocumentType) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getIdCacheKey(documentTypeId));
     }
 
     /**
      * Returns the cache key for the given document type ID.
      */
-    protected String getIdCacheKey(Long documentTypeId) {
-    	return DOCUMENT_TYPE_ID_CACHE_PREFIX + documentTypeId.toString();
+    protected String getIdCacheKey(String documentTypeId) {
+    	return DOCUMENT_TYPE_ID_CACHE_PREFIX + documentTypeId;
     }
 
     /**
@@ -214,14 +214,14 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
      * Fetches the DocumentType from the cache with the given document type id.  If there is no entry in the cache for the given
      * document type id, null is returned.
      */
-    protected DocumentTypeDTO fetchDTOFromCacheById(Long documentTypeId) {
+    protected DocumentTypeDTO fetchDTOFromCacheById(String documentTypeId) {
     	return (DocumentTypeDTO) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getDTOIdCacheKey(documentTypeId));
     }
 
     /**
      * Returns the cache key for the given document type ID.
      */
-    protected String getDTOIdCacheKey(Long documentTypeId) {
+    protected String getDTOIdCacheKey(String documentTypeId) {
     	return DOCUMENT_TYPE_DTO_ID_CACHE_PREFIX + documentTypeId.toString();
     }
 
@@ -290,19 +290,17 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		DocumentType oldDocumentType = findByName(documentType.getName(), true, false);
     		// reset the children on the oldDocumentType
     		//oldDocumentType.resetChildren();
-    		Long existingDocTypeId = null;
+    		String existingDocTypeId = null;
     		if (oldDocumentType != null) {
-        		existingDocTypeId = oldDocumentType.getDocumentTypeId();
-        		if (existingDocTypeId.longValue() > 0) {
-        		    // set version number on the new doc type using the max version from the database
-        		    Integer maxVersionNumber = documentTypeDAO.getMaxVersionNumber(documentType.getName());
-        			documentType.setVersion((maxVersionNumber != null) ? new Integer(maxVersionNumber.intValue() + 1) : new Integer(0));
-        			oldDocumentType.setCurrentInd(Boolean.FALSE);
-        			if ( LOG.isInfoEnabled() ) { 
-        				LOG.info("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name '" + oldDocumentType.getName() + "' (current = " + oldDocumentType.getCurrentInd() + ")");
-        			}
-        			save(oldDocumentType, false);
-        		}
+    			existingDocTypeId = oldDocumentType.getDocumentTypeId();
+    			// set version number on the new doc type using the max version from the database
+    			Integer maxVersionNumber = documentTypeDAO.getMaxVersionNumber(documentType.getName());
+    			documentType.setVersion((maxVersionNumber != null) ? new Integer(maxVersionNumber.intValue() + 1) : new Integer(0));
+    			oldDocumentType.setCurrentInd(Boolean.FALSE);
+    			if ( LOG.isInfoEnabled() ) { 
+    				LOG.info("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name '" + oldDocumentType.getName() + "' (current = " + oldDocumentType.getCurrentInd() + ")");
+    			}
+    			save(oldDocumentType, false);
     		}
     		// check to see that no current documents exist in database
     		if (!CollectionUtils.isEmpty(documentTypeDAO.findAllCurrentByName(documentType.getName()))) {
@@ -382,7 +380,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         this.documentTypeDAO = documentTypeDAO;
     }
 
-    public DocumentTypeDTO getDocumentTypeVO(Long documentTypeId) {
+    public DocumentTypeDTO getDocumentTypeVOById(String documentTypeId) {
         DocumentTypeDTO dto = fetchDTOFromCacheById(documentTypeId);
         if ( dto == null ) {
             DocumentType docType = findById(documentTypeId);
@@ -396,7 +394,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         return dto;
     }
 
-    public DocumentTypeDTO getDocumentTypeVO(String documentTypeName) {
+    public DocumentTypeDTO getDocumentTypeVOByName(String documentTypeName) {
         DocumentTypeDTO dto = fetchDTOFromCacheByName(documentTypeName);
         if ( dto == null ) {
             DocumentType docType = findByName(documentTypeName);
@@ -456,11 +454,11 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 		return true;
 	}
 
-    public List getChildDocumentTypes(Long documentTypeId) {
+    public List getChildDocumentTypes(String documentTypeId) {
     	List childDocumentTypes = new ArrayList();
     	List childIds = getDocumentTypeDAO().getChildDocumentTypeIds(documentTypeId);
     	for (Iterator iter = childIds.iterator(); iter.hasNext();) {
-			Long childDocumentTypeId = (Long) iter.next();
+			String childDocumentTypeId = (String) iter.next();
 			childDocumentTypes.add(findById(childDocumentTypeId));
 		}
     	return childDocumentTypes;

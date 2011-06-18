@@ -16,6 +16,18 @@
  */
 package org.kuali.rice.kew.doctype;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
@@ -23,9 +35,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-
-import javax.persistence.*;
-import java.io.Serializable;
 
 
 /**
@@ -56,7 +65,7 @@ public class DocumentTypeAttribute implements Comparable, Serializable {
 	@JoinColumn(name="RULE_ATTR_ID")
 	private RuleAttribute ruleAttribute;
     @Column(name="DOC_TYP_ID",insertable=false, updatable=false)
-	private Long documentTypeId;
+	private String documentTypeId;
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DOC_TYP_ID")
 	private DocumentType documentType;
@@ -87,14 +96,14 @@ public class DocumentTypeAttribute implements Comparable, Serializable {
 	/**
 	 * @param documentTypeId The documentTypeId to set.
 	 */
-	public void setDocumentTypeId(Long documentTypeId) {
+	public void setDocumentTypeId(String documentTypeId) {
 		this.documentTypeId = documentTypeId;
 	}
 
 	/**
 	 * @return Returns the documentTypeId.
 	 */
-	public Long getDocumentTypeId() {
+	public String getDocumentTypeId() {
 		return documentTypeId;
 	}
 

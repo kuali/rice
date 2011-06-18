@@ -215,7 +215,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return DTOConverter.convertRouteNodeInstance(nodeInstance);
     }
 
-    public DocumentTypeDTO getDocumentType(Long documentTypeId) throws WorkflowException {
+    public DocumentTypeDTO getDocumentType(String documentTypeId) throws WorkflowException {
         if (documentTypeId == null) {
             LOG.error("null documentTypeId passed in.");
             throw new RuntimeException("null documentTypeId passed in.");
@@ -223,7 +223,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Fetching DocumentTypeVO [documentTypeId="+documentTypeId+"]");
         }
-        return KEWServiceLocator.getDocumentTypeService().getDocumentTypeVO(documentTypeId);
+        return KEWServiceLocator.getDocumentTypeService().getDocumentTypeVOById(documentTypeId);
     }
 
     public DocumentTypeDTO getDocumentTypeByName(String documentTypeName) throws WorkflowException {
@@ -234,7 +234,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Fetching DocumentTypeVO [documentTypeName="+documentTypeName+"]");
         }
-        DocumentTypeDTO documentType = KEWServiceLocator.getDocumentTypeService().getDocumentTypeVO(documentTypeName);
+        DocumentTypeDTO documentType = KEWServiceLocator.getDocumentTypeService().getDocumentTypeVOByName(documentTypeName);
         return documentType;
     }
 
@@ -904,7 +904,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return true;
     }
 
-    public boolean isSuperUserForDocumentType(String principalId, Long documentTypeId) throws WorkflowException {
+    public boolean isSuperUserForDocumentType(String principalId, String documentTypeId) throws WorkflowException {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Determining super user status [principalId=" + principalId + ", documentTypeId=" + documentTypeId + "]");
     	}

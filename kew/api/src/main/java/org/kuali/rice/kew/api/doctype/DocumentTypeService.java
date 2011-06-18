@@ -1,8 +1,14 @@
 package org.kuali.rice.kew.api.doctype;
 
+import javax.jws.WebParam;
+
 
 public interface DocumentTypeService {
 
+	String getDocumentTypeIdByName(@WebParam(name = "documentTypeName") String documentTypeName);
+	
+	//DocumentType getDocumentType(@WebParam(name = "documentTypeId"), String documentTypeId);
+	
 	// TODO add the following methods to this service
 	
 //	public DocumentTypeDTO getDocumentType(

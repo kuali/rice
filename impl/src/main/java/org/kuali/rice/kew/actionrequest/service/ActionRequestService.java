@@ -87,7 +87,7 @@ public interface ActionRequestService {
 
     public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
 
-    public List findPendingRootRequestsByDocumentType(Long documentTypeId);
+    public List findPendingRootRequestsByDocumentType(String documentTypeId);
 
     public List findAllActionRequestsByDocumentId(String documentId);
 

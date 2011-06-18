@@ -31,8 +31,8 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  */
 public interface DocumentTypeService extends DocumentTypeQueryService, XmlExporter {
 
-    public DocumentTypeDTO getDocumentTypeVO(Long documentTypeId);
-    public DocumentTypeDTO getDocumentTypeVO(String documentTypeName);
+    public DocumentTypeDTO getDocumentTypeVOById(String documentTypeId);
+    public DocumentTypeDTO getDocumentTypeVOByName(String documentTypeName);
     public void versionAndSave(DocumentType documentType);
     public void save(DocumentType documentType);
     public void save(DocumentType documentType, boolean flushCache);
@@ -40,7 +40,7 @@ public interface DocumentTypeService extends DocumentTypeQueryService, XmlExport
     public List findAllCurrentRootDocuments();
     public List findAllCurrent();
     public List<DocumentType> findPreviousInstances(String documentTypeName);
-    public List getChildDocumentTypes(Long documentTypeId);
+    public List getChildDocumentTypes(String documentTypeId);
     public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute);
 
     /**

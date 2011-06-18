@@ -71,10 +71,10 @@ public class KEWModuleService extends ModuleServiceBase {
 			if ( fieldValues.containsKey( "name" ) ) {
 				return (T)getDocumentTypeService().findByName((String)fieldValues.get( "name" ) );
 			}else if( fieldValues.containsKey( "documentTypeId" ) ){
-				return (T)getDocumentTypeService().findById(Long.valueOf(fieldValues.get( "documentTypeId" ).toString()));
+				return (T)getDocumentTypeService().findById(fieldValues.get( "documentTypeId" ).toString());
 			}else if (fieldValues.containsKey( "id" ) ) {
 				// assume it's a string and convert it to a long.
-				return (T)getDocumentTypeService().findById(Long.valueOf(fieldValues.get( "id" ).toString()));
+				return (T)getDocumentTypeService().findById(fieldValues.get( "id" ).toString());
 			}
 
 		}else if(DocumentRouteHeaderEBO.class.isAssignableFrom( businessObjectClass )){

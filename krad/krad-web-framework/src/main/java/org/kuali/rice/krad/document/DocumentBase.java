@@ -139,7 +139,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     public String getDocumentTitle() {
         try {
-            String documentTypeLabel = KRADServiceLocatorWeb.getWorkflowInfoService().getDocType(this.getDocumentHeader().getWorkflowDocument().getDocumentType()).getDocTypeLabel();
+            String documentTypeLabel = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(this.getDocumentHeader().getWorkflowDocument().getDocumentType()).getDocTypeLabel();
             if (null == documentTypeLabel) {
                 documentTypeLabel = "";
             }

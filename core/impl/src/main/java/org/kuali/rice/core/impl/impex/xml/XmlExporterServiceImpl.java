@@ -33,7 +33,7 @@ import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.impex.xml.XmlExporterService;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.framework.impex.xml.XmlImpexRegistry;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 
 /**
  * An implementation of the XmlExporterService which can be configured with a set of

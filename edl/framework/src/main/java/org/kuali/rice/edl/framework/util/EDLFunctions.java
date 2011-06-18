@@ -17,9 +17,9 @@
 package org.kuali.rice.edl.framework.util;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.UserSession;

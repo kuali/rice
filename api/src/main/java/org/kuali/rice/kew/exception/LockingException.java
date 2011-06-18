@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.exception;
 
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
+
 /**
  * An exception which is thrown when a pessimistic lock fails to be aquired.
  * 

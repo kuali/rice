@@ -19,7 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.kew.actions.ActionTakenEvent;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;

@@ -16,13 +16,20 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.junit.Test;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
+
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.action.InvalidActionTakenException;
+import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.document.DocumentCreationException;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 public class CreateDocumentTest extends KEWTestCase {
     
@@ -35,11 +42,10 @@ public class CreateDocumentTest extends KEWTestCase {
 	 * Tests the attempt to create a document from a non-existent document type.
 	 */
 	@Test public void testCreateNonExistentDocumentType() throws Exception {
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "flim-flam-flooey");
 		try {
-			document.getDocumentId();
-			fail("A workflow exception should have been thrown.");
-		} catch (WorkflowException e) {
+			WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "flim-flam-flooey");
+			fail("A DocumentTypeNotFoundException exception should have been thrown.");
+		} catch (DocumentTypeNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -49,12 +55,11 @@ public class CreateDocumentTest extends KEWTestCase {
 	 */
 	@Test public void testCreateNonRoutableDocumentType() throws Exception {
 		// the BlanketApproveTest is a parent document type that has no routing path defined.  Attempts to
-		// create documents of this type should return an error
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveTest");
+		// create documents of this type should return a DocumentCreationException
 		try {
-			document.getDocumentId();
+			WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveTest");
 			fail("A workflow exception should have been thrown.");
-		} catch (IllegalArgumentException e) {
+		} catch (DocumentCreationException e) {
 			e.printStackTrace();
 		}
 	}
@@ -65,13 +70,38 @@ public class CreateDocumentTest extends KEWTestCase {
     @Test public void testCreateInactiveDocumentType() throws Exception {
         // the CreatedDocumentInactive document type is inactive and should not be able to 
         // be initiated for a new document
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "CreatedDocumentInactive");
-        try {
-            document.getDocumentId();
+    	try {
+    		WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "CreatedDocumentInactive");
             fail("A workflow exception should have been thrown.");
-        } catch (WorkflowException e) {
+        } catch (InvalidActionTakenException e) {
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Tests creation of a simple document and verifies it's state.
+     */
+    @Test
+    public void testCreateSimpleDocumentType() throws Exception {
+    	String principalId = getPrincipalIdForName("ewestfal");
+    	WorkflowDocument workflowDocument = WorkflowDocument.createDocument(principalId, "TestDocumentType");
+    	assertNotNull(workflowDocument);
+    	
+    	assertNotNull(workflowDocument.getDocumentId());
+    	Document document = workflowDocument.getDocument();
+    	assertNotNull(document);
+    	
+    	assertNotNull(document.getDateCreated());
+    	assertNotNull(document.getDateLastModified());
+    	assertNull(document.getDateApproved());
+    	assertNull(document.getDateFinalized());
+    	
+    	assertEquals("", document.getTitle());
+    	assertNotNull(document.getDocumentTypeId());
+    	assertEquals("TestDocumentType", document.getDocumentTypeName());
+    	assertEquals(principalId, document.getInitiatorPrincipalId());
+    	assertEquals(DocumentStatus.INITIATED, document.getStatus());
+    	
     }
     
     protected String getPrincipalIdForName(String principalName) {

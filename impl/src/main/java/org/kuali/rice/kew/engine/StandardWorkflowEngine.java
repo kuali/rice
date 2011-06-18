@@ -16,9 +16,16 @@
 
 package org.kuali.rice.kew.engine;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.log4j.MDC;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.document.DocumentCreationException;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.Process;
@@ -46,12 +53,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /**
@@ -715,7 +716,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		Process process = document.getDocumentType().getPrimaryProcess();
 		if (process == null || process.getInitialRouteNode() == null) {
 		    if (process == null) {
-		        throw new IllegalArgumentException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");
+		        throw new DocumentCreationException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");
 		    }
 			return;
 		}

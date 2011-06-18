@@ -17,7 +17,7 @@ package org.kuali.rice.kew.mail;
 
 import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.core.util.xml.XmlJotter;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

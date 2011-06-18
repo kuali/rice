@@ -49,7 +49,7 @@ import org.kuali.rice.edl.impl.dao.EDocLiteDAO;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
 import org.kuali.rice.edl.impl.xml.EDocLiteXmlParser;
 import org.kuali.rice.edl.impl.xml.export.EDocLiteXmlExporter;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;

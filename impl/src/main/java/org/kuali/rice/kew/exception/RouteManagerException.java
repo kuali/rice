@@ -16,8 +16,8 @@
  */
 package org.kuali.rice.kew.exception;
 
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 
 /**

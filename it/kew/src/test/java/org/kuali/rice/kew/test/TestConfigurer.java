@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.test;
 
 import org.kuali.rice.core.impl.config.property.BaseConfig;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;

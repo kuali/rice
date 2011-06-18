@@ -17,7 +17,7 @@ package org.kuali.rice.ken.service.impl;
 
 import org.kuali.rice.ken.bo.NotificationResponse;
 import org.kuali.rice.ken.service.NotificationService;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 

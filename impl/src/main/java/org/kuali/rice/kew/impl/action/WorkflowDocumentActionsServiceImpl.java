@@ -10,13 +10,16 @@ import org.kuali.rice.kew.api.action.AdHocRevokeFromGroup;
 import org.kuali.rice.kew.api.action.AdHocRevokeFromPrincipal;
 import org.kuali.rice.kew.api.action.AdHocToGroup;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
+import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.action.ReturnPoint;
 import org.kuali.rice.kew.api.action.ValidActions;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
+import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentCreationException;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
@@ -31,11 +34,21 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	
 	private DocumentTypeService documentTypeService;
 	
+	/**
+	 * 
+	 * TODO
+	 * 
+	 * @throws RiceIllegalArgumentException if principalId is null or blank
+	 * @throws RiceIllegalArgumentException if documentTypeName is null or blank
+	 * @throws DocumentTypeNotFoundException if documentTypeName does not represent a valid document type
+	 * @throws DocumentCreationException if document for the given document type could not be created
+	 * @throws InvalidActionTakenException if the caller is not allowed to execute this action
+	 */
 	@Override
 	public Document create(String documentTypeName,
 			String initiatorPrincipalId, DocumentUpdate documentUpdate,
 			DocumentContentUpdate documentContentUpdate)
-			throws RiceIllegalArgumentException {
+			throws RiceIllegalArgumentException, DocumentTypeNotFoundException, DocumentCreationException, InvalidActionTakenException {
 		
 		incomingParamCheck(documentTypeName, "documentTypeName");
 		incomingParamCheck(initiatorPrincipalId, "initiatorPrincipalId");
@@ -46,7 +59,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		
 		String documentTypeId = documentTypeService.getDocumentTypeIdByName(documentTypeName);
 		if (documentTypeId == null) {
-			throw new IllegalArgumentException("Failed to locate a document type with the given name: " + documentTypeName);
+			throw new DocumentTypeNotFoundException("Failed to locate a document type with the given name: " + documentTypeName);
 		}
 		
 		DocumentRouteHeaderValue documentBo = new DocumentRouteHeaderValue();
@@ -64,6 +77,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		try {
 			documentBo = KEWServiceLocator.getWorkflowDocumentService().createDocument(initiatorPrincipalId, documentBo);
 			return DocumentRouteHeaderValue.to(documentBo);
+		} catch (org.kuali.rice.kew.exception.InvalidActionTakenException e) {
+			// TODO get rid of checked InvalidActionTakenException
+			throw new InvalidActionTakenException(e.getMessage());
 		} catch (WorkflowException e) {
 			// TODO remove this once we stop throwing WorkflowException everywhere!
 			throw new RiceRuntimeException(e);
@@ -278,6 +294,10 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 				&& StringUtils.isBlank((String) object)) {
 			throw new RiceIllegalArgumentException(name + " was blank");
 		}
+	}
+	
+	public void setDocumentTypeService(DocumentTypeService documentTypeService) {
+		this.documentTypeService = documentTypeService;
 	}
 
 }

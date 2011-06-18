@@ -18,11 +18,11 @@ package org.kuali.rice.kew.routeheader;
 
 
 import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
 
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;

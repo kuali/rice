@@ -24,16 +24,14 @@ import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
-
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -92,21 +90,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         }
 
         KualiWorkflowDocument document = KualiWorkflowDocumentImpl.createKualiDocumentImpl(person.getPrincipalId(), documentTypeId);
-
-        // workflow doesn't complain about invalid docTypes until the first call to getDocumentId, but the rest of our code
-        // assumes that you get the exception immediately upon trying to create a document of that invalid type
-        //
-        // and it throws the generic WorkflowException, apparently, instead of the more specific DocumentTypeNotFoundException,
-        // so as long as I'm here I'll do that conversion as well
-        try {
-            document.getDocumentId();
-        }
-        catch (WorkflowException e) {
-            if (e.getMessage().contains("Could not locate the given document type name")) {
-                throw new DocumentTypeNotFoundException("unknown document type '" + documentTypeId + "'");
-            }
-            throw e;
-        }
 
         watch.stop();
         if (LOG.isDebugEnabled()) {

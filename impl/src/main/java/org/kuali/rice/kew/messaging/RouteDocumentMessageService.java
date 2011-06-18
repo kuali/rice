@@ -17,9 +17,9 @@
 package org.kuali.rice.kew.messaging;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.engine.WorkflowEngine;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 

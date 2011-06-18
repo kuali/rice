@@ -17,9 +17,9 @@ package org.kuali.rice.kew.docmentlink;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.dto.DocumentLinkDTO;
 
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.test.BaselineTestCase;

@@ -284,6 +284,7 @@ public final class Document implements ModelObjectComplete, DocumentContract {
             setDocumentId(documentId);
             setStatus(status);
             setDateCreated(dateCreated);
+            setTitle("");
             setInitiatorPrincipalId(initiatorPrincipalId);
             setDocumentTypeName(documentTypeName);
             setDocumentTypeId(documentTypeId);
@@ -450,6 +451,9 @@ public final class Document implements ModelObjectComplete, DocumentContract {
         }
 
         public void setTitle(String title) {
+        	if (title == null) {
+        		title = "";
+        	}
             this.title = title;
         }
 

@@ -14,7 +14,7 @@
 package org.kuali.rice.kew.messaging.exceptionhandling;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;

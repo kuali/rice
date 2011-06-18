@@ -4,8 +4,11 @@ import java.util.List;
 
 import javax.jws.WebParam;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentCreationException;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
@@ -14,7 +17,8 @@ import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
 
 public interface WorkflowDocumentActionsService {
 
-	public Document create(String documentTypeName, String initiatorPrincipalId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+	public Document create(String documentTypeName, String initiatorPrincipalId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate)
+		throws RiceIllegalArgumentException, DocumentTypeNotFoundException, DocumentCreationException;
 	
 	public ValidActions determineValidActions(String documentId, String principalId);
 

@@ -24,7 +24,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor;
 import org.kuali.rice.kim.api.responsibility.Responsibility;

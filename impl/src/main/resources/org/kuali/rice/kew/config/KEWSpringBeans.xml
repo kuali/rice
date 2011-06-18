@@ -155,6 +155,10 @@
                 <idref local="enWorkflowUtilityService" />
                 <idref local="enQuickLinksService" />
                 <idref local="enDocumentRequeuerService"/>
+                
+                <idref local="rice.kew.workflowDocumentActionsService" />
+                <idref local="rice.kew.documentTypeService" />
+                
                 <!-- it's important that this service remains non-transactionally proxied for various reasons
                 <idref local="enUserOptionsService"/>
                 -->
@@ -774,8 +778,13 @@
 	
 	
 	<!-- New beans added for KEW version compatibility refactoring Rice 2.0 -->
+
+	<bean id="rice.kew.documentTypeService" class="org.kuali.rice.kew.impl.doctype.DocumentTypeServiceImpl">
+		<property name="documentTypeDao" ref="enDocumentTypeDAO" />
+	</bean>
 	
-	<bean id="rice.kew.workflowDocumentActionsService" class="org.kuali.rice.kew.impl.action.WorkflowDocumentActionsServiceImpl" />
-	
+	<bean id="rice.kew.workflowDocumentActionsService" class="org.kuali.rice.kew.impl.action.WorkflowDocumentActionsServiceImpl">
+		<property name="documentTypeService" ref="rice.kew.documentTypeService"/>
+	</bean>	
     
 </beans>

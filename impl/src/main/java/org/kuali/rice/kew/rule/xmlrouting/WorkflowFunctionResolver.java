@@ -25,7 +25,7 @@ import javax.xml.xpath.XPathFunction;
 import javax.xml.xpath.XPathFunctionResolver;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.xml.xstream.XStreamSafeSearchFunction;

@@ -57,4 +57,6 @@ public interface DocumentTypeDAO {
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute);
 
     public String findDocumentTypeIdByDocumentId(String documentId);
+    
+    public String findDocumentTypeIdByName(String documentTypeName);
 }

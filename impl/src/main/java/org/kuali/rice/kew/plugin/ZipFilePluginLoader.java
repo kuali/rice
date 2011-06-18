@@ -19,7 +19,7 @@ package org.kuali.rice.kew.plugin;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

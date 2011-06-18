@@ -19,7 +19,7 @@ package org.kuali.rice.edl.impl;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

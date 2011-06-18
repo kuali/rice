@@ -17,8 +17,8 @@ package org.kuali.rice.kew.notes.web;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.SecuritySession;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;

@@ -17,9 +17,9 @@ package org.kuali.rice.kew.rule;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 

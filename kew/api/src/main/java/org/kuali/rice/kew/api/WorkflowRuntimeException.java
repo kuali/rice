@@ -14,7 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.exception;
+package org.kuali.rice.kew.api;
+
+import javax.xml.ws.WebFault;
 
 /**
  * A generic runtime exception thrown from KEW.  Acts as the superclass for all runtime
@@ -22,6 +24,7 @@ package org.kuali.rice.kew.exception;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@WebFault(name = "WorkflowRuntimeFault", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 public class WorkflowRuntimeException extends RuntimeException {
     
     private static final long serialVersionUID = 2012770642382150523L;

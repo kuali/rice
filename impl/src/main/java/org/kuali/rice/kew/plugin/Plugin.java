@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.impl.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.core.util.ContextClassLoaderBinder;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;

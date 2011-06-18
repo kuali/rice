@@ -26,7 +26,7 @@ import java.io.UnsupportedEncodingException;
 
 import javax.activation.DataSource;
 
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 
 
 /**

@@ -28,7 +28,7 @@ import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

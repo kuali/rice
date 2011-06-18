@@ -23,7 +23,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.ListUtils;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;

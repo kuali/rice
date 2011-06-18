@@ -21,11 +21,11 @@ import java.util.List;
 
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.RequestParser;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.w3c.dom.Element;
 

@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.krad.exception;
 
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 
 /**
  * Exception thrown when an invalid export is attempted.

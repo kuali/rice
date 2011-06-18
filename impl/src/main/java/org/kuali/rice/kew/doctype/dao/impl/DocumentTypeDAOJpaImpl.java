@@ -251,5 +251,13 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
     	final DocumentRouteHeaderValue docHeader = (DocumentRouteHeaderValue)new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     	return (docHeader != null) ? docHeader.getDocumentTypeId() : null;
     }
+    
+    public String findDocumentTypeIdByName(String documentTypeName) {
+    	Criteria crit = new Criteria(DocumentType.class.getName());
+    	crit.eq("name", documentTypeName);
+
+    	final DocumentType documentType = (DocumentType)new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+    	return (documentType != null) ? documentType.getDocumentTypeId() : null;
+    }
 
 }

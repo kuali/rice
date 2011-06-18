@@ -33,6 +33,7 @@ import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
@@ -49,7 +50,6 @@ import org.kuali.rice.kew.engine.node.SimpleJoinNode;
 import org.kuali.rice.kew.engine.node.SimpleSplitNode;
 import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyProvider.Stop;
 import org.kuali.rice.kew.engine.transition.SplitTransitionEngine;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 

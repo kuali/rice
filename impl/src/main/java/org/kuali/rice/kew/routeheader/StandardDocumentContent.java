@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.routeheader;
 
 import org.kuali.rice.core.util.xml.XmlException;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

@@ -24,10 +24,14 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
+import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentCreationException;
+import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
@@ -42,16 +46,58 @@ public class WorkflowDocument implements java.io.Serializable {
     private ModifiableDocument modifiableDocument;    
     private ModifiableDocumentContent modifiableDocumentContent;;
 
+    /**
+     * TODO 
+     * 
+     * @param principalId TODO
+     * @param documentTypeName TODO
+     * 
+     * @return TODO
+     * 
+     * @throws IllegalArgumentException if principalId is null or blank
+     * @throws IllegalArgumentException if documentTypeName is null or blank
+     * @throws DocumentTypeNotFoundException if documentTypeName does not represent a valid document type
+     * @throws DocumentCreationException if the document type does not allow for creation of a document,
+     * this can occur when the given document type is used only as a parent and has no route path configured
+     * @throws InvalidActionTakenException if the caller is not allowed to execute this action
+     */
     public static WorkflowDocument createDocument(String principalId, String documentTypeName) {
     	return createDocument(principalId, documentTypeName, null, null);
     }
     
+    /**
+     * TODO
+     * 
+     * @param principalId TODO
+     * @param documentTypeName TODO
+     * @param title TODO
+     * 
+     * @return TODO
+     * 
+     * @throws IllegalArgumentException if principalId is null or blank
+     * @throws IllegalArgumentException if documentTypeName is null or blank
+     * @throws DocumentTypeNotFoundException if documentTypeName does not represent a valid document type
+     */
     public static WorkflowDocument createDocument(String principalId, String documentTypeName, String title) {
     	DocumentUpdate.Builder builder = DocumentUpdate.Builder.create();
     	builder.setTitle(title);
     	return createDocument(principalId, documentTypeName, builder.build(), null);
     }
     
+    /**
+     * TODO
+     * 
+     * @param principalId TODO
+     * @param documentTypeName TODO
+     * @param documentUpdate TODO
+     * @param documentContentUpdate TODO
+     * 
+     * @return TODO
+     * 
+     * @throws IllegalArgumentException if principalId is null or blank
+     * @throws IllegalArgumentException if documentTypeName is null or blank
+     * @throws DocumentTypeNotFoundException if documentTypeName does not represent a valid document type
+     */
 	public static WorkflowDocument createDocument(String principalId, String documentTypeName, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
 		if (StringUtils.isBlank(principalId)) {
 			throw new IllegalArgumentException("principalId was null or blank");
@@ -650,111 +696,116 @@ public class WorkflowDocument implements java.io.Serializable {
 //    	documentContentDirty = true;
 //    }
 //
-//    /**
-//     * Indicates if the document is in the initiated state or not.
-//     *
-//     * @return true if in the specified state
-//     */
-//    public boolean stateIsInitiated() {
-//        return KEWConstants.ROUTE_HEADER_INITIATED_CD.equals(getRouteHeader().getDocRouteStatus());
-//    }
-//
-//    /**
-//     * Indicates if the document is in the saved state or not.
-//     *
-//     * @return true if in the specified state
-//     */
-//    public boolean stateIsSaved() {
-//        return KEWConstants.ROUTE_HEADER_SAVED_CD.equals(getRouteHeader().getDocRouteStatus());
-//    }
-//
-//    /**
-//     * Indicates if the document is in the enroute state or not.
-//     *
-//     * @return true if in the specified state
-//     */
-//    public boolean stateIsEnroute() {
-//        return KEWConstants.ROUTE_HEADER_ENROUTE_CD.equals(getRouteHeader().getDocRouteStatus());
-//    }
-//
-//    /**
-//     * Indicates if the document is in the exception state or not.
-//     *
-//     * @return true if in the specified state
-//     */
-//    public boolean stateIsException() {
-//        return KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equals(getRouteHeader().getDocRouteStatus());
-//    }
-//
-//    /**
-//     * Indicates if the document is in the canceled state or not.
-//     *
-//     * @return true if in the specified state
-//     */
-//    public boolean stateIsCanceled() {
-//        return KEWConstants.ROUTE_HEADER_CANCEL_CD.equals(getRouteHeader().getDocRouteStatus());
-//    }
-//
-//    /**
-//     * Indicates if the document is in the disapproved state or not.
-//     *
-//     * @return true if in the specified state
-//     */
-//    public boolean stateIsDisapproved() {
-//        return KEWConstants.ROUTE_HEADER_DISAPPROVED_CD.equals(getRouteHeader().getDocRouteStatus());
-//    }
-//
-//    /**
-//     * Indicates if the document is in the approved state or not. Will answer true is document is in Processed or Finalized state.
-//     *
-//     * @return true if in the specified state
-//     */
-//    public boolean stateIsApproved() {
-//        return KEWConstants.ROUTE_HEADER_APPROVED_CD.equals(getRouteHeader().getDocRouteStatus()) || stateIsProcessed() || stateIsFinal();
-//    }
-//
-//    /**
-//     * Indicates if the document is in the processed state or not.
-//     *
-//     * @return true if in the specified state
-//     */
-//    public boolean stateIsProcessed() {
-//        return KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(getRouteHeader().getDocRouteStatus());
-//    }
-//
-//    /**
-//     * Indicates if the document is in the final state or not.
-//     *
-//     * @return true if in the specified state
-//     */
-//    public boolean stateIsFinal() {
-//        return KEWConstants.ROUTE_HEADER_FINAL_CD.equals(getRouteHeader().getDocRouteStatus());
-//    }
-//
-//    /**
-//     * Returns the display value of the current document status
-//     * @return the display value of the current document status
-//     */
-//    public String getStatusDisplayValue() {
-//        return (String) KEWConstants.DOCUMENT_STATUSES.get(getRouteHeader().getDocRouteStatus());
-//    }
-//
-//    /**
-//     * Returns the principalId with which this WorkflowDocument was constructed
-//     * @return the principalId with which this WorkflowDocument was constructed
-//     */
-//    public String getPrincipalId() {
-//        return principalId;
-//    }
-//
-//    /**
-//     * Sets the principalId under which actions against this document should be taken
-//     * @param principalId principalId under which actions against this document should be taken
-//     */
-//    public void setPrincipalId(String principalId) {
-//        this.principalId = principalId;
-//    }
-//
+  
+    public DocumentStatus getStatus() {
+    	return getDocument().getStatus();
+    }
+    
+    public boolean checkStatus(DocumentStatus status) {
+    	if (status == null) {
+    		throw new IllegalArgumentException("status was null");
+    	}
+    	return status == getStatus();
+    }
+    
+    /**
+     * Indicates if the document is in the initiated state or not.
+     *
+     * @return true if in the specified state
+     */
+    public boolean isInitiated() {
+        return checkStatus(DocumentStatus.INITIATED);
+    }
+
+    /**
+     * Indicates if the document is in the saved state or not.
+     *
+     * @return true if in the specified state
+     */
+    public boolean isSaved() {
+        return checkStatus(DocumentStatus.SAVED);
+    }
+
+    /**
+     * Indicates if the document is in the enroute state or not.
+     *
+     * @return true if in the specified state
+     */
+    public boolean isEnroute() {
+        return checkStatus(DocumentStatus.ENROUTE);
+    }
+
+    /**
+     * Indicates if the document is in the exception state or not.
+     *
+     * @return true if in the specified state
+     */
+    public boolean isException() {
+        return checkStatus(DocumentStatus.EXCEPTION);
+    }
+
+    /**
+     * Indicates if the document is in the canceled state or not.
+     *
+     * @return true if in the specified state
+     */
+    public boolean isCanceled() {
+        return checkStatus(DocumentStatus.CANCELED);
+    }
+
+    /**
+     * Indicates if the document is in the disapproved state or not.
+     *
+     * @return true if in the specified state
+     */
+    public boolean isDisapproved() {
+        return checkStatus(DocumentStatus.DISAPPROVED);
+    }
+
+    /**
+     * Indicates if the document is in the Processed or Finalized state.
+     *
+     * @return true if in the specified state
+     */
+    public boolean isApproved() {
+    	return isProcessed() || isFinal();
+    }
+
+    /**
+     * Indicates if the document is in the processed state or not.
+     *
+     * @return true if in the specified state
+     */
+    public boolean isProcessed() {
+        return checkStatus(DocumentStatus.PROCESSED);
+    }
+
+    /**
+     * Indicates if the document is in the final state or not.
+     *
+     * @return true if in the specified state
+     */
+    public boolean isFinal() {
+        return checkStatus(DocumentStatus.FINAL);
+    }
+
+    /**
+     * Returns the principalId with which this WorkflowDocument was constructed
+     * 
+     * @return the principalId with which this WorkflowDocument was constructed
+     */
+    public String getPrincipalId() {
+        return principalId;
+    }
+    
+    public void switchPrincipal(String principalId) {
+    	if (StringUtils.isBlank(this.principalId)) {
+    		throw new IllegalArgumentException("principalId was null or blank");
+    	}
+    	this.principalId = principalId;
+    	// TODO reload valid actions
+    }
+
 //    /**
 //     * Checks if the document has been created or not (i.e. has a document id or not) and issues
 //     * a call to the server to create the document if it has not yet been created.

@@ -202,10 +202,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		}
 	}
 
-	public DocumentRouteHeaderValue clearFYIDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException {
+	public DocumentRouteHeaderValue clearFYIDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException {
 		// init(routeHeader);
 		Principal principal = loadPrincipal(principalId);
-		ClearFYIAction action = new ClearFYIAction(routeHeader, principal, "");
+		ClearFYIAction action = new ClearFYIAction(routeHeader, principal, annotation);
 		action.recordAction();
 		return finish(routeHeader);
 	}

@@ -16,13 +16,12 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.junit.Test;
-
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 public class ApproveActionTest extends KEWTestCase {
 
@@ -32,7 +31,7 @@ public class ApproveActionTest extends KEWTestCase {
     
     @Test public void testPreapprovals() throws Exception {
     	WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "PreApprovalTest");
-    	doc.routeDocument("");
+    	doc.route("");
     	
     	//rock some preapprovals and other actions... 
     	doc = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), doc.getDocumentId());
@@ -49,16 +48,15 @@ public class ApproveActionTest extends KEWTestCase {
     	doc.approve("");
     	
     	doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
-    	assertTrue("the document should be final", doc.stateIsFinal());
+    	assertTrue("the document should be final", doc.isFinal());
     }
 
     @Test public void testInitiatorRole() throws Exception {
         WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "InitiatorRoleApprovalTest");
-        doc.routeDocument("");
+        doc.route("");
         //rock some preapprovals and other actions... 
         doc = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), doc.getDocumentId());
         doc.approve("");
-        
         
         doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
         doc.acknowledge("");
@@ -66,12 +64,12 @@ public class ApproveActionTest extends KEWTestCase {
         doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
         doc.complete("");
 
-        assertFalse("the document should NOT be final", doc.stateIsFinal());
+        assertFalse("the document should NOT be final", doc.isFinal());
 
         //approve as the person the doc is routed (initiator) to so we can move the document on and hopefully to final
         doc = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
         doc.approve("");
         
-        assertTrue("the document should be final", doc.stateIsFinal());
+        assertTrue("the document should be final", doc.isFinal());
     }
 }

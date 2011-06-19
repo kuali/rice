@@ -44,7 +44,7 @@ public interface WorkflowDocumentService {
     public DocumentRouteHeaderValue adHocRouteDocumentToPrincipal(String principalId, DocumentRouteHeaderValue routeHeader, String actionRequested, String routeMethodName, String annotation, String targetPrincipalId, String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException;
     public DocumentRouteHeaderValue adHocRouteDocumentToGroup(String principalId, DocumentRouteHeaderValue routeHeader, String actionRequested, String routeMethodName, String annotation, String groupId, String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException;
     public DocumentRouteHeaderValue cancelDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
-    public DocumentRouteHeaderValue clearFYIDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue clearFYIDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue completeDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue createDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws WorkflowException;
     public DocumentRouteHeaderValue disapproveDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;

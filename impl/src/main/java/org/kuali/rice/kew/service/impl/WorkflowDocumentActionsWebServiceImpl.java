@@ -16,20 +16,25 @@
  */
 package org.kuali.rice.kew.service.impl;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
-import org.kuali.rice.kew.dto.*;
+import org.kuali.rice.kew.dto.AdHocRevokeDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.MovePointDTO;
+import org.kuali.rice.kew.dto.ReturnPointDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentActions {
@@ -182,7 +187,7 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(principalId, "principalId");
         LOG.debug("Clear FYI [principalId=" + principalId + ", docId=" + routeHeaderVO.getDocumentId() + "]");
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().clearFYIDocument(principalId, routeHeader);
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().clearFYIDocument(principalId, routeHeader, "");
         return DTOConverter.convertRouteHeader(routeHeader, principalId);
     }
 

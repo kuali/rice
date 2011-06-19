@@ -326,8 +326,8 @@ public class WorkflowDocument implements java.io.Serializable {
 //
 
     public void route(String annotation) {
-    	DocumentActionResult response = getWorkflowDocumentActionsService().route(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
-    	resetStateAfterAction(response);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().route(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
     }
     
 //
@@ -344,18 +344,11 @@ public class WorkflowDocument implements java.io.Serializable {
 //    	documentContentDirty = true;
 //    }
 //
-//    /**
-//     * Performs the 'approve' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs approving the document
-//     * @see WorkflowDocumentActions#approveDocument(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void approve(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().approveDocument(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
+
+    public void approve(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().approve(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
 //
 //    /**
 //     * Performs the 'cancel' action on the document this WorkflowDocument represents.  If this is a new document,
@@ -405,20 +398,12 @@ public class WorkflowDocument implements java.io.Serializable {
 //       	getRouteHeader().setAppDocStatus(appDocStatus);
 //       	saveRoutingData();
 //    }
-//    
-//    /**
-//     * Performs the 'acknowledge' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs acknowledging the document
-//     * @see WorkflowDocumentActions#acknowledgeDocument(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void acknowledge(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().acknowledgeDocument(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
-//
+    
+    public void acknowledge(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().acknowledge(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
+
 //    /**
 //     * Performs the 'fyi' action on the document this WorkflowDocument represents.  If this is a new document,
 //     * the document is created first.
@@ -711,20 +696,12 @@ public class WorkflowDocument implements java.io.Serializable {
 //    	getWorkflowDocumentActions().clearFYIDocument(principalId, getRouteHeader());
 //    	documentContentDirty = true;
 //    }
-//
-//    /**
-//     * Performs the 'complete' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs clearing completing the document
-//     * @see WorkflowDocumentActions#completeDocument(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void complete(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().completeDocument(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
-//
+
+    public void complete(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().complete(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
+
 //    /**
 //     * Performs the 'logDocumentAction' action on the document this WorkflowDocument represents.  If this is a new document,
 //     * the document is created first.  The 'logDocumentAction' simply logs a message on the document.

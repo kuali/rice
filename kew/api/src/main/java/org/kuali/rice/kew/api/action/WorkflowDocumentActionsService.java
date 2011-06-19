@@ -24,9 +24,9 @@ public interface WorkflowDocumentActionsService {
 
 	public RequestedActions determineRequestedActions(String documentId, String principalId);
 	
-	public void acknowledge(String documentId, String principalId, String annotation);
+	public DocumentActionResult acknowledge(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
 	
-	public void approve(String documentId, String principalId, String annotation);
+	public DocumentActionResult approve(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
 			
     public void adHocToPrincipal(String documentId, String principalId, AdHocToPrincipal adHocCommand, String annotation);
     
@@ -36,13 +36,13 @@ public interface WorkflowDocumentActionsService {
     
     public void revokeAdHocRequestsFromGroup(String documentId, String principalId, AdHocRevokeFromGroup revoke, String annotation);
     
-    public void cancel(String documentId, String principalId, String annotation);
+    public DocumentActionResult cancel(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
-    public void clearFyi(String documentId, String principalId, String annotation);
+    public DocumentActionResult clearFyi(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
-    public void complete(String documentId, String principalId, String annotation);
+    public DocumentActionResult complete(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
-    public void disapprove(String documentId, String principalId, String annotation);
+    public DocumentActionResult disapprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
 
     public DocumentActionResult route(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
@@ -56,7 +56,7 @@ public interface WorkflowDocumentActionsService {
     
     public void releaseGroupAuthority(String documentId, String principalId, String groupId, String annotation);
     
-    public void save(String documentId, String principalId, String annotation);
+    public DocumentActionResult save(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
     public void delete(String documentId);
     

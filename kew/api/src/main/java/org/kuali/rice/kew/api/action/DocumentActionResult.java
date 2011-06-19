@@ -16,15 +16,15 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.kew.api.document.Document;
 import org.w3c.dom.Element;
 
-@XmlRootElement(name = DocumentActionResponse.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = DocumentActionResult.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = DocumentActionResponse.Constants.TYPE_NAME, propOrder = {
-		DocumentActionResponse.Elements.DOCUMENT,
-		DocumentActionResponse.Elements.VALID_ACTIONS,
-		DocumentActionResponse.Elements.REQUESTED_ACTIONS,
+@XmlType(name = DocumentActionResult.Constants.TYPE_NAME, propOrder = {
+		DocumentActionResult.Elements.DOCUMENT,
+		DocumentActionResult.Elements.VALID_ACTIONS,
+		DocumentActionResult.Elements.REQUESTED_ACTIONS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentActionResponse {
+public final class DocumentActionResult {
     
 	@XmlElement(name = Elements.DOCUMENT, required = true)
     private final Document document;
@@ -39,13 +39,13 @@ public final class DocumentActionResponse {
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
-    private DocumentActionResponse() {
+    private DocumentActionResult() {
     	this.document = null;
     	this.validActions = null;
     	this.requestedActions = null;
     }
     
-    private DocumentActionResponse(Document document, ValidActions validActions, RequestedActions requestedActions) {
+    private DocumentActionResult(Document document, ValidActions validActions, RequestedActions requestedActions) {
     	if (document == null) {
     		throw new IllegalArgumentException("document was null");
     	}
@@ -54,8 +54,8 @@ public final class DocumentActionResponse {
         this.requestedActions = requestedActions;
     }
     
-    public static DocumentActionResponse create(Document document, ValidActions validActions, RequestedActions requestedActions) {
-    	return new DocumentActionResponse(document, validActions, requestedActions);
+    public static DocumentActionResult create(Document document, ValidActions validActions, RequestedActions requestedActions) {
+    	return new DocumentActionResult(document, validActions, requestedActions);
     }
     
     public Document getDocument() {
@@ -89,8 +89,8 @@ public final class DocumentActionResponse {
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "documentActionResponse";
-        final static String TYPE_NAME = "DocumentActionResponseType";
+        final static String ROOT_ELEMENT_NAME = "documentActionResult";
+        final static String TYPE_NAME = "DocumentActionResultType";
         final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] { CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
     

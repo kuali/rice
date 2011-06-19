@@ -44,7 +44,7 @@ public interface WorkflowDocumentActionsService {
     
     public void disapprove(String documentId, String principalId, String annotation);
 
-    public DocumentActionResponse route(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult route(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
     public void blanketApproveToNodes(String documentId, String principalId, List<String> nodeNames, String annotation);
     

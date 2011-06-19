@@ -25,7 +25,7 @@ import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.api.action.DocumentActionResponse;
+import org.kuali.rice.kew.api.action.DocumentActionResult;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.action.RequestedActions;
 import org.kuali.rice.kew.api.action.ValidActions;
@@ -297,7 +297,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	return null;
     }
     
-    protected void resetStateAfterAction(DocumentActionResponse response) {
+    protected void resetStateAfterAction(DocumentActionResult response) {
     	this.modifiableDocument = new ModifiableDocument(response.getDocument());
     	this.validActions = null;
     	if (response.getValidActions() != null) {
@@ -326,7 +326,7 @@ public class WorkflowDocument implements java.io.Serializable {
 //
 
     public void route(String annotation) {
-    	DocumentActionResponse response = getWorkflowDocumentActionsService().route(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult response = getWorkflowDocumentActionsService().route(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
     	resetStateAfterAction(response);
     }
     

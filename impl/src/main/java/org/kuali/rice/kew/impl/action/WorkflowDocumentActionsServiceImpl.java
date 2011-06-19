@@ -12,7 +12,7 @@ import org.kuali.rice.kew.api.action.AdHocRevokeFromGroup;
 import org.kuali.rice.kew.api.action.AdHocRevokeFromPrincipal;
 import org.kuali.rice.kew.api.action.AdHocToGroup;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
-import org.kuali.rice.kew.api.action.DocumentActionResponse;
+import org.kuali.rice.kew.api.action.DocumentActionResult;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.action.RequestedActions;
@@ -195,11 +195,11 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         return RequestedActions.create(completeRequested, approveRequested, acknowledgeRequested, fyiRequested);
 	}
 	
-	protected DocumentActionResponse constructDocumentActionResponse(DocumentRouteHeaderValue documentBo, String principalId) {
+	protected DocumentActionResult constructDocumentActionResponse(DocumentRouteHeaderValue documentBo, String principalId) {
 		Document document = DocumentRouteHeaderValue.to(documentBo);
 		ValidActions validActions = determineValidActionsInternal(documentBo, principalId);
 		RequestedActions requestedActions = determineRequestedActionsInternal(documentBo, principalId);
-		return DocumentActionResponse.create(document, validActions, requestedActions);
+		return DocumentActionResult.create(document, validActions, requestedActions);
 	}
 
 	@Override
@@ -272,7 +272,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResponse route(String documentId, String principalId, String annotation,
+	public DocumentActionResult route(String documentId, String principalId, String annotation,
 			DocumentUpdate documentUpdate,
 			DocumentContentUpdate documentContentUpdate) {
 		if (LOG.isDebugEnabled()) {

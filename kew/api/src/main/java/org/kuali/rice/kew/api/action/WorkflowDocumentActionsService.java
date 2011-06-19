@@ -22,6 +22,8 @@ public interface WorkflowDocumentActionsService {
 	
 	public ValidActions determineValidActions(String documentId, String principalId);
 
+	public RequestedActions determineRequestedActions(String documentId, String principalId);
+	
 	public void acknowledge(String documentId, String principalId, String annotation);
 	
 	public void approve(String documentId, String principalId, String annotation);
@@ -42,7 +44,7 @@ public interface WorkflowDocumentActionsService {
     
     public void disapprove(String documentId, String principalId, String annotation);
 
-    public void route(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResponse route(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
     public void blanketApproveToNodes(String documentId, String principalId, List<String> nodeNames, String annotation);
     

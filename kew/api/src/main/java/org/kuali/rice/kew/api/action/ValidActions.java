@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
     ValidActions.Elements.VALID_ACTION_CODES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ValidActions implements ModelObjectComplete, ValidActionsContract {
+public final class ValidActions implements ModelObjectComplete {
 
 	private static final long serialVersionUID = 8074175291030982905L;
 
@@ -54,7 +54,6 @@ public final class ValidActions implements ModelObjectComplete, ValidActionsCont
         this.validActionCodes = validActionCodes;
     }
 
-    @Override
     public Set<ActionType> getValidActions() {
     	if (validActionCodes == null) {
     		return Collections.emptySet();
@@ -89,7 +88,7 @@ public final class ValidActions implements ModelObjectComplete, ValidActionsCont
     /**
      * A builder which can be used to construct {@link ValidActions} instances.  Enforces the constraints of the {@link ValidActionsContract}.
      */
-    public final static class Builder implements Serializable, ModelBuilder, ValidActionsContract {
+    public final static class Builder implements Serializable, ModelBuilder {
 
 		private static final long serialVersionUID = -3227993220281961077L;
 
@@ -103,20 +102,10 @@ public final class ValidActions implements ModelObjectComplete, ValidActionsCont
             return new Builder();
         }
 
-        public static Builder create(ValidActionsContract contract) {
-            if (contract == null) {
-                throw new IllegalArgumentException("contract was null");
-            }
-            Builder builder = create();
-            builder.setValidActions(contract.getValidActions());
-            return builder;
-        }
-
         public ValidActions build() {
             return new ValidActions(this);
         }
 
-        @Override
         public Set<ActionType> getValidActions() {
             return this.validActions;
         }

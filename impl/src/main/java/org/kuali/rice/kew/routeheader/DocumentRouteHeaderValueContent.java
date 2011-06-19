@@ -27,6 +27,8 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.kuali.rice.core.util.xml.XmlJotter;
+
 @Entity
 @Table(name="KREW_DOC_HDR_CNTNT_T")
 @NamedQuery(name="DocumentRouteHeaderValueContent.FindByDocumentId", query="select d from DocumentRouteHeaderValueContent as d where d.documentId = :documentId")
@@ -61,6 +63,28 @@ public class DocumentRouteHeaderValueContent implements Serializable {
 	}
 	public void setDocumentId(String documentId) {
 		this.documentId = documentId;
+	}
+	
+	public static org.kuali.rice.kew.api.document.DocumentContent to(DocumentRouteHeaderValueContent content) {
+		if (content == null) {
+			return null;
+		}
+		org.kuali.rice.kew.api.document.DocumentContent.Builder builder = org.kuali.rice.kew.api.document.DocumentContent.Builder.create(content.getDocumentId());
+		// initialize the content fields
+		builder.setApplicationContent("");
+		builder.setAttributeContent("");
+		builder.setSearchableContent("");
+		DocumentContent documentContent = new StandardDocumentContent(content.getDocumentContent());
+		if (documentContent.getApplicationContent() != null) {
+			builder.setApplicationContent(XmlJotter.jotNode(documentContent.getApplicationContent()));
+		}
+		if (documentContent.getAttributeContent() != null) {
+			builder.setAttributeContent(XmlJotter.jotNode(documentContent.getAttributeContent()));
+		}
+		if (documentContent.getSearchableContent() != null) {
+			builder.setSearchableContent(XmlJotter.jotNode(documentContent.getSearchableContent()));
+		}
+		return builder.build();
 	}
 
 }

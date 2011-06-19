@@ -157,6 +157,7 @@
                 <idref local="enDocumentRequeuerService"/>
                 
                 <idref local="rice.kew.workflowDocumentActionsService" />
+                <idref local="rice.kew.workflowDocumentService" />
                 <idref local="rice.kew.documentTypeService" />
                 
                 <!-- it's important that this service remains non-transactionally proxied for various reasons
@@ -785,6 +786,8 @@
 	
 	<bean id="rice.kew.workflowDocumentActionsService" class="org.kuali.rice.kew.impl.action.WorkflowDocumentActionsServiceImpl">
 		<property name="documentTypeService" ref="rice.kew.documentTypeService"/>
-	</bean>	
+	</bean>
+	
+	<bean id="rice.kew.workflowDocumentService" class="org.kuali.rice.kew.impl.document.WorkflowDocumentServiceImpl" />
     
 </beans>

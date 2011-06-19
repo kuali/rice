@@ -58,6 +58,7 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContract;
 import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.DocumentVariable;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
@@ -822,6 +823,28 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         for (KeyValue kvp : variables) {
             setVariable(kvp.getKey(), kvp.getValue());
         }
+    }
+    
+    public void applyDocumentUpdate(DocumentUpdate documentUpdate) {
+    	if (documentUpdate != null) {
+    		String thisDocTitle = getDocTitle() == null ? "" : getDocTitle();
+    		String updateDocTitle = documentUpdate.getTitle() == null ? "" : documentUpdate.getTitle();
+    		if (!StringUtils.equals(thisDocTitle, updateDocTitle)) {
+            	KEWServiceLocator.getActionListService().updateActionItemsForTitleChange(getDocumentId(), documentUpdate.getTitle());
+            }
+            setDocTitle(updateDocTitle);
+            setAppDocId(documentUpdate.getApplicationDocumentId());
+            setStatusModDate(new Timestamp(System.currentTimeMillis()));
+            updateAppDocStatus(documentUpdate.getApplicationDocumentStatus());
+
+            
+            // TODO variables?
+//            /* set the variables from the routeHeaderVO */
+//            List<KeyValue> variables = routeHeaderVO.getVariables();
+//            for (KeyValue kvp : variables) {
+//                setVariable(kvp.getKey(), kvp.getValue());
+//            }
+    	}
     }
 
     /**

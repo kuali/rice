@@ -24,7 +24,11 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.action.DocumentActionResponse;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
+import org.kuali.rice.kew.api.action.RequestedActions;
+import org.kuali.rice.kew.api.action.ValidActions;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.document.Document;
@@ -37,6 +41,12 @@ import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 
+/**
+ * TODO ..
+ * 
+ * <p>This class is *not* thread safe.
+ *
+ */
 public class WorkflowDocument implements java.io.Serializable {
 
 	private static final long serialVersionUID = -3672966990721719088L;
@@ -44,7 +54,9 @@ public class WorkflowDocument implements java.io.Serializable {
     private String principalId;
     
     private ModifiableDocument modifiableDocument;    
-    private ModifiableDocumentContent modifiableDocumentContent;;
+    private ModifiableDocumentContent modifiableDocumentContent;
+    private ValidActions validActions;
+    private RequestedActions requestedActions;
 
     /**
      * TODO 
@@ -257,6 +269,20 @@ public class WorkflowDocument implements java.io.Serializable {
         return getModifiableDocument().getTitle();
     }
     
+    public ValidActions getValidActions() {
+    	if (validActions == null) {
+    		validActions = getWorkflowDocumentActionsService().determineValidActions(getDocumentId(), getPrincipalId());
+    	}
+    	return validActions;
+    }
+    
+    public RequestedActions getRequestedActions() {
+    	if (requestedActions == null) {
+    		requestedActions = getWorkflowDocumentActionsService().determineRequestedActions(getDocumentId(), getPrincipalId());
+    	}
+    	return requestedActions;
+    }
+    
     protected DocumentUpdate getDocumentUpdateIfDirty() {
     	if (getModifiableDocument().isDirty()) {
     		return getModifiableDocument().getBuilder().build();
@@ -271,9 +297,15 @@ public class WorkflowDocument implements java.io.Serializable {
     	return null;
     }
     
-    protected void resetStateAfterAction() {
-    	if (getModifiableDocument().isDirty()) {
-    		this.modifiableDocument = new ModifiableDocument(getWorkflowDocumentService().getDocument(getDocumentId()));
+    protected void resetStateAfterAction(DocumentActionResponse response) {
+    	this.modifiableDocument = new ModifiableDocument(response.getDocument());
+    	this.validActions = null;
+    	if (response.getValidActions() != null) {
+    		this.validActions = response.getValidActions();
+    	}
+    	this.requestedActions = null;
+    	if (response.getRequestedActions() != null) {
+    		this.requestedActions = response.getRequestedActions();
     	}
     	// regardless of whether modifiable document content is dirty, we null it out so it will be re-fetched next time it's needed
     	this.modifiableDocumentContent = null;
@@ -294,8 +326,8 @@ public class WorkflowDocument implements java.io.Serializable {
 //
 
     public void route(String annotation) {
-    	getWorkflowDocumentActionsService().route(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
-    	resetStateAfterAction();
+    	DocumentActionResponse response = getWorkflowDocumentActionsService().route(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(response);
     }
     
 //
@@ -523,66 +555,76 @@ public class WorkflowDocument implements java.io.Serializable {
 //        }
 //        return getRouteHeader().getDocTypeName();
 //    }
-//
-//    /**
-//     * Returns whether an acknowledge is requested of the user for this document.  This is
-//     * a convenience method that delegates to {@link RouteHeaderDTO#isAckRequested()}.
-//     * @return whether an acknowledge is requested of the user for this document
-//     * @see RouteHeaderDTO#isAckRequested()
-//     */
-//    public boolean isAcknowledgeRequested() {
-//        return getRouteHeader().isAckRequested();
-//    }
-//
-//    /**
-//     * Returns whether an approval is requested of the user for this document.  This is
-//     * a convenience method that delegates to {@link RouteHeaderDTO#isApproveRequested()}.
-//     * @return whether an approval is requested of the user for this document
-//     * @see RouteHeaderDTO#isApproveRequested()
-//     */
-//    public boolean isApprovalRequested() {
-//        return getRouteHeader().isApproveRequested();
-//    }
-//
-//    /**
-//     * Returns whether a completion is requested of the user for this document.  This is
-//     * a convenience method that delegates to {@link RouteHeaderDTO#isCompleteRequested()}.
-//     * @return whether an approval is requested of the user for this document
-//     * @see RouteHeaderDTO#isCompleteRequested()
-//     */
-//    public boolean isCompletionRequested() {
-//        return getRouteHeader().isCompleteRequested();
-//    }
-//
-//    /**
-//     * Returns whether an FYI is requested of the user for this document.  This is
-//     * a convenience method that delegates to {@link RouteHeaderDTO#isFyiRequested()}.
-//     * @return whether an FYI is requested of the user for this document
-//     * @see RouteHeaderDTO#isFyiRequested()
-//     */
-//    public boolean isFYIRequested() {
-//        return getRouteHeader().isFyiRequested();
-//    }
-//
-//    /**
-//     * Returns whether the user can blanket approve the document
-//     * @return whether the user can blanket approve the document
-//     * @see RouteHeaderDTO#getValidActions()
-//     */
-//    public boolean isBlanketApproveCapable() {
-//        // TODO delyea - refactor this to take into account non-initiator owned documents
-//    	return getRouteHeader().getValidActions().contains(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD) && (isCompletionRequested() || isApprovalRequested() || stateIsInitiated());
-//    }
-//
-//    /**
-//     * Returns whether the specified action code is valid for the current user and document
-//     * @return whether the user can blanket approve the document
-//     * @see RouteHeaderDTO#getValidActions()
-//     */
-//    public boolean isActionCodeValidForDocument(String actionTakenCode) {
-//    	return getRouteHeader().getValidActions().contains(actionTakenCode);
-//    }
-//
+
+    /**
+     * Returns whether a completion is requested of the user for this document.  This is
+     * a convenience method that delegates to {@link RouteHeaderDTO#isCompleteRequested()}.
+     * @return whether an approval is requested of the user for this document
+     * @see RouteHeaderDTO#isCompleteRequested()
+     */
+    public boolean isCompletionRequested() {
+        return getRequestedActions().isCompleteRequested();
+    }
+    
+    /**
+     * Returns whether an approval is requested of the user for this document.  This is
+     * a convenience method that delegates to {@link RouteHeaderDTO#isApproveRequested()}.
+     * @return whether an approval is requested of the user for this document
+     * @see RouteHeaderDTO#isApproveRequested()
+     */
+    public boolean isApprovalRequested() {
+        return getRequestedActions().isApproveRequested();
+    }
+    
+    /**
+     * Returns whether an acknowledge is requested of the user for this document.  This is
+     * a convenience method that delegates to {@link RouteHeaderDTO#isAckRequested()}.
+     * @return whether an acknowledge is requested of the user for this document
+     * @see RouteHeaderDTO#isAckRequested()
+     */
+    public boolean isAcknowledgeRequested() {
+    	return getRequestedActions().isAcknowledgeRequested();
+    }
+    
+    /**
+     * Returns whether an FYI is requested of the user for this document.  This is
+     * a convenience method that delegates to {@link RouteHeaderDTO#isFyiRequested()}.
+     * @return whether an FYI is requested of the user for this document
+     * @see RouteHeaderDTO#isFyiRequested()
+     */
+    public boolean isFYIRequested() {
+        return getRequestedActions().isFyiRequested();
+    }
+
+    /**
+     * Returns whether the user can blanket approve the document
+     * @return whether the user can blanket approve the document
+     * @see RouteHeaderDTO#getValidActions()
+     */
+    public boolean isBlanketApproveCapable() {
+    	return isActionValid(ActionType.BLANKET_APPROVE) && (isCompletionRequested() || isApprovalRequested() || isInitiated());
+    }
+
+    /**
+     * Returns whether the specified action code is valid for the current user and document
+     * @return whether the user can blanket approve the document
+     * @see RouteHeaderDTO#getValidActions()
+     */
+    public boolean isActionCodeValid(String actionCode) {
+    	if (StringUtils.isBlank(actionCode)) {
+    		throw new IllegalArgumentException("actionTakenCode was null or blank");
+    	}
+    	return getValidActions().getValidActions().contains(ActionType.fromCode(actionCode));
+    }
+    
+    public boolean isActionValid(ActionType actionType) {
+    	if (actionType == null) {
+    		throw new IllegalArgumentException("actionType was null");
+    	}
+    	return getValidActions().getValidActions().contains(actionType);
+    }
+
+    //
 //    /**
 //     * Performs the 'super-user-approve' action on the document this WorkflowDocument represents.  If this is a new document,
 //     * the document is created first.

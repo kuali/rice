@@ -5,13 +5,17 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.AdHocRevokeFromGroup;
 import org.kuali.rice.kew.api.action.AdHocRevokeFromPrincipal;
 import org.kuali.rice.kew.api.action.AdHocToGroup;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
+import org.kuali.rice.kew.api.action.DocumentActionResponse;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.action.MovePoint;
+import org.kuali.rice.kew.api.action.RequestedActions;
 import org.kuali.rice.kew.api.action.ReturnPoint;
 import org.kuali.rice.kew.api.action.ValidActions;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
@@ -24,15 +28,77 @@ import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 
 public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActionsService {
 
 	private static final Logger LOG = Logger.getLogger(WorkflowDocumentActionsServiceImpl.class);
 	
 	private DocumentTypeService documentTypeService;
+	
+	protected DocumentRouteHeaderValue init(String documentId, String principalId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
+		incomingParamCheck(documentId, "documentId");
+		incomingParamCheck(principalId, "principalId");
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Initializing Document from incoming documentId: " + documentId);
+		}
+		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+		
+		// TODO update notes?
+		
+		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+		boolean modified = false;
+		if (documentUpdate != null) {
+			document.applyDocumentUpdate(documentUpdate);
+			modified = true;
+		}
+		if (documentContentUpdate != null) {
+			String newDocumentContent = DTOConverter.buildUpdatedDocumentContent(document.getDocContent(), documentContentUpdate, document.getDocumentTypeName());
+			document.setDocContent(newDocumentContent);
+			modified = true;
+		}
+		
+		if (modified) {
+			KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
+	        
+			/* 
+			 * Branch data is not persisted when we call saveRouteHeader so we must Explicitly
+			 * save the branch.  Noticed issue in: KULRICE-4074 when the future action request info,
+			 * which is stored in the branch, was not being persisted.
+			 * 
+			 * The call to setRouteHeaderData will ensure that the variable data is in the branch, but we have
+			 * to persist the route header before we can save the branch info.
+			 * 
+			 * Placing here to minimize system impact.  We should investigate placing this logic into 
+			 * saveRouteHeader... but at that point we should just turn auto-update = true on the branch relationship
+			 * 
+			 */
+			this.saveRouteNodeInstances(document);
+
+		}
+        
+        return document;
+	}
+	
+	/**
+     * This method explicitly saves the branch data if it exists in the routeHeaderValue
+     * 
+     * @param routeHeader
+     */
+    private void saveRouteNodeInstances(DocumentRouteHeaderValue routeHeader){
+    
+    	List<RouteNodeInstance> routeNodes = routeHeader.getInitialRouteNodeInstances();               
+        if(routeNodes != null && !routeNodes.isEmpty()){        	        	
+        	for(RouteNodeInstance rni: routeNodes){
+        		KEWServiceLocator.getRouteNodeService().save(rni);        		
+        	}
+        }
+    	
+    }
 	
 	/**
 	 * 
@@ -76,21 +142,64 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		
 		try {
 			documentBo = KEWServiceLocator.getWorkflowDocumentService().createDocument(initiatorPrincipalId, documentBo);
-			return DocumentRouteHeaderValue.to(documentBo);
-		} catch (org.kuali.rice.kew.exception.InvalidActionTakenException e) {
-			// TODO get rid of checked InvalidActionTakenException
-			throw new InvalidActionTakenException(e.getMessage());
 		} catch (WorkflowException e) {
 			// TODO remove this once we stop throwing WorkflowException everywhere!
-			throw new RiceRuntimeException(e);
+			translateException(e);
 		}
+		return DocumentRouteHeaderValue.to(documentBo);
 	}
 
 	@Override
-	public ValidActions determineValidActions(String documentId,
-			String principalId) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-		return null;
+	public ValidActions determineValidActions(String documentId, String principalId) {
+		incomingParamCheck(documentId, "documentId");
+		incomingParamCheck(principalId, "principalId");
+		DocumentRouteHeaderValue documentBo = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+		if (documentBo == null) {
+			throw new IllegalArgumentException("Failed to locate a document for document id: " + documentId);
+		}
+		return determineValidActionsInternal(documentBo, principalId);
+	}
+	
+	protected ValidActions determineValidActionsInternal(DocumentRouteHeaderValue documentBo, String principalId) {
+		Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+		return KEWServiceLocator.getActionRegistry().getNewValidActions(principal, documentBo);
+	}		
+	
+	@Override
+	public RequestedActions determineRequestedActions(String documentId, String principalId) {
+		incomingParamCheck(documentId, "documentId");
+		incomingParamCheck(principalId, "principalId");DocumentRouteHeaderValue documentBo = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+		if (documentBo == null) {
+			throw new IllegalArgumentException("Failed to locate a document for document id: " + documentId);
+		}
+		return determineRequestedActionsInternal(documentBo, principalId);
+	}
+	
+	protected RequestedActions determineRequestedActionsInternal(DocumentRouteHeaderValue documentBo, String principalId) {
+		AttributeSet actionsRequested = KEWServiceLocator.getActionRequestService().getActionsRequested(documentBo, principalId, true);
+		boolean completeRequested = false;
+		boolean approveRequested = false;
+		boolean acknowledgeRequested = false;
+		boolean fyiRequested = false;
+        for (String actionRequestCode : actionsRequested.keySet()) {
+			if (ActionRequestType.FYI.getCode().equals(actionRequestCode)) {
+                fyiRequested = Boolean.parseBoolean(actionsRequested.get(actionRequestCode));					
+			} else if (ActionRequestType.ACKNOWLEDGE.getCode().equals(actionRequestCode)) {
+               acknowledgeRequested = Boolean.parseBoolean(actionsRequested.get(actionRequestCode));
+			} else if (ActionRequestType.APPROVE.getCode().equals(actionRequestCode)) {
+                approveRequested = Boolean.parseBoolean(actionsRequested.get(actionRequestCode));					
+			} else if (ActionRequestType.COMPLETE.getCode().equals(actionRequestCode)) {
+                completeRequested = Boolean.parseBoolean(actionsRequested.get(actionRequestCode));
+			}
+		}
+        return RequestedActions.create(completeRequested, approveRequested, acknowledgeRequested, fyiRequested);
+	}
+	
+	protected DocumentActionResponse constructDocumentActionResponse(DocumentRouteHeaderValue documentBo, String principalId) {
+		Document document = DocumentRouteHeaderValue.to(documentBo);
+		ValidActions validActions = determineValidActionsInternal(documentBo, principalId);
+		RequestedActions requestedActions = determineRequestedActionsInternal(documentBo, principalId);
+		return DocumentActionResponse.create(document, validActions, requestedActions);
 	}
 
 	@Override
@@ -163,11 +272,20 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public void route(String documentId, String principalId, String annotation,
+	public DocumentActionResponse route(String documentId, String principalId, String annotation,
 			DocumentUpdate documentUpdate,
 			DocumentContentUpdate documentContentUpdate) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Route Document [principalId=" + principalId + ", documentId=" + documentId + ", annotation=" + annotation + "]");
+		}
+		DocumentRouteHeaderValue documentBo = init(documentId, principalId, documentUpdate, documentContentUpdate);
+		try {
+			documentBo = KEWServiceLocator.getWorkflowDocumentService().routeDocument(principalId, documentBo, annotation);
+		} catch (WorkflowException e) {
+			// TODO fix this up once the checked exception goes away
+			translateException(e);
+		}
+		return constructDocumentActionResponse(documentBo, principalId);
 	}
 
 	@Override
@@ -300,4 +418,15 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		this.documentTypeService = documentTypeService;
 	}
 
+	/**
+	 * TODO - this code is temporary until we get rid of all the crazy
+	 * throwing of "WorkflowException"
+	 */
+	private void translateException(WorkflowException e) {
+		if (e instanceof org.kuali.rice.kew.exception.InvalidActionTakenException) {
+			throw new InvalidActionTakenException(e.getMessage(), e);
+		}
+		throw new WorkflowRuntimeException(e.getMessage(), e);
+	}
+	
 }

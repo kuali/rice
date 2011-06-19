@@ -32,35 +32,50 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = DocumentUpdate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentUpdate.Constants.TYPE_NAME, propOrder = {
+	DocumentUpdate.Elements.TITLE,
     DocumentUpdate.Elements.APPLICATION_DOCUMENT_ID,
-    DocumentUpdate.Elements.TITLE,
+    DocumentUpdate.Elements.APPLICATION_DOCUMENT_STATUS,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentUpdate implements Serializable {
 
 	private static final long serialVersionUID = 608839901744771499L;
 
-	@XmlElement(name = Elements.APPLICATION_DOCUMENT_ID, required = false)
-	private final String applicationDocumentId;
-	
 	@XmlElement(name = Elements.TITLE, required = false)
 	private final String title;
+
+	@XmlElement(name = Elements.APPLICATION_DOCUMENT_ID, required = false)
+	private final String applicationDocumentId;
+		
+	@XmlElement(name = Elements.APPLICATION_DOCUMENT_STATUS, required = false)
+	private final String applicationDocumentStatus;
     
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
     
+	private DocumentUpdate() {
+		this.title = null;
+		this.applicationDocumentId = null;
+		this.applicationDocumentStatus = null;
+	}
+	
     private DocumentUpdate(Builder builder) {
-    	this.applicationDocumentId = builder.getApplicationDocumentId();
     	this.title = builder.getTitle();
+    	this.applicationDocumentId = builder.getApplicationDocumentId();
+    	this.applicationDocumentStatus = builder.getApplicationDocumentStatus();
     }
-        
+
+	public String getTitle() {
+		return title;
+	}
+
 	public String getApplicationDocumentId() {
 		return applicationDocumentId;
 	}
 	
-	public String getTitle() {
-		return title;
+	public String getApplicationDocumentStatus() {
+		return applicationDocumentStatus;
 	}
 	
 	@Override
@@ -85,11 +100,12 @@ public final class DocumentUpdate implements Serializable {
 
 		private static final long serialVersionUID = 2220000561051177421L;
 
-		private String applicationDocumentId;
 		private String title;
+		private String applicationDocumentId;
+		private String applicationDocumentStatus;
+
 
 		private Builder() {
-			this.applicationDocumentId = "";
 			this.title = "";
 		}
 
@@ -102,13 +118,22 @@ public final class DocumentUpdate implements Serializable {
 				throw new IllegalArgumentException("document was null");
 			}
 			Builder builder = create();
-			builder.setApplicationDocumentId(document.getApplicationDocumentId());
 			builder.setTitle(document.getTitle());
+			builder.setApplicationDocumentId(document.getApplicationDocumentId());
+			builder.setApplicationDocumentStatus(document.getApplicationDocumentStatus());
 			return builder;
 		}
 
 		public DocumentUpdate build() {
 			return new DocumentUpdate(this);
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public void setTitle(String title) {
+			this.title = title;
 		}
 
 		public String getApplicationDocumentId() {
@@ -119,12 +144,12 @@ public final class DocumentUpdate implements Serializable {
 			this.applicationDocumentId = applicationDocumentId;
 		}
 
-		public String getTitle() {
-			return title;
+		public String getApplicationDocumentStatus() {
+			return applicationDocumentStatus;
 		}
 
-		public void setTitle(String title) {
-			this.title = title;
+		public void setApplicationDocumentStatus(String applicationDocumentStatus) {
+			this.applicationDocumentStatus = applicationDocumentStatus;
 		}
 
 	}
@@ -142,8 +167,10 @@ public final class DocumentUpdate implements Serializable {
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
      */
     static class Elements {
+    	final static String TITLE = "title";
         final static String APPLICATION_DOCUMENT_ID = "applicationDocumentId";
-        final static String TITLE = "title";
+        final static String APPLICATION_DOCUMENT_STATUS = "applicationDocumentStatus";
+        
     }
 
 }

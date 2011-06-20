@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
@@ -35,7 +36,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimEntity extends Inactivateable {
+public interface KimEntity extends Inactivatable {
 	
     /**
      * Gets this {@link KimEntity}'s identity id.

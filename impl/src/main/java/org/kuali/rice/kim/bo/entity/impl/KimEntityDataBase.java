@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.List;
-import java.util.Set;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.krad.bo.Defaultable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.MappedSuperclass;
-
-import org.kuali.rice.krad.bo.DefaultableInactivateable;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import java.util.List;
+import java.util.Set;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -33,9 +33,9 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 public abstract class KimEntityDataBase extends PersistableBusinessObjectBase {
 
 
-	protected DefaultableInactivateable getDefaultItem( List<? extends DefaultableInactivateable> list ) {
+	protected <T extends Defaultable & Inactivatable> T getDefaultItem( List<T> list ) {
 		// find the default entry
-		for ( DefaultableInactivateable item : list ) {
+		for ( T item : list ) {
 			if ( item.isDefaultValue() && item.isActive() ) {
 				return item;
 			}
@@ -48,9 +48,9 @@ public abstract class KimEntityDataBase extends PersistableBusinessObjectBase {
 		return null;		
 	}
 	
-	protected DefaultableInactivateable getDefaultItem( Set<? extends DefaultableInactivateable> set ) {
+	protected <T extends Defaultable & Inactivatable> T  getDefaultItem( Set<T> set ) {
 		// find the default entry
-		for ( DefaultableInactivateable item : set ) {
+		for ( T item : set ) {
 			if ( item.isDefaultValue() && item.isActive() ) {
 				return item;
 			}

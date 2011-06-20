@@ -25,12 +25,11 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
-
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -43,14 +42,16 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill
@@ -126,7 +127,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
                 if (principalId != null) {
                     if (StringUtils.equals(groupMembershipInfo.getTypeCode(), Role.PRINCIPAL_MEMBER_TYPE)
                             && StringUtils.equals(principalId, groupMembershipInfo.getMemberId())
-                            && groupMembershipInfo.isActive()) {
+                            && groupMembershipInfo.isActive(new Timestamp(System.currentTimeMillis()))) {
                         groupPrincipals.add(groupMembershipInfo);
                     }
                 } else {
@@ -151,7 +152,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
                 if (!CollectionUtils.isEmpty(groupMembershipInfos)) {
                     for (GroupMember groupMembershipInfo : groupMembershipInfos) {
                         if (StringUtils.equals(groupMembershipInfo.getTypeCode(), Role.GROUP_MEMBER_TYPE)
-                                && groupMembershipInfo.isActive()) {
+                                && groupMembershipInfo.isActive(new Timestamp(System.currentTimeMillis()))) {
                             groupMembers.add(groupMembershipInfo);
                         }
                     }

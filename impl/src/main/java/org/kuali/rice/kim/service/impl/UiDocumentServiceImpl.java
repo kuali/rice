@@ -519,7 +519,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                             groupMemberships = getGroupService().getMembers(groupIds);
                             if(ObjectUtils.isNotNull(groupMemberships)){
                                 for (GroupMember groupMember: groupMemberships) {
-                                    if (groupMember.isActive() && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
+                                    if (groupMember.isActive(new Timestamp(System.currentTimeMillis())) && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
                                         StringUtils.equals(groupMember.getTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
                                         // create one PersonDocumentGroup per GroupMembershipInfo **
                                         PersonDocumentGroup docGroup = new PersonDocumentGroup();
@@ -1260,7 +1260,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				Collection<GroupMember> currGroupMembers = getGroupService().getMembers(Collections.singletonList(group.getGroupId()));
 				if(ObjectUtils.isNotNull(currGroupMembers)){
 					for (GroupMember origGroupMember: currGroupMembers) {
-                        if (origGroupMember.isActive()
+                        if (origGroupMember.isActive(new Timestamp(System.currentTimeMillis()))
                             && origGroupMember.getTypeCode().equals(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
                             if(origGroupMember.getId()!=null && StringUtils.equals(origGroupMember.getId(), group.getGroupMemberId())){
                                 groupPrincipalImpl.setObjectId(origGroupMember.getObjectId());
@@ -2659,13 +2659,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					for(GroupMemberBo origGroupMemberImpl: origGroupMembers){
 						if(StringUtils.equals(origGroupMemberImpl.getGroupId(), newGroupMember.getGroupId()) &&
 								StringUtils.equals(origGroupMemberImpl.getMemberId(), newGroupMember.getMemberId()) &&
-								!origGroupMemberImpl.isActive()){
+								!origGroupMemberImpl.isActive(new Timestamp(System.currentTimeMillis()))){
 							//TODO: verify if you want to add  && newGroupMember.isActive() condition to if...
 							newGroupMember.setMemberId(origGroupMemberImpl.getMemberId());
 						}
                         if(StringUtils.equals(origGroupMemberImpl.getGroupId(), newGroupMember.getGroupId()) &&
 								StringUtils.equals(origGroupMemberImpl.getMemberId(), newGroupMember.getMemberId()) &&
-								origGroupMemberImpl.isActive()){
+								origGroupMemberImpl.isActive(new Timestamp(System.currentTimeMillis()))){
 							newGroupMember.setId(origGroupMemberImpl.getId());
                             newGroupMember.setVersionNumber(origGroupMemberImpl.getVersionNumber());
 						}

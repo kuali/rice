@@ -30,13 +30,13 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springframework.util.CollectionUtils;
 
 import javax.xml.namespace.QName;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for {@link GroupUpdateServiceImpl}
@@ -97,7 +97,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		// it exists
 		assertNotNull("should have found g2", g2);
 		// it is inactive
-		assertFalse("g2 should be inactive", g2.isActive());
+		assertFalse("g2 should be inactive", g2.isActive(new Timestamp(System.currentTimeMillis())));
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		// it exists
 		assertNotNull("should have found p1", p1);
 		// it is inactive
-		assertFalse("p1 should be inactive", p1.isActive());
+		assertFalse("p1 should be inactive", p1.isActive(new Timestamp(System.currentTimeMillis())));
 	}
 
 	@Test
@@ -163,8 +163,8 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		assertNotNull("should have found p1", p1);
 		assertNotNull("should have found g2", g2);
 		// it is inactive
-		assertFalse("p1 should be inactive", p1.isActive());
-		assertFalse("g2 should be inactive", g2.isActive());
+		assertFalse("p1 should be inactive", p1.isActive(new Timestamp(System.currentTimeMillis())));
+		assertFalse("g2 should be inactive", g2.isActive(new Timestamp(System.currentTimeMillis())));
 	}
 
 	/* Stubs to test other GroupUpdateService methods: */

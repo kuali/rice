@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.entity.impl;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.bo.entity.KimEntityResidency;
+import org.kuali.rice.kim.api.identity.residency.EntityResidencyContract;
 
 import javax.persistence.*;
 
@@ -29,7 +29,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_RESIDENCY_T")
-public class KimEntityResidencyImpl extends KimEntityDataBase implements KimEntityResidency {
+public class KimEntityResidencyImpl extends KimEntityDataBase implements EntityResidencyContract {
 
 	private static final long serialVersionUID = 6577601907062646925L;
 
@@ -80,28 +80,28 @@ public class KimEntityResidencyImpl extends KimEntityDataBase implements KimEnti
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getDeterminationMethod()
+	 * @see org.kuali.rice.kim.api.identity.residency.EntityResidencyContract#getDeterminationMethod()
 	 */
 	public String getDeterminationMethod() {
 		return determinationMethod;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getEntityId()
+	 * @see org.kuali.rice.kim.api.identity.residency.EntityResidencyContract#getEntityId()
 	 */
 	public String getEntityId() {
 		return entityId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getId()
+	 * @see org.kuali.rice.kim.api.identity.residency.EntityResidencyContract#getId()
 	 */
 	public String getId() {
 		return id;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getInState()
+	 * @see org.kuali.rice.kim.api.identity.residency.EntityResidencyContract#getInState()
 	 */
 	public String getInState() {
 		return inStateFlag;

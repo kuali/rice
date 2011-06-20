@@ -22,6 +22,7 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = EntityEthnicity.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = EntityEthnicity.Constants.TYPE_NAME, propOrder = {
+    EntityEthnicity.Elements.ID,
     EntityEthnicity.Elements.ENTITY_ID,
     EntityEthnicity.Elements.ETHNICITY_CODE,
     EntityEthnicity.Elements.ETHNICITY_CODE_UNMASKED,
@@ -30,7 +31,6 @@ import org.w3c.dom.Element;
     EntityEthnicity.Elements.SUPPRESS_PERSONAL,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
-    EntityEthnicity.Elements.ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class EntityEthnicity

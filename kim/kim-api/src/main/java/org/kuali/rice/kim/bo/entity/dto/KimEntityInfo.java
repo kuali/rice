@@ -28,6 +28,8 @@ import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.api.identity.residency.EntityResidencyContract;
+import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeData;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
 import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
@@ -35,7 +37,6 @@ import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.KimEntityResidency;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     private List<Principal> principals;
     private EntityPrivacyPreferences privacyPreferences;
     private List<EntityEthnicity> ethnicities;
-    private List<KimEntityResidencyInfo> residencies;
+    private List<EntityResidency> residencies;
     private List<EntityVisa> visas;
 
     /**
@@ -142,11 +143,11 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
                 ethnicities.add(EntityEthnicity.Builder.create(contract).build());
             }
 
-            residencies = deriveCollection(entity.getResidencies(), new XForm<KimEntityResidency, KimEntityResidencyInfo>() {
-                public KimEntityResidencyInfo xform(KimEntityResidency source) {
-                    return new KimEntityResidencyInfo(source);
-                }
-            });
+
+            residencies = new ArrayList<EntityResidency>();
+            for (EntityResidencyContract contract : entity.getResidencies()) {
+                residencies.add(EntityResidency.Builder.create(contract).build());
+            }
 
             visas = new ArrayList<EntityVisa>();
             for (EntityVisaContract contract : entity.getVisas()) {
@@ -388,16 +389,16 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getResidencies()
      */
-    public List<KimEntityResidencyInfo> getResidencies() {
+    public List<EntityResidency> getResidencies() {
         // If our reference is null, assign and return an empty List
-        return (residencies != null) ? residencies : (residencies = new ArrayList<KimEntityResidencyInfo>());
+        return (residencies != null) ? residencies : (residencies = new ArrayList<EntityResidency>());
     }
 
     /** 
      * Setter for this {@link KimEntityInfo}'s residencies.  Note the behavior of 
      * {@link #getResidencies()} if this is set to null;
      */
-    public void setResidencies(List<KimEntityResidencyInfo> residencies) {
+    public void setResidencies(List<EntityResidency> residencies) {
         this.residencies = residencies;
     }
 

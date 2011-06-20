@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.entity;
+package org.kuali.rice.kim.api.identity.residency;
 
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * residency info for a KIM identity
@@ -22,29 +25,24 @@ package org.kuali.rice.kim.bo.entity;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface KimEntityResidency {
+public interface EntityResidencyContract extends Versioned, GloballyUnique, Identifiable {
 
-    /**
-     * Gets this {@link KimEntityResidency}'s id.
-     * @return the id for this {@link KimEntityResidency}, or null if none has been assigned.
-     */
-	String getId();
 	
 	/**
-     * Gets this {@link KimEntityResidency}'s identity id.
-     * @return the identity id for this {@link KimEntityResidency}, or null if none has been assigned.
+     * Gets this {@link EntityResidencyContract}'s identity id.
+     * @return the identity id for this {@link EntityResidencyContract}, or null if none has been assigned.
      */
 	String getEntityId();
 	
 	/**
-     * Gets this {@link KimEntityResidency}'s determination method.
-     * @return the determination method for this {@link KimEntityResidency}, or null if none has been assigned.
+     * Gets this {@link EntityResidencyContract}'s determination method.
+     * @return the determination method for this {@link EntityResidencyContract}, or null if none has been assigned.
      */
 	String getDeterminationMethod();
 	
 	/**
-     * Gets the state this {@link KimEntityResidency} is in.
-     * @return the state this {@link KimEntityResidency} is in, or null if none has been assigned.
+     * Gets the state this {@link EntityResidencyContract} is in.
+     * @return the state this {@link EntityResidencyContract} is in, or null if none has been assigned.
      */
 	String getInState();
 }

@@ -28,6 +28,7 @@ import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
+import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.util.AutoPopulatingList;
 
@@ -109,10 +110,10 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<EntityEthnicityBo> ethnicities = new AutoPopulatingList(EntityEthnicityBo.class);
 
-	@OneToMany(targetEntity = KimEntityResidencyImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = EntityResidencyBo.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityResidencyImpl> residencies = new AutoPopulatingList(KimEntityResidencyImpl.class);
+	protected List<EntityResidencyBo> residencies = new AutoPopulatingList(EntityResidencyBo.class);
 
 	@OneToMany(targetEntity = EntityVisaBo.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
@@ -338,14 +339,14 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @return the residencies
 	 */
-	public List<KimEntityResidencyImpl> getResidencies() {
+	public List<EntityResidencyBo> getResidencies() {
 		return this.residencies;
 	}
 
 	/**
 	 * @param residencies the residencies to set
 	 */
-	public void setResidencies(List<KimEntityResidencyImpl> residencies) {
+	public void setResidencies(List<EntityResidencyBo> residencies) {
 		this.residencies = residencies;
 	}
 

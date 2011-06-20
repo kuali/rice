@@ -221,7 +221,7 @@
     <collection-descriptor name="ethnicities" element-class-ref="org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
-    <collection-descriptor name="residencies" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="residencies" element-class-ref="org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
     <collection-descriptor name="visas" element-class-ref="org.kuali.rice.kim.impl.identity.visa.EntityVisaBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
@@ -349,11 +349,11 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl" table="KRIM_ENTITY_RESIDENCY_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo" table="KRIM_ENTITY_RESIDENCY_T">
     <field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ENTITY_RESIDENCY_ID_S" />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="determinationMethod" column="DETERMINATION_METHOD" jdbc-type="VARCHAR"  />
-    <field-descriptor name="inStateFlag" column="IN_STATE" jdbc-type="VARCHAR"  />
+    <field-descriptor name="inState" column="IN_STATE" jdbc-type="VARCHAR"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>

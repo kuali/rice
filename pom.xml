@@ -24,7 +24,7 @@
   <artifactId>rice</artifactId>
   <packaging>pom</packaging>
   <name>Kuali Rice</name>
-  <version>1.0.3.2</version>
+  <version>1.0.3.3-SNAPSHOT</version>
   <description>
         The Kuali Rice effort provides an enterprise class
 		middleware suite of integrated products that allows both Kuali and

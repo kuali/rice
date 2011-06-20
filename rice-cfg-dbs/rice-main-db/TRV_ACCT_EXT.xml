@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <TRV_ACCT_EXT ACCT_NUM="a1" ACCT_TYPE="IAT"/>
+    <TRV_ACCT_EXT ACCT_NUM="a14" ACCT_TYPE="CAT"/>
+    <TRV_ACCT_EXT ACCT_NUM="a2" ACCT_TYPE="EAT"/>
+    <TRV_ACCT_EXT ACCT_NUM="a3" ACCT_TYPE="IAT"/>
+    <TRV_ACCT_EXT ACCT_NUM="a6" ACCT_TYPE="CAT"/>
+    <TRV_ACCT_EXT ACCT_NUM="a8" ACCT_TYPE="EAT"/>
+    <TRV_ACCT_EXT ACCT_NUM="a9" ACCT_TYPE="CAT"/>
+</dataset>

@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -30,7 +29,7 @@ abstract class AdHocCommand implements Serializable {
 	@XmlElement(name = Elements.ACTION_REQUESTED_CODE, required = true)
 	private final String actionRequestedCode;
 	
-	@XmlElement(name = Elements.NODE_NAME, required = true)
+	@XmlElement(name = Elements.NODE_NAME, required = false)
 	private final String nodeName;
 	
 	@XmlElement(name = Elements.RESPONSIBILITY_DESCRIPTION, required = false)
@@ -128,9 +127,6 @@ abstract class AdHocCommand implements Serializable {
 		}
 
 		public void setNodeName(String nodeName) {
-			if (StringUtils.isBlank(nodeName)) {
-				throw new IllegalArgumentException("nodeName was null or blank");
-			}
 			this.nodeName = nodeName;
 		}
 

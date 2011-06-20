@@ -28,9 +28,9 @@ public interface WorkflowDocumentActionsService {
 	
 	public DocumentActionResult approve(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
 			
-    public void adHocToPrincipal(String documentId, String principalId, AdHocToPrincipal adHocCommand, String annotation);
+    public DocumentActionResult adHocToPrincipal(String documentId, String principalId, AdHocToPrincipal adHocCommand, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
-    public void adHocToGroup(String documentId, String principalId, AdHocToGroup adHocCommand, String annotation);
+    public DocumentActionResult adHocToGroup(String documentId, String principalId, AdHocToGroup adHocCommand, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
     public void revokeAdHocRequestsFromPrincipal(String documentId, String principalId, AdHocRevokeFromPrincipal revoke, String annotation);
     

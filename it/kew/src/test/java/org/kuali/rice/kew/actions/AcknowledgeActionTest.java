@@ -16,15 +16,15 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.util.KimConstants;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  *
@@ -39,7 +39,7 @@ public class AcknowledgeActionTest extends KEWTestCase {
     @Test public void testSavedDocumentAdhocRequest() throws Exception {
         WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
-        doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false);
+        doc.adHocToPrincipal(ActionRequestType.ACKNOWLEDGE, "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false);
         String userId = getPrincipalIdForName("dewey");
         doc = WorkflowDocument.loadDocument(userId, doc.getDocumentId());
         assertTrue("Acknowledge should be requested of user " + userId, doc.isAcknowledgeRequested());
@@ -48,13 +48,13 @@ public class AcknowledgeActionTest extends KEWTestCase {
         } catch (Exception e) {
             fail("A non-initator with an Ack request should be allowed to take the Ack action on a " + getSavedStatusDisplayValue() + " document");
         }
-        assertTrue("Document should be " + getSavedStatusDisplayValue(), doc.stateIsSaved());
+        assertTrue("Document should be " + getSavedStatusDisplayValue(), doc.isSaved());
 
         String workgroupUserId = getPrincipalIdForName("dewey");
         doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
 
-        doc.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT"), "respDesc1", false);
+        doc.adHocToGroup(ActionRequestType.ACKNOWLEDGE, "annotation1", getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT"), "respDesc1", false);
         doc = WorkflowDocument.loadDocument(workgroupUserId, doc.getDocumentId());
         assertTrue("Acknowledge should be requested of user " + workgroupUserId, doc.isAcknowledgeRequested());
         try {
@@ -62,6 +62,6 @@ public class AcknowledgeActionTest extends KEWTestCase {
         } catch (Exception e) {
             fail("A non-initator with an Ack request should be allowed to take the Ack action on a " + getSavedStatusDisplayValue() + " document");
         }
-        assertTrue("Document should be " + getSavedStatusDisplayValue(), doc.stateIsSaved());
+        assertTrue("Document should be " + getSavedStatusDisplayValue(), doc.isSaved());
     }
 }

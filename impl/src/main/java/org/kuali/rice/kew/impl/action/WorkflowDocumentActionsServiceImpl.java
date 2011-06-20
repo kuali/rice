@@ -41,7 +41,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	
 	private DocumentTypeService documentTypeService;
 	
-	private static final DocumentActionCallback ACKNOWLEDGE_CALLBACK = new DocumentActionCallback() {
+	private static final DocumentActionCallback ACKNOWLEDGE_CALLBACK = new StandardDocumentActionCallback() {
 		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 			return KEWServiceLocator.getWorkflowDocumentService().acknowledgeDocument(principalId, documentBo, annotation);
 		}
@@ -50,7 +50,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		}
 	};
 	
-	private static final DocumentActionCallback APPROVE_CALLBACK = new DocumentActionCallback() {
+	private static final DocumentActionCallback APPROVE_CALLBACK = new StandardDocumentActionCallback() {
 		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 			return KEWServiceLocator.getWorkflowDocumentService().approveDocument(principalId, documentBo, annotation);
 		}
@@ -59,7 +59,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		}
 	};
 	
-	private static final DocumentActionCallback CANCEL_CALLBACK = new DocumentActionCallback() {
+	private static final DocumentActionCallback CANCEL_CALLBACK = new StandardDocumentActionCallback() {
 		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 			return KEWServiceLocator.getWorkflowDocumentService().cancelDocument(principalId, documentBo, annotation);
 		}
@@ -68,7 +68,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		}
 	};
 	
-	private static final DocumentActionCallback FYI_CALLBACK = new DocumentActionCallback() {
+	private static final DocumentActionCallback FYI_CALLBACK = new StandardDocumentActionCallback() {
 		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 			return KEWServiceLocator.getWorkflowDocumentService().clearFYIDocument(principalId, documentBo, annotation);
 		}
@@ -77,7 +77,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		}
 	};
 	
-	private static final DocumentActionCallback COMPLETE_CALLBACK = new DocumentActionCallback() {
+	private static final DocumentActionCallback COMPLETE_CALLBACK = new StandardDocumentActionCallback() {
 		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 			return KEWServiceLocator.getWorkflowDocumentService().completeDocument(principalId, documentBo, annotation);
 		}
@@ -86,7 +86,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		}
 	};
 	
-	private static final DocumentActionCallback DISAPPROVE_CALLBACK = new DocumentActionCallback() {
+	private static final DocumentActionCallback DISAPPROVE_CALLBACK = new StandardDocumentActionCallback() {
 		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 			return KEWServiceLocator.getWorkflowDocumentService().disapproveDocument(principalId, documentBo, annotation);
 		}
@@ -96,7 +96,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	};
 
 	
-	private static final DocumentActionCallback ROUTE_CALLBACK = new DocumentActionCallback() {
+	private static final DocumentActionCallback ROUTE_CALLBACK = new StandardDocumentActionCallback() {
 		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 			return KEWServiceLocator.getWorkflowDocumentService().routeDocument(principalId, documentBo, annotation);
 		}
@@ -105,7 +105,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		}
 	};
 	
-	private static final DocumentActionCallback SAVE_CALLBACK = new DocumentActionCallback() {
+	private static final DocumentActionCallback SAVE_CALLBACK = new StandardDocumentActionCallback() {
 		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 			return KEWServiceLocator.getWorkflowDocumentService().saveDocument(principalId, documentBo, annotation);
 		}
@@ -296,17 +296,73 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public void adHocToPrincipal(String documentId, String principalId,
-			AdHocToPrincipal adHocCommand, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+	public DocumentActionResult adHocToPrincipal(String documentId,
+			String principalId,
+			final AdHocToPrincipal adHocCommand,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate) {
+		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
+				new DocumentActionCallback() {
+					@Override
+					public String getLogMessage(String documentId, String principalId, String annotation) {
+						return "AdHoc Route To Principal [principalId=" + principalId + 
+							", docId=" + documentId + 
+							", actionRequest=" + adHocCommand.getActionRequested() + 
+							", nodeName=" + adHocCommand.getNodeName() + 
+							", targetPrincipalId=" + adHocCommand.getTargetPrincipalId() + 
+							", forceAction=" + adHocCommand.isForceAction() + 
+							", annotation=" + annotation + 
+							", requestLabel=" + adHocCommand.getRequestLabel() + "]";
+					}
+					@Override
+					public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+						return KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(principalId,
+									documentBo,
+									adHocCommand.getActionRequested().getCode(),
+									adHocCommand.getNodeName(),
+									annotation,
+									adHocCommand.getTargetPrincipalId(),
+									adHocCommand.getResponsibilityDescription(),
+									adHocCommand.isForceAction(),
+									adHocCommand.getRequestLabel());
+					}
+				});
 	}
 
 	@Override
-	public void adHocToGroup(String documentId, String principalId,
-			AdHocToGroup adHocCommand, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+	public DocumentActionResult adHocToGroup(String documentId,
+			String principalId,
+			final AdHocToGroup adHocCommand,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate) {
+		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
+				new DocumentActionCallback() {
+					@Override
+					public String getLogMessage(String documentId, String principalId, String annotation) {
+						return "AdHoc Route To Group [principalId=" + principalId + 
+							", docId=" + documentId + 
+							", actionRequest=" + adHocCommand.getActionRequested() + 
+							", nodeName=" + adHocCommand.getNodeName() + 
+							", targetGroupId=" + adHocCommand.getTargetGroupId() + 
+							", forceAction=" + adHocCommand.isForceAction() + 
+							", annotation=" + annotation + 
+							", requestLabel=" + adHocCommand.getRequestLabel() + "]";
+					}
+					@Override
+					public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+						return KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToGroup(principalId,
+									documentBo,
+									adHocCommand.getActionRequested().getCode(),
+									adHocCommand.getNodeName(),
+									annotation,
+									adHocCommand.getTargetGroupId(),
+									adHocCommand.getResponsibilityDescription(),
+									adHocCommand.isForceAction(),
+									adHocCommand.getRequestLabel());
+					}
+				});
 	}
 
 	@Override
@@ -517,7 +573,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 				DocumentContentUpdate documentContentUpdate,
 				DocumentActionCallback callback) {
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(callback.getActionName() + " [principalId=" + principalId + ", documentId=" + documentId + ", annotation=" + annotation + "]");
+			LOG.debug(callback.getLogMessage(documentId, principalId, annotation));
 		}
 		DocumentRouteHeaderValue documentBo = init(documentId, principalId, documentUpdate, documentContentUpdate);
 		try {
@@ -534,7 +590,17 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		
 		DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException;
 		
-		String getActionName();
+		String getLogMessage(String documentId, String principalId, String annotation);
+		
+	}	
+	
+	protected static abstract class StandardDocumentActionCallback implements DocumentActionCallback {
+		
+		public final String getLogMessage(String documentId, String principalId, String annotation) {
+			return getActionName() + " [principalId=" + principalId + ", documentId=" + documentId + ", annotation=" + annotation + "]";
+		}
+		
+		protected abstract String getActionName();
 		
 	}
 	

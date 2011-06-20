@@ -23,8 +23,11 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.action.AdHocToGroup;
+import org.kuali.rice.kew.api.action.AdHocToPrincipal;
 import org.kuali.rice.kew.api.action.DocumentActionResult;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.action.RequestedActions;
@@ -311,19 +314,10 @@ public class WorkflowDocument implements java.io.Serializable {
     	this.modifiableDocumentContent = null;
     }
     
-//    /**
-//     * Performs the 'save' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs saving the document
-//     * @see WorkflowDocumentActions#saveDocument(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void saveDocument(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().saveDocument(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
-//
+    public void saveDocument(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().save(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
 
     public void route(String annotation) {
     	DocumentActionResult result = getWorkflowDocumentActionsService().route(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
@@ -439,59 +433,61 @@ public class WorkflowDocument implements java.io.Serializable {
 //    	routeHeader = getWorkflowUtility().getRouteHeader(getDocumentId());
 //    	documentContentDirty = true;
 //    }
-//
-//    /**
-//     * Sends an ad hoc request to the specified user at the current active node on the document.  If the document is
-//     * in a terminal state, the request will be attached to the terminal node.
-//     */
-//    public void adHocRouteDocumentToPrincipal(String actionRequested, String annotation, String principalId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
-//    	adHocRouteDocumentToPrincipal(actionRequested, null, annotation, principalId, responsibilityDesc, forceAction);
-//    }
-//
-//    /**
-//     * Sends an ad hoc request to the specified user at the specified node on the document.  If the document is
-//     * in a terminal state, the request will be attached to the terminal node.
-//     */
-//    public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
-//    	adHocRouteDocumentToPrincipal(actionRequested, nodeName, annotation, principalId, responsibilityDesc, forceAction, null);
-//    }
-//
-//    /**
-//     * Sends an ad hoc request to the specified user at the specified node on the document.  If the document is
-//     * in a terminal state, the request will be attached to the terminal node.
-//     */
-//    public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToPrincipal(principalId, getRouteHeader(), actionRequested, nodeName, annotation, principalId, responsibilityDesc, forceAction, requestLabel);
-//    	documentContentDirty = true;
-//    }
-//
-//    /**
-//     * Sends an ad hoc request to the specified workgroup at the current active node on the document.  If the document is
-//     * in a terminal state, the request will be attached to the terminal node.
-//     */
-//    public void adHocRouteDocumentToGroup(String actionRequested, String annotation, String groupId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
-//    	adHocRouteDocumentToGroup(actionRequested, null, annotation, groupId, responsibilityDesc, forceAction);
-//    }
-//
-//    /**
-//     * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
-//     * in a terminal state, the request will be attached to the terminal node.
-//     */
-//    public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
-//    	adHocRouteDocumentToGroup(actionRequested, nodeName, annotation, groupId, responsibilityDesc, forceAction, null);
-//    }
-//
-//    /**
-//     * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
-//     * in a terminal state, the request will be attached to the terminal node.
-//     */
-//    public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToGroup(principalId, getRouteHeader(), actionRequested, nodeName, annotation, groupId, responsibilityDesc, forceAction, requestLabel);
-//    	documentContentDirty = true;
-//    }
-//
+
+    /**
+     * Sends an ad hoc request to the specified user at the current active node on the document.  If the document is
+     * in a terminal state, the request will be attached to the terminal node.
+     */
+    public void adHocToPrincipal(ActionRequestType actionRequested, String annotation, String targetPrincipalId, String responsibilityDescription, boolean forceAction) {
+    	adHocToPrincipal(actionRequested, null, annotation, targetPrincipalId, responsibilityDescription, forceAction);
+    }
+
+    /**
+     * Sends an ad hoc request to the specified user at the specified node on the document.  If the document is
+     * in a terminal state, the request will be attached to the terminal node.
+     */
+    public void adHocToPrincipal(ActionRequestType actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDescription, boolean forceAction) {
+    	adHocToPrincipal(actionRequested, nodeName, annotation, targetPrincipalId, responsibilityDescription, forceAction, null);
+    }
+
+    public void adHocToPrincipal(ActionRequestType actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDescription, boolean forceAction, String requestLabel) {
+    	AdHocToPrincipal.Builder builder = AdHocToPrincipal.Builder.create(actionRequested, nodeName, targetPrincipalId);
+    	builder.setResponsibilityDescription(responsibilityDescription);
+    	builder.setForceAction(forceAction);
+    	builder.setRequestLabel(requestLabel);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToPrincipal(getDocumentId(), getPrincipalId(), builder.build(), annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
+
+    /**
+     * Sends an ad hoc request to the specified workgroup at the current active node on the document.  If the document is
+     * in a terminal state, the request will be attached to the terminal node.
+     */
+    public void adHocToGroup(ActionRequestType actionRequested, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction) {
+    	adHocRouteDocumentToGroup(actionRequested, null, annotation, targetGroupId, responsibilityDescription, forceAction);
+    }
+
+    /**
+     * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
+     * in a terminal state, the request will be attached to the terminal node.
+     */
+    public void adHocRouteDocumentToGroup(ActionRequestType actionRequested, String nodeName, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction) {
+    	adHocRouteDocumentToGroup(actionRequested, nodeName, annotation, targetGroupId, responsibilityDescription, forceAction, null);
+    }
+
+    /**
+     * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
+     * in a terminal state, the request will be attached to the terminal node.
+     */
+    public void adHocRouteDocumentToGroup(ActionRequestType actionRequested, String nodeName, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction, String requestLabel) {
+    	AdHocToGroup.Builder builder = AdHocToGroup.Builder.create(actionRequested, nodeName, targetGroupId);
+    	builder.setResponsibilityDescription(responsibilityDescription);
+    	builder.setForceAction(forceAction);
+    	builder.setRequestLabel(requestLabel);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToGroup(getDocumentId(), getPrincipalId(), builder.build(), annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
+
 //    /**
 //     * Revokes AdHoc request(s) according to the given AdHocRevokeVO which is passed in.
 //     *

@@ -32,10 +32,11 @@
 
 .dataTables_wrapper {
 	position: relative;
-	min-height: 302px;
+	/* [disabled]min-height: 302px; */
 	clear: both;
 	_height: 302px;
 	zoom: 1; /* Feeling sorry for IE */
+	padding-bottom: 22px;
 }
 
 .dataTables_processing {

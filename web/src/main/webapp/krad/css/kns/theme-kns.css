@@ -6,12 +6,10 @@
 	-moz-border-radius: 12px;
 	-webkit-border-radius: 12px;
 	border-radius: 12px;
-	/*defines gradient background*/
-	background-image: -moz-linear-gradient(top,  #ffffff,  #e6e6e6);
-	background-image: -webkit-gradient(linear, left top, left bottom,  color-stop(0, #ffffff),  color-stop(1, #e6e6e6));
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#e6e6e6')";
 	color:#900;
 	border: 1px solid #999;
+	background-color:#FFF;	
 }
 .fl-theme-ks .button-secondary1, .ui-widget-content .button-secondary1, .ui-widget-header .button-secondary1 {
 	border: 1px solid #999;
@@ -25,7 +23,10 @@
 	-webkit-border-radius: 2px;
 	border-radius: 2px;
 	text-transform: lowercase;
-	padding:0px .5em
+	padding:0px .5em;
+	background-color:red;
+	
+	
 }
 .fl-theme-ks .button-primary a, .button-primary a:link, .button-primary a:visited {
 	color: #eeeeee;

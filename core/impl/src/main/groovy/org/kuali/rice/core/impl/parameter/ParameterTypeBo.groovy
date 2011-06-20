@@ -23,12 +23,12 @@ import javax.persistence.Table
 import org.hibernate.annotations.Type
 import org.kuali.rice.core.api.parameter.ParameterType
 import org.kuali.rice.core.api.parameter.ParameterTypeContract
-import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.Inactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRCR_PARM_TYP_T")
-public class ParameterTypeBo extends PersistableBusinessObjectBase implements ParameterTypeContract, Inactivateable {
+public class ParameterTypeBo extends PersistableBusinessObjectBase implements ParameterTypeContract, Inactivatable {
 
     private static final long serialVersionUID = 1L;
 

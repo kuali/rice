@@ -18,6 +18,7 @@ package org.kuali.rice.kim.impl.common.active
 
 import java.sql.Timestamp
 import javax.persistence.Column
+import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 public abstract class ActiveFromToBo extends PersistableBusinessObjectBase {
@@ -27,22 +28,7 @@ public abstract class ActiveFromToBo extends PersistableBusinessObjectBase {
 	@Column(name = "ACTV_TO_DT")
 	Timestamp activeToDate
 
-    boolean isActive() {
-        long asOfDate = System.currentTimeMillis()
-
-		return computeActive(asOfDate);
-    }
-
     boolean isActive(Timestamp activeAsOfDate) {
-        long asOfDate = System.currentTimeMillis()
-		if (activeAsOfDate != null) {
-			asOfDate = activeAsOfDate.getTime()
-		}
-
-		return computeActive(asOfDate)
-    }
-
-    private boolean computeActive(Long asOfDate) {
-          return (activeFromDate == null || asOfDate >= activeFromDate.getTime()) && (activeToDate == null || asOfDate < activeToDate.getTime())
+        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate)
     }
 }

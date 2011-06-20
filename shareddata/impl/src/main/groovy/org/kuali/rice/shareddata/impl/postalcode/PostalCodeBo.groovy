@@ -25,7 +25,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 import org.hibernate.annotations.Type
-import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.Inactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.postalcode.PostalCode
 import org.kuali.rice.shareddata.api.postalcode.PostalCodeContract
@@ -36,7 +36,7 @@ import org.kuali.rice.shareddata.impl.state.StateBo
 @IdClass(PostalCodeId.class)
 @Entity
 @Table(name = "KRLC_PSTL_CD_T")
-class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeContract, Inactivateable {
+class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeContract, Inactivatable {
 
     @Id
     @Column(name = "POSTAL_CD")

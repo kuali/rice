@@ -16,7 +16,7 @@
 
 package edu.sampleu.financial.bo;
 
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
@@ -24,7 +24,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
  *
  * @see org.kuali.kfs.vnd.businessobject.PaymentTermType
  */
-public class ShippingPaymentTerms extends PersistableBusinessObjectBase implements Inactivateable {
+public class ShippingPaymentTerms extends PersistableBusinessObjectBase implements Inactivatable {
 
     private String vendorShippingPaymentTermsCode;
     private String vendorShippingPaymentTermsDescription;

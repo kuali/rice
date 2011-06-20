@@ -23,6 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
 import org.w3c.dom.Element;
@@ -50,7 +51,6 @@ import java.util.List;
         RoleMember.Elements.MEMBER_TYPE_CODE,
         CoreConstants.CommonElements.ACTIVE_FROM_DATE,
         CoreConstants.CommonElements.ACTIVE_TO_DATE,
-        CoreConstants.CommonElements.ACTIVE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class RoleMember implements RoleMemberContract, ModelObjectComplete {
@@ -83,9 +83,6 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     @XmlElement(name = CoreConstants.CommonElements.ACTIVE_TO_DATE)
     private final Timestamp activeToDate;
 
-    @XmlElement(name = CoreConstants.CommonElements.ACTIVE)
-    private final boolean active;
-
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -103,7 +100,6 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
         memberTypeCode = null;
         activeFromDate = null;
         activeToDate = null;
-        active = false;
     }
 
     private RoleMember(Builder b) {
@@ -123,7 +119,6 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
         memberTypeCode = b.getMemberTypeCode();
         activeFromDate = b.getActiveFromDate();
         activeToDate = b.getActiveToDate();
-        active = b.isActive();
     }
 
 
@@ -168,7 +163,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
 
     @Override
     public boolean isActive(Timestamp activeAsOfDate) {
-        return (activeFromDate.before(activeAsOfDate) && activeToDate.after(activeAsOfDate));
+        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
     }
 
     @Override
@@ -186,11 +181,6 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
         return ToStringBuilder.reflectionToString(this);
     }
 
-    @Override
-    public boolean isActive() {
-        return active;
-    }
-
 
     public static final class Builder implements ModelBuilder, RoleMemberContract, ModelObjectComplete {
 
@@ -202,8 +192,6 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
         private String memberTypeCode;
         private Timestamp activeFromDate;
         private Timestamp activeToDate;
-        private boolean active = true;
-
 
         public static Builder create(String roleId, String roleMemberId, String memberId,
                                      String memberTypeCode, Timestamp activeFromDate, Timestamp activeToDate, AttributeSet qualifier) {
@@ -315,16 +303,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
 
         @Override
         public boolean isActive(Timestamp activeAsOfDate) {
-            return (activeFromDate.before(activeAsOfDate) && activeToDate.after(activeAsOfDate));
-        }
-
-        @Override
-        public boolean isActive() {
-            return active;
-        }
-
-        public void setActive(boolean active) {
-            this.active = active;
+            return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
         }
 
         @Override
@@ -341,8 +320,6 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
         public String toString() {
             return ToStringBuilder.reflectionToString(this);
         }
-
-
     }
 
     /**

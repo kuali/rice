@@ -18,24 +18,34 @@ package org.kuali.rice.core.api.mo.common.active;
 
 import java.sql.Timestamp;
 
+/**
+ * This interface can be used to identify a model object which has an
+ * "active range" such that an object is only active with a certain
+ * temporal range.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public interface InactivatableFromTo {
 
-public interface InactivatableFromTo extends Inactivatable {
-	/**
-	 * Gets the date for which the record become active
+    /**
+	 * Gets the date for which the record become active. Can be null.
 	 *
 	 * @return Timestamp of active from date
 	 */
-	public Timestamp getActiveFromDate();
+	Timestamp getActiveFromDate();
 
 	/**
-	 * Gets the date for which the record become inactive
+	 * Gets the date for which the record become inactive. Can be null.
 	 *
 	 * @return Timestamp of active to date
 	 */
-	public Timestamp getActiveToDate();
+	Timestamp getActiveToDate();
 
     /**
-     *  Returns if the record is active for a given Time.
+     * Returns if the record is active for a given Time.
+     * If the activeAsOfDate is null will return null.
+     *
+     * @return true if active false if not
      */
-    public boolean isActive(Timestamp activeAsOfDate);
+    boolean isActive(Timestamp activeAsOfDate);
 }

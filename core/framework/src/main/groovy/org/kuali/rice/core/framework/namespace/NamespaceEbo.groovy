@@ -19,10 +19,10 @@ package org.kuali.rice.core.framework.namespace
 import org.kuali.rice.core.api.namespace.Namespace
 import org.kuali.rice.core.api.namespace.NamespaceContract
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.Inactivatable
 
 //@ToString
-class NamespaceEbo implements NamespaceContract, Inactivateable, ExternalizableBusinessObject {
+class NamespaceEbo implements NamespaceContract, Inactivatable, ExternalizableBusinessObject {
 
     private static final long serialVersionUID = 1L;
 

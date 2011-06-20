@@ -21,14 +21,14 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 import org.hibernate.annotations.Type
-import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.Inactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.campus.CampusType
 import org.kuali.rice.shareddata.api.campus.CampusTypeContract
 
 @Entity
 @Table(name="KRLC_CMP_TYP_T")
-public class CampusTypeBo extends PersistableBusinessObjectBase implements Inactivateable, CampusTypeContract {
+public class CampusTypeBo extends PersistableBusinessObjectBase implements Inactivatable, CampusTypeContract {
 	@Id
 	@Column(name="CAMPUS_TYP_CD")
 	def String code;

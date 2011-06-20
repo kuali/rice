@@ -21,15 +21,10 @@ package org.kuali.rice.krad.bo;
  * hide inactive by default for collections in maintenance documents, display active indicator in the search criteria and result set
  * for lookups and default the search criteria field to active
  */
-public interface Inactivateable {
-
-    /**
-     * Indicates whether the record is active or inactive.
-     */
-    public boolean isActive();
+public interface Inactivatable extends org.kuali.rice.core.api.mo.common.active.Inactivatable {
 
     /**
      * Sets the record to active or inactive.
      */
-    public void setActive(boolean active);
+    void setActive(boolean active);
 }

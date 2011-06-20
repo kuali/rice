@@ -37,7 +37,6 @@ class RoleMemberBoTest {
         Assert.assertEquals(bo.memberId, immutable.memberId)
         Assert.assertEquals(bo.activeFromDate, immutable.activeFromDate)
         Assert.assertEquals(bo.activeToDate, immutable.activeToDate)
-        Assert.assertEquals(bo.active, immutable.active)
     }
 
     @Test
@@ -51,8 +50,6 @@ class RoleMemberBoTest {
         Assert.assertEquals(bo.memberId, immutable.memberId)
         Assert.assertEquals(bo.activeFromDate, immutable.activeFromDate)
         Assert.assertEquals(bo.activeToDate, immutable.activeToDate)
-        Assert.assertEquals(bo.active, immutable.active)
-
     }
 
     @Test

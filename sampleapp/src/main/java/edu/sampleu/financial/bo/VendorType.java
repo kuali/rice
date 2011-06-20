@@ -16,14 +16,14 @@
 
 package edu.sampleu.financial.bo;
 
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * Major classification of Vendors according to whether they are sufficiently set up to provide for an interaction via Purchase
  * Orders.
  */
-public class VendorType extends PersistableBusinessObjectBase implements Inactivateable {
+public class VendorType extends PersistableBusinessObjectBase implements Inactivatable {
 
     private String vendorTypeCode;
     private String vendorTypeDescription;

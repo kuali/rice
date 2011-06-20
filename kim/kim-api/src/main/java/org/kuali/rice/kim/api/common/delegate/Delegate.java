@@ -21,8 +21,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.api.mo.common.active.InactivatableFromToImpl;
+import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -31,6 +32,8 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 /**
@@ -49,10 +52,12 @@ import java.util.Collection;
         Delegate.Elements.DELEGATION_MEMBER_ID,
         Delegate.Elements.MEMBER_NAME,
         Delegate.Elements.MEMBER_NAMESPACE_CODE,
+        CoreConstants.CommonElements.ACTIVE_FROM_DATE,
+        CoreConstants.CommonElements.ACTIVE_TO_DATE,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Delegate extends InactivatableFromToImpl implements DelegateContract, ModelObjectComplete {
+public final class Delegate implements DelegateContract, ModelObjectComplete {
 
     private static final long serialVersionUID = 1L;
 
@@ -86,6 +91,14 @@ public final class Delegate extends InactivatableFromToImpl implements DelegateC
     @XmlElement(name = Elements.MEMBER_NAMESPACE_CODE)
     private final String memberNamespaceCode;
 
+    @XmlElement(name =  CoreConstants.CommonElements.ACTIVE_FROM_DATE)
+    @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
+    private final Timestamp activeFromDate;
+
+    @XmlElement(name =  CoreConstants.CommonElements.ACTIVE_TO_DATE)
+    @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
+	private final Timestamp activeToDate;
+
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER)
     private final Long versionNumber;
 
@@ -106,6 +119,8 @@ public final class Delegate extends InactivatableFromToImpl implements DelegateC
         delegationMemberId = null;
         memberName = null;
         memberNamespaceCode = null;
+        activeFromDate = null;
+        activeToDate = null;
         versionNumber = null;
     }
 
@@ -120,6 +135,8 @@ public final class Delegate extends InactivatableFromToImpl implements DelegateC
         delegationMemberId = b.getDelegationMemberId();
         memberName = b.getMemberName();
         memberNamespaceCode = b.getMemberNamespaceCode();
+        activeFromDate = b.getActiveFromDate();
+        activeToDate = b.getActiveToDate();
         versionNumber = b.getVersionNumber();
     }
 
@@ -163,6 +180,21 @@ public final class Delegate extends InactivatableFromToImpl implements DelegateC
         return this.roleId;
     }
 
+    @Override
+    public Timestamp getActiveFromDate() {
+        return activeFromDate;
+    }
+
+    @Override
+    public Timestamp getActiveToDate() {
+        return activeToDate;
+    }
+
+    @Override
+    public boolean isActive(Timestamp activeAsOfDate) {
+        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
+    }
+
     public Long getVersionNumber() {
         return this.versionNumber;
     }
@@ -194,6 +226,8 @@ public final class Delegate extends InactivatableFromToImpl implements DelegateC
         private String delegationMemberId;
         private String memberName;
         private String memberNamespaceCode;
+        private Timestamp activeFromDate;
+    	private Timestamp activeToDate;
         private Long versionNumber;
 
         private Builder() {
@@ -211,6 +245,8 @@ public final class Delegate extends InactivatableFromToImpl implements DelegateC
             b.setDelegationMemberId(delegateContract.getDelegationMemberId());
             b.setMemberName(delegateContract.getMemberName());
             b.setMemberNamespaceCode(delegateContract.getMemberNamespaceCode());
+            b.setActiveFromDate(delegateContract.getActiveFromDate());
+            b.setActiveToDate(delegateContract.getActiveToDate());
             b.setVersionNumber(delegateContract.getVersionNumber());
 
             return b;
@@ -333,6 +369,27 @@ public final class Delegate extends InactivatableFromToImpl implements DelegateC
 
         public void setRoleId(String roleId) {
             this.roleId = roleId;
+        }
+
+        public Timestamp getActiveFromDate() {
+            return activeFromDate != null ? new Timestamp(activeFromDate.getTime()) : null;
+        }
+
+        public void setActiveFromDate(Timestamp activeFromDate) {
+            this.activeFromDate = activeFromDate != null ? new Timestamp(activeFromDate.getTime()) : null;
+        }
+
+        public Timestamp getActiveToDate() {
+            return activeToDate != null ? new Timestamp(activeToDate.getTime()) : null;
+        }
+
+        public void setActiveToDate(Timestamp activeToDate) {
+            this.activeToDate = activeFromDate != null ?  new Timestamp(activeToDate.getTime()) : null;
+        }
+
+        @Override
+        public boolean isActive(Timestamp activeAsOfDate) {
+            return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
         }
 
         public Long getVersionNumber() {

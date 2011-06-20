@@ -16,15 +16,6 @@
 
 package org.kuali.rice.krad.maintenance.rules;
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -36,7 +27,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.document.Document;
@@ -71,6 +62,15 @@ import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.util.AutoPopulatingList;
+
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 
 /**
@@ -239,9 +239,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         if (maintenanceDocument.isEdit()) {
         	Class boClass = maintenanceDocument.getNewMaintainableObject().getBoClass();
             // we can only be inactivating a business object if we're editing it
-            if (boClass != null && Inactivateable.class.isAssignableFrom(boClass)) {
-                Inactivateable oldInactivateableBO = (Inactivateable) oldBo;
-                Inactivateable newInactivateableBO = (Inactivateable) newBo;
+            if (boClass != null && Inactivatable.class.isAssignableFrom(boClass)) {
+                Inactivatable oldInactivateableBO = (Inactivatable) oldBo;
+                Inactivatable newInactivateableBO = (Inactivatable) newBo;
 
                 return oldInactivateableBO.isActive() && !newInactivateableBO.isActive();
             }

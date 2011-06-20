@@ -21,7 +21,11 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Iterator;
 
 /**
@@ -128,14 +132,14 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	}
 	
 	/**
-	 * @see org.kuali.rice.krad.bo.Inactivateable#isActive()
+	 * @see org.kuali.rice.krad.bo.Inactivatable#isActive()
 	 */
 	public boolean isActive() {
 		return active;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.bo.Inactivateable#setActive(boolean)
+	 * @see org.kuali.rice.krad.bo.Inactivatable#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
 		this.active = active;

@@ -15,20 +15,6 @@
  */
 package org.kuali.rice.krad.dao.impl;
 
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.datetime.DateTimeService;
@@ -40,7 +26,7 @@ import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
-import org.kuali.rice.krad.bo.InactivateableFromTo;
+import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.dao.LookupDao;
@@ -55,6 +41,19 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class is the JPA implementation of the LookupDao interface.
@@ -318,7 +317,7 @@ public class LookupDaoJpa implements LookupDao {
 		}
 
 		// build criteria
-		if (example instanceof InactivateableFromTo) {
+		if (example instanceof InactivatableFromTo) {
 			if (KRADPropertyConstants.ACTIVE.equals(propertyName)) {
 				addInactivateableFromToActiveCriteria(example, searchValue, (Criteria) criteria, searchValues);
 			} else if (KRADPropertyConstants.CURRENT.equals(propertyName)) {

@@ -15,17 +15,18 @@
  */
 package org.kuali.rice.krad.bo;
 
-import java.sql.Timestamp;
+import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
+import java.sql.Timestamp;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
-public abstract class InactivatableFromToImpl extends PersistableBusinessObjectBase implements InactivateableFromTo {
+public abstract class InactivatableFromToImpl extends PersistableBusinessObjectBase implements InactivatableFromTo {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,13 +44,7 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 	 * the from and to dates. Null dates are considered to indicate an open range.
 	 */
 	public boolean isActive() {
-		long asOfDate = System.currentTimeMillis();
-		if (activeAsOfDate != null) {
-			asOfDate = activeAsOfDate.getTime();
-		}
-
-		return (activeFromDate == null || asOfDate >= activeFromDate.getTime())
-				&& (activeToDate == null || asOfDate < activeToDate.getTime());
+        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
 	}
 	
 	public void setActive(boolean active) {

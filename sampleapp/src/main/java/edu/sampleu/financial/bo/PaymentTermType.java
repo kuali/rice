@@ -16,17 +16,17 @@
 
 package edu.sampleu.financial.bo;
 
-import java.math.BigDecimal;
-
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+
+import java.math.BigDecimal;
 
 /**
  * Types of Payment Terms for Vendor Contracts. Per contract as distinct from <code>ShippingPaymentTerms</code>.
  *
  * @see org.kuali.kfs.vnd.businessobject.ShippingPaymentTerms
  */
-public class PaymentTermType extends PersistableBusinessObjectBase implements Inactivateable {
+public class PaymentTermType extends PersistableBusinessObjectBase implements Inactivatable {
 
     private String vendorPaymentTermsCode;
     private String vendorDiscountDueTypeDescription;

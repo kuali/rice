@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
-import java.util.List;
-
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
@@ -27,7 +25,8 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.kim.api.identity.residency.EntityResidencyContract;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
 import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
-import org.kuali.rice.krad.bo.Inactivateable;
+
+import java.util.List;
 
 
 /**

@@ -15,22 +15,22 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.InactivateableFromTo;
+import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.InactivateableFromToService;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of InactivateableFromToService that uses the lookup service for query implementation
@@ -48,10 +48,10 @@ public class InactivateableFromToServiceImpl implements InactivateableFromToServ
 	 * 
 	 * @see org.kuali.rice.krad.service.InactivateableFromToService#findMatchingActive(java.lang.Class, java.util.Map)
 	 */
-	public List<InactivateableFromTo> findMatchingActive(Class<? extends InactivateableFromTo> clazz, Map fieldValues) {
+	public List<InactivatableFromTo> findMatchingActive(Class<? extends InactivatableFromTo> clazz, Map fieldValues) {
 		fieldValues.put(KRADPropertyConstants.ACTIVE, "true");
 
-		return (List<InactivateableFromTo>) lookupService.findCollectionBySearchUnbounded(clazz, fieldValues);
+		return (List<InactivatableFromTo>) lookupService.findCollectionBySearchUnbounded(clazz, fieldValues);
 	}
 
 	/**
@@ -60,28 +60,28 @@ public class InactivateableFromToServiceImpl implements InactivateableFromToServ
 	 * @see org.kuali.rice.krad.service.InactivateableFromToService#findMatchingActiveAsOfDate(java.lang.Class, java.util.Map,
 	 *      java.util.Date)
 	 */
-	public List<InactivateableFromTo> findMatchingActiveAsOfDate(Class<? extends InactivateableFromTo> clazz,
+	public List<InactivatableFromTo> findMatchingActiveAsOfDate(Class<? extends InactivatableFromTo> clazz,
 			Map fieldValues, Date activeAsOfDate) {
 		fieldValues.put(KRADPropertyConstants.ACTIVE, "true");
 		fieldValues.put(KRADPropertyConstants.ACTIVE_AS_OF_DATE, dateTimeService.toDateString(activeAsOfDate));
 
-		return (List<InactivateableFromTo>) lookupService.findCollectionBySearchUnbounded(clazz, fieldValues);
+		return (List<InactivatableFromTo>) lookupService.findCollectionBySearchUnbounded(clazz, fieldValues);
 	}
 
 	/**
 	 * @see org.kuali.rice.krad.service.InactivateableFromToService#filterOutNonActive(java.util.List)
 	 */
-	public List<InactivateableFromTo> filterOutNonActive(List<InactivateableFromTo> filterList) {
+	public List<InactivatableFromTo> filterOutNonActive(List<InactivatableFromTo> filterList) {
 		return filterOutNonActive(filterList, dateTimeService.getCurrentDate());
 	}
 
 	/**
 	 * @see org.kuali.rice.krad.service.InactivateableFromToService#filterOutNonActive(java.util.List, java.util.Date)
 	 */
-	public List<InactivateableFromTo> filterOutNonActive(List<InactivateableFromTo> filterList, Date activeAsOfDate) {
-		List<InactivateableFromTo> filteredList = new ArrayList<InactivateableFromTo>();
+	public List<InactivatableFromTo> filterOutNonActive(List<InactivatableFromTo> filterList, Date activeAsOfDate) {
+		List<InactivatableFromTo> filteredList = new ArrayList<InactivatableFromTo>();
 
-		for (InactivateableFromTo inactivateable : filterList) {
+		for (InactivatableFromTo inactivateable : filterList) {
 			inactivateable.setActiveAsOfDate(new java.sql.Timestamp(activeAsOfDate.getTime()));
 			if (inactivateable.isActive()) {
 				filteredList.add(inactivateable);
@@ -96,12 +96,12 @@ public class InactivateableFromToServiceImpl implements InactivateableFromToServ
 	 * 
 	 * @see org.kuali.rice.krad.service.InactivateableFromToService#findMatchingCurrent(java.lang.Class, java.util.Map)
 	 */
-	public List<InactivateableFromTo> findMatchingCurrent(Class<? extends InactivateableFromTo> clazz,
+	public List<InactivatableFromTo> findMatchingCurrent(Class<? extends InactivatableFromTo> clazz,
 			Map fieldValues) {
 		fieldValues.put(KRADPropertyConstants.ACTIVE, "true");
 		fieldValues.put(KRADPropertyConstants.CURRENT, "true");
 
-		return (List<InactivateableFromTo>) lookupService.findCollectionBySearchUnbounded(clazz, fieldValues);
+		return (List<InactivatableFromTo>) lookupService.findCollectionBySearchUnbounded(clazz, fieldValues);
 	}
 
 	/**
@@ -109,33 +109,33 @@ public class InactivateableFromToServiceImpl implements InactivateableFromToServ
 	 * 
 	 * @see org.kuali.rice.krad.service.InactivateableFromToService#findMatchingCurrent(java.lang.Class, java.util.Map, java.util.Date)
 	 */
-	public List<InactivateableFromTo> findMatchingCurrent(Class<? extends InactivateableFromTo> clazz,
+	public List<InactivatableFromTo> findMatchingCurrent(Class<? extends InactivatableFromTo> clazz,
 			Map fieldValues, Date currentAsOfDate) {
 		fieldValues.put(KRADPropertyConstants.ACTIVE, "true");
 		fieldValues.put(KRADPropertyConstants.CURRENT, "true");
 		fieldValues.put(KRADPropertyConstants.ACTIVE_AS_OF_DATE, dateTimeService.toDateString(currentAsOfDate));
 
-		return (List<InactivateableFromTo>) lookupService.findCollectionBySearchUnbounded(clazz, fieldValues);
+		return (List<InactivatableFromTo>) lookupService.findCollectionBySearchUnbounded(clazz, fieldValues);
 	}
 
 	/**
 	 * @see org.kuali.rice.krad.service.InactivateableFromToService#filterOutNonCurrent(java.util.List)
 	 */
-	public List<InactivateableFromTo> filterOutNonCurrent(List<InactivateableFromTo> filterList) {
+	public List<InactivatableFromTo> filterOutNonCurrent(List<InactivatableFromTo> filterList) {
 		return filterOutNonCurrent(filterList, dateTimeService.getCurrentDate());
 	}
 
 	/**
 	 * @see org.kuali.rice.krad.service.InactivateableFromToService#filterOutNonCurrent(java.util.List, java.util.Date)
 	 */
-	public List<InactivateableFromTo> filterOutNonCurrent(List<InactivateableFromTo> filterList, Date currentAsOfDate) {
-		List<InactivateableFromTo> activeList = filterOutNonActive(filterList, currentAsOfDate);
+	public List<InactivatableFromTo> filterOutNonCurrent(List<InactivatableFromTo> filterList, Date currentAsOfDate) {
+		List<InactivatableFromTo> activeList = filterOutNonActive(filterList, currentAsOfDate);
 
 		if (activeList.isEmpty()) {
 			return activeList;
 		}
 
-		List<InactivateableFromTo> currentList = new ArrayList<InactivateableFromTo>();
+		List<InactivatableFromTo> currentList = new ArrayList<InactivatableFromTo>();
 
 		List<String> groupByList = businessObjectDictionaryService.getGroupByAttributesForEffectiveDating(activeList
 				.get(0).getClass());
@@ -151,7 +151,7 @@ public class InactivateableFromToServiceImpl implements InactivateableFromToServ
 
 			String previousGroupByString = "";
 			Date previousActiveFromDate = null;
-			for (InactivateableFromTo inactivateable : activeList) {
+			for (InactivatableFromTo inactivateable : activeList) {
 				String groupByString = buildGroupByValueString((BusinessObject) inactivateable, groupByList);
 				if (!StringUtils.equals(groupByString, previousGroupByString)) {
 					// always add first record of new group by since list is sorted by active begin date descending

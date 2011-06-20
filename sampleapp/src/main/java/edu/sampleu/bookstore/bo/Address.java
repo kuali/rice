@@ -1,13 +1,13 @@
 package edu.sampleu.bookstore.bo;
 
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * Address Business Object class file relative to Address maintenance object.
  */
 
-public class Address extends PersistableBusinessObjectBase implements Inactivateable{
+public class Address extends PersistableBusinessObjectBase implements Inactivatable {
 
 	private static final long serialVersionUID = -8624654503247320725L;
 

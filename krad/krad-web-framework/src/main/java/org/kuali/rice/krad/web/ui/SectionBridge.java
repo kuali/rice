@@ -15,20 +15,11 @@
  */
 package org.kuali.rice.krad.web.ui;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.authorization.FieldRestriction;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.CollectionDefinitionI;
 import org.kuali.rice.krad.datadictionary.FieldDefinition;
@@ -56,6 +47,15 @@ import org.kuali.rice.krad.util.FieldUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MaintenanceUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class SectionBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SectionBridge.class);
@@ -296,10 +296,10 @@ public class SectionBridge {
         String collectionName = collectionDefinition.getName();
         
         // add the toggle inactive record display button for the collection
-        if (m != null && Inactivateable.class.isAssignableFrom(collectionDefinition.getBusinessObjectClass()) && StringUtils.isBlank(parents)) {
+        if (m != null && Inactivatable.class.isAssignableFrom(collectionDefinition.getBusinessObjectClass()) && StringUtils.isBlank(parents)) {
             addShowInactiveButtonField(s, collectionName, !m.getShowInactiveRecords(collectionName));
         }
-        if (inquirable != null && Inactivateable.class.isAssignableFrom(collectionDefinition.getBusinessObjectClass()) && StringUtils.isBlank(parents)) {
+        if (inquirable != null && Inactivatable.class.isAssignableFrom(collectionDefinition.getBusinessObjectClass()) && StringUtils.isBlank(parents)) {
             addShowInactiveButtonField(s, collectionName, !inquirable.getShowInactiveRecords(collectionName));
         }
         
@@ -379,7 +379,7 @@ public class SectionBridge {
                             oldLineBusinessObject = (BusinessObject) ((List) oldObj).get(i);
                         }
                         
-                        if (lineBusinessObject instanceof Inactivateable && !((Inactivateable) lineBusinessObject).isActive()) {
+                        if (lineBusinessObject instanceof Inactivatable && !((Inactivatable) lineBusinessObject).isActive()) {
                             if (m != null) {
                                 // rendering a maint doc
                                 if (!hidableRowsPresent) {
@@ -560,7 +560,7 @@ public class SectionBridge {
                                     
                                     // determine if sub collection line is inactive and should be hidden
                                     boolean setSubRowHidden = false;
-                                    if (lineSubBusinessObject instanceof Inactivateable && !((Inactivateable) lineSubBusinessObject).isActive()) {
+                                    if (lineSubBusinessObject instanceof Inactivatable && !((Inactivatable) lineSubBusinessObject).isActive()) {
                                         if (oldSubObj != null) { 
                                             // get corresponding elements in both the new list and the old list
                                             BusinessObject oldLineSubBusinessObject = (BusinessObject) ((List) oldSubObj).get(j);
@@ -828,7 +828,7 @@ public class SectionBridge {
                 // new records are never hidden, regardless of active status
                 return false;
 }
-            if (!((Inactivateable) lineBusinessObject).isActive() && !((Inactivateable) oldLineBusinessObject).isActive()) {
+            if (!((Inactivatable) lineBusinessObject).isActive() && !((Inactivatable) oldLineBusinessObject).isActive()) {
                 // records with an old and new collection elements of NOT active are eligible to be hidden
                 return true;
             }
@@ -857,7 +857,7 @@ public class SectionBridge {
      * @return whether the BO is eligible to be hidden if the user decides to hide them
      */
     protected static boolean isRowHideableForInquiry(BusinessObject lineBusinessObject) {
-        return !((Inactivateable) lineBusinessObject).isActive();
+        return !((Inactivatable) lineBusinessObject).isActive();
     }
     
     /**

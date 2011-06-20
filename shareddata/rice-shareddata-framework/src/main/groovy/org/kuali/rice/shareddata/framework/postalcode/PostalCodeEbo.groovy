@@ -17,7 +17,7 @@
 package org.kuali.rice.shareddata.framework.postalcode
 
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.Inactivatable
 import org.kuali.rice.shareddata.api.postalcode.PostalCode
 import org.kuali.rice.shareddata.api.postalcode.PostalCodeContract
 import org.kuali.rice.shareddata.framework.country.CountryEbo
@@ -25,7 +25,7 @@ import org.kuali.rice.shareddata.framework.county.CountyEbo
 import org.kuali.rice.shareddata.framework.state.StateEbo
 
 //@ToString
-class PostalCodeEbo implements Inactivateable, PostalCodeContract, ExternalizableBusinessObject {
+class PostalCodeEbo implements Inactivatable, PostalCodeContract, ExternalizableBusinessObject {
     def String code;
     def String countryCode;
     def String cityName;

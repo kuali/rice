@@ -16,29 +16,6 @@
 
 package org.kuali.rice.kew.doctype.bo;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -82,9 +59,31 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that
@@ -102,7 +101,7 @@ import org.kuali.rice.krad.util.ObjectUtils;
                 "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
                 "ORDER BY UPPER(dt.label)")
 })
-public class DocumentType extends PersistableBusinessObjectBase implements Inactivateable, DocumentTypeEBO {
+public class DocumentType extends PersistableBusinessObjectBase implements Inactivatable, DocumentTypeEBO {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
     private static final long serialVersionUID = 1312830153583125069L;
@@ -1569,7 +1568,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     /**
-     * @see org.kuali.rice.krad.bo.Inactivateable#isActive()
+     * @see org.kuali.rice.krad.bo.Inactivatable#isActive()
      */
     public boolean isActive() {
         boolean bRet = false;
@@ -1582,7 +1581,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     /**
-     * @see org.kuali.rice.krad.bo.Inactivateable#setActive(boolean)
+     * @see org.kuali.rice.krad.bo.Inactivatable#setActive(boolean)
      */
     public void setActive(boolean active) {
         this.active = Boolean.valueOf(active);

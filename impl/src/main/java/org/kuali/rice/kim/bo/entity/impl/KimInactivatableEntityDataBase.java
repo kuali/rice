@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
+import org.hibernate.annotations.Type;
+import org.kuali.rice.krad.bo.Inactivatable;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-
-import org.hibernate.annotations.Type;
-import org.kuali.rice.krad.bo.Inactivateable;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -28,7 +28,7 @@ import org.kuali.rice.krad.bo.Inactivateable;
  *
  */
 @MappedSuperclass
-public abstract class KimInactivatableEntityDataBase extends KimEntityDataBase implements Inactivateable {
+public abstract class KimInactivatableEntityDataBase extends KimEntityDataBase implements Inactivatable {
 
 	private static final long serialVersionUID = 1L;
 	

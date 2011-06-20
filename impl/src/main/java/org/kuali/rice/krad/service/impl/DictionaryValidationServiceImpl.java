@@ -23,7 +23,7 @@ import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.CollectionDefinition;
@@ -728,7 +728,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (referenceBo == null) {
         	return false;
         }
-        if (!(referenceBo instanceof Inactivateable) || ((Inactivateable) referenceBo).isActive()) {
+        if (!(referenceBo instanceof Inactivatable) || ((Inactivatable) referenceBo).isActive()) {
             return true;
         }
 
@@ -868,7 +868,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (exists) {
 
                 // do the active test, if appropriate
-                if (!(bo instanceof Inactivateable) || ((Inactivateable) bo).isActive()) {
+                if (!(bo instanceof Inactivatable) || ((Inactivatable) bo).isActive()) {
                     active = validateReferenceIsActive(bo, referenceName);
                     if (!active) {
                         GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE, displayFieldName);

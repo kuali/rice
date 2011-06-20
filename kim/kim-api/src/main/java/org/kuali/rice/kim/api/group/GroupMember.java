@@ -23,6 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
 import org.w3c.dom.Element;
 
@@ -229,20 +230,8 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         }
 
         @Override
-        public boolean isActive() {
-            long asOfDate = System.currentTimeMillis();
-
-		    return (activeFromDate == null || asOfDate >= activeFromDate.getTime()) && (activeToDate == null || asOfDate < activeToDate.getTime());
-        }
-
-        @Override
         public boolean isActive(Timestamp activeAsOf) {
-            long asOfDate = System.currentTimeMillis();
-            if (activeAsOf != null) {
-                asOfDate = activeAsOf.getTime();
-            }
-
-            return (activeFromDate == null || asOfDate >= activeFromDate.getTime()) && (activeToDate == null || asOfDate < activeToDate.getTime());
+            return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOf);
         }
 
         @Override
@@ -284,20 +273,8 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
     }
 
     @Override
-    public boolean isActive() {
-        long asOfDate = System.currentTimeMillis();
-
-		return (activeFromDate == null || asOfDate >= activeFromDate.getTime()) && (activeToDate == null || asOfDate < activeToDate.getTime());
-    }
-
-    @Override
     public boolean isActive(Timestamp activeAsOf) {
-        long asOfDate = System.currentTimeMillis();
-		if (activeAsOf != null) {
-			asOfDate = activeAsOf.getTime();
-		}
-
-		return (activeFromDate == null || asOfDate >= activeFromDate.getTime()) && (activeToDate == null || asOfDate < activeToDate.getTime());
+        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOf);
     }
 
     @Override

@@ -18,7 +18,7 @@ package org.kuali.rice.krad.bo;
 /**
  * Represents a simple code-description business object
  */
-public interface KualiCode extends Inactivateable {
+public interface KualiCode extends Inactivatable {
 
 	/**
 	 * @param code - Setter for the Code.

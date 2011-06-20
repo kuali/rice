@@ -17,12 +17,12 @@
 package org.kuali.rice.shareddata.framework.campus
 
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.Inactivatable
 import org.kuali.rice.shareddata.api.campus.CampusType
 import org.kuali.rice.shareddata.api.campus.CampusTypeContract
 
 //@ToString
-public class CampusTypeEbo implements Inactivateable, CampusTypeContract, ExternalizableBusinessObject {
+public class CampusTypeEbo implements Inactivatable, CampusTypeContract, ExternalizableBusinessObject {
 
 	def String code;
 	def String name;

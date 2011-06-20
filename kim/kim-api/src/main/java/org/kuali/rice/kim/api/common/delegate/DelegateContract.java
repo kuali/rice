@@ -16,9 +16,10 @@
 package org.kuali.rice.kim.api.common.delegate;
 
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
 import org.kuali.rice.core.util.AttributeSet;
 
-public interface DelegateContract extends Versioned {
+public interface DelegateContract extends Versioned, InactivatableFromTo {
 
     /**
      * <p>String representing the DelegationTypeCode</p>

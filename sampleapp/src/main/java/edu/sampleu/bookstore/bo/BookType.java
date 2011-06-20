@@ -3,17 +3,17 @@
  */
 package edu.sampleu.bookstore.bo;
 
+import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.krad.bo.Inactivateable;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * BookType Business Object class file relative to BookType maintenance Object.
  */
 
-public class BookType extends PersistableBusinessObjectBase implements Inactivateable{
+public class BookType extends PersistableBusinessObjectBase implements Inactivatable {
 	
 	
 	private static final long serialVersionUID = 8499633675478827977L;

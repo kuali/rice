@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.krad.bo.InactivateableFromTo;
+import org.kuali.rice.krad.bo.InactivatableFromTo;
 
 import java.util.Date;
 import java.util.List;
@@ -39,7 +39,7 @@ public interface InactivateableFromToService {
 	 *            - Search key values
 	 * @return List of InactivateableFromTo instances that match search criteria and are active
 	 */
-	public List<InactivateableFromTo> findMatchingActive(Class<? extends InactivateableFromTo> clazz, Map fieldValues);
+	public List<InactivatableFromTo> findMatchingActive(Class<? extends InactivatableFromTo> clazz, Map fieldValues);
 
 	/**
 	 * Performs search on given class and criteria and returns only results that active based on the active to/from dates and the given
@@ -53,7 +53,7 @@ public interface InactivateableFromToService {
 	 *            - Date to compare to for determining active status
 	 * @return List of InactivateableFromTo instances that match search criteria and are active as of the given date
 	 */
-	public List<InactivateableFromTo> findMatchingActiveAsOfDate(Class<? extends InactivateableFromTo> clazz,
+	public List<InactivatableFromTo> findMatchingActiveAsOfDate(Class<? extends InactivatableFromTo> clazz,
 			Map fieldValues, Date activeAsOfDate);
 
 	/**
@@ -63,7 +63,7 @@ public interface InactivateableFromToService {
 	 *            - List of InactivateableFromTo instances to filter
 	 * @return List of InactivateableFromTo instances from the given list that are active as of the current date
 	 */
-	public List<InactivateableFromTo> filterOutNonActive(List<InactivateableFromTo> filterList);
+	public List<InactivatableFromTo> filterOutNonActive(List<InactivatableFromTo> filterList);
 
 	/**
 	 * Removes instances from the given list that are inactive based on the given date
@@ -74,7 +74,7 @@ public interface InactivateableFromToService {
 	 *            - Date to compare to for determining active status
 	 * @return List of InactivateableFromTo instances from the given list that are active as of the given date
 	 */
-	public List<InactivateableFromTo> filterOutNonActive(List<InactivateableFromTo> filterList, Date activeAsOfDate);
+	public List<InactivatableFromTo> filterOutNonActive(List<InactivatableFromTo> filterList, Date activeAsOfDate);
 
 	/**
 	 * Performs search on given class and criteria and returns that are active and most current. That is if two records are active the more
@@ -86,7 +86,7 @@ public interface InactivateableFromToService {
 	 *            - Search key values
 	 * @return List of InactivateableFromTo instances that match search criteria and are current
 	 */
-	public List<InactivateableFromTo> findMatchingCurrent(Class<? extends InactivateableFromTo> clazz,
+	public List<InactivatableFromTo> findMatchingCurrent(Class<? extends InactivatableFromTo> clazz,
 			Map fieldValues);
 
 	/**
@@ -101,7 +101,7 @@ public interface InactivateableFromToService {
 	 *            - Date to compare to for determining active and current status
 	 * @return List of InactivateableFromTo instances that match search criteria and are current
 	 */
-	public List<InactivateableFromTo> findMatchingCurrent(Class<? extends InactivateableFromTo> clazz,
+	public List<InactivatableFromTo> findMatchingCurrent(Class<? extends InactivatableFromTo> clazz,
 			Map fieldValues, Date currentAsOfDate);
 
 	/**
@@ -111,7 +111,7 @@ public interface InactivateableFromToService {
 	 *            - List of InactivateableFromTo instances to filter
 	 * @return List of InactivateableFromTo instances from the given list that are current as of the current date
 	 */
-	public List<InactivateableFromTo> filterOutNonCurrent(List<InactivateableFromTo> filterList);
+	public List<InactivatableFromTo> filterOutNonCurrent(List<InactivatableFromTo> filterList);
 
 	/**
 	 * Removes instances from the given list that are not current based on the given date
@@ -122,6 +122,6 @@ public interface InactivateableFromToService {
 	 *            - Date to compare to for determining active and current status
 	 * @return List of InactivateableFromTo instances from the given list that are current as of the given date
 	 */
-	public List<InactivateableFromTo> filterOutNonCurrent(List<InactivateableFromTo> filterList, Date currentAsOfDate);
+	public List<InactivatableFromTo> filterOutNonCurrent(List<InactivatableFromTo> filterList, Date currentAsOfDate);
 
 }

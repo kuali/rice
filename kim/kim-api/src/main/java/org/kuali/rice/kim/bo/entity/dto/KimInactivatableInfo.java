@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import java.io.Serializable;
+import org.kuali.rice.krad.bo.Inactivatable;
 
-import org.kuali.rice.krad.bo.Inactivateable;
+import java.io.Serializable;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -25,7 +25,7 @@ import org.kuali.rice.krad.bo.Inactivateable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KimInactivatableInfo implements Serializable, Inactivateable {
+public class KimInactivatableInfo implements Serializable, Inactivatable {
 
 	private static final long serialVersionUID = 3867167307504353932L;
 

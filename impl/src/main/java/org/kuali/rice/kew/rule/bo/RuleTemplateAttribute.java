@@ -27,10 +27,18 @@ import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 
 
@@ -43,7 +51,7 @@ import java.util.List;
 @Entity
 @Table(name="KREW_RULE_TMPL_ATTR_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateAttributeId")
-public class RuleTemplateAttribute extends PersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, Inactivateable {
+public class RuleTemplateAttribute extends PersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, Inactivatable {
 
     private static final long serialVersionUID = -3580049225424553828L;
     @Id

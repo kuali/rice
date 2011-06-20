@@ -20,9 +20,9 @@ import java.sql.Timestamp;
 /**
  * Business objects that have effective dating (from to dates) should implement this interface. This
  * translates the effective dates in terms of active/inactive status so the features built for
- * {@link Inactivateable} in the frameworks can be taken advantage of
+ * {@link Inactivatable} in the frameworks can be taken advantage of
  */
-public interface InactivateableFromTo extends Inactivateable {
+public interface InactivatableFromTo extends Inactivatable {
 
 	/**
 	 * Sets the date for which record will be active
@@ -34,7 +34,7 @@ public interface InactivateableFromTo extends Inactivateable {
 	
 	/**
 	 * Gets the date for which the record become active
-	 * 
+	 *
 	 * @return Timestamp
 	 */
 	public Timestamp getActiveFromDate();
@@ -49,7 +49,7 @@ public interface InactivateableFromTo extends Inactivateable {
 	
 	/**
 	 * Gets the date for which the record become inactive
-	 * 
+	 *
 	 * @return Timestamp
 	 */
 	public Timestamp getActiveToDate();

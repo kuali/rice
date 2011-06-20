@@ -19,10 +19,10 @@ package org.kuali.rice.core.framework.parameter
 import org.kuali.rice.core.api.parameter.ParameterType
 import org.kuali.rice.core.api.parameter.ParameterTypeContract
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.Inactivatable
 
 //@ToString
-class ParameterTypeEbo implements ParameterTypeContract, Inactivateable, ExternalizableBusinessObject {
+class ParameterTypeEbo implements ParameterTypeContract, Inactivatable, ExternalizableBusinessObject {
 
     private static final long serialVersionUID = 1L;
 

@@ -28,6 +28,7 @@ import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -100,7 +101,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
 		Collection<GroupMemberBo> groupMembers = businessObjectService.findMatching(GroupMemberBo.class, criteria);
 		for ( GroupMemberBo gm : groupMembers ) {
-			if ( gm.isActive() ) {
+			if ( gm.isActive(new Timestamp(System.currentTimeMillis())) ) {
 				return true;
 			}
 		}
@@ -352,7 +353,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		Set<String> groupIds = new HashSet<String>( groupMembers.size() );
 		// only return the active members
 		for ( GroupMemberBo gm : groupMembers ) {
-			if ( gm.isActive() ) {
+			if ( gm.isActive(new Timestamp(System.currentTimeMillis())) ) {
 				groupIds.add( gm.getGroupId() );
 			}
 		}

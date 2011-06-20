@@ -16,23 +16,23 @@
 
 package edu.sampleu.financial.bo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.shareddata.api.country.Country;
 import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
 import org.kuali.rice.shareddata.api.state.State;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Address to be associated with a particular Vendor.
  */
-public class VendorAddress extends PersistableBusinessObjectBase implements Inactivateable {
+public class VendorAddress extends PersistableBusinessObjectBase implements Inactivatable {
     private static Logger LOG = Logger.getLogger(VendorAddress.class);
 
     private Integer vendorAddressGeneratedIdentifier;

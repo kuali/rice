@@ -17,16 +17,17 @@
 package org.kuali.rice.core.api.mo.common.active;
 
 /**
- * This interface is used to tag business objects as inactivateable, so that the framework will automatically handle special
- * processing related to active indicator, e.g. default active indicator to active on new or copy, have a show/hide inactive and
- * hide inactive by default for collections in maintenance documents, display active indicator in the search criteria and result set
- * for lookups and default the search criteria field to active
+ * This interface can be used to identify a model object which has an active
+ * indicator.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Inactivatable {
+
     /**
-     * Returns a boolean value determining if the Object is Active or not.
+     * The active indicator for an object.
      *
-     * @return the active indicator
+     * @return true if active false if not.
      */
-    public boolean isActive();
+    boolean isActive();
 }

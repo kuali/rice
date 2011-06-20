@@ -56,14 +56,14 @@ public class KimPermissionTemplateImpl extends PersistableBusinessObjectBase imp
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.bo.Inactivateable#isActive()
+	 * @see org.kuali.rice.krad.bo.Inactivatable#isActive()
 	 */
 	public boolean isActive() {
 		return active;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.bo.Inactivateable#setActive(boolean)
+	 * @see org.kuali.rice.krad.bo.Inactivatable#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
 		this.active = active;

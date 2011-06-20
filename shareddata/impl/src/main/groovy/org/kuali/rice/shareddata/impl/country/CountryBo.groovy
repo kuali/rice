@@ -21,19 +21,19 @@
 package org.kuali.rice.shareddata.impl.country
 
 import javax.persistence.Column
+import javax.persistence.Entity
 import javax.persistence.Id
+import javax.persistence.Table
 import org.hibernate.annotations.Type
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.Inactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.country.Country
 import org.kuali.rice.shareddata.api.country.CountryContract
-import javax.persistence.Entity
-import javax.persistence.Table
 
 @Entity
 @Table(name="KRLC_CNTRY_T")
-class CountryBo extends PersistableBusinessObjectBase implements Inactivateable, CountryContract, ExternalizableBusinessObject {
+class CountryBo extends PersistableBusinessObjectBase implements Inactivatable, CountryContract, ExternalizableBusinessObject {
 
   @Id
   @Column(name = "POSTAL_CNTRY_CD")

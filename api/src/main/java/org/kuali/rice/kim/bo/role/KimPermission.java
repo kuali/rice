@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.bo.role;
 
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 
 
 /**
@@ -28,7 +28,7 @@ import org.kuali.rice.krad.bo.Inactivateable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimPermission extends Inactivateable {
+public interface KimPermission extends Inactivatable {
 
 	String getPermissionId();
 	

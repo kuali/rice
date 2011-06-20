@@ -23,12 +23,12 @@
 package org.kuali.rice.shareddata.framework.country
 
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.Inactivatable
 import org.kuali.rice.shareddata.api.country.Country
 import org.kuali.rice.shareddata.api.country.CountryContract
 
 //@ToString
-class CountryEbo implements Inactivateable, CountryContract, ExternalizableBusinessObject {
+class CountryEbo implements Inactivatable, CountryContract, ExternalizableBusinessObject {
   def String code;
   def String alternateCode;
   def String name;

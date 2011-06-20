@@ -17,13 +17,13 @@
 package org.kuali.rice.shareddata.framework.state
 
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.Inactivateable
+import org.kuali.rice.krad.bo.Inactivatable
 import org.kuali.rice.shareddata.api.state.State
 import org.kuali.rice.shareddata.api.state.StateContract
 import org.kuali.rice.shareddata.framework.country.CountryEbo
 
 //@ToString
-class StateEbo implements Inactivateable, StateContract, ExternalizableBusinessObject {
+class StateEbo implements Inactivatable, StateContract, ExternalizableBusinessObject {
     def String code;
     def String countryCode;
     def String name;

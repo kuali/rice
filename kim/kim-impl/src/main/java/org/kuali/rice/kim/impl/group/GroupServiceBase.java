@@ -16,7 +16,6 @@
 
 package org.kuali.rice.kim.impl.group;
 
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
@@ -32,8 +31,8 @@ import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -42,6 +41,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 public abstract class GroupServiceBase {
     protected BusinessObjectService businessObjectService;
@@ -211,7 +212,7 @@ public abstract class GroupServiceBase {
 		Set<String> matchingGroupIds = new HashSet<String>();
 		// filter to active groups
 		for ( GroupMemberBo gm : groupMembers ) {
-			if ( gm.isActive() ) {
+			if ( gm.isActive(new Timestamp(System.currentTimeMillis())) ) {
 				matchingGroupIds.add(gm.getGroupId());
 			}
 		}
@@ -228,7 +229,7 @@ public abstract class GroupServiceBase {
 		Collection<GroupMemberBo> groupMembersBos = businessObjectService.findMatching(GroupMemberBo.class, criteria);
         List<GroupMember> groupMembers = new ArrayList<GroupMember>();
         for (GroupMemberBo groupBo : groupMembersBos) {
-            if (groupBo.isActive()){
+            if (groupBo.isActive(new Timestamp(System.currentTimeMillis()))){
                 groupMembers.add(GroupMemberBo.to(groupBo));
             }
         }

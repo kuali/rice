@@ -26,7 +26,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.authorization.FieldRestriction;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.BusinessObjectRelationship;
-import org.kuali.rice.krad.bo.Inactivateable;
+import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
@@ -1266,7 +1266,7 @@ public final class FieldUtils {
             }
 
             // if the attrib name is "active", and BO is Inactivatable, then set the default value to Y
-            if (attributeName.equals(KRADPropertyConstants.ACTIVE) && Inactivateable.class.isAssignableFrom(businessObjectClass)) {
+            if (attributeName.equals(KRADPropertyConstants.ACTIVE) && Inactivatable.class.isAssignableFrom(businessObjectClass)) {
             	field.setPropertyValue(KRADConstants.YES_INDICATOR_VALUE);
             	field.setDefaultValue(KRADConstants.YES_INDICATOR_VALUE);
             }

@@ -1,7 +1,6 @@
 package org.kuali.rice.kim.api.type;
 
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.core.util.KeyValue;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  *
  */
 public interface KimTypeServiceTemp {
-    	/**
+    /**
 	 * Get the workflow document type which
 	 * will be used for the role qualifiers when routing objects with this type.
 	 *
@@ -25,7 +24,7 @@ public interface KimTypeServiceTemp {
 	/**
 	 * Perform validation on the attributes of an object.  The resultant map
 	 * will contain (attributeName,errorMessage) pairs from the validation process.
-	 * An empty map or null indicates that there were no errors.
+	 * An empty attributes indicates that there were no errors.
 	 *
 	 * This method can be used to perform compound validations across multiple
 	 * attributes attached to an object.
@@ -38,7 +37,7 @@ public interface KimTypeServiceTemp {
 
 	boolean validateUniqueAttributes(String kimTypeId, Attributes newAttributes, Attributes oldAttributes);
 
-    List<? extends KeyValue> getAttributeValidValues(String kimTypeId, String attributeName);
+    Attributes getAttributeValidValues(String kimTypeId, String attributeName);
 
     List<String> getWorkflowRoutingAttributes( String routeLevel );
 

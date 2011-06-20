@@ -542,18 +542,20 @@ public class KimTypeServiceBase implements KimTypeService {
 		return new ArrayList<String>();
 	}
 
-	protected List<ConcreteKeyValue> getLocalDataDictionaryAttributeValues(KimTypeAttribute attr) throws ClassNotFoundException {
-		List<ConcreteKeyValue> pairs = new ArrayList<ConcreteKeyValue>();
+	protected Attributes getLocalDataDictionaryAttributeValues(KimTypeAttribute attr) throws ClassNotFoundException {
+
 		BusinessObjectEntry entry = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attr.getKimAttribute().getComponentName());
 		if ( entry == null ) {
 			LOG.warn( "Unable to obtain BusinessObjectEntry for component name: " + attr.getKimAttribute().getComponentName() );
-			return pairs;
+			return Attributes.empty();
 		}
 		AttributeDefinition definition = entry.getAttributeDefinition(attr.getKimAttribute().getAttributeName());
 		if ( definition == null ) {
 			LOG.warn( "No attribute named " + attr.getKimAttribute().getAttributeName() + " found on BusinessObjectEntry for: " + attr.getKimAttribute().getComponentName() );
-			return pairs;
+			return Attributes.empty();
 		}
+
+        List<ConcreteKeyValue> pairs = new ArrayList<ConcreteKeyValue>();
 		String keyValuesFinderName = definition.getControl().getValuesFinderClass();
 		if ( StringUtils.isNotBlank(keyValuesFinderName)) {
 			try {
@@ -581,15 +583,15 @@ public class KimTypeServiceBase implements KimTypeService {
 		} else {
 			LOG.warn( "No values finder class defined on the control definition (" + definition.getControl() + ") on BO / attr = " + attr.getKimAttribute().getComponentName() + " / " + attr.getKimAttribute().getAttributeName() );
 		}
-		return pairs;
+		return Attributes.fromKeyValues(pairs);
 	}
 
-	protected List<ConcreteKeyValue> getCustomValueFinderValues(KimTypeAttribute attrib) {
-		return Collections.emptyList();
+	protected Attributes getCustomValueFinderValues(KimTypeAttribute attrib) {
+		return Attributes.empty();
 	}
 
 	@Override
-	public List<ConcreteKeyValue> getAttributeValidValues(String kimTypeId, String attributeName) {
+	public Attributes getAttributeValidValues(String kimTypeId, String attributeName) {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "getAttributeValidValues(" + kimTypeId + "," + attributeName + ")");			
 		}
@@ -597,7 +599,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "Found Attribute definition: " + attrib );
 		}
-		List<ConcreteKeyValue> pairs = null;
+		Attributes pairs = null;
 		if ( StringUtils.isNotBlank(attrib.getKimAttribute().getComponentName()) ) {
 			try {
 				Class.forName(attrib.getKimAttribute().getComponentName());
@@ -605,7 +607,7 @@ public class KimTypeServiceBase implements KimTypeService {
 					pairs = getLocalDataDictionaryAttributeValues(attrib);
 				} catch ( ClassNotFoundException ex ) {
 					LOG.error( "Got a ClassNotFoundException resolving a values finder - since this should have been executing in the context of the host system - this should not happen.");
-					pairs = Collections.emptyList();
+					return Attributes.empty();
 				}
 			} catch ( ClassNotFoundException ex ) {
 				LOG.error( "Got a ClassNotFoundException resolving a component name (" + attrib.getKimAttribute().getComponentName() + ") - since this should have been executing in the context of the host system - this should not happen.");
@@ -613,7 +615,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		} else {
 			pairs = getCustomValueFinderValues(attrib);
 		}
-        return Collections.unmodifiableList(pairs);
+        return pairs;
 	}
 
 	/**

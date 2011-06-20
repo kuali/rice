@@ -131,6 +131,31 @@ public final class Attributes implements Serializable {
     }
 
     /**
+     * Creates attributes from a Collection of {@link KeyValue}.  KeyValues cannot be null.
+     *
+     * @return Attributes
+     * @throws IllegalArgumentException if keyValues is null
+     */
+    public static Attributes fromKeyValues(Collection<? extends KeyValue> keyValues) {
+        if (keyValues == null) {
+            throw new IllegalArgumentException("keyValues is null");
+        }
+        final Map<String, String> pairs = new HashMap<String, String>();
+        for (KeyValue keyValue : keyValues) {
+            if (keyValue == null) {
+                 throw new IllegalArgumentException("keyValue is null");
+            }
+
+            if (keyValue.getKey() == null) {
+                throw new IllegalArgumentException("keyValue.key is null");
+            }
+
+            pairs.put(keyValue.getKey(), keyValue.getValue());
+        }
+        return fromMap(pairs);
+    }
+
+    /**
      * Converts attributes to a mutable {@link Map}.
      * The map returned is disconnected from this Attributes class and is mutable.
      *

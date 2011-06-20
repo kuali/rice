@@ -45,7 +45,7 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
         if ( kimType != null ) {
 	        KimTypeService service = KIMServiceLocatorWeb.getKimTypeService(kimType);
 	        if ( service != null ) {
-				return new ArrayList<KeyValue>(service.getAttributeValidValues(kimTypeId,kimAttributeName));
+				return new ArrayList<KeyValue>(service.getAttributeValidValues(kimTypeId,kimAttributeName).toKeyValues());
 	        } 
 	        LOG.error( "Unable to get type service " + kimType.getServiceName() );
         } else {

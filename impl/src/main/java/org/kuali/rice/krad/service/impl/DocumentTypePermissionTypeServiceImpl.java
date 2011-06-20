@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * This is a description of what this class does - mpham don't forget to fill
@@ -52,7 +52,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
 	@Override
-	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
+	protected List<KimPermissionInfo> performPermissionMatches(Attributes requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
 		// pull all the potential parent doc type names from the permission list
 		Set<String> permissionDocTypeNames = new HashSet<String>( permissionsList.size() );

@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill
@@ -44,7 +44,7 @@ public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermission
 	 */
 	@Override
 	public List<KimPermissionInfo> performPermissionMatches(
-			AttributeSet requestedDetails,
+			Attributes requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
 		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
 		if (requestedDetails == null) {

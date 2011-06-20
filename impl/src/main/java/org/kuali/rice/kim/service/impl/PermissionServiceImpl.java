@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -274,7 +275,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     		for ( String templateId : permissionMap.keySet() ) {
     			KimPermissionTypeService permissionTypeService = permissionTypeServices.get( templateId );
     			List<KimPermissionInfo> permissionList = permissionMap.get( templateId );
-				applicablePermissions.addAll( permissionTypeService.getMatchingPermissions( permissionDetails, permissionList ) );    				
+				applicablePermissions.addAll( permissionTypeService.getMatchingPermissions( Attributes
+                        .fromMap(permissionDetails), permissionList) );
     		}
     	}
     	return applicablePermissions;

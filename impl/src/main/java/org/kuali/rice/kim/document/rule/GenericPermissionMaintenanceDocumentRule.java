@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -61,7 +61,7 @@ public class GenericPermissionMaintenanceDocumentRule extends
 				rulesPassed = false;
 			} else {
 				KimType kimType = KimApiServiceLocator.getKimTypeInfoService().getKimType(template.getKimTypeId());
-				AttributeSet details = perm.getDetails();
+				Attributes details = Attributes.fromMap(perm.getDetails());
 				// check that add passed attributes are defined
 				for ( String attributeName : details.keySet() ) {
 					if ( kimType.getAttributeDefinitionByName(attributeName) == null ) {
@@ -75,7 +75,7 @@ public class GenericPermissionMaintenanceDocumentRule extends
 				if ( !GlobalVariables.getMessageMap().hasErrors() ) {
 					KimPermissionTypeService service = getPermissionTypeService( kimType.getServiceName() );
 					if ( service != null ) {
-						AttributeSet validationErrors = service.validateAttributes( kimType.getId(), details);
+						Attributes validationErrors = service.validateAttributes( kimType.getId(), details);
 						if ( validationErrors != null && !validationErrors.isEmpty() ) {
 							for ( String attributeName : validationErrors.keySet() ) {
 								GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );

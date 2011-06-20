@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
@@ -31,25 +31,25 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	public static final String UNMATCHABLE_QUALIFICATION = "!~!~!~!~!~";
 
     @Override
-	public abstract AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification);
+	public abstract Attributes convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Attributes qualification);
     
     @Override
-	public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(AttributeSet qualification, List<RoleMembershipInfo> roleMemberList) {
+	public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(Attributes qualification, List<RoleMembershipInfo> roleMemberList) {
         return roleMemberList;
     }
 
     @Override
-	public boolean doesRoleQualifierMatchQualification(AttributeSet qualification, AttributeSet roleQualifier) {
+	public boolean doesRoleQualifierMatchQualification(Attributes qualification, Attributes roleQualifier) {
         return true;
     }
 
     @Override
-	public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+	public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
         return new ArrayList<RoleMembershipInfo>(0);
     }
     
     @Override
-	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification) {
+	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification) {
         return false;
     }
 
@@ -84,12 +84,12 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return true;
     }
 
-    public AttributeSet translateInputAttributeSet(AttributeSet inputAttributeSet) {
-        return inputAttributeSet;
+    public Attributes translateInputAttributes(Attributes inputAttributes) {
+        return inputAttributes;
     }
 
     @Override
-	public AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes) {
+	public Attributes validateAttributes(String kimTypeId, Attributes attributes) {
         return null;
     }
     
@@ -115,13 +115,13 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	}
 
     @Override
-	public boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
+	public boolean validateUniqueAttributes(String kimTypeId, Attributes newAttributes, Attributes oldAttributes){
         return true;
     }
 
     @Override
-	public AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet mainAttributes, AttributeSet delegationAttributes){
-        return new AttributeSet();
+	public Attributes validateUnmodifiableAttributes(String kimTypeId, Attributes mainAttributes, Attributes delegationAttributes){
+        return Attributes.empty();
     }
     
     @Override
@@ -130,8 +130,8 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     }
     
 	@Override
-	public AttributeSet validateAttributesAgainstExisting(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
-		return new AttributeSet();
+	public Attributes validateAttributesAgainstExisting(String kimTypeId, Attributes newAttributes, Attributes oldAttributes){
+		return Attributes.empty();
 	}
 
 	/**

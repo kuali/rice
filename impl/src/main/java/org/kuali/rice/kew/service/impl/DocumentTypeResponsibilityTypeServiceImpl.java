@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService;
 import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -43,7 +43,7 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 	
 	@Override
 	protected List<Responsibility> performResponsibilityMatches(
-			AttributeSet requestedDetails,
+			Attributes requestedDetails,
 			List<Responsibility> responsibilitiesList) {
 		Map<String, List<Responsibility>> potentialDocumentTypeMatches = new HashMap<String, List<Responsibility>>();
 		for (Responsibility responsibility : responsibilitiesList) {

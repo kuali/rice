@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,7 +41,7 @@ public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibil
 	 */
 	@Override
 	protected List<Responsibility> performResponsibilityMatches(
-			AttributeSet requestedDetails,
+			Attributes requestedDetails,
 			List<Responsibility> responsibilitiesList) {
 		// get the base responsibility matches based on the route level and document type
 		List<Responsibility> baseMatches = super.performResponsibilityMatches(requestedDetails,

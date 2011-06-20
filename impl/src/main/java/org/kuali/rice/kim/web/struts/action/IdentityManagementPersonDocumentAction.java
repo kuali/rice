@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -481,7 +481,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        }
 	        AttributeDefinition attrDefinition;
 	        RoleMemberImpl roleMember = KIMServiceLocatorInternal.getUiDocumentService().getRoleMember(newDelegationMember.getRoleMemberId());
-	        AttributeSet roleMemberAttributes = (new AttributeValidationHelper()).convertAttributesToMap(roleMember.getAttributes());
+	        Attributes
+                    roleMemberAttributes = (new AttributeValidationHelper()).convertAttributesToMap(roleMember.getAttributes());
 	        for (String key: attrHelper.getDefinitions().keySet()) {
 	        	RoleDocumentDelegationMemberQualifier qualifier = new RoleDocumentDelegationMemberQualifier();
 	        	attrDefinition = attrHelper.getDefinitions().get(key);

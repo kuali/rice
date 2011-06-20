@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
@@ -24,7 +25,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
 		KimPermissionTypeServiceBase {
 	protected boolean performMatch(AttributeSet inputAttributeSet,
-			AttributeSet storedAttributeSet) {
+			Attributes storedAttributeSet) {
 		// this type doesn't work without attributes passed in 
 		if ( inputAttributeSet == null || storedAttributeSet == null ) {
 			return false;

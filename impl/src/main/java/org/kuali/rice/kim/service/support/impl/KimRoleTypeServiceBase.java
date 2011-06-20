@@ -17,7 +17,7 @@ package org.kuali.rice.kim.service.support.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
@@ -43,8 +43,8 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * 
 	 * @see KimRoleTypeService#doesRoleQualifierMatchQualification(AttributeSet, AttributeSet)
 	 */
-	public boolean doesRoleQualifierMatchQualification(AttributeSet qualification, AttributeSet roleQualifier) {
-		AttributeSet translatedQualification = translateInputAttributeSet(qualification);
+	public boolean doesRoleQualifierMatchQualification(Attributes qualification, Attributes roleQualifier) {
+		Attributes translatedQualification = translateInputAttributes(qualification);
 		validateRequiredAttributesAgainstReceived(translatedQualification);
 		return performMatch(translatedQualification, roleQualifier);
 	}
@@ -52,12 +52,12 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	/**
 	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#doRoleQualifiersMatchQualification(AttributeSet, List)
 	 */
-	public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(AttributeSet qualification, List<RoleMembershipInfo> roleMemberList) {
-		AttributeSet translatedQualification = translateInputAttributeSet(qualification);
+	public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(Attributes qualification, List<RoleMembershipInfo> roleMemberList) {
+		Attributes translatedQualification = translateInputAttributes(qualification);
 		validateRequiredAttributesAgainstReceived(translatedQualification);
 		List<RoleMembershipInfo> matchingMemberships = new ArrayList<RoleMembershipInfo>();
 		for ( RoleMembershipInfo rmi : roleMemberList ) {
-			if ( performMatch( translatedQualification, rmi.getQualifier() ) ) {
+			if ( performMatch( translatedQualification, Attributes.fromMap(rmi.getQualifier()) ) ) {
 				matchingMemberships.add( rmi );
 			}
 		}
@@ -70,7 +70,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * 
 	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#getRoleMembersFromApplicationRole(String, String, AttributeSet)
 	 */
-	public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+	public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
 		if ( !isApplicationRoleType() ) {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
@@ -85,7 +85,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * 
 	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
-	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification) {
+	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification) {
 		if ( !isApplicationRoleType() ) {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
 		}
@@ -125,7 +125,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * 
 	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#convertQualificationForMemberRoles(String, String, String, String, AttributeSet)
 	 */
-	public AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification) {
+	public Attributes convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Attributes qualification) {
 		return qualification;
 	}
 	
@@ -157,8 +157,8 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * 
 	 * @see org.kuali.rice.kim.framework.type.KimDelegationTypeService#doesDelegationQualifierMatchQualification(org.kuali.rice.core.util.AttributeSet, org.kuali.rice.core.util.AttributeSet)
 	 */
-	public boolean doesDelegationQualifierMatchQualification(AttributeSet qualification, AttributeSet roleQualifier) {
-		AttributeSet translatedQualification = translateInputAttributeSet(qualification);
+	public boolean doesDelegationQualifierMatchQualification(Attributes qualification, Attributes roleQualifier) {
+		Attributes translatedQualification = translateInputAttributes(qualification);
 		validateRequiredAttributesAgainstReceived(translatedQualification);
 		return performMatch(translatedQualification, roleQualifier);
 	}

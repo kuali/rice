@@ -1,6 +1,6 @@
 package org.kuali.rice.kim.api.type;
 
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.KeyValue;
 
 import java.util.List;
@@ -30,13 +30,13 @@ public interface KimTypeServiceTemp {
 	 * This method can be used to perform compound validations across multiple
 	 * attributes attached to an object.
 	 */
-	AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes);
+	Attributes validateAttributes(String kimTypeId, Attributes attributes);
 
-	AttributeSet validateAttributesAgainstExisting(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes);
+	Attributes validateAttributesAgainstExisting(String kimTypeId, Attributes newAttributes, Attributes oldAttributes);
 
-	AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet mainAttributes, AttributeSet delegationAttributes);
+	Attributes validateUnmodifiableAttributes(String kimTypeId, Attributes mainAttributes, Attributes delegationAttributes);
 
-	boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes);
+	boolean validateUniqueAttributes(String kimTypeId, Attributes newAttributes, Attributes oldAttributes);
 
     List<? extends KeyValue> getAttributeValidValues(String kimTypeId, String attributeName);
 

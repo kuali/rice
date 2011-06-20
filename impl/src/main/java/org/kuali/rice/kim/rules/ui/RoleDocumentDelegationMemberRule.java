@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
@@ -29,7 +29,9 @@ import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -55,9 +57,9 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
             GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role Member"});
             return false;
         }
-		List<AttributeSet> attributeSetListToValidate = new ArrayList<AttributeSet>();
-		AttributeSet attributeSetToValidate;
-		AttributeSet validationErrors = new AttributeSet();
+		List<Attributes> attributeSetListToValidate = new ArrayList<Attributes>();
+		Attributes attributeSetToValidate;
+		Map<String, String> validationErrors = new HashMap<String, String>();
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(document.getKimType());
 
 		for(RoleDocumentDelegationMember roleMember: document.getDelegationMembers()) {
@@ -82,11 +84,11 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 	    }
         
         if ( kimTypeService != null && !newMember.isRole()) {
-    		AttributeSet localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
-	        validationErrors.putAll( attributeValidationHelper.convertErrors("delegationMember" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
+    		Attributes localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+	        validationErrors.putAll( attributeValidationHelper.convertErrors("delegationMember" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors).toMap() );
         }
     	if (!validationErrors.isEmpty()) {
-    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(Attributes.fromMap(validationErrors));
     		rulePassed = false;
     	}
 		return rulePassed;

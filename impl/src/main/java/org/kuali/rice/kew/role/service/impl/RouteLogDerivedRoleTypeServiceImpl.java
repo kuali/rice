@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.kew.role.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
+import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -60,7 +60,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getRoleMembersFromApplicationRole(String, String, AttributeSet)
 	 */
 	@Override
-    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
 		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();		
 		if(qualification!=null && !qualification.isEmpty()){
@@ -95,7 +95,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	 */
 	@Override
 	public boolean hasApplicationRole(
-			String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
+			String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification){
 		validateRequiredAttributesAgainstReceived(qualification);
         boolean isUserInRouteLog = false;
 		if(qualification!=null && !qualification.isEmpty()){

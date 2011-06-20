@@ -3,6 +3,7 @@ package org.kuali.rice.core.api.mo.common;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.jaxb.StringMapEntry;
 import org.kuali.rice.core.util.jaxb.StringMapEntryList;
@@ -39,7 +40,7 @@ public final class Attributes implements Serializable {
 
     //should only be reassigned on deserialization, can't be final b/c of deserialization hook
     private transient Object lock = new Object();
-    private transient Set<Map.Entry<String, String>> cache;
+    private transient Set<Map.Entry<String, String>> entrySetCache;
 
     /**
      * This constructor should never be called except during JAXB unmarshalling.
@@ -130,7 +131,7 @@ public final class Attributes implements Serializable {
     }
 
     /**
-     * Converts key value to a mutable {@link Map}.
+     * Converts attributes to a mutable {@link Map}.
      * The map returned is disconnected from this Attributes class and is mutable.
      *
      * @return a Map
@@ -139,6 +140,17 @@ public final class Attributes implements Serializable {
         return new HashMap<String, String>(keyValues);
     }
 
+    /**
+     * Converts attributes to a mutable list of immutable {@link KeyValue} objects.
+     * The list returned is disconnected from this Attributes class and is mutable.
+     */
+    public List<KeyValue> toKeyValues() {
+        final List<KeyValue> kv = new ArrayList<KeyValue>();
+        for (Map.Entry<String, String> entry : keyValues.entrySet()) {
+            kv.add(new ConcreteKeyValue(entry));
+        }
+        return kv;
+    }
     //map-like methods
 
     /**
@@ -219,17 +231,17 @@ public final class Attributes implements Serializable {
         //not sure if we really need caching here - but adding it
         //b/c it is easy enough to implement
         synchronized (lock) {
-            if (cache == null) {
+            if (entrySetCache == null) {
                 final Set<Map.Entry<String, String>> temp = new HashSet<Map.Entry<String, String>>();
                 for (Map.Entry<String, String> e : keyValues.entrySet()) {
                     if (e != null) {
                         temp.add(new AbstractMap.SimpleImmutableEntry<String, String>(e.getKey(), e.getValue()));
                     }
                 }
-                cache = Collections.unmodifiableSet(temp);
+                entrySetCache = Collections.unmodifiableSet(temp);
             }
         }
-        return cache;
+        return entrySetCache;
     }
 
     private static void validateKey(String key) {
@@ -263,7 +275,7 @@ public final class Attributes implements Serializable {
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {"cache", "lock"};
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = {"entrySetCache", "lock"};
     }
     
     public static class Adapter extends XmlAdapter<StringMapEntryList, Attributes> {

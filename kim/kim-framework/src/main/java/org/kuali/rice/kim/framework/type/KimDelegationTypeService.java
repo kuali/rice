@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.framework.type;
 
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.type.KimTypeService;
 
 /**
@@ -44,6 +44,6 @@ public interface KimDelegationTypeService extends KimTypeService {
      * The contents of the passed in attribute sets should not be modified as they may be used in future calls by
      * the role service.
      */
-    boolean doesDelegationQualifierMatchQualification( AttributeSet qualification, AttributeSet delegationQualifier );
+    boolean doesDelegationQualifierMatchQualification( Attributes qualification, Attributes delegationQualifier );
 
 }

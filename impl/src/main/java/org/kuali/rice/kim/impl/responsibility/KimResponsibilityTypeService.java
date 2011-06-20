@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.type.KimTypeService;
 
@@ -30,5 +30,5 @@ import java.util.List;
  */
 public interface KimResponsibilityTypeService extends KimTypeService {
 
-    List<Responsibility> getMatchingResponsibilities( AttributeSet requestedDetails, List<Responsibility> responsibilitiesList );
+    List<Responsibility> getMatchingResponsibilities( Attributes requestedDetails, List<Responsibility> responsibilitiesList );
 }

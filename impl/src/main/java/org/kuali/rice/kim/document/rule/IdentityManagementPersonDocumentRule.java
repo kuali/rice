@@ -17,7 +17,7 @@ package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.services.IdentityService;
@@ -393,15 +393,15 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     }
 
     protected boolean validateRoleQualifier( List<PersonDocumentRole> roles ) {
-		AttributeSet validationErrors = new AttributeSet();
+		Map<String, String> validationErrors = new HashMap<String, String>();
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         int i = 0;
     	for(PersonDocumentRole role : roles ) {
     		KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
         	if(CollectionUtils.isEmpty(role.getRolePrncpls()) && !role.getDefinitions().isEmpty()){
         		KimType kimTypeInfo = KimApiServiceLocator.getKimTypeInfoService().getKimType(role.getKimRoleType().getId());
-        		AttributeSet blankQualifiers = attributeValidationHelper.getBlankValueQualifiersMap(kimTypeInfo.getAttributeDefinitions());
-        		AttributeSet localErrors = kimTypeService.validateAttributes(
+        		Attributes blankQualifiers = attributeValidationHelper.getBlankValueQualifiersMap(kimTypeInfo.getAttributeDefinitions());
+        		Attributes localErrors = kimTypeService.validateAttributes(
         			role.getKimRoleType().getId(), blankQualifiers);
         		if(localErrors!=null && !localErrors.isEmpty()){
         			GlobalVariables.getMessageMap().putError("document.roles["+i+"].newRolePrncpl.qualifiers[0].attrVal",
@@ -416,8 +416,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	        if ( kimTypeService != null ) {
 		        int j = 0;
 	        	for ( KimDocumentRoleMember rolePrincipal : role.getRolePrncpls() ) {
-	        		AttributeSet localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getId(), attributeValidationHelper.convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
-			        validationErrors.putAll( attributeValidationHelper.convertErrors("roles["+i+"].rolePrncpls["+j+"]",attributeValidationHelper.convertQualifiersToAttrIdxMap(rolePrincipal.getQualifiers()),localErrors) );
+	        		Attributes localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getId(), attributeValidationHelper.convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
+			        validationErrors.putAll( attributeValidationHelper.convertErrors("roles["+i+"].rolePrncpls["+j+"]",attributeValidationHelper.convertQualifiersToAttrIdxMap(rolePrincipal.getQualifiers()),localErrors).toMap() );
 
 			        if (uniqueQualifierAttributes.size() > 0) {
 			        	validateUniquePersonRoleQualifiersUniqueForMembership(role, rolePrincipal, j, uniqueQualifierAttributes, i, validationErrors);
@@ -432,7 +432,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	if (validationErrors.isEmpty()) {
     		return true;
     	} else {
-    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(Attributes.fromMap(validationErrors));
     		return false;
     	}
     }
@@ -446,7 +446,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
      * @param memberIndex the index of the person's membership in the role (for error reporting purposes)
      * @return true if all unique values are indeed unique, false otherwise
      */
-    protected boolean validateUniquePersonRoleQualifiersUniqueForMembership(PersonDocumentRole role, KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, Set<String> uniqueQualifierAttributes, int roleIndex, AttributeSet validationErrors) {
+    protected boolean validateUniquePersonRoleQualifiersUniqueForMembership(PersonDocumentRole role, KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, Set<String> uniqueQualifierAttributes, int roleIndex, Map<String, String> validationErrors) {
     	boolean foundError = false;
     	int count = 0;
 
@@ -700,28 +700,28 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	public boolean processAddPersonDocumentRoleQualifier(IdentityManagementPersonDocument document, PersonDocumentRole role, KimDocumentRoleMember kimDocumentRoleMember, int selectedRoleIdx) {
 		boolean dateValidationSuccess = validateActiveDate("document.roles[" + selectedRoleIdx + "].newRolePrncpl.activeFromDate", kimDocumentRoleMember.getActiveFromDate(), kimDocumentRoleMember.getActiveToDate());
 		String errorPath = "roles[" + selectedRoleIdx + "].newRolePrncpl";
-		AttributeSet validationErrors = new AttributeSet();
+		Map<String, String> validationErrors = new HashMap<String, String>();
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
 
         boolean attributesUnique;
-		AttributeSet errorsAttributesAgainstExisting;
+		Attributes errorsAttributesAgainstExisting;
 	    int i = 0;
 	    boolean rulePassed = true;
-	    AttributeSet newMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(kimDocumentRoleMember.getQualifiers());
-	    AttributeSet oldMemberQualifiers;
+	    Attributes newMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(kimDocumentRoleMember.getQualifiers());
+	    Attributes oldMemberQualifiers;
 	    List<String> roleIds = new ArrayList<String>();
 	    roleIds.add(role.getRoleId());
 	    //List<RoleMembershipInfo> roleMembersForRole = getRoleService().getFirstLevelRoleMembers(roleIds);
 	    for(KimDocumentRoleMember member: role.getRolePrncpls()){
-	    	oldMemberQualifiers = member.getQualifierAsAttributeSet();
+	    	oldMemberQualifiers = Attributes.fromMap(member.getQualifierAsAttributeSet());
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
 	    			role.getKimRoleType().getId(), newMemberQualifiers, oldMemberQualifiers);
 	    	validationErrors.putAll(
 					attributeValidationHelper.convertErrors(
 						errorPath,
 						attributeValidationHelper.convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()),
-						errorsAttributesAgainstExisting));
+						errorsAttributesAgainstExisting).toMap());
 
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
 	    			role.getKimRoleType().getId(), newMemberQualifiers, oldMemberQualifiers);
@@ -733,26 +733,26 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	    }
 
         if ( kimTypeService != null ) {
-        	AttributeSet localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getId(), newMemberQualifiers );
-    	    validationErrors.putAll( attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper.convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()), localErrors));
+        	Attributes localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getId(), newMemberQualifiers );
+    	    validationErrors.putAll( attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper.convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()), localErrors).toMap());
         }
 
         GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
     	if (validationErrors.isEmpty()) {
     		rulePassed = dateValidationSuccess;
     	} else {
-    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(Attributes.fromMap(validationErrors));
     		rulePassed = false;
     	}
     	return rulePassed;
 	}
 
     protected boolean validateDelegationMemberRoleQualifier(List<RoleDocumentDelegationMember> delegationMembers){
-		AttributeSet validationErrors = new AttributeSet();
+		Map<String, String> validationErrors = new HashMap<String, String>();
 		boolean valid;
 		int memberCounter = 0;
-		AttributeSet errorsTemp;
-		AttributeSet attributeSetToValidate;
+		Attributes errorsTemp;
+		Attributes attributeSetToValidate;
         KimTypeService kimTypeService;
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         RoleMemberImpl roleMember;
@@ -768,7 +768,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
 			errorsTemp = kimTypeService.validateAttributes(kimType.getId(), attributeSetToValidate);
 			validationErrors.putAll(
-					attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper.convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()), errorsTemp));
+					attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper.convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()), errorsTemp).toMap());
 
 			roleMember = getUIDocumentService().getRoleMember(delegationMember.getRoleMemberId());
 			if(roleMember==null){
@@ -776,9 +776,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 				GlobalVariables.getMessageMap().putError("document."+errorPath, RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
 			} else{
 				errorsTemp = kimTypeService.validateUnmodifiableAttributes(
-								kimType.getId(), roleMember.getQualifier(), attributeSetToValidate);
+								kimType.getId(), Attributes.fromMap(roleMember.getQualifier()), attributeSetToValidate);
 				validationErrors.putAll(
-						attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper.convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()), errorsTemp));
+						attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper.convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()), errorsTemp).toMap());
 			}
 	        memberCounter++;
     	}
@@ -786,7 +786,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	if (validationErrors.isEmpty()) {
     		valid = true;
     	} else {
-    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(Attributes.fromMap(validationErrors));
     		valid = false;
     	}
     	return valid;

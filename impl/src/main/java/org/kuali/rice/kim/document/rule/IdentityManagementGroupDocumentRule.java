@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.document.rule;
 
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.services.IdentityService;
@@ -127,21 +127,21 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     }
 
     protected boolean validateGroupQualifier(List<GroupDocumentQualifier> groupQualifiers, KimType kimType){
-		AttributeSet validationErrors = new AttributeSet();
+		Map<String, String> validationErrors = new HashMap<String, String>();
 
-		AttributeSet errorsTemp;
-		AttributeSet attributeSetToValidate;
+		Attributes errorsTemp;
+		Attributes attributeSetToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 		attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
 		errorsTemp = kimTypeService.validateAttributes(kimType.getId(), attributeSetToValidate);
-		validationErrors.putAll( attributeValidationHelper.convertErrors("",attributeValidationHelper.convertQualifiersToAttrIdxMap(groupQualifiers),errorsTemp) );
+		validationErrors.putAll( attributeValidationHelper.convertErrors("",attributeValidationHelper.convertQualifiersToAttrIdxMap(groupQualifiers),errorsTemp).toMap() );
 		GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 		
     	if (validationErrors.isEmpty()) {
     		return true;
     	} 
-    	attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    	attributeValidationHelper.moveValidationErrorsToErrorMap(Attributes.fromMap(validationErrors));
     	return false;
     }
     

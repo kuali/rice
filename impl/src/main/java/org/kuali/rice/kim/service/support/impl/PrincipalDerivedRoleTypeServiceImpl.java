@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -44,25 +44,25 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.impl.type.KimTypeServiceBase#performMatch(org.kuali.rice.core.util.AttributeSet, org.kuali.rice.core.util.AttributeSet)
+	 * @see org.kuali.rice.kim.impl.type.KimTypeServiceBase#performMatch(org.kuali.rice.core.util.Attributes, org.kuali.rice.core.util.Attributes)
 	 */
 	@Override
-	public boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
+	public boolean performMatch(Attributes inputAttributes, Attributes storedAttributes) {
 		return true;
 	}
 
 	/**
 	 * Since this is potentially the entire set of users, just check the qualification for the user we are interested in and return it.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#getRoleMembersFromApplicationRole(String, String, AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#getRoleMembersFromApplicationRole(String, String, Attributes)
 	 */
 	@Override
-    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
 		ArrayList<RoleMembershipInfo> tempIdList = new ArrayList<RoleMembershipInfo>();
 		if ( qualification == null || qualification.isEmpty() ) {
 			return tempIdList;
 		}
-		qualification = translateInputAttributeSet(qualification);
+		qualification = translateInputAttributes(qualification);
 		// check that the principal ID is not null
 		String principalId = qualification.get( KimConstants.AttributeConstants.PRINCIPAL_ID );
 		if ( hasApplicationRole(principalId, null, namespaceCode, roleName, qualification)) {
@@ -72,7 +72,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	}
 	
 	@Override
-	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification) {
+	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification) {
         // check that the principal exists and is active
         Principal principal = getIdentityManagementService().getPrincipal( principalId );
         if ( principal == null || !principal.isActive() ) {

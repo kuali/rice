@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 
@@ -32,10 +32,10 @@ public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 		implements KimResponsibilityTypeService {
 
 	/**
-	 * @see org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService#getMatchingResponsibilities(AttributeSet, List)
+	 * @see org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService#getMatchingResponsibilities(Attributes, List)
 	 */
-	public final List<Responsibility> getMatchingResponsibilities( AttributeSet requestedDetails, List<Responsibility> responsibilitiesList ) {
-		requestedDetails = translateInputAttributeSet(requestedDetails);
+	public final List<Responsibility> getMatchingResponsibilities( Attributes requestedDetails, List<Responsibility> responsibilitiesList ) {
+		requestedDetails = translateInputAttributes(requestedDetails);
 		validateRequiredAttributesAgainstReceived(requestedDetails);
 		return performResponsibilityMatches(requestedDetails, responsibilitiesList);
 	}
@@ -43,13 +43,13 @@ public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 	/**
 	 * Internal method for matching Responsibilities.  Override this method to customize the matching behavior.
 	 * 
-	 * This base implementation uses the {@link #performMatch(AttributeSet, AttributeSet)} method
+	 * This base implementation uses the {@link #performMatch(Attributes, Attributes)} method
 	 * to perform an exact match on the Responsibility details and return all that are equal.
 	 */
-	protected List<Responsibility> performResponsibilityMatches(AttributeSet requestedDetails, List<Responsibility> responsibilitiesList) {
+	protected List<Responsibility> performResponsibilityMatches(Attributes requestedDetails, List<Responsibility> responsibilitiesList) {
 		List<Responsibility> matchingResponsibilities = new ArrayList<Responsibility>();
 		for (Responsibility responsibility : responsibilitiesList) {
-			if ( performMatch(requestedDetails, new AttributeSet(responsibility.getAttributes().toMap())) ) {
+			if ( performMatch(requestedDetails, responsibility.getAttributes()) ) {
 				matchingResponsibilities.add( responsibility );
 			}
 		}

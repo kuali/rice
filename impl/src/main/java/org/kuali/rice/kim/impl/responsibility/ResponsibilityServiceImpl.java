@@ -13,7 +13,6 @@ import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.api.common.delegate.Delegate;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
@@ -27,6 +26,7 @@ import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
@@ -365,7 +365,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             if (responsibilityTypeService == null) {
                 responsibilityTypeService = defaultResponsibilityTypeService;
             }
-            applicableResponsibilities.addAll(responsibilityTypeService.getMatchingResponsibilities(new AttributeSet(responsibilityDetails.toMap()), responsibilityInfos));
+            applicableResponsibilities.addAll(responsibilityTypeService.getMatchingResponsibilities(responsibilityDetails, responsibilityInfos));
         }
         return applicableResponsibilities;
     }

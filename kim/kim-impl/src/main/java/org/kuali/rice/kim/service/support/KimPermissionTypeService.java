@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.service.support;
 
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 
@@ -42,5 +42,5 @@ public interface KimPermissionTypeService extends KimTypeService {
      *   
      * TODO: clarify this description
      */
-    List<KimPermissionInfo> getMatchingPermissions( AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList );
+    List<KimPermissionInfo> getMatchingPermissions( Attributes requestedDetails, List<KimPermissionInfo> permissionsList );
 }

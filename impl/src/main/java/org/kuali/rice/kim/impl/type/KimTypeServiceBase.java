@@ -17,7 +17,7 @@ package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
@@ -132,19 +132,19 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * This method matches input attribute set entries and standard attribute set entries using literal string match.
 	 *
 	 */
-	protected boolean performMatch(AttributeSet inputAttributeSet, AttributeSet storedAttributeSet) {
-		if ( storedAttributeSet == null || inputAttributeSet == null ) {
+	protected boolean performMatch(Attributes inputAttributes, Attributes storedAttributes) {
+		if ( storedAttributes == null || inputAttributes == null ) {
 			return true;
 		}
-		for ( Map.Entry<String, String> entry : storedAttributeSet.entrySet() ) {
-			if (inputAttributeSet.containsKey(entry.getKey()) && !StringUtils.equals(inputAttributeSet.get(entry.getKey()), entry.getValue()) ) {
+		for ( Map.Entry<String, String> entry : storedAttributes.entrySet() ) {
+			if (inputAttributes.containsKey(entry.getKey()) && !StringUtils.equals(inputAttributes.get(entry.getKey()), entry.getValue()) ) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	public AttributeSet translateInputAttributeSet(AttributeSet qualification){
+	public Attributes translateInputAttributes(Attributes qualification){
 		return qualification;
 	}
 
@@ -152,10 +152,10 @@ public class KimTypeServiceBase implements KimTypeService {
 	 *
 	 * This method ...
 	 */
-	public boolean performMatches(AttributeSet inputAttributeSet, List<AttributeSet> storedAttributeSets){
-		for ( AttributeSet storedAttributeSet : storedAttributeSets ) {
+	public boolean performMatches(Attributes inputAttributes, List<Attributes> storedAttributess){
+		for ( Attributes storedAttributes : storedAttributess ) {
 			// if one matches, return true
-			if ( performMatch(inputAttributeSet, storedAttributeSet) ) {
+			if ( performMatch(inputAttributes, storedAttributes) ) {
 				return true;
 			}
 		}
@@ -167,13 +167,13 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * validate it there.  No combination validation is done.  That should be done
 	 * by overriding this method.
 	 *
-	 * @see org.kuali.rice.kim.api.type.KimTypeService#validateAttributes(AttributeSet)
+	 * @see org.kuali.rice.kim.api.type.KimTypeService#validateAttributes(Attributes)
 	 */
 	@Override
-	public AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes) {
-		AttributeSet validationErrors = new AttributeSet();
+	public Attributes validateAttributes(String kimTypeId, Attributes attributes) {
+		Map<String,String> validationErrors = new HashMap<String, String>();
 		if ( attributes == null ) {
-			return validationErrors;
+			return Attributes.empty();
 		}
 		KimType kimType = getTypeInfoService().getKimType(kimTypeId);
 		
@@ -220,7 +220,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			}
 		}
 		
-		return validationErrors;
+		return Attributes.fromMap(validationErrors);
 	}
 
 	private Object getAttributeValue(PropertyDescriptor propertyDescriptor, String attributeValue){
@@ -237,7 +237,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		return attributeValueObject;
 	}
 	
-	protected Map<String, List<String>> validateReferencesExistAndActive( KimType kimType, AttributeSet attributes, Map<String, String> previousValidationErrors) {
+	protected Map<String, List<String>> validateReferencesExistAndActive( KimType kimType, Attributes attributes, Map<String, String> previousValidationErrors) {
 		Map<String, BusinessObject> componentClassInstances = new HashMap<String, BusinessObject>();
 		Map<String, List<String>> errors = new HashMap<String, List<String>>();
 		
@@ -792,7 +792,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	protected final String COMMA_SEPARATOR = ", ";
 
-	protected void validateRequiredAttributesAgainstReceived(AttributeSet receivedAttributes){
+	protected void validateRequiredAttributesAgainstReceived(Attributes receivedAttributes){
 		// abort if type does not want the qualifiers to be checked
 		if ( !isCheckRequiredAttributes() ) {
 			return;
@@ -838,7 +838,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 	
 	@Override
-	public boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
+	public boolean validateUniqueAttributes(String kimTypeId, Attributes newAttributes, Attributes oldAttributes){
 		boolean areAttributesUnique = true;
 		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
 		if(uniqueAttributes==null || uniqueAttributes.isEmpty()){
@@ -851,7 +851,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		return areAttributesUnique;
 	}
 	
-	protected boolean areAttributesEqual(List<String> uniqueAttributeNames, AttributeSet aSet1, AttributeSet aSet2){
+	protected boolean areAttributesEqual(List<String> uniqueAttributeNames, Attributes aSet1, Attributes aSet2){
 		String attrVal1;
 		String attrVal2;
 		StringValueComparator comparator = StringValueComparator.getInstance();
@@ -867,8 +867,8 @@ public class KimTypeServiceBase implements KimTypeService {
 		return true;
 	}
 
-	protected AttributeSet getErrorAttributeSet(String attributeNameKey, String errorKey, String[] errorArguments){
-		AttributeSet validationErrors = new AttributeSet();
+	protected Attributes getErrorAttributes(String attributeNameKey, String errorKey, String[] errorArguments){
+		Map<String, String> validationErrors = new HashMap<String, String>();
 		GlobalVariables.getMessageMap().putError(attributeNameKey, errorKey, errorArguments);
 		List<String> attributeErrors = extractErrorsFromGlobalVariablesErrorMap(attributeNameKey);
 		if(attributeErrors!=null){
@@ -876,10 +876,10 @@ public class KimTypeServiceBase implements KimTypeService {
 				validationErrors.put(attributeNameKey, err);
 			}
 		}
-		return validationErrors;
+		return Attributes.fromMap(validationErrors);
 	}
 	
-    protected boolean areAllAttributeValuesEmpty(AttributeSet attributes){
+    protected boolean areAllAttributeValuesEmpty(Attributes attributes){
     	boolean areAllAttributesEmpty = true;
     	if(attributes!=null) {
 			for(String attributeNameKey: attributes.keySet()){
@@ -892,7 +892,7 @@ public class KimTypeServiceBase implements KimTypeService {
     	return areAllAttributesEmpty;
     }
 
-	protected String getAttributeValue(AttributeSet aSet, String attributeName){
+	protected String getAttributeValue(Attributes aSet, String attributeName){
 		if(StringUtils.isEmpty(attributeName)) {
 			return null;
 		}
@@ -919,15 +919,15 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 
 	@Override
-	public AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet originalAttributeSet, AttributeSet newAttributeSet){
-		AttributeSet validationErrors = new AttributeSet();
+	public Attributes validateUnmodifiableAttributes(String kimTypeId, Attributes originalAttributes, Attributes newAttributes){
+		Map<String, String> validationErrors = new HashMap<String, String>();
 		List<String> attributeErrors = null;
 		KimType kimType = getTypeInfoService().getKimType(kimTypeId);
 		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
 		for(String attributeNameKey: uniqueAttributes){
 			KimTypeAttribute attr = kimType.getAttributeDefinitionByName(attributeNameKey);
-			String mainAttributeValue = getAttributeValue(originalAttributeSet, attributeNameKey);
-			String delegationAttributeValue = getAttributeValue(newAttributeSet, attributeNameKey);
+			String mainAttributeValue = getAttributeValue(originalAttributes, attributeNameKey);
+			String delegationAttributeValue = getAttributeValue(newAttributes, attributeNameKey);
 			attributeErrors = null;
 			if(!StringUtils.equals(mainAttributeValue, delegationAttributeValue)){
 				GlobalVariables.getMessageMap().putError(
@@ -941,7 +941,7 @@ public class KimTypeServiceBase implements KimTypeService {
 				}
 			}
 		}
-		return validationErrors;
+		return Attributes.fromMap(validationErrors);
 	}
 
 	public boolean isCheckRequiredAttributes() {
@@ -953,8 +953,8 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 
 	@Override
-	public AttributeSet validateAttributesAgainstExisting(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
-		return new AttributeSet();
+	public Attributes validateAttributesAgainstExisting(String kimTypeId, Attributes newAttributes, Attributes oldAttributes){
+		return Attributes.empty();
 	}
 
 	protected String getClosestParentDocumentTypeName(

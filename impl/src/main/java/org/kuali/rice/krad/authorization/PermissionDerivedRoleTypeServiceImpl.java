@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.krad.authorization;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -26,6 +24,9 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -63,17 +64,17 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 		this.permissionTemplateName = permissionTemplateName;
 	}
 	
-	protected List<PermissionAssigneeInfo> getPermissionAssignees(AttributeSet qualification) {
-		return getIdentityManagementService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, qualification, qualification);
+	protected List<PermissionAssigneeInfo> getPermissionAssignees(Attributes qualification) {
+		return getIdentityManagementService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, new AttributeSet(qualification.toMap()),  new AttributeSet(qualification.toMap()));
 	}
 
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.util.Attributes)
 	 */
 	@Override
-    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
 		List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(qualification);
 		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
 		for (PermissionAssigneeInfo permissionAssigneeInfo : permissionAssignees) {
@@ -87,13 +88,13 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 	}
 	
     /***
-     * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
+     * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.util.Attributes)
      */
     @Override
     public boolean hasApplicationRole(
-            String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
+            String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification){
         // FIXME: dangerous - data changes could cause an infinite loop - should add thread-local to trap state and abort
-    	return getIdentityManagementService().isAuthorizedByTemplateName(principalId,permissionTemplateNamespace, permissionTemplateName, qualification, qualification);    
+    	return getIdentityManagementService().isAuthorizedByTemplateName(principalId,permissionTemplateNamespace, permissionTemplateName,  new AttributeSet(qualification.toMap()),  new AttributeSet(qualification.toMap()));
 	}
     
     /**

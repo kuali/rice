@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -47,13 +47,13 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
 	 * @see org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
     @Override
-    protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
+    protected List<KimPermissionInfo> performPermissionMatches(Attributes requestedDetails,
             List<KimPermissionInfo> permissionsList) {
         List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
         // loop over the permissions, checking the non-document-related ones
         for ( KimPermissionInfo kpi : permissionsList ) {
-            if ( routeNodeMatches(requestedDetails, kpi.getDetails()) && 
-                    routeStatusMatches(requestedDetails, kpi.getDetails())) {
+            if ( routeNodeMatches(requestedDetails, Attributes.fromMap(kpi.getDetails())) &&
+                    routeStatusMatches(requestedDetails, Attributes.fromMap(kpi.getDetails()))) {
                 matchingPermissions.add( kpi );
             }           
         }
@@ -62,14 +62,14 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
         return matchingPermissions;
     }
 	
-	protected boolean routeNodeMatches(AttributeSet requestedDetails, AttributeSet permissionDetails) {
+	protected boolean routeNodeMatches(Attributes requestedDetails, Attributes permissionDetails) {
 		if ( StringUtils.isBlank( permissionDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME) ) ) {
 			return true;
 		}
 		return StringUtils.equals( requestedDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME), permissionDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME));
 	}
 	
-	protected boolean routeStatusMatches(AttributeSet requestedDetails, AttributeSet permissionDetails) {
+	protected boolean routeStatusMatches(Attributes requestedDetails, Attributes permissionDetails) {
 		if ( StringUtils.isBlank( permissionDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE) ) ) {
 			return true;
 		}

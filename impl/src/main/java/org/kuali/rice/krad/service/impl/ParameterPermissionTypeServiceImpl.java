@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -36,7 +36,7 @@ public class ParameterPermissionTypeServiceImpl extends
     }
     
     @Override
-    protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList) {
+    protected List<KimPermissionInfo> performPermissionMatches(Attributes requestedDetails, List<KimPermissionInfo> permissionsList) {
         String requestedParameterName = requestedDetails.get(KimConstants.AttributeConstants.PARAMETER_NAME);
         String requestedComponentName = requestedDetails.get(KimConstants.AttributeConstants.COMPONENT_NAME);
         List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();

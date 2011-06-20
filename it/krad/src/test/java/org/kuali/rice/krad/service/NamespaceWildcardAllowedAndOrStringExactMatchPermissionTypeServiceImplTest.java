@@ -17,12 +17,15 @@ package org.kuali.rice.krad.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
@@ -45,7 +48,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 
     @Test
     public void testIngesterPermissionExampleLikeRice() {
-        AttributeSet requestedDetails = getUseIngesterRequestedDetails();
+        Attributes requestedDetails = getUseIngesterRequestedDetails();
         
         List<KimPermissionInfo> permissionsList = new ArrayList<KimPermissionInfo>();
 
@@ -63,7 +66,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
      */
     @Test
     public void testIngesterPermissionExampleLikeKFS() {
-        AttributeSet requestedDetails = getUseIngesterRequestedDetails();
+        Attributes requestedDetails = getUseIngesterRequestedDetails();
         
         List<KimPermissionInfo> permissionsList = new ArrayList<KimPermissionInfo>();
 
@@ -80,11 +83,11 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
      * This method recreates the requested details that would be encountered when accessing 
      * the xml ingester screen.
      */
-    private AttributeSet getUseIngesterRequestedDetails() {
-        AttributeSet requestedDetails = new AttributeSet();
+    private Attributes getUseIngesterRequestedDetails() {
+        Map<String, String> requestedDetails = new HashMap<String, String>();
         requestedDetails.put("actionClass", "org.kuali.rice.kew.batch.web.IngesterAction");
         requestedDetails.put("namespaceCode", "KR-WKFLW");
-        return requestedDetails;
+        return Attributes.fromMap(requestedDetails);
     }
 
     /**

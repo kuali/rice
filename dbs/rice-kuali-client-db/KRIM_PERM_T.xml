@@ -1,0 +1,1574 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Electronic Fund Transfer interface for the claiming of electronic funds using the Cash Control Document (CTRL)."
+        NM="Claim Electronic Payment" NMSPC_CD="KFS-AR"
+        OBJ_ID="5B4F097448B9EF33E0404F8189D84F24" PERM_ID="1"
+        PERM_TMPL_ID="7" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows modification of the Customer Tax Number field on the Customer document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-AR"
+        OBJ_ID="5B4F097448C2EF33E0404F8189D84F24" PERM_ID="10"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Edit permission for the Requisition document prior to the document being submitted."
+        NM="Edit Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F0974491CEF33E0404F8189D84F24" PERM_ID="100"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Edit permission for the Purchase Order document prior to the document being submitted."
+        NM="Edit Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F0974491DEF33E0404F8189D84F24" PERM_ID="101"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Edit permission for Accounts Payable Transactional documents prior to the document being submitted."
+        NM="Edit Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F0974491EEF33E0404F8189D84F24" PERM_ID="102"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Edit permission for Receiving Transactional documents prior to the document being submitted."
+        NM="Edit Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F0974491FEF33E0404F8189D84F24" PERM_ID="103"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Electronic Fund Transfer interface for the claiming of electronic funds."
+        NM="Claim Electronic Payment" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F09744923EF33E0404F8189D84F24" PERM_ID="107"
+        PERM_TMPL_ID="7" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Error Correction button on KFS Transactional documents."
+        NM="Error Correct Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F09744924EF33E0404F8189D84F24" PERM_ID="108"
+        PERM_TMPL_ID="6" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Customer Upload Batch Upload page."
+        NM="Upload Batch Input File(s)" NMSPC_CD="KFS-AR"
+        OBJ_ID="5B4F097448C3EF33E0404F8189D84F24" PERM_ID="11"
+        PERM_TMPL_ID="33" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to open KFS documents via the Super search option in Document Search and take Administrative workflow actions on them (such as approving the document, approving individual requests, or sending the document to a specified route node)."
+        NM="Administer Routing for Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F09744929EF33E0404F8189D84F24" PERM_ID="113"
+        PERM_TMPL_ID="3" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Blanket Approval button on KFS Financial System Documents."
+        NM="Blanket Approve Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974492AEF33E0404F8189D84F24" PERM_ID="114"
+        PERM_TMPL_ID="4" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of Financial System Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974492BEF33E0404F8189D84F24" PERM_ID="115"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of Financial System Simple Maintenance documents."
+        NM="Initiate Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974492CEF33E0404F8189D84F24" PERM_ID="116"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Bank Maintenance Document."
+        NM="Initiate Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974492DEF33E0404F8189D84F24" PERM_ID="117"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to modify the information on the Assignees Tab of the Role Document and the Roles section of the Membership Tab on the Person Document for roles with a Module Code beginning with KFS."
+        NM="Assign Role" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974492FEF33E0404F8189D84F24" PERM_ID="119"
+        PERM_TMPL_ID="35" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users access to screens in the KFS-AR module that are not documents, lookups, inquiries, or batch uploads, i.e. this primarily provides access to AR reports"
+        NM="Use Screen" NMSPC_CD="KFS-AR"
+        OBJ_ID="5B4F097448C4EF33E0404F8189D84F24" PERM_ID="12"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to modify the information on the Permissions tab of the Role Document for roles with a module code beginning with KFS."
+        NM="Grant Permission" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F09744930EF33E0404F8189D84F24" PERM_ID="120"
+        PERM_TMPL_ID="36" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to modify the information on the Responsibility tab of the Role Document for roles with a Module Code that begins with KFS."
+        NM="Grant Responsibility" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F09744931EF33E0404F8189D84F24" PERM_ID="121"
+        PERM_TMPL_ID="37" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to modify the information on the Assignees Tab of the Group Document and the Group section of the Membership Tab on the Person Document for groups with namespaces beginning with KFS."
+        NM="Populate Group" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F09744932EF33E0404F8189D84F24" PERM_ID="122"
+        PERM_TMPL_ID="38" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire bank account number on the Bank document and Inquiry."
+        NM="Full Unmask Field" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F09744938EF33E0404F8189D84F24" PERM_ID="128"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access KFS inquiries."
+        NM="Inquire Into Records" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F09744939EF33E0404F8189D84F24" PERM_ID="129"
+        PERM_TMPL_ID="24" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allow users to access KFS lookups."
+        NM="Look Up Records" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974493AEF33E0404F8189D84F24" PERM_ID="130"
+        PERM_TMPL_ID="23" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to initiate and edit the Parameter document for pameters with a module code beginning with KFS."
+        NM="Maintain System Parameter" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974493BEF33E0404F8189D84F24" PERM_ID="131"
+        PERM_TMPL_ID="34" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access and run Batch Jobs associated with KFS modules via the Schedule link."
+        NM="Modify Batch Job" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974493CEF33E0404F8189D84F24" PERM_ID="132"
+        PERM_TMPL_ID="32" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to open KFS Financial System Documents."
+        NM="Open Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974493DEF33E0404F8189D84F24" PERM_ID="133"
+        PERM_TMPL_ID="40" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the last four-digits of the bank account number on the Bank document and Inquiry."
+        NM="Partial Unmask Field" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974493EEF33E0404F8189D84F24" PERM_ID="134"
+        PERM_TMPL_ID="28" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users access to screens in the KFS that are not documents, lookups, inquiries, or batch uploads."
+        NM="Use Screen" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F0974493FEF33E0404F8189D84F24" PERM_ID="135"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to initiate the Vendor Maintenance Document."
+        NM="Initiate Document" NMSPC_CD="KFS-VND"
+        OBJ_ID="5B4F09744940EF33E0404F8189D84F24" PERM_ID="136"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire Tax Number on the Vendor Maintenance Document and Inquiry."
+        NM="Full Unmask Field" NMSPC_CD="KFS-VND"
+        OBJ_ID="5B4F09744941EF33E0404F8189D84F24" PERM_ID="137"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to modify the Tax Number on a Vendor Maintenance Document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-VND"
+        OBJ_ID="5B4F09744942EF33E0404F8189D84F24" PERM_ID="138"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to see and edit the Contracts Tab on the Vendor Maintenance Document."
+        NM="Modify Maintenance Document Section" NMSPC_CD="KFS-VND"
+        OBJ_ID="5B4F09744943EF33E0404F8189D84F24" PERM_ID="139"
+        PERM_TMPL_ID="44" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Document Operation screen."
+        NM="Use Screen" NMSPC_CD="KR-WKFLW"
+        OBJ_ID="5B4F09744944EF33E0404F8189D84F24" PERM_ID="140"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Java Security Management screen. This should be granted to developers."
+        NM="Use Screen" NMSPC_CD="KR-BUS"
+        OBJ_ID="5B4F09744945EF33E0404F8189D84F24" PERM_ID="141"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Message Queue screen."
+        NM="Use Screen" NMSPC_CD="KR-BUS"
+        OBJ_ID="5B4F09744946EF33E0404F8189D84F24" PERM_ID="142"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Service Registry screen."
+        NM="Use Screen" NMSPC_CD="KR-BUS"
+        OBJ_ID="5B4F09744947EF33E0404F8189D84F24" PERM_ID="143"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Thread Pool screen."
+        NM="Use Screen" NMSPC_CD="KR-BUS"
+        OBJ_ID="5B4F09744948EF33E0404F8189D84F24" PERM_ID="144"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Quartz Queue screen. This should be granted to developers."
+        NM="Use Screen" NMSPC_CD="KR-BUS"
+        OBJ_ID="5B4F09744949EF33E0404F8189D84F24" PERM_ID="145"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take Approve, Acknowledge or FYI action on KUALI documents Ad Hoc routed to them."
+        NM="Ad Hoc Review Document" NMSPC_CD="KUALI"
+        OBJ_ID="5B4F0974494AEF33E0404F8189D84F24" PERM_ID="146"
+        PERM_TMPL_ID="9" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to open RICE Documents via the Super search option in Document Search and take Administrative workflow actions on them (such as approving the document, approving individual requests, or sending the document to a specified route node)."
+        NM="Administer Routing for Document" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974494BEF33E0404F8189D84F24" PERM_ID="147"
+        PERM_TMPL_ID="3" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Blanket Approval button on RICE Documents."
+        NM="Blanket Approve Document" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974494CEF33E0404F8189D84F24" PERM_ID="148"
+        PERM_TMPL_ID="4" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of RICE Documents."
+        NM="Initiate Document" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974494DEF33E0404F8189D84F24" PERM_ID="149"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Capital Asset Builder screens (Purchasing/Accounts Payable Transactions and Other General Ledger Transactions)."
+        NM="Use Screen" NMSPC_CD="KFS-CAB"
+        OBJ_ID="5B4F097448C7EF33E0404F8189D84F24" PERM_ID="15"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to modify the information on the Assignees Tab of the Role Document and the Roles section of the Membership Tab on the Person Document for Roles with a Module Code beginning with KR. "
+        NM="Assign Role" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974494EEF33E0404F8189D84F24" PERM_ID="150"
+        PERM_TMPL_ID="35" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to modify the information on the Permissions tab of the Role Document for roles with a module code beginning with KR."
+        NM="Grant Permission" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974494FEF33E0404F8189D84F24" PERM_ID="151"
+        PERM_TMPL_ID="36" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to modify the information on the Responsibility tab of the Role Document for roles with a Module Code that begins with KR."
+        NM="Grant Responsibility" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F09744950EF33E0404F8189D84F24" PERM_ID="152"
+        PERM_TMPL_ID="37" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to modify the information on the Assignees Tab of the Group Document and the Group section of the Membership Tab on the Person Document for groups with namespaces beginning with KR."
+        NM="Populate Group" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F09744953EF33E0404F8189D84F24" PERM_ID="155"
+        PERM_TMPL_ID="38" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Copy button on KFS Financial System Documents."
+        NM="Copy Document" NMSPC_CD="KUALI"
+        OBJ_ID="5B4F09744954EF33E0404F8189D84F24" PERM_ID="156"
+        PERM_TMPL_ID="2" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Asset Payments Document."
+        NM="Initiate Document" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448C8EF33E0404F8189D84F24" PERM_ID="16"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access Kuali RICE inquiries."
+        NM="Inquire Into Records" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F09744959EF33E0404F8189D84F24" PERM_ID="161"
+        PERM_TMPL_ID="24" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allow users to access Kuali RICE lookups."
+        NM="Look Up Records" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974495AEF33E0404F8189D84F24" PERM_ID="162"
+        PERM_TMPL_ID="23" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes to initiate and edit the Parameter document for parameters with a module code beginning with KR."
+        NM="Maintain System Parameter" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974495BEF33E0404F8189D84F24" PERM_ID="163"
+        PERM_TMPL_ID="34" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access and run Batch Jobs associated with KR modules via the Schedule link."
+        NM="Modify Batch Job" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974495CEF33E0404F8189D84F24" PERM_ID="164"
+        PERM_TMPL_ID="32" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to open RICE Documents."
+        NM="Open Document" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974495DEF33E0404F8189D84F24" PERM_ID="165"
+        PERM_TMPL_ID="40" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access all RICE screens."
+        NM="Use Screen" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974495EEF33E0404F8189D84F24" PERM_ID="166"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to cancel a document prior to it being submitted for routing."
+        NM="Cancel Document" NMSPC_CD="KUALI"
+        OBJ_ID="5B4F0974495FEF33E0404F8189D84F24" PERM_ID="167"
+        PERM_TMPL_ID="14" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to submit a document for routing."
+        NM="Route Document" NMSPC_CD="KUALI"
+        OBJ_ID="5B4F09744960EF33E0404F8189D84F24" PERM_ID="168"
+        PERM_TMPL_ID="5" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes user to save documents answering to the FinancialSystemDocument parent document Type."
+        NM="Save Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4F09744961EF33E0404F8189D84F24" PERM_ID="169"
+        PERM_TMPL_ID="15" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Barcode Inventory Error Document."
+        NM="Initiate Document" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448C9EF33E0404F8189D84F24" PERM_ID="17"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take the Approve action on KFS documents routed to them."
+        NM="Take Requested Action" NMSPC_CD="KUALI"
+        OBJ_ID="5B4F09744962EF33E0404F8189D84F24" PERM_ID="170"
+        PERM_TMPL_ID="8" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take the FYI action on KFS documents routed to them."
+        NM="Take Requested Action" NMSPC_CD="KUALI"
+        OBJ_ID="5B4F09744964EF33E0404F8189D84F24" PERM_ID="172"
+        PERM_TMPL_ID="8" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take the Acknowledge action on KFS documents routed to them."
+        NM="Take Requested Action" NMSPC_CD="KUALI"
+        OBJ_ID="5B4F09744965EF33E0404F8189D84F24" PERM_ID="173"
+        PERM_TMPL_ID="8" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to login to the Kuali portal."
+        NM="Log In" NMSPC_CD="KUALI"
+        OBJ_ID="5B4F09744966EF33E0404F8189D84F24" PERM_ID="174"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Capital Asset Management Transactional Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448CAEF33E0404F8189D84F24" PERM_ID="18"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to edit Kuali documents prior to them being submitted for routing."
+        NM="Edit Document" NMSPC_CD="KUALI"
+        OBJ_ID="5B4F0974496CEF33E0404F8189D84F24" PERM_ID="180"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to edit Kuali documents that are in ENROUTE status."
+        NM="Edit Document" NMSPC_CD="KUALI"
+        OBJ_ID="5B4F0974496DEF33E0404F8189D84F24" PERM_ID="181"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the password field on the Person document and inquriy."
+        NM="Full Unmask Field" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B4F0974496FEF33E0404F8189D84F24" PERM_ID="183"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Vendor Commodity Codes tab on the Vendor document. "
+        NM="Modify Maintenance Document Section" NMSPC_CD="KFS-VND"
+        OBJ_ID="5B9C5519D6147C14E0404F8189D82548" PERM_ID="184"
+        PERM_TMPL_ID="44" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users who can edit the Cash Management Document prior to it being submitted for routing."
+        NM="Edit Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B9C5519D6177C14E0404F8189D82548" PERM_ID="185"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to view the tax id in the Disbursement Voucher."
+        NM="Full Unmask Field" NMSPC_CD="KFS-FP"
+        OBJ_ID="5C4970B2B2E48277E0404F8189D80B30" PERM_ID="187"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on an Invoice document that has not yet been submitted for routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-AR"
+        OBJ_ID="5D280C0EE307FEAEE0404F8189D823B5" PERM_ID="188"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Target accounting lines on a Procurement Card Document that is at the Account Full Entry Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="5D280C0EE315FEAEE0404F8189D823B5" PERM_ID="189"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Capital Asset Complex Maintenance Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448CBEF33E0404F8189D84F24" PERM_ID="19"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on documents answering to the parent document Financial Processing Transactional Document when a document is at the Account Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="5D280C0EE31CFEAEE0404F8189D823B5" PERM_ID="190"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Target accounting lines on documents answering to the parent document Financial Processing Transactional Document when a document is at the Account Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="5D280C0EE323FEAEE0404F8189D823B5" PERM_ID="191"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the object code of Source accounting lines on a Disbursement Voucher document that is at the Campus Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="5D280C0EE32AFEAEE0404F8189D823B5" PERM_ID="192"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the amount of Source accounting lines on a Disbursement Voucher document that is at the Tax Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="5D280C0EE32FFEAEE0404F8189D823B5" PERM_ID="193"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the amount of Source accounting lines on a Disbursement Voucher document that is at the Travel Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="5D280C0EE334FEAEE0404F8189D823B5" PERM_ID="194"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the amount of Source accounting lines on a Disbursement Voucher document that is at the Payment Method Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="5D280C0EE339FEAEE0404F8189D823B5" PERM_ID="195"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Target accounting lines on documents answering to the parent document Labor Distribution Transactional Document when a document is at the Account Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-LD"
+        OBJ_ID="5D280C0EE33EFEAEE0404F8189D823B5" PERM_ID="196"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the object code on Target (To side) accounting lines of the Salary Expense Transfer document."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-LD"
+        OBJ_ID="5D280C0EE345FEAEE0404F8189D823B5" PERM_ID="197"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on documents answering to the parent document Purchasing Transactional Document when a document is at the Account Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5D280C0EE349FEAEE0404F8189D823B5" PERM_ID="198"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on documents answering to the parent document Accounts PayableTransactional Document when a document is at the Account Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5D280C0EE350FEAEE0404F8189D823B5" PERM_ID="199"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allow the creation of negative payments when processing an Asset document. "
+        NM="Add Negative Payments" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448CCEF33E0404F8189D84F24" PERM_ID="20"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on Asset Payment document at the Account Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5D280C0EE30EFEAEE0404F8189D823B5" PERM_ID="200"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Blanket Approval button on the Proposal Document."
+        NM="Blanket Approve Document" NMSPC_CD="KFS-CG"
+        OBJ_ID="5DA3CD65603FA8ECE0404F8189D830C0" PERM_ID="201"
+        PERM_TMPL_ID="4" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Salary Expense Transfer Document."
+        NM="Initiate Document" NMSPC_CD="KFS-LD"
+        OBJ_ID="5DA3CD656044A8ECE0404F8189D830C0" PERM_ID="202"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to open Purchase Order Documents (and their children document types) via the Super search option in Document Search and take Administrative workflow actions on them (such as approving the document, approving individual requests, or sending the document to a specified route node)."
+        NM="Administer Routing for Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5DA3CD656048A8ECE0404F8189D830C0" PERM_ID="203"
+        PERM_TMPL_ID="3" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to open documents answering to Accounts Payable Transactional Documents (and their children document types) via the Super search option in Document Search and take Administrative workflow actions on them (such as approving the document, approving individual requests, or sending the document to a specified route node)."
+        NM="Administer Routing for Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5DA3CD65604CA8ECE0404F8189D830C0" PERM_ID="204"
+        PERM_TMPL_ID="3" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Blanket Approval button on the Salary Expense Transfer Document."
+        NM="Blanket Approve Document" NMSPC_CD="KFS-LD"
+        OBJ_ID="5DA3CD656050A8ECE0404F8189D830C0" PERM_ID="205"
+        PERM_TMPL_ID="4" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can access the Effort Detail Tab on the Effort Certification Document."
+        NM="Use Transactional Document" NMSPC_CD="KFS-EC"
+        OBJ_ID="5DCC180002FB6ED5E0404F8189D8271B" PERM_ID="206"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can access the Effort Summary Tab on the Effort Certification Document."
+        NM="Use Transactional Document" NMSPC_CD="KFS-EC"
+        OBJ_ID="5DCC180003006ED5E0404F8189D8271B" PERM_ID="207"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can complete the Nonresident Alien Tax Tab on the Disbursement Voucher document."
+        NM="Use Transactional Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="5DCC180003066ED5E0404F8189D8271B" PERM_ID="209"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users allowed to merge assets on the Asset Retirement document."
+        NM="Merge" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448CDEF33E0404F8189D84F24" PERM_ID="21"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Foreign Draft tab and disbursement amount on Disbursement Voucher documents."
+        NM="Use Transactional Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="5DCC180003096ED5E0404F8189D8271B" PERM_ID="210"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify Wire Transfer tab and disbursement amount on Disbursement Voucher documents."
+        NM="Use Transactional Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="5DCC1800030C6ED5E0404F8189D8271B" PERM_ID="211"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify Non-Employee Travel Expense tab, disbursement amount on Disbursement Voucher documents."
+        NM="Use Transactional Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="5DCC1800030F6ED5E0404F8189D8271B" PERM_ID="212"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can edit specific data on a Payment Request or Credit Memo before the document is extracted to PDP."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5DCC180003206ED5E0404F8189D8271B" PERM_ID="217"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users allowed to capitalize assets with dollar amounts below the institution's Capitalization limit."
+        NM="Override CAPITALIZATION_LIMIT_AMOUNT" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448CEEF33E0404F8189D84F24" PERM_ID="22"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can edit the Bank Code field on documents answering to the parent document Financial System Transactional Document."
+        NM="Edit Bank Code" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5DCC1800032A6ED5E0404F8189D8271B" PERM_ID="220"
+        PERM_TMPL_ID="48" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can open the Budget Construction document."
+        NM="Open Document" NMSPC_CD="KFS-BC"
+        OBJ_ID="5DCC1800033B6ED5E0404F8189D8271B" PERM_ID="225"
+        PERM_TMPL_ID="40" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Import/Export Payrate screen in Budget Construction. By default granted to processors for the top level organization in the org hierarchy."
+        NM="Import / Export Payrate" NMSPC_CD="KFS-BC"
+        OBJ_ID="5DCC180003446ED5E0404F8189D8271B" PERM_ID="228"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Unlock screen in Budget Construction. By default granted to processors for the top level organization in the org hierarchy."
+        NM="Unlock" NMSPC_CD="KFS-BC"
+        OBJ_ID="5DCC180003486ED5E0404F8189D8271B" PERM_ID="229"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can choose the Raze Asset Retirement Reason."
+        NM="Raze" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448CFEF33E0404F8189D84F24" PERM_ID="23"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who receive an option to override the edit preventing the submission of Salary Expense Transfers involving an open Effort Certification Period."
+        NM="Override Transfer Impacting Open Effort Certification"
+        NMSPC_CD="KFS-LD" OBJ_ID="5DCC1800034C6ED5E0404F8189D8271B"
+        PERM_ID="230" PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the last four-digits of the bank account number on the Payee ACH document and Inquiry."
+        NM="Partial Unmask Field" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5DCC180003546ED5E0404F8189D8271B" PERM_ID="233"
+        PERM_TMPL_ID="28" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire bank routing number on the ACH Bank document and Inquiry."
+        NM="Full Unmask Field" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5DCC180003586ED5E0404F8189D8271B" PERM_ID="234"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire bank account number on the Payee ACH document and Inquiry."
+        NM="Full Unmask Field" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5DCC1800035C6ED5E0404F8189D8271B" PERM_ID="235"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire bank routing number on the Payee ACH document and Inquiry."
+        NM="Full Unmask Field" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5DCC180003606ED5E0404F8189D8271B" PERM_ID="236"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on documents answering to the parent document Accounts Financial Processing Transactional Document when a document has not yet been submitted for routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="5DF1906405C97753E0404F8189D816D9" PERM_ID="238"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Target accounting lines on documents answering to the parent document Financial Processing Transactional Document when a document has not yet been submitted for routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="5DF1906405CE7753E0404F8189D816D9" PERM_ID="239"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users allowed to retire more than one asset on an Asset Retirement document."
+        NM="Retire Multiple" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448D0EF33E0404F8189D84F24" PERM_ID="24"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Target accounting lines on documents answering to the parent document Labor Distribution Transactional Document  when a document has not yet been submitted for routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFs-LD"
+        OBJ_ID="5DF1906405D37753E0404F8189D816D9" PERM_ID="240"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on documents answering to the parent document Purchasing Transactional Document when a document has not yet been submitted for routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5DF1906405D87753E0404F8189D816D9" PERM_ID="241"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on documents answering to the parent document Accounts PayableTransactional Document when a document has not yet been submitted for routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5DF1906405DD7753E0404F8189D816D9" PERM_ID="242"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on an Invoice document that has not yet been submitted for routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-AR"
+        OBJ_ID="5DF1906405E27753E0404F8189D816D9" PERM_ID="243"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on documents answering to the parent document Capital Asset ManagementTransactional Document  when a document has not yet been submitted for routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5DF1906405E77753E0404F8189D816D9" PERM_ID="244"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Customer Document."
+        NM="Initiate Document" NMSPC_CD="KFS-AR"
+        OBJ_ID="5E19DAC3F0CC3498E0404F8189D8741D" PERM_ID="245"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Invoice Document."
+        NM="Initiate Document" NMSPC_CD="KFS-AR"
+        OBJ_ID="5E19DAC3F0D03498E0404F8189D8741D" PERM_ID="246"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Budget Construction Document."
+        NM="Initiate Document" NMSPC_CD="KFS-BC"
+        OBJ_ID="5E57281A2530D7EDE0404F8189D82F19" PERM_ID="247"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users allowed to create new and maintain existing records using the Organization Options document."
+        NM="Create / Maintain Record(s)" NMSPC_CD="KFS-AR"
+        OBJ_ID="5F1FA72FC64A8E55E0404F8189D83F28" PERM_ID="248"
+        PERM_TMPL_ID="42" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users allowed to maintain existing (but not create new) records using the Organization Options document."
+        NM="Create / Maintain Record(s)" NMSPC_CD="KFS-AR"
+        OBJ_ID="5F1FA72FC64B8E55E0404F8189D83F28" PERM_ID="249"
+        PERM_TMPL_ID="42" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to retire non-movable assets."
+        NM="Retire Non-Movable Assets" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448D1EF33E0404F8189D84F24" PERM_ID="25"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users allowed to create new and maintain existing  records using the Asset document."
+        NM="Create / Maintain Record(s)" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5F1FA72FC64C8E55E0404F8189D83F28" PERM_ID="250"
+        PERM_TMPL_ID="42" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access Budget Construction Selection."
+        NM="Use Screen" NMSPC_CD="KFS-BC"
+        OBJ_ID="5F987EF9F4F5478FE0404F8189D867E1" PERM_ID="251"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allow users to access the Batch File lookup."
+        NM="Look Up Records" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5F9C33A1C810EE45E0404F8189D87C4B" PERM_ID="256"
+        PERM_TMPL_ID="23" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take the Print action on a Purchase Order."
+        NM="Use Screen" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5FE81CA91F88ABCCE0404F8189D82F94" PERM_ID="257"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can add notes and attachments to the Payment Request document when it is at the Invoice Attachment route node."
+        NM="Add Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="60572547C6C073C9E0404F8189D84924" PERM_ID="258"
+        PERM_TMPL_ID="45" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can add notes and attachments to any document answering to the Kuali Document parent document type."
+        NM="Add Note / Attachment" NMSPC_CD="KUALI"
+        OBJ_ID="60572547C6C473C9E0404F8189D84924" PERM_ID="259"
+        PERM_TMPL_ID="45" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to separate assets." NM="Separate"
+        NMSPC_CD="KFS-CAM" OBJ_ID="5B4F097448D2EF33E0404F8189D84F24"
+        PERM_ID="26" PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view attachments with a type of &quot;Invoice Image&quot; on Payment Request documents."
+        NM="View Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="60572547C6C773C9E0404F8189D84924" PERM_ID="260"
+        PERM_TMPL_ID="46" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view notes and attachments on documents answering to the KualiDocument parent document type."
+        NM="View Note / Attachment" NMSPC_CD="KUALI"
+        OBJ_ID="60572547C6CD73C9E0404F8189D84924" PERM_ID="261"
+        PERM_TMPL_ID="46" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to delete notes and attachments created by any user on documents answering to the Financial System Document parent document type."
+        NM="Delete Note / Attachment" NMSPC_CD="KFS-SYS"
+        OBJ_ID="60572547C6D473C9E0404F8189D84924" PERM_ID="263"
+        PERM_TMPL_ID="47" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to delete notes and attachments created by any user on documents answering to the RICE Document parent document type."
+        NM="Delete Note / Attachment" NMSPC_CD="KR-SYS"
+        OBJ_ID="60572547C6D873C9E0404F8189D84924" PERM_ID="264"
+        PERM_TMPL_ID="47" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the XML Ingester screen."
+        NM="Use Screen" NMSPC_CD="KR-WKFLW"
+        OBJ_ID="60728838C97BD431E0404F8189D87C83" PERM_ID="265"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="The budget construction document does not really use workflow, and all editing is done after the workflow status is final. This permission allows the derived, Budget Construction Document Editor role to allow access to edit the document based on other roles, e.g. Fiscal Officer for account, Organization Reveiwer for org."
+        NM="Edit Document" NMSPC_CD="KFS-BC"
+        OBJ_ID="6074D3D2A181C70AE0404F8189D8193D" PERM_ID="266"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users who can edit Payment Request Documents that are in ENROUTE status."
+        NM="Edit Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6074D3D2A189C70AE0404F8189D8193D" PERM_ID="268"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to open Purchasing Accounts Payable Transactional documents."
+        NM="Open Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="60BB10499BD719E2E0404F8189D8599C" PERM_ID="269"
+        PERM_TMPL_ID="40" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users who can transfer non-movable assets."
+        NM="Transfer Non-Movable Assets" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448D3EF33E0404F8189D84F24" PERM_ID="27"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take the Print action on a Purchase Order."
+        NM="Use Screen" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6074D3D2A191C70AE0404F8189D8193D" PERM_ID="270"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Electronic Funds Transfer screen."
+        NM="Use Screen" NMSPC_CD="KFS-SYS"
+        OBJ_ID="6074D3D2A194C70AE0404F8189D8193D" PERM_ID="271"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can print a Purchase Order document."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6074D3D2A198C70AE0404F8189D8193D" PERM_ID="272"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can preview a Purchase Order document before printing it."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6074D3D2A19CC70AE0404F8189D8193D" PERM_ID="273"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can assign sensitive data to a Purchase Order document which locks down who is allowed to view the PO and its related documents."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6074D3D2A19FC70AE0404F8189D8193D" PERM_ID="274"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can resend Purchase Order cxml to the B2B integrator."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6074D3D2A1A2C70AE0404F8189D8193D" PERM_ID="275"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to take the Request Cancel action on Payment Request documents."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6074D3D2A1A5C70AE0404F8189D8193D" PERM_ID="276"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to remove Holds or Cancels on Payment Request documents."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6074D3D2A1A8C70AE0404F8189D8193D" PERM_ID="277"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on documents answering to the parent document Labor Distribution Transactional Document  when a document has yet to be submitted for routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-LD"
+        OBJ_ID="6088196F50A3AF50E0404F8189D80163" PERM_ID="279"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users who can use the Acquisition Type of &quot;New&quot; on the Asset document."
+        NM="Use Acquisition Type &quot;New&quot;" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448D4EF33E0404F8189D84F24" PERM_ID="28"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on a Procurement Card Document that is at the Account Full Entry Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="6088196F50AAAF50E0404F8189D80163" PERM_ID="280"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Target accounting lines on a Procurement Card Document that is at the Account Full Entry Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="6088196F50AFAF50E0404F8189D80163" PERM_ID="281"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can cancel Payment Request or Credit Memo documents at a manager level."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6088196F50B4AF50E0404F8189D80163" PERM_ID="282"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can cancel Payment Request or Credit Memo documents at a processor level."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6088196F50B7AF50E0404F8189D80163" PERM_ID="283"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to open the Contract Manager Assignment Document."
+        NM="Open Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="60BB10499BDA19E2E0404F8189D8599C" PERM_ID="284"
+        PERM_TMPL_ID="40" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access all Pre-Disbursement Processor screens."
+        NM="Use Screen" NMSPC_CD="KFS-PDP"
+        OBJ_ID="6117D89A95592A3CE0404F8189D81412" PERM_ID="285"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to put Payment Request documents on Hold."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6117D89A955C2A3CE0404F8189D81412" PERM_ID="286"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access Balance Inquiry screens. "
+        NM="Use Screen" NMSPC_CD="KFS-GL"
+        OBJ_ID="6117D89A956C2A3CE0404F8189D81412" PERM_ID="287"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Some Rice client applications use pessimistic locking, i.e. if one user is editing a document, a lock is established to prevent other users from editing at the same time. This permission gives users the ability to administer those locks (when a user establishes a lock and leaves without submitting the document and another user needs to edit) via the pessimistic locking administration screen."
+        NM="Administer Pessimistic Locking" NMSPC_CD="KR-NS"
+        OBJ_ID="611A10C08A65B1AEE0404F8189D83853" PERM_ID="289"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows the use of restricted retirement reasons on the Asset or Asset Retirement Global documents."
+        NM="Use Restricted Retirement Reason" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448D5EF33E0404F8189D84F24" PERM_ID="29"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can save RICE documents." NM="Save Document"
+        NMSPC_CD="KR-SYS" OBJ_ID="61815E6C62D1B647E0404F8189D873B3"
+        PERM_ID="290" PERM_TMPL_ID="15" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to open the Electronic Invoice Reject Document."
+        NM="Open Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="618EBF792B279E6BE0404F8189D87EDB" PERM_ID="291"
+        PERM_TMPL_ID="40" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to upload eInvoice files."
+        NM="Upload Batch Input File(s)" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="61CFF4D7C645B762E0404F8189D81CE3" PERM_ID="292"
+        PERM_TMPL_ID="33" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to put Credit Memo documents on Hold."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="61CFF4D7C64FB762E0404F8189D81CE3" PERM_ID="293"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to remove a Hold from Credit Memo documents."
+        NM="Use Transactional Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="61CFF4D7C652B762E0404F8189D81CE3" PERM_ID="294"
+        PERM_TMPL_ID="31" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access Organizaton Salary Setting within Budget Construction."
+        NM="Use Organization Salary Setting" NMSPC_CD="KFS-BC"
+        OBJ_ID="61CFF4D7C656B762E0404F8189D81CE3" PERM_ID="295"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to edit Appointment Funding Lines within Budget Construction Salary Setting."
+        NM="Edit Appointment Funding" NMSPC_CD="KFS-BC"
+        OBJ_ID="61CFF4D7C658B762E0404F8189D81CE3" PERM_ID="296"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view Appointment Funding Lines within Budget Construction Salary Setting."
+        NM="View Appointment Funding Amounts" NMSPC_CD="KFS-BC"
+        OBJ_ID="61CFF4D7C65CB762E0404F8189D81CE3" PERM_ID="297"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to access other user's action lists via the Help Desk Action List Login."
+        NM="View Other Action List" NMSPC_CD="KR-WKFLW"
+        OBJ_ID="61FAD8F940E3654EE0404F8189D82E75" PERM_ID="298"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows power users to bypass the security associated with certain document types to limit the result set."
+        NM="Unrestricted Document Search" NMSPC_CD="KR-WKFLW"
+        OBJ_ID="61FAD8F940E6654EE0404F8189D82E75" PERM_ID="299"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Accounts Receivable Complex Maintenance Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-AR"
+        OBJ_ID="5B4F097448BBEF33E0404F8189D84F24" PERM_ID="3"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to see menu of balance inquiries after hitting &quot;balance inquiry&quot; button on an accounting line in an accounting document."
+        NM="Use Screen" NMSPC_CD="KFS-GL"
+        OBJ_ID="62234998E8A5F161E0404F8189D873B2" PERM_ID="301"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Asset Depreciation Document."
+        NM="Initiate Document" NMSPC_CD="KFS-CAM"
+        OBJ_ID="62234998E8A8F161E0404F8189D873B2" PERM_ID="302"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the CAB AP and GL Transactions screens."
+        NM="Look Up Records" NMSPC_CD="KFS-CAB"
+        OBJ_ID="62FF3D2EAB1454D5E0404F8189D879AE" PERM_ID="303"
+        PERM_TMPL_ID="23" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access Capital Asset Builder inquiries."
+        NM="Inquire Into Records" NMSPC_CD="KFS-CAB"
+        OBJ_ID="62FF3D2EAB1554D5E0404F8189D879AE" PERM_ID="304"
+        PERM_TMPL_ID="24" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users allowed to create new and maintain existing  records using the Customer Invoice Item Code document."
+        NM="Create / Maintain Record(s)" NMSPC_CD="KFS-AR"
+        OBJ_ID="62FF3D2EAB2954D5E0404F8189D879AE" PERM_ID="305"
+        PERM_TMPL_ID="42" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire Tax Identification Number on the Person Document."
+        NM="Full Unmask Field" NMSPC_CD="KR-SYS"
+        OBJ_ID="6314CC58CF58B7B5E0404F8189D84439" PERM_ID="306"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify entity records in Kuali Identity Management."
+        NM="Modify Entity" NMSPC_CD="KR-IDM"
+        OBJ_ID="638DD46953F9BCD5E0404F8189D86240" PERM_ID="307"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on a Requisition Document that is at the Initiator Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954ADBCD5E0404F8189D86240" PERM_ID="308"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to add notes and attachments with a type of &quot;Contracts&quot; to the Purchase Order document. "
+        NM="Add Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954CABCD5E0404F8189D86240" PERM_ID="313"
+        PERM_TMPL_ID="45" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view attachments with a type of &quot;Contract&quot; on Purchase Order documents and documents answering to that document type."
+        NM="View Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954CEBCD5E0404F8189D86240" PERM_ID="314"
+        PERM_TMPL_ID="46" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to add notes and attachments with a type of &quot;Contract&quot; on Purchase Order documents and documents answering to that document type."
+        NM="Add Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954D2BCD5E0404F8189D86240" PERM_ID="315"
+        PERM_TMPL_ID="45" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view attachments with a type of &quot;Contract Amendments&quot; on Purchase Order documents and documents answering to that document type."
+        NM="View Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954D6BCD5E0404F8189D86240" PERM_ID="316"
+        PERM_TMPL_ID="46" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to add notes and attachments with a type of &quot;Quotes&quot; on Purchase Order documents and documents answering to that document type."
+        NM="Add Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954DABCD5E0404F8189D86240" PERM_ID="317"
+        PERM_TMPL_ID="45" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view attachments with a type of &quot;Quotes&quot; on Purchase Order documents and documents answering to that document type."
+        NM="View Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954DEBCD5E0404F8189D86240" PERM_ID="318"
+        PERM_TMPL_ID="46" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to add notes and attachments with a type of &quot;RFPs&quot; on Purchase Order documents and documents answering to that document type."
+        NM="Add Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954E2BCD5E0404F8189D86240" PERM_ID="319"
+        PERM_TMPL_ID="45" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Owner Chart of Accounts Code field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448D8EF33E0404F8189D84F24" PERM_ID="32"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view attachments with a type of &quot;RFPs&quot; on Purchase Order documents and documents answering to that document type."
+        NM="View Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954E6BCD5E0404F8189D86240" PERM_ID="320"
+        PERM_TMPL_ID="46" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to add notes and attachments with a type of &quot;RFP&quot; on Purchase Order documents and documents answering to that document type."
+        NM="Add Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954EABCD5E0404F8189D86240" PERM_ID="321"
+        PERM_TMPL_ID="45" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view attachments with a type of &quot;RFP&quot; on Purchase Order documents and documents answering to that document type."
+        NM="View Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954EEBCD5E0404F8189D86240" PERM_ID="322"
+        PERM_TMPL_ID="46" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to add notes or attachments with a type of &quot;Other-Restricted&quot; on Purchase Order documents and documents answering to that document type."
+        NM="Add Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954F2BCD5E0404F8189D86240" PERM_ID="323"
+        PERM_TMPL_ID="45" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view attachments with a type of &quot;Other-Restricted&quot; on Purchase Order documents and documents answering to that document type."
+        NM="View Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954F6BCD5E0404F8189D86240" PERM_ID="324"
+        PERM_TMPL_ID="46" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to add notes or attachments with a type of &quot;Credit Memo Image&quot; on Credit Memo documents."
+        NM="Add Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954FABCD5E0404F8189D86240" PERM_ID="325"
+        PERM_TMPL_ID="45" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view attachments with a type of &quot;Credit Memo Image&quot; on Credit Memo documents."
+        NM="View Note / Attachment" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954FEBCD5E0404F8189D86240" PERM_ID="326"
+        PERM_TMPL_ID="46" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows user to maintain the location of assets on the Asset document."
+        NM="Maintain Asset Location" NMSPC_CD="KFS-CAM"
+        OBJ_ID="638DD4695506BCD5E0404F8189D86240" PERM_ID="327"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on a Requisition Document that is at the Organization Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="638DD46954A8BCD5E0404F8189D86240" PERM_ID="328"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Cash Management Document screen that a user sees when they try to initiate and a document is already open for their campus. The screen provides them a link to the existing document for their campus."
+        NM="Use Screen" NMSPC_CD="KFS-FP"
+        OBJ_ID="6438AD772BAB8B3AE0404F8189D8530E" PERM_ID="329"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Owner Account Number field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448D9EF33E0404F8189D84F24" PERM_ID="33"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Cash Management Document screen from which a user can create new deposits."
+        NM="Use Screen" NMSPC_CD="KFS-FP"
+        OBJ_ID="64F1ACF8ADDB59E5E0404F8189D803B4" PERM_ID="330"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Cash Management Document screen from which a user can correct amounts on a closed cash drawer."
+        NM="Use Screen" NMSPC_CD="KFS-FP"
+        OBJ_ID="64F1ACF8ADDE59E5E0404F8189D803B4" PERM_ID="331"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to send FYI Ad-Hoc action requests."
+        NM="Send Ad Hoc Request" NMSPC_CD="KR-SYS"
+        OBJ_ID="662384B381B967A1E0404F8189D868A6" PERM_ID="332"
+        PERM_TMPL_ID="49" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to send Acknowledge Ad-Hoc action requests."
+        NM="Send Ad Hoc Request" NMSPC_CD="KR-SYS"
+        OBJ_ID="662384B381BD67A1E0404F8189D868A6" PERM_ID="333"
+        PERM_TMPL_ID="49" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to send Approve Ad-Hoc action requests."
+        NM="Send Ad Hoc Request" NMSPC_CD="KR-SYS"
+        OBJ_ID="662384B381C167A1E0404F8189D868A6" PERM_ID="334"
+        PERM_TMPL_ID="49" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to modify the Tax Type Code on a Vendor Maintenance Document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-VND"
+        OBJ_ID="6636059A1030F172E0404F8189D81C9E" PERM_ID="335"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Capital Asset In Service Date field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448DAEF33E0404F8189D84F24" PERM_ID="34"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Capital Asset Type Code field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="6636059A1055F172E0404F8189D81C9E" PERM_ID="342"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Capital Asset Description field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="6636059A105AF172E0404F8189D81C9E" PERM_ID="343"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Campus Tag Number field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="6636059A105FF172E0404F8189D81C9E" PERM_ID="344"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        NM="Perform Custom Maintenance Document Function"
+        NMSPC_CD="KFS-CAM" OBJ_ID="6636059A1064F172E0404F8189D81C9E"
+        PERM_ID="346" PERM_TMPL_ID="30" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        NM="Perform Custom Maintenance Document Function"
+        NMSPC_CD="KFS-CAM" OBJ_ID="6636059A1068F172E0404F8189D81C9E"
+        PERM_ID="347" PERM_TMPL_ID="30" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can view the Old Tag Number on the Asset document."
+        NM="View Inquiry or Maintenance Document Field"
+        NMSPC_CD="KFS-CAM" OBJ_ID="6636059A106CF172E0404F8189D81C9E"
+        PERM_ID="348" PERM_TMPL_ID="25" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of Customer Invoice Item Code Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-AR"
+        OBJ_ID="66485265ABC998C3E0404F8189D845FA" PERM_ID="349"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Agency Number field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448DBEF33E0404F8189D84F24" PERM_ID="35"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Cash Receipt Document."
+        NM="Initiate Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="66485265ABCE98C3E0404F8189D845FA" PERM_ID="350"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Identifies users that can be Account Supervisors."
+        NM="Serve As Account Supervisor" NMSPC_CD="KFS-COA"
+        OBJ_ID="66485265ABD398C3E0404F8189D845FA" PERM_ID="351"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Identifies users that can be Account Fiscal Officers."
+        NM="Serve As Fiscal Officer" NMSPC_CD="KFS-COA"
+        OBJ_ID="66485265ABD598C3E0404F8189D845FA" PERM_ID="352"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Identifies users that can be Account Fiscal Officer Delegates."
+        NM="Serve As Fiscal Officer Delegate" NMSPC_CD="KFS-COA"
+        OBJ_ID="66485265ABD798C3E0404F8189D845FA" PERM_ID="353"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y" DESC_TXT="???" NM="Use Screen"
+        NMSPC_CD="KFS-FP" OBJ_ID="66D7B2E1AA79F557E0404F8189D87B39"
+        PERM_ID="354" PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Source accounting lines on a Purchase Order Amendment Document that is at the New Unordered Items Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="67609A96DC1F6F7DE0404F8189D8352E" PERM_ID="355"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Credit Memo Document."
+        NM="Initiate Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="67B111DFDB500668E0404F8189D84701" PERM_ID="356"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Blanket Approval button on the Application Document."
+        NM="Blanket Approve Document" NMSPC_CD="KFS-AR"
+        OBJ_ID="67B111DFDB530668E0404F8189D84701" PERM_ID="357"
+        PERM_TMPL_ID="4" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the object code of Source accounting lines on a Disbursement Voucher Document that is at the Travel Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-FP"
+        OBJ_ID="67D9F640CA896D8AE0404F8189D84684" PERM_ID="358"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y" DESC_TXT="???" NM="Use Screen"
+        NMSPC_CD="KFS-FP" OBJ_ID="67D9F640CA8E6D8AE0404F8189D84684"
+        PERM_ID="359" PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Vendor Name field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448DCEF33E0404F8189D84F24" PERM_ID="36"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of Invoice Recurrence Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-AR"
+        OBJ_ID="67D9F640CA916D8AE0404F8189D84684" PERM_ID="360"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Cash Drawer Document."
+        NM="Initiate Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="67D9F640CA946D8AE0404F8189D84684" PERM_ID="361"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view batch files using the Batch File lookup screen."
+        NM="View Batch File(s)" NMSPC_CD="KFS-SYS"
+        OBJ_ID="67F145466E929160E0404F8189D86771" PERM_ID="362"
+        PERM_TMPL_ID="50" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allow users to access Pre Disbursement Processor lookups."
+        NM="Look Up Records" NMSPC_CD="KFS-PDP"
+        OBJ_ID="6814DC2DE51F58C9E0404F8189D83D19" PERM_ID="363"
+        PERM_TMPL_ID="23" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire Tax Number on the Vendor Maintenance Document and Inquiry."
+        NM="Full Unmask Field" NMSPC_CD="KFS-VND"
+        OBJ_ID="68544B6C959A40E0E0404F8189D84753" PERM_ID="364"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users who can edit Payment Request Documents that are in ENROUTE status."
+        NM="Edit Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="692E471E82C39AACE0404F8189D85128" PERM_ID="365"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users who can edit Payment Request Documents that are in ENROUTE status."
+        NM="Edit Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="692E471E82C79AACE0404F8189D85128" PERM_ID="366"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users who can edit Credit Memo Documents that are in PROCESSED status."
+        NM="Edit Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="692E471E82CB9AACE0404F8189D85128" PERM_ID="367"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users who can edit Credit Memo Documents that are in FINAL status."
+        NM="Edit Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="692E471E82CF9AACE0404F8189D85128" PERM_ID="368"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users allowed to create new and maintain existing records using the Organization Accounting Default document."
+        NM="Create / Maintain Record(s)" NMSPC_CD="KFS-AR"
+        OBJ_ID="6943B0B5253A27AFE0404F8189D863E7" PERM_ID="369"
+        PERM_TMPL_ID="42" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Old Tag Number field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448DDEF33E0404F8189D84F24" PERM_ID="37"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users allowed to maintain existing (but not create new) records using the Organization Accounting Default document."
+        NM="Create / Maintain Record(s)" NMSPC_CD="KFS-AR"
+        OBJ_ID="6943B0B5253E27AFE0404F8189D863E7" PERM_ID="370"
+        PERM_TMPL_ID="42" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to modify the Invoice Item Description of Source accounting lines on an Invoice document that is at the Recurrence Node of routing."
+        NM="Modify Accounting Lines" NMSPC_CD="KFS-AR"
+        OBJ_ID="6A58EE87F0FA5C78E0404F8189D845CE" PERM_ID="371"
+        PERM_TMPL_ID="41" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can edit the Bank Code field on the Cash Management Document."
+        NM="Edit Bank Code" NMSPC_CD="KFS-FP"
+        OBJ_ID="6A773987811E2AD2E0404F8189D87A20" PERM_ID="372"
+        PERM_TMPL_ID="48" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can edit the Bank Code field on the Payment Request Document."
+        NM="Edit Bank Code" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="6A77398781212AD2E0404F8189D87A20" PERM_ID="373"
+        PERM_TMPL_ID="48" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can edit the Bank Code field on the Disbursement Voucher Document."
+        NM="Edit Bank Code" NMSPC_CD="KFS-FP"
+        OBJ_ID="6A77398781242AD2E0404F8189D87A20" PERM_ID="374"
+        PERM_TMPL_ID="48" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Pre-Asset Tagging screens."
+        NM="Look Up Records" NMSPC_CD="KFS-CAB"
+        OBJ_ID="6A77398781282AD2E0404F8189D87A20" PERM_ID="375"
+        PERM_TMPL_ID="23" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users allowed to create new and maintain existing records using the Pre-Asset Tagging document."
+        NM="Create / Maintain Record(s)" NMSPC_CD="KFS-CAB"
+        OBJ_ID="6A773987812B2AD2E0404F8189D87A20" PERM_ID="376"
+        PERM_TMPL_ID="42" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to edit assets tagged in a prior fiscal year."
+        NM="Edit When Tagged Prior Fiscal Year" NMSPC_CD="KFS-CAM"
+        OBJ_ID="6A773987812E2AD2E0404F8189D87A20" PERM_ID="377"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows a user to override entity privacy preferences"
+        NM="Override Entity Privacy Preferences" NMSPC_CD="KR-IDM"
+        OBJ_ID="5B4F09744953EF33E0404F8189D84F29" PERM_ID="378"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the KIM Group document."
+        NM="Initiate Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="6DBEC6D5C2DCE1F4E0404F8189D87B64" PERM_ID="379"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Government Tag Number field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448DEEF33E0404F8189D84F24" PERM_ID="38"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Organization Reversion Global Document."
+        NM="Initiate Document" NMSPC_CD="KFS-COA"
+        OBJ_ID="6DBEC6D5C2DFE1F4E0404F8189D87B64" PERM_ID="380"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire bank account number on the Wire Transfer tab of the Disbursement Voucher document."
+        NM="Full Unmask Field" NMSPC_CD="KFS-FP"
+        OBJ_ID="6DBEC6D5C308E1F4E0404F8189D87B64" PERM_ID="381"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to edit Simple Maintenance document at the AdHoc route node."
+        NM="Edit Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="6DBEC6D5C30DE1F4E0404F8189D87B64" PERM_ID="382"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to edit Complex Maintenance document at the AdHoc route node."
+        NM="Edit Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="6DBEC6D5C30EE1F4E0404F8189D87B64" PERM_ID="383"
+        PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes user to access the Collector Flat File Upload page."
+        NM="Upload Batch Input File(s)" NMSPC_CD="KFS-GL"
+        OBJ_ID="6F7C1605ED30D47FE0404F8189D844F8" PERM_ID="385"
+        PERM_TMPL_ID="33" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire bank routing number on the Payment Detail Inquiry."
+        NM="Full Unmask Field" NMSPC_CD="KFS-PDP"
+        OBJ_ID="72859521CDE481E8E0404F8189D86618" PERM_ID="386"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire bank account number on the Payment Detail Inquiry."
+        NM="Full Unmask Field" NMSPC_CD="KFS-PDP"
+        OBJ_ID="72859521CDE881E8E0404F8189D86618" PERM_ID="387"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the National Stock Number field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448DFEF33E0404F8189D84F24" PERM_ID="39"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take the Approve action on KFS documents Ad Hoc routed to them."
+        NM="Ad Hoc Review Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="72859521CDF981E8E0404F8189D86618" PERM_ID="390"
+        PERM_TMPL_ID="9" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take the FYI action on KFS documents Ad Hoc routed to them."
+        NM="Ad Hoc Review Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="72859521CDFD81E8E0404F8189D86618" PERM_ID="391"
+        PERM_TMPL_ID="9" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take the Acknowledge action on KFS documents Ad Hoc routed to them."
+        NM="Ad Hoc Review Document" NMSPC_CD="KFS-SYS"
+        OBJ_ID="72859521CE0281E8E0404F8189D86618" PERM_ID="392"
+        PERM_TMPL_ID="9" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take any requested action on RICE documents Ad Hoc routed to them."
+        NM="Ad Hoc Review Document" NMSPC_CD="KUALI"
+        OBJ_ID="72859521CE0781E8E0404F8189D86618" PERM_ID="393"
+        PERM_TMPL_ID="9" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can modify the Financial Object Sub Type Code field on the Asset document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448E0EF33E0404F8189D84F24" PERM_ID="40"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to access the Barcode Inventory Process upload page."
+        NM="Upload Batch Input File(s)" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B4F097448E2EF33E0404F8189D84F24" PERM_ID="42"
+        PERM_TMPL_ID="33" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can view the Replacement Amount field on the Asset document."
+        NM="View Inquiry or Maintenance Document Field"
+        NMSPC_CD="KFS-CAM" OBJ_ID="5B4F097448E3EF33E0404F8189D84F24"
+        PERM_ID="43" PERM_TMPL_ID="25" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can view the Estimated Selling Price field on the Asset document."
+        NM="View Inquiry or Maintenance Document Field"
+        NMSPC_CD="KFS-CAM" OBJ_ID="5B4F097448E4EF33E0404F8189D84F24"
+        PERM_ID="44" PERM_TMPL_ID="25" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can view the Condition Code on the Asset document."
+        NM="View Inquiry or Maintenance Document Field"
+        NMSPC_CD="KFS-CAM" OBJ_ID="5B4F097448E6EF33E0404F8189D84F24"
+        PERM_ID="46" PERM_TMPL_ID="25" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can view the Land County Name on the Asset document."
+        NM="View Inquiry or Maintenance Document Field"
+        NMSPC_CD="KFS-CAM" OBJ_ID="5B4F097448E7EF33E0404F8189D84F24"
+        PERM_ID="47" PERM_TMPL_ID="25" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can view the Land Acreage Size on the Asset document."
+        NM="View Inquiry or Maintenance Document Field"
+        NMSPC_CD="KFS-CAM" OBJ_ID="5B4F097448E8EF33E0404F8189D84F24"
+        PERM_ID="48" PERM_TMPL_ID="25" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can view the Land Parcel Number on the Asset document."
+        NM="View Inquiry or Maintenance Document Field"
+        NMSPC_CD="KFS-CAM" OBJ_ID="5B4F097448E9EF33E0404F8189D84F24"
+        PERM_ID="49" PERM_TMPL_ID="25" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of Application Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-AR"
+        OBJ_ID="5B4F097448BDEF33E0404F8189D84F24" PERM_ID="5"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the CFDA Close Document."
+        NM="Initiate Document" NMSPC_CD="KFS-CG"
+        OBJ_ID="5B4F097448EBEF33E0404F8189D84F24" PERM_ID="51"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Proposal Document."
+        NM="Initiate Document" NMSPC_CD="KFS-CG"
+        OBJ_ID="5B4F097448ECEF33E0404F8189D84F24" PERM_ID="52"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to vew the Research Risk tab on the Proposal document."
+        NM="View Inquiry or Maintenance Document Section"
+        NMSPC_CD="KFS-CG" OBJ_ID="5B4F097448EEEF33E0404F8189D84F24"
+        PERM_ID="54" PERM_TMPL_ID="43" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Global Object Code Document."
+        NM="Initiate Document" NMSPC_CD="KFS-COA"
+        OBJ_ID="5B4F097448EFEF33E0404F8189D84F24" PERM_ID="55"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Organization Reversion Document."
+        NM="Initiate Document" NMSPC_CD="KFS-COA"
+        OBJ_ID="5B4F097448F0EF33E0404F8189D84F24" PERM_ID="56"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can edit Accounts that are inactive."
+        NM="Edit Inactive Account" NMSPC_CD="KFS-COA"
+        OBJ_ID="5B4F097448F2EF33E0404F8189D84F24" PERM_ID="58"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Identifies users that can be Account Managers"
+        NM="Serve As Account Manager" NMSPC_CD="KFS-COA"
+        OBJ_ID="5B4F097448F3EF33E0404F8189D84F24" PERM_ID="59"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Cash Control Document."
+        NM="Initiate Document" NMSPC_CD="KFS-AR"
+        OBJ_ID="5B4F097448BEEF33E0404F8189D84F24" PERM_ID="6"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to edit the Sub-Account Type Code on the Sub-Account document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-COA"
+        OBJ_ID="5B4F097448F4EF33E0404F8189D84F24" PERM_ID="60"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can edit the Organization Plant Chart Code on the Organization document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-COA"
+        OBJ_ID="5B4F097448F5EF33E0404F8189D84F24" PERM_ID="61"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can edit the Organization Plant Account Number on the Organization document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-COA"
+        OBJ_ID="5B4F097448F6EF33E0404F8189D84F24" PERM_ID="62"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can edit the Campus Plant Chart Code on the Organization document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-COA"
+        OBJ_ID="5B4F097448F7EF33E0404F8189D84F24" PERM_ID="63"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can edit the Campus Plant Account Number on the Organization document."
+        NM="Modify Maintenance Document Field" NMSPC_CD="KFS-COA"
+        OBJ_ID="5B4F097448F8EF33E0404F8189D84F24" PERM_ID="64"
+        PERM_TMPL_ID="26" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Effort Certification Document."
+        NM="Initiate Document" NMSPC_CD="KFS-EC"
+        OBJ_ID="5B4F097448F9EF33E0404F8189D84F24" PERM_ID="65"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can use a Distribution of Income and Expense document to claim Electronic Payments."
+        NM="Claim Electronic Payment" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B4F097448FAEF33E0404F8189D84F24" PERM_ID="66"
+        PERM_TMPL_ID="7" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can use a Year End Distribution of Income and Expense document to claim Electronic Payments."
+        NM="Claim Electronic Payment" NMSPC_CD="KFS-FP"
+        OBJ_ID="5C4970B2B3058277E0404F8189D80B30" PERM_ID="67"
+        PERM_TMPL_ID="7" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to open Procurement Card Documents via the Super search option in Document Search and take Administrative workflow actions on them (such as approving the document, approving individual requests, or sending the document to a specified route node)."
+        NM="Administer Routing for Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B4F097448FCEF33E0404F8189D84F24" PERM_ID="68"
+        PERM_TMPL_ID="3" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Cash Management Document."
+        NM="Initiate Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B4F097448FDEF33E0404F8189D84F24" PERM_ID="69"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Service Billing Document."
+        NM="Initiate Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B4F097448FEEF33E0404F8189D84F24" PERM_ID="70"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Journal Voucher Document."
+        NM="Initiate Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B4F097448FFEF33E0404F8189D84F24" PERM_ID="71"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the  Procurement Card Document."
+        NM="Initiate Document" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B4F09744900EF33E0404F8189D84F24" PERM_ID="72"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire Credit Card number on the Procurement Card document and Inquiry."
+        NM="Full Unmask Field" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B4F09744901EF33E0404F8189D84F24" PERM_ID="73"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to access the Procurement Card Upload page."
+        NM="Upload Batch Input File(s)" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B4F09744902EF33E0404F8189D84F24" PERM_ID="74"
+        PERM_TMPL_ID="33" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the  General Ledger Correction Process Document."
+        NM="Initiate Document" NMSPC_CD="KFS-GL"
+        OBJ_ID="5B4F09744903EF33E0404F8189D84F24" PERM_ID="75"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes user to access the Collector XML Upload page."
+        NM="Upload Batch Input File(s)" NMSPC_CD="KFS-GL"
+        OBJ_ID="5B4F09744904EF33E0404F8189D84F24" PERM_ID="76"
+        PERM_TMPL_ID="33" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes user to access the Enterprise Feed Upload page."
+        NM="Upload Batch Input File(s)" NMSPC_CD="KFS-GL"
+        OBJ_ID="5B4F09744905EF33E0404F8189D84F24" PERM_ID="77"
+        PERM_TMPL_ID="33" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Labor Journal Voucher Document."
+        NM="Initiate Document" NMSPC_CD="KFS-LD"
+        OBJ_ID="5B4F09744906EF33E0404F8189D84F24" PERM_ID="78"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the  Labor Ledger Correction Process Document."
+        NM="Initiate Document" NMSPC_CD="KFS-LD"
+        OBJ_ID="5B4F09744907EF33E0404F8189D84F24" PERM_ID="79"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of Accounts Receivable Transactional Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-AR"
+        OBJ_ID="5B4F097448C0EF33E0404F8189D84F24" PERM_ID="8"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to set and remove immediate status on payments in PDP."
+        NM="Set as Immmediate Pay" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B4F09744908EF33E0404F8189D84F24" PERM_ID="80"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of Pre-Disbursement Processor Simple Maintenance Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B4F09744909EF33E0404F8189D84F24" PERM_ID="81"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to take the Cancel action on payments in PDP."
+        NM="Cancel Payment" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B4F0974490AEF33E0404F8189D84F24" PERM_ID="82"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to access and run the Format Checks /ACH screen in PDP"
+        NM="Format" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B4F0974490BEF33E0404F8189D84F24" PERM_ID="83"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to hold payments and remove non-tax related holds on payments in PDP."
+        NM="Hold Payment / Remove Non-Tax Payment Hold"
+        NMSPC_CD="KFS-PDP" OBJ_ID="5B4F0974490CEF33E0404F8189D84F24"
+        PERM_ID="84" PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access the Configuration Viewer screen"
+        NM="Use Screen" NMSPC_CD="KR-BUS"
+        OBJ_ID="97469975-D110-9A65-5EE5-F21FD1BEB5B2" PERM_ID="840"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y" NM="Add Message to Route Log"
+        NMSPC_CD="KUALI" OBJ_ID="65677409-89e4-11df-98b1-1300c9ee50c1"
+        PERM_ID="841" PERM_TMPL_ID="51" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Users who can reset a format process in PDP."
+        NM="Remove Format Lock" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B4F0974490EEF33E0404F8189D84F24" PERM_ID="86"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to remove payments held for tax review in PDP."
+        NM="Remove Payment Tax Hold" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B4F0974490FEF33E0404F8189D84F24" PERM_ID="87"
+        PERM_TMPL_ID="1" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows users to access Pre Disbursement Processor inquiries."
+        NM="Inquire Into Records" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B4F09744910EF33E0404F8189D84F24" PERM_ID="88"
+        PERM_TMPL_ID="24" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allow users to access Pre Disbursement Processor lookups."
+        NM="Look Up Records" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B4F09744911EF33E0404F8189D84F24" PERM_ID="89"
+        PERM_TMPL_ID="23" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire Tax Number on the Customer document and Inquiry."
+        NM="Full Unmask Field" NMSPC_CD="KFS-AR"
+        OBJ_ID="5B4F097448C1EF33E0404F8189D84F24" PERM_ID="9"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Manually Upload Payment File screen in PDP."
+        NM="Upload Batch Input File(s)" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B4F09744912EF33E0404F8189D84F24" PERM_ID="90"
+        PERM_TMPL_ID="33" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows access to the Blanket Approval button on the Payment Request Document."
+        NM="Blanket Approve Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F09744913EF33E0404F8189D84F24" PERM_ID="91"
+        PERM_TMPL_ID="4" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Requisition Document."
+        NM="Initiate Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F09744914EF33E0404F8189D84F24" PERM_ID="92"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of Purchasing Transactional Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F09744915EF33E0404F8189D84F24" PERM_ID="93"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Purchase Order Document."
+        NM="Initiate Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F09744916EF33E0404F8189D84F24" PERM_ID="94"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Purchase Order Close Document."
+        NM="Initiate Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F09744917EF33E0404F8189D84F24" PERM_ID="95"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Purchase Order Retransmit Document."
+        NM="Initiate Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F09744918EF33E0404F8189D84F24" PERM_ID="96"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Payment Request Document."
+        NM="Initiate Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F09744919EF33E0404F8189D84F24" PERM_ID="97"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of Receiving Transactional Documents."
+        NM="Initiate Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F0974491AEF33E0404F8189D84F24" PERM_ID="98"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes the initiation of the Electronic Invoice Reject  Document.&#xa;"
+        NM="Initiate Document" NMSPC_CD="KFS-PURAP"
+        OBJ_ID="5B4F0974491BEF33E0404F8189D84F24" PERM_ID="99"
+        PERM_TMPL_ID="10" VER_NBR="1"/>
+</dataset>

@@ -1,0 +1,435 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from the users in the Principal table. This role gives users high-level permissions to interact with RICE documents and to login to KUALI."
+        KIM_TYP_ID="2" LAST_UPDT_DT="20081104143710" NMSPC_CD="KUALI"
+        OBJ_ID="5ADF18B6D4847954E0404F8189D85002" ROLE_ID="1"
+        ROLE_NM="User" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to work the Cash Management Document and verify Cash Receipt documents for a given campus."
+        KIM_TYP_ID="17" LAST_UPDT_DT="20081106130346" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B0A1BA86BD127E4E0404F8189D83938" ROLE_ID="11"
+        ROLE_NM="Cash Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who receive workflow action requests for Disbursement Vouchers based on the campus code associated with the initiator of the document."
+        KIM_TYP_ID="17" LAST_UPDT_DT="20081106130346" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B0A1BA86BEC27E4E0404F8189D83938" ROLE_ID="12"
+        ROLE_NM="Disbursement Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to use the Service Billing document and enter specified accounts on the &quot;Income&quot; side of the document."
+        KIM_TYP_ID="26" LAST_UPDT_DT="20081109184902" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B4B421E42A47717E0404F8189D821F7" ROLE_ID="13"
+        ROLE_NM="Service Bill Processor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who receive workflow action requests for Disbursement Vouchers for travel payment reasons and can edit the accounting line and Non-Employee Travel Expense or Pre-Paid Travel Expenses tabs."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115503" NMSPC_CD="KFS-FP"
+        OBJ_ID="5B31640F000AADF1E0404F8189D84647" ROLE_ID="15"
+        ROLE_NM="Travel Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who can use the Electronic Fund Transfer screen and use DI or YEDI documents to claim those funds."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115503" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F000CADF1E0404F8189D84647" ROLE_ID="16"
+        ROLE_NM="Treasury Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to use the Collector Upload screen."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115503" NMSPC_CD="KFS-GL"
+        OBJ_ID="5B31640F0015ADF1E0404F8189D84647" ROLE_ID="17"
+        ROLE_NM="Interdepartmental Billing Processor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users associated with PDP customers that can use the Payment File Batch Upload screen and have basic PDP inquiry access. "
+        KIM_TYP_ID="32" LAST_UPDT_DT="20081109184903" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B4B421E42B17717E0404F8189D821F7" ROLE_ID="18"
+        ROLE_NM="Customer Contact" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who can cancel or hold payments reset locked format processes and view unmasked bank routing and account numbers in PDP."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115504" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B31640F0018ADF1E0404F8189D84647" ROLE_ID="19"
+        ROLE_NM="Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users identified as part of an AR billing organization. They have access to the basic functions of the KFS AR module such as creating invoices or customers."
+        KIM_TYP_ID="38" LAST_UPDT_DT="20081114141017" NMSPC_CD="KFS-AR"
+        OBJ_ID="5BABFACC4F58A8EEE0404F8189D8770F" ROLE_ID="2"
+        ROLE_NM="Biller" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who can set payments for immediate pay and use the Format Checks/ACH screen in PDP."
+        KIM_TYP_ID="17" LAST_UPDT_DT="20081106130346" NMSPC_CD="KFS-PDP"
+        OBJ_ID="5B0A1BA86BFF27E4E0404F8189D83938" ROLE_ID="20"
+        ROLE_NM="Processor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Accounts Payable users who can initiate Payment Requests and Credit Memo documents. They also have several permissions related to processing these document types and receive workflow action requests for them. "
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115504"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="5B31640F001EADF1E0404F8189D84647"
+        ROLE_ID="22" ROLE_NM="Accounts Payable Processor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who receive workflow action requests for Purchasing transactional documents that contain a specific commodity code and campus combination."
+        KIM_TYP_ID="33" LAST_UPDT_DT="20081115154318"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="5BC1649606B06CABE0404F8189D81764"
+        ROLE_ID="23" ROLE_NM="Commodity Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who receive incomplete Requisition documents for completion for a given Chart and Organization."
+        KIM_TYP_ID="27" LAST_UPDT_DT="20081115154309"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="5BC16496064D6CABE0404F8189D81764"
+        ROLE_ID="24" ROLE_NM="Content Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Contract Managers review and approve Purchase Order documents. A Purchase Order is assigned to a given Contract Manager for their review and approval."
+        KIM_TYP_ID="34" LAST_UPDT_DT="20081109184907"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="5B4B421E42D57717E0404F8189D821F7"
+        ROLE_ID="25" ROLE_NM="Contract Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role represents central or campus Purchasing staff. They have additional permissions for and receive action requests for most Purchasing document types as well as receiving action requests for Disbursement Vouchers paying PO Type Vendors."
+        KIM_TYP_ID="17" LAST_UPDT_DT="20081108115505"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="5B31640F0031ADF1E0404F8189D84647"
+        ROLE_ID="26" ROLE_NM="Purchasing Processor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to view KFS-PURAP documents identified with a specific Sensitive Data Code. "
+        KIM_TYP_ID="35" LAST_UPDT_DT="20081109184914"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="5B4B421E43267717E0404F8189D821F7"
+        ROLE_ID="27" ROLE_NM="Sensitive Data Viewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="An optional role that allows users to receive workflow action requests for documents of a specified type that contain accounts belonging to a specified chart and organization (including the organization hierarchy) and within a certain dollar amount or involving a specified override code."
+        KIM_TYP_ID="30" LAST_UPDT_DT="20081115154310" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5BC1649606566CABE0404F8189D81764" ROLE_ID="28"
+        ROLE_NM="Accounting Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users with manager-level access to Accounts Payable documents. This includes the ability to hold or cancel (or remove those states) from Payment Request and Credit Memo documents. "
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115508" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F0059ADF1E0404F8189D84647" ROLE_ID="29"
+        ROLE_NM="Accounts Payable Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users that manage the KFS AR module. They receive Accounts Receivable transactional and maintenance documents for approval."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115502" NMSPC_CD="KFS-AR"
+        OBJ_ID="5B31640F0004ADF1E0404F8189D84647" ROLE_ID="3"
+        ROLE_NM="Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Central Accounts Receivable staff that receive workflow action requests for Cash Control and Lockbox documents. They can also use the Electronic Fund Transfer screen and claim those funds using a Cash Control document."
+        KIM_TYP_ID="27" LAST_UPDT_DT="20081106130346" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B0A1BA86BA227E4E0404F8189D83938" ROLE_ID="30"
+        ROLE_NM="Accounts Receivable Lockbox Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users that manage the KFS-AR module. This role has no inherent permissions or responsibilities."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115508" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F005CADF1E0404F8189D84647" ROLE_ID="31"
+        ROLE_NM="Accounts Receivable Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="A role that uses the Affiliation Type and Employee Status on a Principal record to determine if a user is an active faculty or staff employee. These users can initiate some KFS-PURAP documents and inquire into certain KFS screens."
+        KIM_TYP_ID="41" LAST_UPDT_DT="20081114141017" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5BABFACC4F5EA8EEE0404F8189D8770F" ROLE_ID="32"
+        ROLE_NM="Active Faculty or Staff" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="A role that uses the Employee Status (A,L or P) and Employee Type (P) to determine that a given Principal represents a professional staff employee. These users are allowed to be Account Supervisors or Account Managers on Accounts."
+        KIM_TYP_ID="41" LAST_UPDT_DT="20081114141017" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5BABFACC4F5FA8EEE0404F8189D8770F" ROLE_ID="33"
+        ROLE_NM="Active Professional Employee" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Central Capital Assets staff capable of taking restricted actions on Assets, including retiring or transferring non-moveable assets."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115508" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F005EADF1E0404F8189D84647" ROLE_ID="34"
+        ROLE_NM="Asset Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Central Capital Assets staff capable of applying asset payments, using KFS-CAB and adding negative payments. This role contains permissions to modify restricted asset fields and to override the defined capitalization threshold."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115508" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F0060ADF1E0404F8189D84647" ROLE_ID="35"
+        ROLE_NM="Asset Processor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="An optional role created to receive action requests for Budget Adjustment documents at the Organization Route Node. Intended to receive requests for the top level chart and organization (thus receiving all Budget Adjustment documents)."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115521" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F00F7ADF1E0404F8189D84647" ROLE_ID="36"
+        ROLE_NM="University Administration Budget Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Defines users responsible for managing the chart data for a given Chart of Accounts code. They may initiate Global Object Code and Organization Reversion maintenance documents and modify the Campus and Organization Plant Chart Code and Account on Organization documents."
+        KIM_TYP_ID="25" LAST_UPDT_DT="20081109184915" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4B421E432D7717E0404F8189D821F7" ROLE_ID="37"
+        ROLE_NM="Chart Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Central contract and grant staff that have special permissions related to Effort Certification. They can override the edit that prevents transferring salary for an open effort reporting period and receive workflow action requests for Effort Certification Recreates."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115508" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F0063ADF1E0404F8189D84647" ROLE_ID="38"
+        ROLE_NM="Contracts &amp; Grants Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Central contract and grant staff that receive workflow action requests for transactions involving grant accounts. They can view Research Risk information on Proposal documents, establish cost share sub-accounts and modify the object codes on Salary Expense Transfer documents."
+        KIM_TYP_ID="23" LAST_UPDT_DT="20081109184918" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4B421E434A7717E0404F8189D821F7" ROLE_ID="39"
+        ROLE_NM="Contracts &amp; Grants Processor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users associated with KFS AR processing organizations. They can initiate Application and Cash control documents and add new records to the Organization Options and Organization Accounting Defaults tables."
+        KIM_TYP_ID="38" LAST_UPDT_DT="20081114141017" NMSPC_CD="KFS-AR"
+        OBJ_ID="5BABFACC4F59A8EEE0404F8189D8770F" ROLE_ID="4"
+        ROLE_NM="Processor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role defines the list of users that may be selected as Project Directors on the Proposal or Award document."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115509" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F006BADF1E0404F8189D84647" ROLE_ID="40"
+        ROLE_NM="Contracts &amp; Grants Project Director" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from the Fiscal Officer field on the Account. Fiscal Officers receive workflow action requests for most transactional documents and have edit permissions that allow them to change accounting lines involving their accounts."
+        KIM_TYP_ID="39" LAST_UPDT_DT="20081114141017" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5BABFACC4F5BA8EEE0404F8189D8770F" ROLE_ID="41"
+        ROLE_NM="Fiscal Officer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from the Primary delegates defined in the Account Delegate table in KFS."
+        KIM_TYP_ID="39" LAST_UPDT_DT="20081114141017" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5BABFACC4F5CA8EEE0404F8189D8770F" ROLE_ID="42"
+        ROLE_NM="Fiscal Officer Primary Delegate" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from the Secondary delegates defined in the Account Delegate table in KFS."
+        KIM_TYP_ID="39" LAST_UPDT_DT="20081114141017" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5BABFACC4F5DA8EEE0404F8189D8770F" ROLE_ID="43"
+        ROLE_NM="Fiscal Officer Secondary Delegate" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role represents a collection of all the KFS module manager roles and has permission to initiate simple maintenance documents and restricted documents such as the JV and LLJV. These users also have the ability to blanket approve most document types and assign roles and permissions for all KFS namespaces."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115519" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F00DBADF1E0404F8189D84647" ROLE_ID="44"
+        ROLE_NM="Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role represents a very select central processing function allowed to run KFS batch jobs, initiate GLCP and LLCP documents and upload Enterprise Feed and Procurement Card files."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115519" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F00DCADF1E0404F8189D84647" ROLE_ID="45"
+        ROLE_NM="Operations" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role manages the plant fund functions associated with KFS-CAM and has special permissions related to assets in support of these functions. It can also edit the Organization and Campus Plant Chart and Account fields on the Organization document."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115520" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F00E6ADF1E0404F8189D84647" ROLE_ID="46"
+        ROLE_NM="Plant Fund Accountant" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users that manage the KFS-PURAP module. This role can take the resend action on Purchase Order documents."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115520" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F00E8ADF1E0404F8189D84647" ROLE_ID="47"
+        ROLE_NM="Purchasing Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who receive workflow action requests for documents that include accounts belonging to particular sub-funds groups."
+        KIM_TYP_ID="31" LAST_UPDT_DT="20081115154320" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5BC1649606BF6CABE0404F8189D81764" ROLE_ID="48"
+        ROLE_NM="Sub-Fund Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users with a need to view unmasked Tax ID numbers. They can also modify the tax number associated with AR customer records and PURAP vendor records."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115520" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F00EDADF1E0404F8189D84647" ROLE_ID="49"
+        ROLE_NM="Tax Identification Number User" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users that manage the KFS-CAM module. They can initiate Barcode Inventory Error documents and have access to take restricted actions on assets and modify fields on the asset document that other users do not."
+        KIM_TYP_ID="17" LAST_UPDT_DT="20081106130346" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B0A1BA86BAF27E4E0404F8189D83938" ROLE_ID="5"
+        ROLE_NM="Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Represents a central tax area that receives workflow action requests for DVs, Payment Requests, and POs involving payments to non-resident aliens or employees. They can also edit the Tax tabs on the DV and Payment Request documents."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115520" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F00F2ADF1E0404F8189D84647" ROLE_ID="50"
+        ROLE_NM="Tax Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="A technical administrator that is specific to the KFS system. This role has no inherent permissions or responsibilities."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115520" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F00F3ADF1E0404F8189D84647" ROLE_ID="51"
+        ROLE_NM="Technical Administrator" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from the KFS Chart table. It is used to determine the Chart Manager of the top level Chart in the organization hierarchy. This role receives workflow action requests for Chart documents and has the ability to edit the organization and campus Plant Chart and Account fields on the Organization document."
+        KIM_TYP_ID="40" LAST_UPDT_DT="20081114141017" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5BABFACC4F60A8EEE0404F8189D8770F" ROLE_ID="53"
+        ROLE_NM="University Chart Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="The basic role that grants users access to KFS. It gives users the ability to initiate most documents and use inquiries and search screens. Users are qualified by namespace, chart and organization. If these fields are not defined the chart and organization are inherited from the Department ID on the users' Principal record."
+        KIM_TYP_ID="36" LAST_UPDT_DT="20081106130303" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B0A1BA85D7C27E4E0404F8189D83938" ROLE_ID="54"
+        ROLE_NM="User" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users capable of taking superuser action on KFS documents and blanket approving some document types not available to the KFS-SYS Manager role."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115521" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F00FAADF1E0404F8189D84647" ROLE_ID="55"
+        ROLE_NM="Workflow Administrator" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role receives workflow action requests for the Vendor document."
+        KIM_TYP_ID="37" LAST_UPDT_DT="20081109184922" NMSPC_CD="KFS-VND"
+        OBJ_ID="5B4B421E43797717E0404F8189D821F7" ROLE_ID="56"
+        ROLE_NM="Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from users with that have received an action request for a given document."
+        KIM_TYP_ID="42" LAST_UPDT_DT="20081114141017"
+        NMSPC_CD="KR-WKFLW" OBJ_ID="5BABFACC4F62A8EEE0404F8189D8770F"
+        ROLE_ID="59" ROLE_NM="Approve Request Recipient" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who can initiate CAM transactional and maintenance documents, create new records using the asset document, maintain asset locations and modify accounting lines on invoice documents."
+        KIM_TYP_ID="28" LAST_UPDT_DT="20081106130345" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5B0A1BA86B8527E4E0404F8189D83938" ROLE_ID="6"
+        ROLE_NM="Processor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from the initiator listed within the route log of a given document."
+        KIM_TYP_ID="43" LAST_UPDT_DT="20081114141017"
+        NMSPC_CD="KR-WKFLW" OBJ_ID="5BABFACC4F63A8EEE0404F8189D8770F"
+        ROLE_ID="60" ROLE_NM="Initiator" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from the initiator and action request recipients listed within the route log of a given document."
+        KIM_TYP_ID="43" LAST_UPDT_DT="20081114141017"
+        NMSPC_CD="KR-WKFLW" OBJ_ID="5BABFACC4F64A8EEE0404F8189D8770F"
+        ROLE_ID="61" ROLE_NM="Initiator or Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role represents the KFS System User, that is the user ID the system uses when it takes programmed actions (such as auto-initiating or approving documents such as the PCDO and PO)."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081109184923" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B4B421E43827717E0404F8189D821F7" ROLE_ID="62"
+        ROLE_NM="System User" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role can take superuser actions and blanket approve RICE documents as well as being able to modify and assign permissions, responsibilities and roles belonging to the KR namespaces."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115522" NMSPC_CD="KR-SYS"
+        OBJ_ID="5B31640F0105ADF1E0404F8189D84647" ROLE_ID="63"
+        ROLE_NM="Technical Administrator" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="An optional role created to receive action requests for Budget Adjustment documents at the Organization route Node. Intended to receive only requests associated with regional campus charts and organizations."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20081108115520" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5B31640F00EAADF1E0404F8189D84647" ROLE_ID="65"
+        ROLE_NM="Regional Budget Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from users with the Edit Document permission for a given document type.,"
+        KIM_TYP_ID="45" LAST_UPDT_DT="20081114141017" NMSPC_CD="KR-NS"
+        OBJ_ID="5BABFACC4F61A8EEE0404F8189D8770F" ROLE_ID="66"
+        ROLE_NM="Document Editor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from the user who took the Complete action on a given document."
+        KIM_TYP_ID="43" LAST_UPDT_DT="20081114141017"
+        NMSPC_CD="KR-WKFLW" OBJ_ID="5BABFACC4F65A8EEE0404F8189D8770F"
+        ROLE_ID="67" ROLE_NM="Router" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who wish to receive workflow action requests for KFS-PURAP documents that involve a specific account number and sub-account number."
+        KIM_TYP_ID="47" LAST_UPDT_DT="20081116231035"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="5BDB528B94D81B20E0404F8189D876A9"
+        ROLE_ID="68" ROLE_NM="Sub-Account Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Identifies the user who routed the source document (Requisition) for a KFS-PURAP document."
+        KIM_TYP_ID="48" LAST_UPDT_DT="20081116231035"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="5BDB528B94DA1B20E0404F8189D876A9"
+        ROLE_ID="69" ROLE_NM="Source Document Router" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="An optional role that allows users to receive workflow action requests for documents of a specified type that include a specified chart and organization (including the organization hierarchy).,"
+        KIM_TYP_ID="29" LAST_UPDT_DT="20081115154306" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5BC16496062F6CABE0404F8189D81764" ROLE_ID="7"
+        ROLE_NM="Organization Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who receive workflow action requests for Disbursement Vouchers with specified payment methods and can edit the accounting lines and Wire Transfer and Foreign Draft tabs."
+        KIM_TYP_ID="46" LAST_UPDT_DT="20081122124925" NMSPC_CD="KFS-FP"
+        OBJ_ID="5C4970B2B2DA8277E0404F8189D80B30" ROLE_ID="70"
+        ROLE_NM="Disbursement Method Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role is derived from the accounts appearing on an Effort Certification document. KFS finds the most recent award associated with each account and routes workflow action requests to the Project Director's associated with the accounts on the Effort Certification document.,"
+        KIM_TYP_ID="39" LAST_UPDT_DT="20081122155236" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5C4970B2B2FB8277E0404F8189D80B30" ROLE_ID="72"
+        ROLE_NM="Award Project Director" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users borrowing assets on the Equipment Loan/Return document."
+        KIM_TYP_ID="50" LAST_UPDT_DT="20081122163224" NMSPC_CD="KFS-CAM"
+        OBJ_ID="5C4970B2B3008277E0404F8189D80B30" ROLE_ID="74"
+        ROLE_NM="Asset Borrower" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to edit Budget Construction Documents."
+        KIM_TYP_ID="53" LAST_UPDT_DT="20081211151804" NMSPC_CD="KFS-BC"
+        OBJ_ID="5DCC12F2FB0D77D4E0404F8189D826E2" ROLE_ID="75"
+        ROLE_NM="Document Editor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who receive Invoice and Invoice Recurrence documents for approval."
+        KIM_TYP_ID="27" LAST_UPDT_DT="20081211211150" NMSPC_CD="KFS-AR"
+        OBJ_ID="5DD07815AB2860B6E0404F8189D862C9" ROLE_ID="76"
+        ROLE_NM="Invoice Recurrence Instance Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Central administration users charged with reviewing Purchase Order documents that exceed an account's sufficient funds balance."
+        KIM_TYP_ID="25" LAST_UPDT_DT="20081213151904"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="5DF45238F4FF8846E0404F8189D840B8"
+        ROLE_ID="79" ROLE_NM="Budget Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who receive workflow action requests when Proposal or Award documents involve research risk."
+        KIM_TYP_ID="24" LAST_UPDT_DT="20081115154317" NMSPC_CD="KFS-CG"
+        OBJ_ID="5BC1649606A46CABE0404F8189D81764" ROLE_ID="8"
+        ROLE_NM="Research Risk Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who have view-only access to Budget Construction Documents."
+        KIM_TYP_ID="53" LAST_UPDT_DT="20090102000911" NMSPC_CD="KFS-BC"
+        OBJ_ID="5F79F0FDFEF4429BE0404F8189D852C9" ROLE_ID="80"
+        ROLE_NM="Document Viewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who can use the Organization Salary Setting, import/export payrate and unlock options on the Budget Construction Document."
+        KIM_TYP_ID="6" LAST_UPDT_DT="20090102001046" NMSPC_CD="KFS-BC"
+        OBJ_ID="5F79F0FDFEFF429BE0404F8189D852C9" ROLE_ID="81"
+        ROLE_NM="Processor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role is derived from users with the Modify Batch Job permission. They are able to use the Schedule lookup.,"
+        KIM_TYP_ID="58" LAST_UPDT_DT="20090103170137" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5F9C33A1C80FEE45E0404F8189D87C4B" ROLE_ID="82"
+        ROLE_NM="Batch Job Modifier" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from users with the Open Document permission for a given document type.,"
+        KIM_TYP_ID="60" LAST_UPDT_DT="20090113000339" NMSPC_CD="KR-NS"
+        OBJ_ID="60572547C6BC73C9E0404F8189D84924" ROLE_ID="83"
+        ROLE_NM="Document Opener" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role houses other roles and indicates which of those can view KFS-PURAP documents that have been identified as potentially sensitive. "
+        KIM_TYP_ID="62" LAST_UPDT_DT="20090114112818"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="6074D3D2A172C70AE0404F8189D8193D"
+        ROLE_ID="84" ROLE_NM="Potentially Sensitive Document User" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="A role that derives the users who initiated or received a workflow action request for a sensitive KFS-PURAP document."
+        KIM_TYP_ID="48" LAST_UPDT_DT="20090114112818"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="6074D3D2A16EC70AE0404F8189D8193D"
+        ROLE_ID="85"
+        ROLE_NM="Sensitive Related Document Initiator Or Reviewer" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives users who placed a Payment Request or Credit Memo on hold or canceled it in order to determine who can remove those actions. "
+        KIM_TYP_ID="61" LAST_UPDT_DT="20090114112818"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="6074D3D2A16DC70AE0404F8189D8193D"
+        ROLE_ID="86" ROLE_NM="Payment Request Hold / Cancel Initiator" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from users with an acknowledge action request in the route log of a given document."
+        KIM_TYP_ID="42" LAST_UPDT_DT="20090119224511"
+        NMSPC_CD="KR-WKFLW" OBJ_ID="60E2DDC86A956F19E0404F8189D85D42"
+        ROLE_ID="88" ROLE_NM="Acknowledge Request Recipient" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from users with an FYI action request in the route log of a given document."
+        KIM_TYP_ID="42" LAST_UPDT_DT="20090119224511"
+        NMSPC_CD="KR-WKFLW" OBJ_ID="60E2DDC86A966F19E0404F8189D85D42"
+        ROLE_ID="89" ROLE_NM="FYI Request Recipient" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from the Account Supervisor field on the Account. Account Supervisors receive workflow action requests for Asset and Asset Retirement Global documents.,"
+        KIM_TYP_ID="39" LAST_UPDT_DT="20081114141017" NMSPC_CD="KFS-SYS"
+        OBJ_ID="5BABFACC4F5AA8EEE0404F8189D8770F" ROLE_ID="9"
+        ROLE_NM="Account Supervisor" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role represents the KR System User, that is the user ID RICE uses when it takes programmed actions."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20090127195114" NMSPC_CD="KR-SYS"
+        OBJ_ID="61815E6C62D0B647E0404F8189D873B3" ROLE_ID="90"
+        ROLE_NM="System User" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to create Invoice Recurrence documents."
+        KIM_TYP_ID="64" LAST_UPDT_DT="20090215223947" NMSPC_CD="KFS-AR"
+        OBJ_ID="62FF3D2EAB2E54D5E0404F8189D879AE" ROLE_ID="91"
+        ROLE_NM="Invoice Recurrence Creator" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users authorized to initiate Cash Receipt documents. This role exists to exclude Cash Managers from being able to initiate Cash Receipt documents. You do not need to add explicit members to this role to accomplish this exclusion."
+        KIM_TYP_ID="65" LAST_UPDT_DT="20090329155338" NMSPC_CD="KFS-FP"
+        OBJ_ID="66485265ABCD98C3E0404F8189D845FA" ROLE_ID="92"
+        ROLE_NM="Cash Receipt Initiator" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="A role that uses the Employee Status (A,L or P) along with the presence of the KFS-SYS User role to determine that a given Principal represents an employee with KFS access. These users are allowed to be fiscal Officers on Accounts."
+        KIM_TYP_ID="41" LAST_UPDT_DT="20090329155339" NMSPC_CD="KFS-SYS"
+        OBJ_ID="66485265ABD198C3E0404F8189D845FA" ROLE_ID="93"
+        ROLE_NM="Active Employee &amp; Financial System User" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="A role that uses the Employee Status (A,L or P) and Employee Type (P), along with the presence of the KFS-SYS User role to determine that a given Principal represents a professional staff employee with KFS access. These users are allowed to be fiscal Officers on Accounts."
+        KIM_TYP_ID="41" LAST_UPDT_DT="20090329155339" NMSPC_CD="KFS-SYS"
+        OBJ_ID="66485265ABD298C3E0404F8189D845FA" ROLE_ID="94"
+        ROLE_NM="Active Professional Employee &amp; Financial System User" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from users with the Initiate Document permission for a given document type."
+        KIM_TYP_ID="66" LAST_UPDT_DT="20090419185239" NMSPC_CD="KR-SYS"
+        OBJ_ID="67F145466E8B9160E0404F8189D86771" ROLE_ID="95"
+        ROLE_NM="Document Initiator" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users that manage the KFS-FP module. This role has no inherent permissions or responsibilities."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20090419185240" NMSPC_CD="KFS-FP"
+        OBJ_ID="67F145466E8C9160E0404F8189D86771" ROLE_ID="96"
+        ROLE_NM="Financial Processing Manager" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role derives its members from users with an Approval action request (that was not generated via the ad-hoc recipients tab) in the route log of a given document."
+        KIM_TYP_ID="42" LAST_UPDT_DT="20090419202010"
+        NMSPC_CD="KR-WKFLW" OBJ_ID="67F145466EB09160E0404F8189D86771"
+        ROLE_ID="97" ROLE_NM="Non-Ad Hoc Approve Request Recipient" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="Users who receive workflow action requests for Accounts Payable transactional documents."
+        KIM_TYP_ID="69" LAST_UPDT_DT="20090924153333"
+        NMSPC_CD="KFS-PURAP" OBJ_ID="7458E81E6708E937E0404F8189D85DE6"
+        ROLE_ID="98" ROLE_NM="Accounts Payable Document Reviewer" VER_NBR="1"/>
+</dataset>

@@ -23,6 +23,8 @@ import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics;
+import org.kuali.rice.kim.api.identity.personal.EntityEthnicityContract;
+import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
@@ -32,7 +34,6 @@ import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityResidency;
 
@@ -59,7 +60,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     private List<EntityName> names;
     private List<Principal> principals;
     private EntityPrivacyPreferences privacyPreferences;
-    private List<KimEntityEthnicityInfo> ethnicities;
+    private List<EntityEthnicity> ethnicities;
     private List<KimEntityResidencyInfo> residencies;
     private List<EntityVisa> visas;
 
@@ -135,11 +136,11 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
                 citizenships.add(EntityCitizenship.Builder.create(contract).build());
             }
 
-            ethnicities = deriveCollection(entity.getEthnicities(), new XForm<KimEntityEthnicity, KimEntityEthnicityInfo>() {
-                public KimEntityEthnicityInfo xform(KimEntityEthnicity source) {
-                    return new KimEntityEthnicityInfo(source);
-                }
-            });
+
+            ethnicities = new ArrayList<EntityEthnicity>();
+            for (EntityEthnicityContract contract : entity.getEthnicities()) {
+                ethnicities.add(EntityEthnicity.Builder.create(contract).build());
+            }
 
             residencies = deriveCollection(entity.getResidencies(), new XForm<KimEntityResidency, KimEntityResidencyInfo>() {
                 public KimEntityResidencyInfo xform(KimEntityResidency source) {
@@ -370,16 +371,16 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getEthnicities()
      */
-    public List<KimEntityEthnicityInfo> getEthnicities() {
+    public List<EntityEthnicity> getEthnicities() {
         // If our reference is null, assign and return an empty List
-        return (ethnicities != null) ? ethnicities : (ethnicities = new ArrayList<KimEntityEthnicityInfo>());
+        return (ethnicities != null) ? ethnicities : (ethnicities = new ArrayList<EntityEthnicity>());
     }
 
     /** 
      * Setter for this {@link KimEntityInfo}'s ethnicities.  Note the behavior of 
      * {@link #getEthnicities()} if this is set to null;
      */
-    public void setEthnicities(List<KimEntityEthnicityInfo> ethnicities) {
+    public void setEthnicities(List<EntityEthnicity> ethnicities) {
         this.ethnicities = ethnicities;
     }
 

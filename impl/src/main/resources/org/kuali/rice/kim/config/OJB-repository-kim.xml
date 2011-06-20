@@ -218,7 +218,7 @@
     <collection-descriptor name="citizenships" element-class-ref="org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
-    <collection-descriptor name="ethnicities" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="ethnicities" element-class-ref="org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
     <collection-descriptor name="residencies" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
@@ -340,7 +340,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl" table="KRIM_ENTITY_ETHNIC_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo" table="KRIM_ENTITY_ETHNIC_T">
     <field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ENTITY_ETHNIC_ID_S" />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="ethnicityCode" column="ETHNCTY_CD" jdbc-type="VARCHAR"  />

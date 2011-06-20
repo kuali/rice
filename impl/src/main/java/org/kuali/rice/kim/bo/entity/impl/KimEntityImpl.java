@@ -23,6 +23,7 @@ import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo;
+import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
@@ -103,10 +104,10 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<EntityCitizenshipBo> citizenships = new AutoPopulatingList(EntityCitizenshipBo.class);
 
-	@OneToMany(targetEntity = KimEntityEthnicityImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = EntityEthnicityBo.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityEthnicityImpl> ethnicities = new AutoPopulatingList(KimEntityEthnicityImpl.class);
+	protected List<EntityEthnicityBo> ethnicities = new AutoPopulatingList(EntityEthnicityBo.class);
 
 	@OneToMany(targetEntity = KimEntityResidencyImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
@@ -323,14 +324,14 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @return the ethnicities
 	 */
-	public List<KimEntityEthnicityImpl> getEthnicities() {
+	public List<EntityEthnicityBo> getEthnicities() {
 		return this.ethnicities;
 	}
 
 	/**
 	 * @param ethnicities the ethnicities to set
 	 */
-	public void setEthnicities(List<KimEntityEthnicityImpl> ethnicities) {
+	public void setEthnicities(List<EntityEthnicityBo> ethnicities) {
 		this.ethnicities = ethnicities;
 	}
 

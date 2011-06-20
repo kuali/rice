@@ -8,8 +8,11 @@ import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Parameter
 import javax.persistence.Column
 import org.kuali.rice.kim.api.identity.visa.EntityVisa
+import javax.persistence.Entity
+import javax.persistence.Table
 
-
+@Entity
+@Table(name = "KRIM_ENTITY_VISA_T")
 class EntityVisaBo extends PersistableBusinessObjectBase implements EntityVisaContract {
     @Id
     @GeneratedValue(generator="KRIM_ENTITY_VISA_ID_S")

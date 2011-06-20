@@ -37,14 +37,14 @@
     <class>org.kuali.rice.kim.impl.type.KimTypeAttributeBo</class>
     <class>org.kuali.rice.kim.impl.identity.principal.PrincipalBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityImpl</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl</class>
+    <class>org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo</class>
     <class>org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo</class>
     <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl</class>
     <class>org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo</class>
     <class>org.kuali.rice.kim.impl.identity.name.EntityNameBo</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl</class>
+    <class>org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl</class>
     <class>org.kuali.rice.kim.impl.identity.visa.EntityVisaBo</class>
     <class>org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo</class>

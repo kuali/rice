@@ -40,6 +40,7 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinition.Builder;
 		AgendaDefinition.Elements.NAMESPACE_CODE,
 		AgendaDefinition.Elements.TYPE_ID,
 		AgendaDefinition.Elements.CONTEXT_ID,
+        AgendaDefinition.Elements.ACTIVE,
 		AgendaDefinition.Elements.FIRST_ITEM_ID,
 		AgendaDefinition.Elements.ATTRIBUTES,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -62,6 +63,9 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	
 	@XmlElement(name = Elements.CONTEXT_ID, required = true)
 	private final String contextId;
+
+    @XmlElement(name = Elements.ACTIVE, required = false)
+    private final boolean active;
 	
 	@XmlElement(name = Elements.FIRST_ITEM_ID, required = false)
 	private final String firstItemId;
@@ -87,6 +91,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
     	this.namespaceCode = null;
     	this.typeId = null;
     	this.contextId = null;
+        this.active = false;
     	this.firstItemId = null;
     	this.attributes = null;
         this.versionNumber = null;
@@ -104,6 +109,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         this.namespaceCode = builder.getNamespaceCode();
         this.typeId = builder.getTypeId();
         this.contextId = builder.getContextId();
+        this.active = builder.isActive();
         this.firstItemId = builder.getFirstItemId();
         if (builder.getAttributes() != null){
         	this.attributes = Collections.unmodifiableMap(new HashMap<String, String>(builder.getAttributes()));
@@ -138,6 +144,11 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		return this.contextId;
 	}
 
+    @Override
+    public boolean isActive() {
+        return this.active;
+    }
+
 	@Override
 	public String getFirstItemId(){
 		return this.firstItemId;
@@ -165,6 +176,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         private String namespaceCode;
         private String typeId;
         private String contextId;
+        private boolean active;
         private String firstItemId;
         private Map<String, String> attributes;
         private Long versionNumber;
@@ -178,6 +190,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
             setNamespaceCode(namespaceCode);
             setTypeId(typeId);
             setContextId(contextId);
+            setActive(true);
             setAttributes(new HashMap<String, String>());
         }
         
@@ -196,6 +209,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
             }
             Builder builder =  new Builder(contract.getId(), contract.getName(),
             		contract.getNamespaceCode(), contract.getTypeId(), contract.getContextId());
+            builder.setActive(contract.isActive());
             builder.setFirstItemId( contract.getFirstItemId() );
             if (contract.getAttributes() != null) {
                 builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
@@ -245,7 +259,10 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		}
 			this.contextId = contextId;
 		}
-		
+
+        public void setActive(boolean active) {
+            this.active = active;
+        }
 		
 		public void setFirstItemId(String firstItemId) {
 			this.firstItemId = firstItemId;
@@ -296,6 +313,11 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		public String getContextId() {
 			return contextId;
 		}
+
+        @Override
+        public boolean isActive() {
+            return active;
+        }
 
 		@Override
 		public String getFirstItemId() {
@@ -358,6 +380,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		final static String NAMESPACE_CODE = "namespaceCode";
 		final static String TYPE_ID = "typeId";
 		final static String CONTEXT_ID = "contextId";
+        final static String ACTIVE = "active";
 		final static String FIRST_ITEM_ID = "firstItemId";
 		final static String ATTRIBUTES = "attributes";
 		final static String ATTRIBUTE = "attribute";

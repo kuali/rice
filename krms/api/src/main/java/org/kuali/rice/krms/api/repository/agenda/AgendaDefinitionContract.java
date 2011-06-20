@@ -4,8 +4,9 @@ import java.util.Map;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
-public interface AgendaDefinitionContract extends Identifiable, Versioned {
+public interface AgendaDefinitionContract extends Identifiable, Inactivatable, Versioned {
 	/**
 	 * This is the name of the Agenda 
 	 *

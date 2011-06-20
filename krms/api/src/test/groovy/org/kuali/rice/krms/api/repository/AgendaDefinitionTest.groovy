@@ -53,6 +53,7 @@ class AgendaDefinitionTest {
     <namespaceCode>KRMS_TEST</namespaceCode>
     <typeId>1234XYZ</typeId>
     <contextId>CONTEXT-001</contextId>
+    <active>true</active>
     <firstItemId>ITEM01</firstItemId>
     <attributes>
         <ns2:entry key="Fund">19900A</ns2:entry>

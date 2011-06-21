@@ -11,33 +11,33 @@ import org.apache.commons.lang.StringUtils;
 @XmlRootElement(name = AdHocRevokeFromPrincipal.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AdHocRevokeFromPrincipal.Constants.TYPE_NAME, propOrder = {
-		AdHocRevokeFromPrincipal.Elements.PRINCIPAL_ID
+		AdHocRevokeFromPrincipal.Elements.TARGET_PRINCIPAL_ID
 })
 public final class AdHocRevokeFromPrincipal extends AdHocRevokeCommand {
 
 	private static final long serialVersionUID = 1084623378944347299L;
 
-	@XmlElement(name = Elements.PRINCIPAL_ID, required = true)
-	private final String principalId;
+	@XmlElement(name = Elements.TARGET_PRINCIPAL_ID, required = true)
+	private final String targetPrincipalId;
 	
-	private AdHocRevokeFromPrincipal(String actionRequestId, String nodeName, String principalId) {
+	private AdHocRevokeFromPrincipal(String actionRequestId, String nodeName, String targetPrincipalId) {
 		super(actionRequestId, nodeName);
-		if (StringUtils.isBlank(principalId)) {
-			throw new IllegalArgumentException("principalId was null or blank");
+		if (StringUtils.isBlank(targetPrincipalId)) {
+			throw new IllegalArgumentException("targetPrincipalId was null or blank");
 		}
-		this.principalId = principalId;
+		this.targetPrincipalId = targetPrincipalId;
 	}
 	
-	public static AdHocRevokeFromPrincipal createRevokeByActionRequest(String actionRequestId, String principalId) {
-		return new AdHocRevokeFromPrincipal(actionRequestId, null, principalId);
+	public static AdHocRevokeFromPrincipal createRevokeByActionRequest(String actionRequestId, String targetPrincipalId) {
+		return new AdHocRevokeFromPrincipal(actionRequestId, null, targetPrincipalId);
 	}
 	
-	public static AdHocRevokeFromPrincipal createRevokeByNodeName(String nodeName, String principalId) {
-		return new AdHocRevokeFromPrincipal(null, nodeName, principalId);
+	public static AdHocRevokeFromPrincipal createRevokeByNodeName(String nodeName, String targetPrincipalId) {
+		return new AdHocRevokeFromPrincipal(null, nodeName, targetPrincipalId);
 	}
 		
-	public String getPrincipalId() {
-		return principalId;
+	public String getTargetPrincipalId() {
+		return targetPrincipalId;
 	}
 	
 	/**
@@ -52,7 +52,7 @@ public final class AdHocRevokeFromPrincipal extends AdHocRevokeCommand {
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
      */
     static class Elements {
-        final static String PRINCIPAL_ID = "principalId";
+        final static String TARGET_PRINCIPAL_ID = "targetPrincipalId";
     }
 	
 }

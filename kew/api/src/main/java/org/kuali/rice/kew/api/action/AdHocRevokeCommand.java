@@ -21,9 +21,10 @@ import org.w3c.dom.Element;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AdHocRevokeCommand.Constants.TYPE_NAME, propOrder = {
 		AdHocRevokeCommand.Elements.ACTION_REQUEST_ID,
+		AdHocRevokeCommand.Elements.NODE_NAME,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-abstract class AdHocRevokeCommand implements Serializable {
+public abstract class AdHocRevokeCommand implements Serializable {
 
 	private static final long serialVersionUID = 5848714514445793355L;
 

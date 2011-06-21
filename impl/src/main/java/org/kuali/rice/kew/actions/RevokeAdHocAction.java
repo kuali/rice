@@ -16,18 +16,21 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.action.AdHocRevokeCommand;
+import org.kuali.rice.kew.api.action.AdHocRevokeFromGroup;
+import org.kuali.rice.kew.api.action.AdHocRevokeFromPrincipal;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -39,13 +42,13 @@ public class RevokeAdHocAction extends ActionTakenEvent {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RevokeAdHocAction.class);
 
-    private AdHocRevoke revoke;
+    private AdHocRevokeCommand revoke;
 
     public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal);
     }
 
-    public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, AdHocRevoke revoke, String annotation) {
+    public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, AdHocRevokeCommand revoke, String annotation) {
         super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal, annotation);
         this.revoke = revoke;
     }
@@ -90,7 +93,7 @@ public class RevokeAdHocAction extends ActionTakenEvent {
         List<ActionRequestValue> actionRequests = getActionRequestService().findPendingRootRequestsByDocId(getDocumentId());
         for (ActionRequestValue actionRequest : actionRequests)
         {
-            if (revoke.matchesActionRequest(actionRequest))
+            if (matchesActionRequest(revoke, actionRequest))
             {
                 requestsToRevoke.add(actionRequest);
             }
@@ -109,5 +112,27 @@ public class RevokeAdHocAction extends ActionTakenEvent {
         notifyActionTaken(actionTaken);
 
     }
+    
+    /**
+	 * Determines if the given action request is an ad hoc request which matches this set of criteria.
+	 */
+	protected boolean matchesActionRequest(AdHocRevokeCommand adHocRevokeCommand, ActionRequestValue actionRequest) {
+		if (!actionRequest.isAdHocRequest()) {
+			return false;
+		}
+		if (adHocRevokeCommand.getActionRequestId() != null && !adHocRevokeCommand.getActionRequestId().equals(actionRequest.getActionRequestId()) ){
+			return false;
+		}
+		if (!StringUtils.isEmpty(adHocRevokeCommand.getNodeName()) && !adHocRevokeCommand.getNodeName().equals(actionRequest.getNodeInstance().getName())) {
+			return false;
+		}
+		if (adHocRevokeCommand instanceof AdHocRevokeFromPrincipal && (!actionRequest.isUserRequest() || !actionRequest.getPrincipalId().equals(((AdHocRevokeFromPrincipal)adHocRevokeCommand).getTargetPrincipalId()))) {
+			return false;
+		}
+		if (adHocRevokeCommand instanceof AdHocRevokeFromGroup && (!actionRequest.isGroupRequest() || !actionRequest.getGroupId().equals(((AdHocRevokeFromGroup)adHocRevokeCommand).getTargetGroupId()))) {
+			return false;
+		}
+		return true;
+	}
 
 }

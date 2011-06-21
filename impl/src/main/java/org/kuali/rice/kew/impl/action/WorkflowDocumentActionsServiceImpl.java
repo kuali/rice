@@ -60,7 +60,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 			return ActionType.APPROVE.getLabel();
 		}
 	};
-	
+		
 	private static final DocumentActionCallback CANCEL_CALLBACK = new StandardDocumentActionCallback() {
 		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 			return KEWServiceLocator.getWorkflowDocumentService().cancelDocument(principalId, documentBo, annotation);
@@ -381,9 +381,23 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 			String annotation,
 			DocumentUpdate documentUpdate,
 			DocumentContentUpdate documentContentUpdate,
-			AdHocRevokeFromPrincipal revoke) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-		throw new UnsupportedOperationException("implement me!");
+			final AdHocRevokeFromPrincipal revoke) {
+		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
+				new DocumentActionCallback() {
+					@Override
+					public String getLogMessage(String documentId, String principalId, String annotation) {
+						return "Revoke AdHoc from Principal [principalId=" + principalId + 
+							", docId=" + documentId + 
+							", actionRequestId=" + revoke.getActionRequestId() + 
+							", nodeName=" + revoke.getNodeName() + 
+							", targetPrincipalId=" + revoke.getTargetPrincipalId() + 
+							", annotation=" + annotation + "]";
+					}
+					@Override
+					public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+						return KEWServiceLocator.getWorkflowDocumentService().revokeAdHocRequests(principalId, documentBo, revoke, annotation);
+					}
+				});
 	}
 
 	@Override
@@ -392,10 +406,23 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 			String annotation,
 			DocumentUpdate documentUpdate,
 			DocumentContentUpdate documentContentUpdate,
-			AdHocRevokeFromGroup revoke) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-		throw new UnsupportedOperationException("implement me!");
-	}
+			final AdHocRevokeFromGroup revoke) {
+		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
+				new DocumentActionCallback() {
+					@Override
+					public String getLogMessage(String documentId, String principalId, String annotation) {
+						return "Revoke AdHoc from Group [principalId=" + principalId + 
+							", docId=" + documentId + 
+							", actionRequestId=" + revoke.getActionRequestId() + 
+							", nodeName=" + revoke.getNodeName() + 
+							", targetGroupId=" + revoke.getTargetGroupId() + 
+							", annotation=" + annotation + "]";
+					}
+					@Override
+					public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+						return KEWServiceLocator.getWorkflowDocumentService().revokeAdHocRequests(principalId, documentBo, revoke, annotation);
+					}
+				});	}
 
 	@Override
 	public DocumentActionResult cancel(String documentId,

@@ -11,33 +11,33 @@ import org.apache.commons.lang.StringUtils;
 @XmlRootElement(name = AdHocRevokeFromGroup.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AdHocRevokeFromGroup.Constants.TYPE_NAME, propOrder = {
-		AdHocRevokeFromGroup.Elements.GROUP_ID
+		AdHocRevokeFromGroup.Elements.TARGET_GROUP_ID
 })
 public final class AdHocRevokeFromGroup extends AdHocRevokeCommand {
 
 	private static final long serialVersionUID = 1084623378944347299L;
 
-	@XmlElement(name = Elements.GROUP_ID, required = true)
-	private final String groupId;
+	@XmlElement(name = Elements.TARGET_GROUP_ID, required = true)
+	private final String targetGroupId;
 	
-	private AdHocRevokeFromGroup(String actionRequestId, String nodeName, String groupId) {
+	private AdHocRevokeFromGroup(String actionRequestId, String nodeName, String targetGroupId) {
 		super(actionRequestId, nodeName);
-		if (StringUtils.isBlank(groupId)) {
-			throw new IllegalArgumentException("groupId was null or blank");
+		if (StringUtils.isBlank(targetGroupId)) {
+			throw new IllegalArgumentException("targetGroupId was null or blank");
 		}
-		this.groupId = groupId;
+		this.targetGroupId = targetGroupId;
 	}
 	
-	public static AdHocRevokeFromGroup createRevokeByActionRequest(String actionRequestId, String groupId) {
-		return new AdHocRevokeFromGroup(actionRequestId, null, groupId);
+	public static AdHocRevokeFromGroup createRevokeByActionRequest(String actionRequestId, String targetGroupId) {
+		return new AdHocRevokeFromGroup(actionRequestId, null, targetGroupId);
 	}
 	
-	public static AdHocRevokeFromGroup createRevokeByNodeName(String nodeName, String groupId) {
-		return new AdHocRevokeFromGroup(null, nodeName, groupId);
+	public static AdHocRevokeFromGroup createRevokeByNodeName(String nodeName, String targetGroupId) {
+		return new AdHocRevokeFromGroup(null, nodeName, targetGroupId);
 	}
 		
-	public String getGroupId() {
-		return groupId;
+	public String getTargetGroupId() {
+		return targetGroupId;
 	}
 	
 	/**
@@ -52,7 +52,7 @@ public final class AdHocRevokeFromGroup extends AdHocRevokeCommand {
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
      */
     static class Elements {
-        final static String GROUP_ID = "groupId";
+        final static String TARGET_GROUP_ID = "targetGroupId";
     }
 	
 }

@@ -52,11 +52,13 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.actions.AdHocRevoke;
 import org.kuali.rice.kew.actions.MovePoint;
 import org.kuali.rice.kew.actions.ValidActions;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.AdHocRevokeCommand;
+import org.kuali.rice.kew.api.action.AdHocRevokeFromGroup;
+import org.kuali.rice.kew.api.action.AdHocRevokeFromPrincipal;
 import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
@@ -1215,13 +1217,23 @@ public class DTOConverter {
         return movePoint;
     }
 
-    public static AdHocRevoke convertAdHocRevokeVO(AdHocRevokeDTO revokeVO) throws WorkflowException {
-        AdHocRevoke revoke = new AdHocRevoke();
-        revoke.setActionRequestId(revokeVO.getActionRequestId());
-        revoke.setNodeName(revokeVO.getNodeName());
-        revoke.setPrincipalId(revokeVO.getPrincipalId());
-        revoke.setGroupId(revokeVO.getGroupId());
-        return revoke;
+    /**
+     * TODO: Temporary, just to keep compiler happy.  Remove once AdHocRevokeDTO can be removed.
+     */
+    public static AdHocRevokeCommand convertAdHocRevokeVO(AdHocRevokeDTO revokeVO) throws WorkflowException {
+    	if (revokeVO.getPrincipalId() != null) {
+    		if (revokeVO.getActionRequestId() != null) {
+    			return AdHocRevokeFromPrincipal.createRevokeByActionRequest(revokeVO.getActionRequestId().toString(), revokeVO.getPrincipalId());
+    		} else {
+    			return AdHocRevokeFromPrincipal.createRevokeByNodeName(revokeVO.getNodeName(), revokeVO.getPrincipalId());
+    		}
+    	} else {
+    		if (revokeVO.getActionRequestId() != null) {
+    			return AdHocRevokeFromGroup.createRevokeByActionRequest(revokeVO.getActionRequestId().toString(), revokeVO.getGroupId());
+    		} else {
+    			return AdHocRevokeFromGroup.createRevokeByNodeName(revokeVO.getNodeName(), revokeVO.getGroupId());
+    		}
+    	}
     }
 
     public static WorkflowAttributeValidationErrorDTO convertWorkflowAttributeValidationError(WorkflowAttributeValidationError error) {

@@ -5,6 +5,11 @@ import org.kuali.rice.core.api.CoreConstants.Versions;
 
 public final class KewApiConstants {
 	
+    public static final String MACHINE_GENERATED_RESPONSIBILITY_ID = "0";
+    public static final String ADHOC_REQUEST_RESPONSIBILITY_ID = "-1";
+    public static final String EXCEPTION_REQUEST_RESPONSIBILITY_ID = "-2";
+    public static final String SAVED_REQUEST_RESPONSIBILITY_ID = "-3";
+	
 	public static final class DocumentContentVersions {
 		public static final int ROUTE_LEVEL = 0;
 		public static final int NODAL = 1;

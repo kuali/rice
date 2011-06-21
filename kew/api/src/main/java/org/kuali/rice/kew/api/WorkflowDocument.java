@@ -17,7 +17,10 @@
 package org.kuali.rice.kew.api;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
@@ -40,6 +43,7 @@ import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentCreationException;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
@@ -248,8 +252,8 @@ public class WorkflowDocument implements java.io.Serializable {
     	return getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attributeDefinition);
     }
 
-    public List<ActionRequest> getActionRequests() {
-    	return getWorkflowDocumentService().getActionRequests(getDocumentId());
+    public List<ActionRequest> getRootActionRequests() {
+    	return getWorkflowDocumentService().getRootActionRequests(getDocumentId());
     }
 
     public List<ActionTaken> getActionsTaken() {
@@ -324,20 +328,10 @@ public class WorkflowDocument implements java.io.Serializable {
     	resetStateAfterAction(result);
     }
     
-//
-//    /**
-//     * Performs the 'disapprove' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs disapproving the document
-//     * @see WorkflowDocumentActions#disapproveDocument(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void disapprove(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().disapproveDocument(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
-//
+    public void disapprove(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().disapprove(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
 
     public void approve(String annotation) {
     	DocumentActionResult result = getWorkflowDocumentActionsService().approve(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
@@ -367,19 +361,12 @@ public class WorkflowDocument implements java.io.Serializable {
 //    public void blanketApprove(String annotation) throws WorkflowException {
 //        blanketApprove(annotation, (String)null);
 //    }
-//
-//    /**
-//     * Commits any changes made to the local copy of this document to the workflow system.  If this is a new document,
-//     * the document is created first.
-//     * @throws WorkflowException in case an error occurs saving the document
-//     * @see WorkflowDocumentActions#saveRoutingData(UserIdDTO, RouteHeaderDTO)
-//     */
-//    public void saveRoutingData() throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().saveRoutingData(principalId, getRouteHeader());
-//    	documentContentDirty = true;
-//    }
-//
+
+    public void saveDocumentData() {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().saveDocumentData(getDocumentId(), principalId, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
+
 //    /**
 //     * 
 //     * This method sets the Application Document Status and then calls saveRoutingData() to commit 
@@ -398,18 +385,15 @@ public class WorkflowDocument implements java.io.Serializable {
     	resetStateAfterAction(result);
     }
 
-//    /**
-//     * Performs the 'fyi' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs fyi-ing the document
-//     */
-//    public void fyi() throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().clearFYIDocument(principalId, getRouteHeader());
-//    	documentContentDirty = true;
-//    }
-//
+    public void fyi(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().clearFyi(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
+    
+    public void fyi() {
+    	fyi("");
+    }
+
 //    /**
 //     * Performs the 'delete' action on the document this WorkflowDocument represents.  If this is a new document,
 //     * the document is created first.
@@ -464,22 +448,22 @@ public class WorkflowDocument implements java.io.Serializable {
      * in a terminal state, the request will be attached to the terminal node.
      */
     public void adHocToGroup(ActionRequestType actionRequested, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction) {
-    	adHocRouteDocumentToGroup(actionRequested, null, annotation, targetGroupId, responsibilityDescription, forceAction);
+    	adHocToGroup(actionRequested, null, annotation, targetGroupId, responsibilityDescription, forceAction);
     }
 
     /**
      * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
      */
-    public void adHocRouteDocumentToGroup(ActionRequestType actionRequested, String nodeName, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction) {
-    	adHocRouteDocumentToGroup(actionRequested, nodeName, annotation, targetGroupId, responsibilityDescription, forceAction, null);
+    public void adHocToGroup(ActionRequestType actionRequested, String nodeName, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction) {
+    	adHocToGroup(actionRequested, nodeName, annotation, targetGroupId, responsibilityDescription, forceAction, null);
     }
 
     /**
      * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
      */
-    public void adHocRouteDocumentToGroup(ActionRequestType actionRequested, String nodeName, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction, String requestLabel) {
+    public void adHocToGroup(ActionRequestType actionRequested, String nodeName, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction, String requestLabel) {
     	AdHocToGroup.Builder builder = AdHocToGroup.Builder.create(actionRequested, nodeName, targetGroupId);
     	builder.setResponsibilityDescription(responsibilityDescription);
     	builder.setForceAction(forceAction);
@@ -901,23 +885,16 @@ public class WorkflowDocument implements java.io.Serializable {
 //    	routeHeader = getWorkflowDocumentActions().releaseGroupAuthority(principalId, getRouteHeader(), groupId, annotation);
 //    	documentContentDirty = true;
 //    }
-//
-//    /**
-//     * Returns names of all active nodes the document is currently at.
-//     *
-//     * @return names of all active nodes the document is currently at.
-//     * @throws WorkflowException if there is an error obtaining the currently active nodes on the document
-//     * @see WorkflowUtility#getActiveNodeInstances(Long)
-//     */
-//    public String[] getNodeNames() throws WorkflowException {
-//    	RouteNodeInstanceDTO[] activeNodeInstances = getWorkflowUtility().getActiveNodeInstances(getDocumentId());
-//    	String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.length)];
-//    	for (int index = 0; index < activeNodeInstances.length; index++) {
-//    		nodeNames[index] = activeNodeInstances[index].getName();
-//    	}
-//    	return nodeNames;
-//    }
-//
+
+    public Set<String> getNodeNames() {
+    	List<RouteNodeInstance> activeNodeInstances = getWorkflowDocumentService().getActiveNodeInstances(getDocumentId());
+    	Set<String> nodeNames = new HashSet<String>(activeNodeInstances.size());
+    	for (RouteNodeInstance routeNodeInstance : activeNodeInstances) {
+    		nodeNames.add(routeNodeInstance.getName());
+    	}
+    	return Collections.unmodifiableSet(nodeNames);
+    }
+
 //    /**
 //     * Performs the 'returnToPrevious' action on the document this WorkflowDocument represents.  If this is a new document,
 //     * the document is created first.

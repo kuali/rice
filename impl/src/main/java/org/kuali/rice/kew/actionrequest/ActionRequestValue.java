@@ -43,11 +43,16 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.engine.CompatUtils;
@@ -60,8 +65,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 
@@ -176,8 +181,6 @@ public class ActionRequestValue implements Serializable {
     private Boolean currentIndicator = true;
     @Transient
     private String createDateString;
-    @Transient
-    private String groupName;
 
     /* New Workflow 2.1 Field */
     // The node instance at which this request was generated
@@ -220,7 +223,7 @@ public class ActionRequestValue implements Serializable {
                 return "Exception";
             }
 
-            List routeLevelNodes = CompatUtils.getRouteLevelCompatibleNodeList(KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId).getDocumentType());
+            List<RouteNode> routeLevelNodes = CompatUtils.getRouteLevelCompatibleNodeList(KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId).getDocumentType());
             if (!(routeLevelInt < routeLevelNodes.size())) {
                 return "Not Found";
             }
@@ -966,6 +969,61 @@ public class ActionRequestValue implements Serializable {
 
 	public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
 		this.routeHeader = routeHeader;
+	}
+	
+	public static ActionRequest to(ActionRequestValue actionRequestBo) {
+		if (actionRequestBo == null) {
+			return null;
+		}
+		return createActionRequestBuilder(actionRequestBo).build();
+	}
+	
+	private static ActionRequest.Builder createActionRequestBuilder(ActionRequestValue actionRequestBo) {
+		ActionRequest.Builder builder = ActionRequest.Builder.create(actionRequestBo.getActionRequestId().toString(),
+				ActionRequestType.fromCode(actionRequestBo.getActionRequested()),
+				ActionRequestStatus.fromCode(actionRequestBo.getStatus()),
+				actionRequestBo.getResponsibilityId().toString(),
+				actionRequestBo.getDocumentId(),
+				RecipientType.fromCode(actionRequestBo.getRecipientTypeCd()));
+		if (actionRequestBo.getActionTaken() != null) {
+			builder.setActionTaken(ActionTaken.Builder.create(ActionTakenValue.to(actionRequestBo.getActionTaken())));
+		}
+		builder.setAnnotation(actionRequestBo.getAnnotation());
+		builder.setCurrent(actionRequestBo.getCurrentIndicator().booleanValue());
+		builder.setDateCreated(new DateTime(actionRequestBo.getCreateDate().getTime()));
+		if (!StringUtils.isBlank(actionRequestBo.getDelegationType())) {
+			builder.setDelegationType(DelegationType.fromCode(actionRequestBo.getDelegationType()));
+		}
+		builder.setForceAction(actionRequestBo.getForceAction().booleanValue());
+		builder.setGroupId(actionRequestBo.getGroupId());
+		builder.setNodeName(actionRequestBo.getPotentialNodeName());
+		if (actionRequestBo.getParentActionRequestId() != null) {
+			builder.setParentActionRequestId(actionRequestBo.getParentActionRequestId().toString());
+		}
+		builder.setPrincipalId(actionRequestBo.getPrincipalId());
+		if (actionRequestBo.getPriority() == null) {
+			builder.setPriority(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY);
+		}
+		builder.setQualifiedRoleName(actionRequestBo.getQualifiedRoleName());
+		builder.setQualifiedRoleNameLabel(actionRequestBo.getQualifiedRoleNameLabel());
+		builder.setRequestLabel(actionRequestBo.getRequestLabel());
+		if (!StringUtils.isBlank(actionRequestBo.getApprovePolicy())) {
+			builder.setRequestPolicy(ActionRequestPolicy.fromCode(actionRequestBo.getApprovePolicy()));
+		}
+		builder.setResponsibilityDescription(actionRequestBo.getResponsibilityDesc());
+		builder.setRoleName(actionRequestBo.getRoleName());
+		if (actionRequestBo.getNodeInstance() != null) {
+			builder.setRouteNodeInstanceId(actionRequestBo.getNodeInstance().getRouteNodeInstanceId().toString());
+		}
+		
+		List<ActionRequest.Builder> childRequests = new ArrayList<ActionRequest.Builder>();
+		if (actionRequestBo.getChildrenRequests() != null) {
+			for (ActionRequestValue childActionRequestBo : actionRequestBo.getChildrenRequests()) {
+				childRequests.add(createActionRequestBuilder(childActionRequestBo));
+			}
+		}
+		builder.setChildRequests(childRequests);
+		return builder;
 	}
     
 }

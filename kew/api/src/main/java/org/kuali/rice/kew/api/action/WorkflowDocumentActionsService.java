@@ -58,6 +58,8 @@ public interface WorkflowDocumentActionsService {
     
     public DocumentActionResult save(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
+    public DocumentActionResult saveDocumentData(String documentId, String principalId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    
     public void delete(String documentId);
     
     public void logAnnotation(String documentId, String principalId, String annotation);

@@ -16,6 +16,10 @@
  */
 package org.kuali.rice.kew.actionrequest.service;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
@@ -23,10 +27,6 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Service to handle the building, sorting, saving, activating and deactivating of action request graphs.  These lists are
@@ -89,7 +89,9 @@ public interface ActionRequestService {
 
     public List findPendingRootRequestsByDocumentType(String documentTypeId);
 
-    public List findAllActionRequestsByDocumentId(String documentId);
+    public List<ActionRequestValue> findAllActionRequestsByDocumentId(String documentId);
+    
+    public List<ActionRequestValue> findAllRootActionRequestsByDocumentId(String documentId);
 
     public List findPendingByActionRequestedAndDocId(String actionRequestedCdCd, String documentId);
 

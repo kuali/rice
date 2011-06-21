@@ -16,32 +16,8 @@
 
 package org.kuali.rice.kew.test;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
-import org.junit.Assert;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import static org.junit.Assert.fail;
 
-import org.springframework.jdbc.core.ConnectionCallback;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.StatementCallback;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
-
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -58,7 +34,31 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import static org.junit.Assert.fail;
+import javax.sql.DataSource;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
+import org.junit.Assert;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.StatementCallback;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 
 /**
@@ -174,6 +174,22 @@ public final class TestUtilities {
 
     public static void assertAtNode(WorkflowDocument document, String nodeName) throws WorkflowException {
     	assertAtNode("", document, nodeName);
+    }
+    
+    /**
+     * Checks that the document is at a node with the given name.  This does not check that the document is at
+     * the given node and only the given node, the document can be at other nodes as well and this assertion
+     * will still pass.
+     */
+    public static void assertAtNodeNew(String message, org.kuali.rice.kew.api.WorkflowDocument document, String nodeName) throws WorkflowException {
+		Set<String> nodeNames = document.getNodeNames();
+		if (!nodeNames.contains(nodeName)) {
+			fail((org.apache.commons.lang.StringUtils.isEmpty(message) ? "" : message + ": ") + "Was [" + StringUtils.join(nodeNames, ", ") + "], Expected " + nodeName);
+		}
+	}
+    
+    public static void assertAtNodeNew(org.kuali.rice.kew.api.WorkflowDocument document, String nodeName) throws WorkflowException {
+    	assertAtNodeNew("", document, nodeName);
     }
 
     /**

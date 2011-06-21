@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.util.jaxb.DateTimeAdapter;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = ActionRequest.Constants.ROOT_ELEMENT_NAME)
@@ -36,7 +37,6 @@ import org.w3c.dom.Element;
 	    ActionRequest.Elements.DATE_CREATED,
 	    ActionRequest.Elements.RESPONSIBILITY_ID,
 	    ActionRequest.Elements.DOCUMENT_ID,
-	    ActionRequest.Elements.ROUTE_METHOD,
 		ActionRequest.Elements.PRIORITY,
 		ActionRequest.Elements.ANNOTATION,
 		ActionRequest.Elements.RECIPIENT_TYPE_CODE,
@@ -82,10 +82,7 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
     
     @XmlElement(name = Elements.DOCUMENT_ID, required = true)
     private final String documentId;
-    
-    @XmlElement(name = Elements.ROUTE_METHOD, required = false)
-    private final String routeMethod;
-    
+        
     @XmlElement(name = Elements.PRIORITY, required = true)
     private final int priority;
 
@@ -156,7 +153,6 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
         this.dateCreated = null;
         this.responsibilityId = null;
         this.documentId = null;
-        this.routeMethod = null;
         this.priority = 0;
     	this.annotation = null;
         this.recipientTypeCode = null;
@@ -185,7 +181,6 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
         this.dateCreated = builder.getDateCreated();
         this.responsibilityId = builder.getResponsibilityId();
         this.documentId = builder.getDocumentId();
-        this.routeMethod = builder.getRouteMethod();
         this.priority = builder.getPriority();
     	this.annotation = builder.getAnnotation();
         this.recipientTypeCode = builder.getRecipientType().getCode();
@@ -271,11 +266,6 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
     }
 
     @Override
-    public String getRouteMethod() {
-        return this.routeMethod;
-    }
-
-    @Override
     public RecipientType getRecipientType() {
         return RecipientType.fromCode(this.recipientTypeCode);
     }
@@ -355,7 +345,7 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
     public ActionTaken getActionTaken() {
         return this.actionTaken;
     }
-
+    
     @Override
     public List<ActionRequest> getChildRequests() {
     	if (this.childRequests == null) {
@@ -363,6 +353,79 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
     	} else {
     		return Collections.unmodifiableList(this.childRequests);
     	}
+    }
+
+    public boolean isAdHocRequest() {
+    	return KewApiConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    }
+
+    public boolean isGeneratedRequest() {
+    	return KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    }
+
+    public boolean isExceptionRequest() {
+    	return KewApiConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    }
+
+    public boolean isRouteModuleRequest() {
+    	return getResponsibilityId() != null && Long.parseLong(getResponsibilityId()) > 0;
+    }
+    
+    public boolean isNotificationRequest() {
+        return isAcknowledgeRequest() || isFyiRequest();
+    }
+
+    public boolean isApprovalRequest() {
+        return ActionRequestType.APPROVE == getActionRequested() || ActionRequestType.COMPLETE == getActionRequested();
+    }
+
+    public boolean isAcknowledgeRequest() {
+        return ActionRequestType.ACKNOWLEDGE == getActionRequested();
+    }
+
+    public boolean isFyiRequest() {
+        return ActionRequestType.FYI == getActionRequested();
+    }
+
+    public boolean isPending() {
+        return isInitialized() || isActivated();
+    }
+
+    public boolean isCompleteRequest() {
+        return ActionRequestType.COMPLETE == getActionRequested();
+    }
+
+    public boolean isInitialized() {
+        return ActionRequestStatus.INITIALIZED == getStatus();
+    }
+
+    public boolean isActivated() {
+        return ActionRequestStatus.ACTIVATED == getStatus();
+    }
+
+    public boolean isDone() {
+        return ActionRequestStatus.DONE == getStatus();
+    }
+
+    public boolean isUserRequest() {
+        return RecipientType.PRINCIPAL == getRecipientType();
+    }
+
+    public boolean isGroupRequest() {
+    	return RecipientType.GROUP == getRecipientType();
+    }
+
+    public boolean isRoleRequest() {
+    	return RecipientType.ROLE == getRecipientType();
+    }
+    
+    public List<ActionRequest> flatten() {
+    	List<ActionRequest> flattenedRequests = new ArrayList<ActionRequest>();
+    	flattenedRequests.add(this);
+    	for (ActionRequest childRequest : getChildRequests()) {
+    		flattenedRequests.addAll(childRequest.flatten());
+    	}
+    	return Collections.unmodifiableList(flattenedRequests);
     }
 
     @Override
@@ -394,7 +457,6 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
         private DateTime dateCreated;
         private String responsibilityId;
         private String documentId;
-        private String routeMethod;
         private int priority;
         private String annotation;
         private RecipientType recipientType;
@@ -437,7 +499,6 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
             Builder builder = create(contract.getId(), contract.getActionRequested(), contract.getStatus(), contract.getResponsibilityId(), contract.getDocumentId(), contract.getRecipientType());
             builder.setCurrent(contract.isCurrent());
             builder.setDateCreated(contract.getDateCreated());
-            builder.setRouteMethod(contract.getRouteMethod());
             builder.setPriority(contract.getPriority());
             builder.setAnnotation(contract.getAnnotation());
             builder.setPrincipalId(contract.getPrincipalId());
@@ -500,11 +561,6 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
         @Override
         public String getDocumentId() {
             return this.documentId;
-        }
-
-        @Override
-        public String getRouteMethod() {
-            return this.routeMethod;
         }
 
         @Override
@@ -643,10 +699,6 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
             this.documentId = documentId;
         }
 
-        public void setRouteMethod(String routeMethod) {
-            this.routeMethod = routeMethod;
-        }
-
         public void setPriority(int priority) {
             this.priority = priority;
         }
@@ -750,7 +802,6 @@ public final class ActionRequest implements ModelObjectComplete, ActionRequestCo
         final static String DATE_CREATED = "dateCreated";
         final static String RESPONSIBILITY_ID = "responsibilityId";
         final static String DOCUMENT_ID = "documentId";
-        final static String ROUTE_METHOD = "routeMethod";
         final static String RECIPIENT_TYPE_CODE = "recipientTypeCode";
         final static String PRINCIPAL_ID = "principalId";
         final static String GROUP_ID = "groupId";

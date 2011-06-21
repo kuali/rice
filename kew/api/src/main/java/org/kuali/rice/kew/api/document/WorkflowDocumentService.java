@@ -16,8 +16,10 @@ public interface WorkflowDocumentService {
 	
 	DocumentContent getDocumentContent(String documentId);
 	
-	List<ActionRequest> getActionRequests(@WebParam(name = "documentId") String documentId);
+	List<ActionRequest> getRootActionRequests(@WebParam(name = "documentId") String documentId);
 
+	public List<ActionRequest> getActionRequests(String documentId, String nodeName, String principalId);
+	
 	List<ActionTaken> getActionsTaken(@WebParam(name = "documentId") String documentId);
 
 	
@@ -65,11 +67,10 @@ public interface WorkflowDocumentService {
 //	public RouteNodeInstanceDTO[] getDocumentRouteNodeInstances(
 //			@WebParam(name = "documentId") String documentId)
 //			throws WorkflowException;
-//
-//	public RouteNodeInstanceDTO[] getActiveNodeInstances(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
-//
+
+	public List<RouteNodeInstance> getActiveNodeInstances(
+			@WebParam(name = "documentId") String documentId);
+
 //	public RouteNodeInstanceDTO[] getTerminalNodeInstances(
 //			@WebParam(name = "documentId") String documentId)
 //			throws WorkflowException;

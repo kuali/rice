@@ -112,8 +112,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		public String getActionName() {
 			return ActionType.SAVE.getLabel();
 		}
-	};
-	
+	};	
 	
 	protected DocumentRouteHeaderValue init(String documentId, String principalId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
 		incomingParamCheck(documentId, "documentId");
@@ -464,6 +463,27 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 			DocumentUpdate documentUpdate,
 			DocumentContentUpdate documentContentUpdate) {
 		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, SAVE_CALLBACK);
+	}
+	
+	@Override
+	public DocumentActionResult saveDocumentData(String documentId,
+			String principalId,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate) {
+		return executeActionInternal(documentId, principalId, null, documentUpdate, documentContentUpdate, new DocumentActionCallback() {
+		
+			@Override
+			public String getLogMessage(String documentId, String principalId, String annotation) {
+				return "Saving Routing Data [principalId=" + principalId + ", docId=" + documentId + "]";
+			}
+			
+			@Override
+			public DocumentRouteHeaderValue doInDocumentBo(
+					DocumentRouteHeaderValue documentBo, String principalId,
+					String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().saveRoutingData(principalId, documentBo);
+			}
+		});
 	}
 
 	@Override

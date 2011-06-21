@@ -16,11 +16,27 @@
  */
 package org.kuali.rice.kew.actiontaken;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -28,19 +44,14 @@ import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.group.Group;
-
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
 
 
 /**
@@ -295,5 +306,21 @@ public class ActionTakenValue implements Serializable {
 
     public boolean isCompletion() {
     	return KEWConstants.ACTION_TAKEN_COMPLETED_CD.equals(getActionTaken());
+    }
+    
+    public static ActionTaken to(ActionTakenValue actionTakenBo) {
+    	if (actionTakenBo == null) {
+    		return null;
+    	}
+    	ActionTaken.Builder builder = ActionTaken.Builder.create(actionTakenBo.getActionTakenId().toString(),
+    			actionTakenBo.getDocumentId(),
+    			actionTakenBo.getPrincipalId(),
+    			ActionType.fromCode(actionTakenBo.getActionTaken()));
+    	builder.setActionDate(new DateTime(actionTakenBo.getActionDate().getTime()));
+    	builder.setAnnotation(actionTakenBo.getAnnotation());
+    	builder.setCurrent(actionTakenBo.getCurrentIndicator().booleanValue());
+    	builder.setDelegatorGroupId(actionTakenBo.getDelegatorGroupId());
+    	builder.setDelegatorPrincipalId(actionTakenBo.getDelegatorPrincipalId());
+    	return builder.build();
     }
 }

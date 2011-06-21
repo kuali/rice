@@ -44,6 +44,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.document.RouteNodeInstanceState;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -182,7 +183,7 @@ public class RouteNodeInstance implements Serializable {
     public void setInitial(boolean initial) {
         this.initial = initial;
     }
-    public List getState() {
+    public List<NodeState> getState() {
         return state;
     }
     public void setState(List<NodeState> state) {
@@ -292,6 +293,34 @@ public class RouteNodeInstance implements Serializable {
 	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
+	}
+	
+	public static org.kuali.rice.kew.api.document.RouteNodeInstance to(RouteNodeInstance routeNodeInstance) {
+		if (routeNodeInstance == null) {
+			return null;
+		}
+		org.kuali.rice.kew.api.document.RouteNodeInstance.Builder builder = org.kuali.rice.kew.api.document.RouteNodeInstance.Builder.create();
+		builder.setActive(routeNodeInstance.isActive());
+		builder.setBranchId(routeNodeInstance.getBranch().getBranchId().toString());
+		builder.setComplete(routeNodeInstance.isComplete());
+		builder.setDocumentId(routeNodeInstance.getDocumentId());
+		builder.setId(routeNodeInstance.getRouteNodeInstanceId().toString());
+		builder.setInitial(routeNodeInstance.isInitial());
+		builder.setName(routeNodeInstance.getName());
+		if (routeNodeInstance.getProcess() != null) {
+			builder.setProcessId(routeNodeInstance.getProcess().getRouteNodeInstanceId().toString());
+		}
+		builder.setRouteNodeId(routeNodeInstance.getRouteNode().getRouteNodeId().toString());
+		List<RouteNodeInstanceState> states = new ArrayList<RouteNodeInstanceState>();
+		for (NodeState stateBo : routeNodeInstance.getState()) {
+			RouteNodeInstanceState.Builder stateBuilder = RouteNodeInstanceState.Builder.create();
+			stateBuilder.setId(stateBo.getStateId().toString());
+			stateBuilder.setKey(stateBo.getKey());
+			stateBuilder.setValue(stateBo.getValue());
+			states.add(stateBuilder.build());
+		}
+		builder.setState(states);
+		return builder.build();
 	}
     
 }

@@ -20,9 +20,7 @@ public interface ActionRequestContract extends Identifiable {
 	String getResponsibilityId();
 	
 	String getDocumentId();
-	
-	String getRouteMethod();
-	
+		
 	int getPriority();
 	
 	String getAnnotation();

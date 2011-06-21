@@ -70,7 +70,7 @@ public final class Attributes implements Serializable {
      */
     public static Attributes fromMap(Map<String, String> map) {
         if (map == null) {
-            throw new IllegalArgumentException("map is null");
+            return empty();
         }
 
         if (map.isEmpty()) {
@@ -88,7 +88,7 @@ public final class Attributes implements Serializable {
      */
     public static Attributes fromMapEntry(Map.Entry<String, String> entry) {
         if (entry == null) {
-            throw new IllegalArgumentException("entry is null");
+            return empty();
         }
 
         if (entry.getKey() == null) {
@@ -120,7 +120,7 @@ public final class Attributes implements Serializable {
      */
     public static Attributes fromKeyValue(KeyValue keyValue) {
         if (keyValue == null) {
-            throw new IllegalArgumentException("keyValue is null");
+            return empty();
         }
 
         if (keyValue.getKey() == null) {
@@ -138,7 +138,7 @@ public final class Attributes implements Serializable {
      */
     public static Attributes fromKeyValues(Collection<? extends KeyValue> keyValues) {
         if (keyValues == null) {
-            throw new IllegalArgumentException("keyValues is null");
+            return empty();
         }
         final Map<String, String> pairs = new HashMap<String, String>();
         for (KeyValue keyValue : keyValues) {

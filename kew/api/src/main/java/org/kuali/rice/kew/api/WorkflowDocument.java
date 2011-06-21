@@ -30,6 +30,8 @@ import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.action.AdHocRevokeFromGroup;
+import org.kuali.rice.kew.api.action.AdHocRevokeFromPrincipal;
 import org.kuali.rice.kew.api.action.AdHocToGroup;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
 import org.kuali.rice.kew.api.action.DocumentActionResult;
@@ -418,18 +420,10 @@ public class WorkflowDocument implements java.io.Serializable {
 //    	documentContentDirty = true;
 //    }
 
-    /**
-     * Sends an ad hoc request to the specified user at the current active node on the document.  If the document is
-     * in a terminal state, the request will be attached to the terminal node.
-     */
     public void adHocToPrincipal(ActionRequestType actionRequested, String annotation, String targetPrincipalId, String responsibilityDescription, boolean forceAction) {
     	adHocToPrincipal(actionRequested, null, annotation, targetPrincipalId, responsibilityDescription, forceAction);
     }
 
-    /**
-     * Sends an ad hoc request to the specified user at the specified node on the document.  If the document is
-     * in a terminal state, the request will be attached to the terminal node.
-     */
     public void adHocToPrincipal(ActionRequestType actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDescription, boolean forceAction) {
     	adHocToPrincipal(actionRequested, nodeName, annotation, targetPrincipalId, responsibilityDescription, forceAction, null);
     }
@@ -443,26 +437,14 @@ public class WorkflowDocument implements java.io.Serializable {
     	resetStateAfterAction(result);
     }
 
-    /**
-     * Sends an ad hoc request to the specified workgroup at the current active node on the document.  If the document is
-     * in a terminal state, the request will be attached to the terminal node.
-     */
     public void adHocToGroup(ActionRequestType actionRequested, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction) {
     	adHocToGroup(actionRequested, null, annotation, targetGroupId, responsibilityDescription, forceAction);
     }
 
-    /**
-     * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
-     * in a terminal state, the request will be attached to the terminal node.
-     */
     public void adHocToGroup(ActionRequestType actionRequested, String nodeName, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction) {
     	adHocToGroup(actionRequested, nodeName, annotation, targetGroupId, responsibilityDescription, forceAction, null);
     }
 
-    /**
-     * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
-     * in a terminal state, the request will be attached to the terminal node.
-     */
     public void adHocToGroup(ActionRequestType actionRequested, String nodeName, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction, String requestLabel) {
     	AdHocToGroup.Builder builder = AdHocToGroup.Builder.create(actionRequested, nodeName, targetGroupId);
     	builder.setResponsibilityDescription(responsibilityDescription);
@@ -472,24 +454,23 @@ public class WorkflowDocument implements java.io.Serializable {
     	resetStateAfterAction(result);
     }
 
-//    /**
-//     * Revokes AdHoc request(s) according to the given AdHocRevokeVO which is passed in.
-//     *
-//     * If a specific action request ID is specified on the revoke bean, and that ID is not a valid ID, this method should throw a
-//     * WorkflowException.
-//     * @param revoke AdHocRevokeVO
-//     * @param annotation message to note for this action
-//     * @throws WorkflowException if an error occurs revoking adhoc requests
-//     * @see WorkflowDocumentActions#revokeAdHocRequests(UserIdDTO, RouteHeaderDTO, AdHocRevokeDTO, String)
-//     */
-//    public void revokeAdHocRequests(AdHocRevokeDTO revoke, String annotation) throws WorkflowException {
-//    	if (getRouteHeader().getDocumentId() == null) {
-//    		throw new WorkflowException("Can't revoke request, the workflow document has not yet been created!");
-//    	}
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().revokeAdHocRequests(principalId, getRouteHeader(), revoke, annotation);
-//    	documentContentDirty = true;
-//    }
+    public void revokeAdHocRequestsFromPrincipal(AdHocRevokeFromPrincipal revokeFromPrincipal, String annotation) {
+    	if (revokeFromPrincipal == null) {
+    		throw new IllegalArgumentException("revokeFromPrincipal was null");
+    	}
+    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequestsFromPrincipal(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), revokeFromPrincipal);
+    	resetStateAfterAction(result);
+    }
+    
+    public void revokeAdHocRequestsFromGroup(AdHocRevokeFromGroup revokeFromGroup, String annotation) {
+    	if (revokeFromGroup == null) {
+    		throw new IllegalArgumentException("revokeFromGroup was null");
+    	}
+    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequestsFromGroup(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), revokeFromGroup);
+    	resetStateAfterAction(result);
+    }
+
+    
 //
 //    /**
 //     * Sets the title of the document, empty string if null is specified.

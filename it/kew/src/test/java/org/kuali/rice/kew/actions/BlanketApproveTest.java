@@ -32,12 +32,12 @@ import mocks.MockEmailNotificationService;
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -89,7 +89,7 @@ public class BlanketApproveTest extends KEWTestCase {
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("");
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-        assertTrue("Document should be processed.", document.stateIsProcessed());
+        assertTrue("Document should be processed.", document.isProcessed());
         Collection nodeInstances = getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         // once the document is processed there are no active nodes
         assertEquals("Wrong number of active nodes.", 0, nodeInstances.size());
@@ -139,44 +139,44 @@ public class BlanketApproveTest extends KEWTestCase {
         assertTrue(isAck1);
         assertTrue(isAck2);
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
-        assertTrue(document.stateIsProcessed());
+        assertTrue(document.isProcessed());
         assertTrue(document.isAcknowledgeRequested());
         assertEquals("bmcgough should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
         assertEquals("bmcgough should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
 
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue(document.stateIsProcessed());
+        assertTrue(document.isProcessed());
         assertTrue(document.isAcknowledgeRequested());
         assertEquals("rkirkend should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));        
         assertEquals("rkirkend should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
-        assertTrue(document.stateIsProcessed());
+        assertTrue(document.isProcessed());
         assertTrue(document.isAcknowledgeRequested());
         assertEquals("pmckown should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
         assertEquals("pmckown should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
-        assertTrue(document.stateIsProcessed());
+        assertTrue(document.isProcessed());
         assertTrue(document.isAcknowledgeRequested());
         assertEquals("rkirkend should have been sent an temay", 1, getMockEmailService().immediateReminderEmailsSent("temay", document.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));        
         document.acknowledge("");
         
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
-        assertTrue(document.stateIsProcessed());
+        assertTrue(document.isProcessed());
         assertTrue(document.isAcknowledgeRequested());
         assertEquals("rkirkend should have been sent an jhopf", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-        assertTrue(document.stateIsFinal());
+        assertTrue(document.isFinal());
         
         document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("", SequentialSetup.WORKFLOW_DOCUMENT_2_NODE);
-        assertTrue("Document should be enroute.", document.stateIsEnroute());
+        assertTrue("Document should be enroute.", document.isEnroute());
         nodeInstances = getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         assertEquals("Should be one active node.", 1, nodeInstances.size());
         RouteNodeInstance doc2Instance = (RouteNodeInstance)nodeInstances.iterator().next();
@@ -202,7 +202,7 @@ public class BlanketApproveTest extends KEWTestCase {
         
         // blanket approve to current node
         document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
-        document.routeDocument("");
+        document.route("");
         try {
             document.blanketApprove("", SequentialSetup.WORKFLOW_DOCUMENT_NODE);
             fail("Should have thrown exception");
@@ -220,7 +220,7 @@ public class BlanketApproveTest extends KEWTestCase {
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("");        
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-        assertTrue("Document should be processed.", document.stateIsProcessed());
+        assertTrue("Document should be processed.", document.isProcessed());
         Collection nodeInstances = getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         // once the document has gone processed there are no active nodes
         assertEquals("Wrong number of active nodes.", 0, nodeInstances.size());
@@ -261,7 +261,7 @@ public class BlanketApproveTest extends KEWTestCase {
         
         document.blanketApprove("");
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-        assertTrue("Document should be processed.", document.stateIsProcessed());
+        assertTrue("Document should be processed.", document.isProcessed());
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         
         assertEquals("Wrong number of pending action requests.", 10, actionRequests.size());
@@ -295,7 +295,7 @@ public class BlanketApproveTest extends KEWTestCase {
         
         document.blanketApprove("");
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-        assertTrue("Document should be processed.", document.stateIsProcessed());
+        assertTrue("Document should be processed.", document.isProcessed());
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertEquals("Wrong number of pending action requests.", 10, actionRequests.size());
     }
@@ -304,7 +304,7 @@ public class BlanketApproveTest extends KEWTestCase {
         
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("", ParallelSetup.JOIN_NODE);
-        assertTrue("Document should still be enroute.", document.stateIsEnroute());
+        assertTrue("Document should still be enroute.", document.isEnroute());
 
         // document should now be at the workflow document final node
         Collection activeNodes = getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
@@ -329,7 +329,7 @@ public class BlanketApproveTest extends KEWTestCase {
         
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("", ParallelSetup.ACKNOWLEDGE_1_NODE);
-        assertTrue("Document should be processed.", document.stateIsProcessed());
+        assertTrue("Document should be processed.", document.isProcessed());
 
         // document should now be terminal
         Collection activeNodes = getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
@@ -351,7 +351,7 @@ public class BlanketApproveTest extends KEWTestCase {
             // Shouldn't be able to blanket approve past the join in conjunction with blanket approve within a branch
         	TestUtilities.getExceptionThreader().join();
         	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-            assertTrue("Document should be in exception routing.", document.stateIsException());            
+            assertTrue("Document should be in exception routing.", document.isException());            
         }
     }
     
@@ -463,7 +463,7 @@ public class BlanketApproveTest extends KEWTestCase {
     @Test public void testBlanketApprovePastMandatoryNode() throws Exception {
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveMandatoryNodeTest");
         document.blanketApprove("");
-        assertTrue("Document should be processed.", document.stateIsProcessed());
+        assertTrue("Document should be processed.", document.isProcessed());
     }
     
     /**
@@ -474,13 +474,13 @@ public class BlanketApproveTest extends KEWTestCase {
     	String jitruePrincipalId = getPrincipalIdForName("jitrue");
     	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "BlanketApproveThroughRoleAndWorkgroupTest");
     	document.saveDocument("");
-    	assertTrue(document.stateIsSaved());
+    	assertTrue(document.isSaved());
     	TestUtilities.assertNotInActionList(jitruePrincipalId, document.getDocumentId());
     	document.blanketApprove("");
     	
     	// document should now be processed
     	document = WorkflowDocument.loadDocument(jitruePrincipalId, document.getDocumentId());
-    	assertTrue(document.stateIsProcessed());
+    	assertTrue(document.isProcessed());
     	assertTrue(document.isAcknowledgeRequested());
     	
     	// there should be 3 root acknowledge requests, one to the WorkflowAdmin workgroup, one to jitrue in the Notify role and one to jitrue in the Notify2 role
@@ -497,7 +497,7 @@ public class BlanketApproveTest extends KEWTestCase {
     	
     	// document should still be processed
     	document = WorkflowDocument.loadDocument(jitruePrincipalId, document.getDocumentId());
-    	assertTrue(document.stateIsProcessed());
+    	assertTrue(document.isProcessed());
     	assertTrue(document.isAcknowledgeRequested());
     	
     	// there should now be 2 root acknowledge requests, one to jitrue in the Notify role and one to jitrue in the Notify2 role
@@ -509,7 +509,7 @@ public class BlanketApproveTest extends KEWTestCase {
     	document.acknowledge("");
     	
     	// document should now be final
-    	assertTrue(document.stateIsFinal());
+    	assertTrue(document.isFinal());
     }
     
     private RouteNodeService getRouteNodeService() {

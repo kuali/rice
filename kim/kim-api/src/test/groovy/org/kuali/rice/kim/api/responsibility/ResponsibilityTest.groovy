@@ -94,7 +94,7 @@ class ResponsibilityTest {
 	
     @Test
     void happy_path() {
-        Responsibility.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE)
+        Responsibility.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE).build()
     }
 
 	@Test(expected = IllegalArgumentException.class)

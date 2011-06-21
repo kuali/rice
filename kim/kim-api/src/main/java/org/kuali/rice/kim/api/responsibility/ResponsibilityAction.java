@@ -399,10 +399,6 @@ public final class ResponsibilityAction
         }
 
         public void setGroupId(String groupId) {
-            if (StringUtils.isBlank(groupId)) {
-                throw new IllegalArgumentException("groupId is blank");
-            }
-
             this.groupId = groupId;
         }
 

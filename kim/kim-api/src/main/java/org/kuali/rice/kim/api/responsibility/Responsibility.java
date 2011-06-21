@@ -60,7 +60,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
 
 	private static final long serialVersionUID = 1L;
 
-    @XmlElement(name = Responsibility.Elements.ID, required = true)
+    @XmlElement(name = Responsibility.Elements.ID, required = false)
     private final String id;
 
     @XmlElement(name = Responsibility.Elements.NAMESPACE_CODE, required = true)

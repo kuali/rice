@@ -45,22 +45,22 @@ class TemplateTest {
 	
     @Test
     void happy_path() {
-        Template.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID)
+        Template.Builder.create(NAMESPACE_CODE, NAME, KIM_TYPE_ID)
     }
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_null() {
-		Template.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID).setVersionNumber(null);
+		Template.Builder.create(NAMESPACE_CODE, NAME, KIM_TYPE_ID).setVersionNumber(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_less_than_1() {
-		Template.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID).setVersionNumber(-1);
+		Template.Builder.create(NAMESPACE_CODE, NAME, KIM_TYPE_ID).setVersionNumber(-1);
 	}
 	
 	@Test
 	void test_copy() {
-		def o1b = Template.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID)
+		def o1b = Template.Builder.create(NAMESPACE_CODE, NAME, KIM_TYPE_ID)
 		o1b.description = DESCRIPTION
 
 		def o1 = o1b.build()

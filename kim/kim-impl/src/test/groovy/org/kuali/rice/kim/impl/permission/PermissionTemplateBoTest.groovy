@@ -37,6 +37,6 @@ class PermissionTemplateBoTest {
     }
 
     static Template.Builder create() {
-        return Template.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID)
+        return Template.Builder.create(NAMESPACE_CODE, NAME, KIM_TYPE_ID)
     }
 }

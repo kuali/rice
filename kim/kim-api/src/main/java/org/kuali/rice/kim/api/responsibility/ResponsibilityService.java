@@ -82,7 +82,17 @@ public interface ResponsibilityService {
     Responsibility updateResponsibility(@WebParam(name = "responsibility") Responsibility responsibility)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
-
+    /**
+     * Gets a {@link Responsibility} from an id.
+     *
+     * <p>
+     *   This method will return null if the responsibility does not exist.
+     * </p>
+     *
+     * @param id the unique id to retrieve the responsibility by. cannot be null.
+     * @return a {@link Responsibility} or null
+     * @throws IllegalArgumentException if the id is blank
+     */
     @WebMethod(operationName = "getResponsibility")
     @WebResult(name = "responsibility")
     Responsibility getResponsibility(@WebParam(name = "id") String id);
@@ -91,7 +101,17 @@ public interface ResponsibilityService {
     @WebResult(name = "responsibilities")
     List<Responsibility> findRespsByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
                                                          @WebParam(name = "name") String name);
-
+    /**
+     * Gets a {@link Template} from an id.
+     *
+     * <p>
+     *   This method will return null if the template does not exist.
+     * </p>
+     *
+     * @param id the unique id to retrieve the template by. cannot be null.
+     * @return a {@link Template} or null
+     * @throws IllegalArgumentException if the id is blank
+     */
     @WebMethod(operationName = "getResponsibilityTemplate")
     @WebResult(name = "template")
     Template getResponsibilityTemplate(@WebParam(name = "id") String id);

@@ -55,7 +55,7 @@ public final class Template implements TemplateContract, ModelObjectComplete{
 
 	private static final long serialVersionUID = 1L;
 	
-    @XmlElement(name = Template.Elements.ID, required = true)
+    @XmlElement(name = Template.Elements.ID, required = false)
     private final String id;
 
     @XmlElement(name = Template.Elements.NAMESPACE_CODE, required = true)
@@ -207,8 +207,7 @@ public final class Template implements TemplateContract, ModelObjectComplete{
         private String objectId;
         private boolean active;
         
-        private Builder(String id, String namespaceCode, String name, String kimTypeId) {
-            setId(id);
+        private Builder(String namespaceCode, String name, String kimTypeId) {
             setNamespaceCode(namespaceCode);
             setName(name);
             setKimTypeId(kimTypeId);
@@ -217,15 +216,16 @@ public final class Template implements TemplateContract, ModelObjectComplete{
         /**
          * creates a KimPermission with the required fields.
          */
-        public static Builder create(String id, String namespaceCode, String name, String kimTypeId) {
-            return new Builder(id, namespaceCode, name, kimTypeId);
+        public static Builder create(String namespaceCode, String name, String kimTypeId) {
+            return new Builder(namespaceCode, name, kimTypeId);
         }
 
         /**
          * creates a KimPermission from an existing {@link TemplateContract}.
          */
         public static Builder create(TemplateContract contract) {
-            Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), contract.getKimTypeId());
+            Builder builder = new Builder(contract.getNamespaceCode(), contract.getName(), contract.getKimTypeId());
+            builder.setId(contract.getId());
             builder.setDescription(contract.getDescription());
             
             builder.setActive(contract.isActive());
@@ -241,9 +241,6 @@ public final class Template implements TemplateContract, ModelObjectComplete{
         }
 
         public void setId(final String id) {
-        	if (StringUtils.isEmpty(id)) {
-                throw new IllegalArgumentException("id is blank");
-            }
         	this.id = id;
         }
         

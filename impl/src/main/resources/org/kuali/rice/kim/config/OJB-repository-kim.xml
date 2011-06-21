@@ -676,7 +676,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo" table="KRIM_RSP_TMPL_T">
-    <field-descriptor name="id" column="RSP_TMPL_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="RSP_TMPL_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="KRIM_RSP_TMPL_ID_S" autoincrement="true" />
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />

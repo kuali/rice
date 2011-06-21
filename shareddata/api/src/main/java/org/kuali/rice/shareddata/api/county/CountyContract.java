@@ -16,20 +16,14 @@
 
 package org.kuali.rice.shareddata.api.county;
 
+import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * This is the contract for a State.
  */
-public interface CountyContract extends Inactivatable, Versioned {
-
-    /**
-     * This the county code for the County.  This cannot be null or a blank string.
-     *
-     * @return code
-     */
-    String getCode();
+public interface CountyContract extends Inactivatable, Versioned, Coded {
 
     /**
      * This the postal country code for the County.  This cannot be null or a blank string.

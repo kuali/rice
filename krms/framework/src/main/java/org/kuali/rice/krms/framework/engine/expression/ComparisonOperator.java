@@ -1,9 +1,10 @@
 package org.kuali.rice.krms.framework.engine.expression;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.krms.api.engine.IncompatibleTypeException;
 
-public enum ComparisonOperator {
+public enum ComparisonOperator implements Coded {
 
 	EQUALS("="),
 	NOT_EQUALS("!="),

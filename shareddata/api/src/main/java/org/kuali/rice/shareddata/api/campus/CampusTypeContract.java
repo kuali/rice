@@ -16,23 +16,13 @@
 
 package org.kuali.rice.shareddata.api.campus;
 
+import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
-public interface CampusTypeContract extends Versioned, GloballyUnique, Inactivatable {
+public interface CampusTypeContract extends Versioned, GloballyUnique, Inactivatable, Coded {
 	
-	/**
-	 * This is the campus type code for the CampusType.  This is cannot be a null or a blank string.
-	 *
-	 * <p>
-	 * It is a unique abreviation of a campus type.
-	 * </p>
-	 * @return code for CampusType.  Will never be null or an empty string.
-	 */
-	String getCode();
-
-
 	/**
 	 * This is the name for the CampusType. 
 	 *
@@ -42,16 +32,4 @@ public interface CampusTypeContract extends Versioned, GloballyUnique, Inactivat
 	 * @return name for CampusType.
 	 */
 	String getName();
-
-
-	/**
-	 * This is the active flag for the CampusType. 
-	 *
-	 * <p>
-	 * It is a flag that determines if a campus type is active or not.
-	 * </p>
-	 * @return active boolean for CampusType.
-	 */
-	boolean isActive();
-
 }

@@ -24,9 +24,9 @@ package org.kuali.rice.core.api.mo.common;
 public interface Coded {
 
 	/**
-	 * The code value for this object.
+	 * The code value for this object.  In general a code value cannot be null or a blank string.
 	 * 
-	 * @return the code value for this object, or null if the code is not defined
+	 * @return the code value for this object.
 	 */
 	String getCode();
 	

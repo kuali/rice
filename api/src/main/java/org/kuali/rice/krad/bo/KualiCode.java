@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.krad.bo;
 
+import org.kuali.rice.core.api.mo.common.Coded;
+
 /**
  * Represents a simple code-description business object
  */
-public interface KualiCode extends Inactivatable {
+public interface KualiCode extends Inactivatable, Coded {
 
 	/**
 	 * @param code - Setter for the Code.

@@ -16,6 +16,7 @@
 
 package org.kuali.rice.shareddata.api.country;
 
+import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
@@ -23,7 +24,7 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
  * Contract for a Country. Country is a basic abstraction over a Country, encapsulating its name, country code,
  * postal code, and if its restricted or not
  */
-public interface CountryContract extends Versioned, Inactivatable {
+public interface CountryContract extends Versioned, Inactivatable, Coded {
 
     /**
      * An abbreviated String representing the unique identifying code for a given country.  This code correlates
@@ -32,6 +33,7 @@ public interface CountryContract extends Versioned, Inactivatable {
      *
      * @return The country code for this Country.
      */
+    @Override
     String getCode();
 
     /**

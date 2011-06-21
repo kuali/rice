@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.kew.util.KEWConstants;
 
 /**
@@ -25,7 +26,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public final class ActivationTypeEnum {
+public final class ActivationTypeEnum implements Coded {
     /** Routing should process the associated ActionRequests in sequence */
     public static final ActivationTypeEnum SEQUENTIAL = new ActivationTypeEnum(KEWConstants.ROUTE_LEVEL_SEQUENCE, KEWConstants.ROUTE_LEVEL_SEQUENTIAL_NAME, KEWConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
     /** Routing should process the associated ActionRequests in parallel */

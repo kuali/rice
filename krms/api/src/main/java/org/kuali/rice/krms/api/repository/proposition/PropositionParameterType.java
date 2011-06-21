@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krms.api.repository.proposition;
 
+import org.kuali.rice.core.api.mo.common.Coded;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +26,7 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public enum PropositionParameterType {
+public enum PropositionParameterType implements Coded {
 
 	CONSTANT("C"),
 	TERM("T"),

@@ -30,6 +30,7 @@ import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
@@ -46,9 +47,7 @@ import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -91,6 +90,7 @@ import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
@@ -639,14 +639,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return (PrincipalBo)getBusinessObjectService().findByPrimaryKey(PrincipalBo.class, criteria);
 	}
 
-	public List<KimEntityEmploymentInformationInfo> getEntityEmploymentInformationInfo(String entityId) {
+	public List<EntityEmployment> getEntityEmploymentInformationInfo(String entityId) {
         KimEntityImpl entityImpl = getEntityImpl(entityId);
-        List<KimEntityEmploymentInformationInfo> empInfos = new ArrayList<KimEntityEmploymentInformationInfo>();
-        KimEntityEmploymentInformationInfo empInfo;
+        List<EntityEmployment> empInfos = new ArrayList<EntityEmployment>();
+        EntityEmployment empInfo;
         if(ObjectUtils.isNotNull(entityImpl) && CollectionUtils.isNotEmpty(entityImpl.getEmploymentInformation())){
-        	for(KimEntityEmploymentInformationImpl empImpl: entityImpl.getEmploymentInformation()){
-            	empInfo = new KimEntityEmploymentInformationInfo(empImpl);
-            	empInfos.add(empInfo);
+        	for(EntityEmploymentBo empImpl: entityImpl.getEmploymentInformation()){
+            	empInfos.add(EntityEmploymentBo.to(empImpl));
         	}
         }
         return empInfos;
@@ -840,7 +839,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return rulePassed;
 	}
 
-	protected List<PersonDocumentAffiliation> loadAffiliations(List <EntityAffiliation> affiliations, List<KimEntityEmploymentInformationInfo> empInfos) {
+	protected List<PersonDocumentAffiliation> loadAffiliations(List <EntityAffiliation> affiliations, List<EntityEmployment> empInfos) {
 		List<PersonDocumentAffiliation> docAffiliations = new ArrayList<PersonDocumentAffiliation>();
 		if(ObjectUtils.isNotNull(affiliations)){
 			for (EntityAffiliation affiliation: affiliations) {
@@ -858,19 +857,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					// employment informations
 					List<PersonDocumentEmploymentInfo> docEmploymentInformations = new ArrayList<PersonDocumentEmploymentInfo>();
 					if(ObjectUtils.isNotNull(empInfos)){
-						for (KimEntityEmploymentInformationInfo empInfo: empInfos) {
-							if (empInfo.isActive() && StringUtils.equals(docAffiliation.getEntityAffiliationId(), empInfo.getEntityAffiliationId())) {
+						for (EntityEmployment empInfo: empInfos) {
+							if (empInfo.isActive()
+                                    && StringUtils.equals(docAffiliation.getEntityAffiliationId(),
+                                                          (empInfo.getEntityAffiliation() != null ? empInfo.getEntityAffiliation().getId() : null))) {
 								PersonDocumentEmploymentInfo docEmpInfo = new PersonDocumentEmploymentInfo();
-								docEmpInfo.setEntityEmploymentId(empInfo.getEntityEmploymentId());
+								docEmpInfo.setEntityEmploymentId(empInfo.getEmployeeId());
 								docEmpInfo.setEmployeeId(empInfo.getEmployeeId());
 								docEmpInfo.setEmploymentRecordId(empInfo.getEmploymentRecordId());
 								docEmpInfo.setBaseSalaryAmount(empInfo.getBaseSalaryAmount());
 								docEmpInfo.setPrimaryDepartmentCode(empInfo.getPrimaryDepartmentCode());
-								docEmpInfo.setEmploymentStatusCode(empInfo.getEmployeeStatusCode());
-								docEmpInfo.setEmploymentTypeCode(empInfo.getEmployeeTypeCode());
+								docEmpInfo.setEmploymentStatusCode(empInfo.getEmployeeStatus() != null ? empInfo.getEmployeeStatus().getCode() : null);
+								docEmpInfo.setEmploymentTypeCode(empInfo.getEmployeeType() != null ? empInfo.getEmployeeType().getCode() : null);
 								docEmpInfo.setActive(empInfo.isActive());
 								docEmpInfo.setPrimary(empInfo.isPrimary());
-								docEmpInfo.setEntityAffiliationId(empInfo.getEntityAffiliationId());
+								docEmpInfo.setEntityAffiliationId(empInfo.getEntityAffiliation() != null ? empInfo.getEntityAffiliation().getId() : null);
 								// there is no version number on KimEntityEmploymentInformationInfo
 								//docEmpInfo.setVersionNumber(empInfo.getVersionNumber());
 								docEmpInfo.setEdit(true);
@@ -970,10 +971,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	}
 	}
 
-    protected void setupAffiliation(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity,List<EntityAffiliationBo> origAffiliations, List<KimEntityEmploymentInformationImpl> origEmpInfos) {
+    protected void setupAffiliation(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity,List<EntityAffiliationBo> origAffiliations, List<EntityEmploymentBo> origEmpInfos) {
 		List<EntityAffiliationBo> entityAffiliations = new ArrayList<EntityAffiliationBo>();
 		// employment informations
-		List<KimEntityEmploymentInformationImpl> entityEmploymentInformations = new ArrayList<KimEntityEmploymentInformationImpl>();
+		List<EntityEmploymentBo> entityEmploymentInformations = new ArrayList<EntityEmploymentBo>();
 		if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getAffiliations())){
 			for (PersonDocumentAffiliation affiliation : identityManagementPersonDocument.getAffiliations()) {
 				EntityAffiliationBo entityAffiliation = new EntityAffiliationBo();
@@ -998,8 +999,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				int employeeRecordCounter = origEmpInfos==null?0:origEmpInfos.size();
 				if(CollectionUtils.isNotEmpty(affiliation.getEmpInfos())){
 					for (PersonDocumentEmploymentInfo empInfo : affiliation.getEmpInfos()) {
-						KimEntityEmploymentInformationImpl entityEmpInfo = new KimEntityEmploymentInformationImpl();
-						entityEmpInfo.setEntityEmploymentId(empInfo.getEntityEmploymentId());
+						EntityEmploymentBo entityEmpInfo = new EntityEmploymentBo();
+						entityEmpInfo.setId(empInfo.getEntityEmploymentId());
 						entityEmpInfo.setEmployeeId(empInfo.getEmployeeId());
 						entityEmpInfo.setEmploymentRecordId(empInfo.getEmploymentRecordId());
 						entityEmpInfo.setBaseSalaryAmount(empInfo.getBaseSalaryAmount());
@@ -1011,12 +1012,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						entityEmpInfo.setEntityId(identityManagementPersonDocument.getEntityId());
 						entityEmpInfo.setEntityAffiliationId(empInfo.getEntityAffiliationId());
 						if(ObjectUtils.isNotNull(origEmpInfos)){
-							for (KimEntityEmploymentInformationImpl origEmpInfo : origEmpInfos) {
+							for (EntityEmploymentBo origEmpInfo : origEmpInfos) {
 								if(isSameEmpInfo(origEmpInfo, entityEmpInfo)){
-									entityEmpInfo.setEntityEmploymentId(entityEmpInfo.getEntityEmploymentId());
+									entityEmpInfo.setId(entityEmpInfo.getEntityId());
 								}
 
-								if (origEmpInfo.getEntityEmploymentId()!=null && StringUtils.equals(origEmpInfo.getEntityEmploymentId(), entityEmpInfo.getEntityEmploymentId())) {
+								if (origEmpInfo.getId()!=null && StringUtils.equals(origEmpInfo.getId(), entityEmpInfo.getId())) {
 									entityEmpInfo.setVersionNumber(origEmpInfo.getVersionNumber());
 									entityEmpInfo.setEmploymentRecordId(empInfo.getEmploymentRecordId());
 								}
@@ -1047,7 +1048,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
  		(StringUtils.isNotEmpty(origAffiliation.getEntityId()) && StringUtils.equals(origAffiliation.getEntityId(), entityAffiliation.getEntityId()));
     }
 
-    private boolean isSameEmpInfo(KimEntityEmploymentInformationImpl origEmpInfo, KimEntityEmploymentInformationImpl entityEmpInfo){
+    private boolean isSameEmpInfo(EntityEmploymentBo origEmpInfo, EntityEmploymentBo entityEmpInfo){
     	//emp_info:
     		//employmentRecordId
     		//entityId

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
@@ -122,5 +122,5 @@ public interface UiDocumentService {
 	public boolean canModifyEntity( String currentUserPrincipalId, String toModifyPrincipalId );
 	public boolean canOverrideEntityPrivacyPreferences( String currentUserPrincipalId, String toModifyPrincipalId );
 
-	public List<KimEntityEmploymentInformationInfo> getEntityEmploymentInformationInfo(String entityId);
+	public List<EntityEmployment> getEntityEmploymentInformationInfo(String entityId);
 }

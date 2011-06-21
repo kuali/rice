@@ -38,8 +38,6 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
-import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.KimCodeInfoBase;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -49,6 +47,8 @@ import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.kim.service.AuthenticationService;
@@ -965,19 +965,19 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return type;
 	}
 
-	public EmploymentStatusInfo getEmploymentStatus( String code ) {
-		EmploymentStatusInfo type = (EmploymentStatusInfo)kimReferenceTypeCache.get(EmploymentStatusInfo.class.getSimpleName()+"-"+code);
+	public Type getEmploymentStatus( String code ) {
+		Type type = (Type)kimReferenceTypeCacheMap.get(EntityEmploymentStatusBo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
 			type = getIdentityService().getEmploymentStatus(code);
-			kimReferenceTypeCache.put(EmploymentStatusInfo.class.getSimpleName()+"-"+code, type);
+			kimReferenceTypeCacheMap.put(EntityEmploymentStatusBo.class.getSimpleName()+"-"+code, type);
 		}
 		return type;
 	}
-	public EmploymentTypeInfo getEmploymentType( String code ) {
-		EmploymentTypeInfo type = (EmploymentTypeInfo)kimReferenceTypeCache.get(EmploymentTypeInfo.class.getSimpleName()+"-"+code);
+	public Type getEmploymentType( String code ) {
+		Type type = (Type)kimReferenceTypeCacheMap.get(EntityEmploymentTypeBo.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
 			type = getIdentityService().getEmploymentType(code);
-			kimReferenceTypeCache.put(EmploymentTypeInfo.class.getSimpleName()+"-"+code, type);
+			kimReferenceTypeCacheMap.put(EntityEmploymentTypeBo.class.getSimpleName()+"-"+code, type);
 		}
 		return type;
 	}

@@ -26,16 +26,11 @@ import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
-import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
-import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
-import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.impl.identity.EntityTypeBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
@@ -45,6 +40,9 @@ import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
@@ -246,7 +244,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 				info.setDefaultAffiliation( affInfo.get( affInfo.size() - 1 ) );
 			}
 		}
-		info.setPrimaryEmployment( new KimEntityEmploymentInformationInfo( entity.getPrimaryEmployment() ) );
+		info.setPrimaryEmployment( EntityEmploymentBo.to(entity.getPrimaryEmployment()) );
 		ArrayList<KimEntityExternalIdentifierInfo> idInfo = new ArrayList<KimEntityExternalIdentifierInfo>( entity.getExternalIdentifiers().size() );
 		info.setExternalIdentifiers( idInfo );
 		for ( KimEntityExternalIdentifier id : entity.getExternalIdentifiers() ) {
@@ -502,20 +500,20 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		return EntityEmailTypeBo.to(impl);
 	}
 
-	public EmploymentStatusInfo getEmploymentStatus( String code ) {
-		EmploymentStatusImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EmploymentStatusImpl.class, code);
+	public Type getEmploymentStatus( String code ) {
+		EntityEmploymentStatusBo impl = getBusinessObjectService().findBySinglePrimaryKey(EntityEmploymentStatusBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
-		return impl.toInfo();
+		return EntityEmploymentStatusBo.to(impl);
 	}
 
-	public EmploymentTypeInfo getEmploymentType( String code ) {
-		EmploymentTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EmploymentTypeImpl.class, code);
+	public Type getEmploymentType( String code ) {
+		EntityEmploymentTypeBo impl = getBusinessObjectService().findBySinglePrimaryKey(EntityEmploymentTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
-		return impl.toInfo();
+		return EntityEmploymentTypeBo.to(impl);
 	}
 
 	public Type getEntityNameType( String code ) {

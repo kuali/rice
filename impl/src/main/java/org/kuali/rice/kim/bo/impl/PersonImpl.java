@@ -21,6 +21,7 @@ import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -28,12 +29,11 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
-import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
-import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-//import org.kuali.rice.shareddata.api.campus.Campus;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -99,9 +98,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected Map<String,String> externalIdentifiers = null;
 	// employment data
 	protected String employeeStatusCode = "";
-	protected EmploymentStatusImpl employeeStatus;
+	protected EntityEmploymentStatusBo employeeStatus;
 	protected String employeeTypeCode = "";
-	protected EmploymentTypeImpl employeeType;
+	protected EntityEmploymentTypeBo employeeType;
 	protected String primaryDepartmentCode = "";
 	protected String employeeId = "";
 	
@@ -272,10 +271,10 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	protected void populateEmploymentInfo( KimEntityDefaultInfo entity ) {
 		if(entity!=null){
-			KimEntityEmploymentInformation employmentInformation = entity.getPrimaryEmployment();
+			EntityEmployment employmentInformation = entity.getPrimaryEmployment();
 			if ( employmentInformation != null ) {
-				employeeStatusCode = unNullify( employmentInformation.getEmployeeStatusCode() );
-				employeeTypeCode = unNullify( employmentInformation.getEmployeeTypeCode() );
+				employeeStatusCode = unNullify( employmentInformation.getEmployeeStatus() != null ? employmentInformation.getEmployeeStatus().getCode() : null);
+				employeeTypeCode = unNullify( employmentInformation.getEmployeeType() != null ? employmentInformation.getEmployeeStatus().getCode() : null);
 				primaryDepartmentCode = unNullify( employmentInformation.getPrimaryDepartmentCode() );
 				employeeId = unNullify( employmentInformation.getEmployeeId() );
 				if ( employmentInformation.getBaseSalaryAmount() != null ) {
@@ -656,11 +655,11 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	//	return this.campus;
 	//}
 
-	public EmploymentStatusImpl getEmployeeStatus() {
+	public EntityEmploymentStatusBo getEmployeeStatus() {
 		return this.employeeStatus;
 	}
 
-	public EmploymentTypeImpl getEmployeeType() {
+	public EntityEmploymentTypeBo getEmployeeType() {
 		return this.employeeType;
 	}
 }

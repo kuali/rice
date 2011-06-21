@@ -16,11 +16,12 @@
 package org.kuali.rice.kim.bo.entity.dto;
 
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
+import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
-import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
     protected List<EntityTypeDataDefault> entityTypes;
     protected List<EntityAffiliation> affiliations;
     protected EntityAffiliation defaultAffiliation;
-    protected KimEntityEmploymentInformationInfo primaryEmployment;
+    protected EntityEmployment primaryEmployment;
     protected List<KimEntityExternalIdentifierInfo> externalIdentifiers;
     protected EntityPrivacyPreferences privacyPreferences;
 
@@ -112,22 +113,11 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
      * Gets this {@link KimEntityDefaultInfo}'s primary employment info.
      * @return the primary employment info for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
      */
-    public KimEntityEmploymentInformationInfo getPrimaryEmployment() {
+    public EntityEmployment getPrimaryEmployment() {
         return primaryEmployment;
     }
 
-    public void setPrimaryEmployment(KimEntityEmploymentInformation primaryEmployment) {
-        if (primaryEmployment != null) {
-            if (primaryEmployment instanceof KimEntityEmploymentInformationInfo) {
-                this.primaryEmployment = (KimEntityEmploymentInformationInfo) primaryEmployment;
-            }
-            else {
-                this.primaryEmployment = new KimEntityEmploymentInformationInfo(primaryEmployment);
-            }
-        }
-    }
-
-    public void setPrimaryEmployment(KimEntityEmploymentInformationInfo primaryEmployment) {
+    public void setPrimaryEmployment(EntityEmployment primaryEmployment) {
         this.primaryEmployment = primaryEmployment;
     }
 

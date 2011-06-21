@@ -18,12 +18,12 @@ package org.kuali.rice.kim.bo.entity.impl;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
@@ -160,11 +160,11 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 		info.setAffiliations(affInfo);
 
 		// employment information
-		KimEntityEmploymentInformationInfo empInfo = new KimEntityEmploymentInformationInfo();
+		EntityEmployment.Builder empInfo = EntityEmployment.Builder.create();
 		empInfo.setEmployeeId( this.getEmployeeId() );
 		empInfo.setPrimary(true);
 		empInfo.setPrimaryDepartmentCode(this.getPrimaryDepartmentCode());
-		info.setPrimaryEmployment( empInfo );
+		info.setPrimaryEmployment( empInfo.build() );
 		
 		// external identifiers
 		info.setExternalIdentifiers( new ArrayList<KimEntityExternalIdentifierInfo>(0) );

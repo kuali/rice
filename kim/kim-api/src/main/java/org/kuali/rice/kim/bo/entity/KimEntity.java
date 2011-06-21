@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.entity;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
+import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicityContract;
@@ -83,10 +84,10 @@ public interface KimEntity extends Inactivatable {
 	
     /**
      * Gets this {@link KimEntity}'s employment information List
-     * @return the List of {@link KimEntityEmploymentInformation}S for this {@link KimEntity}.
+     * @return the List of {@link org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract}S for this {@link KimEntity}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
-	List<? extends KimEntityEmploymentInformation> getEmploymentInformation();
+	List<? extends EntityEmploymentContract> getEmploymentInformation();
 
     /**
      * Gets this {@link KimEntity}'s privacy preferences
@@ -119,10 +120,10 @@ public interface KimEntity extends Inactivatable {
 	
 	/**
 	 * Gets this {@link KimEntity}'s employment information
-	 * @return the primary {@link KimEntityEmploymentInformation} for this {@link KimEntity}, 
+	 * @return the primary {@link org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract} for this {@link KimEntity},
 	 * or null if none has been assigned.
 	 */
-	KimEntityEmploymentInformation getPrimaryEmployment();
+	EntityEmploymentContract getPrimaryEmployment();
 
 	/**
 	 * Gets this {@link KimEntity}'s default affiliation

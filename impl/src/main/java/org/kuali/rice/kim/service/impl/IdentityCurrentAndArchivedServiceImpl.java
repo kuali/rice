@@ -25,8 +25,6 @@ import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
-import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
@@ -106,14 +104,14 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	/**
 	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEmploymentStatus(java.lang.String)
 	 */
-	public EmploymentStatusInfo getEmploymentStatus(String code) {
+	public Type getEmploymentStatus(String code) {
 		return getInnerIdentityService().getEmploymentStatus(code);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEmploymentType(java.lang.String)
 	 */
-	public EmploymentTypeInfo getEmploymentType(String code) {
+	public Type getEmploymentType(String code) {
 		return getInnerIdentityService().getEmploymentType(code);
 	}
 

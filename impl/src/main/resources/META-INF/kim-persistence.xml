@@ -26,8 +26,8 @@
     <class>org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo</class>
     <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo</class>
     <class>org.kuali.rice.kim.impl.identity.email.EntityEmailBo</class>
-    <class>org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl</class>
-    <class>org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl</class>
+    <class>org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo</class>
+    <class>org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo</class>
     <class>org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo</class>
     <class>org.kuali.rice.kim.impl.identity.EntityTypeBo</class>
     <class>org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl</class>
@@ -40,7 +40,7 @@
     <class>org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo</class>
     <class>org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo</class>
     <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl</class>
+    <class>org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl</class>
     <class>org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo</class>
     <class>org.kuali.rice.kim.impl.identity.name.EntityNameBo</class>

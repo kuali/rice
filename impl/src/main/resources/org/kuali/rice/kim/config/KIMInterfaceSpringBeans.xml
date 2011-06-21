@@ -207,8 +207,8 @@
              <entry key="org.kuali.rice.kim.framework.identity.address.EntityAddressTypeContractEbo" value="org.kuali.rice.kim.framework.identity.address.EntityAddressTypeEbo" />
              <entry key="org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeContract" value="org.kuali.rice.kim.framework.identity.affiliation.EntityAffiliationTypeEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.citizenship.EntityCitizenshipStatusContractEbo" value="org.kuali.rice.kim.framework.identity.citizenship.EntityCitizenshipStatusEbo" />
-             <entry key="org.kuali.rice.kim.bo.reference.EmploymentStatus" value="org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl" />
-             <entry key="org.kuali.rice.kim.bo.reference.EmploymentType" value="org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl" />
+             <entry key="org.kuali.rice.kim.framework.identity.employment.EntityEmploymentStatusContractEbo" value="org.kuali.rice.kim.framework.identity.employment.EntityEmploymentStatusEbo" />
+             <entry key="org.kuali.rice.kim.framework.identity.employment.EntityEmploymentTypeContractEbo" value="org.kuali.rice.kim.framework.identity.employment.EntityEmploymentTypeEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.name.EntityNameTypeContractEbo" value="org.kuali.rice.kim.framework.identity.name.EntityNameTypeEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.EntityTypeContractEbo" value="org.kuali.rice.kim.framework.identity.EntityTypeEbo" />
              <entry key="org.kuali.rice.kim.bo.reference.ExternalIdentifierType" value="org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl" />

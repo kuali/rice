@@ -24,9 +24,9 @@ import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
@@ -105,17 +105,17 @@ public class UserXmlParser {
         }
     	
         Long entityId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S", 
-        		KimEntityEmploymentInformationImpl.class);
+        		EntityEmploymentBo.class);
         
         // if they define an empl id, let's set that up
-        KimEntityEmploymentInformationImpl emplInfo = null;
+        EntityEmploymentBo emplInfo = null;
         if (!StringUtils.isBlank(emplId)) {
-        	emplInfo = new KimEntityEmploymentInformationImpl();
+        	emplInfo = new EntityEmploymentBo();
         	emplInfo.setActive(true);
         	emplInfo.setEmployeeId(emplId);
         	emplInfo.setPrimary(true);
         	emplInfo.setEntityId("" + entityId);
-        	emplInfo.setEntityEmploymentId(emplId);
+        	emplInfo.setId(emplId);
         	emplInfo.setEntityAffiliationId(null);
         }
         
@@ -123,7 +123,7 @@ public class UserXmlParser {
 		KimEntityImpl entity = new KimEntityImpl();
 		entity.setActive(true);
 		entity.setEntityId("" + entityId);
-		List<KimEntityEmploymentInformationImpl> emplInfos = new ArrayList<KimEntityEmploymentInformationImpl>();
+		List<EntityEmploymentBo> emplInfos = new ArrayList<EntityEmploymentBo>();
 		if (emplInfo != null) {
 			emplInfos.add(emplInfo);
 		}

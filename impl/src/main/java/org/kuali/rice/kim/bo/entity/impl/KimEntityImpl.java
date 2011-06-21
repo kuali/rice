@@ -21,6 +21,7 @@ import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo;
 import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo;
@@ -85,7 +86,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityEmploymentInformationImpl> employmentInformation = new AutoPopulatingList(KimEntityEmploymentInformationImpl.class);
+	protected List<EntityEmploymentBo> employmentInformation = new AutoPopulatingList(EntityEmploymentBo.class);
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
@@ -222,7 +223,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @return the employmentInformation
 	 */
-	public List<KimEntityEmploymentInformationImpl> getEmploymentInformation() {
+	public List<EntityEmploymentBo> getEmploymentInformation() {
 		return this.employmentInformation;
 	}
 
@@ -230,7 +231,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @param employmentInformation
 	 *            the employmentInformation to set
 	 */
-	public void setEmploymentInformation(List<KimEntityEmploymentInformationImpl> employmentInformation) {
+	public void setEmploymentInformation(List<EntityEmploymentBo> employmentInformation) {
 		this.employmentInformation = employmentInformation;
 	}
 
@@ -282,8 +283,8 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getPrimaryEmployment()
 	 */
-	public KimEntityEmploymentInformationImpl getPrimaryEmployment() {
-		for ( KimEntityEmploymentInformationImpl emp : employmentInformation ) {
+	public EntityEmploymentBo getPrimaryEmployment() {
+		for ( EntityEmploymentBo emp : employmentInformation ) {
 			if ( emp.isActive() && emp.isPrimary() ) {
 				return emp;
 			}

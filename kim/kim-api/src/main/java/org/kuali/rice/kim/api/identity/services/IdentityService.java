@@ -26,8 +26,6 @@ import org.kuali.rice.kim.api.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
-import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
@@ -176,12 +174,12 @@ public interface IdentityService {
     /**
      * Gets the employment status for the given employment status code.
      */
-	public EmploymentStatusInfo getEmploymentStatus( @WebParam(name="code") String code );
+	public Type getEmploymentStatus( @WebParam(name="code") String code );
 	
     /**
      * Gets the employment type for the given employment type code.
      */
-	public EmploymentTypeInfo getEmploymentType( @WebParam(name="code") String code );
+	public Type getEmploymentType( @WebParam(name="code") String code );
 	
     /**
      * Gets the identity name type for the given identity name type code.

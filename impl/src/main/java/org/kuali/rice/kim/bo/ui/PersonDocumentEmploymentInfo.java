@@ -15,17 +15,25 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.kim.bo.reference.EmploymentStatus;
-import org.kuali.rice.kim.bo.reference.EmploymentType;
-import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
-import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -70,14 +78,14 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditab
 	@Column(name="PRMRY_IND")
 	protected boolean primary;
 
-	@ManyToOne(targetEntity=EmploymentTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EntityEmploymentTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMP_TYP_CD", insertable = false, updatable = false)
-	protected EmploymentType employmentType;
+	protected EntityEmploymentTypeBo employmentType;
 
-	@ManyToOne(targetEntity=EmploymentStatusImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EntityEmploymentStatusBo.class, fetch = FetchType.EAGER, cascade = {})
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "EMP_STAT_CD", insertable = false, updatable = false)
-	protected EmploymentStatus employmentStatus;
+	protected EntityEmploymentStatusBo employmentStatus;
 	@Transient
 	protected PersonDocumentAffiliation affiliation;
 	
@@ -86,77 +94,77 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditab
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getBaseSalaryAmount()
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#getBaseSalaryAmount()
 	 */
 	public KualiDecimal getBaseSalaryAmount() {
 		return baseSalaryAmount;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeStatusCode()
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#getEmployeeStatusCode()
 	 */
 	public String getEmploymentStatusCode() {
 		return employmentStatusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmploymentTypeCode()
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#getEmploymentTypeCode()
 	 */
 	public String getEmploymentTypeCode() {
 		return employmentTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEntityAffiliationId()
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
 		return entityAffiliationId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEntityEmploymentId()
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#getEntityEmploymentId()
 	 */
 	public String getEntityEmploymentId() {
 		return entityEmploymentId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#isPrimary()
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#isPrimary()
 	 */
 	public boolean isPrimary() {
 		return primary;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setAffiliationId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#setAffiliationId(java.lang.String)
 	 */
 	public void setEntityAffiliationId(String entityAffiliationId) {
 		this.entityAffiliationId = entityAffiliationId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setBaseSalaryAmount(java.math.BigDecimal)
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#setBaseSalaryAmount(java.math.BigDecimal)
 	 */
 	public void setBaseSalaryAmount(KualiDecimal baseSalaryAmount) {
 		this.baseSalaryAmount = baseSalaryAmount;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setEmployeeStatusCode(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#setEmployeeStatusCode(java.lang.String)
 	 */
 	public void setEmploymentStatusCode(String employmentStatusCode) {
 		this.employmentStatusCode = employmentStatusCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setEmploymentTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#setEmploymentTypeCode(java.lang.String)
 	 */
 	public void setEmploymentTypeCode(String employmentTypeCode) {
 		this.employmentTypeCode = employmentTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setPrimary(boolean)
+	 * @see org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract#setPrimary(boolean)
 	 */
 	public void setPrimary(boolean primary) {
 		this.primary = primary;
@@ -166,19 +174,19 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditab
 		this.entityEmploymentId = entityEmploymentId;
 	}
 
-	public EmploymentType getEmploymentType() {
+	public EntityEmploymentTypeBo getEmploymentType() {
 		return this.employmentType;
 	}
 
-	public void setEmploymentType(EmploymentType employmentType) {
+	public void setEmploymentType(EntityEmploymentTypeBo employmentType) {
 		this.employmentType = employmentType;
 	}
 
-	public EmploymentStatus getEmploymentStatus() {
+	public EntityEmploymentStatusBo getEmploymentStatus() {
 		return this.employmentStatus;
 	}
 
-	public void setEmploymentStatus(EmploymentStatus employmentStatus) {
+	public void setEmploymentStatus(EntityEmploymentStatusBo employmentStatus) {
 		this.employmentStatus = employmentStatus;
 	}
 

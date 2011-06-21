@@ -9,10 +9,10 @@ import org.kuali.rice.kim.api.identity.TypeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
-@Table(name="KRIM_EMP_TYP_T")
-public class EntityEmploymentTypeBo extends PersistableBusinessObjectBase implements TypeContract {
+@Table(name="KRIM_EMP_STAT_T")
+public class EntityEmploymentStatusBo extends PersistableBusinessObjectBase implements TypeContract {
     @Id
-    @Column(name="EMP_TYP_CD")
+    @Column(name="EMP_STAT_CD")
     String code;
     @Column(name="NM")
     String name;
@@ -24,24 +24,24 @@ public class EntityEmploymentTypeBo extends PersistableBusinessObjectBase implem
 
 
     /**
-   * Converts a mutable EmploymentTypeBo to an immutable EmploymentType representation.
+   * Converts a mutable EmploymentStatusBo to an immutable EmploymentStatus representation.
    * @param bo
-   * @return an immutable EmploymentType
+   * @return an immutable EmploymentStatus
    */
-  static Type to(EntityEmploymentTypeBo bo) {
+  static Type to(EntityEmploymentStatusBo bo) {
     if (bo == null) { return null }
     return Type.Builder.create(bo).build()
   }
 
   /**
-   * Creates a EmploymentType business object from an immutable representation of a EmploymentType.
-   * @param an immutable EmploymentType
-   * @return a EmploymentTypeBo
+   * Creates a EmploymentStatus business object from an immutable representation of a EmploymentStatus.
+   * @param an immutable EmploymentStatus
+   * @return a EmploymentStatusBo
    */
-  static EntityEmploymentTypeBo from(Type immutable) {
+  static EntityEmploymentStatusBo from(Type immutable) {
     if (immutable == null) {return null}
 
-    EntityEmploymentTypeBo bo = new EntityEmploymentTypeBo()
+    EntityEmploymentStatusBo bo = new EntityEmploymentStatusBo()
     bo.code = immutable.code
     bo.name = immutable.name
     bo.sortCode = immutable.sortCode

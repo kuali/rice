@@ -23,9 +23,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -481,13 +481,13 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     }
 
     protected void setEmployeeRecordIds(){
-    	List<KimEntityEmploymentInformationInfo> empInfos = getUiDocumentService().getEntityEmploymentInformationInfo(getEntityId());
+    	List<EntityEmployment> empInfos = getUiDocumentService().getEntityEmploymentInformationInfo(getEntityId());
         for(PersonDocumentAffiliation affiliation: getAffiliations()) {
             int employeeRecordCounter = CollectionUtils.isEmpty(empInfos) ? 0 : empInfos.size();
             for(PersonDocumentEmploymentInfo empInfo: affiliation.getEmpInfos()){
                 if(CollectionUtils.isNotEmpty(empInfos)){
-                    for(KimEntityEmploymentInformationInfo origEmpInfo: empInfos){
-                        if (origEmpInfo.getEntityEmploymentId().equals(empInfo.getEntityEmploymentId())) {
+                    for(EntityEmployment origEmpInfo: empInfos){
+                        if (origEmpInfo.getEmployeeId().equals(empInfo.getEntityEmploymentId())) {
                             empInfo.setEmploymentRecordId(origEmpInfo.getEmploymentRecordId());
                         }
                     }

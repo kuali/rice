@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2007-2010 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.reference;
+package org.kuali.rice.core.util.jaxb;
 
+import org.kuali.rice.core.util.type.KualiDecimal;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * Marshall/unmarshall a joda-time DateTime object.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface EmploymentStatus extends KimCode {
-	String getEmploymentStatusCode();
-	String getEmploymentStatusName();
+public class KualiDecimalAdapter extends XmlAdapter<String, KualiDecimal> {
+
+	@Override
+	public String marshal(KualiDecimal decimal) throws Exception {
+		return decimal == null ? null : decimal.toString();
+	}
+
+	@Override
+	public KualiDecimal unmarshal(String decimal) throws Exception {
+		return decimal == null ? null : new KualiDecimal(decimal);
+	}
+	
 }

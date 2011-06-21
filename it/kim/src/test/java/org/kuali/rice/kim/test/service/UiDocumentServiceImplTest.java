@@ -21,13 +21,13 @@ import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
+import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
@@ -374,10 +374,10 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEquals(docAffln.getEntityAffiliationId(), entityAffln.getId());
 	}
 
-	private void assertEmpInfoTrue(PersonDocumentEmploymentInfo docEmpInfo, KimEntityEmploymentInformation entityEmpInfo) {
+	private void assertEmpInfoTrue(PersonDocumentEmploymentInfo docEmpInfo, EntityEmploymentContract entityEmpInfo) {
 		assertEquals(docEmpInfo.getEmployeeId(), entityEmpInfo.getEmployeeId());
-		assertEquals(docEmpInfo.getEmploymentTypeCode(), entityEmpInfo.getEmployeeTypeCode());
-		assertEquals(docEmpInfo.getEmploymentStatusCode(), entityEmpInfo.getEmployeeStatusCode());
+		assertEquals(docEmpInfo.getEmploymentTypeCode(), entityEmpInfo.getEmployeeType().getCode());
+		assertEquals(docEmpInfo.getEmploymentStatusCode(), entityEmpInfo.getEmployeeStatus().getCode());
 		assertEquals(docEmpInfo.getEmploymentRecordId(), entityEmpInfo.getEmploymentRecordId());
 		assertEquals(docEmpInfo.getBaseSalaryAmount(), entityEmpInfo.getBaseSalaryAmount());
 	}

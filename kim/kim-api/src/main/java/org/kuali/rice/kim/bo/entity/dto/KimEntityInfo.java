@@ -20,6 +20,8 @@ import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
+import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics;
@@ -35,7 +37,6 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
 import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     private List<EntityAffiliation> affiliations;
     private EntityBioDemographics bioDemographics;
     private List<EntityCitizenship> citizenships;
-    private List<KimEntityEmploymentInformationInfo> employmentInformation;
+    private List<EntityEmployment> employmentInformation;
     private String entityId;
     private List<EntityTypeData> entityTypes;
     private List<KimEntityExternalIdentifierInfo> externalIdentifiers;
@@ -118,12 +119,10 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
                 affiliations.add(EntityAffiliation.Builder.create(contract).build());
             }
 
-            employmentInformation = deriveCollection(entity.getEmploymentInformation(), 
-                    new XForm<KimEntityEmploymentInformation, KimEntityEmploymentInformationInfo>() {
-                public KimEntityEmploymentInformationInfo xform(KimEntityEmploymentInformation source) {
-                    return new KimEntityEmploymentInformationInfo(source);
-                }
-            });
+            employmentInformation = new ArrayList<EntityEmployment>();
+            for (EntityEmploymentContract contract : entity.getEmploymentInformation()) {
+                employmentInformation.add(EntityEmployment.Builder.create(contract).build());
+            }
 
             externalIdentifiers = deriveCollection(entity.getExternalIdentifiers(), 
                     new XForm<KimEntityExternalIdentifier, KimEntityExternalIdentifierInfo>() {
@@ -220,17 +219,17 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getEmploymentInformation()
      */
-    public List<KimEntityEmploymentInformationInfo> getEmploymentInformation() {
+    public List<EntityEmployment> getEmploymentInformation() {
         // If our reference is null, assign and return an empty List
         return (employmentInformation != null) ? employmentInformation
-                : (employmentInformation = new ArrayList<KimEntityEmploymentInformationInfo>());
+                : (employmentInformation = new ArrayList<EntityEmployment>());
     }
 
     /** 
      * Setter for this {@link KimEntityInfo}'s employment information.  Note the behavior of 
      * {@link #getEmploymentInformation()} if this is set to null;
      */
-    public void setEmploymentInformation(List<KimEntityEmploymentInformationInfo> employmentInformation) {
+    public void setEmploymentInformation(List<EntityEmployment> employmentInformation) {
         this.employmentInformation = employmentInformation;
     }
 
@@ -238,10 +237,10 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getPrimaryEmployment()
      */
-    public KimEntityEmploymentInformationInfo getPrimaryEmployment() {
-        KimEntityEmploymentInformationInfo result = null;
+    public EntityEmployment getPrimaryEmployment() {
+        EntityEmployment result = null;
         if (employmentInformation != null)
-            for (KimEntityEmploymentInformationInfo employment : employmentInformation) {
+            for (EntityEmployment employment : employmentInformation) {
                 if (employment.isPrimary()) {
                     result = employment;
                 }

@@ -43,7 +43,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
     private CriteriaLookupService criteriaLookupService;
 
     @Override 
-    public void createParameter(Parameter parameter) {
+    public Parameter createParameter(Parameter parameter) {
         if (parameter == null) {
             throw new RiceIllegalArgumentException("parameter is null");
         }
@@ -54,11 +54,11 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
             throw new RiceIllegalStateException("the parameter to create already exists: " + parameter);
         }
 
-        businessObjectService.save(ParameterBo.from(parameter));
+        return ParameterBo.to(businessObjectService.save(ParameterBo.from(parameter)));
     } 
 
     @Override
-    public void updateParameter(Parameter parameter) {
+    public Parameter updateParameter(Parameter parameter) {
         if (parameter == null) {
             throw new RiceIllegalArgumentException("parameter is null");
         }
@@ -78,7 +78,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
             toUpdate = parameter;
         }
 
-        businessObjectService.save(ParameterBo.from(toUpdate));
+        return ParameterBo.to(businessObjectService.save(ParameterBo.from(toUpdate)));
     }
 
     @Override

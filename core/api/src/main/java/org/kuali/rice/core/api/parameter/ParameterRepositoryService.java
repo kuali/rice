@@ -26,7 +26,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collection;
 
 /**
@@ -40,11 +39,13 @@ public interface ParameterRepositoryService {
      * This will create a {@link Parameter} exactly like the parameter passed in.
      *
      * @param parameter the parameter to create
+     * @return the parameter that was created
      * @throws IllegalArgumentException if the parameter is null
      * @throws IllegalStateException if the parameter is already existing in the system
      */
     @WebMethod(operationName="createParameter")
-    void createParameter(@WebParam(name = "parameter") Parameter parameter)
+    @WebResult(name = "parameter")
+    Parameter createParameter(@WebParam(name = "parameter") Parameter parameter)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
@@ -58,12 +59,14 @@ public interface ParameterRepositoryService {
      * </p>
      *
      * @param parameter the parameter to update
+     * @return the parameter that was updated
      * @throws IllegalArgumentException if the parameter is null
      * @throws IllegalStateException if the parameter does not exist in the system under the
      * specific application id or default rice application id
      */
     @WebMethod(operationName="updateParameter")
-    void updateParameter(@WebParam(name = "parameter") Parameter parameter)
+    @WebResult(name = "parameter")
+    Parameter updateParameter(@WebParam(name = "parameter") Parameter parameter)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**

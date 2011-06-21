@@ -32,13 +32,13 @@ public class ParameterServiceImpl implements ParameterService {
     private String applicationId = KRADConstants.DEFAULT_PARAMETER_APPLICATION_ID;
 
     @Override
-    public void createParameter(Parameter parameter) {
-        parameterRepositoryService.createParameter(parameter);
+    public Parameter createParameter(Parameter parameter) {
+        return parameterRepositoryService.createParameter(parameter);
     }
 
     @Override
-    public void updateParameter(Parameter parameter) {
-        parameterRepositoryService.updateParameter(parameter);
+    public Parameter updateParameter(Parameter parameter) {
+        return parameterRepositoryService.updateParameter(parameter);
     }
 
     @Override

@@ -27,8 +27,8 @@ import org.kuali.rice.core.api.parameter.ParameterKey
 import org.kuali.rice.core.api.parameter.ParameterRepositoryService
 import org.kuali.rice.core.api.parameter.ParameterType
 import org.kuali.rice.core.api.parameter.ParameterTypeContract
-import org.kuali.rice.krad.bo.PersistableBusinessObject
 import org.kuali.rice.krad.service.BusinessObjectService
+import static org.junit.Assert.assertNotNull
 
 class ParameterRepositoryServiceImplTest {
     private MockFor mock
@@ -88,10 +88,12 @@ class ParameterRepositoryServiceImplTest {
     @Test
     void test_create_parameter_does_not_exist() {
         mock.demand.findByPrimaryKey(2..2) { clazz, map -> null }
-        mock.demand.save { PersistableBusinessObject bo -> }
+        mock.demand.save { bo -> bo}
         injectBusinessObjectServiceIntoParameterRepositoryService()
-        pservice.createParameter(parameter)
+        def p = pservice.createParameter(parameter)
+        assertNotNull p
         mock.verify(boService)
+
     }
 
     @Test
@@ -107,9 +109,10 @@ class ParameterRepositoryServiceImplTest {
     @Test
     void test_update_parameter_exists() {
         mock.demand.findByPrimaryKey(1..1) { clazz, map -> bo }
-        mock.demand.save { bo -> }
+        mock.demand.save { bo -> bo }
         injectBusinessObjectServiceIntoParameterRepositoryService()
-        pservice.updateParameter(parameter)
+        def p = pservice.updateParameter(parameter)
+        assertNotNull p
         mock.verify(boService)
     }
 

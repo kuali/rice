@@ -29,7 +29,6 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This service provides operations for determining what responsibility actions
@@ -67,8 +66,8 @@ public interface ResponsibilityService {
      * @throws IllegalStateException if the responsibility is already existing in the system
      */
     @WebMethod(operationName="createResponsibility")
-    @WebResult(name = "id")
-    String createResponsibility(@WebParam(name = "responsibility") Responsibility responsibility)
+    @WebResult(name = "responsibility")
+    Responsibility createResponsibility(@WebParam(name = "responsibility") Responsibility responsibility)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
@@ -79,7 +78,8 @@ public interface ResponsibilityService {
      * @throws IllegalStateException if the responsibility does not exist in the system
      */
     @WebMethod(operationName="updateResponsibility")
-    void updateResponsibility(@WebParam(name = "responsibility") Responsibility responsibility)
+    @WebResult(name = "responsibility")
+    Responsibility updateResponsibility(@WebParam(name = "responsibility") Responsibility responsibility)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
 

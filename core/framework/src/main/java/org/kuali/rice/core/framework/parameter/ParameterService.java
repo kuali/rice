@@ -39,14 +39,14 @@ public interface ParameterService {
      *
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#createParameter(org.kuali.rice.core.api.parameter.Parameter)} for details
      */
-    void createParameter(Parameter parameter);
+    Parameter createParameter(Parameter parameter);
 
     /**
      * This will update a {@link Parameter}.
      *
      * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#updateParameter(org.kuali.rice.core.api.parameter.Parameter)} for details
      */
-    void updateParameter(Parameter parameter);
+    Parameter updateParameter(Parameter parameter);
 
     /**
      * This method checks if a parameter exists.  It will never return null.

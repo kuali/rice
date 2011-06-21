@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.service;
 
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 
 /**
  * This interface defines methods that a BusinessObjectService must provide.
@@ -38,7 +38,7 @@ public interface BusinessObjectService {
      * @param bo A BusinessObject instance or descendent that you wish to be stored.
      * 
      */
-    public PersistableBusinessObject save(PersistableBusinessObject bo);
+    public <T extends PersistableBusinessObject> T save(T bo);
 
     /**
      * Saves the businessObjects on the list via the persistence layer.

@@ -55,7 +55,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     private RoleService roleService;
 
     @Override
-    public String createResponsibility(final Responsibility responsibility) throws RiceIllegalArgumentException, RiceIllegalStateException {
+    public Responsibility createResponsibility(final Responsibility responsibility) throws RiceIllegalArgumentException, RiceIllegalStateException {
         if (responsibility == null) {
             throw new RiceIllegalArgumentException("responsibility is null");
         }
@@ -66,11 +66,11 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
         bo.setAttributeDetails(attrBos);
-        return ((ResponsibilityBo) businessObjectService.save(bo)).getId();
+        return ResponsibilityBo.to(businessObjectService.save(bo));
     }
 
     @Override
-    public void updateResponsibility(final Responsibility responsibility) throws RiceIllegalArgumentException, RiceIllegalStateException {
+    public Responsibility updateResponsibility(final Responsibility responsibility) throws RiceIllegalArgumentException, RiceIllegalStateException {
         if (responsibility == null) {
             throw new RiceIllegalArgumentException("responsibility is null");
         }
@@ -82,7 +82,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
         bo.getAttributeDetails().addAll(attrBos);
-        businessObjectService.save(bo);
+        return ResponsibilityBo.to(businessObjectService.save(bo));
     }
 
     @Override

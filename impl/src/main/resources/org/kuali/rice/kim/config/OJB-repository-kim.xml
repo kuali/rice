@@ -131,7 +131,7 @@
   <!-- ******************************************************************* -->
 
   <class-descriptor class="org.kuali.rice.kim.impl.type.KimTypeBo" table="KRIM_TYP_T">
-    <field-descriptor name="id" column="KIM_TYP_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="KIM_TYP_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="KRIM_TYP_ID_S" autoincrement="true"/>
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="serviceName" column="SRVC_NM" jdbc-type="VARCHAR" />
@@ -144,7 +144,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" table="KRIM_ATTR_DEFN_T">
-    <field-descriptor name="id" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="KRIM_ATTR_DEFN_ID_S" autoincrement="true"/>
     <field-descriptor name="attributeName" column="NM" jdbc-type="VARCHAR" />
     <field-descriptor name="attributeLabel" column="LBL" jdbc-type="VARCHAR" />
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
@@ -155,7 +155,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.type.KimTypeAttributeBo" table="KRIM_TYP_ATTR_T">
-    <field-descriptor name="id" column="KIM_TYP_ATTR_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="KIM_TYP_ATTR_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="KRIM_TYP_ATTR_ID_S" autoincrement="true" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="sortCode" column="SORT_CD" jdbc-type="VARCHAR" />

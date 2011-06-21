@@ -75,6 +75,7 @@ abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implemen
     /** creates a list of KimAttributeDataBos from attributes, kimTypeId, and assignedToId. */
     static <T extends KimAttributeDataBo> List<T> createFrom(Class<T> type, Attributes attributes, String kimTypeId) {
        if (attributes == null) {
+           //purposely not using Collections.emptyList() b/c we do not want to return an unmodifiable list.
            return new ArrayList<T>();
        }
        return attributes.toMap().entrySet().collect {

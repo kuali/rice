@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.actions.MovePoint;
-import org.kuali.rice.kew.api.action.AdHocRevokeCommand;
+import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -125,7 +125,9 @@ public interface WorkflowDocumentService {
     /**
      * @since 2.2.2
      */
-    public DocumentRouteHeaderValue revokeAdHocRequests(String principalId, DocumentRouteHeaderValue document, AdHocRevokeCommand revoke, String annotation) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue revokeAdHocRequests(String principalId, DocumentRouteHeaderValue document, AdHocRevoke revoke, String annotation) throws InvalidActionTakenException;
+    
+    public DocumentRouteHeaderValue revokeAdHocRequests(String principalId, DocumentRouteHeaderValue document, String actionRequestId, String annotation) throws InvalidActionTakenException;
 
     // Deprecated as of 2.1 //
 

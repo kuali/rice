@@ -33,10 +33,12 @@ public interface WorkflowDocumentActionsService {
     
     public DocumentActionResult adHocToGroup(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocToGroup adHocCommand);
     
-    public DocumentActionResult revokeAdHocRequestsFromPrincipal(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocRevokeFromPrincipal revoke);
+    public DocumentActionResult revokeAdHocRequestById(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, String actionRequestId);
     
-    public DocumentActionResult revokeAdHocRequestsFromGroup(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocRevokeFromGroup revoke);
+    public DocumentActionResult revokeAdHocRequests(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocRevoke revoke);
     
+    public DocumentActionResult revokeAllAdHocRequests(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+        
     public DocumentActionResult cancel(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
     public DocumentActionResult clearFyi(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);

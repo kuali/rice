@@ -30,8 +30,7 @@ import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.api.action.AdHocRevokeFromGroup;
-import org.kuali.rice.kew.api.action.AdHocRevokeFromPrincipal;
+import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.AdHocToGroup;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
 import org.kuali.rice.kew.api.action.DocumentActionResult;
@@ -454,22 +453,26 @@ public class WorkflowDocument implements java.io.Serializable {
     	resetStateAfterAction(result);
     }
 
-    public void revokeAdHocRequestsFromPrincipal(AdHocRevokeFromPrincipal revokeFromPrincipal, String annotation) {
-    	if (revokeFromPrincipal == null) {
-    		throw new IllegalArgumentException("revokeFromPrincipal was null");
+    public void revokeAdHocRequestById(String actionRequestId, String annotation) {
+    	if (StringUtils.isBlank(actionRequestId)) {
+    		throw new IllegalArgumentException("actionRequestId was null or blank");
     	}
-    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequestsFromPrincipal(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), revokeFromPrincipal);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequestById(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), actionRequestId);
     	resetStateAfterAction(result);
     }
     
-    public void revokeAdHocRequestsFromGroup(AdHocRevokeFromGroup revokeFromGroup, String annotation) {
-    	if (revokeFromGroup == null) {
-    		throw new IllegalArgumentException("revokeFromGroup was null");
+    public void revokeAdHocRequests(AdHocRevoke revoke, String annotation) {
+    	if (revoke == null) {
+    		throw new IllegalArgumentException("revokeFromPrincipal was null");
     	}
-    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequestsFromGroup(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), revokeFromGroup);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequests(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), revoke);
     	resetStateAfterAction(result);
     }
-
+    
+    public void revokeAllAdHocRequests(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAllAdHocRequests(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
     
 //
 //    /**

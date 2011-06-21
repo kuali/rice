@@ -11,8 +11,7 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.api.action.AdHocRevokeFromGroup;
-import org.kuali.rice.kew.api.action.AdHocRevokeFromPrincipal;
+import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.AdHocToGroup;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
 import org.kuali.rice.kew.api.action.DocumentActionResult;
@@ -374,24 +373,45 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 					}
 				});
 	}
-
+	
 	@Override
-	public DocumentActionResult revokeAdHocRequestsFromPrincipal(String documentId,
+	public DocumentActionResult revokeAdHocRequestById(String documentId,
 			String principalId,
 			String annotation,
 			DocumentUpdate documentUpdate,
 			DocumentContentUpdate documentContentUpdate,
-			final AdHocRevokeFromPrincipal revoke) {
+			final String actionRequestId) {
 		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
 				new DocumentActionCallback() {
 					@Override
 					public String getLogMessage(String documentId, String principalId, String annotation) {
 						return "Revoke AdHoc from Principal [principalId=" + principalId + 
+							", documentId=" + documentId + 
+							", annotation=" + annotation + 
+							", actionRequestId=" + actionRequestId + "]";
+					}
+					@Override
+					public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+						return KEWServiceLocator.getWorkflowDocumentService().revokeAdHocRequests(principalId, documentBo, actionRequestId, annotation);
+					}
+				});
+	}
+
+	@Override
+	public DocumentActionResult revokeAdHocRequests(String documentId,
+			String principalId,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate,
+			final AdHocRevoke revoke) {
+		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
+				new DocumentActionCallback() {
+					@Override
+					public String getLogMessage(String documentId, String principalId, String annotation) {
+						return "Revoke AdHoc Requests [principalId=" + principalId + 
 							", docId=" + documentId + 
-							", actionRequestId=" + revoke.getActionRequestId() + 
-							", nodeName=" + revoke.getNodeName() + 
-							", targetPrincipalId=" + revoke.getTargetPrincipalId() + 
-							", annotation=" + annotation + "]";
+							", annotation=" + annotation + 
+							", revoke=" + revoke.toString() + "]"; 
 					}
 					@Override
 					public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
@@ -399,30 +419,29 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 					}
 				});
 	}
+	
+	
 
 	@Override
-	public DocumentActionResult revokeAdHocRequestsFromGroup(String documentId,
+	public DocumentActionResult revokeAllAdHocRequests(String documentId,
 			String principalId,
 			String annotation,
 			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate,
-			final AdHocRevokeFromGroup revoke) {
+			DocumentContentUpdate documentContentUpdate) {
 		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
 				new DocumentActionCallback() {
 					@Override
 					public String getLogMessage(String documentId, String principalId, String annotation) {
-						return "Revoke AdHoc from Group [principalId=" + principalId + 
+						return "Revoke All AdHoc Requests [principalId=" + principalId + 
 							", docId=" + documentId + 
-							", actionRequestId=" + revoke.getActionRequestId() + 
-							", nodeName=" + revoke.getNodeName() + 
-							", targetGroupId=" + revoke.getTargetGroupId() + 
-							", annotation=" + annotation + "]";
+							", annotation=" + annotation + "]"; 
 					}
 					@Override
 					public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
-						return KEWServiceLocator.getWorkflowDocumentService().revokeAdHocRequests(principalId, documentBo, revoke, annotation);
+						return KEWServiceLocator.getWorkflowDocumentService().revokeAdHocRequests(principalId, documentBo, (AdHocRevoke)null, annotation);
 					}
-				});	}
+				});
+	}
 
 	@Override
 	public DocumentActionResult cancel(String documentId,

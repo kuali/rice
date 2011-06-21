@@ -19,14 +19,12 @@ package org.kuali.rice.kew.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.api.action.AdHocRevokeCommand;
-import org.kuali.rice.kew.api.action.AdHocRevokeFromGroup;
-import org.kuali.rice.kew.api.action.AdHocRevokeFromPrincipal;
+import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -42,13 +40,19 @@ public class RevokeAdHocAction extends ActionTakenEvent {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RevokeAdHocAction.class);
 
-    private AdHocRevokeCommand revoke;
+    private String actionRequestId;
+    private AdHocRevoke revoke;
 
     public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal);
     }
 
-    public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, AdHocRevokeCommand revoke, String annotation) {
+    public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String actionRequestId, String annotation) {
+        super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal, annotation);
+        this.actionRequestId = actionRequestId;
+    }
+    
+    public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, AdHocRevoke revoke, String annotation) {
         super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal, annotation);
         this.revoke = revoke;
     }
@@ -98,8 +102,8 @@ public class RevokeAdHocAction extends ActionTakenEvent {
                 requestsToRevoke.add(actionRequest);
             }
         }
-        if (requestsToRevoke.isEmpty() && revoke.getActionRequestId() != null) {
-        	throw new InvalidActionTakenException("Failed to revoke action request with id " + revoke.getActionRequestId() +
+        if (requestsToRevoke.isEmpty() && actionRequestId != null) {
+        	throw new InvalidActionTakenException("Failed to revoke action request with id " + actionRequestId +
         			".  ID does not represent a valid ad hoc request!");
         }
 
@@ -116,21 +120,24 @@ public class RevokeAdHocAction extends ActionTakenEvent {
     /**
 	 * Determines if the given action request is an ad hoc request which matches this set of criteria.
 	 */
-	protected boolean matchesActionRequest(AdHocRevokeCommand adHocRevokeCommand, ActionRequestValue actionRequest) {
+	protected boolean matchesActionRequest(AdHocRevoke adHocRevokeCommand, ActionRequestValue actionRequest) {
 		if (!actionRequest.isAdHocRequest()) {
 			return false;
-		}
-		if (adHocRevokeCommand.getActionRequestId() != null && !adHocRevokeCommand.getActionRequestId().equals(actionRequest.getActionRequestId()) ){
-			return false;
-		}
-		if (!StringUtils.isEmpty(adHocRevokeCommand.getNodeName()) && !adHocRevokeCommand.getNodeName().equals(actionRequest.getNodeInstance().getName())) {
-			return false;
-		}
-		if (adHocRevokeCommand instanceof AdHocRevokeFromPrincipal && (!actionRequest.isUserRequest() || !actionRequest.getPrincipalId().equals(((AdHocRevokeFromPrincipal)adHocRevokeCommand).getTargetPrincipalId()))) {
-			return false;
-		}
-		if (adHocRevokeCommand instanceof AdHocRevokeFromGroup && (!actionRequest.isGroupRequest() || !actionRequest.getGroupId().equals(((AdHocRevokeFromGroup)adHocRevokeCommand).getTargetGroupId()))) {
-			return false;
+		}		
+		if (actionRequestId != null) {
+			return actionRequestId.equals(actionRequest.getActionRequestId().toString());
+		} else if (adHocRevokeCommand != null) {
+			boolean principalOrGroupId = !CollectionUtils.isEmpty(adHocRevokeCommand.getPrincipalIds()) || !CollectionUtils.isEmpty(adHocRevokeCommand.getGroupIds());
+			if (!CollectionUtils.isEmpty(adHocRevokeCommand.getNodeNames()) && !adHocRevokeCommand.getNodeNames().contains(actionRequest.getNodeInstance().getName())) {
+				return false;
+			}
+			if (actionRequest.isUserRequest() && !CollectionUtils.isEmpty(adHocRevokeCommand.getPrincipalIds())) {
+				return adHocRevokeCommand.getPrincipalIds().contains(actionRequest.getPrincipalId());
+			}
+			if (actionRequest.isGroupRequest() && !CollectionUtils.isEmpty(adHocRevokeCommand.getGroupIds())) {
+				return adHocRevokeCommand.getGroupIds().contains(actionRequest.getGroupId());
+			}
+			return !principalOrGroupId;
 		}
 		return true;
 	}

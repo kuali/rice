@@ -57,7 +57,7 @@ import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.api.action.AdHocRevokeCommand;
+import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -465,9 +465,16 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		}
 	}
 
-	public DocumentRouteHeaderValue revokeAdHocRequests(String principalId, DocumentRouteHeaderValue document, AdHocRevokeCommand revoke, String annotation) throws InvalidActionTakenException {
+	public DocumentRouteHeaderValue revokeAdHocRequests(String principalId, DocumentRouteHeaderValue document, AdHocRevoke revoke, String annotation) throws InvalidActionTakenException {
 		Principal principal = loadPrincipal(principalId);
 		RevokeAdHocAction action = new RevokeAdHocAction(document, principal, revoke, annotation);
+		action.performAction();
+		return finish(document);
+	}
+	
+	public DocumentRouteHeaderValue revokeAdHocRequests(String principalId, DocumentRouteHeaderValue document, String actionRequestId, String annotation) throws InvalidActionTakenException {
+		Principal principal = loadPrincipal(principalId);
+		RevokeAdHocAction action = new RevokeAdHocAction(document, principal, actionRequestId, annotation);
 		action.performAction();
 		return finish(document);
 	}

@@ -10,7 +10,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * See the License for the specific language governing Responsibilitys and
  * limitations under the License.
  */
 package org.kuali.rice.kim.api.responsibility;
@@ -23,44 +23,44 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.common.template.TemplateContract;
 
 /**
- * This is the contract for a Permission. Represents a single permission within the system.
+ * This is the contract for a Responsibility. Represents a single Responsibility within the system.
  * 
- * Permissions are attached to roles. All authorization checks should be done against permissions,
+ * Responsibilities are attached to roles. All authorization checks should be done against Responsibilities,
  * never against roles or groups.
  *  
  */
 public interface ResponsibilityContract extends Versioned, GloballyUnique, Inactivatable, Identifiable{;
     
     /**
-     * The namespace code that this Permission belongs too.
+     * The namespace code that this Responsibility belongs too.
      *
      * @return namespaceCode
      */
     String getNamespaceCode();
     
     /**
-     * The name of the Permission.
+     * The name of the Responsibility.
      *
      * @return name
      */
     String getName();
     
     /**
-     * The description of the Permission.
+     * The description of the Responsibility.
      *
      * @return description
      */
 	String getDescription();
 
     /**
-     * The Template referenced by the Permission.
+     * The Template referenced by the Responsibility.
      * 
      * @return templateId
      */
 	TemplateContract getTemplate();
 	
    /** 
-	 * Attributes for a Permission.
+	 * Attributes for a Responsibility.
 	 * 
 	 * @return attributes
 	 */

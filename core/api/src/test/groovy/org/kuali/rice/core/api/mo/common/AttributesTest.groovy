@@ -35,9 +35,9 @@ class AttributesTest {
         assertTrue Attributes.fromMap([:]).is(Attributes.empty())
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     void testFromMapNull() {
-        Attributes.fromMap(null)
+        assertEquals(Attributes.fromMap(null), Attributes.empty())
     }
 
     @Test
@@ -46,9 +46,9 @@ class AttributesTest {
         assertEquals Attributes.fromMap(m).toMap(), m
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     void testFromMapEntryNull() {
-        Attributes.fromMapEntry(null)
+        assertEquals(Attributes.fromMapEntry(null), Attributes.empty())
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -77,9 +77,9 @@ class AttributesTest {
         assertEquals set.iterator().next(), e
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     void testFromKeyValueNull() {
-        Attributes.fromKeyValue(null)
+        assertEquals(Attributes.fromKeyValue(null), Attributes.empty())
     }
 
     @Test(expected = IllegalArgumentException.class)

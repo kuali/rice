@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.api;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -337,30 +338,29 @@ public class WorkflowDocument implements java.io.Serializable {
     	DocumentActionResult result = getWorkflowDocumentActionsService().approve(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
     	resetStateAfterAction(result);
     }
-//
-//    /**
-//     * Performs the 'cancel' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs canceling the document
-//     * @see WorkflowDocumentActions#cancelDocument(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void cancel(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().cancelDocument(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
-//
-//    /**
-//     * Performs the 'blanket-approve' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs blanket-approving the document
-//     * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdDTO, RouteHeaderDTO, String, String[])
-//     */
-//    public void blanketApprove(String annotation) throws WorkflowException {
-//        blanketApprove(annotation, (String)null);
-//    }
+
+    public void cancel(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().cancel(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	resetStateAfterAction(result);
+    }
+
+    public void blanketApprove(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().blanketApprove(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+ 		resetStateAfterAction(result);
+    }
+    
+    public void blanketApprove(String annotation, String nodeName) {
+    	if (StringUtils.isEmpty(nodeName)) {
+    		throw new IllegalArgumentException("nodeName was null or blank");
+    	}
+    	blanketApprove(annotation, (nodeName == null ? new String[] {} : new String[] { nodeName }));
+    }
+
+    public void blanketApprove(String annotation, String[] nodeNames) {
+    	Set<String> nodeNamesSet = new HashSet<String>(Arrays.asList(nodeNames));
+    	DocumentActionResult result = getWorkflowDocumentActionsService().blanketApproveToNodes(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), nodeNamesSet);
+ 		resetStateAfterAction(result);
+    }
 
     public void saveDocumentData() {
     	DocumentActionResult result = getWorkflowDocumentActionsService().saveDocumentData(getDocumentId(), principalId, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
@@ -439,7 +439,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	builder.setResponsibilityDescription(responsibilityDescription);
     	builder.setForceAction(forceAction);
     	builder.setRequestLabel(requestLabel);
-    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToPrincipal(getDocumentId(), getPrincipalId(), builder.build(), annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToPrincipal(getDocumentId(), getPrincipalId(), annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), builder.build());
     	resetStateAfterAction(result);
     }
 
@@ -468,7 +468,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	builder.setResponsibilityDescription(responsibilityDescription);
     	builder.setForceAction(forceAction);
     	builder.setRequestLabel(requestLabel);
-    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToGroup(getDocumentId(), getPrincipalId(), builder.build(), annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToGroup(getDocumentId(), getPrincipalId(), annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), builder.build());
     	resetStateAfterAction(result);
     }
 

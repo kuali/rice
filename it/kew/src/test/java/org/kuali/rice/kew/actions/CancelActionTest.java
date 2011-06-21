@@ -16,18 +16,19 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
-
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 public class CancelActionTest extends KEWTestCase {
@@ -37,8 +38,8 @@ public class CancelActionTest extends KEWTestCase {
     }
 
     @Test public void testCancel() throws Exception {
-        WorkflowDocument document =WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        document.routeDocument("");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        document.route("");
         
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         document.approve("");
@@ -56,7 +57,7 @@ public class CancelActionTest extends KEWTestCase {
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         document.cancel("");
         
-        assertTrue("Document should be disapproved", document.stateIsCanceled());
+        assertTrue("Document should be disapproved", document.isCanceled());
 
         //verify that the document is truly dead - no more action requests or action items.
         

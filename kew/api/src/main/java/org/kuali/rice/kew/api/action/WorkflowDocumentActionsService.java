@@ -1,6 +1,7 @@
 package org.kuali.rice.kew.api.action;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.jws.WebParam;
 
@@ -28,13 +29,13 @@ public interface WorkflowDocumentActionsService {
 	
 	public DocumentActionResult approve(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
 			
-    public DocumentActionResult adHocToPrincipal(String documentId, String principalId, AdHocToPrincipal adHocCommand, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult adHocToPrincipal(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocToPrincipal adHocCommand);
     
-    public DocumentActionResult adHocToGroup(String documentId, String principalId, AdHocToGroup adHocCommand, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult adHocToGroup(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocToGroup adHocCommand);
     
-    public void revokeAdHocRequestsFromPrincipal(String documentId, String principalId, AdHocRevokeFromPrincipal revoke, String annotation);
+    public DocumentActionResult revokeAdHocRequestsFromPrincipal(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocRevokeFromPrincipal revoke);
     
-    public void revokeAdHocRequestsFromGroup(String documentId, String principalId, AdHocRevokeFromGroup revoke, String annotation);
+    public DocumentActionResult revokeAdHocRequestsFromGroup(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocRevokeFromGroup revoke);
     
     public DocumentActionResult cancel(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
@@ -46,7 +47,9 @@ public interface WorkflowDocumentActionsService {
 
     public DocumentActionResult route(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
-    public void blanketApproveToNodes(String documentId, String principalId, List<String> nodeNames, String annotation);
+    public DocumentActionResult blanketApprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    
+    public DocumentActionResult blanketApproveToNodes(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, Set<String> nodeNames);
     
     public void returnToPreviousNode(String documentId, String principalId, ReturnPoint returnPoint, String annotation);
 

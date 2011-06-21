@@ -1,6 +1,8 @@
 package org.kuali.rice.kew.impl.action;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -99,6 +101,15 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	private static final DocumentActionCallback ROUTE_CALLBACK = new StandardDocumentActionCallback() {
 		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 			return KEWServiceLocator.getWorkflowDocumentService().routeDocument(principalId, documentBo, annotation);
+		}
+		public String getActionName() {
+			return ActionType.ROUTE.getLabel();
+		}
+	};
+	
+	private static final DocumentActionCallback BLANKET_APPROVE_CALLBACK = new StandardDocumentActionCallback() {
+		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+			return KEWServiceLocator.getWorkflowDocumentService().blanketApproval(principalId, documentBo, annotation, new HashSet<String>());
 		}
 		public String getActionName() {
 			return ActionType.ROUTE.getLabel();
@@ -297,10 +308,10 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	@Override
 	public DocumentActionResult adHocToPrincipal(String documentId,
 			String principalId,
-			final AdHocToPrincipal adHocCommand,
 			String annotation,
 			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
+			DocumentContentUpdate documentContentUpdate,
+			final AdHocToPrincipal adHocCommand) {
 		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
 				new DocumentActionCallback() {
 					@Override
@@ -332,10 +343,10 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	@Override
 	public DocumentActionResult adHocToGroup(String documentId,
 			String principalId,
-			final AdHocToGroup adHocCommand,
 			String annotation,
 			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
+			DocumentContentUpdate documentContentUpdate,
+			final AdHocToGroup adHocCommand) {
 		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
 				new DocumentActionCallback() {
 					@Override
@@ -365,18 +376,25 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public void revokeAdHocRequestsFromPrincipal(String documentId,
-			String principalId, AdHocRevokeFromPrincipal revoke,
-			String annotation) {
+	public DocumentActionResult revokeAdHocRequestsFromPrincipal(String documentId,
+			String principalId,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate,
+			AdHocRevokeFromPrincipal revoke) {
 		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+		throw new UnsupportedOperationException("implement me!");
 	}
 
 	@Override
-	public void revokeAdHocRequestsFromGroup(String documentId,
-			String principalId, AdHocRevokeFromGroup revoke, String annotation) {
+	public DocumentActionResult revokeAdHocRequestsFromGroup(String documentId,
+			String principalId,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate,
+			AdHocRevokeFromGroup revoke) {
 		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+		throw new UnsupportedOperationException("implement me!");
 	}
 
 	@Override
@@ -420,12 +438,36 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 			DocumentContentUpdate documentContentUpdate) {
 		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, ROUTE_CALLBACK);
 	}
+	
+	@Override
+	public DocumentActionResult blanketApprove(String documentId,
+			String principalId,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate) {
+		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, BLANKET_APPROVE_CALLBACK);
+	}
 
 	@Override
-	public void blanketApproveToNodes(String documentId, String principalId,
-			List<String> nodeNames, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+	public DocumentActionResult blanketApproveToNodes(String documentId,
+			String principalId,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate,
+			final Set<String> nodeNames) {
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new DocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().blanketApproval(principalId, documentBo, annotation, nodeNames);
+			}
+			public String getLogMessage(String documentId, String principalId, String annotation) {
+				return "Blanket Approve [principalId=" + principalId + ", documentId=" + documentId + ", annotation=" + annotation + ", nodeNames=" + nodeNames + "]";
+			}
+		});
 	}
 
 	@Override

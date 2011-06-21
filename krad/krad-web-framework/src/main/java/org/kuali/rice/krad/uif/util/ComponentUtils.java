@@ -10,6 +10,15 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.beans.PropertyDescriptor;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -25,15 +34,6 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.OrderComparator;
 
-import java.beans.PropertyDescriptor;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * Utility class providing methods to help create and modify
  * <code>Component</code> instances
@@ -41,6 +41,9 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentUtils {
+    
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ComponentUtils.class);
+
 
     public static <T extends Component> T copy(T component) {
         return copy(component, null);
@@ -132,7 +135,7 @@ public class ComponentUtils {
     public static <T extends Component> T copyComponent(T component, String addBindingPrefix, String idSuffix) {
         T copy = copy(component, idSuffix);
 
-        prefixBindingPathNested(component, addBindingPrefix);
+        prefixBindingPathNested(copy, addBindingPrefix);
 
         return copy;
     }
@@ -206,6 +209,9 @@ public class ComponentUtils {
 
     public static void prefixBindingPathNested(Component component, String addBindingPrefix) {
         if (component instanceof DataBinding) {
+            if (LOG.isDebugEnabled()) {
+                LOG.info("setting nested binding prefix '"+ addBindingPrefix  +"' on " + component);
+            }
             prefixBindingPath((DataBinding) component, addBindingPrefix);
         }
 

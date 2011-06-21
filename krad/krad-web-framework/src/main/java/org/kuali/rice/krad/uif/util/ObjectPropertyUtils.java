@@ -51,7 +51,13 @@ public class ObjectPropertyUtils {
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Object> T getPropertyValue(Object object, String propertyPath) {
-		return (T) wrapObject(object).getPropertyValue(propertyPath);
+	    T result = null;
+	    try {
+	        result = (T) wrapObject(object).getPropertyValue(propertyPath);
+	    } catch (RuntimeException e) {
+	        throw new RuntimeException("Error getting property '" + propertyPath + "' from " + object, e);
+	    }
+	    return result;
 	}
 
 	public static void initializeProperty(Object object, String propertyPath) {

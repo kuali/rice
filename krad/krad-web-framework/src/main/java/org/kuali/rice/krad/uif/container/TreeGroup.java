@@ -133,7 +133,8 @@ public class TreeGroup extends Group {
         Tree<Group, MessageField> treeGroups = new Tree<Group, MessageField>();
 
         String bindingPrefix = getBindingInfo().getBindingPrefixForNested();
-        Node<Group, MessageField> rootNode = buildTreeNode(treeData.getRootElement(), bindingPrefix, 0);
+        Node<Group, MessageField> rootNode = buildTreeNode(treeData.getRootElement(), 
+                bindingPrefix + /* TODO: hack */ ".rootElement", 0);
         treeGroups.setRootElement(rootNode);
 
         setTreeGroups(treeGroups);
@@ -160,12 +161,15 @@ public class TreeGroup extends Group {
 
         List<Node<Group, MessageField>> nodeChildren = new ArrayList<Node<Group, MessageField>>();
 
-        int childIndex = -1;
+        int childIndex = 0;
         for (Node<Object, String> childDataNode : nodeData.getChildren()) {
             String nextBindingPrefix = bindingPrefix + ".children[" + childIndex + "]";
             Node<Group, MessageField> childNode = buildTreeNode(childDataNode, nextBindingPrefix, nodeCounter++);
 
             nodeChildren.add(childNode);
+
+            // Don't forget about me:
+            ++childIndex;
         }
         node.setChildren(nodeChildren);
 

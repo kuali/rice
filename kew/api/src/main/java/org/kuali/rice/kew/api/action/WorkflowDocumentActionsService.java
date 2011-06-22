@@ -53,7 +53,7 @@ public interface WorkflowDocumentActionsService {
     
     public DocumentActionResult blanketApproveToNodes(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, Set<String> nodeNames);
     
-    public void returnToPreviousNode(String documentId, String principalId, ReturnPoint returnPoint, String annotation);
+    public DocumentActionResult returnToPreviousNode(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, ReturnPoint returnPoint);
 
     public void move(String documentId, String principalId, MovePoint movePoint, String annotation);
     

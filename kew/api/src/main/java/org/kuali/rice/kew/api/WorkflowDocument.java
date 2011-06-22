@@ -36,6 +36,7 @@ import org.kuali.rice.kew.api.action.AdHocToPrincipal;
 import org.kuali.rice.kew.api.action.DocumentActionResult;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.action.RequestedActions;
+import org.kuali.rice.kew.api.action.ReturnPoint;
 import org.kuali.rice.kew.api.action.ValidActions;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
@@ -856,33 +857,21 @@ public class WorkflowDocument implements java.io.Serializable {
     	return Collections.unmodifiableSet(nodeNames);
     }
 
-//    /**
-//     * Performs the 'returnToPrevious' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @param nodeName the node to return to
-//     * @throws WorkflowException in case an error occurs returning to previous node
-//     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
-//     */
-//    public void returnToPreviousNode(String annotation, String nodeName) throws WorkflowException {
-//        ReturnPointDTO returnPoint = new ReturnPointDTO(nodeName);
-//        returnToPreviousNode(annotation, returnPoint);
-//    }
-//
-//    /**
-//     * Performs the 'returnToPrevious' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @param ReturnPointDTO the node to return to
-//     * @throws WorkflowException in case an error occurs returning to previous node
-//     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
-//     */
-//    public void returnToPreviousNode(String annotation, ReturnPointDTO returnPoint) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().returnDocumentToPreviousNode(principalId, getRouteHeader(), returnPoint, annotation);
-//    	documentContentDirty = true;
-//    }
-//
+    public void returnToPreviousNode(String nodeName, String annotation) {
+    	if (StringUtils.isBlank(nodeName)) {
+    		throw new IllegalArgumentException("nodeName was null or blank");
+    	}
+        returnToPreviousNode(ReturnPoint.create(nodeName), annotation);
+    }
+
+    public void returnToPreviousNode(ReturnPoint returnPoint, String annotation) {
+    	if (returnPoint == null) {
+    		throw new IllegalArgumentException("returnPoint was null");
+    	}
+    	DocumentActionResult result = getWorkflowDocumentActionsService().returnToPreviousNode(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), returnPoint);
+    	resetStateAfterAction(result);
+    }
+
 //    /**
 //     * Moves the document from a current node in it's route to another node.  If this is a new document,
 //     * the document is created first.

@@ -517,10 +517,11 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public void returnToPreviousNode(String documentId, String principalId,
-			ReturnPoint returnPoint, String annotation) {
+	public DocumentActionResult returnToPreviousNode(String documentId, String principalId,
+			String annotation, DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate, ReturnPoint returnPoint) {
 		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+return null;
 	}
 
 	@Override

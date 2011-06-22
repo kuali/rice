@@ -473,37 +473,14 @@ public class WorkflowDocument implements java.io.Serializable {
     	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAllAdHocRequests(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
     	resetStateAfterAction(result);
     }
-    
-//
-//    /**
-//     * Sets the title of the document, empty string if null is specified.
-//     * @param title title of the document to set, or null
-//     */
-//    // WorkflowException is declared but not thrown...
-//    public void setTitle(String title) throws WorkflowException {
-//        if (title == null) {
-//            title = "";
-//        }
-//        if (title.length() > KEWConstants.TITLE_MAX_LENGTH) {
-//            title = title.substring(0, KEWConstants.TITLE_MAX_LENGTH);
-//        }
-//        getRouteHeader().setDocTitle(title);
-//    }
-//
-//    /**
-//     * Returns the document type of the workflow document
-//     * @return the document type of the workflow document
-//     * @throws RuntimeException if document does not exist (is not yet created)
-//     * @see RouteHeaderDTO#getDocTypeName()
-//     */
-//    public String getDocumentType() {
-//        if (getRouteHeader() == null) {
-//            // HACK: FIXME: we should probably proscribe, or at least handle consistently, these corner cases
-//            // NPEs are not nice
-//            throw new RuntimeException("No such document!");
-//        }
-//        return getRouteHeader().getDocTypeName();
-//    }
+
+    public void setTitle(String title) {
+        getModifiableDocument().setTitle(title);
+    }
+
+    public String getDocumentTypeName() {
+    	return getDocument().getDocumentTypeName();
+    }
 
     /**
      * Returns whether a completion is requested of the user for this document.  This is

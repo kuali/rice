@@ -15,6 +15,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
 
 /**
@@ -132,7 +133,16 @@ public final class DocumentUpdate implements Serializable {
 			return title;
 		}
 
+		/**
+		 * TODO: document the fact that this will auto-truncate the title...
+		 */
 		public void setTitle(String title) {
+			if (title == null) {
+				title = "";
+			}
+	        if (title.length() > KewApiConstants.TITLE_MAX_LENGTH) {
+	            title = title.substring(0, KewApiConstants.TITLE_MAX_LENGTH);
+	        }
 			this.title = title;
 		}
 

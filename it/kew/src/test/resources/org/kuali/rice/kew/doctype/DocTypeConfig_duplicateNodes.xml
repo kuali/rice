@@ -30,7 +30,7 @@
 			<superUserGroupName namespace="KR-WKFLW">${test.doctype.workgroup}</superUserGroupName>
 			<docHandler>${test.base.url}/_blank</docHandler>
             <helpDefinitionURL>/_help</helpDefinitionURL>
-			<blanketApproveGroupName namespce="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
 			<defaultExceptionGroupName namespace="KR-WKFLW">${test.doctype.workgroup}</defaultExceptionGroupName>
 			<routePaths>
 				<routePath>

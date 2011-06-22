@@ -37,6 +37,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl;
@@ -48,14 +49,13 @@ import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
@@ -70,12 +70,17 @@ public class DocumentTypeTest extends KEWTestCase {
         loadXmlFile("DoctypeConfig.xml");
     }
 
+    /**
+     * TODO: Ignored currently, this method goes into an infinite loop in document type parsing (ick!) when invoked...not good.
+     * 
+     * KULRICE-3526
+     */
     @Ignore
     @Test public void testDuplicateNodeNameInRoutePath() throws Exception {
         loadXmlFile("DoctypeConfig_duplicateNodes.xml");
         WorkflowDocument document = WorkflowDocument.createDocument("user1", "TestDoubleNodeDocumentType");
         document.setTitle("");
-        document.routeDocument("");
+        document.route("");
         document = WorkflowDocument.loadDocument("rkirkend", document.getDocumentId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
         document.approve("");
@@ -91,19 +96,19 @@ public class DocumentTypeTest extends KEWTestCase {
     @Test public void testChangingDocumentTypeOnEnrouteDocument() throws Exception {
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "DocumentType");
         document.setTitle("");
-        document.routeDocument("");
+        document.route("");
 
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
 
         WorkflowInfo info = new WorkflowInfo();
-        Integer version1 = info.getDocTypeByName(document.getDocumentType()).getDocTypeVersion();
+        Integer version1 = info.getDocTypeByName(document.getDocumentTypeName()).getDocTypeVersion();
 
         //update the document type
         loadXmlFile("DoctypeSecondVersion.xml");
 
         //verify that we have a new documenttypeid and its a newer version
-        Integer version2 = info.getDocTypeByName(document.getDocumentType()).getDocTypeVersion();
+        Integer version2 = info.getDocTypeByName(document.getDocumentTypeName()).getDocTypeVersion();
 
         assertTrue("Version2 should be larger than verison1", version2.intValue() > version1.intValue());
 
@@ -114,7 +119,7 @@ public class DocumentTypeTest extends KEWTestCase {
         document.approve("");
 
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
-        Integer versionDocument = info.getDocTypeById(document.getRouteHeader().getDocTypeId()).getDocTypeVersion();
+        Integer versionDocument = info.getDocTypeById(document.getDocument().getDocumentTypeId()).getDocTypeVersion();
 
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
         //make sure our document still represents the accurate version
@@ -130,7 +135,7 @@ public class DocumentTypeTest extends KEWTestCase {
 
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "FinalApproverDocumentType");
         document.setTitle("");
-        document.routeDocument("");
+        document.route("");
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         try {
             document.approve("");
@@ -139,7 +144,7 @@ public class DocumentTypeTest extends KEWTestCase {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
         	document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-            assertTrue("Document should be in exception routing", document.stateIsException());
+            assertTrue("Document should be in exception routing", document.isException());
         }
     }
     
@@ -153,8 +158,8 @@ public class DocumentTypeTest extends KEWTestCase {
 
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "EmptyRoutePathDocumentType");
         document.setTitle("");
-        document.routeDocument("");
-        assertTrue("Document should be in final state", document.stateIsFinal());
+        document.route("");
+        assertTrue("Document should be in final state", document.isFinal());
     }
 
     /**
@@ -165,12 +170,12 @@ public class DocumentTypeTest extends KEWTestCase {
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "MandatoryRouteDocumentType");
         document.setTitle("");
         try {
-            document.routeDocument("");
+            document.route("");
         } catch (Exception e) {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
         	document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
-            assertTrue("Document should be in exception routing", document.stateIsException());
+            assertTrue("Document should be in exception routing", document.isException());
         }
     }
 

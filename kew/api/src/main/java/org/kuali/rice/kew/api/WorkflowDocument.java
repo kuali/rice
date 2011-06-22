@@ -480,60 +480,26 @@ public class WorkflowDocument implements java.io.Serializable {
     	return getDocument().getDocumentTypeName();
     }
 
-    /**
-     * Returns whether a completion is requested of the user for this document.  This is
-     * a convenience method that delegates to {@link RouteHeaderDTO#isCompleteRequested()}.
-     * @return whether an approval is requested of the user for this document
-     * @see RouteHeaderDTO#isCompleteRequested()
-     */
     public boolean isCompletionRequested() {
         return getRequestedActions().isCompleteRequested();
     }
     
-    /**
-     * Returns whether an approval is requested of the user for this document.  This is
-     * a convenience method that delegates to {@link RouteHeaderDTO#isApproveRequested()}.
-     * @return whether an approval is requested of the user for this document
-     * @see RouteHeaderDTO#isApproveRequested()
-     */
     public boolean isApprovalRequested() {
         return getRequestedActions().isApproveRequested();
     }
     
-    /**
-     * Returns whether an acknowledge is requested of the user for this document.  This is
-     * a convenience method that delegates to {@link RouteHeaderDTO#isAckRequested()}.
-     * @return whether an acknowledge is requested of the user for this document
-     * @see RouteHeaderDTO#isAckRequested()
-     */
     public boolean isAcknowledgeRequested() {
     	return getRequestedActions().isAcknowledgeRequested();
     }
     
-    /**
-     * Returns whether an FYI is requested of the user for this document.  This is
-     * a convenience method that delegates to {@link RouteHeaderDTO#isFyiRequested()}.
-     * @return whether an FYI is requested of the user for this document
-     * @see RouteHeaderDTO#isFyiRequested()
-     */
     public boolean isFYIRequested() {
         return getRequestedActions().isFyiRequested();
     }
 
-    /**
-     * Returns whether the user can blanket approve the document
-     * @return whether the user can blanket approve the document
-     * @see RouteHeaderDTO#getValidActions()
-     */
     public boolean isBlanketApproveCapable() {
     	return isActionValid(ActionType.BLANKET_APPROVE) && (isCompletionRequested() || isApprovalRequested() || isInitiated());
     }
 
-    /**
-     * Returns whether the specified action code is valid for the current user and document
-     * @return whether the user can blanket approve the document
-     * @see RouteHeaderDTO#getValidActions()
-     */
     public boolean isActionCodeValid(String actionCode) {
     	if (StringUtils.isBlank(actionCode)) {
     		throw new IllegalArgumentException("actionTakenCode was null or blank");

@@ -517,11 +517,25 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult returnToPreviousNode(String documentId, String principalId,
-			String annotation, DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate, ReturnPoint returnPoint) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-return null;
+	public DocumentActionResult returnToPreviousNode(String documentId,
+			String principalId,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate,
+			final ReturnPoint returnPoint) {
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new DocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().returnDocumentToPreviousNode(principalId, documentBo, returnPoint.getNodeName(), annotation);
+			}
+			public String getLogMessage(String documentId, String principalId, String annotation) {
+				return "Return to Previous [principalId=" + principalId + ", documentId=" + documentId + ", annotation=" + annotation + ", destNodeName=" + returnPoint.getNodeName() + "]";
+			}
+		});
 	}
 
 	@Override

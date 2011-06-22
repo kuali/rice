@@ -366,18 +366,14 @@ public class WorkflowDocument implements java.io.Serializable {
     	resetStateAfterAction(result);
     }
 
-//    /**
-//     * 
-//     * This method sets the Application Document Status and then calls saveRoutingData() to commit 
-//     * the changes to the workflow system.
-//     * 
-//     * @param appDocStatus
-//     * @throws WorkflowException
-//     */
-//    public void updateAppDocStatus(String appDocStatus) throws WorkflowException {
-//       	getRouteHeader().setAppDocStatus(appDocStatus);
-//       	saveRoutingData();
-//    }
+    public void updateApplicationDocumentStatus(String applicationDocumentStatus) {
+    	setApplicationDocumentStatus(applicationDocumentStatus);
+       	saveDocumentData();
+    }
+    
+    public void setApplicationDocumentStatus(String applicationDocumentStatus) {
+    	getModifiableDocument().setApplicationDocumentStatus(applicationDocumentStatus);
+    }
     
     public void acknowledge(String annotation) {
     	DocumentActionResult result = getWorkflowDocumentActionsService().acknowledge(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
@@ -1229,6 +1225,15 @@ public class WorkflowDocument implements java.io.Serializable {
 		
 		protected void setTitle(String title) {
 			builder.setTitle(title);
+			dirty = true;
+		}
+		
+		protected String getApplicationDocumentStatus() {
+			return builder.getApplicationDocumentStatus();
+		}
+		
+		protected void setApplicationDocumentStatus(String applicationDocumentStatus) {
+			builder.setApplicationDocumentStatus(applicationDocumentStatus);
 			dirty = true;
 		}
 

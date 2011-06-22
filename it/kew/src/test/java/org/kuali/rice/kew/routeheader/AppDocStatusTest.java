@@ -16,30 +16,25 @@
  */
 package org.kuali.rice.kew.routeheader;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
-
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
-
-import static org.junit.Assert.*;
-
 
 public class AppDocStatusTest extends KEWTestCase {
-    
-    
-    private static final String DOCUMENT_TYPE_NAME = "TestAppDocStatusDoc2";
-	private static final String ADHOC_NODE = "AdHoc";
-	private static final String WORKFLOW_DOCUMENT_NODE = "WorkflowDocument";
-    private static final String ACKNOWLEDGE_1_NODE = "Acknowledge1";
-    private static final String ACKNOWLEDGE_2_NODE = "Acknowledge2";
-	    
+    	    
     protected void loadTestData() throws Exception {
     	super.loadTestData();
         loadXmlFile("AppDocStatusTestConfig.xml");
@@ -61,32 +56,30 @@ public class AppDocStatusTest extends KEWTestCase {
     @Test public void testValidAppDocStatus() throws Exception {
     	// Create document
     	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc2");
-    	document.saveRoutingData();
+    	document.saveDocumentData();
     	assertNotNull(document.getDocumentId());
-    	assertTrue("Document should be initiatied", document.stateIsInitiated());
-    	assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
+    	assertTrue("Document should be initiatied", document.isInitiated());
+    	assertTrue("Invalid route level.", document.getNodeNames().contains("Initiated"));
     	
     	// route document to first stop and check status, etc.
-    	document.routeDocument("Test Routing.");    	
-    	RouteHeaderDTO rh = document.getRouteHeader();
-    	String appDocStatus = rh.getAppDocStatus();
+    	document.route("Test Routing.");    	
+    	String appDocStatus = document.getDocument().getApplicationDocumentStatus();
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Approval in Progress".equalsIgnoreCase(appDocStatus));
         
         // should have generated a request to "bmcgough"
     	document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
-        assertTrue("Document should be enroute", document.stateIsEnroute());
-    	assertEquals("Invalid route level.", new Integer(1), document.getRouteHeader().getDocRouteLevel());
-    	String[] nodeNames = document.getNodeNames();
-    	assertEquals("Wrong number of node names.", 1, nodeNames.length);
-    	assertEquals("Wrong node name.", "DestinationApproval", nodeNames[0]);
+        assertTrue("Document should be enroute", document.isEnroute());
+    	Set<String> nodeNames = document.getNodeNames();
+    	assertEquals("Wrong number of node names.", 1, nodeNames.size());
+    	assertTrue("Wrong node name.", document.getNodeNames().contains("DestinationApproval"));
 
     	// check action request
-        ActionRequestDTO[] requests = document.getActionRequests();
-        assertEquals(1, requests.length);
-        ActionRequestDTO request = requests[0];
+        List<ActionRequest> requests = document.getRootActionRequests();
+        assertEquals(1, requests.size());
+        ActionRequest request = requests.get(0);
         assertEquals(getPrincipalIdForName("bmcgough"), request.getPrincipalId());
-        assertEquals(KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
-        assertEquals(new Integer(1), request.getRouteLevel());
+        assertEquals(ActionRequestType.APPROVE, request.getActionRequested());
+        assertEquals("DestinationApproval", request.getNodeName());
         assertTrue(document.isApprovalRequested());
         
         // approve the document to send it to its next route node
@@ -94,26 +87,25 @@ public class AppDocStatusTest extends KEWTestCase {
         
         // check status 
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
-        rh = document.getRouteHeader();
-    	appDocStatus = rh.getAppDocStatus();
+        Document rh = document.getDocument();
+    	appDocStatus = rh.getApplicationDocumentStatus();
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Submitted".equalsIgnoreCase(appDocStatus));
         
         // should have generated a request to "temay"
-    	assertTrue("Document should be enroute", document.stateIsEnroute());
-    	assertEquals("Invalid route level.", new Integer(2), document.getRouteHeader().getDocRouteLevel());
+    	assertTrue("Document should be enroute", document.isEnroute());
     	nodeNames = document.getNodeNames();
-    	assertEquals("Wrong number of node names.", 1, nodeNames.length);
-    	assertEquals("Wrong node name.", "TravelerApproval", nodeNames[0]);
+    	assertEquals("Wrong number of node names.", 1, nodeNames.size());
+    	assertTrue("Wrong node name.", nodeNames.contains("TravelerApproval"));
     	document.approve("Test approve by temay");
     	
     	// update the AppDocStatus via client API
-        document.updateAppDocStatus("Completed");
+        document.updateApplicationDocumentStatus("Completed");
 
         // get a refreshed document and check it out
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
 //        assertTrue("Document should be processed.", document.stateIsProcessed());        
-        rh = document.getRouteHeader();
-    	appDocStatus = rh.getAppDocStatus();
+        rh = document.getDocument();
+    	appDocStatus = rh.getApplicationDocumentStatus();
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Completed".equalsIgnoreCase(appDocStatus));
     	
         // check app doc status transition history
@@ -129,7 +121,7 @@ public class AppDocStatusTest extends KEWTestCase {
                
     	// TODO when we are able to, we should also verify the RouteNodeInstances are correct
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertTrue("Document should be final.", document.stateIsFinal());
+    	assertTrue("Document should be final.", document.isFinal());
     }        
 
     /**
@@ -142,32 +134,31 @@ public class AppDocStatusTest extends KEWTestCase {
     @Test public void testAppDocStatusValuesNotDefined() throws Exception {
     	// Create document
     	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc1");
-    	document.saveRoutingData();
+    	document.saveDocumentData();
     	assertNotNull(document.getDocumentId());
-    	assertTrue("Document should be initiatied", document.stateIsInitiated());
-    	assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
+    	assertTrue("Document should be initiatied", document.isInitiated());
+    	assertTrue("Invalid route level.", document.getNodeNames().contains("Initiated"));
     	
     	// route document to first stop and check status, etc.
-    	document.routeDocument("Test Routing.");    	
-    	RouteHeaderDTO rh = document.getRouteHeader();
-    	String appDocStatus = rh.getAppDocStatus();
+    	document.route("Test Routing.");    	
+    	Document rh = document.getDocument();
+    	String appDocStatus = rh.getApplicationDocumentStatus();
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Approval in Progress".equalsIgnoreCase(appDocStatus));
         
         // should have generated a request to "bmcgough"
     	document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
-        assertTrue("Document should be enroute", document.stateIsEnroute());
-    	assertEquals("Invalid route level.", new Integer(1), document.getRouteHeader().getDocRouteLevel());
-    	String[] nodeNames = document.getNodeNames();
-    	assertEquals("Wrong number of node names.", 1, nodeNames.length);
-    	assertEquals("Wrong node name.", "step1", nodeNames[0]);
+        assertTrue("Document should be enroute", document.isEnroute());
+    	Set<String> nodeNames = document.getNodeNames();
+    	assertEquals("Wrong number of node names.", 1, nodeNames.size());
+    	assertTrue("Wrong node name.", nodeNames.contains("step1"));
 
     	// check action request
-        ActionRequestDTO[] requests = document.getActionRequests();
-        assertEquals(1, requests.length);
-        ActionRequestDTO request = requests[0];
+        List<ActionRequest> requests = document.getRootActionRequests();
+        assertEquals(1, requests.size());
+        ActionRequest request = requests.get(0);
         assertEquals(getPrincipalIdForName("bmcgough"), request.getPrincipalId());
-        assertEquals(KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
-        assertEquals(new Integer(1), request.getRouteLevel());
+        assertEquals(ActionRequestType.APPROVE, request.getActionRequested());
+        assertEquals("step1", request.getNodeName());
         assertTrue(document.isApprovalRequested());
         
         // approve the document to send it to its next route node
@@ -175,26 +166,25 @@ public class AppDocStatusTest extends KEWTestCase {
         
         // check status 
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
-        rh = document.getRouteHeader();
-    	appDocStatus = rh.getAppDocStatus();
+        rh = document.getDocument();
+    	appDocStatus = rh.getApplicationDocumentStatus();
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Submitted".equalsIgnoreCase(appDocStatus));
         
         // should have generated a request to "temay"
-    	assertTrue("Document should be enroute", document.stateIsEnroute());
-    	assertEquals("Invalid route level.", new Integer(2), document.getRouteHeader().getDocRouteLevel());
+    	assertTrue("Document should be enroute", document.isEnroute());
     	nodeNames = document.getNodeNames();
-    	assertEquals("Wrong number of node names.", 1, nodeNames.length);
-    	assertEquals("Wrong node name.", "step2", nodeNames[0]);
+    	assertEquals("Wrong number of node names.", 1, nodeNames.size());
+    	assertTrue("Wrong node name.", nodeNames.contains("step2"));
     	document.approve("Test approve by temay");
     	
     	// update the AppDocStatus via client API
-        document.updateAppDocStatus("Some Random Value");
+        document.updateApplicationDocumentStatus("Some Random Value");
 
         // get a refreshed document and check it out
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
 //        assertTrue("Document should be processed.", document.stateIsProcessed());        
-        rh = document.getRouteHeader();
-    	appDocStatus = rh.getAppDocStatus();
+        rh = document.getDocument();
+    	appDocStatus = rh.getApplicationDocumentStatus();
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Some Random Value".equalsIgnoreCase(appDocStatus));
     	
         // check app doc status transition history
@@ -210,7 +200,7 @@ public class AppDocStatusTest extends KEWTestCase {
                
     	// TODO when we are able to, we should also verify the RouteNodeInstances are correct
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertTrue("Document should be final.", document.stateIsFinal());
+    	assertTrue("Document should be final.", document.isFinal());
     }        
 
     /**
@@ -223,15 +213,15 @@ public class AppDocStatusTest extends KEWTestCase {
      */
     @Test public void testInvalidAppDocStatusValue() throws Exception {
     	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc2");
-    	document.saveRoutingData();
+    	document.saveDocumentData();
     	assertNotNull(document.getDocumentId());
-    	assertTrue("Document should be initiatied", document.stateIsInitiated());
-    	assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
+    	assertTrue("Document should be initiatied", document.isInitiated());
+    	assertTrue("Invalid route level.", document.getNodeNames().contains("Initiated"));
     	    	
     	// update the AppDocStatus via client API
     	boolean gotException = false;
     	try {
-    		document.updateAppDocStatus("BAD STATUS");
+    		document.updateApplicationDocumentStatus("BAD STATUS");
     	} catch (Throwable t){
     		gotException = true;
     		WorkflowRuntimeException ex = new WorkflowRuntimeException();

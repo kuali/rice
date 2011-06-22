@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.krad.web.struts.form;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.krad.util.TableRenderUtil;
 
 /**
@@ -49,6 +58,17 @@ public class KualiTableRenderFormMetadata {
      */
     private int columnToSortIndex;
 
+    /**
+     * If it is not feasible to use an index for lookup, as with mapped properties in an AttributeSet, it may be necessary to store a string value
+     */
+    private String columnToSortName;
+    
+    /**
+     * When the screen was last rendered, the column name on which it was previously sorted -- this is important for toggling between ascending and descending
+     * sort orders
+     */
+    private String previouslySortedColumnName;
+    
     private boolean sortDescending;
     
     public KualiTableRenderFormMetadata() {
@@ -215,6 +235,35 @@ public class KualiTableRenderFormMetadata {
         this.sortDescending = sortDescending;
     }
     
+	/**
+	 * @return the columnToSortName
+	 */
+	public String getColumnToSortName() {
+		return this.columnToSortName;
+	}
+
+	/**
+	 * @param columnToSortName the columnToSortName to set
+	 */
+	public void setColumnToSortName(String columnToSortName) {
+		this.columnToSortName = columnToSortName;
+	}
+
+	/**
+	 * @return the previouslySortedColumnName
+	 */
+	public String getPreviouslySortedColumnName() {
+		return this.previouslySortedColumnName;
+	}
+
+	/**
+	 * @param previouslySortedColumnName the previouslySortedColumnName to set
+	 */
+	public void setPreviouslySortedColumnName(String previouslySortedColumnName) {
+		this.previouslySortedColumnName = previouslySortedColumnName;
+	}
+    
+    
     /**
      * Sets the paging form parameters to go to the first page of the list
      * 
@@ -255,5 +304,92 @@ public class KualiTableRenderFormMetadata {
         setFirstRowIndex(TableRenderUtil.computeStartIndexForPage(pageNumber, listSize, maxRowsPerPage));
         setLastRowIndex(TableRenderUtil.computeLastIndexForPage(pageNumber, listSize, maxRowsPerPage));
     }
-    
+
+    /**
+     * Sorts a list on the form according to the form metadata (sortColumName, previouslySortedColumnName)
+     * 
+     * @param memberTableMetadata
+     * @param items
+     * @param maxRowsPerPage
+     * @throws WorkflowException
+     */
+    public void sort(List<?> items, int maxRowsPerPage) {
+
+    	// Don't bother to sort null, empty or singleton lists
+    	if (items == null || items.size() <= 1) 
+    		return;
+
+        String columnToSortOn = getColumnToSortName();
+        
+        // Don't bother to sort if no column to sort on is provided
+        if (StringUtils.isEmpty(columnToSortOn))
+        	return;
+        
+        String previouslySortedColumnName = getPreviouslySortedColumnName();
+        
+        // We know members isn't null or empty from the check above
+    	Object firstItem = items.get(0);
+    	// Need to decide if the comparator is for a bean property or a mapped key on the qualififer attribute set
+    	Comparator comparator = null;
+    	Comparator subComparator = new Comparator<Object>() {
+
+    		public int compare(Object o1, Object o2) {
+    			if (o1 == null)
+    				return -1;
+    			if (o2 == null)
+    				return 1;
+    			
+    			if (o1 instanceof java.util.Date && o2 instanceof java.util.Date) {
+    				Date d1 = (Date)o1;
+    				Date d2 = (Date)o2;
+    				return d1.compareTo(d2);
+    			}
+    			
+    			String s1 = o1.toString();
+    			String s2 = o2.toString();
+    			int n1=s1.length(), n2=s2.length();
+    			for (int i1=0, i2=0; i1<n1 && i2<n2; i1++, i2++) {
+    				char c1 = s1.charAt(i1);
+    				char c2 = s2.charAt(i2);
+    				if (c1 != c2) {
+    					c1 = Character.toUpperCase(c1);
+    					c2 = Character.toUpperCase(c2);
+    					if (c1 != c2) {
+    						c1 = Character.toLowerCase(c1);
+    						c2 = Character.toLowerCase(c2);
+    						if (c1 != c2) {
+    							return c1 - c2;
+    						}
+    					}
+    				}
+    			}
+    			return n1 - n2;
+    		}
+    	};
+    	// If the columnName is a readable bean property on the first member, then it's safe to say we need a simple bean property comparator, 
+    	// otherwise it's a mapped property -- syntax for BeanComparator is "name" and "name(key)", respectively
+    	if (PropertyUtils.isReadable(firstItem, columnToSortOn)) 
+    		comparator = new BeanComparator(columnToSortOn, subComparator);
+    	else
+    		comparator = new BeanComparator(new StringBuilder().append("qualifierAsAttributeSet(").append(columnToSortOn).append(")").toString(), subComparator);
+    	
+        
+        // If the user has decided to resort by the same column that the list is currently sorted by, then assume that s/he wants to reverse the order of the sort
+        if (!StringUtils.isEmpty(columnToSortOn) && !StringUtils.isEmpty(previouslySortedColumnName) && columnToSortOn.equals(previouslySortedColumnName)) {
+            // we're already sorted on the same column that the user clicked on, so we reverse the list
+        	if (isSortDescending()) 
+        		comparator = Collections.reverseOrder(comparator);
+        	
+        	setSortDescending(!isSortDescending());
+        } else {
+        	// Track which column we're currently sorting, so that the above logic will work on the next sort 
+        	setPreviouslySortedColumnName(columnToSortOn);
+        	setSortDescending(true);
+        }
+        
+        Collections.sort(items, comparator);
+
+		jumpToFirstPage(items.size(), maxRowsPerPage);
+    }
+
 }

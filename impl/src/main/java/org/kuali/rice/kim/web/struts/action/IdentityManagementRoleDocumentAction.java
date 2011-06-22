@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -42,7 +53,6 @@ import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
-import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.question.ConfirmationQuestion;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -50,17 +60,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.krad.web.struts.form.KualiTableRenderFormMetadata;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -89,26 +88,25 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		for(String methodToCallToUncheck: methodToCallToUncheckedList)
 			addMethodToCallToUncheckedList(methodToCallToUncheck);
 	}
-
+	
+    /**
+     * This method doesn't actually sort the column - it's just that we need a sort method in
+     * order to exploit the existing methodToCall logic. The sorting is handled in the execute
+     * method below, and delegated to the KualiTableRenderFormMetadata object. 
+     * 
+     * @param mapping
+     * @param form 
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        this.createDocument(roleDocumentForm);
 
-        // mimic loading the document; consider calling the loadDocument method instead
-        Document document = roleDocumentForm.getDocument();
-        KualiWorkflowDocument workflowDocument = roleDocumentForm.getDocument().getDocumentHeader().getWorkflowDocument();
-        roleDocumentForm.populateHeaderFields(workflowDocument);
-        roleDocumentForm.setDocId(document.getDocumentNumber());
-        roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
-
-        if (KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDocumentForm.getRoleDocument().getKimType())) {
-            roleDocumentForm.setCanModifyAssignees(false);
-        }
-        GlobalVariables.getUserSession().addObject(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY, roleDocumentForm.getRoleDocument());
-        return refresh(mapping, roleDocumentForm, request, response);
+    	return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
-	@Override
+    @Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
@@ -124,8 +122,10 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
 		if (roleDocumentForm.getRoleDocument()!=null && roleDocumentForm.getMemberRows() != null) {
 			memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
+			// KULRICE-3972: need to be able to sort by column header like on lookups when editing large roles and groups
+			memberTableMetadata.sort(roleDocumentForm.getMemberRows(), roleDocumentForm.getRecordsPerPage());
 		}
-
+	
 		// KULRICE-4762: active delegates of "inactivated" role members cause validation problems
 		ActionForward forward = promptForAffectedDelegates(mapping, form, request, response,
 				roleDocumentForm);

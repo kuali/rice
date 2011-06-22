@@ -1,5 +1,4 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -557,7 +556,7 @@ public final class KRADConstants {
     	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+".showAllTabs" );
     	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+".toggleTab" );
     	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+"."+TableRenderConstants.SWITCH_TO_PAGE_METHOD );
-//    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+"."+TableRenderConstants.SORT_METHOD );
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+"."+TableRenderConstants.SORT_METHOD );
     }
 
     public static final String GLOBAL_VARIABLES_MESSAGES_LIST_ACTION_MESSAGES = "GlobalVariablesMessagesList";

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.util;
 import java.util.Enumeration;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.kuali.rice.core.util.CollectionUtils;
 
 /**
@@ -47,10 +48,27 @@ public final class PagingBannerUtils {
     		if (parameterName.startsWith(paramPrefix)) {
             	parameterName = WebUtils.endsWithCoordinates(parameterName) ? parameterName : parameterName + ".x";
             	String numberStr = StringUtils.substringBetween(parameterName, paramPrefix, ".");
-                return Integer.parseInt(numberStr);
+            	if (NumberUtils.isDigits(numberStr)) {
+            		return Integer.parseInt(numberStr);
+            	}
             }
         }
     	
     	return -1;
+    }
+    
+    /**
+     * same as method above except for use when it is not feasible to use ordinals to identify columns -- for example,
+     * if dynamic attributes may be used
+     */
+    public static String getStringValueAfterPrefix(String paramPrefix, Enumeration<String> parameterNames) {
+        for (String parameterName : CollectionUtils.toIterable(parameterNames)) {
+            if (parameterName.startsWith(paramPrefix)) {
+                parameterName = WebUtils.endsWithCoordinates(parameterName) ? parameterName : parameterName + ".x";
+                return StringUtils.substringBetween(parameterName, paramPrefix, ".");
+            }
+        }
+
+        return "";
     }
 }

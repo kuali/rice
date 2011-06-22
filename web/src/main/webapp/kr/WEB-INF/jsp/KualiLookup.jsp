@@ -199,7 +199,6 @@
     				<bean-el:message key="lookup.no.returnable.rows" />
     				<br/><br/>
     			</c:if>
-
 				<display:table class="datatable-100" cellspacing="0"
 				requestURIcontext="false" cellpadding="0" name="${reqSearchResults}"
 				id="row" export="true" pagesize="100" varTotals="totals" 

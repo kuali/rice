@@ -54,7 +54,8 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
     public void populate(HttpServletRequest request) {
         super.populate(request);
 
-        memberTableMetadata = new KualiTableRenderFormMetadata();
+        if (memberTableMetadata == null)
+        	memberTableMetadata = new KualiTableRenderFormMetadata();
 
         if (KRADConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD.equals(getMethodToCall())) {
             final String paramPrefix = KRADConstants.DISPATCH_REQUEST_PARAMETER + "." + KRADConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD + ".";
@@ -66,7 +67,7 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
             final String paramPrefix = KRADConstants.DISPATCH_REQUEST_PARAMETER + "." + KRADConstants.TableRenderConstants.SORT_METHOD + ".";
             memberTableMetadata.setColumnToSortIndex(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
             if (memberTableMetadata.getColumnToSortIndex() == -1) {
-                throw new RuntimeException("Couldn't find page number");
+                memberTableMetadata.setColumnToSortName(PagingBannerUtils.getStringValueAfterPrefix(paramPrefix, request.getParameterNames()));
             }
         }
     }

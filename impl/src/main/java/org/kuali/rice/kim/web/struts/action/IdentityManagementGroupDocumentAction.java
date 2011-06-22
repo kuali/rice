@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -22,8 +30,8 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.Role;
@@ -35,22 +43,16 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.struts.action.KualiTableRenderAction;
 import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.krad.web.struts.form.KualiTableRenderFormMetadata;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class IdentityManagementGroupDocumentAction extends IdentityManagementDocumentActionBase {
+public class IdentityManagementGroupDocumentAction extends IdentityManagementDocumentActionBase implements KualiTableRenderAction {
 
 	/**
 	 * This constructs a ...
@@ -62,7 +64,24 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 		addMethodToCallToUncheckedList( CHANGE_NAMESPACE_METHOD_TO_CALL );
 	}
 	
-	@Override
+    /**
+     * This method doesn't actually sort the column - it's just that we need a sort method in
+     * order to exploit the existing methodToCall logic. The sorting is handled in the execute
+     * method below, and delegated to the KualiTableRenderFormMetadata object. 
+     * 
+     * @param mapping
+     * @param form 
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+    	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
+    @Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
@@ -77,6 +96,8 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
 		if (groupDocumentForm.getMemberRows() != null) {
 			memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
+			// KULRICE-3972: need to be able to sort by column header like on lookups when editing large roles and groups
+			memberTableMetadata.sort(groupDocumentForm.getMemberRows(), groupDocumentForm.getRecordsPerPage());
 		}
 		
 		ActionForward forward = super.execute(mapping, groupDocumentForm, request, response);

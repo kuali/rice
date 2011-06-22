@@ -294,7 +294,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
 
   <bean id="Group_ShowHideInactive" parent="GroupBodyOnly"
-        p:conditionalRender="#isAssignableFrom(T(org.kuali.rice.krad.bo.Inactivateable),
+        p:conditionalRender="#isAssignableFrom(T(org.kuali.rice.krad.bo.Inactivatable),
     #collectionGroup.collectionObjectClass)">
     <property name="items">
       <list>

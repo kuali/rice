@@ -539,10 +539,25 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public void move(String documentId, String principalId,
-			MovePoint movePoint, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+	public DocumentActionResult move(String documentId,
+			String principalId,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate,
+			final MovePoint movePoint) {
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new DocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().moveDocument(principalId, documentBo, movePoint, annotation);
+			}
+			public String getLogMessage(String documentId, String principalId, String annotation) {
+				return "Move Document [principalId=" + principalId + ", documentId=" + documentId + ", annotation=" + annotation + ", movePoint=" + movePoint + "]";
+			}
+		});
 	}
 
 	@Override

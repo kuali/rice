@@ -35,6 +35,7 @@ import org.kuali.rice.kew.api.action.AdHocToGroup;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
 import org.kuali.rice.kew.api.action.DocumentActionResult;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
+import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.action.RequestedActions;
 import org.kuali.rice.kew.api.action.ReturnPoint;
 import org.kuali.rice.kew.api.action.ValidActions;
@@ -872,19 +873,14 @@ public class WorkflowDocument implements java.io.Serializable {
     	resetStateAfterAction(result);
     }
 
-//    /**
-//     * Moves the document from a current node in it's route to another node.  If this is a new document,
-//     * the document is created first.
-//     * @param MovePointDTO VO representing the node at which to start, and the number of steps to move (negative steps is reverse)
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs moving the document
-//     * @see WorkflowDocumentActions#moveDocument(UserIdDTO, RouteHeaderDTO, MovePointDTO, String)
-//     */
-//    public void moveDocument(MovePointDTO movePoint, String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader =  getWorkflowDocumentActions().moveDocument(principalId, getRouteHeader(), movePoint, annotation);
-//    	documentContentDirty = true;
-//    }
+    public void moveDocument(MovePoint movePoint, String annotation) {
+    	if (movePoint == null) {
+    		throw new IllegalArgumentException("movePoint was null");
+    	}
+    	DocumentActionResult result = getWorkflowDocumentActionsService().move(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), movePoint);
+    	resetStateAfterAction(result);
+    }
+    
 //
 //    /**
 //     * Returns the route node instances that have been created so far during the life of this document.  This includes

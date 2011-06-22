@@ -54,11 +54,11 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.actions.MovePoint;
 import org.kuali.rice.kew.actions.ValidActions;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
+import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
@@ -1211,10 +1211,7 @@ public class DTOConverter {
     }
 
     public static MovePoint convertMovePointVO(MovePointDTO movePointVO) {
-        MovePoint movePoint = new MovePoint();
-        movePoint.setStartNodeName(movePointVO.getStartNodeName());
-        movePoint.setStepsToMove(movePointVO.getStepsToMove());
-        return movePoint;
+        return MovePoint.create(movePointVO.getStartNodeName(), movePointVO.getStepsToMove());
     }
 
     /**

@@ -16,11 +16,17 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -31,12 +37,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 /**

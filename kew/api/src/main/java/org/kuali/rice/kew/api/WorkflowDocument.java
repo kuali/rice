@@ -873,7 +873,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	resetStateAfterAction(result);
     }
 
-    public void moveDocument(MovePoint movePoint, String annotation) {
+    public void move(MovePoint movePoint, String annotation) {
     	if (movePoint == null) {
     		throw new IllegalArgumentException("movePoint was null");
     	}

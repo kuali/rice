@@ -582,18 +582,6 @@ public class WorkflowDocument implements java.io.Serializable {
 //    	createDocumentIfNeccessary();
 //    	return getWorkflowUtility().isSuperUserForDocumentType(principalId, getRouteHeader().getDocTypeId());
 //	}
-//    /**
-//     * Performs the 'clearFYI' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs clearing FYI on the document
-//     * @see WorkflowDocumentActions#clearFYIDocument(UserIdDTO, RouteHeaderDTO)
-//     */
-//    public void clearFYI() throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	getWorkflowDocumentActions().clearFYIDocument(principalId, getRouteHeader());
-//    	documentContentDirty = true;
-//    }
 
     public void complete(String annotation) {
     	DocumentActionResult result = getWorkflowDocumentActionsService().complete(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());

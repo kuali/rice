@@ -68,7 +68,9 @@ public interface WorkflowDocumentService {
 //			@WebParam(name = "documentId") String documentId)
 //			throws WorkflowException;
 
-	public List<RouteNodeInstance> getActiveNodeInstances(
+	public List<RouteNodeInstance> getRouteNodeInstances(String documentId);
+	
+	public List<RouteNodeInstance> getActiveRouteNodeInstances(
 			@WebParam(name = "documentId") String documentId);
 
 //	public RouteNodeInstanceDTO[] getTerminalNodeInstances(
@@ -78,13 +80,10 @@ public interface WorkflowDocumentService {
 //	public DocumentContentDTO getDocumentContent(
 //			@WebParam(name = "documentId") String documentId)
 //			throws WorkflowException;
-//
-//	// 2.2
-//	public String[] getPreviousRouteNodeNames(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
-//
-//	
+
+	public List<String> getPreviousRouteNodeNames(@WebParam(name = "documentId") String documentId);
+
+	
 //	public String getDocumentStatus(
 //			@WebParam(name = "documentId") String documentId)
 //			throws WorkflowException;

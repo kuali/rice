@@ -17,15 +17,18 @@
 package org.kuali.rice.kew.clientapp;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.List;
+import java.util.Set;
+
 import org.junit.Test;
-
-import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.test.KEWTestCase;
-
-import static org.junit.Assert.*;
 
 /**
  * Place to test WorkflowDocument.
@@ -38,13 +41,15 @@ public class WorkflowDocumentTest extends KEWTestCase {
     }
 
     @Test public void testLoadNonExistentDocument() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), "123456789");
-    	assertNull("RouteHeaderVO should be null.", document.getRouteHeader());
+    	try {
+    		WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), "123456789");
+    		fail("load of non-existent document should have thrown IllegalArgumentException");
+    	} catch (IllegalArgumentException e) {}
     }
 
     @Test public void testWorkflowDocument() throws Exception {
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
-        document.routeDocument("");
+        document.route("");
 
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.approve("");
@@ -52,12 +57,10 @@ public class WorkflowDocumentTest extends KEWTestCase {
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         document.approve("");
 
-        RouteNodeInstanceDTO[] nodeInstances = document.getRouteNodeInstances();
         boolean containsInitiated = false;
         boolean containsTemplate1 = false;
         boolean containsTemplate2 = false;
-        for (int j = 0; j < nodeInstances.length; j++) {
-            RouteNodeInstanceDTO routeNodeInstance = nodeInstances[j];
+        for (RouteNodeInstance routeNodeInstance : document.getRouteNodeInstances()) {
             if (routeNodeInstance.getName().equals("Initiated")) {
                 containsInitiated = true;
             } else if (routeNodeInstance.getName().equals("Template1")) {
@@ -80,10 +83,10 @@ public class WorkflowDocumentTest extends KEWTestCase {
     @Test public void testReturnToPreviousCorrectlyUpdatingDocumentStatus() throws Exception {
 
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
-        document.routeDocument("");
+        document.route("");
 
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-        document.returnToPreviousNode("", "Initiated");
+        document.returnToPreviousNode("Initiated", "");
 
         assertFalse("ewestfal should no longer have approval status", document.isApprovalRequested());
         assertFalse("ewestfal should no long have blanket approve status", document.isBlanketApproveCapable());
@@ -96,23 +99,23 @@ public class WorkflowDocumentTest extends KEWTestCase {
     @Test public void testGetPreviousRouteNodeNames() throws Exception {
 
     	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
-        document.routeDocument("");
+        document.route("");
 
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.approve("");
 
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
-        String[] previousNodeNames = document.getPreviousNodeNames();
-        assertEquals("Should have 2 previous Node Names", 2, previousNodeNames.length);
-        assertEquals("Last node name should be the first visisted", "Initiated", previousNodeNames[0]);
-        assertEquals("First node name should be last node visited", "Template1", previousNodeNames[1]);
-        String[] currentNodes = document.getNodeNames();
-        assertEquals("Should have 1 current node name", 1, currentNodes.length);
-        assertEquals("Current node name incorrect", "Template2", currentNodes[0]);
-        document.returnToPreviousNode("", "Template1");
+        List<String> previousNodeNames = document.getPreviousNodeNames();
+        assertEquals("Should have 2 previous Node Names", 2, previousNodeNames.size());
+        assertEquals("Last node name should be the first visisted", "Initiated", previousNodeNames.get(0));
+        assertEquals("First node name should be last node visited", "Template1", previousNodeNames.get(1));
+        Set<String> currentNodes = document.getNodeNames();
+        assertEquals("Should have 1 current node name", 1, currentNodes.size());
+        assertEquals("Current node name incorrect", "Template2", currentNodes.iterator().next());
+        document.returnToPreviousNode("Template1", "");
         previousNodeNames = document.getPreviousNodeNames();
-        assertEquals("Should have 1 previous Node Name", 1, previousNodeNames.length);
-        assertEquals("Previous Node name incorrect", "Initiated", previousNodeNames[0]);
+        assertEquals("Should have 1 previous Node Name", 1, previousNodeNames.size());
+        assertEquals("Previous Node name incorrect", "Initiated", previousNodeNames.get(0));
 
     }
 

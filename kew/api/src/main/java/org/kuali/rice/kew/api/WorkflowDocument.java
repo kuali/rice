@@ -499,6 +499,10 @@ public class WorkflowDocument implements java.io.Serializable {
     public boolean isBlanketApproveCapable() {
     	return isActionValid(ActionType.BLANKET_APPROVE) && (isCompletionRequested() || isApprovalRequested() || isInitiated());
     }
+    
+    public boolean isRouteCapable() {
+    	return isActionValid(ActionType.ROUTE);
+    }
 
     public boolean isActionCodeValid(String actionCode) {
     	if (StringUtils.isBlank(actionCode)) {
@@ -578,17 +582,6 @@ public class WorkflowDocument implements java.io.Serializable {
 //    	createDocumentIfNeccessary();
 //    	return getWorkflowUtility().isSuperUserForDocumentType(principalId, getRouteHeader().getDocTypeId());
 //	}
-//
-//    /**
-//     * Returns whether the user passed into WorkflowDocument at instantiation can route
-//     * the document.
-//	 * @return if user passed into WorkflowDocument at instantiation can route
-//	 *         the document.
-//	 */
-//    public boolean isRouteCapable() {
-//        return isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_ROUTED_CD);
-//    }
-//
 //    /**
 //     * Performs the 'clearFYI' action on the document this WorkflowDocument represents.  If this is a new document,
 //     * the document is created first.
@@ -760,7 +753,7 @@ public class WorkflowDocument implements java.io.Serializable {
 //    }
 
     public Set<String> getNodeNames() {
-    	List<RouteNodeInstance> activeNodeInstances = getWorkflowDocumentService().getActiveNodeInstances(getDocumentId());
+    	List<RouteNodeInstance> activeNodeInstances = getActiveRouteNodeInstances();
     	Set<String> nodeNames = new HashSet<String>(activeNodeInstances.size());
     	for (RouteNodeInstance routeNodeInstance : activeNodeInstances) {
     		nodeNames.add(routeNodeInstance.getName());
@@ -791,30 +784,19 @@ public class WorkflowDocument implements java.io.Serializable {
     	resetStateAfterAction(result);
     }
     
-//
-//    /**
-//     * Returns the route node instances that have been created so far during the life of this document.  This includes
-//     * all previous instances which have already been processed and are no longer active.
-//     * @return the route node instances that have been created so far during the life of this document
-//     * @throws WorkflowException if there is an error getting the route node instances for the document
-//     * @see WorkflowUtility#getDocumentRouteNodeInstances(Long)
-//     */
-//    public RouteNodeInstanceDTO[] getRouteNodeInstances() throws WorkflowException {
-//    	return getWorkflowUtility().getDocumentRouteNodeInstances(getDocumentId());
-//    }
-//
-//    /**
-//     * Returns Array of Route Nodes Names that can be safely returned to using the 'returnToPreviousXXX' methods.
-//     * Names are sorted in reverse chronological order.
-//     *
-//     * @return array of Route Nodes Names that can be safely returned to using the 'returnToPreviousXXX' methods
-//     * @throws WorkflowException if an error occurs obtaining the names of the previous route nodes for this document
-//     * @see WorkflowUtility#getPreviousRouteNodeNames(Long)
-//     */
-//    public String[] getPreviousNodeNames() throws WorkflowException {
-//    	return getWorkflowUtility().getPreviousRouteNodeNames(getDocumentId());
-//	}
-//
+
+    public List<RouteNodeInstance> getActiveRouteNodeInstances() {
+    	return getWorkflowDocumentService().getActiveRouteNodeInstances(getDocumentId());
+    }
+    
+    public List<RouteNodeInstance> getRouteNodeInstances() {
+    	return getWorkflowDocumentService().getRouteNodeInstances(getDocumentId());
+    }
+
+    public List<String> getPreviousNodeNames() {
+    	return getWorkflowDocumentService().getPreviousRouteNodeNames(getDocumentId());
+	}
+
 //    /**
 //     * Returns a document detail VO representing the route header along with action requests, actions taken,
 //     * and route node instances.

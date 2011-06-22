@@ -73,6 +73,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		return Collections.unmodifiableList(actionRequests);
 	}
 	
+	@Override
 	public List<ActionRequest> getActionRequests(String documentId, String nodeName, String principalId) {
         if (StringUtils.isBlank(documentId)) {
         	throw new RiceIllegalArgumentException("documentId was null or blank");
@@ -119,20 +120,69 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 	
 	@Override
-	public List<RouteNodeInstance> getActiveNodeInstances(String documentId) {
-		if ( LOG.isDebugEnabled() ) {
-    		LOG.debug("Fetching active RouteNodeInstancess [documentId=" + documentId + "]");
+	public List<RouteNodeInstance> getRouteNodeInstances(String documentId) {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Fetching RouteNodeInstances [documentId=" + documentId + "]");
     	}
-		DocumentRouteHeaderValue documentRouteHeaderValue = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		if (documentRouteHeaderValue == null) {
-			throw new IllegalArgumentException("Failed to locate a document for the given documentId: " + documentId);
-		}
-		List<RouteNodeInstance> activeNodeInstances = new ArrayList<RouteNodeInstance>();
-        List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodeInstanceBos = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(documentId);
-        for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNodeInstanceBo : routeNodeInstanceBos) {
-        	activeNodeInstances.add(org.kuali.rice.kew.engine.node.RouteNodeInstance.to(routeNodeInstanceBo));
-        }
-        return activeNodeInstances;
+    	DocumentRouteHeaderValue documentBo = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+    	if (documentBo == null) {
+    		return Collections.emptyList();
+    	}
+    	return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(documentBo, true));
+    }	
+	
+	@Override
+	public List<RouteNodeInstance> getActiveRouteNodeInstances(String documentId) {
+		if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Fetching active RouteNodeInstances [documentId=" + documentId + "]");
+    	}
+        return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(documentId));
 	}
 
+	private List<RouteNodeInstance> convertRouteNodeInstances(List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodeInstanceBos) {
+		List<RouteNodeInstance> routeNodeInstances = new ArrayList<RouteNodeInstance>();
+        for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNodeInstanceBo : routeNodeInstanceBos) {
+        	routeNodeInstances.add(org.kuali.rice.kew.engine.node.RouteNodeInstance.to(routeNodeInstanceBo));
+        }
+        return Collections.unmodifiableList(routeNodeInstances);
+	}
+	
+	@Override
+	public List<String> getPreviousRouteNodeNames(String documentId) {
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching previous node names [documentId=" + documentId + "]");
+		}
+		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+		
+		// TODO validate that the doc is null or not instead of just throwing NPE?
+		
+		//going conservative for now.  if the doc isn't enroute or exception nothing will be returned.
+		if (document.isEnroute() || document.isInException()) {
+
+			List<org.kuali.rice.kew.engine.node.RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document);
+			long largetActivatedNodeId = 0;
+			for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNodeInstance : activeNodeInstances) {
+				if (routeNodeInstance.getRouteNode().getRouteNodeId().longValue() > largetActivatedNodeId) {
+					largetActivatedNodeId = routeNodeInstance.getRouteNode().getRouteNodeId().longValue();
+				}
+			}
+
+			List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
+			List<String> nodeNames = new ArrayList<String>();
+
+			for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNode : routeNodes) {
+				if (routeNode.isComplete() && !nodeNames.contains(routeNode.getName())) {
+					//if the prototype of the nodeInstance we're analyzing is less than the largest id of all our active prototypes
+					//then add it to the list.  This is an attempt to account for return to previous hitting a single node multiple times
+					if (routeNode.getRouteNode().getRouteNodeId().longValue() < largetActivatedNodeId) {
+						nodeNames.add(routeNode.getName());
+					}
+				}
+			}
+			return Collections.unmodifiableList(nodeNames);
+		} else {
+			return Collections.emptyList();
+		}
+	}
+	
 }

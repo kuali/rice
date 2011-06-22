@@ -662,6 +662,7 @@
 						</map>
 					</property>
 				</bean>
+				<bean class="org.kuali.rice.krad.datadictionary.validation.constraint.provider.ComplexAttributeDefinitionConstraintProvider"/>
 				<bean class="org.kuali.rice.krad.datadictionary.validation.constraint.provider.DataObjectEntryConstraintProvider">
 					<!-- 
 						individual constraint resolvers can be injected as a map keyed by constraint type as string, or the default 

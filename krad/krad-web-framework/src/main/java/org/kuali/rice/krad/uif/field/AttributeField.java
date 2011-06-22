@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
@@ -123,7 +124,9 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     private AttributeQuery fieldAttributeQuery;
 	
-    // widgets
+    private boolean escapeHtmlInPropertyValue;
+    
+	// widgets
     private Inquiry fieldInquiry;
     private QuickFinder fieldLookup;
     private DirectInquiry fieldDirectInquiry;
@@ -263,12 +266,10 @@ public class AttributeField extends FieldBase implements DataBinding {
     	boolean additionalValueSet = false;
     	boolean alternateValueSet = false;
 
-    	Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-
     	if (getAttributeSecurity() != null){
     		//TODO: Check authorization
     		// if (attributeSecurity.isMask() && !boAuthzService.canFullyUnmaskField(user,businessObjectClass, field.getPropertyName(), null)) {
-
+    		Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
 			alternateDisplayValue = getSecuredFieldValue(attributeSecurity, fieldValue);
 			setReadOnly(true);
 			isSecure = true;
@@ -291,6 +292,9 @@ public class AttributeField extends FieldBase implements DataBinding {
     			}else{
     				alternateDisplayValue = org.apache.commons.lang.ObjectUtils.toString(alterateFieldValue);
     			}
+    			if (alternateField.isEscapeHtmlInPropertyValue()){
+    				alternateDisplayValue = StringEscapeUtils.escapeHtml(alternateDisplayValue);
+    			}
     			alternateValueSet = true;
     		}
     	}
@@ -308,6 +312,9 @@ public class AttributeField extends FieldBase implements DataBinding {
         		}else {
         			additionalDisplayValue = org.apache.commons.lang.ObjectUtils.toString(additionalFieldValue);
         		}
+        		if (additionalPropertyField != null && additionalPropertyField.isEscapeHtmlInPropertyValue()){
+        			additionalDisplayValue = StringEscapeUtils.escapeHtml(additionalDisplayValue);
+    			}
     		}else if (view.isTranslateCodes()){
     			//If translate code is enabled, check for any relationship present for this field and it's of type KualiCode
         		BusinessObjectRelationship relationship = KRADServiceLocatorWeb.getDataObjectMetaDataService().getDataObjectRelationship(model,model.getClass(),getBindingInfo().getBindingPath(),"",true,true,true);
@@ -326,6 +333,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     			MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
     			if (multiValueControl.getOptions() != null){
     				for (KeyValue keyValue : multiValueControl.getOptions()) {
+    					Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
 						if (StringUtils.equals((String)fieldValue, keyValue.getKey())){
 							alternateDisplayValue = keyValue.getValue();
 							break;
@@ -1326,4 +1334,22 @@ public class AttributeField extends FieldBase implements DataBinding {
     public void setFieldAttributeQuery(AttributeQuery fieldAttributeQuery) {
         this.fieldAttributeQuery = fieldAttributeQuery;
     }
+    
+    /**
+	 * Sets HTML escaping for this property value. HTML escaping will be handled in alternate and additional fields also.
+	 * 
+	 */
+	public void setEscapeHtmlInPropertyValue(boolean escapeHtmlInPropertyValue) {
+		this.escapeHtmlInPropertyValue = escapeHtmlInPropertyValue;
+	}
+	
+    /**
+     * Returns true if HTML escape allowed for this field
+     * 
+	 * @return true if escaping allowed
+	 */
+	public boolean isEscapeHtmlInPropertyValue() {
+		return this.escapeHtmlInPropertyValue;
+	}
+	
 }

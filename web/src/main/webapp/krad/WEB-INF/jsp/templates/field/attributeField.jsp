@@ -49,7 +49,7 @@
 
 					<%-- If either alternate value or additional property not preset, display the actual property value --%>
 					<c:if test="${empty field.additionalDisplayValue}">
-						<s:bind path="${field.bindingInfo.bindingPath}">${status.value}</s:bind>
+						<s:bind path="${field.bindingInfo.bindingPath}" htmlEscape="${field.escapeHtmlInPropertyValue}">${status.value}</s:bind>
 					</c:if>
 				</c:if>
 			</c:if>

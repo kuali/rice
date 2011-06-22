@@ -21,12 +21,12 @@ import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
@@ -103,7 +103,7 @@ public interface IdentityManagementService {
 	Type getEmploymentType(@WebParam(name = "code") String code);
 	Type getEntityNameType(@WebParam(name = "code") String code);
 	Type getEntityType(@WebParam(name = "code") String code);
-	ExternalIdentifierTypeInfo getExternalIdentifierType(@WebParam(name = "code") String code);
+	EntityExternalIdentifierType getExternalIdentifierType(@WebParam(name = "code") String code);
 	Type getPhoneType(@WebParam(name = "code") String code);
 
 	// *******************************

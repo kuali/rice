@@ -22,6 +22,8 @@ import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -29,7 +31,6 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
@@ -294,9 +295,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	protected void populateExternalIdentifiers( KimEntityDefaultInfo entity ) {
 		if(entity!=null){
-			List<? extends KimEntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
+			List<? extends EntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
 			externalIdentifiers = new HashMap<String,String>( externalIds.size() );
-			for ( KimEntityExternalIdentifier eei : externalIds ) {
+			for ( EntityExternalIdentifier eei : externalIds ) {
 				externalIdentifiers.put( eei.getExternalIdentifierTypeCode(), eei.getExternalId() );
 			}
 		}

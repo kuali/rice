@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
@@ -25,7 +26,6 @@ import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
@@ -211,7 +211,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	/**
 	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getExternalIdentifierType(java.lang.String)
 	 */
-	public ExternalIdentifierTypeInfo getExternalIdentifierType(String code) {
+	public EntityExternalIdentifierType getExternalIdentifierType(String code) {
 		return getInnerIdentityService().getExternalIdentifierType(code);
 	}
 

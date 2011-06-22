@@ -20,15 +20,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -428,7 +427,7 @@ public class PersonServiceImpl implements PersonService {
 						String extIdTypeCode = criteria.get(KIMPropertyConstants.Person.EXTERNAL_IDENTIFIER_TYPE_CODE);
 						if ( StringUtils.isNotBlank(extIdTypeCode) ) {
 							// if found, load that external ID Type via service
-							ExternalIdentifierTypeInfo extIdType = getIdentityManagementService().getExternalIdentifierType(extIdTypeCode);
+							EntityExternalIdentifierType extIdType = getIdentityManagementService().getExternalIdentifierType(extIdTypeCode);
 							// if that type needs to be encrypted, encrypt the value in the criteria map
 							if ( extIdType != null && extIdType.isEncryptionRequired() ) {
 								try {

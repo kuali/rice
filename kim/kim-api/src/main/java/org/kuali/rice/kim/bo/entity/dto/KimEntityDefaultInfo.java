@@ -16,8 +16,8 @@
 package org.kuali.rice.kim.bo.entity.dto;
 
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
-import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
@@ -42,7 +42,7 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
     protected List<EntityAffiliation> affiliations;
     protected EntityAffiliation defaultAffiliation;
     protected EntityEmployment primaryEmployment;
-    protected List<KimEntityExternalIdentifierInfo> externalIdentifiers;
+    protected List<EntityExternalIdentifier> externalIdentifiers;
     protected EntityPrivacyPreferences privacyPreferences;
 
     /**
@@ -122,18 +122,18 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
     }
 
     /**
-     * Gets this {@link KimEntityDefaultInfo}'s List of {@link KimEntityExternalIdentifierInfo}S.
-     * @return the List of {@link KimEntityExternalIdentifierInfo}S for this {@link KimEntityDefaultInfo}.
+     * Gets this {@link KimEntityDefaultInfo}'s List of {@link org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier}S.
+     * @return the List of {@link org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier}S for this {@link KimEntityDefaultInfo}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
-    public List<KimEntityExternalIdentifierInfo> getExternalIdentifiers() {
+    public List<EntityExternalIdentifier> getExternalIdentifiers() {
         // If our reference is null, assign and return an empty List
         return (externalIdentifiers != null) ? 
-                externalIdentifiers : (externalIdentifiers = new ArrayList<KimEntityExternalIdentifierInfo>());
+                externalIdentifiers : (externalIdentifiers = new ArrayList<EntityExternalIdentifier>());
     }
 
     public void setExternalIdentifiers(
-            List<KimEntityExternalIdentifierInfo> externalIdentifiers) {
+            List<EntityExternalIdentifier> externalIdentifiers) {
         this.externalIdentifiers = externalIdentifiers;
     }
 

@@ -1,4 +1,4 @@
-package org.kuali.rice.kim.impl.identity.externalId
+package org.kuali.rice.kim.impl.identity.external
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -7,10 +7,12 @@ import javax.persistence.Table
 import org.kuali.rice.kim.api.identity.Type
 import org.kuali.rice.kim.api.identity.TypeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierTypeContract
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType
 
 @Entity
 @Table(name="KRIM_EXT_ID_TYP_T")
-public class EntityExternalIdentifierTypeBo extends PersistableBusinessObjectBase implements TypeContract {
+public class EntityExternalIdentifierTypeBo extends PersistableBusinessObjectBase implements EntityExternalIdentifierTypeContract {
     @Id
     @Column(name="EXT_ID_TYP_CD")
     String code;
@@ -22,10 +24,9 @@ public class EntityExternalIdentifierTypeBo extends PersistableBusinessObjectBas
     @Column(name="DISPLAY_SORT_CD")
     String sortCode;
 
-    //TODO: need to create contract that includes this field
     @org.hibernate.annotations.Type(type="yes_no")
 	@Column(name="ENCR_REQ_IND")
-	protected boolean encryptionRequired;
+	boolean encryptionRequired;
 
 
     /**
@@ -33,9 +34,9 @@ public class EntityExternalIdentifierTypeBo extends PersistableBusinessObjectBas
    * @param bo
    * @return an immutable AddressType
    */
-  static Type to(EntityExternalIdentifierTypeBo bo) {
+  static EntityExternalIdentifierType to(EntityExternalIdentifierTypeBo bo) {
     if (bo == null) { return null }
-    return Type.Builder.create(bo).build()
+    return EntityExternalIdentifierType.Builder.create(bo).build()
   }
 
   /**
@@ -43,7 +44,7 @@ public class EntityExternalIdentifierTypeBo extends PersistableBusinessObjectBas
    * @param an immutable AddressType
    * @return a AddressTypeBo
    */
-  static EntityExternalIdentifierTypeBo from(Type immutable) {
+  static EntityExternalIdentifierTypeBo from(EntityExternalIdentifierType immutable) {
     if (immutable == null) {return null}
 
     EntityExternalIdentifierTypeBo bo = new EntityExternalIdentifierTypeBo()
@@ -51,6 +52,7 @@ public class EntityExternalIdentifierTypeBo extends PersistableBusinessObjectBas
     bo.name = immutable.name
     bo.sortCode = immutable.sortCode
     bo.active = immutable.active
+    bo.encryptionRequired = immutable.encryptionRequired
     bo.versionNumber = immutable.versionNumber
     bo.objectId = immutable.objectId
 

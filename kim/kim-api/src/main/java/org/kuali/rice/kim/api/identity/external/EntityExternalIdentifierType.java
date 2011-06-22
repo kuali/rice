@@ -1,13 +1,4 @@
-package org.kuali.rice.kim.api.identity.affiliation;
-
-import java.io.Serializable;
-import java.util.Collection;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+package org.kuali.rice.kim.api.identity.external;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -16,22 +7,32 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeContract;
 import org.w3c.dom.Element;
 
-@XmlRootElement(name = EntityAffiliationType.Constants.ROOT_ELEMENT_NAME)
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+import java.util.Collection;
+
+@XmlRootElement(name = EntityExternalIdentifierType.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = EntityAffiliationType.Constants.TYPE_NAME, propOrder = {
-    EntityAffiliationType.Elements.CODE,
-    EntityAffiliationType.Elements.NAME,
-    EntityAffiliationType.Elements.SORT_CODE,
-    EntityAffiliationType.Elements.ACTIVE,
-    EntityAffiliationType.Elements.EMPLOYMENT_AFFILIATION_TYPE,
+@XmlType(name = EntityExternalIdentifierType.Constants.TYPE_NAME, propOrder = {
+    EntityExternalIdentifierType.Elements.CODE,
+    EntityExternalIdentifierType.Elements.NAME,
+    EntityExternalIdentifierType.Elements.SORT_CODE,
+    EntityExternalIdentifierType.Elements.ACTIVE,
+    EntityExternalIdentifierType.Elements.ENCRYPTION_REQUIRED,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityAffiliationType
-    implements ModelObjectComplete, EntityAffiliationTypeContract
+public final class EntityExternalIdentifierType
+    implements ModelObjectComplete, EntityExternalIdentifierTypeContract
 {
     @XmlElement(name = Elements.CODE, required = true)
     private final String code;
@@ -39,8 +40,8 @@ public final class EntityAffiliationType
     private final String name;
     @XmlElement(name = Elements.SORT_CODE, required = false)
     private final String sortCode;
-    @XmlElement(name = Elements.EMPLOYMENT_AFFILIATION_TYPE, required = false)
-    private final boolean employmentAffiliationType;
+    @XmlElement(name = Elements.ENCRYPTION_REQUIRED, required = false)
+    private final boolean encryptionRequired;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
     @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
@@ -55,21 +56,21 @@ public final class EntityAffiliationType
      * Private constructor used only by JAXB.
      * 
      */
-    private EntityAffiliationType() {
+    private EntityExternalIdentifierType() {
         this.name = null;
         this.code = null;
         this.sortCode = null;
         this.versionNumber = null;
         this.objectId = null;
         this.active = false;
-        this.employmentAffiliationType = false;
+        this.encryptionRequired = false;
     }
 
-    private EntityAffiliationType(Builder builder) {
+    private EntityExternalIdentifierType(Builder builder) {
         this.name = builder.getName();
         this.code = builder.getCode();
         this.sortCode = builder.getSortCode();
-        this.employmentAffiliationType = builder.isEmploymentAffiliationType();
+        this.encryptionRequired = builder.isEncryptionRequired();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
         this.active = builder.isActive();
@@ -91,8 +92,8 @@ public final class EntityAffiliationType
     }
 
     @Override
-    public boolean isEmploymentAffiliationType() {
-        return this.employmentAffiliationType;
+    public boolean isEncryptionRequired() {
+        return this.encryptionRequired;
     }
 
     @Override
@@ -131,13 +132,13 @@ public final class EntityAffiliationType
      * 
      */
     public final static class Builder
-        implements Serializable, ModelBuilder, EntityAffiliationTypeContract
+        implements Serializable, ModelBuilder, EntityExternalIdentifierTypeContract
     {
 
         private String name;
         private String code;
         private String sortCode;
-        private boolean employmentAffiliationType;
+        private boolean encryptionRequired;
         private Long versionNumber;
         private String objectId;
         private boolean active;
@@ -150,23 +151,22 @@ public final class EntityAffiliationType
             return new Builder(code);
         }
 
-        public static Builder create(EntityAffiliationTypeContract contract) {
+        public static Builder create(EntityExternalIdentifierTypeContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            // TODO if create() is modified to accept required parameters, this will need to be modified
             Builder builder = create(contract.getCode());
             builder.setName(contract.getName());
             builder.setSortCode(contract.getSortCode());
-            builder.setEmploymentAffiliationType(contract.isEmploymentAffiliationType());
+            builder.setEncryptionRequired(contract.isEncryptionRequired());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
             builder.setActive(contract.isActive());
             return builder;
         }
 
-        public EntityAffiliationType build() {
-            return new EntityAffiliationType(this);
+        public EntityExternalIdentifierType build() {
+            return new EntityExternalIdentifierType(this);
         }
 
         @Override
@@ -185,8 +185,8 @@ public final class EntityAffiliationType
         }
 
         @Override
-        public boolean isEmploymentAffiliationType() {
-            return this.employmentAffiliationType;
+        public boolean isEncryptionRequired() {
+            return this.encryptionRequired;
         }
 
         @Override
@@ -219,8 +219,8 @@ public final class EntityAffiliationType
             this.sortCode = sortCode;
         }
 
-        public void setEmploymentAffiliationType(boolean employmentAffiliationType) {
-            this.employmentAffiliationType = employmentAffiliationType;
+        public void setEncryptionRequired(boolean encryptionRequired) {
+            this.encryptionRequired = encryptionRequired;
         }
 
         public void setVersionNumber(Long versionNumber) {
@@ -244,8 +244,8 @@ public final class EntityAffiliationType
      */
     static class Constants {
 
-        final static String ROOT_ELEMENT_NAME = "entityAffiliationType";
-        final static String TYPE_NAME = "entityAffiliationTypeType";
+        final static String ROOT_ELEMENT_NAME = "entityExternalIdentifierType";
+        final static String TYPE_NAME = "entityExternalIdentifierTypeType";
         final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
 
     }
@@ -261,7 +261,7 @@ public final class EntityAffiliationType
         final static String CODE = "code";
         final static String SORT_CODE = "sortCode";
         final static String ACTIVE = "active";
-        final static String EMPLOYMENT_AFFILIATION_TYPE = "employmentAffiliationType";
+        final static String ENCRYPTION_REQUIRED = "encryptionRequired";
 
     }
 

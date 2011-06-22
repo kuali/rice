@@ -211,7 +211,7 @@
              <entry key="org.kuali.rice.kim.framework.identity.employment.EntityEmploymentTypeContractEbo" value="org.kuali.rice.kim.framework.identity.employment.EntityEmploymentTypeEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.name.EntityNameTypeContractEbo" value="org.kuali.rice.kim.framework.identity.name.EntityNameTypeEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.EntityTypeContractEbo" value="org.kuali.rice.kim.framework.identity.EntityTypeEbo" />
-             <entry key="org.kuali.rice.kim.bo.reference.ExternalIdentifierType" value="org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl" />
+             <entry key="org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierTypeContract" value="org.kuali.rice.kim.framework.identity.external.EntityExternalIdentifierTypeEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.phone.EntityPhoneTypeContractEbo" value="org.kuali.rice.kim.framework.identity.phone.EntityPhoneTypeEbo" />
             </map>
         </property>

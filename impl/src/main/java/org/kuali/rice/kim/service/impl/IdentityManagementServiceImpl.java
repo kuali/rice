@@ -27,6 +27,7 @@ import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.TypeContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.identity.services.IdentityService;
@@ -38,8 +39,6 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
-import org.kuali.rice.kim.bo.reference.dto.KimCodeInfoBase;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.impl.identity.EntityTypeBo;
@@ -108,7 +107,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected Map<String,MaxAgeSoftReference<Boolean>> isAuthorizedByTemplateNameCache;
     protected Map<String,MaxAgeSoftReference<Boolean>> isPermissionDefinedForTemplateNameCache;
 
-    protected HashMap<String,KimCodeInfoBase> kimReferenceTypeCache = new HashMap<String, KimCodeInfoBase>();
     protected HashMap<String,TypeContract> kimReferenceTypeCacheMap = new HashMap<String, TypeContract>();
 
 	public void afterPropertiesSet() throws Exception {
@@ -997,11 +995,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return type;
 	}
-	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code ) {
-		ExternalIdentifierTypeInfo type = (ExternalIdentifierTypeInfo)kimReferenceTypeCache.get(ExternalIdentifierTypeInfo.class.getSimpleName()+"-"+code);
+	public EntityExternalIdentifierType getExternalIdentifierType( String code ) {
+		EntityExternalIdentifierType type = (EntityExternalIdentifierType)kimReferenceTypeCacheMap.get(EntityExternalIdentifierType.class.getSimpleName()+"-"+code);
 		if ( type == null ) {
 			type = getIdentityService().getExternalIdentifierType(code);
-			kimReferenceTypeCache.put(ExternalIdentifierTypeInfo.class.getSimpleName()+"-"+code, type);
+			kimReferenceTypeCacheMap.put(EntityExternalIdentifierType.class.getSimpleName()+"-"+code, type);
 		}
 		return type;
 	}

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import com.google.common.base.Predicates;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -23,10 +22,10 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeContract;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.reference.KimCode;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.framework.group.GroupEbo;
 import org.kuali.rice.kim.service.PersonService;
@@ -38,7 +37,6 @@ import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -48,7 +46,6 @@ import java.util.Set;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.notEqual;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -165,7 +162,7 @@ public class KimModuleService extends ModuleServiceBase {
 			return Collections.singletonList( KimConstants.PrimaryKeyConstants.GROUP_ID );
 		} else if ( KimType.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
 			return Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID );
-		} else if ( KimCode.class.isAssignableFrom(businessObjectInterfaceClass)) {
+		} else if ( KimTypeContract.class.isAssignableFrom(businessObjectInterfaceClass)) {
 			return Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE );
 		}
 

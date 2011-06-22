@@ -19,19 +19,18 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
-import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
-import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.impl.identity.EntityTypeBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
@@ -43,6 +42,7 @@ import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
@@ -245,10 +245,10 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 			}
 		}
 		info.setPrimaryEmployment( EntityEmploymentBo.to(entity.getPrimaryEmployment()) );
-		ArrayList<KimEntityExternalIdentifierInfo> idInfo = new ArrayList<KimEntityExternalIdentifierInfo>( entity.getExternalIdentifiers().size() );
+		ArrayList<EntityExternalIdentifier> idInfo = new ArrayList<EntityExternalIdentifier>( entity.getExternalIdentifiers().size() );
 		info.setExternalIdentifiers( idInfo );
-		for ( KimEntityExternalIdentifier id : entity.getExternalIdentifiers() ) {
-			idInfo.add( new KimEntityExternalIdentifierInfo( id ) );
+		for ( EntityExternalIdentifierContract id : entity.getExternalIdentifiers() ) {
+			idInfo.add( EntityExternalIdentifier.Builder.create( id ).build() );
 		}
 		return info;
 	}
@@ -532,12 +532,12 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		return EntityTypeBo.to(impl);
 	}
 
-	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code ) {
-		ExternalIdentifierTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(ExternalIdentifierTypeImpl.class, code);
+	public EntityExternalIdentifierType getExternalIdentifierType( String code ) {
+		EntityExternalIdentifierTypeBo impl = getBusinessObjectService().findBySinglePrimaryKey(EntityExternalIdentifierTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
-		return impl.toInfo();
+		return EntityExternalIdentifierTypeBo.to(impl);
 	}
 	
 	public Type getPhoneType( String code ) {

@@ -30,7 +30,7 @@
     <class>org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo</class>
     <class>org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo</class>
     <class>org.kuali.rice.kim.impl.identity.EntityTypeBo</class>
-    <class>org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl</class>
+    <class>org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo</class>
     <class>org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo</class>
     <class>org.kuali.rice.kim.impl.type.KimTypeBo</class>
     <class>org.kuali.rice.kim.impl.common.attribute.KimAttributeBo</class>
@@ -41,7 +41,7 @@
     <class>org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo</class>
     <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo</class>
     <class>org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl</class>
+    <class>org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo</class>
     <class>org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo</class>
     <class>org.kuali.rice.kim.impl.identity.name.EntityNameBo</class>
     <class>org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo</class>
@@ -98,11 +98,9 @@
     
     <!-- mapped superclasses -->
     <class>org.kuali.rice.kim.bo.entity.impl.KimDefaultableEntityDataBase</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimDefaultableEntityTypeDataBase</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityDataBase</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimInactivatableEntityDataBase</class>
     <class>org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl</class>
-    <class>org.kuali.rice.kim.bo.reference.impl.KimCodeBase</class>
     <class>org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentBoBase</class>

@@ -106,9 +106,9 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl" table="KRIM_EXT_ID_TYP_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo" table="KRIM_EXT_ID_TYP_T">
     <field-descriptor name="code" column="EXT_ID_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="displaySortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="sortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="encryptionRequired" column="ENCR_REQ_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
@@ -206,7 +206,7 @@
     <collection-descriptor name="principals" element-class-ref="org.kuali.rice.kim.impl.identity.principal.PrincipalBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
-    <collection-descriptor name="externalIdentifiers" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="externalIdentifiers" element-class-ref="org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" />
     </collection-descriptor>
     <collection-descriptor name="affiliations" element-class-ref="org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
@@ -299,15 +299,15 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl" table="KRIM_ENTITY_EXT_ID_T">
-    <field-descriptor name="entityExternalIdentifierId" column="ENTITY_EXT_ID_ID" jdbc-type="VARCHAR" primarykey="true"   autoincrement="true" sequence-name="KRIM_ENTITY_EXT_ID_ID_S"  />
+  <class-descriptor class="org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo" table="KRIM_ENTITY_EXT_ID_T">
+    <field-descriptor name="id" column="ENTITY_EXT_ID_ID" jdbc-type="VARCHAR" primarykey="true"   autoincrement="true" sequence-name="KRIM_ENTITY_EXT_ID_ID_S"  />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="externalIdentifierTypeCode" column="EXT_ID_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="externalId" column="EXT_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
-    <reference-descriptor name="externalIdentifierType" class-ref="org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="externalIdentifierTypeCode" />
+    <reference-descriptor name="externalIdentifierType" class-ref="org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="externalIdentifierTypeCode" target-field-ref="code" />
     </reference-descriptor>
   </class-descriptor>
 

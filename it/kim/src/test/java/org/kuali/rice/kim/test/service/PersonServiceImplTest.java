@@ -22,14 +22,17 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-
-import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.test.bo.BOContainingPerson;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.lookup.Lookupable;
-import org.kuali.rice.krad.service.*;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.AutoPopulatingList;
 
@@ -67,10 +70,9 @@ public class PersonServiceImplTest extends KIMTestCase {
 		Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal("p1");
 		
 		SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-		Long externalIdentifierId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_EXT_ID_ID_S", KimEntityExternalIdentifierImpl.class);
-		KimEntityExternalIdentifierImpl externalIdentifier = new KimEntityExternalIdentifierImpl();
-		externalIdentifier.setEntityExternalIdentifierId(externalIdentifierId.toString());
-		externalIdentifier.setEntityExternalIdentifierId("");
+		Long externalIdentifierId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_EXT_ID_ID_S", EntityExternalIdentifierBo.class);
+		EntityExternalIdentifierBo externalIdentifier = new EntityExternalIdentifierBo();
+		externalIdentifier.setId("externalIdentifierId");
 		externalIdentifier.setEntityId(principal.getEntityId());
 		externalIdentifier.setExternalId("000-00-0000");
 		externalIdentifier.setExternalIdentifierTypeCode("SSN");

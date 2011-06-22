@@ -22,6 +22,7 @@ import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo;
 import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo;
@@ -76,7 +77,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityExternalIdentifierImpl> externalIdentifiers = new AutoPopulatingList(KimEntityExternalIdentifierImpl.class);
+	protected List<EntityExternalIdentifierBo> externalIdentifiers = new AutoPopulatingList(EntityExternalIdentifierBo.class);
 
 	@Fetch(value = FetchMode.SELECT)
 	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
@@ -154,7 +155,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	/**
 	 * @return the externalIdentifiers
 	 */
-	public List<KimEntityExternalIdentifierImpl> getExternalIdentifiers() {
+	public List<EntityExternalIdentifierBo> getExternalIdentifiers() {
 		return this.externalIdentifiers;
 	}
 
@@ -162,7 +163,7 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @param externalIdentifiers
 	 *            the externalIdentifiers to set
 	 */
-	public void setExternalIdentifiers(List<KimEntityExternalIdentifierImpl> externalIdentifiers) {
+	public void setExternalIdentifiers(List<EntityExternalIdentifierBo> externalIdentifiers) {
 		this.externalIdentifiers = externalIdentifiers;
 	}
 
@@ -269,8 +270,8 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEntityExternalIdentifier(java.lang.String)
 	 */
-	public KimEntityExternalIdentifierImpl getEntityExternalIdentifier(String externalIdentifierTypeCode) {
-		for ( KimEntityExternalIdentifierImpl id : externalIdentifiers ) {
+	public EntityExternalIdentifierBo getEntityExternalIdentifier(String externalIdentifierTypeCode) {
+		for ( EntityExternalIdentifierBo id : externalIdentifiers ) {
 			if ( id.getExternalIdentifierTypeCode().equals(  externalIdentifierTypeCode  ) ) {
 				return id;
 			}

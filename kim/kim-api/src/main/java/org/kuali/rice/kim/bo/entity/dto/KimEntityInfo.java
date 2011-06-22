@@ -22,6 +22,8 @@ import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics;
@@ -37,7 +39,6 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
 import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
     private List<EntityEmployment> employmentInformation;
     private String entityId;
     private List<EntityTypeData> entityTypes;
-    private List<KimEntityExternalIdentifierInfo> externalIdentifiers;
+    private List<EntityExternalIdentifier> externalIdentifiers;
     private List<EntityName> names;
     private List<Principal> principals;
     private EntityPrivacyPreferences privacyPreferences;
@@ -124,12 +125,11 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
                 employmentInformation.add(EntityEmployment.Builder.create(contract).build());
             }
 
-            externalIdentifiers = deriveCollection(entity.getExternalIdentifiers(), 
-                    new XForm<KimEntityExternalIdentifier, KimEntityExternalIdentifierInfo>() {
-                public KimEntityExternalIdentifierInfo xform(KimEntityExternalIdentifier source) {
-                    return new KimEntityExternalIdentifierInfo(source); 
-                }
-            });        
+
+            externalIdentifiers = new ArrayList<EntityExternalIdentifier>();
+            for (EntityExternalIdentifierContract contract : entity.getExternalIdentifiers()) {
+                externalIdentifiers.add(EntityExternalIdentifier.Builder.create(contract).build());
+            }
 
             citizenships = new ArrayList<EntityCitizenship>();
             for (EntityCitizenshipContract contract : entity.getCitizenships()) {
@@ -285,17 +285,17 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getExternalIdentifiers()
      */
-    public List<KimEntityExternalIdentifierInfo> getExternalIdentifiers() {
+    public List<EntityExternalIdentifier> getExternalIdentifiers() {
         // If our reference is null, assign and return an empty List
         return (externalIdentifiers != null) ? externalIdentifiers
-                : (externalIdentifiers = new ArrayList<KimEntityExternalIdentifierInfo>());
+                : (externalIdentifiers = new ArrayList<EntityExternalIdentifier>());
     }
 
     /** 
      * Setter for this {@link KimEntityInfo}'s external identifiers.  Note the behavior of 
      * {@link #getExternalIdentifiers()} if this is set to null;
      */
-    public void setExternalIdentifiers(List<KimEntityExternalIdentifierInfo> externalIdentifiers) {
+    public void setExternalIdentifiers(List<EntityExternalIdentifier> externalIdentifiers) {
         this.externalIdentifiers = externalIdentifiers;
     }
 
@@ -422,13 +422,14 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      * {@inheritDoc}
      * @see KimEntity#getEntityExternalIdentifier(String)
      */
-    public KimEntityExternalIdentifier getEntityExternalIdentifier(String externalIdentifierTypeCode) {
-        KimEntityExternalIdentifier result = null;
+    public EntityExternalIdentifierContract getEntityExternalIdentifier(String externalIdentifierTypeCode) {
+        EntityExternalIdentifierContract result = null;
 
-        List<KimEntityExternalIdentifierInfo> externalIdentifiers = getExternalIdentifiers();
+        List<EntityExternalIdentifier> externalIdentifiers = getExternalIdentifiers();
         if (externalIdentifiers != null)
-            for (KimEntityExternalIdentifier eid : externalIdentifiers) {
-                if (eid.getExternalIdentifierTypeCode().equals(externalIdentifierTypeCode)) {
+            for (EntityExternalIdentifier eid : externalIdentifiers) {
+                if (eid.getExternalIdentifierType() != null
+                    && eid.getExternalIdentifierTypeCode().equals(externalIdentifierTypeCode)) {
                     result = eid;
                 }
             }

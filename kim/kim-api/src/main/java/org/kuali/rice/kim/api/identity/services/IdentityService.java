@@ -18,6 +18,7 @@ package org.kuali.rice.kim.api.identity.services;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
@@ -26,7 +27,6 @@ import org.kuali.rice.kim.api.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
-import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 import javax.jws.WebParam;
@@ -194,7 +194,7 @@ public interface IdentityService {
     /**
      * Gets the external identifier type for the given external identifier type code.
      */
-	public ExternalIdentifierTypeInfo getExternalIdentifierType( @WebParam(name="code") String code );
+	public EntityExternalIdentifierType getExternalIdentifierType( @WebParam(name="code") String code );
 	
     /**
      * Gets the phone type for the given phone type code.

@@ -78,7 +78,7 @@ class EntityEmailTest {
 			def Type getEmailType() { Type.Builder.create(new TypeContract() {
 				def String code = EntityEmailTest.TYPE_CODE
 				def String name = EntityEmailTest.TYPE_NAME
-				def boolean active = EntityEmailTest.TYPE_ACTIVE
+				def boolean active = EntityEmailTest.TYPE_ACTIVE.toBoolean()
                 def String sortCode = EntityEmailTest.TYPE_SORT_CODE
                 def Long versionNumber = EntityEmailTest.TYPE_VERSION_NUMBER
 				def String objectId = EntityEmailTest.TYPE_OBJECT_ID

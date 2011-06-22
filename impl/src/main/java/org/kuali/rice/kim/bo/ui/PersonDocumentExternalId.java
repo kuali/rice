@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -41,38 +41,38 @@ public class PersonDocumentExternalId extends KimDocumentBoBase{
 	//@Column(name = "EXT_ID")
 	protected String externalId;
 	
-	protected ExternalIdentifierType externalIdentifierType;
+	protected EntityExternalIdentifierTypeBo externalIdentifierType;
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getEntityExternalIdentifierId()
+	 * @see org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract#getEntityExternalIdentifierId()
 	 */
 	public String getEntityExternalIdentifierId() {
 		return entityExternalIdentifierId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalId()
+	 * @see org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract#getExternalId()
 	 */
 	public String getExternalId() {
 		return externalId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalIdentifierTypeCode()
+	 * @see org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract#getExternalIdentifierTypeCode()
 	 */
 	public String getExternalIdentifierTypeCode() {
 		return externalIdentifierTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#setExternalId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract#setExternalId(java.lang.String)
 	 */
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#setExternalIdentifierTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract#setExternalIdentifierTypeCode(java.lang.String)
 	 */
 	public void setExternalIdentifierTypeCode(String externalIdentifierTypeCode) {
 		this.externalIdentifierTypeCode = externalIdentifierTypeCode;
@@ -82,11 +82,11 @@ public class PersonDocumentExternalId extends KimDocumentBoBase{
 		this.entityExternalIdentifierId = entityExternalIdentifierId;
 	}
 
-	public ExternalIdentifierType getExternalIdentifierType() {
+	public EntityExternalIdentifierTypeBo getExternalIdentifierType() {
 		return this.externalIdentifierType;
 	}
 
-	public void setExternalIdentifierType(ExternalIdentifierType externalIdentifierType) {
+	public void setExternalIdentifierType(EntityExternalIdentifierTypeBo externalIdentifierType) {
 		this.externalIdentifierType = externalIdentifierType;
 	}
 

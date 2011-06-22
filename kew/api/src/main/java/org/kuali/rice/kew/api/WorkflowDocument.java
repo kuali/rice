@@ -352,14 +352,10 @@ public class WorkflowDocument implements java.io.Serializable {
  		resetStateAfterAction(result);
     }
     
-    public void blanketApprove(String annotation, String nodeName) {
-    	if (StringUtils.isEmpty(nodeName)) {
-    		throw new IllegalArgumentException("nodeName was null or blank");
+    public void blanketApprove(String annotation, String ... nodeNames) {
+    	if (nodeNames == null) {
+    		throw new IllegalArgumentException("nodeNames was null");
     	}
-    	blanketApprove(annotation, (nodeName == null ? new String[] {} : new String[] { nodeName }));
-    }
-
-    public void blanketApprove(String annotation, String[] nodeNames) {
     	Set<String> nodeNamesSet = new HashSet<String>(Arrays.asList(nodeNames));
     	DocumentActionResult result = getWorkflowDocumentActionsService().blanketApproveToNodes(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), nodeNamesSet);
  		resetStateAfterAction(result);
@@ -768,59 +764,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	// TODO reload valid actions
     }
 
-//    /**
-//     * Checks if the document has been created or not (i.e. has a document id or not) and issues
-//     * a call to the server to create the document if it has not yet been created.
-//     *
-//     * Also checks if the document content has been updated and saves it if it has.
-//     */
-//    private void createDocumentIfNeccessary() throws WorkflowException {
-//    	if (getRouteHeader().getDocumentId() == null) {
-//    		routeHeader = getWorkflowDocumentActions().createDocument(principalId, getRouteHeader());
-//    	}
-//    	if (documentContent != null && documentContent.isModified()) {
-//    		saveDocumentContent(documentContent);
-//    	}
-//    }
-//
-//    /**
-//     * Like handleException except it returns a RuntimeException.
-//     */
-//    private RuntimeException handleExceptionAsRuntime(Exception e) {
-//    	if (e instanceof RuntimeException) {
-//    		return (RuntimeException)e;
-//    	}
-//    	return new WorkflowRuntimeException(e);
-//    }
-//
-//    // WORKFLOW 2.1: new methods
-//
-//    /**
-//     * Performs the 'blanketApprove' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @param nodeName the extent to which to blanket approve; blanket approval will stop at this node
-//     * @throws WorkflowException in case an error occurs blanket-approving the document
-//     * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdDTO, RouteHeaderDTO, String, String[])
-//     */
-//    public void blanketApprove(String annotation, String nodeName) throws WorkflowException {
-//        blanketApprove(annotation, (nodeName == null ? new String[] {} : new String[] { nodeName }));
-//    }
-//
-//    /**
-//     * Performs the 'blanketApprove' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @param nodeNames the nodes at which blanket approval will stop (in case the blanket approval traverses a split, in which case there may be multiple "active" nodes)
-//     * @throws WorkflowException in case an error occurs blanket-approving the document
-//     * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdDTO, RouteHeaderDTO, String, String[])
-//     */
-//    public void blanketApprove(String annotation, String[] nodeNames) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().blanketApprovalToNodes(principalId, getRouteHeader(), annotation, nodeNames);
-//    	documentContentDirty = true;
-//    }
-//
+    //
 //    /**
 //     * The user taking action removes the action items for this workgroup and document from all other
 //     * group members' action lists.   If this is a new document, the document is created first.

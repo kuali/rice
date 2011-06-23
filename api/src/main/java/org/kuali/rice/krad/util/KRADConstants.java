@@ -459,16 +459,6 @@ public final class KRADConstants {
     public static final String CSV_FORMAT = "csv";
 
     public static final String XML_MIME_TYPE = "application/xml";
-
-    public static final String AND_LOGICAL_OPERATOR = "&&";
-    public static final String OR_LOGICAL_OPERATOR = "|";
-    public static final String NOT_LOGICAL_OPERATOR = "!";
-    public static final String BETWEEN_OPERATOR = "..";
-    public static final String NULL_OPERATOR = "NULL";
-//    // add AND operator to thest if it is uncommented below
-//    public static final String[] LOGICAL_OPERATORS = {OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR};
-    public static final String[] QUERY_CHARACTERS = {"*", "?", "%", ">", "<", BETWEEN_OPERATOR, OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR, "="};
-    public static final String[] RANGE_CHARACTERS = {">=","<=",">","<",BETWEEN_OPERATOR};
     public static final String AUDIT_ERRORS = "AuditErrors";
 
     // Header Tab navigation constant values

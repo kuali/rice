@@ -12,18 +12,11 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
@@ -31,6 +24,13 @@ import org.kuali.rice.krad.service.RiceApplicationConfigurationMediationService;
 import org.kuali.rice.krad.service.RiceApplicationConfigurationService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 //@Transactional
 public class RiceApplicationConfigurationMediationServiceImpl implements RiceApplicationConfigurationMediationService {
@@ -50,7 +50,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     	
     	String parameterValue = null;
     	if ( namespaceCode != null ) {
-    	    String parameterKey = (new StringBuffer(namespaceCode).append("|").append(parameterName)).toString();
+    	    String parameterKey = (new StringBuffer(namespaceCode).append(SearchOperator.OR.op()).append(parameterName)).toString();
     	    parameterValue = getParameterValueFromConfigurationParameterCache( parameterKey );
     	    if ( parameterValue != null ) {
                 return parameterValue;

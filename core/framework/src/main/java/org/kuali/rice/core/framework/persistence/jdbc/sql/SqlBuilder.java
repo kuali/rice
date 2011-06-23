@@ -15,22 +15,22 @@
  */
 package org.kuali.rice.core.framework.persistence.jdbc.sql;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.search.SearchOperator;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.core.web.format.BooleanFormatter;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.datetime.DateTimeService;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.framework.logic.LogicalOperator;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.core.util.type.TypeUtils;
-import org.kuali.rice.core.web.format.BooleanFormatter;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.
@@ -86,23 +86,23 @@ public class SqlBuilder {
 			return;
 		}
 
-		if (StringUtils.contains(propertyValue, LogicalOperator.OR.op())) {
+		if (StringUtils.contains(propertyValue, SearchOperator.OR.op())) {
 			addOrCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, allowWildcards);
 			return;
 		}
 
-		if ( StringUtils.contains(propertyValue, LogicalOperator.AND.op())) {
+		if ( StringUtils.contains(propertyValue, SearchOperator.AND.op())) {
 			addAndCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, allowWildcards);
 			return;
 		}
 
 		if (TypeUtils.isStringClass(propertyType)) {
 			if (StringUtils.contains(propertyValue,
-					LogicalOperator.NOT.op())) {
+					SearchOperator.NOT.op())) {
 				addNotCriteria(propertyName, propertyValue, propertyType,
 						caseInsensitive, criteria, allowWildcards);
             } else if (propertyValue != null && (
-            				StringUtils.contains(propertyValue, LogicalOperator.BETWEEN.op())
+            				StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())
             				|| propertyValue.startsWith(">")
             				|| propertyValue.startsWith("<") ) ) {
 				addStringRangeCriteria(propertyName, propertyValue, criteria, propertyType, caseInsensitive, allowWildcards);
@@ -133,20 +133,20 @@ public class SqlBuilder {
 	}
 
 	private void addOrCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria, boolean allowWildcards) {
-		addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, LogicalOperator.OR.op(), allowWildcards);
+		addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, SearchOperator.OR.op(), allowWildcards);
 	}
 
 	private void addAndCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria, boolean allowWildcards) {
-		addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, LogicalOperator.AND.op(), allowWildcards);
+		addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, SearchOperator.AND.op(), allowWildcards);
 	}
 
 	private void addNotCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria, boolean allowWildcards) {
-		String[] splitPropVal = StringUtils.split(propertyValue, LogicalOperator.NOT.op());
+		String[] splitPropVal = StringUtils.split(propertyValue, SearchOperator.NOT.op());
 
 		int strLength = splitPropVal.length;
 		// if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
 		if (strLength > 1) {
-			String expandedNot = "!" + StringUtils.join(splitPropVal, LogicalOperator.AND.op() + LogicalOperator.NOT.op());
+			String expandedNot = SearchOperator.NOT + StringUtils.join(splitPropVal, SearchOperator.AND.op() + SearchOperator.NOT.op());
 			// we know that since this method is called, treatWildcardsAndOperatorsAsLiteral is false
 			addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, allowWildcards, criteria);
 		} else {
@@ -163,10 +163,10 @@ public class SqlBuilder {
 			Criteria predicate = new Criteria("N/A", criteria.getAlias());
 			// we know that since this method is called, treatWildcardsAndOperatorsAsLiteral is false
 			addCriteria(propertyName, element, propertyType, caseInsensitive, allowWildcards, predicate);
-			if (splitValue == LogicalOperator.OR.op()) {
+			if (splitValue == SearchOperator.OR.op()) {
 				subCriteria.or(predicate);
 			}
-			if (splitValue == LogicalOperator.AND.op()) {
+			if (splitValue == SearchOperator.AND.op()) {
 				subCriteria.and(predicate);
 			}
 		}
@@ -195,7 +195,7 @@ public class SqlBuilder {
 
 	public static boolean containsRangeCharacters(String string){
 		boolean bRet = false;
-		for (LogicalOperator op : LogicalOperator.RANGE_CHARACTERS) {
+		for (SearchOperator op : SearchOperator.RANGE_CHARACTERS) {
             if(StringUtils.contains(string, op.op())){
             	bRet = true;
             }
@@ -205,22 +205,22 @@ public class SqlBuilder {
 
 	private void addDateRangeCriteria(String propertyName, String propertyValue, Criteria criteria, Class propertyType) {
 
-		if (StringUtils.contains(propertyValue, LogicalOperator.BETWEEN.op())) {
+		if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
 			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
 			criteria.between(propertyName, parseDate(SQLUtils.cleanDate(rangeValues[0])), parseDate(cleanUpperBound(SQLUtils.cleanDate(rangeValues[1]))), propertyType);
-		} else if (propertyValue.startsWith(">=")) {
+		} else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
 			criteria.gte(propertyName, parseDate(SQLUtils.cleanDate(propertyValue)), propertyType);
-		} else if (propertyValue.startsWith("<=")) {
+		} else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
 			criteria.lte(propertyName, parseDate(cleanUpperBound(SQLUtils.cleanDate(propertyValue))),propertyType);
-		} else if (propertyValue.startsWith(">")) {
+		} else if (propertyValue.startsWith(SearchOperator.GREATER_THAN.op())) {
 			// we clean the upper bound here because if you say >12/22/09, it translates greater than
 			// the date... as in whole date. ie. the next day on.
 			criteria.gt(propertyName, parseDate(cleanUpperBound(SQLUtils.cleanDate(propertyValue))), propertyType);
-		} else if (propertyValue.startsWith("<")) {
+		} else if (propertyValue.startsWith(SearchOperator.LESS_THAN.op())) {
 			criteria.lt(propertyName, parseDate(SQLUtils.cleanDate(propertyValue)), propertyType);
 		} else {
 			String sDate = convertSimpleDateToDateRange(SQLUtils.cleanDate(propertyValue));
-			if(sDate.contains(LogicalOperator.BETWEEN.op())){
+			if(sDate.contains(SearchOperator.BETWEEN.op())){
 				addDateRangeCriteria(propertyName, sDate, criteria, propertyType);
 			}else{
 				criteria.eq(propertyName, parseDate(sDate), propertyType);
@@ -268,16 +268,16 @@ public class SqlBuilder {
 
 	private void addNumericRangeCriteria(String propertyName, String propertyValue, Criteria criteria, Class propertyType) {
 
-		if (StringUtils.contains(propertyValue, LogicalOperator.BETWEEN.op())) {
+		if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
 			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
 			criteria.between(propertyName, stringToBigDecimal(rangeValues[0]), stringToBigDecimal(rangeValues[1]), propertyType);
-		} else if (propertyValue.startsWith(">=")) {
+		} else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
 			criteria.gte(propertyName, stringToBigDecimal(propertyValue), propertyType);
-		} else if (propertyValue.startsWith("<=")) {
+		} else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
 			criteria.lte(propertyName, stringToBigDecimal(propertyValue), propertyType);
-		} else if (propertyValue.startsWith(">")) {
+		} else if (propertyValue.startsWith(SearchOperator.GREATER_THAN.op())) {
 			criteria.gt(propertyName, stringToBigDecimal(propertyValue), propertyType);
-		} else if (propertyValue.startsWith("<")) {
+		} else if (propertyValue.startsWith(SearchOperator.LESS_THAN.op())) {
 			criteria.lt(propertyName, stringToBigDecimal(propertyValue), propertyType);
 		} else {
 			criteria.eq(propertyName, stringToBigDecimal(propertyValue), propertyType);
@@ -286,7 +286,7 @@ public class SqlBuilder {
 
 	private void addStringRangeCriteria(String propertyName, String propertyValue, Criteria criteria, Class propertyType, boolean caseInsensitive, boolean allowWildcards) {
 
-		if (StringUtils.contains(propertyValue, LogicalOperator.BETWEEN.op())) {
+		if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
 			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
 			propertyName = this.getCaseAndLiteralPropertyName(propertyName, caseInsensitive);
 			String val1 = this.getCaseAndLiteralPropertyValue(rangeValues[0], caseInsensitive, allowWildcards);
@@ -296,13 +296,13 @@ public class SqlBuilder {
 			propertyName = this.getCaseAndLiteralPropertyName(propertyName, caseInsensitive);
 			String value = this.getCaseAndLiteralPropertyValue(SQLUtils.cleanString(propertyValue), caseInsensitive, allowWildcards);
 
-			if (propertyValue.startsWith(">=")) {
+			if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
 				criteria.gte(propertyName, value, propertyType);
-			} else if (propertyValue.startsWith("<=")) {
+			} else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
 				criteria.lte(propertyName, value, propertyType);
-			} else if (propertyValue.startsWith(">")) {
+			} else if (propertyValue.startsWith(SearchOperator.GREATER_THAN.op())) {
 				criteria.gt(propertyName, value, propertyType);
-			} else if (propertyValue.startsWith("<")) {
+			} else if (propertyValue.startsWith(SearchOperator.LESS_THAN.op())) {
 				criteria.lt(propertyName, value, propertyType);
 			}
 		}

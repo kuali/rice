@@ -15,13 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.framework.logic.LogicalOperator;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.DateFormatter;
@@ -37,6 +34,9 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * This class defines a constraint processor to ensure that attribute values are constrained to valid characters, as defined by some regular expression. Of the 
@@ -134,7 +134,8 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 						// Use the Boolean value being null to ensure we only do this once
 						if (doValidateDateRangeOrder == null) {
 							// We only want to validate a date range if we're dealing with something that has a date formatter on it and that looks like an actual range (is made up of 2 values with a between operator between them)
-    						doValidateDateRangeOrder = Boolean.valueOf(DateFormatter.class.isAssignableFrom(formatterClass) && StringUtils.contains(ValidationUtils.getString(value), LogicalOperator.BETWEEN.toString())); 
+    						doValidateDateRangeOrder = Boolean.valueOf(DateFormatter.class.isAssignableFrom(formatterClass) && StringUtils.contains(ValidationUtils.getString(value), SearchOperator
+                                    .BETWEEN.toString()));
 						}
 						
 						constraintValidationResult = processFormatterValidation(result, formatterClass, entryName, attributeName, parsedAttributeValue, DATE_RANGE_ERROR_PREFIXES[i]);

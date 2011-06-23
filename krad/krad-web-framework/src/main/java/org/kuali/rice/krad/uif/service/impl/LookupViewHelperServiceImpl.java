@@ -15,24 +15,12 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
-import java.security.GeneralSecurityException;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.DateFormatter;
@@ -72,6 +60,19 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.spring.controller.MaintenanceDocumentController;
 import org.springframework.web.util.HtmlUtils;
+
+import java.security.GeneralSecurityException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -225,8 +226,8 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 
 		// make sure a wildcard/operator is in the value
 		boolean found = false;
-		for (int i = 0; i < KRADConstants.QUERY_CHARACTERS.length; i++) {
-			String queryCharacter = KRADConstants.QUERY_CHARACTERS[i];
+		for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
+			String queryCharacter = op.op();
 
 			if (attributeValue.contains(queryCharacter)) {
 				found = true;
@@ -332,11 +333,11 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 				String newPropValue = to_DateValue;// maybe clean above with
 				// ObjectUtils.clean(propertyValue)
 				if (StringUtils.isNotEmpty(from_DateValue) && StringUtils.isNotEmpty(to_DateValue)) {
-					newPropValue = from_DateValue + KRADConstants.BETWEEN_OPERATOR + to_DateValue;
+					newPropValue = from_DateValue + SearchOperator.BETWEEN + to_DateValue;
 				} else if (StringUtils.isNotEmpty(from_DateValue) && StringUtils.isEmpty(to_DateValue)) {
-					newPropValue = ">=" + from_DateValue;
+					newPropValue = SearchOperator.GREATER_THAN_EQUAL.op() + from_DateValue;
 				} else if (StringUtils.isNotEmpty(to_DateValue) && StringUtils.isEmpty(from_DateValue)) {
-					newPropValue = "<=" + to_DateValue;
+					newPropValue = SearchOperator.LESS_THAN_EQUAL.op() + to_DateValue;
 				} // could optionally continue on else here
 
 				fieldsToUpdate.put(dateFieldName, newPropValue);
@@ -473,7 +474,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 					// SQL "IN" clause
 					for (Object ebo : eboResults) {
 						if (boPropertyValue.length() != 0) {
-							boPropertyValue.append("|");
+							boPropertyValue.append(SearchOperator.OR.op());
 						}
 						try {
 							boPropertyValue.append(PropertyUtils.getProperty(ebo, eboProperty).toString());

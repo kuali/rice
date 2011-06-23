@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
@@ -990,8 +991,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
         // make sure a wildcard/operator is in the value
         boolean found = false;
-        for (int i = 0; i < KRADConstants.QUERY_CHARACTERS.length; i++) {
-            String queryCharacter = KRADConstants.QUERY_CHARACTERS[i];
+        for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
+            String queryCharacter = op.op();
 
             if (attributeValue.contains(queryCharacter)) {
                 found = true;
@@ -1238,11 +1239,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 String dateValue = (String) lookupFormFields.get(dateFieldName);
                 String newPropValue = dateValue;//maybe clean above with ObjectUtils.clean(propertyValue)
                 if (StringUtils.isNotEmpty(fromDateValue) && StringUtils.isNotEmpty(dateValue)) {
-                    newPropValue = fromDateValue + KRADConstants.BETWEEN_OPERATOR + dateValue;
+                    newPropValue = fromDateValue + SearchOperator.BETWEEN + dateValue;
                 } else if (StringUtils.isNotEmpty(fromDateValue) && StringUtils.isEmpty(dateValue)) {
-                    newPropValue = ">=" + fromDateValue;
+                    newPropValue = SearchOperator.GREATER_THAN_EQUAL + fromDateValue;
                 } else if (StringUtils.isNotEmpty(dateValue) && StringUtils.isEmpty(fromDateValue)) {
-                    newPropValue = "<=" + dateValue;
+                    newPropValue = SearchOperator.LESS_THAN_EQUAL + dateValue;
                 } //could optionally continue on else here
 
                 fieldsToUpdate.put(dateFieldName, newPropValue);

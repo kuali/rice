@@ -22,6 +22,7 @@ import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.core.util.RiceKeyConstants;
@@ -122,8 +123,12 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             if (StringUtils.isBlank(pkValue)) {
                 throw new RuntimeException("Missing pk value for field " + pkFieldName + " when a search based on PK values only is performed.");
             }
-            else if (StringUtils.indexOfAny(pkValue, KRADConstants.QUERY_CHARACTERS) != -1) {
-                throw new RuntimeException("Value \"" + pkValue + "\" for PK field " + pkFieldName + " contains wildcard/operator characters.");
+            else {
+                for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
+                    if (pkValue.contains(op.op())) {
+                        throw new RuntimeException("Value \"" + pkValue + "\" for PK field " + pkFieldName + " contains wildcard/operator characters.");
+                    }
+                }
             }
             boolean treatWildcardsAndOperatorsAsLiteral = KRADServiceLocatorWeb.
             		getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, pkFieldName);
@@ -294,18 +299,18 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * Adds to the criteria object based on the property type and any query characters given.
      */
     private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Criteria criteria) {
-        if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, KRADConstants.OR_LOGICAL_OPERATOR)) {
+        if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, SearchOperator.OR.op())) {
             addOrCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             return;
         }
 
-        if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, KRADConstants.AND_LOGICAL_OPERATOR)) {
+        if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, SearchOperator.AND.op())) {
             addAndCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             return;
         }
 
-        if (StringUtils.containsIgnoreCase(propertyValue, KRADConstants.NULL_OPERATOR)) {
-        	if (StringUtils.contains(propertyValue, KRADConstants.NOT_LOGICAL_OPERATOR)) {
+        if (StringUtils.containsIgnoreCase(propertyValue, SearchOperator.NULL.op())) {
+        	if (StringUtils.contains(propertyValue, SearchOperator.NOT.op())) {
         		criteria.addColumnNotNull(propertyName);
         	}
         	else {
@@ -318,11 +323,11 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         		propertyName = getDbPlatform().getUpperCaseFunction() + "(" + propertyName + ")";
         		propertyValue = propertyValue.toUpperCase();
         	}
-            if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, KRADConstants.NOT_LOGICAL_OPERATOR)) {
+            if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, SearchOperator.NOT.op())) {
                 addNotCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
             } else if (
             		!treatWildcardsAndOperatorsAsLiteral && propertyValue != null && (
-            				StringUtils.contains(propertyValue, KRADConstants.BETWEEN_OPERATOR)
+            				StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())
             				|| propertyValue.startsWith(">")
             				|| propertyValue.startsWith("<") ) ) {
                 addStringRangeCriteria(propertyName, propertyValue, criteria);
@@ -438,7 +443,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * @param criteria
      */
     private void addOrCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
-        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, KRADConstants.OR_LOGICAL_OPERATOR);
+        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, SearchOperator.OR.op());
     }
        
     /**
@@ -448,17 +453,17 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * @param criteria
      */
     private void addAndCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
-        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, KRADConstants.AND_LOGICAL_OPERATOR);
+        addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, SearchOperator.AND.op());
     }
 
     private void addNotCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
 
-        String[] splitPropVal = StringUtils.split(propertyValue, KRADConstants.NOT_LOGICAL_OPERATOR);
+        String[] splitPropVal = StringUtils.split(propertyValue, SearchOperator.NOT.op());
 
         int strLength = splitPropVal.length;
         // if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
         if (strLength > 1) {
-            String expandedNot = "!" + StringUtils.join(splitPropVal, KRADConstants.AND_LOGICAL_OPERATOR + KRADConstants.NOT_LOGICAL_OPERATOR);
+            String expandedNot = SearchOperator.NOT + StringUtils.join(splitPropVal, SearchOperator.AND.op() + SearchOperator.NOT.op());
             // we know that since this method was called, treatWildcardsAndOperatorsAsLiteral must be false
             addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, false, criteria);
         }
@@ -480,10 +485,10 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         	Criteria predicate = new Criteria();
 
             addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, false, predicate);
-            if (splitValue == KRADConstants.OR_LOGICAL_OPERATOR) {
+            if (splitValue == SearchOperator.OR.op()) {
             	subCriteria.addOrCriteria(predicate);
             }
-            if (splitValue == KRADConstants.AND_LOGICAL_OPERATOR) {
+            if (splitValue == SearchOperator.AND.op()) {
             	subCriteria.addAndCriteria(predicate);
             }
         }
@@ -505,24 +510,24 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
 	 */
     private void addDateRangeCriteria(String propertyName, String propertyValue, boolean treatWildcardsAndOperatorsAsLiteral, Criteria criteria) {
 
-        if (StringUtils.contains(propertyValue, KRADConstants.BETWEEN_OPERATOR)) {
+        if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
         	if (treatWildcardsAndOperatorsAsLiteral)
         		throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
-            String[] rangeValues = StringUtils.split(propertyValue, KRADConstants.BETWEEN_OPERATOR);
+            String[] rangeValues = StringUtils.split(propertyValue, SearchOperator.BETWEEN.op());
             criteria.addBetween(propertyName, parseDate( ObjectUtils.clean(rangeValues[0] ) ), parseDate( ObjectUtils.clean(rangeValues[1] ) ) );
-        } else if (propertyValue.startsWith(">=")) {
+        } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
         	if (treatWildcardsAndOperatorsAsLiteral)
         		throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
             criteria.addGreaterOrEqualThan(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
-        } else if (propertyValue.startsWith("<=")) {
+        } else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
         	if (treatWildcardsAndOperatorsAsLiteral)
         		throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
             criteria.addLessOrEqualThan(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
-        } else if (propertyValue.startsWith(">")) {
+        } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN.op())) {
         	if (treatWildcardsAndOperatorsAsLiteral)
         		throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
             criteria.addGreaterThan(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
-        } else if (propertyValue.startsWith("<")) {
+        } else if (propertyValue.startsWith(SearchOperator.LESS_THAN.op())) {
         	if (treatWildcardsAndOperatorsAsLiteral)
         		throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
             criteria.addLessThan(propertyName, parseDate( ObjectUtils.clean(propertyValue) ) );
@@ -559,24 +564,24 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      */
     private void addNumericRangeCriteria(String propertyName, String propertyValue, boolean treatWildcardsAndOperatorsAsLiteral, Criteria criteria) {
 
-        if (StringUtils.contains(propertyValue, KRADConstants.BETWEEN_OPERATOR)) {
+        if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
         	if (treatWildcardsAndOperatorsAsLiteral)
         		throw new RuntimeException("Cannot use wildcards and operators on numeric field " + propertyName);
-            String[] rangeValues = StringUtils.split(propertyValue, KRADConstants.BETWEEN_OPERATOR);
+            String[] rangeValues = StringUtils.split(propertyValue, SearchOperator.BETWEEN.op());
             criteria.addBetween(propertyName, cleanNumeric( rangeValues[0] ), cleanNumeric( rangeValues[1] ));
-        } else if (propertyValue.startsWith(">=")) {
+        } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
         	if (treatWildcardsAndOperatorsAsLiteral)
         		throw new RuntimeException("Cannot use wildcards and operators on numeric field " + propertyName);
             criteria.addGreaterOrEqualThan(propertyName, cleanNumeric(propertyValue));
-        } else if (propertyValue.startsWith("<=")) {
+        } else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
         	if (treatWildcardsAndOperatorsAsLiteral)
         		throw new RuntimeException("Cannot use wildcards and operators on numeric field " + propertyName);
             criteria.addLessOrEqualThan(propertyName, cleanNumeric(propertyValue));
-        } else if (propertyValue.startsWith(">")) {
+        } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN.op())) {
         	if (treatWildcardsAndOperatorsAsLiteral)
         		throw new RuntimeException("Cannot use wildcards and operators on numeric field " + propertyName);
             criteria.addGreaterThan(propertyName, cleanNumeric( propertyValue ) );
-        } else if (propertyValue.startsWith("<")) {
+        } else if (propertyValue.startsWith(SearchOperator.LESS_THAN.op())) {
         	if (treatWildcardsAndOperatorsAsLiteral)
         		throw new RuntimeException("Cannot use wildcards and operators on numeric field " + propertyName);
             criteria.addLessThan(propertyName, cleanNumeric(propertyValue));
@@ -590,16 +595,16 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      */
     private void addStringRangeCriteria(String propertyName, String propertyValue, Criteria criteria) {
 
-        if (StringUtils.contains(propertyValue, KRADConstants.BETWEEN_OPERATOR)) {
-            String[] rangeValues = StringUtils.split(propertyValue, KRADConstants.BETWEEN_OPERATOR);
+        if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
+            String[] rangeValues = StringUtils.split(propertyValue, SearchOperator.BETWEEN.op());
             criteria.addBetween(propertyName, rangeValues[0], rangeValues[1]);
-        } else if (propertyValue.startsWith(">=")) {
+        } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
             criteria.addGreaterOrEqualThan(propertyName, ObjectUtils.clean(propertyValue));
-        } else if (propertyValue.startsWith("<=")) {
+        } else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
             criteria.addLessOrEqualThan(propertyName, ObjectUtils.clean(propertyValue));
-        } else if (propertyValue.startsWith(">")) {
+        } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN.op())) {
             criteria.addGreaterThan(propertyName, ObjectUtils.clean(propertyValue));
-        } else if (propertyValue.startsWith("<")) {
+        } else if (propertyValue.startsWith(SearchOperator.LESS_THAN.op())) {
             criteria.addLessThan(propertyName, ObjectUtils.clean(propertyValue));
         } else {
         	criteria.addEqualTo(propertyName, ObjectUtils.clean(propertyValue));

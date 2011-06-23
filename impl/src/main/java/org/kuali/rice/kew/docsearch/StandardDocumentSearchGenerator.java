@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.Criteria;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
@@ -40,8 +40,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.krad.UserSession;
@@ -290,13 +290,13 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         String sRet = propertyValue;
 
-        if (StringUtils.contains(propertyValue, KRADConstants.BETWEEN_OPERATOR)) {
+        if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
             String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
-            sRet = ObjectUtils.clean(rangeValues[0].trim())+ " .. " + cleanUpperBound(ObjectUtils.clean(rangeValues[1].trim()));
-        }  else if (propertyValue.startsWith("<=")) {
-            sRet = "<=" + cleanUpperBound(ObjectUtils.clean(propertyValue));
-        }  else if (propertyValue.startsWith("<")) {
-            sRet = "<" + cleanUpperBound(ObjectUtils.clean(propertyValue));
+            sRet = ObjectUtils.clean(rangeValues[0].trim()) + " " + SearchOperator.BETWEEN.op() + " " + cleanUpperBound(ObjectUtils.clean(rangeValues[1].trim()));
+        }  else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
+            sRet = SearchOperator.LESS_THAN_EQUAL + cleanUpperBound(ObjectUtils.clean(propertyValue));
+        }  else if (propertyValue.startsWith(SearchOperator.LESS_THAN.op())) {
+            sRet = SearchOperator.LESS_THAN + cleanUpperBound(ObjectUtils.clean(propertyValue));
         }
 
         return sRet;
@@ -485,23 +485,23 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 lowerBound.setRangeSearch(false);
                 upperBound.setRangeSearch(false);
                 if (lowerBound.isSearchInclusive()) {
-                    lowerBound.setValue(">=" + lowerBound.getValue());
+                    lowerBound.setValue(SearchOperator.GREATER_THAN_EQUAL.op() + lowerBound.getValue());
                 } else {
-                    lowerBound.setValue(">" + lowerBound.getValue());
+                    lowerBound.setValue(SearchOperator.GREATER_THAN.op() + lowerBound.getValue());
                 }
                 if (upperBound.isSearchInclusive()) {
-                    upperBound.setValue("<=" + upperBound.getValue());
+                    upperBound.setValue(SearchOperator.LESS_THAN_EQUAL.op() + upperBound.getValue());
                 } else {
-                    upperBound.setValue("<" + upperBound.getValue());
+                    upperBound.setValue(SearchOperator.LESS_THAN.op() + upperBound.getValue());
                 }
 
             } else if (lowerBound != null) {
                 newComp = new SearchAttributeCriteriaComponent(lowerBound
                         .getFormKey(), null, false);
                 if (lowerBound.isSearchInclusive()) {
-                    newComp.setValue(">=" + lowerBound.getValue());
+                    newComp.setValue(SearchOperator.GREATER_THAN_EQUAL.op() + lowerBound.getValue());
                 } else {
-                    newComp.setValue(">" + lowerBound.getValue());
+                    newComp.setValue(SearchOperator.GREATER_THAN.op() + lowerBound.getValue());
                 }
                 newComp.setSearchInclusive(lowerBound.isSearchInclusive());
                 newComp.setCaseSensitive(lowerBound.isCaseSensitive());
@@ -519,9 +519,9 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 newComp = new SearchAttributeCriteriaComponent(upperBound
                         .getFormKey(), null, false);
                 if (upperBound.isSearchInclusive()) {
-                    newComp.setValue("<=" + upperBound.getValue());
+                    newComp.setValue(SearchOperator.LESS_THAN_EQUAL.op() + upperBound.getValue());
                 } else {
-                    newComp.setValue("<" + upperBound.getValue());
+                    newComp.setValue(SearchOperator.LESS_THAN.op() + upperBound.getValue());
                 }
                 newComp.setSearchInclusive(upperBound.isSearchInclusive());
                 newComp.setCaseSensitive(upperBound.isCaseSensitive());
@@ -768,22 +768,22 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             } else {
                 String sqlOperand = getSqlOperand(criteriaComponent.isRangeSearch(), criteriaComponent.isSearchInclusive(), (criteriaComponent.isRangeSearch() && criteriaComponent.isComponentLowerBoundValue()), usingWildcards);
               if(criteriaComponent.isAllowInlineRange()) {
-                for (String range : KRADConstants.RANGE_CHARACTERS) {
-                        int index = StringUtils.indexOf(attributeValueSearched, range);
+                for (SearchOperator range : SearchOperator.RANGE_CHARACTERS) {
+                        int index = StringUtils.indexOf(attributeValueSearched, range.op());
                     if(index != -1) {
-                            sqlOperand=range;
-                            if(!StringUtils.equals(sqlOperand, "..")) {
-                                attributeValueSearched = StringUtils.remove(attributeValueSearched, range);
+                            sqlOperand=range.op();
+                            if(!StringUtils.equals(sqlOperand, SearchOperator.BETWEEN.op())) {
+                                attributeValueSearched = StringUtils.remove(attributeValueSearched, range.op());
 
                             } else {
-                                String[] rangeValues = StringUtils.split(attributeValueSearched, "..");
+                                String[] rangeValues = StringUtils.split(attributeValueSearched, SearchOperator.BETWEEN.op());
                                 if(rangeValues!=null && rangeValues.length>1) {
                                     checkNumberFormattingIfNumeric(rangeValues[0], valueIsLong, valueIsFloat);
 
                                     //append first one here and then set the second one and break
-                                    whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, ">=", getDbPlatform().escapeString(rangeValues[0]), prefixToUse, suffixToUse));
+                                    whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, SearchOperator.GREATER_THAN_EQUAL.op(), getDbPlatform().escapeString(rangeValues[0]), prefixToUse, suffixToUse));
                                     attributeValueSearched = rangeValues[1];
-                                    sqlOperand = "<=";
+                                    sqlOperand = SearchOperator.LESS_THAN_EQUAL.op();
                                 } else {
                                     throw new RuntimeException("What to do here...Range search \"..\" without one element");
                                 }
@@ -859,27 +859,27 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
 
         if(isAllowInlineRange) {
-            for (String range : KRADConstants.RANGE_CHARACTERS) {
-                int index = StringUtils.indexOf(dateValueToSearch, range);
+            for (SearchOperator range : SearchOperator.RANGE_CHARACTERS) {
+                int index = StringUtils.indexOf(dateValueToSearch, range.op());
                 if(index != -1) {
-                    sqlOperand=new StringBuffer(range);
-                    if(!StringUtils.equals(sqlOperand.toString(), "..")) {
-                        dateValueToSearch = StringUtils.remove(dateValueToSearch,range);
-                        if(StringUtils.equals(range, ">")) {
+                    sqlOperand=new StringBuffer(range.op());
+                    if(!StringUtils.equals(sqlOperand.toString(), SearchOperator.BETWEEN.op())) {
+                        dateValueToSearch = StringUtils.remove(dateValueToSearch,range.op());
+                        if(range == SearchOperator.GREATER_THAN) {
                             timeValueToSearch = upperTimeBound;
-                        } else if(StringUtils.equals(range, "<")){
+                        } else if(range == SearchOperator.LESS_THAN){
                             timeValueToSearch = lowerTimeBound;
                         }
                     }  else {
-                        String[] rangeValues = StringUtils.split(dateValueToSearch, "..");
+                        String[] rangeValues = StringUtils.split(dateValueToSearch, SearchOperator.BETWEEN.op());
                         if(rangeValues!=null && rangeValues.length>1) {
                             //Enhancement Idea - Could possibly use recursion here (would have to set the lower bound and inclusive variables
                             //append first one here and then set the second one and break
                             timeValueToSearch = lowerTimeBound;
-							whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, ">=", getDbPlatform().getDateSQL(getDbPlatform().escapeString(SQLUtils.getSqlFormattedDate(rangeValues[0].trim())), timeValueToSearch.trim()), "", ""));
+							whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, SearchOperator.GREATER_THAN_EQUAL.op(), getDbPlatform().getDateSQL(getDbPlatform().escapeString(SQLUtils.getSqlFormattedDate(rangeValues[0].trim())), timeValueToSearch.trim()), "", ""));
 
                             dateValueToSearch = rangeValues[1];
-                            sqlOperand = new StringBuffer("<=");
+                            sqlOperand = new StringBuffer(SearchOperator.LESS_THAN_EQUAL.op());
                             timeValueToSearch = upperTimeBound;
                         } else {
                             throw new RuntimeException("What to do here...Range search \"..\" without one element");

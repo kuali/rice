@@ -15,19 +15,10 @@
  */
 package org.kuali.rice.krad.lookup;
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
@@ -39,6 +30,16 @@ import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Transactional
 public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {
@@ -331,7 +332,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
 	        		// SQL "IN" clause
 	        		for ( Object ebo : eboResults ) {
 	        			if ( boPropertyValue.length() != 0 ) {
-	        				boPropertyValue.append( "|" );
+	        				boPropertyValue.append( SearchOperator.OR.op() );
 	        			}
 	        			try {
 	        				boPropertyValue.append( PropertyUtils.getProperty( ebo, eboProperty ).toString() );

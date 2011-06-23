@@ -15,6 +15,16 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.search.SearchOperator;
+import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,15 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * LookupResults support strategy which uses the primary keys and lookupable defined in a business object's data dictionary file to support the multivalue lookup 
@@ -158,7 +159,7 @@ public class DataDictionaryLookupResultsSupportStrategy implements
 					
 					lookupId.append(formattedValue);
 				}
-				lookupId.append("|");
+				lookupId.append(SearchOperator.OR.op());
 			} catch (IllegalAccessException iae) {
 				throw new RuntimeException("Could not retrieve pk field value "+pkFieldName+" from business object "+businessObject.getClass().getName(), iae);
 			} catch (InvocationTargetException ite) {

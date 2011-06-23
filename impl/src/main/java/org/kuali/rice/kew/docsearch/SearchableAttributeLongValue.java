@@ -19,14 +19,25 @@ package org.kuali.rice.kew.docsearch;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.util.KRADConstants;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -163,7 +174,7 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
     	boolean bRet = true;
     	boolean bSplit = false;
 
-		if (StringUtils.contains(valueEntered, KRADConstants.BETWEEN_OPERATOR)) {
+		if (StringUtils.contains(valueEntered, SearchOperator.BETWEEN.op())) {
 			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
 			for(String value : l){
 				bSplit = true;
@@ -172,9 +183,9 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
 				}
 			}
 		}
-		if (StringUtils.contains(valueEntered, KRADConstants.OR_LOGICAL_OPERATOR)) {
+		if (StringUtils.contains(valueEntered, SearchOperator.OR.op())) {
 			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KRADConstants.OR_LOGICAL_OPERATOR)));
-			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KRADConstants.OR_LOGICAL_OPERATOR));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, SearchOperator.OR.op()));
 			for(String value : l){
 				bSplit = true;
 				if(!isPassesDefaultValidation(value)){
@@ -182,9 +193,9 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
 				}
 			}
 		}
-		if (StringUtils.contains(valueEntered, KRADConstants.AND_LOGICAL_OPERATOR)) {
+		if (StringUtils.contains(valueEntered, SearchOperator.AND.op())) {
 			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KRADConstants.AND_LOGICAL_OPERATOR)));
-			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KRADConstants.AND_LOGICAL_OPERATOR));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, SearchOperator.AND.op()));
 			for(String value : l){
 				bSplit = true;
 				if(!isPassesDefaultValidation(value)){

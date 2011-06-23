@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.core.framework.persistence.jdbc.sql;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.search.SearchOperator;
+import org.kuali.rice.krad.util.KRADConstants;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,10 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.framework.logic.LogicalOperator;
-import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Utility class for working with SQL.
@@ -291,19 +291,19 @@ public final class SQLUtils {
     }
    
 	public static String cleanDate(String string) {		
-        for (LogicalOperator op : LogicalOperator.RANGE_CHARACTERS) {
+        for (SearchOperator op : SearchOperator.RANGE_CHARACTERS) {
             string = StringUtils.replace(string, op.op(), "");
         }
         return string;
     }
    
 	public static String cleanNumericOfValidOperators(String string){
-		for (LogicalOperator op : LogicalOperator.RANGE_CHARACTERS) {
+		for (SearchOperator op : SearchOperator.RANGE_CHARACTERS) {
             string = StringUtils.replace(string, op.op(), "");
         }
-		string = StringUtils.replace(string, LogicalOperator.OR.op(), "");
-		string = StringUtils.replace(string, LogicalOperator.AND.op(), "");
-		string = StringUtils.replace(string, LogicalOperator.NOT.op(), "");
+		string = StringUtils.replace(string, SearchOperator.OR.op(), "");
+		string = StringUtils.replace(string, SearchOperator.AND.op(), "");
+		string = StringUtils.replace(string, SearchOperator.NOT.op(), "");
 
 		return string;
 	}
@@ -315,7 +315,7 @@ public final class SQLUtils {
      * @return Cleaned string
      */
     public static String cleanString(String string) {
-        for (LogicalOperator op : LogicalOperator.QUERY_CHARACTERS) {
+        for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
             string = StringUtils.replace(string, op.op(), "");
         }
         return string;
@@ -372,23 +372,23 @@ public final class SQLUtils {
  			throw new NullPointerException("The list passed in is by reference and should never be null.");
  		}
 
- 		if (StringUtils.contains(valueEntered, LogicalOperator.BETWEEN.op())) {
+ 		if (StringUtils.contains(valueEntered, SearchOperator.BETWEEN.op())) {
  			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
  			for(String value : l){
  				getSearchableValueRecursive(value,lRet);
  			}
  			return;
  		}
- 		if (StringUtils.contains(valueEntered, LogicalOperator.OR.op())) {
- 			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperator.OR.op()));
+ 		if (StringUtils.contains(valueEntered, SearchOperator.OR.op())) {
+ 			List<String> l = Arrays.asList(StringUtils.split(valueEntered, SearchOperator.OR.op()));
  			for(String value : l){
  				getSearchableValueRecursive(value,lRet);
  			}
  			return;
  		}
- 		if (StringUtils.contains(valueEntered, LogicalOperator.AND.op())) {
+ 		if (StringUtils.contains(valueEntered, SearchOperator.AND.op())) {
  			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KRADConstants.AND.op())));
- 			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperator.AND.op()));
+ 			List<String> l = Arrays.asList(StringUtils.split(valueEntered, SearchOperator.AND.op()));
  			for(String value : l){
  				getSearchableValueRecursive(value,lRet);
  			}
@@ -406,8 +406,8 @@ public final class SQLUtils {
      * @return Cleaned string
      */
     private static String clean(String string) {
-        for (int i = 0; i < KRADConstants.QUERY_CHARACTERS.length; i++) {
-            string = StringUtils.replace(string, KRADConstants.QUERY_CHARACTERS[i], KRADConstants.EMPTY_STRING);
+        for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
+            string = StringUtils.replace(string, op.op(), KRADConstants.EMPTY_STRING);
         }
         return string;
     }

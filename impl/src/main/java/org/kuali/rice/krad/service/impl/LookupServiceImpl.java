@@ -11,17 +11,17 @@
 
 package org.kuali.rice.krad.service.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.search.SearchOperator;
+import org.kuali.rice.krad.dao.LookupDao;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LookupService;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.krad.dao.LookupDao;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.LookupService;
-import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Service implementation for the Lookup structure. It Provides a generic search
@@ -85,13 +85,18 @@ public class LookupServiceImpl implements LookupService {
         Iterator<String> pkIter = pkFields.iterator();
         boolean returnVal = true;
         while (returnVal && pkIter.hasNext()) {
-            String pkName = (String) pkIter.next();
-            String pkValue = (String) formProps.get(pkName);
+            String pkName = pkIter.next();
+            String pkValue = formProps.get(pkName);
 
             if (StringUtils.isBlank(pkValue)) {
                 returnVal = false;
-            } else if (StringUtils.indexOfAny(pkValue, KRADConstants.QUERY_CHARACTERS) != -1) {
-                returnVal = false;
+            } else {
+                for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
+                    if (pkValue.contains(op.op())) {
+                        returnVal = false;
+                        break;
+                    }
+                }
             }
         }
         return returnVal;

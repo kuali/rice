@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.framework.logic;
+package org.kuali.rice.core.api.search;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
 /**
- * This class contains a static list of logical operators used in rice.   
+ * This class contains a static list of search operators used in rice.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public enum LogicalOperator {
+public enum SearchOperator {
 	AND("&&"),
 	OR("|"),
 	NOT("!"),
@@ -41,14 +40,14 @@ public enum LogicalOperator {
 	LESS_THAN_EQUAL("<=");
 	
 	private final String op;
-	private LogicalOperator(String op) {
+	private SearchOperator(String op) {
 		this.op = op;
 	}
 	
-	public static final Collection<LogicalOperator> QUERY_CHARACTERS =
+	public static final Collection<SearchOperator> QUERY_CHARACTERS =
 		Collections.unmodifiableCollection(Arrays.asList(LIKE_MANY, LIKE_ONE, LIKE_MANY_P, GREATER_THAN, LESS_THAN, BETWEEN, OR, NOT, EQUAL));
 	
-	public static final Collection<LogicalOperator> RANGE_CHARACTERS =
+	public static final Collection<SearchOperator> RANGE_CHARACTERS =
 		Collections.unmodifiableCollection(Arrays.asList(GREATER_THAN_EQUAL, LESS_THAN_EQUAL, GREATER_THAN, LESS_THAN, BETWEEN));
 	
 	public String op() {

@@ -18,8 +18,9 @@ package org.kuali.rice.kew.bo.lookup;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.util.type.KualiDecimal;
@@ -1209,20 +1210,20 @@ KualiLookupableHelperServiceImpl {
 	            && valueToReturn instanceof String
 	            && isDateTime) {
 	        if(fieldName.startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
-    	        if (StringUtils.contains((String)valueToReturn, "..")) {
-    	            valueToReturn = StringUtils.split((String)valueToReturn, "..")[0];
-    	        } else if (StringUtils.contains((String)valueToReturn, ">=")) {
-    	            valueToReturn = StringUtils.split((String)valueToReturn, ">=")[0];
+    	        if (StringUtils.contains((String)valueToReturn, SearchOperator.BETWEEN.op())) {
+    	            valueToReturn = StringUtils.split((String)valueToReturn, SearchOperator.BETWEEN.op())[0];
+    	        } else if (StringUtils.contains((String)valueToReturn, SearchOperator.GREATER_THAN_EQUAL.op())) {
+    	            valueToReturn = StringUtils.split((String)valueToReturn, SearchOperator.GREATER_THAN_EQUAL.op())[0];
     	        } else {
     	            valueToReturn = null;
     	        }
 	        } else {
-	            if (StringUtils.contains((String)valueToReturn, "..")) {
-                    valueToReturn = StringUtils.split((String)valueToReturn, "..")[1];
-                } else if (StringUtils.contains((String)valueToReturn, ">=")) {
+	            if (StringUtils.contains((String)valueToReturn, SearchOperator.BETWEEN.op())) {
+                    valueToReturn = StringUtils.split((String)valueToReturn, SearchOperator.BETWEEN.op())[1];
+                } else if (StringUtils.contains((String)valueToReturn, SearchOperator.GREATER_THAN_EQUAL.op())) {
                     valueToReturn = null;
-                } else if (StringUtils.contains((String)valueToReturn, "<=")) {
-                    valueToReturn = StringUtils.split((String)valueToReturn, "<=")[0];
+                } else if (StringUtils.contains((String)valueToReturn, SearchOperator.LESS_THAN_EQUAL.op())) {
+                    valueToReturn = StringUtils.split((String)valueToReturn, SearchOperator.LESS_THAN_EQUAL.op())[0];
                 }
 
 	        }

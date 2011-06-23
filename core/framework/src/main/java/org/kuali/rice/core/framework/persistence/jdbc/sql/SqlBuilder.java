@@ -46,6 +46,20 @@ public class SqlBuilder {
 	
 	public static final  String EMPTY_STRING = "";
 
+    public static final class JoinType {
+
+	}
+
+	/**
+	 * @param clazz
+	 * @return true if the given Class is an join type
+	 * @throws IllegalArgumentException
+	 *             if the given Class is null
+	 */
+	public static boolean isJoinClass(Class clazz) {
+		return clazz.isAssignableFrom(JoinType.class);
+	}
+
 	public Criteria createCriteria(String columnName, String searchValue, String tableName, String tableAlias, Class propertyType) {
 		return createCriteria(columnName, searchValue, tableName, tableAlias, propertyType, false, true);
 	}
@@ -80,7 +94,7 @@ public class SqlBuilder {
 
 	public void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, boolean allowWildcards, Criteria criteria) {
 
-		if(TypeUtils.isJoinClass(propertyType)){ // treat this as a join table.
+		if(SqlBuilder.isJoinClass(propertyType)){ // treat this as a join table.
 			String temp = SQLUtils.cleanString(propertyValue);
 			criteria.eq(propertyName, temp, propertyType);
 			return;

@@ -604,7 +604,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 crit = sqlBuild.createCriteria("VAL", criteriaComponent.getValue() , searchAttribute.getAttributeTableName(), tableAlias, c, addCaseInsensitivityForValue, searchAttribute.allowsWildcards());
             }
             sqlBuild.addCriteria("KEY_CD", criteriaComponent.getSavedKey(), String.class, false, false, crit); // this is always of type string.
-            sqlBuild.andCriteria("DOC_HDR_ID", tableAlias + ".DOC_HDR_ID", "KREW_DOC_HDR_T", "DOC_HDR", TypeUtils.JoinType.class, false, false, crit);
+            sqlBuild.andCriteria("DOC_HDR_ID", tableAlias + ".DOC_HDR_ID", "KREW_DOC_HDR_T", "DOC_HDR", SqlBuilder.JoinType.class, false, false, crit);
 
             if(finalCriteria == null ){
                 finalCriteria = crit;

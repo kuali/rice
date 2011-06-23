@@ -93,7 +93,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <bean parent="TextControl" p:size="26" />
             </property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Account Open Date" p:maxLength="9">
+          <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Account Open Date" p:maxLength="9" p:hiddenPropertyNames="hidden1,hidden2">
             <property name="control">
               <bean parent="DateControl" p:size="10" p:watermarkText="mm/dd/yyyy"/>
             </property>

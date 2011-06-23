@@ -122,6 +122,8 @@ public class AttributeField extends FieldBase implements DataBinding {
     
     private List<String> informationalDisplayPropertyNames;
 
+    private List<String> hiddenPropertyNames;
+
     private AttributeQuery fieldAttributeQuery;
 	
     private boolean escapeHtmlInPropertyValue;
@@ -137,6 +139,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
         simpleConstraint = new SimpleConstraint();
         informationalDisplayPropertyNames = new ArrayList<String>();
+        hiddenPropertyNames = new ArrayList<String>();
     }
 
     /**
@@ -196,6 +199,16 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
 
         setupInformationalFieldQuery();
+
+        // Adjust the path for hidden fields
+        List<String> hiddenPropertyPaths = new ArrayList<String>();
+
+        for (String hiddenPropertyName : getHiddenPropertyNames()) {
+            String hiddenPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(hiddenPropertyName);
+            hiddenPropertyPaths.add(hiddenPropertyPath);
+        }
+
+        this.hiddenPropertyNames = hiddenPropertyPaths;
 
         // TODO: remove later, this should be done within the service lifecycle
         if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
@@ -1306,6 +1319,25 @@ public class AttributeField extends FieldBase implements DataBinding {
      */
     public void setInformationalDisplayPropertyNames(List<String> informationalDisplayPropertyNames) {
         this.informationalDisplayPropertyNames = informationalDisplayPropertyNames;
+    }
+
+    /**
+     * Allows specifying hidden property names without having to specify as a
+     * field in the group config (that might impact layout)
+     *
+     * @return List<String> hidden property names
+     */
+    public List<String> getHiddenPropertyNames() {
+        return hiddenPropertyNames;
+    }
+
+    /**
+     * Setter for the hidden property names
+     *
+     * @param hiddenPropertyNames
+     */
+    public void setHiddenPropertyNames(List<String> hiddenPropertyNames) {
+        this.hiddenPropertyNames = hiddenPropertyNames;
     }
 
     /**

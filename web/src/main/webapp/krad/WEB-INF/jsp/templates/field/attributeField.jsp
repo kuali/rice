@@ -98,7 +98,11 @@
   <c:if test="${!field.readOnly}">
      <krad:template component="${field.fieldSuggest}" parent="${field}"/>
   </c:if>
-  
+
+  <%-- render hidden fields --%>
+  <c:forEach items="${field.hiddenPropertyNames}" var="hiddenPropertyName" varStatus="status">
+     <form:hidden id="${field.id}_h${status.count}" path="${hiddenPropertyName}"/>
+  </c:forEach>
 </krad:span>
 
 <c:if test="${!field.errorsField.alternateContainer}">

@@ -105,6 +105,9 @@ public class UITestController extends UifControllerBase {
 		uiTestForm.setField1("Field1");
 		uiTestForm.setField2("Field2");
 
+        uiTestForm.setHidden1("Hidden1");
+        uiTestForm.setHidden2("Hidden2");
+
 		return super.start(uiTestForm, result, request, response);
 	}
 

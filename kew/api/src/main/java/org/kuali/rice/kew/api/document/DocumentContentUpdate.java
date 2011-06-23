@@ -154,6 +154,19 @@ public final class DocumentContentUpdate implements Serializable {
 			builder.setSearchableContent(documentContent.getSearchableContent());
 			return builder;
 		}
+		
+		public static Builder create(DocumentContentUpdate documentContentUpdate) {
+			if (documentContentUpdate == null) {
+				throw new IllegalArgumentException("documentContentUpdate was null");
+			}
+			Builder builder = create();
+			builder.setAttributeContent(documentContentUpdate.getAttributeContent());
+			builder.setApplicationContent(documentContentUpdate.getApplicationContent());
+			builder.setSearchableContent(documentContentUpdate.getSearchableContent());
+			builder.setAttributeDefinitions(documentContentUpdate.getAttributeDefinitions());
+			builder.setSearchableDefinitions(documentContentUpdate.getSearchableDefinitions());
+			return builder;
+		}
 
 		public DocumentContentUpdate build() {
 			return new DocumentContentUpdate(this);

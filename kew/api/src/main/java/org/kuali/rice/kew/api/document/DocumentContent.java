@@ -97,6 +97,20 @@ public final class DocumentContent implements ModelObjectComplete, DocumentConte
     public int getFormatVersion() {
         return this.formatVersion;
     }
+    
+    public String getFullContent() {
+        StringBuilder fullContent = new StringBuilder();
+        fullContent.append("<").append(KewApiConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
+        if (!StringUtils.isBlank(getApplicationContent())) {
+            fullContent.append("<").append(KewApiConstants.APPLICATION_CONTENT_ELEMENT).append(">");
+            fullContent.append(getApplicationContent());
+            fullContent.append("</").append(KewApiConstants.APPLICATION_CONTENT_ELEMENT).append(">");        	
+        }
+        fullContent.append(getAttributeContent());
+        fullContent.append(getSearchableContent());
+        fullContent.append("</").append(KewApiConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
+        return fullContent.toString();
+    }
 
     @Override
     public int hashCode() {

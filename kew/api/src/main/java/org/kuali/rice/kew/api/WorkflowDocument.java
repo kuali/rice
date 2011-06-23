@@ -730,28 +730,15 @@ public class WorkflowDocument implements java.io.Serializable {
 //    public DocumentDetailDTO getDetail() throws WorkflowException {
 //    	return getWorkflowUtility().getDocumentDetail(getDocumentId());
 //    }
-//
-//    /**
-//     * Saves the given DocumentContentVO for this document.
-//     * @param documentContent document content VO to store for this document
-//     * @since 2.3
-//     * @see WorkflowDocumentActions#saveDocumentContent(DocumentContentDTO)
-//     */
-//    public DocumentContentDTO saveDocumentContent(DocumentContentDTO documentContent) throws WorkflowException {
-//    	if (documentContent.getDocumentId() == null) {
-//    		throw new WorkflowException("Document Content does not have a valid document ID.");
-//    	}
-//    	// important to check directly against getRouteHeader().getDocumentId() instead of just getDocumentId() because saveDocumentContent
-//    	// is called from createDocumentIfNeccessary which is called from getDocumentId().  If that method was used, we would have an infinite loop.
-//    	if (!documentContent.getDocumentId().equals(getRouteHeader().getDocumentId())) {
-//    		throw new WorkflowException("Attempted to save content on this document with an invalid document id of " + documentContent.getDocumentId());
-//    	}
-//    	DocumentContentDTO newDocumentContent = getWorkflowDocumentActions().saveDocumentContent(documentContent);
-//    	this.documentContent = new ModifiableDocumentContentDTO(newDocumentContent);
-//    	documentContentDirty = false;
-//    	return this.documentContent;
-//    }
-//    
+    
+    public void updateDocumentContent(DocumentContentUpdate documentContentUpdate) {
+    	if (documentContentUpdate == null) {
+    		throw new IllegalArgumentException("documentContentUpdate was null.");
+    	}
+    	getModifiableDocumentContent().setDocumentContentUpdate(documentContentUpdate);
+    	saveDocumentData();
+    }
+    
 //    public void placeInExceptionRouting(String annotation) throws WorkflowException {
 //    	createDocumentIfNeccessary();
 //    	routeHeader = getWorkflowDocumentActions().placeInExceptionRouting(principalId, getRouteHeader(), annotation);
@@ -1033,7 +1020,7 @@ public class WorkflowDocument implements java.io.Serializable {
 		   this.originalDocumentContent = documentContent;
 		   this.builder = DocumentContentUpdate.Builder.create(documentContent);
 	   }
-	   
+	   	   
 	   protected DocumentContent getDocumentContent() {
 		   if (!dirty) {
 			   return originalDocumentContent;
@@ -1047,6 +1034,11 @@ public class WorkflowDocument implements java.io.Serializable {
 	   
 	   protected DocumentContentUpdate.Builder getBuilder() {
 		   return builder;
+	   }
+	   
+	   protected void setDocumentContentUpdate(DocumentContentUpdate update) {
+		   this.builder = DocumentContentUpdate.Builder.create(update);
+		   this.dirty = true;
 	   }
 	   
 	   protected void addAttributeDefinition(WorkflowAttributeDefinition definition) {

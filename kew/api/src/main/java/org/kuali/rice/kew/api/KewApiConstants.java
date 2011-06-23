@@ -18,6 +18,14 @@ public final class KewApiConstants {
     public static final String APPLICATION_CONTENT_ELEMENT = "applicationContent";
     public static final String DEFAULT_DOCUMENT_CONTENT = "<"+DOCUMENT_CONTENT_ELEMENT+"/>";
     public static final String DEFAULT_DOCUMENT_CONTENT2 = "<"+DOCUMENT_CONTENT_ELEMENT+"></"+DOCUMENT_CONTENT_ELEMENT+">";
+    
+    // receive future action request constants
+    public static final String RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY = "_receive_future_requests";
+    public static final String DEACTIVATED_FUTURE_REQUESTS_BRANCH_STATE_KEY = "_deactivated_future_requests";
+    public static final String DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE = "NO";
+    public static final String RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE = "YES";
+    public static final String CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE = "CLEAR";
+
 	
 	public static final class DocumentContentVersions {
 		public static final int ROUTE_LEVEL = 0;

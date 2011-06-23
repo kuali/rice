@@ -19,6 +19,7 @@ package org.kuali.rice.kew.api;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -847,41 +848,35 @@ public class WorkflowDocument implements java.io.Serializable {
     	return getModifiableDocument().getVariableValue(name);
     }
 
-//    /**
-//     *
-//     * Tells workflow that the current the document is constructed as will receive all future requests routed to them
-//     * disregarding any force action flags set on the action request.  Uses the setVariable method behind the seens so
-//     * an action needs taken on the document to set this state on the document.
-//     *
-//     * @throws WorkflowException
-//     */
-//    public void setReceiveFutureRequests() throws WorkflowException {
-//        WorkflowUtility workflowUtility = getWorkflowUtility();
-//        this.setVariable(workflowUtility.getFutureRequestsKey(principalId), workflowUtility.getReceiveFutureRequestsValue());
-//    }
-//
-//    /**
-//     * Tell workflow that the current document is constructed as will not receive any future requests routed to them
-//     * disregarding any force action flags set on action requests.  Uses the setVariable method behind the scenes so
-//     * an action needs taken on the document to set this state on the document.
-//     *
-//     * @throws WorkflowException
-//     */
-//    public void setDoNotReceiveFutureRequests() throws WorkflowException {
-//        WorkflowUtility workflowUtility = getWorkflowUtility();
-//        this.setVariable(workflowUtility.getFutureRequestsKey(principalId), workflowUtility.getDoNotReceiveFutureRequestsValue());
-//    }
-//
-//    /**
-//     * Clears any state set on the document regarding a user receiving or not receiving action requests.  Uses the setVariable method
-//     * behind the seens so an action needs taken on the document to set this state on the document.
-//     *
-//     * @throws WorkflowException
-//     */
-//    public void setClearFutureRequests() throws WorkflowException {
-//        WorkflowUtility workflowUtility = getWorkflowUtility();
-//        this.setVariable(workflowUtility.getFutureRequestsKey(principalId), workflowUtility.getClearFutureRequestsValue());
-//    }
+    public void setReceiveFutureRequests() {
+        setVariable(getFutureRequestsKey(principalId), getReceiveFutureRequestsValue());
+    }
+
+    public void setDoNotReceiveFutureRequests() {
+        this.setVariable(getFutureRequestsKey(principalId), getDoNotReceiveFutureRequestsValue());
+    }
+
+    public void setClearFutureRequests() {
+        this.setVariable(getFutureRequestsKey(principalId), getClearFutureRequestsValue());
+    }
+    
+    protected String getFutureRequestsKey(String principalId) {
+        return KewApiConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY + "," + principalId + "," + new Date().toString() + ", " + Math.random();
+    }
+
+    public String getReceiveFutureRequestsValue() {
+        return KewApiConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
+    }
+
+    public String getDoNotReceiveFutureRequestsValue() {
+        return KewApiConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
+    }
+
+    public String getClearFutureRequestsValue() {
+        return KewApiConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
+    }
+
+    
 //
 //    /**
 //     * Deletes the note of with the same id as that of the argument on the document.

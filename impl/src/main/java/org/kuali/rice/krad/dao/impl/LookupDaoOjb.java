@@ -485,10 +485,10 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         	Criteria predicate = new Criteria();
 
             addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, false, predicate);
-            if (splitValue == SearchOperator.OR.op()) {
+            if (splitValue.equals(SearchOperator.OR.op())) {
             	subCriteria.addOrCriteria(predicate);
             }
-            if (splitValue == SearchOperator.AND.op()) {
+            if (splitValue.equals(SearchOperator.AND.op())) {
             	subCriteria.addAndCriteria(predicate);
             }
         }

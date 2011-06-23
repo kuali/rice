@@ -208,12 +208,16 @@
 				<%-- the param['d-16544-e'] parameter below is NOT null when we are in exporting mode, so this check disables rendering of return/action URLs when we are exporting to CSV, excel, xml, etc. --%>
 				<c:if test="${param['d-16544-e'] == null}">
 					<logic:present name="KualiForm" property="formKey">
-						<c:if
-							test="${KualiForm.formKey!='' && KualiForm.hideReturnLink!=true && !KualiForm.multipleValues && !empty KualiForm.backLocation}">
-							<c:if test="${row.rowReturnable}">
-								<display:column class="infocell" property="returnUrl" media="html" title="Return Value"/>
-							</c:if>
-						</c:if>
+						<c:if test="${KualiForm.formKey!='' && KualiForm.hideReturnLink!=true && !KualiForm.multipleValues && !empty KualiForm.backLocation}">
+ 	 	 	 				<c:choose>
+								<c:when test="${row.rowReturnable}">    
+									<display:column class="infocell" media="html" title="Return Value">${row.returnUrl}</display:column>
+								</c:when>
+								<c:otherwise>
+									<display:column class="infocell" media="html" title="Blank">&nbsp;</display:column>
+								</c:otherwise>
+ 		                   </c:choose>
+ 		                </c:if>
 						<c:if test="${KualiForm.actionUrlsExist==true && KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">
 							<c:choose>
 								<c:when test="${row.actionUrls!=''}">

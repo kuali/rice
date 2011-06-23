@@ -1,5 +1,6 @@
 package org.kuali.rice.kew.api.action;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -24,8 +25,10 @@ import org.w3c.dom.Element;
 		DocumentActionResult.Elements.REQUESTED_ACTIONS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentActionResult {
+public final class DocumentActionResult implements Serializable {
     
+	private static final long serialVersionUID = -3916503634900791018L;
+
 	@XmlElement(name = Elements.DOCUMENT, required = true)
     private final Document document;
 	

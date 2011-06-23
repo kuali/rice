@@ -14,6 +14,7 @@ import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.AdHocToGroup;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
+import org.kuali.rice.kew.api.action.DocumentActionParameters;
 import org.kuali.rice.kew.api.action.DocumentActionResult;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.action.MovePoint;
@@ -124,7 +125,13 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		}
 	};	
 	
-	protected DocumentRouteHeaderValue init(String documentId, String principalId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
+	
+	
+	protected DocumentRouteHeaderValue init(DocumentActionParameters parameters) {
+		String documentId = parameters.getDocumentId();
+		String principalId = parameters.getPrincipalId();
+		DocumentUpdate documentUpdate = parameters.getDocumentUpdate();
+		DocumentContentUpdate documentContentUpdate = parameters.getDocumentContentUpdate();
 		incomingParamCheck(documentId, "documentId");
 		incomingParamCheck(principalId, "principalId");
 		if (LOG.isDebugEnabled()) {
@@ -287,31 +294,19 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult acknowledge(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-        return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, ACKNOWLEDGE_CALLBACK);
+	public DocumentActionResult acknowledge(DocumentActionParameters parameters) {
+        return executeActionInternal(parameters, ACKNOWLEDGE_CALLBACK);
 	}
 
 	@Override
-	public DocumentActionResult approve(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, APPROVE_CALLBACK);
+	public DocumentActionResult approve(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters, APPROVE_CALLBACK);
 	}
 
 	@Override
-	public DocumentActionResult adHocToPrincipal(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate,
+	public DocumentActionResult adHocToPrincipal(DocumentActionParameters parameters,
 			final AdHocToPrincipal adHocCommand) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 					@Override
 					public String getLogMessage(String documentId, String principalId, String annotation) {
@@ -340,13 +335,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult adHocToGroup(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate,
+	public DocumentActionResult adHocToGroup(DocumentActionParameters parameters,
 			final AdHocToGroup adHocCommand) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 					@Override
 					public String getLogMessage(String documentId, String principalId, String annotation) {
@@ -375,13 +366,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 	
 	@Override
-	public DocumentActionResult revokeAdHocRequestById(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate,
+	public DocumentActionResult revokeAdHocRequestById(DocumentActionParameters parameters,
 			final String actionRequestId) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 					@Override
 					public String getLogMessage(String documentId, String principalId, String annotation) {
@@ -398,13 +385,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult revokeAdHocRequests(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate,
+	public DocumentActionResult revokeAdHocRequests(DocumentActionParameters parameters,
 			final AdHocRevoke revoke) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 					@Override
 					public String getLogMessage(String documentId, String principalId, String annotation) {
@@ -423,12 +406,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	
 
 	@Override
-	public DocumentActionResult revokeAllAdHocRequests(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate,
+	public DocumentActionResult revokeAllAdHocRequests(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 					@Override
 					public String getLogMessage(String documentId, String principalId, String annotation) {
@@ -444,68 +423,38 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult cancel(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, CANCEL_CALLBACK);
+	public DocumentActionResult cancel(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters, CANCEL_CALLBACK);
 	}
 
-	public DocumentActionResult clearFyi(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, FYI_CALLBACK);
+	public DocumentActionResult clearFyi(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters, FYI_CALLBACK);
 	}
 
 	@Override
-	public DocumentActionResult complete(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, COMPLETE_CALLBACK);
+	public DocumentActionResult complete(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters, COMPLETE_CALLBACK);
 	}
 
 	@Override
-	public DocumentActionResult disapprove(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, DISAPPROVE_CALLBACK);
+	public DocumentActionResult disapprove(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters, DISAPPROVE_CALLBACK);
 	}
 
 	@Override
-	public DocumentActionResult route(String documentId, String principalId, String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, ROUTE_CALLBACK);
+	public DocumentActionResult route(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters, ROUTE_CALLBACK);
 	}
 	
 	@Override
-	public DocumentActionResult blanketApprove(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, BLANKET_APPROVE_CALLBACK);
+	public DocumentActionResult blanketApprove(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters, BLANKET_APPROVE_CALLBACK);
 	}
 
 	@Override
-	public DocumentActionResult blanketApproveToNodes(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate,
+	public DocumentActionResult blanketApproveToNodes(DocumentActionParameters parameters,
 			final Set<String> nodeNames) {
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().blanketApproval(principalId, documentBo, annotation, nodeNames);
@@ -517,17 +466,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult returnToPreviousNode(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate,
+	public DocumentActionResult returnToPreviousNode(DocumentActionParameters parameters,
 			final ReturnPoint returnPoint) {
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().returnDocumentToPreviousNode(principalId, documentBo, returnPoint.getNodeName(), annotation);
@@ -539,17 +480,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult move(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate,
+	public DocumentActionResult move(DocumentActionParameters parameters,
 			final MovePoint movePoint) {
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().moveDocument(principalId, documentBo, movePoint, annotation);
@@ -561,17 +494,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult takeGroupAuthority(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate,
+	public DocumentActionResult takeGroupAuthority(DocumentActionParameters parameters,
 			final String groupId) {
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+		return executeActionInternal(parameters,
 				new StandardDocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().takeGroupAuthority(principalId, documentBo, groupId, annotation);
@@ -583,17 +508,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult releaseGroupAuthority(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate,
+	public DocumentActionResult releaseGroupAuthority(DocumentActionParameters parameters,
 			final String groupId) {
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+		return executeActionInternal(parameters,
 				new StandardDocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().releaseGroupAuthority(principalId, documentBo, groupId, annotation);
@@ -606,20 +523,13 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult save(String documentId,
-			String principalId,
-			String annotation,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-		return executeActionInternal(documentId, principalId, annotation, documentUpdate, documentContentUpdate, SAVE_CALLBACK);
+	public DocumentActionResult save(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters, SAVE_CALLBACK);
 	}
 	
 	@Override
-	public DocumentActionResult saveDocumentData(String documentId,
-			String principalId,
-			DocumentUpdate documentUpdate,
-			DocumentContentUpdate documentContentUpdate) {
-		return executeActionInternal(documentId, principalId, null, documentUpdate, documentContentUpdate, new DocumentActionCallback() {
+	public DocumentActionResult saveDocumentData(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters, new DocumentActionCallback() {
 		
 			@Override
 			public String getLogMessage(String documentId, String principalId, String annotation) {
@@ -637,7 +547,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
 	@Override
 	public void delete(String documentId, String principalId) {
-		DocumentRouteHeaderValue documentBo = init(documentId, principalId, null, null);
+		DocumentRouteHeaderValue documentBo = init(DocumentActionParameters.create(documentId, principalId, null));
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Delete [principalId=" + principalId + ", documentId=" + documentId + "]");
 		}
@@ -665,12 +575,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public DocumentActionResult superUserBlanketApprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor) {
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+	public DocumentActionResult superUserBlanketApprove(DocumentActionParameters parameters, final boolean executePostProcessor) {
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().superUserApprove(principalId, documentBo, annotation, executePostProcessor);
@@ -682,12 +588,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
     
 	@Override
-    public DocumentActionResult superUserNodeApprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor, final String nodeName) {
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+    public DocumentActionResult superUserNodeApprove(DocumentActionParameters parameters, final boolean executePostProcessor, final String nodeName) {
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(principalId, documentBo, nodeName, annotation, executePostProcessor);
@@ -700,12 +602,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
     
 	@Override
-    public DocumentActionResult superUserTakeRequestedAction(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor, final String actionRequestId) {
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+    public DocumentActionResult superUserTakeRequestedAction(DocumentActionParameters parameters, final boolean executePostProcessor, final String actionRequestId) {
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(principalId, documentBo, Long.valueOf(actionRequestId), annotation, executePostProcessor);
@@ -717,12 +615,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
     
 	@Override
-    public DocumentActionResult superUserDisapprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor){
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+    public DocumentActionResult superUserDisapprove(DocumentActionParameters parameters, final boolean executePostProcessor){
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(principalId, documentBo, annotation, executePostProcessor);
@@ -734,12 +628,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
     
 	@Override
-    public DocumentActionResult superUserCancel(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor) {
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+    public DocumentActionResult superUserCancel(DocumentActionParameters parameters, final boolean executePostProcessor) {
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(principalId, documentBo, annotation, executePostProcessor);
@@ -751,12 +641,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
     
 	@Override
-    public DocumentActionResult superUserReturnToPreviousNode(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor, final ReturnPoint returnPoint) {
-		return executeActionInternal(documentId,
-				principalId,
-				annotation,
-				documentUpdate,
-				documentContentUpdate,
+    public DocumentActionResult superUserReturnToPreviousNode(DocumentActionParameters parameters, final boolean executePostProcessor, final ReturnPoint returnPoint) {
+		return executeActionInternal(parameters,
 				new DocumentActionCallback() {
 			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
 				return KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(principalId, documentBo, returnPoint.getNodeName(), annotation, executePostProcessor);
@@ -805,23 +691,21 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		throw new WorkflowRuntimeException(e.getMessage(), e);
 	}
 	
-	protected DocumentActionResult executeActionInternal(String documentId,
-				String principalId,
-				String annotation,
-				DocumentUpdate documentUpdate,
-				DocumentContentUpdate documentContentUpdate,
-				DocumentActionCallback callback) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug(callback.getLogMessage(documentId, principalId, annotation));
+	protected DocumentActionResult executeActionInternal(DocumentActionParameters parameters, DocumentActionCallback callback) {
+		if (parameters == null) {
+			throw new IllegalArgumentException("Document action parameters was null.");
 		}
-		DocumentRouteHeaderValue documentBo = init(documentId, principalId, documentUpdate, documentContentUpdate);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(callback.getLogMessage(parameters.getDocumentId(), parameters.getPrincipalId(), parameters.getAnnotation()));
+		}
+		DocumentRouteHeaderValue documentBo = init(parameters);
 		try {
-			documentBo = callback.doInDocumentBo(documentBo, principalId, annotation);
+			documentBo = callback.doInDocumentBo(documentBo, parameters.getPrincipalId(), parameters.getAnnotation());
 		} catch (WorkflowException e) {
 			// TODO fix this up once the checked exception goes away
 			translateException(e);
 		}
-		return constructDocumentActionResult(documentBo, principalId);
+		return constructDocumentActionResult(documentBo, parameters.getPrincipalId());
 	}
 	
 	

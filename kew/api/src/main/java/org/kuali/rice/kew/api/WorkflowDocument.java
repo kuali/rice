@@ -33,6 +33,7 @@ import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.AdHocToGroup;
 import org.kuali.rice.kew.api.action.AdHocToPrincipal;
+import org.kuali.rice.kew.api.action.DocumentActionParameters;
 import org.kuali.rice.kew.api.action.DocumentActionResult;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.action.MovePoint;
@@ -328,32 +329,32 @@ public class WorkflowDocument implements java.io.Serializable {
     }
     
     public void saveDocument(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().save(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().save(constructDocumentActionParameters(annotation));
     	resetStateAfterAction(result);
     }
 
     public void route(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().route(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().route(constructDocumentActionParameters(annotation));
     	resetStateAfterAction(result);
     }
     
     public void disapprove(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().disapprove(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().disapprove(constructDocumentActionParameters(annotation));
     	resetStateAfterAction(result);
     }
 
     public void approve(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().approve(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().approve(constructDocumentActionParameters(annotation));
     	resetStateAfterAction(result);
     }
 
     public void cancel(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().cancel(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().cancel(constructDocumentActionParameters(annotation));
     	resetStateAfterAction(result);
     }
 
     public void blanketApprove(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().blanketApprove(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().blanketApprove(constructDocumentActionParameters(annotation));
  		resetStateAfterAction(result);
     }
     
@@ -362,12 +363,12 @@ public class WorkflowDocument implements java.io.Serializable {
     		throw new IllegalArgumentException("nodeNames was null");
     	}
     	Set<String> nodeNamesSet = new HashSet<String>(Arrays.asList(nodeNames));
-    	DocumentActionResult result = getWorkflowDocumentActionsService().blanketApproveToNodes(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), nodeNamesSet);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().blanketApproveToNodes(constructDocumentActionParameters(annotation), nodeNamesSet);
  		resetStateAfterAction(result);
     }
 
     public void saveDocumentData() {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().saveDocumentData(getDocumentId(), principalId, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().saveDocumentData(constructDocumentActionParameters(null));
     	resetStateAfterAction(result);
     }
 
@@ -381,12 +382,12 @@ public class WorkflowDocument implements java.io.Serializable {
     }
     
     public void acknowledge(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().acknowledge(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().acknowledge(constructDocumentActionParameters(annotation));
     	resetStateAfterAction(result);
     }
 
     public void fyi(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().clearFyi(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().clearFyi(constructDocumentActionParameters(annotation));
     	resetStateAfterAction(result);
     }
     
@@ -424,7 +425,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	builder.setResponsibilityDescription(responsibilityDescription);
     	builder.setForceAction(forceAction);
     	builder.setRequestLabel(requestLabel);
-    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToPrincipal(getDocumentId(), getPrincipalId(), annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), builder.build());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToPrincipal(constructDocumentActionParameters(annotation), builder.build());
     	resetStateAfterAction(result);
     }
 
@@ -441,7 +442,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	builder.setResponsibilityDescription(responsibilityDescription);
     	builder.setForceAction(forceAction);
     	builder.setRequestLabel(requestLabel);
-    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToGroup(getDocumentId(), getPrincipalId(), annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), builder.build());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToGroup(constructDocumentActionParameters(annotation), builder.build());
     	resetStateAfterAction(result);
     }
 
@@ -449,7 +450,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	if (StringUtils.isBlank(actionRequestId)) {
     		throw new IllegalArgumentException("actionRequestId was null or blank");
     	}
-    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequestById(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), actionRequestId);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequestById(constructDocumentActionParameters(annotation), actionRequestId);
     	resetStateAfterAction(result);
     }
     
@@ -457,12 +458,12 @@ public class WorkflowDocument implements java.io.Serializable {
     	if (revoke == null) {
     		throw new IllegalArgumentException("revokeFromPrincipal was null");
     	}
-    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequests(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), revoke);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequests(constructDocumentActionParameters(annotation), revoke);
     	resetStateAfterAction(result);
     }
     
     public void revokeAllAdHocRequests(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAllAdHocRequests(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAllAdHocRequests(constructDocumentActionParameters(annotation));
     	resetStateAfterAction(result);
     }
 
@@ -513,32 +514,32 @@ public class WorkflowDocument implements java.io.Serializable {
     }
     
     public void superUserBlanketApprove(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserBlanketApprove(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserBlanketApprove(constructDocumentActionParameters(annotation), true);
     	resetStateAfterAction(result);
     }
     
     public void superUserNodeApprove(String nodeName, String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserNodeApprove(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true, nodeName);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserNodeApprove(constructDocumentActionParameters(annotation), true, nodeName);
     	resetStateAfterAction(result);    	
     }
 
     public void superUserTakeRequestedAction(String actionRequestId, String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserTakeRequestedAction(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true, actionRequestId);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserTakeRequestedAction(constructDocumentActionParameters(annotation), true, actionRequestId);
     	resetStateAfterAction(result);
     }
 
     public void superUserDisapprove(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserDisapprove(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserDisapprove(constructDocumentActionParameters(annotation), true);
     	resetStateAfterAction(result);
     }
 
     public void superUserCancel(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserCancel(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserCancel(constructDocumentActionParameters(annotation), true);
     	resetStateAfterAction(result);
     }
     
     public void superUserReturnToPreviousNode(ReturnPoint returnPoint, String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserReturnToPreviousNode(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true, returnPoint);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserReturnToPreviousNode(constructDocumentActionParameters(annotation), true, returnPoint);
     	resetStateAfterAction(result);
     }
 
@@ -547,7 +548,7 @@ public class WorkflowDocument implements java.io.Serializable {
 	}
 
     public void complete(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().complete(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());
+    	DocumentActionResult result = getWorkflowDocumentActionsService().complete(constructDocumentActionParameters(annotation));
     	resetStateAfterAction(result);
     }
 
@@ -667,12 +668,12 @@ public class WorkflowDocument implements java.io.Serializable {
     }
 
     public void takeGroupAuthority(String annotation, String groupId) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().takeGroupAuthority(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), groupId);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().takeGroupAuthority(constructDocumentActionParameters(annotation), groupId);
     	resetStateAfterAction(result);
     }
 
     public void releaseGroupAuthority(String annotation, String groupId) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().releaseGroupAuthority(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), groupId);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().releaseGroupAuthority(constructDocumentActionParameters(annotation), groupId);
     	resetStateAfterAction(result);
     }
 
@@ -696,7 +697,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	if (returnPoint == null) {
     		throw new IllegalArgumentException("returnPoint was null");
     	}
-    	DocumentActionResult result = getWorkflowDocumentActionsService().returnToPreviousNode(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), returnPoint);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().returnToPreviousNode(constructDocumentActionParameters(annotation), returnPoint);
     	resetStateAfterAction(result);
     }
 
@@ -704,7 +705,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	if (movePoint == null) {
     		throw new IllegalArgumentException("movePoint was null");
     	}
-    	DocumentActionResult result = getWorkflowDocumentActionsService().move(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), movePoint);
+    	DocumentActionResult result = getWorkflowDocumentActionsService().move(constructDocumentActionParameters(annotation), movePoint);
     	resetStateAfterAction(result);
     }
     
@@ -1007,6 +1008,14 @@ public class WorkflowDocument implements java.io.Serializable {
 //	   } 
 //   }
    
+    protected DocumentActionParameters constructDocumentActionParameters(String annotation) {
+    	DocumentActionParameters.Builder builder = DocumentActionParameters.Builder.create(getDocumentId(), getPrincipalId());
+    	builder.setAnnotation(annotation);
+    	builder.setDocumentUpdate(getDocumentUpdateIfDirty());
+    	builder.setDocumentContentUpdate(getDocumentContentUpdateIfDirty());
+    	return builder.build();
+    }
+    
    protected static class ModifiableDocumentContent implements Serializable {
 	   
 	   private static final long serialVersionUID = -4458431160327214042L;

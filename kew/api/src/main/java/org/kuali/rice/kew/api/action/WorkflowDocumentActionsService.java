@@ -25,45 +25,48 @@ public interface WorkflowDocumentActionsService {
 
 	public RequestedActions determineRequestedActions(String documentId, String principalId);
 	
-	public DocumentActionResult acknowledge(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+	public DocumentActionResult acknowledge(DocumentActionParameters parameters);
 	
-	public DocumentActionResult approve(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+	public DocumentActionResult approve(DocumentActionParameters parameters);
 			
-    public DocumentActionResult adHocToPrincipal(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocToPrincipal adHocCommand);
+    public DocumentActionResult adHocToPrincipal(DocumentActionParameters parameters, AdHocToPrincipal adHocCommand);
     
-    public DocumentActionResult adHocToGroup(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocToGroup adHocCommand);
+    public DocumentActionResult adHocToGroup(DocumentActionParameters parameters, AdHocToGroup adHocCommand);
     
-    public DocumentActionResult revokeAdHocRequestById(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, String actionRequestId);
+    public DocumentActionResult revokeAdHocRequestById(DocumentActionParameters parameters, String actionRequestId);
     
-    public DocumentActionResult revokeAdHocRequests(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, AdHocRevoke revoke);
+    public DocumentActionResult revokeAdHocRequests(DocumentActionParameters parameters, AdHocRevoke revoke);
     
-    public DocumentActionResult revokeAllAdHocRequests(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult revokeAllAdHocRequests(DocumentActionParameters parameters);
         
-    public DocumentActionResult cancel(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult cancel(DocumentActionParameters parameters);
     
-    public DocumentActionResult clearFyi(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult clearFyi(DocumentActionParameters parameters);
     
-    public DocumentActionResult complete(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult complete(DocumentActionParameters parameters);
     
-    public DocumentActionResult disapprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult disapprove(DocumentActionParameters parameters);
 
-    public DocumentActionResult route(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult route(DocumentActionParameters parameters);
     
-    public DocumentActionResult blanketApprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult blanketApprove(DocumentActionParameters parameters);
     
-    public DocumentActionResult blanketApproveToNodes(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, Set<String> nodeNames);
+    public DocumentActionResult blanketApproveToNodes(DocumentActionParameters parameters, Set<String> nodeNames);
     
-    public DocumentActionResult returnToPreviousNode(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, ReturnPoint returnPoint);
+    public DocumentActionResult returnToPreviousNode(DocumentActionParameters parameters, ReturnPoint returnPoint);
 
-    public DocumentActionResult move(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, MovePoint movePoint);
+    public DocumentActionResult move(DocumentActionParameters parameters, MovePoint movePoint);
     
-    public DocumentActionResult takeGroupAuthority(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, String groupId);
+    public DocumentActionResult takeGroupAuthority(DocumentActionParameters parameters, String groupId);
     
-    public DocumentActionResult releaseGroupAuthority(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, String groupId);
+    public DocumentActionResult releaseGroupAuthority(DocumentActionParameters parameters, String groupId);
     
-    public DocumentActionResult save(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    public DocumentActionResult save(DocumentActionParameters parameters);
     
-    public DocumentActionResult saveDocumentData(String documentId, String principalId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+    /**
+     * TODO - document the fact that passing an annotation to this will have no effect as it's not actually recorded on the route log
+     */
+    public DocumentActionResult saveDocumentData(DocumentActionParameters parameters);
     
     public void delete(String documentId, String principalId);
     
@@ -71,17 +74,17 @@ public interface WorkflowDocumentActionsService {
         
     public void initiateIndexing(String documentId);
     
-    public DocumentActionResult superUserBlanketApprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor);
+    public DocumentActionResult superUserBlanketApprove(DocumentActionParameters parameters, boolean executePostProcessor);
     
-    public DocumentActionResult superUserNodeApprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor, String nodeName);
+    public DocumentActionResult superUserNodeApprove(DocumentActionParameters parameters, boolean executePostProcessor, String nodeName);
     
-    public DocumentActionResult superUserTakeRequestedAction(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor, String actionRequestId);
+    public DocumentActionResult superUserTakeRequestedAction(DocumentActionParameters parameters, boolean executePostProcessor, String actionRequestId);
     
-    public DocumentActionResult superUserDisapprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor);
+    public DocumentActionResult superUserDisapprove(DocumentActionParameters parameters, boolean executePostProcessor);
     
-    public DocumentActionResult superUserCancel(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor);
+    public DocumentActionResult superUserCancel(DocumentActionParameters parameters, boolean executePostProcessor);
     
-    public DocumentActionResult superUserReturnToPreviousNode(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor, ReturnPoint returnPoint);
+    public DocumentActionResult superUserReturnToPreviousNode(DocumentActionParameters parameters, boolean executePostProcessor, ReturnPoint returnPoint);
     
     public void placeInExceptionRouting(String documentId, String principalId);
     

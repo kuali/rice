@@ -57,10 +57,13 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.ValidActions;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
@@ -1118,6 +1121,44 @@ public class DTOConverter {
         return detail;
     }
 
+    public static DocumentDetail convertDocumentDetailNew(DocumentRouteHeaderValue routeHeader) {
+        if (routeHeader == null) {
+            return null;
+        }
+        org.kuali.rice.kew.api.document.Document document = DocumentRouteHeaderValue.to(routeHeader);
+        DocumentDetail.Builder detail = DocumentDetail.Builder.create(document);
+        Map<Long, RouteNodeInstance> nodeInstances = new HashMap<Long, RouteNodeInstance>();
+        List<ActionRequest> actionRequestVOs = new ArrayList<ActionRequest>();
+        List<ActionRequestValue> rootActionRequests = KEWServiceLocator.getActionRequestService().getRootRequests(routeHeader.getActionRequests());
+        for (Iterator<ActionRequestValue> iterator = rootActionRequests.iterator(); iterator.hasNext();) {
+            ActionRequestValue actionRequest = iterator.next();
+            actionRequestVOs.add(ActionRequestValue.to(actionRequest));
+            RouteNodeInstance nodeInstance = actionRequest.getNodeInstance();
+            if (nodeInstance == null) {
+                continue;
+            }
+            if (nodeInstance.getRouteNodeInstanceId() == null) {
+                throw new IllegalStateException("Error creating document detail structure because of NULL node instance id.");
+            }
+            nodeInstances.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
+        }
+        detail.setActionRequests(actionRequestVOs);
+        List<org.kuali.rice.kew.api.document.RouteNodeInstance> nodeInstanceVOs = new ArrayList<org.kuali.rice.kew.api.document.RouteNodeInstance>();
+        for (Iterator<RouteNodeInstance> iterator = nodeInstances.values().iterator(); iterator.hasNext();) {
+            RouteNodeInstance nodeInstance = iterator.next();
+            nodeInstanceVOs.add(RouteNodeInstance.to(nodeInstance));
+        }
+        detail.setRouteNodeInstances(nodeInstanceVOs);
+        List<ActionTaken> actionTakenVOs = new ArrayList<ActionTaken>();
+        for (Object element : routeHeader.getActionsTaken()) {
+            ActionTakenValue actionTaken = (ActionTakenValue) element;
+            actionTakenVOs.add(ActionTakenValue.to(actionTaken));
+        }
+        detail.setActionsTaken(actionTakenVOs);
+        return detail.build();
+    }
+
+    
     public static RouteNodeInstanceDTO convertRouteNodeInstance(RouteNodeInstance nodeInstance) throws WorkflowException {
         if (nodeInstance == null) {
             return null;

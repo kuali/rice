@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.jws.WebParam;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -29,8 +31,10 @@ import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
+import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -117,6 +121,25 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			actionTakens.add(ActionTakenValue.to(actionTakenBo));
 		}
 		return actionTakens;
+	}
+	
+	@Override
+	public DocumentDetail getDocumentDetail(@WebParam(name = "documentId") String documentId) {
+		if (StringUtils.isBlank(documentId)) {
+            throw new IllegalArgumentException("documentId was null or blank");
+        }
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Fetching DocumentDetail [id="+documentId+"]");
+        }
+        DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+        if (document == null) {
+        	return null;
+        }
+        DocumentDetail documentDetailVO = DTOConverter.convertDocumentDetailNew(document);
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Returning DocumentDetailVO [id=" + documentId + "]");
+        }
+        return documentDetailVO;
 	}
 	
 	@Override

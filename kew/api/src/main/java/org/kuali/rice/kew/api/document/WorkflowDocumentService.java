@@ -21,7 +21,7 @@ public interface WorkflowDocumentService {
 	public List<ActionRequest> getActionRequests(String documentId, String nodeName, String principalId);
 	
 	List<ActionTaken> getActionsTaken(@WebParam(name = "documentId") String documentId);
-
+	
 //    public DocumentDetailDTO getDocumentDetailFromAppId(String documentTypeName, String appId) throws WorkflowException;
 //
 //	public RouteHeaderDTO getRouteHeaderWithPrincipal(
@@ -33,10 +33,9 @@ public interface WorkflowDocumentService {
 //			@WebParam(name = "documentId") String documentId)
 //			throws WorkflowException;
 //
-//	public DocumentDetailDTO getDocumentDetail(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
-//
+
+	public DocumentDetail getDocumentDetail(@WebParam(name = "documentId") String documentId);
+
 //	public RouteNodeInstanceDTO getNodeInstance(
 //			@WebParam(name = "nodeInstanceId") Long nodeInstanceId)
 //			throws WorkflowException;

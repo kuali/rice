@@ -47,6 +47,7 @@ import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentCreationException;
+import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.RouteNodeInstance;
@@ -723,15 +724,9 @@ public class WorkflowDocument implements java.io.Serializable {
     	return getWorkflowDocumentService().getPreviousRouteNodeNames(getDocumentId());
 	}
 
-//    /**
-//     * Returns a document detail VO representing the route header along with action requests, actions taken,
-//     * and route node instances.
-//     * @return Returns a document detail VO representing the route header along with action requests, actions taken, and route node instances.
-//     * @throws WorkflowException
-//     */
-//    public DocumentDetailDTO getDetail() throws WorkflowException {
-//    	return getWorkflowUtility().getDocumentDetail(getDocumentId());
-//    }
+    public DocumentDetail getDocumentDetail() {
+    	return getWorkflowDocumentService().getDocumentDetail(getDocumentId());
+    }
     
     public void updateDocumentContent(DocumentContentUpdate documentContentUpdate) {
     	if (documentContentUpdate == null) {

@@ -1,6 +1,6 @@
 package org.kuali.rice.kew.api.document;
 
-import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 
@@ -36,6 +36,6 @@ public interface DocumentContract {
 
 	DateTime getApplicationDocumentStatusDate();
 
-	List<? extends DocumentVariableContract> getVariables();
+	Map<String, String> getVariables();
 	
 }

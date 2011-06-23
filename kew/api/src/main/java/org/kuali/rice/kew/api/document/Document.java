@@ -1,10 +1,10 @@
 package org.kuali.rice.kew.api.document;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.util.jaxb.DateTimeAdapter;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = Document.Constants.ROOT_ELEMENT_NAME)
@@ -103,7 +104,8 @@ public final class Document implements ModelObjectComplete, DocumentContract {
     
     @XmlElementWrapper(name = Elements.VARIABLES, required = false)
     @XmlElement(name = Elements.VARIABLE, required = false)
-    private final List<DocumentVariable> variables;
+    @XmlJavaTypeAdapter(MapStringStringAdapter.class)
+    private final Map<String, String> variables;
         
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -147,11 +149,7 @@ public final class Document implements ModelObjectComplete, DocumentContract {
         this.documentHandlerUrl = builder.getDocumentHandlerUrl();
         this.applicationDocumentStatus = builder.getApplicationDocumentStatus();
         this.applicationDocumentStatusDate = builder.getApplicationDocumentStatusDate();
-        List<DocumentVariable> variables = new ArrayList<DocumentVariable>();
-        for (DocumentVariable.Builder variableBuilder : builder.getVariables()) {
-        	variables.add(variableBuilder.build());
-        }
-        this.variables = variables;
+        this.variables = new HashMap<String, String>(builder.getVariables());
     }
 
     @Override
@@ -233,8 +231,8 @@ public final class Document implements ModelObjectComplete, DocumentContract {
     }
 
     @Override
-    public List<DocumentVariable> getVariables() {
-        return Collections.unmodifiableList(this.variables);
+    public Map<String, String> getVariables() {
+        return Collections.unmodifiableMap(this.variables);
     }
 
     @Override
@@ -278,7 +276,7 @@ public final class Document implements ModelObjectComplete, DocumentContract {
         private String documentHandlerUrl;
         private String applicationDocumentStatus;
         private DateTime applicationDocumentStatusDate;
-        private List<DocumentVariable.Builder> variables;
+        private Map<String, String> variables;
 
         private Builder(String documentId, DocumentStatus status, DateTime dateCreated, String initiatorPrincipalId, String documentTypeName, String documentTypeId) {
             setDocumentId(documentId);
@@ -288,7 +286,7 @@ public final class Document implements ModelObjectComplete, DocumentContract {
             setInitiatorPrincipalId(initiatorPrincipalId);
             setDocumentTypeName(documentTypeName);
             setDocumentTypeId(documentTypeId);
-            setVariables(new ArrayList<DocumentVariable.Builder>());
+            setVariables(new HashMap<String, String>());
         }
 
         public static Builder create(String documentId, DocumentStatus status, DateTime dateCreated, String initiatorPrincipalId, String documentTypeName, String documentTypeId) {
@@ -320,16 +318,7 @@ public final class Document implements ModelObjectComplete, DocumentContract {
             builder.setDocumentHandlerUrl(contract.getDocumentHandlerUrl());
             builder.setApplicationDocumentStatus(contract.getApplicationDocumentStatus());
             builder.setApplicationDocumentStatusDate(contract.getApplicationDocumentStatusDate());
-            if (contract.getVariables() != null && !contract.getVariables().isEmpty()) {
-            	List<DocumentVariable.Builder> variableBuilders = new ArrayList<DocumentVariable.Builder>();
-            	for (DocumentVariableContract variable : contract.getVariables()) {
-            		if (variable == null) {
-            			throw new IllegalArgumentException("A null document variable was found in list.");
-            		}
-            		variableBuilders.add(DocumentVariable.Builder.create(variable));
-            	}
-            	builder.setVariables(variableBuilders);
-            }
+            builder.setVariables(new HashMap<String, String>(contract.getVariables()));
             return builder;
         }
 
@@ -413,7 +402,7 @@ public final class Document implements ModelObjectComplete, DocumentContract {
         }
 
         @Override
-        public List<DocumentVariable.Builder> getVariables() {
+        public Map<String, String> getVariables() {
             return this.variables;
         }
 
@@ -469,7 +458,6 @@ public final class Document implements ModelObjectComplete, DocumentContract {
         }
 
         public void setRoutedByPrincipalId(String routedByPrincipalId) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
             this.routedByPrincipalId = routedByPrincipalId;
         }
 
@@ -499,35 +487,28 @@ public final class Document implements ModelObjectComplete, DocumentContract {
             this.applicationDocumentStatusDate = applicationDocumentStatusDate;
         }
 
-        public void setVariables(List<DocumentVariable.Builder> variables) {
+        public void setVariables(Map<String, String> variables) {
         	if (variables == null) {
-        		variables = new ArrayList<DocumentVariable.Builder>();
+        		variables = new HashMap<String, String>();
         	}
             this.variables = variables;
         }
 
     }
 
-
     /**
      * Defines some internal constants used on this class.
-     * 
      */
     static class Constants {
-
         final static String ROOT_ELEMENT_NAME = "document";
         final static String TYPE_NAME = "DocumentType";
         final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
-
 
     /**
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
-     * 
      */
     static class Elements {
-
         final static String DOCUMENT_ID = "documentId";
         final static String STATUS = "status";
         final static String DATE_CREATED = "dateCreated";
@@ -545,7 +526,6 @@ public final class Document implements ModelObjectComplete, DocumentContract {
         final static String APPLICATION_DOCUMENT_STATUS_DATE = "applicationDocumentStatusDate";
         final static String VARIABLE = "variable";
         final static String VARIABLES = "variables";
-
     }
 
 }

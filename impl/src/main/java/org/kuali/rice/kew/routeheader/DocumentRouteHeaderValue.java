@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,7 +60,6 @@ import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContract;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
-import org.kuali.rice.kew.api.document.DocumentVariable;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -836,14 +836,11 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
             setAppDocId(documentUpdate.getApplicationDocumentId());
             setStatusModDate(new Timestamp(System.currentTimeMillis()));
             updateAppDocStatus(documentUpdate.getApplicationDocumentStatus());
-
             
-            // TODO variables?
-//            /* set the variables from the routeHeaderVO */
-//            List<KeyValue> variables = routeHeaderVO.getVariables();
-//            for (KeyValue kvp : variables) {
-//                setVariable(kvp.getKey(), kvp.getValue());
-//            }
+            Map<String, String> variables = documentUpdate.getVariables();
+            for (String variableName : variables.keySet()) {
+                setVariable(variableName, variables.get(variableName));
+            }
     	}
     }
 
@@ -1162,8 +1159,8 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
 	}
 	
 	@Override
-	public List<DocumentVariable> getVariables() {
-		List<DocumentVariable> documentVariables = new ArrayList<DocumentVariable>();
+	public Map<String, String> getVariables() {
+		Map<String, String> documentVariables = new HashMap<String, String>();
 		/* populate the routeHeaderVO with the document variables */
         // FIXME: we assume there is only one for now
         Branch routeNodeInstanceBranch = getRootBranch();
@@ -1174,7 +1171,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
             for (BranchState bs : listOfBranchStates) {
                 if (bs.getKey() != null && bs.getKey().startsWith(BranchState.VARIABLE_PREFIX)) {
                     LOG.debug("Setting branch state variable on vo: " + bs.getKey() + "=" + bs.getValue());
-                    documentVariables.add(DocumentVariable.Builder.create(bs.getKey().substring(BranchState.VARIABLE_PREFIX.length()), bs.getValue()).build());
+                    documentVariables.put(bs.getKey().substring(BranchState.VARIABLE_PREFIX.length()), bs.getValue());
                 }
             }
         }

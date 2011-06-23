@@ -18,7 +18,9 @@ package org.kuali.rice.kew.actions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
@@ -30,7 +32,6 @@ import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 
@@ -119,9 +120,10 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
     }
     
     private boolean isDocumentPostProcessable(WorkflowDocument doc, List<String> validNodeNames) throws WorkflowException {
-        String[] nodeNames = doc.getNodeNames();
-        if (nodeNames != null && nodeNames.length > 0) {
-        	return validNodeNames.contains(doc.getNodeNames()[0]) || (doc.getNodeNames()[0].equals("AdHoc")) || (doc.getNodeNames()[0].equals("WorkflowDocument"));
+        Set<String> nodeNames = doc.getNodeNames();
+        if (nodeNames != null && nodeNames.size() > 0) {
+        	String nodeName = nodeNames.iterator().next();
+        	return validNodeNames.contains(nodeName) || (nodeName.equals("AdHoc")) || (nodeName.equals("WorkflowDocument"));
         }
         return false;
     }

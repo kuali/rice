@@ -16,13 +16,14 @@
  */
 package org.kuali.rice.kew.actions;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
-
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-
-import static org.junit.Assert.*;
 
 /**
  * Test SuperUserCancel through WorkflowDocument
@@ -36,12 +37,12 @@ public class SuperUserCancelTest extends KEWTestCase {
     @Test
     public void testSuperUserCancel() throws Exception {
 	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-	document.routeDocument("");
+	document.route("");
 
 	document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
 	assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
 	document.superUserCancel("");
-	assertTrue("Document should be final after Super User Cancel", document.stateIsCanceled());
+	assertTrue("Document should be final after Super User Cancel", document.isCanceled());
     }
 
     @Test
@@ -49,7 +50,7 @@ public class SuperUserCancelTest extends KEWTestCase {
 	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
 	assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
 	document.superUserCancel("");
-	assertTrue("Document should be final after Super User Cancel", document.stateIsCanceled());
+	assertTrue("Document should be final after Super User Cancel", document.isCanceled());
     }
 
     @Test
@@ -58,13 +59,13 @@ public class SuperUserCancelTest extends KEWTestCase {
 	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
 	assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
 	document.superUserCancel("");
-	assertTrue("Document should be final after Super User Cancel", document.stateIsCanceled());
+	assertTrue("Document should be final after Super User Cancel", document.isCanceled());
     }
 
     @Test
     public void testSuperUserCancelInvalidUser() throws Exception {
 	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-	document.routeDocument("");
+	document.route("");
 
 	document = WorkflowDocument.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId());
 	try {

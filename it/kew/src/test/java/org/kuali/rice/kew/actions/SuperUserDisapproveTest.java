@@ -16,13 +16,14 @@
  */
 package org.kuali.rice.kew.actions;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
-
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-
-import static org.junit.Assert.*;
 
 /**
  * 
@@ -37,24 +38,24 @@ public class SuperUserDisapproveTest extends KEWTestCase {
 	
     @Test public void testSuperUserDisapprove() throws Exception {
         WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        document.routeDocument("");
+        document.route("");
         
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
         document.superUserDisapprove("");
-        assertTrue("Document should be final after Super User Disapprove", document.stateIsDisapproved());
+        assertTrue("Document should be final after Super User Disapprove", document.isDisapproved());
 	}
 	
     @Test public void testSuperUserInitiatorDisapprove() throws Exception {
 		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
         document.superUserDisapprove("");
-        assertTrue("Document should be final after Super User Disapprove", document.stateIsDisapproved());
+        assertTrue("Document should be final after Super User Disapprove", document.isDisapproved());
 	}
 	
     @Test public void testSuperUserDisapproveInvalidUser() throws Exception {
 		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        document.routeDocument("");
+        document.route("");
         
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId());
         try {

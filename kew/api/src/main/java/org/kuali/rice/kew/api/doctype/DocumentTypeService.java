@@ -9,6 +9,8 @@ public interface DocumentTypeService {
 	
 	//DocumentType getDocumentType(@WebParam(name = "documentTypeId"), String documentTypeId);
 	
+	boolean isSuperUser(String principalId, String documentTypeId);
+	
 	// TODO add the following methods to this service
 	
 //	public DocumentTypeDTO getDocumentType(

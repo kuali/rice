@@ -2,6 +2,7 @@ package org.kuali.rice.kew.api;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
+import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 
 /**
@@ -12,6 +13,7 @@ public class KewApiServiceLocator {
 
 	public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE = "rice.kew.workflowDocumentActionsService";
 	public static final String WORKFLOW_DOCUMENT_SERVICE = "rice.kew.workflowDocumentService";
+	public static final String DOCUMENT_TYPE_SERVICE = "rice.kew.documentTypeService";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -24,5 +26,10 @@ public class KewApiServiceLocator {
     public static WorkflowDocumentService getWorkflowDocumentService() {
         return getService(WORKFLOW_DOCUMENT_SERVICE);
     }
+    
+    public static DocumentTypeService getDocumentTypeService() {
+        return getService(DOCUMENT_TYPE_SERVICE);
+    }
+
     
 }

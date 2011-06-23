@@ -65,23 +65,23 @@ public interface WorkflowDocumentActionsService {
     
     public DocumentActionResult saveDocumentData(String documentId, String principalId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     
-    public void delete(String documentId);
+    public void delete(String documentId, String principalId);
     
     public void logAnnotation(String documentId, String principalId, String annotation);
         
     public void initiateIndexing(String documentId);
     
-    public void superUserFullApprove(String documentId, String principalId, boolean executePostProcessor, String annotation);
+    public DocumentActionResult superUserBlanketApprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor);
     
-    public void superUserNodeApprove(String documentId, String principalId, String nodeName, boolean executePostProcessor, String annotation);
+    public DocumentActionResult superUserNodeApprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor, String nodeName);
     
-    public void superUserTakeRequestedAction(String documentId, String principalId, String actionRequestId, boolean executePostProcessor, String annotation);
+    public DocumentActionResult superUserTakeRequestedAction(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor, String actionRequestId);
     
-    public void superUserDisapprove(String documentId, String principalId, boolean executePostProcessor, String annotation);
+    public DocumentActionResult superUserDisapprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor);
     
-    public void superUserCancel(String documentId, String principalId, boolean executePostProcessor, String annotation);
+    public DocumentActionResult superUserCancel(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor);
     
-    public void superUserReturnToPreviousNode(String documentId, String principalId, ReturnPoint returnPoint, boolean executePostProcessor, String annotation);
+    public DocumentActionResult superUserReturnToPreviousNode(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, boolean executePostProcessor, ReturnPoint returnPoint);
     
     public void placeInExceptionRouting(String documentId, String principalId);
     

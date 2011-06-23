@@ -399,7 +399,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * execute any document operation
      */
     public void delete() {
-    	getWorkflowDocumentActionsService().delete(getDocumentId());
+    	getWorkflowDocumentActionsService().delete(getDocumentId(), principalId);
     	documentDeleted = true;
     }
 
@@ -511,71 +511,40 @@ public class WorkflowDocument implements java.io.Serializable {
     	}
     	return getValidActions().getValidActions().contains(actionType);
     }
+    
+    public void superUserBlanketApprove(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserBlanketApprove(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true);
+    	resetStateAfterAction(result);
+    }
+    
+    public void superUserNodeApprove(String nodeName, String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserNodeApprove(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true, nodeName);
+    	resetStateAfterAction(result);    	
+    }
 
-    //
-//    /**
-//     * Performs the 'super-user-approve' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs super-user-approve-ing the document
-//     * @see WorkflowDocumentActions#superUserApprove(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void superUserApprove(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().superUserApprove(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
-//
-//    /**
-//     * Performs the 'super-user-action-request-approve' action on the document this WorkflowDocument represents and the action
-//     * request the id represents.
-//     * @param actionRequestId the action request id for the action request the super user is approved
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs super-user-action-request-approve-ing the document
-//     * @see WorkflowDocumentActions#superUserApprove(UserIdVO, RouteHeaderVO, String)(UserIdVO, RouteHeaderVO, String)
-//     */
-//    public void superUserActionRequestApprove(Long actionRequestId, String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().superUserActionRequestApprove(principalId, getRouteHeader(), actionRequestId, annotation);
-//    	documentContentDirty = true;
-//    }
-//
-//    /**
-//     * Performs the 'super-user-disapprove' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs super-user-disapprove-ing the document
-//     * @see WorkflowDocumentActions#superUserDisapprove(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void superUserDisapprove(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().superUserDisapprove(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
-//
-//    /**
-//     * Performs the 'super-user-cancel' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs super-user-cancel-ing the document
-//     * @see WorkflowDocumentActions#superUserCancel(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void superUserCancel(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().superUserCancel(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
-//
-//    /**
-//     * Returns whether the user is a super user on this document
-//     * @return whether the user is a super user on this document
-//     * @throws WorkflowException if an error occurs determining whether the user is a super user on this document
-//     * @see WorkflowUtility#isSuperUserForDocumentType(UserIdDTO, Long)
-//     */
-//    public boolean isSuperUser() throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	return getWorkflowUtility().isSuperUserForDocumentType(principalId, getRouteHeader().getDocTypeId());
-//	}
+    public void superUserTakeRequestedAction(String actionRequestId, String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserTakeRequestedAction(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true, actionRequestId);
+    	resetStateAfterAction(result);
+    }
+
+    public void superUserDisapprove(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserDisapprove(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true);
+    	resetStateAfterAction(result);
+    }
+
+    public void superUserCancel(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserCancel(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true);
+    	resetStateAfterAction(result);
+    }
+    
+    public void superUserReturnToPreviousNode(ReturnPoint returnPoint, String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserReturnToPreviousNode(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), true, returnPoint);
+    	resetStateAfterAction(result);
+    }
+
+    public boolean isSuperUser() {
+    	return KewApiServiceLocator.getDocumentTypeService().isSuperUser(principalId, getDocument().getDocumentTypeId());
+	}
 
     public void complete(String annotation) {
     	DocumentActionResult result = getWorkflowDocumentActionsService().complete(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty());

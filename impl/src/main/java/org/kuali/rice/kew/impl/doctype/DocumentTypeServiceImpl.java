@@ -15,8 +15,11 @@
  */
 package org.kuali.rice.kew.impl.doctype;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 /**
  * Reference implementation of the {@link DocumentTypeService}. 
@@ -26,11 +29,27 @@ import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
  */
 public class DocumentTypeServiceImpl implements DocumentTypeService {
 
+	private static final Logger LOG = Logger.getLogger(DocumentTypeServiceImpl.class);
+	
 	private DocumentTypeDAO documentTypeDao;
 	
 	@Override
 	public String getDocumentTypeIdByName(String documentTypeName) {
 		return documentTypeDao.findDocumentTypeIdByName(documentTypeName);
+	}
+	
+	@Override
+	public boolean isSuperUser(String principalId, String documentTypeId) {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Determining super user status [principalId=" + principalId + ", documentTypeId=" + documentTypeId + "]");
+    	}
+    	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(documentTypeId);
+    	boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(principalId, documentType);
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Super user status is " + isSuperUser + ".");
+    	}
+    	return isSuperUser;
+
 	}
 	
 	public void setDocumentTypeDao(DocumentTypeDAO documentTypeDao) {

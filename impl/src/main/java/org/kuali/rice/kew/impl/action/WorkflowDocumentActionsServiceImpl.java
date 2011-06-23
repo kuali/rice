@@ -567,9 +567,6 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 			DocumentUpdate documentUpdate,
 			DocumentContentUpdate documentContentUpdate,
 			final String groupId) {
-		if (StringUtils.isBlank(groupId)) {
-			throw new RiceIllegalArgumentException("groupId was null or blank");
-		}
 		return executeActionInternal(documentId,
 				principalId,
 				annotation,
@@ -592,9 +589,6 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 			DocumentUpdate documentUpdate,
 			DocumentContentUpdate documentContentUpdate,
 			final String groupId) {
-		if (StringUtils.isBlank(groupId)) {
-			throw new RiceIllegalArgumentException("groupId was null or blank");
-		}
 		return executeActionInternal(documentId,
 				principalId,
 				annotation,
@@ -642,9 +636,16 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public void delete(String documentId) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+	public void delete(String documentId, String principalId) {
+		DocumentRouteHeaderValue documentBo = init(documentId, principalId, null, null);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Delete [principalId=" + principalId + ", documentId=" + documentId + "]");
+		}
+		try {
+			KEWServiceLocator.getWorkflowDocumentService().deleteDocument(principalId, documentBo);
+		} catch (WorkflowException e) {
+			translateException(e);
+		}
 	}
 
 	@Override
@@ -661,49 +662,109 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public void superUserFullApprove(String documentId, String principalId,
-			boolean executePostProcessor, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+	public DocumentActionResult superUserBlanketApprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor) {
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new DocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().superUserApprove(principalId, documentBo, annotation, executePostProcessor);
+			}
+			public String getLogMessage(String documentId, String principalId, String annotation) {
+				return "SU Blanket Approve [principalId=" + principalId + ", documentId=" + documentId + ", annotation=" + annotation + "]";
+			}
+		});		
 	}
-
+    
 	@Override
-	public void superUserNodeApprove(String documentId, String principalId,
-			String nodeName, boolean executePostProcessor, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
+    public DocumentActionResult superUserNodeApprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor, final String nodeName) {
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new DocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(principalId, documentBo, nodeName, annotation, executePostProcessor);
+			}
+			public String getLogMessage(String documentId, String principalId, String annotation) {
+				return "SU Node Approve Action [principalId=" + principalId + ", documentId=" + documentId + ", nodeName=" + nodeName + ", annotation=" + annotation + "]";
+			}
+		});		
 
 	}
-
+    
 	@Override
-	public void superUserTakeRequestedAction(String documentId,
-			String principalId, String actionRequestId,
-			boolean executePostProcessor, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+    public DocumentActionResult superUserTakeRequestedAction(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor, final String actionRequestId) {
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new DocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(principalId, documentBo, Long.valueOf(actionRequestId), annotation, executePostProcessor);
+			}
+			public String getLogMessage(String documentId, String principalId, String annotation) {
+				return "SU Take Requested Action [principalId=" + principalId + ", docume tId=" + documentId + ", actionRequestId=" + actionRequestId + ", annotation=" + annotation + "]";
+			}
+		});		
 	}
-
+    
 	@Override
-	public void superUserDisapprove(String documentId, String principalId,
-			boolean executePostProcessor, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+    public DocumentActionResult superUserDisapprove(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor){
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new DocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(principalId, documentBo, annotation, executePostProcessor);
+			}
+			public String getLogMessage(String documentId, String principalId, String annotation) {
+				return "SU Disapprove [principalId=" + principalId + ", documentId=" + documentId + ", annotation=" + annotation + "]";
+			}
+		});		
 	}
-
+    
 	@Override
-	public void superUserCancel(String documentId, String principalId,
-			boolean executePostProcessor, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+    public DocumentActionResult superUserCancel(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor) {
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new DocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(principalId, documentBo, annotation, executePostProcessor);
+			}
+			public String getLogMessage(String documentId, String principalId, String annotation) {
+				return "SU Cancel [principalId=" + principalId + ", documentId=" + documentId + ", annotation=" + annotation + "]";
+			}
+		});		
 	}
-
+    
 	@Override
-	public void superUserReturnToPreviousNode(String documentId,
-			String principalId, ReturnPoint returnPoint,
-			boolean executePostProcessor, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
+    public DocumentActionResult superUserReturnToPreviousNode(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, final boolean executePostProcessor, final ReturnPoint returnPoint) {
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new DocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(principalId, documentBo, returnPoint.getNodeName(), annotation, executePostProcessor);
+			}
+			public String getLogMessage(String documentId, String principalId, String annotation) {
+				return "SU Return to Previous Node [principalId=" + principalId + ", documentId=" + documentId + ", annotation=" + annotation + ", returnPoint=" + returnPoint + "]";
+			}
+		});		
 
 	}
-
+	
 	@Override
 	public void placeInExceptionRouting(String documentId, String principalId) {
 		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS

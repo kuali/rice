@@ -22,7 +22,6 @@ public interface WorkflowDocumentService {
 	
 	List<ActionTaken> getActionsTaken(@WebParam(name = "documentId") String documentId);
 
-	
 //    public DocumentDetailDTO getDocumentDetailFromAppId(String documentTypeName, String appId) throws WorkflowException;
 //
 //	public RouteHeaderDTO getRouteHeaderWithPrincipal(

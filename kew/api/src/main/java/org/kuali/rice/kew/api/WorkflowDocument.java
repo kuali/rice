@@ -741,12 +741,11 @@ public class WorkflowDocument implements java.io.Serializable {
     	saveDocumentData();
     }
     
-//    public void placeInExceptionRouting(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().placeInExceptionRouting(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
-//
+    public void placeInExceptionRouting(String annotation) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().placeInExceptionRouting(constructDocumentActionParameters(annotation));
+    	resetStateAfterAction(result);
+    }
+
 //    /**
 //     * Returns a list of NoteVO representing the notes on the document
 //     * @return a list of NoteVO representing the notes on the document

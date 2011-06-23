@@ -125,6 +125,15 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		}
 	};	
 	
+	private static final DocumentActionCallback PLACE_IN_EXCEPTION_CALLBACK = new StandardDocumentActionCallback() {
+		public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+			return KEWServiceLocator.getWorkflowDocumentService().placeInExceptionRouting(principalId, documentBo, annotation);
+		}
+		public String getActionName() {
+			return "Place In Exception";
+		}
+	};	
+	
 	
 	
 	protected DocumentRouteHeaderValue init(DocumentActionParameters parameters) {
@@ -655,9 +664,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 	
 	@Override
-	public void placeInExceptionRouting(String documentId, String principalId) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+	public DocumentActionResult placeInExceptionRouting(DocumentActionParameters parameters) {
+		return executeActionInternal(parameters, PLACE_IN_EXCEPTION_CALLBACK);
 	}
 
 	@Override

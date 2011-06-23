@@ -86,7 +86,7 @@ public interface WorkflowDocumentActionsService {
     
     public DocumentActionResult superUserReturnToPreviousNode(DocumentActionParameters parameters, boolean executePostProcessor, ReturnPoint returnPoint);
     
-    public void placeInExceptionRouting(String documentId, String principalId);
+    public DocumentActionResult placeInExceptionRouting(DocumentActionParameters parameters);
     
     // TODO add the following methods to this service
     

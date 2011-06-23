@@ -16,11 +16,27 @@
 
 package org.kuali.rice.kim.service.impl;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
@@ -120,20 +136,9 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-
-import javax.xml.namespace.QName;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
@@ -155,6 +160,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     private ResponsibilityInternalService responsibilityInternalService;
 	private KimTypeInfoService kimTypeInfoService;
     private DocumentHelperService documentHelperService;
+    private ParameterService parameterService;
 
 
 	/**
@@ -561,7 +567,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		        	docRole.setEdit(true);
 		        	docRole.setRoleId(role.getRoleId());
 		        	docRole.setRoleName(role.getRoleName());
-		        	docRole.setRolePrncpls(populateDocRolePrncpl(role.getMembers(), identityManagementPersonDocument.getPrincipalId(), getAttributeDefinitionsForRole(docRole)));
+		        	docRole.setRolePrncpls(populateDocRolePrncpl(role.getNamespaceCode(), role.getMembers(), identityManagementPersonDocument.getPrincipalId(), getAttributeDefinitionsForRole(docRole)));
 		        	docRole.refreshReferenceObject("assignedResponsibilities");
 		        	if(docRole.getRolePrncpls()!=null && !docRole.getRolePrncpls().isEmpty()){
 		        		docRoles.add(docRole);
@@ -700,7 +706,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return (List<RoleResponsibilityActionImpl>)getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
 	}
 
-    protected List<KimDocumentRoleMember> populateDocRolePrncpl(List <RoleMemberImpl> roleMembers, String principalId, AttributeDefinitionMap definitions) {
+    protected List<KimDocumentRoleMember> populateDocRolePrncpl(String namespaceCode, List <RoleMemberImpl> roleMembers, String principalId, AttributeDefinitionMap definitions) {
 		List <KimDocumentRoleMember> docRoleMembers = new ArrayList <KimDocumentRoleMember>();
 		if(ObjectUtils.isNotNull(roleMembers)){
 	    	for (RoleMemberImpl rolePrincipal : roleMembers) {
@@ -713,7 +719,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	        		docRolePrncpl.setRoleId(rolePrincipal.getRoleId());
 	        		docRolePrncpl.setActiveFromDate(rolePrincipal.getActiveFromDate());
 	        		docRolePrncpl.setActiveToDate(rolePrincipal.getActiveToDate());
-	         		docRolePrncpl.setQualifiers(populateDocRoleQualifier(rolePrincipal.getAttributes(), definitions));
+	         		docRolePrncpl.setQualifiers(populateDocRoleQualifier(namespaceCode, rolePrincipal.getAttributes(), definitions));
 	         		docRolePrncpl.setEdit(true);
 	        		docRoleMembers.add(docRolePrncpl);
 	    		 }
@@ -725,7 +731,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     // UI layout for rolequalifier is a little different from kimroleattribute set up.
     // each principal may have member with same role multiple times with different qualifier, but the role
     // only displayed once, and the qualifier displayed multiple times.
-    protected List<KimDocumentRoleQualifier> populateDocRoleQualifier(List <RoleMemberAttributeDataImpl> qualifiers, AttributeDefinitionMap definitions) {
+    protected List<KimDocumentRoleQualifier> populateDocRoleQualifier(String namespaceCode, List <RoleMemberAttributeDataImpl> qualifiers, AttributeDefinitionMap definitions) {
 		List <KimDocumentRoleQualifier> docRoleQualifiers = new ArrayList <KimDocumentRoleQualifier>();
 		if(definitions!=null){
 			for (String key : definitions.keySet()) {
@@ -761,7 +767,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			// If all of the qualifiers are empty, return an empty list
 			// This is to prevent dynamic qualifiers from appearing in the
 			// person maintenance roles tab.  see KULRICE-3989 for more detail
-			if (!Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(SHOW_BLANK_QUALIFIERS))) {
+			// and KULRICE-5071 for detail on switching from config value to 
+			// application-scoped parameter
+			if (!isBlankRoleQualifierVisible(namespaceCode)) {
 				int qualCount = 0;
 				for (KimDocumentRoleQualifier qual : docRoleQualifiers){
 					if (StringUtils.isEmpty(qual.getAttrVal())){
@@ -1036,6 +1044,28 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimEntity.setAffiliations(entityAffiliations);
 	}
 
+    /*
+     * Added to address KULRICE-5071 : "Move the 'show blank qualifier' kim toggle from a Config param to a System param"
+     * 
+     * This method first checks for a namespace specific parameter with a detailTypeCode of "All" and parameterName of "KIM_SHOW_BLANK_QUALIFIERS". 
+     * If no parameter is found, it checks for the config property "kim.show.blank.qualifiers", and defaults to true if no config property exists. 
+     *
+     */
+    private boolean isBlankRoleQualifierVisible(String namespaceCode) {
+    	boolean showBlankQualifiers = true;
+		
+		Parameter param = getParameterService().getParameter(namespaceCode, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KimConstants.ParameterKey.SHOW_BLANK_QUALIFIERS);
+	    if (param != null) {
+	    	showBlankQualifiers = "Y".equals(param.getValue());
+	    } else {
+	    	String configProperty = ConfigContext.getCurrentContextConfig().getProperty(SHOW_BLANK_QUALIFIERS);
+	    	if (configProperty != null)
+	    		showBlankQualifiers = Boolean.valueOf(configProperty);
+	    }
+	    
+	    return showBlankQualifiers;
+    }
+    
    private boolean isSameAffiliation(EntityAffiliationBo origAffiliation, EntityAffiliationBo entityAffiliation){
     	//entityId
     	//affiliationTypeCode
@@ -2821,11 +2851,22 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	}
     	return qualifiers;
     }
-
-   public ResponsibilityInternalService getResponsibilityInternalService() {
-    	if ( responsibilityInternalService == null ) {
-    		responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
-    	}
+    
+	public ResponsibilityInternalService getResponsibilityInternalService() {
+		if ( responsibilityInternalService == null ) {
+				responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
+		}
 		return responsibilityInternalService;
 	}
+
+    public ParameterService getParameterService() {
+    	if ( parameterService == null ) {
+    		parameterService = CoreFrameworkServiceLocator.getParameterService();
+    	}
+    	return parameterService;
+    }
+
+    public void setParameterService(ParameterService parameterService) {
+    	this.parameterService = parameterService;
+    }
 }

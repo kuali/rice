@@ -342,4 +342,9 @@ public final class KimConstants {
 
         public static final String KIM_NAMESPACE_2_0 = KIM_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
     }
+    
+    public static class ParameterKey {
+    	public static final String SHOW_BLANK_QUALIFIERS = "KIM_SHOW_BLANK_QUALIFIERS";
+	}
+    
 }

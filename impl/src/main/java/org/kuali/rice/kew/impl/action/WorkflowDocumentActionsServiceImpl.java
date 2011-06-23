@@ -649,10 +649,13 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public void logAnnotation(String documentId, String principalId,
-			String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+	public void logAnnotation(String documentId, String principalId, String annotation) {
+		DocumentRouteHeaderValue documentBo = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+		try {
+			KEWServiceLocator.getWorkflowDocumentService().logDocumentAction(principalId, documentBo, annotation);
+		} catch (WorkflowException e) {
+			translateException(e);
+		}
 	}
 
 	@Override

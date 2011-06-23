@@ -551,19 +551,10 @@ public class WorkflowDocument implements java.io.Serializable {
     	resetStateAfterAction(result);
     }
 
-//    /**
-//     * Performs the 'logDocumentAction' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.  The 'logDocumentAction' simply logs a message on the document.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs logging a document action on the document
-//     * @see WorkflowDocumentActions#logDocumentAction(UserIdDTO, RouteHeaderDTO, String)
-//     */
-//    public void logDocumentAction(String annotation) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	getWorkflowDocumentActions().logDocumentAction(principalId, getRouteHeader(), annotation);
-//    	documentContentDirty = true;
-//    }
-//
+    public void logAnnotation(String annotation) {
+    	getWorkflowDocumentActionsService().logAnnotation(getDocumentId(), principalId, annotation);
+    }
+
   
     public DocumentStatus getStatus() {
     	return getDocument().getStatus();

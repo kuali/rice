@@ -18,7 +18,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiRuleService;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.web.spring.form.MaintenanceForm;
+import org.kuali.rice.krad.web.spring.form.DocumentFormBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -47,12 +47,12 @@ public class DocumentViewHelperServiceImpl extends ViewHelperServiceImpl {
     protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
         boolean isValidLine = true;
 
-        if (model.getClass().equals(MaintenanceForm.class) && addLine.getClass().equals(AdHocRoutePerson.class)) {
-            MaintenanceForm form = (MaintenanceForm) model;
+        if (model instanceof DocumentFormBase && addLine instanceof AdHocRoutePerson) {
+            DocumentFormBase form = (DocumentFormBase) model;
             isValidLine = getKualiRuleService().applyRules(new AddAdHocRoutePersonEvent(form.getDocument(), (AdHocRoutePerson)addLine));
         }
-        else if (model.getClass().equals(MaintenanceForm.class) && addLine.getClass().equals(AdHocRouteWorkgroup.class)) {
-            MaintenanceForm form = (MaintenanceForm) model;
+        else if (model instanceof DocumentFormBase && addLine instanceof AdHocRouteWorkgroup) {
+            DocumentFormBase form = (DocumentFormBase) model;
             isValidLine = getKualiRuleService().applyRules(new AddAdHocRouteWorkgroupEvent(form.getDocument(), (AdHocRouteWorkgroup)addLine));
         }
 

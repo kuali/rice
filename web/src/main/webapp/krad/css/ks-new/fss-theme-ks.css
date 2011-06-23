@@ -1,4 +1,5 @@
 /*-- Base Styles ------ */
+
 a {
     color:#3F7826;
     font-weight:normal;
@@ -47,6 +48,7 @@ table td, table th {
 	background-color:#73C561;
 	/* font styling */
 	color: #2A2A2A;
+    cursor:pointer;
 }
 .fl-theme-ks .button-secondary1 {
 	border-color:#469C3D;
@@ -57,6 +59,7 @@ table td, table th {
 	/* fallback for < 8 versions of IE*/
 	background-color:#73C561;
 	color: #2A2A2A;
+    cursor:pointer;
 }
 
 .fl-theme-ks .button-secondary2 {
@@ -68,8 +71,12 @@ table td, table th {
 	/* fallback for < 8 versions of IE*/
 	background-color:#73C561;
 	color: #3F7826;
+    cursor:pointer;
 }
 .ui-priority-secondary-sm {
+    -moz-border-radius:3px;
+    -o-border-radius: 3px;
+    -webkit-border-radius: 3px;
     border-radius:3px;
     background-image: -moz-linear-gradient(top, #ffffff, #e2e2e2);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #e2e2e2));
@@ -191,9 +198,7 @@ table td, table th {
     .field-attribute .summry {
         line-height: 18px;
     }
-    .desc {
-        display:block;
-    }
+
     .labelTop {
         float:none;
         display:block;
@@ -204,9 +209,177 @@ table td, table th {
     .constraint {
         /*float:left;        removing for non-table display, but may possibly break elsewhere - David */
     }
-    .errorMessages {
-        background-color: #FFE0EC;
-        padding: 6px;
+/* ERRORS AND MESSAGING */
+    /*
+ * ErrorsField
+*/
+    .errorsField{
+        padding-left: 10px;
+        overflow: hidden;
+        *zoom: 1;
+    }
+
+    .errorsFieldForContainer{
+        float: none;
+        padding-left: 10px;
+        display:inline-block;
+        zoom:1;
+        *display:inline;
+    }
+
+    .errorMessages{
+        padding-left: 20px;
+        background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
+    }
+
+    .warningMessages{
+        padding-left: 20px;
+        background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
+    }
+
+    .infoMessages{
+        padding-left: 20px;
+        background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll left top transparent;
+    }
+
+    .errorsFieldForContainer .errorMessages{
+
+        border: 1px solid red;
+        background-color: #FFE0E9;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-right: 10px;
+    }
+
+    .errorsFieldForContainer .warningMessages{
+        border: 1px solid goldenrod;
+        background-color: #F4E271;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-right: 10px;
+    }
+
+    .errorsFieldForContainer .infoMessages{
+        border: 1px solid #82CAFA;
+        background-color: #AFDCEC;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-right: 10px;
+    }
+
+    .errorsField ul{
+        list-style: none outside none;
+        margin: 0;
+    }
+
+    .errorsField li{
+        list-style: none outside none;
+        margin-left: 0;
+        padding: 1px 0;
+        line-height: 1.3em;
+    }
+
+    .errorsField .errorMessages{
+        color: #DF0000;
+        font-weight: bold;
+    }
+
+    span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError{
+        background-color: #FFE0E9 !important;
+    }
+
+    span.information, div.information, td.information{
+        background-color: #AFDCEC;
+    }
+
+    span.warning, div.warning, td.warning{
+        background-color: #F4E271;
+    }
+
+    label.clientError, a.clientError, label.serverError{
+        color: #DF0000 !important;
+    }
+
+    li label.error{
+        display: inline !important;
+    }
+
+    .clearfix:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+
+/* IE specific */
+    * html .clearfix {height: 1%;}
+
+    .boxLayoutHorizontalItem{
+        margin-right: 15px;
+    }
+
+    .boxLayoutVerticalItem{
+        padding-bottom: 20px;
+        display: block;
+    }
+
+    .fieldContainerVerticalItem{
+        padding-bottom: 5px;
+        display: block;
+    }
+/*
+Tab menu
+*/
+    .tab-navigation-block{
+        padding: 0 !important;
+        padding-left: 20px !important;
+
+    }
+
+    .tab-navigation-block, .tab-navigation-block li{
+        border-bottom: 1px solid #C7C7C7;
+    }
+
+    .tab-navigation-block li{
+        float: left;
+        list-style: none outside none;
+        margin: 0 0.2em 1px 0;
+        padding: 0;
+        position: relative;
+        top: 2px;
+        *top: 1px;
+        white-space: nowrap;
+        clear: none;
+    }
+
+    .ui-tabs li{
+        clear: none;
+    }
+
+    .tab-navigation-block li a{
+        float: left;
+        padding: 0.5em 1em;
+        text-decoration: none;
+    }
+
+    .tab-navigation-block li.ui-state-active{
+        border-bottom: 1px solid #F6F6F6;
+        background: none;
+    }
+
+    .tab-navigation-block li.ui-state-active a{
+        color: black !important;
+    }
+
+    .ui-datepicker-trigger{
+        cursor: pointer;
     }
     .page-action h2 {
         clear:left;
@@ -228,7 +401,13 @@ table td, table th {
    float: left;
    width: 219px;
 }
-
+/* error messaging */
+.errorsField {
+    float:right; /* validation errors should appear to the right of the field group */
+}
+.clientError img {
+    margin-left:10px;   /* adds spacing between tab label and the icon */
+}
 /*
 Basic Navigation Menu
 */
@@ -279,8 +458,7 @@ ul.basic-navigation li.basic-element a.current, ul.basic-navigation li.basic-ele
 Animated Navigation Menu
 */
 .animated-navigation h2.fl-font-serif {
-    font-family:arial, sans-serif;
-    font-size: 12px;
+    font-family:arial, sans-serif; /* overrides the h2 to a sans-serif */
 }
 ul.animated-navigation {
     list-style: none outside none;
@@ -298,7 +476,7 @@ ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animate
     width: 200px;
 	font-weight: bold;
     margin-top: 20px;
-    font-size: .9em;
+    font-size: .92307692em;
     font-family:arial, sans-serif;
     text-transform:uppercase;
     border-top: 2px solid #000;
@@ -316,6 +494,7 @@ ul.animated-navigation li.animated-element a {
     color: #3F7826;
     text-decoration: none;
     border-bottom: 1px solid #bbb;
+    font-size:.92307692em;
 }
 
 ul.animated-navigation li.animated-element a:hover, ul.animated-navigation li.animated-element a:focus {
@@ -364,7 +543,7 @@ Navigation Slide Control
     background-color:#fff;
     border:1px solid #ccc;
 }
-.ui-datepicker-trigger, .ui-datepicker-buttonpane button {            /* make sure the icons appear clickable*/
+.ui-datepicker-trigger {            /* make sure the icons appear clickable*/
     cursor:pointer;
 	background-image:url(../../images/cal_ks.gif)
 }
@@ -386,20 +565,20 @@ Navigation Slide Control
     color:transparent
 }
 .ui-datepicker-prev .ui-icon {
-    background:  url(../../images/sprite-icons.png) no-repeat scroll -24px 0 transparent;
+    background:  url(../../images/sprite-icons.png) no-repeat scroll -23px 0 transparent;
 }
 .ui-datepicker-prev:hover .ui-icon {
-    background:  url(../../images/sprite-icons-hover.png) no-repeat scroll -24px 0 transparent;
+    background:  url(../../images/sprite-icons-hover.png) no-repeat scroll -23px 0 transparent;
 }
 .ui-datepicker-next {
     float:right;
     color:transparent;
 }
 .ui-datepicker-next .ui-icon {
-    background:  url(../../images/sprite-icons.png) no-repeat scroll -24px -34px transparent;
+    background:  url(../../images/sprite-icons.png) no-repeat scroll -23px -34px transparent;
 }
 .ui-datepicker-next:hover .ui-icon {
-    background:  url(../../images/sprite-icons-hover.png) no-repeat scroll -24px -34px transparent;
+    background:  url(../../images/sprite-icons-hover.png) no-repeat scroll -23px -34px transparent;
 }
 .ui-datepicker-title select {
     margin-right:5px;
@@ -408,6 +587,9 @@ Navigation Slide Control
     background-color: #000000;
     padding: 5px 0;
     text-align: center;
+    -moz-border-radius: 0 0 4px 4px;
+    -webkit-border-radius: 0 0 4px 4px;
+    -o-border-radius: 0 0 4px 4px;
     border-radius:0 0 4px 4px;
 }
 .ui-datepicker-buttonpane button {
@@ -476,4 +658,12 @@ Navigation Slide Control
 
 .ui-tabs-nav li.ui-state-hover a{
     color: #ffffff;
+}
+
+/* Lightbox Styles */
+.view_header {          /* remove background image for lightbox headers */
+    background: none;
+}
+.view_header h1 {                     /* h1 style for lightboxes */
+    font-family:arial, sans-serif;
 }

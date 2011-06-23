@@ -302,14 +302,14 @@ public class WorkflowDocument implements java.io.Serializable {
     
     protected DocumentUpdate getDocumentUpdateIfDirty() {
     	if (getModifiableDocument().isDirty()) {
-    		return getModifiableDocument().getBuilder().build();
+    		return getModifiableDocument().build();
     	}
     	return null;
     }
     
     protected DocumentContentUpdate getDocumentContentUpdateIfDirty() {
     	if (getModifiableDocumentContent().isDirty()) {
-    		return getModifiableDocumentContent().getBuilder().build();
+    		return getModifiableDocumentContent().build();
     	}
     	return null;
     }
@@ -838,27 +838,15 @@ public class WorkflowDocument implements java.io.Serializable {
 //    		}
 //    	}
 //    }
-//
-//    /**
-//     * Sets a variable on the document.  The assignment is deferred until the next time the document is committed (via an action).
-//     * @param name name of the variable
-//     * @param value value of the variable
-//     */
-//    public void setVariable(String name, String value) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//        getRouteHeader().setVariable(name, value);
-//    }
-//
-//    /**
-//     * Gets the value of a variable on the document, creating the document first if it does not exist.
-//     * @param name variable name
-//     * @return variable value
-//     */
-//    public String getVariable(String name) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//        return getRouteHeader().getVariable(name);
-//    }
-//
+
+    public void setVariable(String name, String value) {
+    	getModifiableDocument().setVariable(name, value);
+    }
+
+    public String getVariableValue(String name) {
+    	return getModifiableDocument().getVariableValue(name);
+    }
+
 //    /**
 //     *
 //     * Tells workflow that the current the document is constructed as will receive all future requests routed to them
@@ -1041,8 +1029,8 @@ public class WorkflowDocument implements java.io.Serializable {
 		   return documentContentBuilder.build();
 	   }
 	   
-	   protected DocumentContentUpdate.Builder getBuilder() {
-		   return builder;
+	   protected DocumentContentUpdate build() {
+		   return builder.build();
 	   }
 	   
 	   protected void setDocumentContentUpdate(DocumentContentUpdate update) {
@@ -1133,8 +1121,8 @@ public class WorkflowDocument implements java.io.Serializable {
 			return documentBuilder.build();
 		}
 
-		protected DocumentUpdate.Builder getBuilder() {
-			return builder;
+		protected DocumentUpdate build() {
+			return builder.build();
 		}
 		
 		/**
@@ -1176,6 +1164,15 @@ public class WorkflowDocument implements java.io.Serializable {
 		protected void setApplicationDocumentStatus(String applicationDocumentStatus) {
 			builder.setApplicationDocumentStatus(applicationDocumentStatus);
 			dirty = true;
+		}
+		
+		protected void setVariable(String name, String value) {
+			builder.setVariable(name, value);
+			dirty = true;
+		}
+		
+		protected String getVariableValue(String name) {
+			return builder.getVariableValue(name);
 		}
 
 		boolean isDirty() {

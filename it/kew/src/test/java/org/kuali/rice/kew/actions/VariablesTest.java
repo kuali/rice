@@ -17,17 +17,18 @@
 
 package org.kuali.rice.kew.actions;
 
-import org.junit.Test;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.ActionTakenDTO;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-
-import static org.junit.Assert.*;
 
 /**
  * Test case that tests setting and getting variables, both programmatically
@@ -43,14 +44,14 @@ public class VariablesTest extends KEWTestCase {
     }
 
     private void dumpInfoAboutDoc(WorkflowDocument doc) throws WorkflowException {
-        LOG.info("\tDoc: class=" + doc.getDocumentType() + " title=" + doc.getTitle() + " status=" + doc.getStatusDisplayValue());
+        LOG.info("\tDoc: class=" + doc.getDocumentTypeName() + " title=" + doc.getTitle() + " status=" + doc.getStatus());
         LOG.info("\tActionRequests:");
-        for (ActionRequestDTO ar: doc.getActionRequests()) {
-            LOG.info("\t\tId: " + ar.getActionRequestId() + " PrincipalId: " + ar.getPrincipalId() + " ActionRequested: " + ar.getActionRequested() + " ActionTaken: " + (ar.getActionTaken() != null ? ar.getActionTaken().getActionTaken() : null) + " NodeName: " + ar.getNodeName() + " Status:" + ar.getStatus());
+        for (ActionRequest ar: doc.getRootActionRequests()) {
+            LOG.info("\t\tId: " + ar.getId() + " PrincipalId: " + ar.getPrincipalId() + " ActionRequested: " + ar.getActionRequested() + " ActionTaken: " + (ar.getActionTaken() != null ? ar.getActionTaken().getActionTaken() : null) + " NodeName: " + ar.getNodeName() + " Status:" + ar.getStatus());
         }
         LOG.info("\tActionTakens:");
-        for (ActionTakenDTO at: doc.getActionsTaken()) {
-            LOG.info("\t\tId: " + at.getActionTakenId() + " PrincipalId: " + at.getPrincipalId() + " ActionTaken: " + at.getActionTaken());
+        for (ActionTaken at: doc.getActionsTaken()) {
+            LOG.info("\t\tId: " + at.getId() + " PrincipalId: " + at.getPrincipalId() + " ActionTaken: " + at.getActionTaken());
         }
         LOG.info("\tNodeNames:");
         for (String name: doc.getNodeNames()) {
@@ -67,44 +68,44 @@ public class VariablesTest extends KEWTestCase {
 
     @Test public void testVariables() throws Exception {
         WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "VariablesTest");
-        doc.routeDocument("");
+        doc.route("");
 
         //rock some preapprovals and other actions...
         doc = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), doc.getDocumentId());
         dumpInfoAboutDoc(doc);
         doc.setVariable("myexcellentvariable", "righton");
         doc.approve("");
-        assertEquals("startedVariableValue", doc.getVariable("started"));
-        assertEquals("startedVariableValue", doc.getVariable("copiedVar"));
+        assertEquals("startedVariableValue", doc.getVariableValue("started"));
+        assertEquals("startedVariableValue", doc.getVariableValue("copiedVar"));
 
         doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
-        assertEquals("righton", doc.getVariable("myexcellentvariable"));
+        assertEquals("righton", doc.getVariableValue("myexcellentvariable"));
         doc.setVariable("vartwo", "two");
         doc.setVariable("myexcellentvariable", "ichangedit");
         doc.acknowledge("");
 
         doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
-        assertEquals("ichangedit", doc.getVariable("myexcellentvariable"));
-        assertEquals("two", doc.getVariable("vartwo"));
+        assertEquals("ichangedit", doc.getVariableValue("myexcellentvariable"));
+        assertEquals("two", doc.getVariableValue("vartwo"));
         doc.setVariable("another", "another");
         doc.setVariable("vartwo", null);
         doc.complete("");
 
         //approve as the person the doc is routed to so we can move the documen on and hopefully to final
         doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
-        assertEquals("ichangedit", doc.getVariable("myexcellentvariable"));
-        assertEquals(null, doc.getVariable("vartwo"));
-        assertEquals("another", doc.getVariable("another"));
+        assertEquals("ichangedit", doc.getVariableValue("myexcellentvariable"));
+        assertEquals(null, doc.getVariableValue("vartwo"));
+        assertEquals("another", doc.getVariableValue("another"));
         doc.approve("");
 
-        assertEquals("endedVariableValue", doc.getVariable("ended"));
-        assertNotNull(doc.getVariable("google"));
-        LOG.info(doc.getVariable("google"));
-        assertEquals("documentContentendedVariableValue", doc.getVariable("xpath"));
-        LOG.info(doc.getVariable("xpath"));
+        assertEquals("endedVariableValue", doc.getVariableValue("ended"));
+        assertNotNull(doc.getVariableValue("google"));
+        LOG.info(doc.getVariableValue("google"));
+        assertEquals("documentContentendedVariableValue", doc.getVariableValue("xpath"));
+        LOG.info(doc.getVariableValue("xpath"));
 
-        assertEquals("aNewStartedVariableValue", doc.getVariable("started"));
+        assertEquals("aNewStartedVariableValue", doc.getVariableValue("started"));
 
-        assertTrue("the document should be final", doc.stateIsFinal());
+        assertTrue("the document should be final", doc.isFinal());
     }
 }

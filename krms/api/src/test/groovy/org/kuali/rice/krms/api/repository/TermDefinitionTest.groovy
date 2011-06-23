@@ -38,6 +38,8 @@ class TermDefinitionTest {
 	        <contextId>1234CONTEXT</contextId>
 	        <name>termSpec-name</name>
 	        <type>term.spec.Type</type>
+	        <categories>
+	        </categories>
 	    </specification>
 	    <parameters>
 	        <parameter>

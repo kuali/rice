@@ -16,6 +16,7 @@ public class FunctionBo extends PersistableBusinessObjectBase implements Inactiv
 	def boolean active	
 
 	def List<FunctionParameterBo> parameters
+    def List<CategoryBo> categories
 	
 	/**
 	* Converts a mutable bo to it's immutable counterpart
@@ -48,6 +49,10 @@ public class FunctionBo extends PersistableBusinessObjectBase implements Inactiv
 	   for (parm in im.parameters){
 		   bo.parameters.add( FunctionParameterBo.from(parm) )
 	   }
+       bo.categories = new ArrayList<CategoryBo>()
+       for (category in im.categories) {
+           bo.categories.add(CategoryBo.from(category))
+       }
 	   bo.versionNumber = im.versionNumber
 	   return bo
    }

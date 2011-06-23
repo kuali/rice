@@ -17,6 +17,9 @@ package org.kuali.rice.krms.api.repository.term;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
+
+import java.util.List;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 
@@ -29,5 +32,14 @@ public interface TermSpecificationDefinitionContract extends Identifiable, Versi
 	String getContextId();
 	String getName();
 	String getType();
-	
+
+    /**
+     * Returns an ordered, immutable list of the categories which this term specification
+     * definition requires.  This list can be empty (in the case of a term
+     * which has no arguments) but will never be null.
+     *
+     * @return the list of categories for this term specification definition
+     */
+    List<? extends CategoryDefinitionContract> getCategories();
+
 }

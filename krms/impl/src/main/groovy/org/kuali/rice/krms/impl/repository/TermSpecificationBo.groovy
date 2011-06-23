@@ -12,7 +12,9 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
 	def String contextId
 	def String name
 	def String type
-		
+
+    def List<CategoryBo> categories
+
 	/**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object
@@ -36,6 +38,10 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
 	   bo.contextId = im.contextId
 	   bo.name = im.name
 	   bo.type = im.type
+       bo.categories = new ArrayList<CategoryBo>()
+       for (category in im.categories) {
+           bo.categories.add(CategoryBo.from(category))
+       }
 	   bo.versionNumber = im.versionNumber
 	   
 	   return bo

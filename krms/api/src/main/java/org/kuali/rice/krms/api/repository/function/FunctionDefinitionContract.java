@@ -18,6 +18,7 @@ package org.kuali.rice.krms.api.repository.function;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
 import java.util.List;
@@ -94,5 +95,14 @@ public interface FunctionDefinitionContract extends Versioned, Identifiable, Ina
 	 * @return the list of parameters for this function definition
 	 */
 	List<? extends FunctionParameterDefinitionContract> getParameters();
+
+    /**
+     * Returns an ordered, immutable list of the categories which this function
+     * definition requires.  This list can be empty (in the case of a function
+     * which has no arguments) but will never be null.
+     *
+     * @return the list of categories for this function definition
+     */
+    List<? extends CategoryDefinitionContract> getCategories();
 
 }

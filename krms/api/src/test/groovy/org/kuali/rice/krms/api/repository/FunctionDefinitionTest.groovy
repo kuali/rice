@@ -24,6 +24,8 @@ import org.kuali.rice.krms.api.repository.function.FunctionDefinitionContract
 import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinition
 import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinitionContract
 import org.kuali.rice.krms.api.test.JAXBAssert
+import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract
+import org.kuali.rice.krms.api.repository.category.CategoryDefinition
 
 class FunctionDefinitionTest {
 
@@ -50,6 +52,16 @@ class FunctionDefinitionTest {
 	private static final Long PARM2_VERSION_NUMBER = 1;
 	private static final Integer PARM2_SEQUENCE_NUMBER = 2;
 	
+    private static final String CTGRY1_ID = "4";
+    private static final String CTGRY1_NAME = "category1";
+    private static final String CTGRY1_NAMESPACE = "namespace";
+    private static final Long CTGRY1_VERSION_NUMBER = 1;
+
+    private static final String CTGRY2_ID = "5";
+    private static final String CTGRY2_NAME = "category2";
+    private static final String CTGRY2_NAMESPACE = "namespace";
+    private static final Long CTGRY2_VERSION_NUMBER = 1;
+
 	private static final String XML = """
 <function xmlns="http://rice.kuali.org/krms/repository/v2_0">
 	<id>1</id>
@@ -80,6 +92,20 @@ class FunctionDefinitionTest {
 			<functionId>1</functionId>
 		</parameter>
 	</parameters>
+	<categories>
+	    <category>
+	        <id>4</id>
+	        <name>category1</name>
+	        <namespace>namespace</namespace>
+	        <versionNumber>1</versionNumber>
+	    </category>
+	    <category>
+	        <id>5</id>
+	        <name>category2</name>
+	        <namespace>namespace</namespace>
+	        <versionNumber>1</versionNumber>
+	    </category>
+	</categories>
 </function>
 """;
 
@@ -192,6 +218,18 @@ class FunctionDefinitionTest {
 		assert parameter2.description == PARM2_DESCRIPTION;
 		assert parameter2.parameterType == PARM2_TYPE;
 		assert parameter2.versionNumber == PARM2_VERSION_NUMBER;
+
+        CategoryDefinition category1 = functionDef.getCategories().get(0);
+        assert category1.id == CTGRY1_ID;
+        assert category1.name == CTGRY1_NAME;
+        assert category1.namespace == CTGRY1_NAMESPACE;
+        assert category1.versionNumber == CTGRY1_VERSION_NUMBER;
+
+        CategoryDefinition category2 = functionDef.getCategories().get(1);
+        assert category2.id == CTGRY2_ID;
+        assert category2.name == CTGRY2_NAME;
+        assert category2.namespace == CTGRY2_NAMESPACE;
+        assert category2.versionNumber == CTGRY2_VERSION_NUMBER;
 	}
 
 	@Test
@@ -240,6 +278,20 @@ class FunctionDefinitionTest {
 						String functionId = FunctionDefinitionTest.ID;
 					})
 				]
+                List<CategoryDefinition.Builder> categories = [
+                    CategoryDefinition.Builder.create(new CategoryDefinitionContract() {
+                        String id = FunctionDefinitionTest.CTGRY1_ID;
+                        String name = FunctionDefinitionTest.CTGRY1_NAME;
+                        String namespace = FunctionDefinitionTest.CTGRY1_NAMESPACE;
+                        Long versionNumber = FunctionDefinitionTest.CTGRY1_VERSION_NUMBER;
+                    }),
+                    CategoryDefinition.Builder.create(new CategoryDefinitionContract() {
+                        String id = FunctionDefinitionTest.CTGRY2_ID;
+                        String name = FunctionDefinitionTest.CTGRY2_NAME;
+                        String namespace = FunctionDefinitionTest.CTGRY2_NAMESPACE;
+                        Long versionNumber = FunctionDefinitionTest.CTGRY2_VERSION_NUMBER;
+                    })
+                ]
 			});
 	}
 	

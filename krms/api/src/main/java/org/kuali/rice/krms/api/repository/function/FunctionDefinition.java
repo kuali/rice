@@ -36,6 +36,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.krms.api.repository.category.CategoryDefinition;
+import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.w3c.dom.Element;
 
@@ -59,6 +61,7 @@ import org.w3c.dom.Element;
 		FunctionDefinition.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
         FunctionDefinition.Elements.PARAMETERS,
+        FunctionDefinition.Elements.CATEGORIES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class FunctionDefinition implements FunctionDefinitionContract, ModelObjectComplete {
@@ -92,6 +95,10 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
 	@XmlElementWrapper(name = Elements.PARAMETERS, required = false)
 	@XmlElement(name = Elements.PARAMETER, required = false)
 	private final List<FunctionParameterDefinition> parameters;
+
+    @XmlElementWrapper(name = Elements.CATEGORIES, required = false)
+    @XmlElement(name = Elements.CATEGORY, required = false)
+    private final List<CategoryDefinition> categories;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -110,6 +117,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
     	this.active = false;
     	this.versionNumber = null;
     	this.parameters = null;
+        this.categories = null;
     }
     
     private FunctionDefinition(Builder builder) {
@@ -125,6 +133,10 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
     	for (FunctionParameterDefinition.Builder parameter : builder.getParameters()) {
     		this.parameters.add(parameter.build());
     	}
+        this.categories = new ArrayList<CategoryDefinition>();
+        for (CategoryDefinition.Builder category : builder.getCategories()) {
+            this.categories.add(category.build());
+        }
     }
     
 	@Override
@@ -172,6 +184,11 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
 		return Collections.unmodifiableList(parameters);
 	}
 
+    @Override
+    public List<CategoryDefinition> getCategories() {
+        return Collections.unmodifiableList(categories);
+    }
+
 	/**
 	 * A builder which can be used to construct {@link FunctionDefinition}
 	 * instances.  Enforces the constraints of the {@link FunctionDefinitionContract}.
@@ -192,6 +209,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
     	private boolean active;
     	private Long versionNumber;
     	private List<FunctionParameterDefinition.Builder> parameters;
+        private List<CategoryDefinition.Builder> categories;
     	
         private Builder(String namespace, String name, String returnType, String typeId) {
         	setNamespace(namespace);
@@ -200,6 +218,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
         	setTypeId(typeId);
         	setActive(true);
         	setParameters(new ArrayList<FunctionParameterDefinition.Builder>());
+            setCategories(new ArrayList<CategoryDefinition.Builder>());
         }
         
         /**
@@ -244,6 +263,9 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
         	for (FunctionParameterDefinitionContract parameter : contract.getParameters()) {
         		builder.getParameters().add(FunctionParameterDefinition.Builder.create(parameter));
         	}
+            for (CategoryDefinitionContract category : contract.getCategories()) {
+                builder.getCategories().add(CategoryDefinition.Builder.create(category));
+            }
         	return builder;
         }
 
@@ -401,7 +423,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
 		public List<FunctionParameterDefinition.Builder> getParameters() {
 			return this.parameters;
 		}
-		
+
 		/**
          * Sets the parameters for the function definition that will be returned by this builder.
          * This list is a list of builders for each of the {@link FunctionParameterDefinition}
@@ -418,6 +440,28 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
 			}
 			this.parameters = parameters;
 		}
+
+        @Override
+        public List<CategoryDefinition.Builder> getCategories() {
+            return this.categories;
+        }
+
+        /**
+         * Sets the category for the function definition that will be returned by this builder.
+         * This list is a list of builders for each of the {@link CategoryDefinition}
+         * instances that will form the categories of this function definition.  The given list
+         * must not be null.
+         *
+         * @param categories a list of builders for the categories which will be specified on this function definition
+         *
+         * @throws IllegalArgumentException if the given categories list is null
+         */
+        public void setCategories(List<CategoryDefinition.Builder> categories) {
+            if (categories == null) {
+                throw new IllegalArgumentException("categories was null");
+            }
+            this.categories = categories;
+        }
 
 	}
 	
@@ -459,6 +503,8 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
         final static String ACTIVE = "active";
         final static String PARAMETERS = "parameters";
         final static String PARAMETER = "parameter";
+        final static String CATEGORIES = "categories";
+        final static String CATEGORY = "category";
     }
     
 }

@@ -65,6 +65,8 @@ class TermResolverTest {
         <contextId>1234CONTEXT</contextId>
         <name>termSpec-name</name>
         <type>term.spec.Type</type>
+        <categories>
+        </categories>
     </output>
     <prerequisites>
         <termSpecificationDefinition>
@@ -72,6 +74,8 @@ class TermResolverTest {
             <contextId>1234CONTEXT</contextId>
             <name>PREREQtermSpec-name</name>
             <type>PREREQterm.spec.Type</type>
+            <categories>
+            </categories>
         </termSpecificationDefinition>
     </prerequisites>
     <attributes>

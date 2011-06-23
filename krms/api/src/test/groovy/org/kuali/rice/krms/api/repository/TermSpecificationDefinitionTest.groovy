@@ -44,6 +44,8 @@ class TermSpecificationDefinitionTest {
 			<contextId>1001</contextId>
 			<name>total</name>
 			<type>java.math.BigDecimal</type>
+			<categories>
+			</categories>
 		</TermSpecification>
 	"""
 

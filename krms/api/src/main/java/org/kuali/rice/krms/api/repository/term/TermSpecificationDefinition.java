@@ -16,12 +16,16 @@
 package org.kuali.rice.krms.api.repository.term;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -34,6 +38,8 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.BuilderUtils;
 import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
+import org.kuali.rice.krms.api.repository.category.CategoryDefinition;
+import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Builder;
 
 /**
@@ -50,6 +56,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Builder;
 		TermSpecificationDefinition.Elements.NAME,
 		TermSpecificationDefinition.Elements.TYPE,
         CoreConstants.CommonElements.VERSION_NUMBER,
+        TermSpecificationDefinition.Elements.CATEGORIES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class TermSpecificationDefinition implements TermSpecificationDefinitionContract, ModelObjectComplete {
@@ -66,6 +73,11 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 	private final String type;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
+
+    @XmlElementWrapper(name = Elements.CATEGORIES, required = false)
+    @XmlElement(name = Elements.CATEGORY, required = false)
+    private final List<CategoryDefinition> categories;
+
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -80,6 +92,7 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		name = null;
 		type = null;
         versionNumber = null;
+        this.categories = null;
 	}
 	
 	/**
@@ -93,6 +106,10 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		name = b.getName();
 		type = b.getType();
 		versionNumber = b.getVersionNumber();
+        this.categories = new ArrayList<CategoryDefinition>();
+        for (CategoryDefinition.Builder category : b.getCategories()) {
+            this.categories.add(category.build());
+        }
 	}
 	
 	/**
@@ -109,7 +126,8 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		private String name;
 		private String type;
         private Long versionNumber;
-		
+        private List<CategoryDefinition.Builder> categories;
+
 		private static final String NON_NULL_NON_EMPTY_ERROR =  " must be non-null and must contain non-whitespace chars"; 
 
 		/**
@@ -128,6 +146,7 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 			setContextId(contextId);
 			setName(name);
 			setType(type);
+            setCategories(new ArrayList<CategoryDefinition.Builder>());
 		}
 		
 		/**
@@ -159,6 +178,10 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 					termSpecification.getName(), 
 					termSpecification.getType());
 			builder.setVersionNumber(termSpecification.getVersionNumber());
+            for (CategoryDefinitionContract category : termSpecification.getCategories()) {
+                builder.getCategories().add(CategoryDefinition.Builder.create(category));
+            }
+
 			return builder;
 		}
 		
@@ -210,6 +233,16 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }
+
+        /**
+         * @param categories the categories to set.  May not be null but can be an empty list.
+         */
+        public void setCategories(List<CategoryDefinition.Builder> categories) {
+            if (categories == null) {
+                throw new IllegalArgumentException("categories was null");
+            }
+            this.categories = categories;
+        }
         
 		// Getters
 		
@@ -252,6 +285,15 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
         public Long getVersionNumber() {
             return this.versionNumber;
         }
+
+        /**
+         * @return the categories
+         */
+        @Override
+        public List<CategoryDefinition.Builder> getCategories() {
+            return this.categories;
+        }
+
 
 		/**
 		 * Constructs a {@link TermSpecificationDefinition}
@@ -305,7 +347,15 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
     public Long getVersionNumber() {
         return versionNumber;
     }
-    
+
+    /**
+     * @see TermSpecificationDefinitionContract#getCategories()
+     */
+    @Override
+    public List<CategoryDefinition> getCategories() {
+        return Collections.unmodifiableList(categories);
+    }
+
 	/**
 	* @see java.lang.Object#equals(java.lang.Object)
 	*/
@@ -345,6 +395,8 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		public static final String CONTEXT_ID = "contextId";
 		public static final String NAME = "name";
 		public static final String TYPE = "type";
+        final static String CATEGORIES = "categories";
+        final static String CATEGORY = "category";
 	}
 	
 

@@ -707,34 +707,15 @@ public class WorkflowDocument implements java.io.Serializable {
     	// TODO reload valid actions
     }
 
-    //
-//    /**
-//     * The user taking action removes the action items for this workgroup and document from all other
-//     * group members' action lists.   If this is a new document, the document is created first.
-//     *
-//     * @param annotation the message to log for the action
-//     * @param workgroupId the workgroup on which to take authority
-//     * @throws WorkflowException user taking action is not in workgroup
-//     */
-//    public void takeGroupAuthority(String annotation, String groupId) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().takeGroupAuthority(principalId, getRouteHeader(), groupId, annotation);
-//    	documentContentDirty = true;
-//    }
-//
-//    /**
-//     * The user that took the group authority is putting the action items back in the other users action lists.
-//     * If this is a new document, the document is created first.
-//     *
-//     * @param annotation the message to log for the action
-//     * @param workgroupId the workgroup on which to take authority
-//     * @throws WorkflowException user taking action is not in workgroup or did not take workgroup authority
-//     */
-//    public void releaseGroupAuthority(String annotation, String groupId) throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowDocumentActions().releaseGroupAuthority(principalId, getRouteHeader(), groupId, annotation);
-//    	documentContentDirty = true;
-//    }
+    public void takeGroupAuthority(String annotation, String groupId) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().takeGroupAuthority(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), groupId);
+    	resetStateAfterAction(result);
+    }
+
+    public void releaseGroupAuthority(String annotation, String groupId) {
+    	DocumentActionResult result = getWorkflowDocumentActionsService().releaseGroupAuthority(getDocumentId(), principalId, annotation, getDocumentUpdateIfDirty(), getDocumentContentUpdateIfDirty(), groupId);
+    	resetStateAfterAction(result);
+    }
 
     public Set<String> getNodeNames() {
     	List<RouteNodeInstance> activeNodeInstances = getActiveRouteNodeInstances();

@@ -57,9 +57,9 @@ public interface WorkflowDocumentActionsService {
 
     public DocumentActionResult move(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, MovePoint movePoint);
     
-    public void takeGroupAuthority(String documentId, String principalId, String groupId, String annotation);
+    public DocumentActionResult takeGroupAuthority(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, String groupId);
     
-    public void releaseGroupAuthority(String documentId, String principalId, String groupId, String annotation);
+    public DocumentActionResult releaseGroupAuthority(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate, String groupId);
     
     public DocumentActionResult save(String documentId, String principalId, String annotation, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
     

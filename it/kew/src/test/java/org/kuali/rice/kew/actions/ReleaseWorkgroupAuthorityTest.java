@@ -17,20 +17,19 @@
 package org.kuali.rice.kew.actions;
 
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.service.ActionListService;
-
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.util.KimConstants;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.Iterator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -43,7 +42,7 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
 
     @Test public void testReleaseWorkgroupAuthority() throws Exception {
         WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
-        doc.routeDocument("");
+        doc.route("");
 
         String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
         //have member rkirkend take authority
@@ -52,7 +51,7 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
 
         // verify there is only one action item and that it's to rkirkend
         ActionListService aiService = KEWServiceLocator.getActionListService();
-        Collection actionItems = aiService.findByDocumentId(doc.getDocumentId());
+        Collection<ActionItem> actionItems = aiService.findByDocumentId(doc.getDocumentId());
         assertEquals("There should be only one action item", 1, actionItems.size());
         ActionItem ai = (ActionItem)actionItems.iterator().next();
         assertEquals("action item should be to rkirkend", getPrincipalIdForName("rkirkend"), ai.getPrincipalId());
@@ -66,8 +65,8 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
         //verify that all members have the action item
         actionItems = aiService.findByDocumentId(doc.getDocumentId());
         assertTrue("There should be more than one action item", actionItems.size() > 1);
-        for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
-            ActionItem actionItem = (ActionItem) iter.next();
+        for (Iterator<ActionItem> iter = actionItems.iterator(); iter.hasNext();) {
+            ActionItem actionItem = iter.next();
             assertTrue("Action Item not to workgroup member", TakeWorkgroupAuthorityTest.WORKGROUP_MEMBERS.contains(actionItem.getPerson().getPrincipalName()));
         }
     }

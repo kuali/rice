@@ -111,7 +111,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 			return KEWServiceLocator.getWorkflowDocumentService().blanketApproval(principalId, documentBo, annotation, new HashSet<String>());
 		}
 		public String getActionName() {
-			return ActionType.ROUTE.getLabel();
+			return ActionType.BLANKET_APPROVE.getLabel();
 		}
 	};
 	
@@ -561,16 +561,53 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 	}
 
 	@Override
-	public void takeGroupAuthority(String documentId, String principalId,
-			String groupId, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+	public DocumentActionResult takeGroupAuthority(String documentId,
+			String principalId,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate,
+			final String groupId) {
+		if (StringUtils.isBlank(groupId)) {
+			throw new RiceIllegalArgumentException("groupId was null or blank");
+		}
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new StandardDocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().takeGroupAuthority(principalId, documentBo, groupId, annotation);
+			}
+			public String getActionName() {
+				return ActionType.TAKE_GROUP_AUTHORITY.getLabel();
+			}
+		});		
 	}
 
 	@Override
-	public void releaseGroupAuthority(String documentId, String principalId,
-			String groupId, String annotation) {
-		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
+	public DocumentActionResult releaseGroupAuthority(String documentId,
+			String principalId,
+			String annotation,
+			DocumentUpdate documentUpdate,
+			DocumentContentUpdate documentContentUpdate,
+			final String groupId) {
+		if (StringUtils.isBlank(groupId)) {
+			throw new RiceIllegalArgumentException("groupId was null or blank");
+		}
+		return executeActionInternal(documentId,
+				principalId,
+				annotation,
+				documentUpdate,
+				documentContentUpdate,
+				new StandardDocumentActionCallback() {
+			public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId, String annotation) throws WorkflowException {
+				return KEWServiceLocator.getWorkflowDocumentService().releaseGroupAuthority(principalId, documentBo, groupId, annotation);
+			}
+			public String getActionName() {
+				return ActionType.RELEASE_GROUP_AUTHORITY.getLabel();
+			}
+		});		
 
 	}
 

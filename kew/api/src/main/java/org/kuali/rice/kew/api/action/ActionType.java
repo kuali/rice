@@ -98,12 +98,12 @@ public enum ActionType implements Coded {
     /**
      * The document is routed to a workgroup and a user in the workgroup wants to take authority from the workgroup
      */
-    @XmlEnumValue("w") TAKE_WORKGROUP_AUTHORITY("w", "TAKE WORKGROUP AUTHORITY"),
+    @XmlEnumValue("w") TAKE_GROUP_AUTHORITY("w", "TAKE GROUP AUTHORITY"),
     		
     /**
      * The person who took workgroup authority is releasing it
      */
-    @XmlEnumValue("y") ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD("y", "RELEASE WORKGROUP AUTHORITY"),
+    @XmlEnumValue("y") RELEASE_GROUP_AUTHORITY("y", "RELEASE GROUP AUTHORITY"),
     
     /**
      * The document is moved

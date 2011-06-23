@@ -17,39 +17,27 @@
 package org.kuali.rice.kew.actions;
 
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.dto.ActionTakenDTO;
-
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.util.KimConstants;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- *<authenticationId>ewestfal</authenticationId>
-					<authenticationId>rkirkend</authenticationId>
-					<authenticationId>jhopf</authenticationId>
-					<authenticationId>bmcgough</authenticationId>
-					<authenticationId>temay</authenticationId>
-					<authenticationId>xqi</authenticationId>
-					<authenticationId>natjohns</authenticationId>
-					<authenticationId>pmckown</authenticationId>
-					<authenticationId>jthomas</authenticationId>
-					<authenticationId>jitrue</authenticationId>
  *
  */
 public class TakeWorkgroupAuthorityTest extends KEWTestCase {
@@ -77,16 +65,16 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
     @Test public void testTakeWorkgroupAuthorityAction() throws Exception {
 
         WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), DOC_TYPE);
-        doc.routeDocument("");
+        doc.route("");
 
         String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
 
         //verify that all members have the action item
         ActionListService aiService = KEWServiceLocator.getActionListService();
-        Collection actionItems = aiService.findByDocumentId(doc.getDocumentId());
+        Collection<ActionItem> actionItems = aiService.findByDocumentId(doc.getDocumentId());
         assertTrue("There should be more than one action item", actionItems.size() > 1);
-        for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
-            ActionItem actionItem = (ActionItem) iter.next();
+        for (Iterator<ActionItem> iter = actionItems.iterator(); iter.hasNext();) {
+            ActionItem actionItem = iter.next();
             assertTrue("Action Item not to workgroup member", WORKGROUP_MEMBERS.contains(actionItem.getPerson().getPrincipalName()));
         }
 
@@ -97,8 +85,8 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         //verify that only rkirkend has an action item now.
         actionItems = aiService.findByDocumentId(doc.getDocumentId());
         assertEquals("There should only be a single action item to rkirkend", 1, actionItems.size());
-        for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
-            ActionItem actionItem = (ActionItem) iter.next();
+        for (Iterator<ActionItem> iter = actionItems.iterator(); iter.hasNext();) {
+            ActionItem actionItem = iter.next();
             assertEquals("Action item should be to rkirkend", "rkirkend", actionItem.getPerson().getPrincipalName());
         }
 

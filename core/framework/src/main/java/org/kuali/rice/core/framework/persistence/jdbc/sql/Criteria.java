@@ -15,6 +15,16 @@
  */
 package org.kuali.rice.core.framework.persistence.jdbc.sql;
 
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.core.web.format.BooleanFormatter;
+
+import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -25,17 +35,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.Query;
-
-import org.kuali.rice.core.api.datetime.DateTimeService;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.core.util.type.TypeUtils;
-import org.kuali.rice.core.web.format.BooleanFormatter;
 
 
 
@@ -106,7 +105,7 @@ public class Criteria {
 			return "";
 		}
 
-		if(TypeUtils.isJoinClass(propertyType)){
+		if(SqlBuilder.isJoinClass(propertyType)){
 			return value.toString();
 		}
 

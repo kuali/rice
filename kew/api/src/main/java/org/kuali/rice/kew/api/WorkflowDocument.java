@@ -68,6 +68,8 @@ public class WorkflowDocument implements java.io.Serializable {
     private ModifiableDocumentContent modifiableDocumentContent;
     private ValidActions validActions;
     private RequestedActions requestedActions;
+    
+    private boolean documentDeleted = false;
 
     /**
      * TODO 
@@ -189,6 +191,9 @@ public class WorkflowDocument implements java.io.Serializable {
     }
     
     public String getDocumentId() {
+    	if (documentDeleted) {
+    		throw new IllegalStateException("Document has been deleted.");
+    	}
     	return getModifiableDocument().getDocumentId();
     }
     
@@ -389,29 +394,22 @@ public class WorkflowDocument implements java.io.Serializable {
     	fyi("");
     }
 
-//    /**
-//     * Performs the 'delete' action on the document this WorkflowDocument represents.  If this is a new document,
-//     * the document is created first.
-//     * @param annotation the message to log for the action
-//     * @throws WorkflowException in case an error occurs deleting the document
-//     * @see WorkflowDocumentActions#deleteDocument(UserIdDTO, RouteHeaderDTO)
-//     */
-//    public void delete() throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	getWorkflowDocumentActions().deleteDocument(principalId, getRouteHeader());
-//    	documentContentDirty = true;
-//    }
-//
-//    /**
-//     * Reloads the document route header.  If this is a new document, the document is created first.
-//     * Next time document content is accessed, an up-to-date copy will be retrieved from workflow.
-//     * @throws WorkflowException in case an error occurs retrieving the route header
-//     */
-//    public void refreshContent() throws WorkflowException {
-//    	createDocumentIfNeccessary();
-//    	routeHeader = getWorkflowUtility().getRouteHeader(getDocumentId());
-//    	documentContentDirty = true;
-//    }
+    /**
+     * TODO - be sure to mention that once this document is deleted, this api effectively becomes "dead" when you try to
+     * execute any document operation
+     */
+    public void delete() {
+    	getWorkflowDocumentActionsService().delete(getDocumentId());
+    	documentDeleted = true;
+    }
+
+    public void refresh() {    	
+    	Document document = getWorkflowDocumentService().getDocument(getDocumentId());
+    	this.modifiableDocument = new ModifiableDocument(document);
+    	this.validActions = null;
+    	this.requestedActions = null;
+    	this.modifiableDocumentContent = null;
+    }
 
     public void adHocToPrincipal(ActionRequestType actionRequested, String annotation, String targetPrincipalId, String responsibilityDescription, boolean forceAction) {
     	adHocToPrincipal(actionRequested, null, annotation, targetPrincipalId, responsibilityDescription, forceAction);
@@ -704,7 +702,8 @@ public class WorkflowDocument implements java.io.Serializable {
     		throw new IllegalArgumentException("principalId was null or blank");
     	}
     	this.principalId = principalId;
-    	// TODO reload valid actions
+    	this.validActions = null;
+    	this.requestedActions = null;
     }
 
     public void takeGroupAuthority(String annotation, String groupId) {

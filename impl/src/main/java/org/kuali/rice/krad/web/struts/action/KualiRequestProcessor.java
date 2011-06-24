@@ -412,7 +412,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			if (userSession.retrieveObject(docFormKey) != null) {
 				LOG.debug("getDecomentForm KualiDocumentFormBase from session");
 				form = (ActionForm) userSession.retrieveObject(docFormKey);
-			} else {
+			} else if (StringUtils.isNotBlank(documentNumber)) {
 				form = getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
 			}
 			request.setAttribute(mapping.getAttribute(), form);

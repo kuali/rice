@@ -117,5 +117,9 @@ public final class NotInIgnoreCasePredicate extends AbstractPredicate implements
         final static String ROOT_ELEMENT_NAME = "notInIgnoreCase";
         final static String TYPE_NAME = "NotInIgnoreCaseType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

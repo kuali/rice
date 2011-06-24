@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlElement
 import javax.xml.bind.annotation.XmlElements
 import javax.xml.bind.annotation.XmlRootElement
 import javax.xml.bind.annotation.XmlType
+import org.apache.commons.lang.builder.ToStringBuilder
 import org.junit.Test
 import static org.junit.Assert.*
 
@@ -180,6 +181,11 @@ public class SimplePredicateTest {
     	public CriteriaValue<?> getValue() {
     		return value;
     	}
+
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this);
+        }
                 
     }
     
@@ -222,6 +228,11 @@ public class SimplePredicateTest {
     	public CriteriaValue<?> getValue() {
     		return value;
     	}
+
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this);
+        }
                 
     }
 

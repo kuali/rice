@@ -111,5 +111,9 @@ public final class NotEqualPredicate extends AbstractPredicate implements Single
         final static String ROOT_ELEMENT_NAME = "notEqual";
         final static String TYPE_NAME = "NotEqualType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

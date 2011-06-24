@@ -499,7 +499,7 @@ public final class PredicateFactory {
             throw new IllegalArgumentException("name is blank");
         }
 
-        final String correctedName = findDynName(name);
+        final String correctedName = CriteriaSupportUtils.findDynName(name);
         for (Method m : PredicateFactory.class.getMethods()) {
 
             //currently this class does NOT overload therefore this method doesn't have to worry about
@@ -516,17 +516,6 @@ public final class PredicateFactory {
         }
 
         throw new DynPredicateException("predicate: " + name + " doesn't exist");
-    }
-
-    private static String findDynName(String name) {
-        String correctedName = StringUtils.uncapitalize(name).replace("Predicate", "");
-        //null is a keyword therefore they are called isNull & isNotNull
-        if (correctedName.equals("null")) {
-            correctedName = "isNull";
-        } else if (correctedName.equals("notNull")) {
-            correctedName = "isNotNull";
-        }
-        return correctedName;
     }
 
     //this is really a fatal error (programming error)

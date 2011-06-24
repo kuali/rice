@@ -121,5 +121,9 @@ public final class NotInPredicate extends AbstractPredicate implements MultiValu
         final static String ROOT_ELEMENT_NAME = "notIn";
         final static String TYPE_NAME = "NotInType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

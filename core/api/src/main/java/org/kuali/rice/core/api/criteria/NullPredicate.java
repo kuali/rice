@@ -86,5 +86,10 @@ public final class NullPredicate extends AbstractPredicate implements PropertyPa
         final static String ROOT_ELEMENT_NAME = "null";
         final static String TYPE_NAME = "NullType";
     }
-    
+
+    @Override
+    public String toString() {
+        return new StringBuilder(CriteriaSupportUtils.findDynName(this.getClass().getSimpleName()))
+                .append(this.getPropertyPath()).append(")").toString();
+    }
 }

@@ -117,5 +117,10 @@ public final class InIgnoreCasePredicate extends AbstractPredicate implements Mu
         final static String ROOT_ELEMENT_NAME = "inIgnoreCase";
         final static String TYPE_NAME = "InIgnoreCaseType";
     }
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
     
 }

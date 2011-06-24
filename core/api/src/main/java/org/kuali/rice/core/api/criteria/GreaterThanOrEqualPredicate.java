@@ -109,5 +109,10 @@ public final class GreaterThanOrEqualPredicate extends AbstractPredicate impleme
         final static String ROOT_ELEMENT_NAME = "greaterThanOrEqual";
         final static String TYPE_NAME = "GreaterThanOrEqualType";
     }
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
     
 }

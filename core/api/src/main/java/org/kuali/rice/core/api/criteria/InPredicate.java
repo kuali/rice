@@ -121,5 +121,10 @@ public final class InPredicate extends AbstractPredicate implements MultiValuedP
         final static String ROOT_ELEMENT_NAME = "in";
         final static String TYPE_NAME = "InType";
     }
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
     
 }

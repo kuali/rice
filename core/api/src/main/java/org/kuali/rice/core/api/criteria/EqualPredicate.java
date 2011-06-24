@@ -111,5 +111,9 @@ public final class EqualPredicate extends AbstractPredicate implements SingleVal
         final static String ROOT_ELEMENT_NAME = "equal";
         final static String TYPE_NAME = "EqualType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

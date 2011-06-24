@@ -34,6 +34,8 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
  * Btw.  My flag format was stolen from regex but we could use anything really.
  * http://download.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html#CASE_INSENSITIVE
  *
+ * I'm currently supporting this.
+ *
  * 3) In the above example, I used a case insensitive flag but Like doesn't support case
  * insensitive.  Should it?
  *
@@ -44,14 +46,12 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
  * implementations.  To me it seems it's better to make escaping behavior undefined.
  *
  * If we do support an escape character then we should probably also support a flag to treat
- * escape chars as literal like (?i) - is that right? need to confirm what flag get append
- * to the regex
+ * escape chars as literal like (?l) (that doesn't exist in java regex)
  *
  * http://download.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html#LITERAL
  *
- * 5) Maybe we should just support what is in the org.kuali.rice.core.framework.logic.LogicalOperator class
- * which btw contains more than just logical operators - This should be split into multiple enums.
- * ?
+ * 5) Maybe we should just support what is in the {@link org.kuali.rice.core.framework.logic.SearchOperator} class
+ *
  * 6) Maybe the predicate class could have a toLookupString, toLookupMap() methods on them to translate
  * to various formats of criteria?  Or maybe this factory method & related methods should get placed into
  * krad or somewhere else?
@@ -117,7 +117,6 @@ class PredicateFactoryLookup {
      *
      * <p>
      * Related to null values:  Null values will be translated to isNull predicates.
-     * Criteria maps do not support isNotNull.
      * </p>
      *
      * The criteria string may also contain flags similar to regex flags.  The current
@@ -127,7 +126,7 @@ class PredicateFactoryLookup {
      *     <li>(?i) case insensitive</li>
      * </ul>
      *
-     * To use the 'i' and 'm' flags prepend them to the criteria value for example:
+     * To use the 'i' and 'm' flags prepend them to the criteria value, for example:
      *
      * (?im)foo
      *
@@ -206,7 +205,7 @@ class PredicateFactoryLookup {
         return false;
     }
 
-    public static String getFlagsStr(String criteria) {
+    private static String getFlagsStr(String criteria) {
         Matcher m = FLAGS_PATTERN.matcher(criteria);
         if (m.find()) {
             return m.group();
@@ -214,7 +213,7 @@ class PredicateFactoryLookup {
         return "";
     }
 
-    public static boolean isCaseInsensitive(String flagStr) {
+    private static boolean isCaseInsensitive(String flagStr) {
         return flagStr.contains("i");
     }
 }

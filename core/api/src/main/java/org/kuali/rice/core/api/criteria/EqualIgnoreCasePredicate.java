@@ -32,28 +32,24 @@ import java.util.Collection;
  * An immutable predicate which represents an "equal ignore case" statement which is
  * evaluated the {@link org.kuali.rice.core.api.criteria.CriteriaValue} of this predicate.
  *
- * @see org.kuali.rice.core.api.criteria.PredicateFactory for a convenient way to construct this class.
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * @see org.kuali.rice.core.api.criteria.PredicateFactory for a convenient way to construct this class.
  */
 @XmlRootElement(name = EqualIgnoreCasePredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = EqualIgnoreCasePredicate.Constants.TYPE_NAME, propOrder = {
-    CriteriaSupportUtils.PropertyConstants.VALUE,
-    CoreConstants.CommonElements.FUTURE_ELEMENTS
-})
+@XmlType(name = EqualIgnoreCasePredicate.Constants.TYPE_NAME,
+        propOrder = {CriteriaSupportUtils.PropertyConstants.VALUE, CoreConstants.CommonElements.FUTURE_ELEMENTS})
 public final class EqualIgnoreCasePredicate extends AbstractPredicate implements SingleValuedPredicate {
 
-	private static final long serialVersionUID = 7159459561133496549L;
+    private static final long serialVersionUID = 7159459561133496549L;
 
-	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
-	private final String propertyPath;
+    @XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
+    private final String propertyPath;
 
     @XmlElements(value = {
-    		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true)
-    })
-	private final CriteriaStringValue value;
+            @XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class,
+                    required = true)})
+    private final CriteriaStringValue value;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -69,35 +65,38 @@ public final class EqualIgnoreCasePredicate extends AbstractPredicate implements
     }
 
     /**
-	 * Constructs an EqualIgnoreCasePredicate for the given path and value.
-	 *
-	 * @param propertyPath the property path for the predicate, must not be null or blank
-	 * @param value the value to evaluation the path against, must not be null.
-	 *
-	 * @throws IllegalArgumentException if the propertyPath is null or blank
-	 * @throws IllegalArgumentException if the value is null
-	 */
+     * Constructs an EqualIgnoreCasePredicate for the given path and value.
+     *
+     * @param propertyPath the property path for the predicate, must not be null or blank
+     * @param value the value to evaluation the path against, must not be null.
+     * @throws IllegalArgumentException if the propertyPath is null or blank
+     * @throws IllegalArgumentException if the value is null
+     */
     EqualIgnoreCasePredicate(String propertyPath, CriteriaStringValue value) {
-		this.propertyPath = propertyPath;
-		this.value = value;
+        this.propertyPath = propertyPath;
+        this.value = value;
     }
-        
+
     @Override
     public String getPropertyPath() {
-    	return propertyPath;
+        return propertyPath;
     }
-    
-	@Override
-	public CriteriaStringValue getValue() {
-		return value;
-	}
-    
-	/**
+
+    @Override
+    public CriteriaStringValue getValue() {
+        return value;
+    }
+
+    /**
      * Defines some internal constants used on this class.
      */
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "equalIgnoreCase";
         final static String TYPE_NAME = "EqualIgnoreCaseType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

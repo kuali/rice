@@ -104,5 +104,9 @@ public final class LikePredicate extends AbstractPredicate implements SingleValu
         final static String ROOT_ELEMENT_NAME = "like";
         final static String TYPE_NAME = "LikeType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

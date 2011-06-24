@@ -99,5 +99,9 @@ public final class NotEqualIgnoreCasePredicate extends AbstractPredicate impleme
         final static String ROOT_ELEMENT_NAME = "notEqualIgnoreCase";
         final static String TYPE_NAME = "NotEqualIgnoreCaseType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

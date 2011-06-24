@@ -104,5 +104,9 @@ public final class NotLikePredicate extends AbstractPredicate implements SingleV
         final static String ROOT_ELEMENT_NAME = "notLike";
         final static String TYPE_NAME = "NotLikeType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

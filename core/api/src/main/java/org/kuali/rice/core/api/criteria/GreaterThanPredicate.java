@@ -109,5 +109,9 @@ public final class GreaterThanPredicate extends AbstractPredicate implements Sin
         final static String ROOT_ELEMENT_NAME = "greaterThan";
         final static String TYPE_NAME = "GreaterThanType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

@@ -109,5 +109,9 @@ public final class LessThanOrEqualPredicate extends AbstractPredicate implements
         final static String ROOT_ELEMENT_NAME = "lessThanOrEqual";
         final static String TYPE_NAME = "LessThanOrEqualType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

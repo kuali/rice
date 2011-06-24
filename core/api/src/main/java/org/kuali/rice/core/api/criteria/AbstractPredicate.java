@@ -17,7 +17,6 @@ package org.kuali.rice.core.api.criteria;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * An abstract class from which all {@link Predicate} instances should extend.
@@ -41,8 +40,6 @@ abstract class AbstractPredicate implements Predicate {
     }
 
     @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
+    public abstract String toString();
 	
 }

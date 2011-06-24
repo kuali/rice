@@ -109,5 +109,9 @@ public final class LessThanPredicate extends AbstractPredicate implements Single
         final static String ROOT_ELEMENT_NAME = "lessThan";
         final static String TYPE_NAME = "LessThanType";
     }
-    
+
+    @Override
+    public String toString() {
+        return CriteriaSupportUtils.toString(this);
+    }
 }

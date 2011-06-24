@@ -30,7 +30,8 @@ import java.util.Set;
 abstract class AbstractCompositePredicate extends AbstractPredicate implements CompositePredicate {
 
     private static final long serialVersionUID = 6164560054223588779L;
-    
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
     /**
      * Defines the JAXB annotations for the List of predicates.  All supported predicates *MUST* be
      * included in this List in order for them to be supported in the XML schema.
@@ -96,4 +97,21 @@ abstract class AbstractCompositePredicate extends AbstractPredicate implements C
         final static String TYPE_NAME = "CompositePredicateType";
     }
 
+    @Override
+    public final String toString() {
+        StringBuilder b = new StringBuilder(CriteriaSupportUtils.findDynName(this.getClass().getSimpleName()));
+        b.append("(");
+        if (!predicates.isEmpty()) {
+            for (Predicate p : predicates) {
+                b.append(LINE_SEPARATOR);
+                //b.append("\t");
+                b.append(p);
+                b.append(", ");
+            }
+            b.deleteCharAt(b.lastIndexOf(", "));
+            b.append(LINE_SEPARATOR);
+        }
+        b.append(')');
+        return  b.toString();
+    }
 }

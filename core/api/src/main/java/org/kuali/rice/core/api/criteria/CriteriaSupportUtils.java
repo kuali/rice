@@ -23,10 +23,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -227,5 +229,30 @@ final class CriteriaSupportUtils {
     		previousType = currentType;
     	}
     }
-	
+
+    static String findDynName(String name) {
+        String correctedName = StringUtils.uncapitalize(name).replace("Predicate", "");
+        //null is a keyword therefore they are called isNull & isNotNull
+        if (correctedName.equals("null")) {
+            correctedName = "isNull";
+        } else if (correctedName.equals("notNull")) {
+            correctedName = "isNotNull";
+        }
+        return correctedName;
+    }
+
+    public static String toString(SingleValuedPredicate p) {
+        return new StringBuilder(CriteriaSupportUtils.findDynName(p.getClass().getSimpleName())).append("(")
+                .append(p.getPropertyPath()).append(", ").append(p.getValue().getValue()).append(")").toString();
+    }
+
+    public static String toString(MultiValuedPredicate p) {
+        final List<String> values = new ArrayList<String>();
+        for (CriteriaValue<?> value : p.getValues()) {
+            values.add(value.getValue().toString());
+        }
+
+        return new StringBuilder(CriteriaSupportUtils.findDynName(p.getClass().getSimpleName())).append("(")
+                .append(p.getPropertyPath()).append(", ").append("[").append(StringUtils.join(values, ", ")).append("]").append(")").toString();
+    }
 }

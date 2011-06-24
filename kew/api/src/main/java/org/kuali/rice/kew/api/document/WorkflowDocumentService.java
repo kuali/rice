@@ -186,6 +186,9 @@ public interface WorkflowDocumentService {
 	/**
 	 * TODO - document that this "ignores" the request to create the link if it already exists,
 	 * returning the existing link if there is one
+	 * 
+	 * TODO - also document that this method actually creates two links in the db, one from the document being
+	 * linked to the target and vice-versa
 	 */
 	DocumentLink addDocumentLink(DocumentLink documentLink) throws RiceIllegalArgumentException;
 

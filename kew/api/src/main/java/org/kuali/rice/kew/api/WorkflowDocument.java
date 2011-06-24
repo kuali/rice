@@ -771,68 +771,6 @@ public class WorkflowDocument implements java.io.Serializable {
     public String getClearFutureRequestsValue() {
         return KewApiConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
-    
-//   //add 1 link between 2 docs by DTO, double link added
-//   public void addLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException{
-//	   try{
-//		   if(DocumentLinkDTO.checkDocLink(docLinkVO))
-//			   getWorkflowUtility().addDocumentLink(docLinkVO);
-//	   }
-//	   catch(Exception e){
-//		   throw handleExceptionAsRuntime(e); 
-//	   } 
-//   }
-//   
-//   //get link from orgn doc to a specifc doc
-//   public DocumentLinkDTO getLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException{
-//	   try{
-//		   if(DocumentLinkDTO.checkDocLink(docLinkVO))
-//			   return getWorkflowUtility().getLinkedDocument(docLinkVO);
-//		   else
-//			   return null;
-//	   }
-//	   catch(Exception e){
-//		   throw handleExceptionAsRuntime(e); 
-//	   }
-//   }
-//   
-//   //get all links to orgn doc
-//   public List<DocumentLinkDTO> getLinkedDocumentsByDocId(String documentId) throws WorkflowException{
-//	   if(documentId == null)
-//		   throw new WorkflowException("document Id is null");
-//	   try{   
-//		   return getWorkflowUtility().getLinkedDocumentsByDocId(documentId);
-//	   } 
-//	   catch (Exception e) {
-//		   throw handleExceptionAsRuntime(e);
-//	   }
-//   }
-//   
-//   //remove all links from orgn: double links removed
-//   public void removeLinkedDocuments(String docId) throws WorkflowException{
-//	   
-//	   if(docId == null)
-//		   throw new WorkflowException("doc id is null");
-//	   
-//	   try{   
-//		   getWorkflowUtility().deleteDocumentLinksByDocId(docId);
-//	   } 
-//	   catch (Exception e) {
-//		   throw handleExceptionAsRuntime(e);
-//	   }
-//   }
-//   
-//   //remove link between 2 docs, double link removed
-//   public void removeLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException{
-//	   
-//	   try{
-//		   if(DocumentLinkDTO.checkDocLink(docLinkVO))
-//			   getWorkflowUtility().deleteDocumentLink(docLinkVO);
-//	   }
-//	   catch(Exception e){
-//		   throw handleExceptionAsRuntime(e); 
-//	   } 
-//   }
    
     protected DocumentActionParameters constructDocumentActionParameters(String annotation) {
     	DocumentActionParameters.Builder builder = DocumentActionParameters.Builder.create(getDocumentId(), getPrincipalId());

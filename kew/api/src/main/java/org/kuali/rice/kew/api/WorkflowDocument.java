@@ -58,6 +58,8 @@ import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 /**
  * TODO ..
  * 
+ * TODO - it is intended that operations against document data on this are only "flushed" when an action is performed...
+ * 
  * <p>This class is *not* thread safe.
  *
  */
@@ -373,11 +375,6 @@ public class WorkflowDocument implements java.io.Serializable {
     	DocumentActionResult result = getWorkflowDocumentActionsService().saveDocumentData(constructDocumentActionParameters(null));
     	resetStateAfterAction(result);
     }
-
-    public void updateApplicationDocumentStatus(String applicationDocumentStatus) {
-    	setApplicationDocumentStatus(applicationDocumentStatus);
-       	saveDocumentData();
-    }
     
     public void setApplicationDocumentStatus(String applicationDocumentStatus) {
     	getModifiableDocument().setApplicationDocumentStatus(applicationDocumentStatus);
@@ -557,7 +554,6 @@ public class WorkflowDocument implements java.io.Serializable {
     public void logAnnotation(String annotation) {
     	getWorkflowDocumentActionsService().logAnnotation(getDocumentId(), principalId, annotation);
     }
-
   
     public DocumentStatus getStatus() {
     	return getDocument().getStatus();
@@ -733,7 +729,6 @@ public class WorkflowDocument implements java.io.Serializable {
     		throw new IllegalArgumentException("documentContentUpdate was null.");
     	}
     	getModifiableDocumentContent().setDocumentContentUpdate(documentContentUpdate);
-    	saveDocumentData();
     }
     
     public void placeInExceptionRouting(String annotation) {

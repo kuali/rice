@@ -99,7 +99,8 @@ public class AppDocStatusTest extends KEWTestCase {
     	document.approve("Test approve by temay");
     	
     	// update the AppDocStatus via client API
-        document.updateApplicationDocumentStatus("Completed");
+        document.setApplicationDocumentStatus("Completed");
+        document.saveDocumentData();
 
         // get a refreshed document and check it out
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
@@ -178,7 +179,8 @@ public class AppDocStatusTest extends KEWTestCase {
     	document.approve("Test approve by temay");
     	
     	// update the AppDocStatus via client API
-        document.updateApplicationDocumentStatus("Some Random Value");
+        document.setApplicationDocumentStatus("Some Random Value");
+        document.saveDocumentData();
 
         // get a refreshed document and check it out
         document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
@@ -221,7 +223,8 @@ public class AppDocStatusTest extends KEWTestCase {
     	// update the AppDocStatus via client API
     	boolean gotException = false;
     	try {
-    		document.updateApplicationDocumentStatus("BAD STATUS");
+    		document.setApplicationDocumentStatus("BAD STATUS");
+    		document.saveDocumentData();
     	} catch (Throwable t){
     		gotException = true;
     		WorkflowRuntimeException ex = new WorkflowRuntimeException();

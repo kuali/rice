@@ -48,6 +48,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
    <bean id="testSection1-cgrid" parent="testSection1">
        <property name="title" value="Bank Setup - Non Table"/>
+       <property name="componentModifiers">
+         <list>
+         </list>
+      </property>
        <property name="items">
         <list>
           <ref bean="testGroup1-cgrid"/>
@@ -67,6 +71,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>
 
   <bean id="testGroup1-cgrid" parent="testGroup1">
+  	  <property name="componentModifiers">
+         <list>
+         </list>
+      </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
       </property>
@@ -112,6 +120,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>
 
    <bean id="testGroup2-cgrid" parent="testGroup2">
+   	  <property name="componentModifiers">
+         <list>
+         </list>
+      </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
       </property>
@@ -329,6 +341,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>
 
    <bean id="testGroup3-cgrid" parent="testGroup3">
+   	  <property name="componentModifiers">
+         <list>
+         </list>
+      </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
       </property>
@@ -389,6 +405,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
    <bean id="testSection5-cgrid" parent="testSection5">
       <property name="title" value="Banking Info - Non Table"/>
+      <property name="componentModifiers">
+         <list>
+         </list>
+      </property>
       <property name="items">
         <list>
           <ref bean="testGroup3-cgrid"/>
@@ -427,6 +447,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>
 
    <bean id="testSection4-cgrid" parent="testSection4">
+      <property name="componentModifiers">
+         <list>
+         </list>
+      </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
       </property>

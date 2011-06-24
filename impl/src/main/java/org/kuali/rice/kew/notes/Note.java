@@ -16,16 +16,6 @@
  */
 package org.kuali.rice.kew.notes;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -34,6 +24,30 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.api.note.NoteContract;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
@@ -50,7 +64,7 @@ import java.util.List;
 	@NamedQuery(name="KewNote.FindNoteByNoteId",query="select n from org.kuali.rice.kew.notes.Note as n where n.noteId = :noteId"),
 	@NamedQuery(name="KewNote.FindNoteByDocumentId", query="select n from org.kuali.rice.kew.notes.Note as n where n.documentId = :documentId order by n.noteId")
 })
-public class Note implements Serializable {
+public class Note implements Serializable, NoteContract {
 
 	private static final long serialVersionUID = -6136544551121011531L;
 	@Id
@@ -228,6 +242,68 @@ public class Note implements Serializable {
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 	
+	// new methods from NoteContract in 2.0
 
+	@Override
+	public String getId() {
+		if (getNoteId() == null) {
+			return null;
+		}
+		return getNoteId().toString();
+	}
+
+	@Override
+	public Long getVersionNumber() {
+		if (getLockVerNbr() == null) {
+			return null;
+		}
+		return new Long(getLockVerNbr().longValue());
+	}
+
+	@Override
+	public String getAuthorPrincipalId() {
+		return getNoteAuthorWorkflowId();
+	}
+
+	@Override
+	public DateTime getCreateDate() {
+		if (getNoteCreateDate() == null) {
+			return null;
+		}
+		return new DateTime(getNoteCreateDate().getTime());
+	}
+
+	@Override
+	public String getText() {
+		return getNoteText();
+	}
+	
+	public static org.kuali.rice.kew.api.note.Note to(Note note) {
+		if (note == null) {
+			return null;
+		}
+		return org.kuali.rice.kew.api.note.Note.Builder.create(note).build();
+	}
+	
+	public static Note from(org.kuali.rice.kew.api.note.Note note) {
+		if (note == null) {
+			return null;
+		}
+		Note noteBo = new Note();
+		if (note.getId() != null) {
+			noteBo.setNoteId(Long.valueOf(note.getId()));
+		}
+		noteBo.setDocumentId(note.getDocumentId());
+		noteBo.setNoteAuthorWorkflowId(note.getAuthorPrincipalId());
+		if (note.getCreateDate() != null) {
+			noteBo.setNoteCreateDate(new Timestamp(note.getCreateDate().getMillis()));
+		}
+		noteBo.setNoteText(note.getText());
+		if (note.getVersionNumber() != null) {
+			noteBo.setLockVerNbr(Integer.valueOf(note.getVersionNumber().intValue()));
+		}
+		return noteBo;
+	}
+	
 }
 

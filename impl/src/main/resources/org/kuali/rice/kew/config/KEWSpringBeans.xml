@@ -159,6 +159,7 @@
                 <idref local="rice.kew.workflowDocumentActionsService" />
                 <idref local="rice.kew.workflowDocumentService" />
                 <idref local="rice.kew.documentTypeService" />
+                <idref local="rice.kew.noteService" />
                 
                 <!-- it's important that this service remains non-transactionally proxied for various reasons
                 <idref local="enUserOptionsService"/>
@@ -789,5 +790,9 @@
 	</bean>
 	
 	<bean id="rice.kew.workflowDocumentService" class="org.kuali.rice.kew.impl.document.WorkflowDocumentServiceImpl" />
+	
+	<bean id="rice.kew.noteService" class="org.kuali.rice.kew.impl.note.NoteServiceImpl">
+		<property name="noteDao" ref="enNoteDAO" />
+	</bean>
     
 </beans>

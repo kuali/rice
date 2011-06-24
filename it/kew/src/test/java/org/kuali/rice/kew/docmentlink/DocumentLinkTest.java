@@ -15,18 +15,23 @@
  */
 package org.kuali.rice.kew.docmentlink;
 
-import org.apache.log4j.Logger;
-import org.junit.Test;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.dto.DocumentLinkDTO;
-
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.apache.log4j.Logger;
+import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.DocumentLink;
+import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.dto.DocumentLinkDTO;
+import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.test.BaselineTestCase;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 
@@ -35,312 +40,200 @@ import static org.junit.Assert.*;
  *
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
-public class DocumentLinkTest extends KEWTestCase{
+public class DocumentLinkTest extends KEWTestCase {
 
 	private static final Logger LOG = Logger.getLogger(DocumentLinkTest.class);
+	
+	private WorkflowDocumentService service;
+
+	@Override
+	protected void setUpAfterDataLoad() throws Exception {
+		super.setUpAfterDataLoad();
+		this.service = KewApiServiceLocator.getWorkflowDocumentService();
+	}
 
 	@Test public void testAddLinkBTW2DocsSucess() throws Exception {
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		//Test add link	
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6000");
-		doc.addLinkedDocument(testDocLinkVO);
+		// Test add link
+		DocumentLink testDocLink1 = DocumentLink.Builder.create("5000", "6000").build();
+		
+		
+		testDocLink1 = service.addDocumentLink(testDocLink1);
+		assertNotNull(testDocLink1.getId());
+		assertEquals("5000", testDocLink1.getOriginatingDocumentId());
+		assertEquals("6000", testDocLink1.getDestinationDocumentId());
 
-		DocumentLinkDTO link1 = doc.getLinkedDocument(testDocLinkVO);
-
-		testDocLinkVO.setOrgnDocId("6000");
-		testDocLinkVO.setDestDocId("5000");
-
-		DocumentLinkDTO link2 = doc.getLinkedDocument(testDocLinkVO);
-
-		assertEquals(link1.getOrgnDocId(), link2.getDestDocId());
-		assertEquals(link2.getOrgnDocId(), link1.getDestDocId());
+		// ensure that a corresponding link was created with the other document
+		List<DocumentLink> outgoingLinks = service.getOutgoingDocumentLinks("6000");
+		assertEquals(1, outgoingLinks.size());
+		DocumentLink testDocLink2 = outgoingLinks.get(0);
+		
+		assertEquals(testDocLink1.getOriginatingDocumentId(), testDocLink2.getDestinationDocumentId());
+		assertEquals(testDocLink2.getOriginatingDocumentId(), testDocLink1.getDestinationDocumentId());
 
 	}
 
 	@Test public void testAddDuplicatedLinkBTW2DocsFailure() throws Exception {
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		//Test add link	
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6000");
+		DocumentLink testDocLink = DocumentLink.Builder.create("5000", "6000").build();
 
-		doc.addLinkedDocument(testDocLinkVO);
+		DocumentLink testDocLinkAdded = service.addDocumentLink(testDocLink);
+		assertNotNull(testDocLinkAdded);
+		assertNotNull(testDocLinkAdded.getId());
 
-		List<DocumentLinkDTO> links = doc.getLinkedDocumentsByDocId("5000");
+		List<DocumentLink> links1 = service.getOutgoingDocumentLinks("5000");
+		assertEquals(1, links1.size());
 
-		doc.addLinkedDocument(testDocLinkVO);
+		DocumentLink testDocLinkAdded2 = service.addDocumentLink(testDocLink);
+		assertNotNull(testDocLinkAdded);
+		assertNotNull(testDocLinkAdded.getId());
+		assertEquals(testDocLinkAdded2, testDocLinkAdded);
 
-		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId("5000");
+		List<DocumentLink> links2 = service.getOutgoingDocumentLinks("5000");
+		assertEquals(1, links2.size());
 
-		assertEquals(links.size(), links2.size());
+		assertEquals(links1.size(), links2.size());
 
 	}
 
-	@Test public void testAddIncomplelteLinkBTW2DocsFailure() throws Exception{
+	@Test public void testAddIncomplelteLinkBTW2DocsFailure() throws Exception {
 
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
-
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-
-		try{
-			doc.addLinkedDocument(testDocLinkVO);
-			assertFalse(true);
-		}
-		catch(WorkflowRuntimeException e){
-			assertTrue(e.getMessage().contains("doc id is null"));
-		}
+		try {
+			DocumentLink.Builder.create(null, null);
+			fail();
+		} catch (IllegalArgumentException e) {}
 
 		try{
-
-			testDocLinkVO.setOrgnDocId("6000");
-			doc.addLinkedDocument(testDocLinkVO);
-			assertFalse(true);
-		}
-		catch(WorkflowRuntimeException e){
-			assertTrue(e.getMessage().contains("doc id is null"));
+			DocumentLink.Builder.create("6000", null);
+			fail();
+		} catch (IllegalArgumentException e){
+			assertTrue(e.getMessage().contains("was null or blank"));
 		}
 
 	}
 
-	@Test public void testGetLinkBTW2DocsSucess() throws Exception{
+	@Test public void testGetLinkBTW2DocsSucess() throws Exception {
 
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		DocumentLink testDocLink = DocumentLink.Builder.create("5000", "6000").build();
 
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		//Test add link	
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6000");
-		doc.addLinkedDocument(testDocLinkVO);
+		DocumentLink link1 = service.addDocumentLink(testDocLink);
 
-		DocumentLinkDTO link1 = doc.getLinkedDocument(testDocLinkVO);
+		
+		link1 = service.getDocumentLink(link1.getId());
 
 		assertNotNull(link1);
-		assertEquals(testDocLinkVO.getOrgnDocId(), link1.getOrgnDocId());
-		assertEquals(testDocLinkVO.getDestDocId(), link1.getDestDocId());
+		assertEquals(testDocLink.getOriginatingDocumentId(), link1.getOriginatingDocumentId());
+		assertEquals(testDocLink.getDestinationDocumentId(), link1.getDestinationDocumentId());
 
 	}
 
-	@Test public void testGetLinkBTW2DocsFailure() throws Exception{
+	@Test public void testGetLinkBTW2DocsFailure() throws Exception {
 
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		//Test add link	
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6000");
-		doc.addLinkedDocument(testDocLinkVO);
+		DocumentLink testDocLink = DocumentLink.Builder.create("5000", "6000").build();
 
-		testDocLinkVO.setOrgnDocId("5001");
+		service.addDocumentLink(testDocLink);
 
-		DocumentLinkDTO link1 = doc.getLinkedDocument(testDocLinkVO);
+		List<DocumentLink> links = service.getOutgoingDocumentLinks("5001");
 
-		assertEquals(null, link1);
+		assertTrue(links.isEmpty());
 
 	}
 
 	@Test public void testGetAllLinksFromOrgnDocSucess() throws Exception {
 
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
-
-
-		//Test add link	
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6000");
-		doc.addLinkedDocument(testDocLinkVO);
-
-		testDocLinkVO.setOrgnDocId("5009");
-		testDocLinkVO.setDestDocId("6009");
-		doc.addLinkedDocument(testDocLinkVO);
-		//		
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6003");
-		doc.addLinkedDocument(testDocLinkVO);
-
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6004");
-
-		doc.addLinkedDocument(testDocLinkVO);
-
-		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId("5000");
-
-		assertEquals(3, links2.size());
+		DocumentLink link1 = DocumentLink.Builder.create("5000", "6000").build();
+		service.addDocumentLink(link1);
+		
+		DocumentLink link2 = DocumentLink.Builder.create("5009", "6009").build();
+		service.addDocumentLink(link2);
+		
+		DocumentLink link3 = DocumentLink.Builder.create("5000", "6003").build();
+		service.addDocumentLink(link3);
+		
+		DocumentLink link4 = DocumentLink.Builder.create("5000", "6004").build();
+		service.addDocumentLink(link4);
+		
+		List<DocumentLink> links = service.getOutgoingDocumentLinks("5000");
+		assertEquals(3, links.size());
 
 	}
 
 	@Test public void testGetAllLinksFromOrgnDocFailure()throws Exception {
 
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		DocumentLink link1 = DocumentLink.Builder.create("5000", "6000").build();
+		service.addDocumentLink(link1);
 
-		//Test add link	
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6000");
-		doc.addLinkedDocument(testDocLinkVO);
+		DocumentLink link2 = DocumentLink.Builder.create("5009", "6009").build();
+		service.addDocumentLink(link2);
+		
+		DocumentLink link3 = DocumentLink.Builder.create("5000", "6003").build();
+		service.addDocumentLink(link3);
 
-		testDocLinkVO.setOrgnDocId("5009");
-		testDocLinkVO.setDestDocId("6009");
-		doc.addLinkedDocument(testDocLinkVO);
-		//		
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6003");
-		doc.addLinkedDocument(testDocLinkVO);
+		List<DocumentLink> links = service.getOutgoingDocumentLinks("8000");
 
-		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId("8000");
-
-		assertEquals(0, links2.size());
+		assertEquals(0, links.size());
 
 	}
 
 	@Test public void testRemoveLinkBTW2DocsSucess() throws Exception{
 
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		DocumentLink link1 = DocumentLink.Builder.create("5000", "6000").build();
+		link1 = service.addDocumentLink(link1);
 
-		//Test add link	
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6000");
-		doc.addLinkedDocument(testDocLinkVO);
-
-		List<DocumentLinkDTO> links1 = doc.getLinkedDocumentsByDocId("5000");
+		List<DocumentLink> links1 = service.getOutgoingDocumentLinks("5000");
 
 		assertEquals(1, links1.size());
 
-		List<DocumentLinkDTO> links0 = doc.getLinkedDocumentsByDocId("6000");
+		List<DocumentLink> links2 = service.getOutgoingDocumentLinks("6000");
 
-		assertEquals(1, links0.size());
+		assertEquals(1, links2.size());
 
-		doc.removeLinkedDocument(testDocLinkVO);
+		DocumentLink deletedLink = service.deleteDocumentLink(link1.getId());
+		assertNotNull(deletedLink);
 
-		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId("5000");
+		List<DocumentLink> links3 = service.getOutgoingDocumentLinks("5000");
 
-		assertEquals(0, links2.size());
+		assertEquals(0, links3.size());
 	}
 
 	@Test public void testRemoveAllLinksFromOrgnDocSucess() throws Exception {
 
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		DocumentLink link1 = DocumentLink.Builder.create("5000", "6000").build();
+		link1 = service.addDocumentLink(link1);
 
-		//Test add link	
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6000");
-		doc.addLinkedDocument(testDocLinkVO);
+		DocumentLink link2 = DocumentLink.Builder.create("5000", "6002").build();
+		link2 = service.addDocumentLink(link2);
 
-		testDocLinkVO.setOrgnDocId("5000");
-		testDocLinkVO.setDestDocId("6002");
-		doc.addLinkedDocument(testDocLinkVO);
-
-		List<DocumentLinkDTO> links01 = doc.getLinkedDocumentsByDocId("5000");
-		List<DocumentLinkDTO> links02 = doc.getLinkedDocumentsByDocId("6000");
-		List<DocumentLinkDTO> links03 = doc.getLinkedDocumentsByDocId("6002");
+		List<DocumentLink> links01 = service.getOutgoingDocumentLinks("5000");
+		List<DocumentLink> links02 = service.getOutgoingDocumentLinks("6000");
+		List<DocumentLink> links03 = service.getOutgoingDocumentLinks("6002");
 
 		assertEquals(2, links01.size());
 		assertEquals(1, links02.size());
 		assertEquals(1, links03.size());
 
 
-		doc.removeLinkedDocuments("5000");
+		List<DocumentLink> deletedDocuments = service.deleteDocumentLinksByDocumentId("5000");
+		assertEquals(2, deletedDocuments.size());
 
-		links01 = doc.getLinkedDocumentsByDocId("5000");
-		links02 = doc.getLinkedDocumentsByDocId("6000");
-		links03 = doc.getLinkedDocumentsByDocId("6002");
+		links01 = service.getOutgoingDocumentLinks("5000");
+		links02 = service.getOutgoingDocumentLinks("6000");
+		links03 = service.getOutgoingDocumentLinks("6002");
 
 		assertEquals(0, links01.size());
 		assertEquals(0, links02.size());
 		assertEquals(0, links03.size());
 
 	}
-
+	
 	@Test public void testDocLinktoItself() throws Exception {
-
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-
-		try{
-			//DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-			WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
-
-			//Test add link	
-			testDocLinkVO.setOrgnDocId("5000");
-			testDocLinkVO.setDestDocId("5000");
-			doc.addLinkedDocument(testDocLinkVO);
+		try{			
+			DocumentLink.Builder.create("5000", "5000");
 			fail();
-		}
-		catch(WorkflowRuntimeException ex){
-			assertTrue(ex.getMessage().contains("no self link"));
-			
+		} catch(IllegalArgumentException e){
+			assertTrue(e.getMessage().contains("cannot link a document with itself"));
 		}
 	}
 
-	//not a real test case....
-	@Test public void testDocLinkClient() throws Exception {
-
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
-
-		//Test add link	
-		testDocLinkVO.setOrgnDocId("5009");
-		testDocLinkVO.setDestDocId("6008");
-		doc.addLinkedDocument(testDocLinkVO);
-
-		testDocLinkVO.setOrgnDocId("5009");
-		testDocLinkVO.setDestDocId("6009");
-		doc.addLinkedDocument(testDocLinkVO);
-		//		
-		testDocLinkVO.setOrgnDocId("5002");
-		testDocLinkVO.setDestDocId("6002");
-		doc.addLinkedDocument(testDocLinkVO);
-
-		testDocLinkVO.setOrgnDocId("5003");
-		testDocLinkVO.setDestDocId("6003");
-		doc.addLinkedDocument(testDocLinkVO);
-
-		List<DocumentLinkDTO> links = doc.getLinkedDocumentsByDocId("5009");
-
-		for(DocumentLinkDTO link : links)
-			LOG.info("******************************\t link btw:\t" + link.getOrgnDocId()+ "\t" + link.getDestDocId());
-
-		//doc.removeLinkedDocument(testDocLinkVO);
-		//	
-	}
-
-	@Test public void testAddDocLinkWithLinkID() throws Exception {
-
-		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
-
-		//Test add link	
-		testDocLinkVO.setOrgnDocId("5009");
-		testDocLinkVO.setDestDocId("6009");
-		doc.addLinkedDocument(testDocLinkVO);
-
-		testDocLinkVO.setLinbkId(Long.valueOf(2106));
-		testDocLinkVO.setOrgnDocId("5010");
-		testDocLinkVO.setDestDocId("6010");
-		doc.addLinkedDocument(testDocLinkVO);
-
-		//add non-null link id
-
-		//add link id < the next biggest value
-
-		//add link id = on of other link id
-		//get the one just insserted, repuse the id
-
-		testDocLinkVO.setLinbkId(null);
-		testDocLinkVO.setOrgnDocId("5011");
-		testDocLinkVO.setDestDocId("6011");
-		doc.addLinkedDocument(testDocLinkVO);
-
-		List<DocumentLinkDTO> links = doc.getLinkedDocumentsByDocId("5009");
-
-		for(DocumentLinkDTO link : links)
-			LOG.info("******************************\t link btw:\t" + link.getOrgnDocId()+ "\t" + link.getDestDocId());
-
-		//doc.removeLinkedDocument(testDocLinkVO);
-		//	
-	}
 }

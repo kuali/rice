@@ -31,13 +31,9 @@ public final class DocumentLinkDaoUtil {
 
 	public static DocumentLink reverseLink(DocumentLink link){
 		
-		String tmp = link.getDestDocId();
-		link.setDocLinkId(null);
-		
-		link.setDestDocId(link.getOrgnDocId());
-		link.setOrgnDocId(tmp);
-		tmp = null;
-		
-		return link;
+		DocumentLink reversedLink = new DocumentLink();
+		reversedLink.setOrgnDocId(link.getDestDocId());
+		reversedLink.setDestDocId(link.getOrgnDocId());
+		return reversedLink;
 	}
 }

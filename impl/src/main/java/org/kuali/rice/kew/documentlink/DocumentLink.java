@@ -15,13 +15,19 @@
  */
 package org.kuali.rice.kew.documentlink;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.document.DocumentLinkContract;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-
-import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Server side bean for DocumentLinkDAO 
@@ -33,7 +39,7 @@ import java.io.Serializable;
 @Entity
 @Table(name="KREW_DOC_LNK_T")
 //@Sequence(name="KREW_DOC_LNK_S",property="docLinkId")
-public class DocumentLink implements Serializable {
+public class DocumentLink implements Serializable, DocumentLinkContract {
 
 	private static final long serialVersionUID = 551926904795633010L;
 	
@@ -96,5 +102,45 @@ public class DocumentLink implements Serializable {
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}
+	
+	// new contract methods for Rice 2.0
+	
+	@Override
+	public String getId() {
+		if (getDocLinkId() == null) {
+			return null;
+		}
+		return getDocLinkId().toString();
+	}
 
+	@Override
+	public String getOriginatingDocumentId() {
+		return getOrgnDocId();
+	}
+
+	@Override
+	public String getDestinationDocumentId() {
+		return getDestDocId();
+	}
+	
+	public static org.kuali.rice.kew.api.document.DocumentLink to(DocumentLink documentLinkBo) {
+		if (documentLinkBo == null) {
+			return null;
+		}
+		return org.kuali.rice.kew.api.document.DocumentLink.Builder.create(documentLinkBo).build();
+	}
+
+	public static DocumentLink from(org.kuali.rice.kew.api.document.DocumentLink documentLink) {
+		if (documentLink == null) {
+			return null;
+		}
+		DocumentLink documentLinkBo = new DocumentLink();
+		if (documentLink.getId() != null) {
+			documentLinkBo.setDocLinkId(Long.valueOf(documentLink.getId()));
+		}
+		documentLinkBo.setOrgnDocId(documentLink.getOriginatingDocumentId());
+		documentLinkBo.setDestDocId(documentLink.getDestinationDocumentId());
+		return documentLinkBo;
+	}
+	
 }

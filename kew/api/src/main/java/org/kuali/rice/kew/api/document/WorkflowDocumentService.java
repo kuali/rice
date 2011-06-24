@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.jws.WebParam;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
 
@@ -180,16 +181,22 @@ public interface WorkflowDocumentService {
 //	 public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(
 //	    		@WebParam(name = "documentId") String documentId)
 //	    		throws WorkflowException;
-//	    
-//	    //for docmentlink
-//	    public void addDocumentLink(DocumentLinkDTO docLinkVO) throws WorkflowException;
 //
-//	    public void deleteDocumentLink(DocumentLinkDTO docLinkVO) throws WorkflowException;
-//	    
-//	    public void deleteDocumentLinksByDocId(String docId) throws WorkflowException;
-//	    
-//	    public List<DocumentLinkDTO> getLinkedDocumentsByDocId(String documentId) throws WorkflowException;
-//	    
-//	    public DocumentLinkDTO getLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException;
 	
+	/**
+	 * TODO - document that this "ignores" the request to create the link if it already exists,
+	 * returning the existing link if there is one
+	 */
+	DocumentLink addDocumentLink(DocumentLink documentLink) throws RiceIllegalArgumentException;
+
+	DocumentLink deleteDocumentLink(String documentLinkId) throws RiceIllegalArgumentException;
+	
+    List<DocumentLink> deleteDocumentLinksByDocumentId(String originatingDocumentId) throws RiceIllegalArgumentException;
+	    
+    List<DocumentLink> getOutgoingDocumentLinks(String originatingDocumentId) throws RiceIllegalArgumentException;
+    
+    List<DocumentLink> getIncomingDocumentLinks(String originatingDocumentId) throws RiceIllegalArgumentException;
+	    
+    DocumentLink getDocumentLink(String documentLinkId) throws RiceIllegalArgumentException;
+
 }

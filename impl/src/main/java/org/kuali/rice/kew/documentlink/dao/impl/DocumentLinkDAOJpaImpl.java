@@ -97,6 +97,12 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 		return (List<DocumentLink>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	
 	}
+	
+	public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId) {
+		Criteria crit = new Criteria(DocumentLink.class.getName());
+		crit.eq("destDocId", docId);
+		return (List<DocumentLink>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+	}
 
 	/**
 	 * add double link
@@ -104,12 +110,15 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 	 * @see org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO#saveDocumentLink(org.kuali.rice.kew.documentlink.DocumentLink)
 	 */
 	public void saveDocumentLink(DocumentLink link) {
-		if(getLinkedDocument(link) == null) {
+		DocumentLink linkedDocument = getLinkedDocument(link);
+		if(linkedDocument == null) {
 			if (link.getDocLinkId() == null) {
 				entityManager.persist(link);
 			} else {
 				OrmUtils.merge(entityManager, link);
 			}
+		} else {
+			link.setDocLinkId(linkedDocument.getDocLinkId());
 		}
 //		//if we want a 2-way linked pair
 		DocumentLink rLink = DocumentLinkDaoUtil.reverseLink((DocumentLink)ObjectUtils.deepCopy(link));
@@ -128,4 +137,11 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 		entityManager.remove(cur) ;
 	}
 
+	@Override
+	public DocumentLink getDocumentLink(Long documentLinkId) {
+		Criteria crit = new Criteria(DocumentLink.class.getName());
+		crit.eq("docLinkId", documentLinkId);
+		return (DocumentLink) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+	}
+	
 }

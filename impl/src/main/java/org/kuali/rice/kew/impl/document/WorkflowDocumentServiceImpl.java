@@ -32,6 +32,7 @@ import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentDetail;
+import org.kuali.rice.kew.api.document.DocumentLink;
 import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.dto.DTOConverter;
@@ -207,5 +208,83 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			return Collections.emptyList();
 		}
 	}
+	
+	@Override
+	public DocumentLink addDocumentLink(DocumentLink documentLink) throws RiceIllegalArgumentException {
+		if (documentLink == null) {
+			throw new RiceIllegalArgumentException("documentLink was null");
+		}
+		if (documentLink.getId() != null) {
+			throw new RiceIllegalArgumentException("the given documentLink already has an id, cannot add a document link with an existing id");
+		}
+		org.kuali.rice.kew.documentlink.DocumentLink documentLinkBo = org.kuali.rice.kew.documentlink.DocumentLink.from(documentLink);
+		KEWServiceLocator.getDocumentLinkService().saveDocumentLink(documentLinkBo);
+		return org.kuali.rice.kew.documentlink.DocumentLink.to(documentLinkBo);
+	}
+
+	@Override
+	public DocumentLink deleteDocumentLink(String documentLinkId) throws RiceIllegalArgumentException {
+		if (StringUtils.isBlank(documentLinkId)) {
+			throw new RiceIllegalArgumentException("documentLinkId was null or blank");
+		}
+		org.kuali.rice.kew.documentlink.DocumentLink documentLinkBo = KEWServiceLocator.getDocumentLinkService().getDocumentLink(Long.valueOf(documentLinkId));
+		if (documentLinkBo == null) {
+			throw new RiceIllegalArgumentException("Failed to locate document link with the given documentLinkId: " + documentLinkId);
+		}
+		KEWServiceLocator.getDocumentLinkService().deleteDocumentLink(documentLinkBo);
+		return org.kuali.rice.kew.documentlink.DocumentLink.to(documentLinkBo);
+	}
+	    
+	@Override
+	public List<DocumentLink> deleteDocumentLinksByDocumentId(String originatingDocumentId) throws RiceIllegalArgumentException {
+		if (StringUtils.isBlank(originatingDocumentId)) {
+			throw new RiceIllegalArgumentException("originatingDocumentId was null or blank");
+		}
+		List<org.kuali.rice.kew.documentlink.DocumentLink> documentLinkBos = KEWServiceLocator.getDocumentLinkService().getLinkedDocumentsByDocId(originatingDocumentId);
+		if (documentLinkBos == null || documentLinkBos.isEmpty()) {
+			return Collections.emptyList();
+		}
+		List<DocumentLink> deletedDocumentLinks = new ArrayList<DocumentLink>();
+		for (org.kuali.rice.kew.documentlink.DocumentLink documentLinkBo : documentLinkBos) {
+			deletedDocumentLinks.add(org.kuali.rice.kew.documentlink.DocumentLink.to(documentLinkBo));
+			KEWServiceLocator.getDocumentLinkService().deleteDocumentLink(documentLinkBo);
+		}
+		return Collections.unmodifiableList(deletedDocumentLinks);
+    }
+	    
+	@Override
+	public List<DocumentLink> getOutgoingDocumentLinks(String originatingDocumentId) throws RiceIllegalArgumentException {
+		if (StringUtils.isBlank(originatingDocumentId)) {
+			throw new RiceIllegalArgumentException("originatingDocumentId was null or blank");
+		}
+		List<org.kuali.rice.kew.documentlink.DocumentLink> outgoingDocumentLinkBos = KEWServiceLocator.getDocumentLinkService().getLinkedDocumentsByDocId(originatingDocumentId);
+		List<DocumentLink> outgoingDocumentLinks = new ArrayList<DocumentLink>();
+		for (org.kuali.rice.kew.documentlink.DocumentLink outgoingDocumentLinkBo : outgoingDocumentLinkBos) {
+			outgoingDocumentLinks.add(org.kuali.rice.kew.documentlink.DocumentLink.to(outgoingDocumentLinkBo));
+		}
+		return Collections.unmodifiableList(outgoingDocumentLinks);
+    }
+	
+	@Override
+	public List<DocumentLink> getIncomingDocumentLinks(String destinationDocumentId) throws RiceIllegalArgumentException {
+		if (StringUtils.isBlank(destinationDocumentId)) {
+			throw new RiceIllegalArgumentException("destinationDocumentId was null or blank");
+		}
+		List<org.kuali.rice.kew.documentlink.DocumentLink> incomingDocumentLinkBos = KEWServiceLocator.getDocumentLinkService().getOutgoingLinkedDocumentsByDocId(destinationDocumentId);
+		List<DocumentLink> incomingDocumentLinks = new ArrayList<DocumentLink>();
+		for (org.kuali.rice.kew.documentlink.DocumentLink incomingDocumentLinkBo : incomingDocumentLinkBos) {
+			incomingDocumentLinks.add(org.kuali.rice.kew.documentlink.DocumentLink.to(incomingDocumentLinkBo));
+		}
+		return Collections.unmodifiableList(incomingDocumentLinks);
+    }
+	    
+	@Override
+	public DocumentLink getDocumentLink(String documentLinkId) throws RiceIllegalArgumentException {
+		if (StringUtils.isBlank(documentLinkId)) {
+			throw new RiceIllegalArgumentException("documentLinkId was null or blank");
+		}
+		org.kuali.rice.kew.documentlink.DocumentLink documentLinkBo = KEWServiceLocator.getDocumentLinkService().getDocumentLink(Long.valueOf(documentLinkId));
+		return org.kuali.rice.kew.documentlink.DocumentLink.to(documentLinkBo);
+    }
 	
 }

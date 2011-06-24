@@ -17,11 +17,10 @@ package org.kuali.rice.kew.documentlink.dao.impl;
 
 import java.util.List;
 
-import org.kuali.rice.kew.documentlink.DocumentLink;
-import org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.kew.notes.Note;
+import org.kuali.rice.kew.documentlink.DocumentLink;
+import org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 /**
@@ -33,8 +32,11 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 public class DocumentLinkDAOOjbImpl extends PersistenceBrokerDaoSupport implements DocumentLinkDAO{
 
 	public void saveDocumentLink(DocumentLink link) {
-		if(getLinkedDocument(link) == null)
-			this.getPersistenceBrokerTemplate().store(link);  	
+		DocumentLink linkedDocument = getLinkedDocument(link);
+		if(linkedDocument == null)
+			this.getPersistenceBrokerTemplate().store(link);
+		else
+			link.setDocLinkId(linkedDocument.getDocLinkId());
 		//if we want a 2-way linked pair
 		DocumentLink rLink = DocumentLinkDaoUtil.reverseLink(link);
 		if(getLinkedDocument(rLink) == null)
@@ -67,6 +69,14 @@ public class DocumentLinkDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		query.addOrderByAscending("orgnDocId");
 		return (List<DocumentLink>) this.getPersistenceBrokerTemplate().getCollectionByQuery(query);  
 	}
+	
+	public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId) {
+		Criteria crit = new Criteria();
+		crit.addEqualTo("destDocId", docId);
+		QueryByCriteria query = new QueryByCriteria(DocumentLink.class, crit);
+		query.addOrderByAscending("destDocId");
+		return (List<DocumentLink>) this.getPersistenceBrokerTemplate().getCollectionByQuery(query);  
+	}
 
 	/**
 	 * This overridden method ...
@@ -93,5 +103,11 @@ public class DocumentLinkDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		Criteria crit = new Criteria();
 		crit.addEqualTo("orgnDocId", docId);
 		this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(DocumentLink.class, crit));
+	}
+	
+	public DocumentLink getDocumentLink(Long documentLinkId) {
+		Criteria crit = new Criteria();
+		crit.addEqualTo("docLinkId", documentLinkId);
+		return (DocumentLink) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentLink.class, crit));
 	}
 }

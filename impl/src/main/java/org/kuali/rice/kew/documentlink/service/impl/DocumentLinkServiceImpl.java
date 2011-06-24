@@ -71,6 +71,10 @@ public class DocumentLinkServiceImpl implements DocumentLinkService {
 	public List<DocumentLink> getLinkedDocumentsByDocId(String docId) {
 		return getDocumentLinkDAO().getLinkedDocumentsByDocId(docId);
 	}
+	
+	public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId) {
+		return getDocumentLinkDAO().getOutgoingLinkedDocumentsByDocId(docId);
+	}
 
 	/**
 	 * This overridden method ...
@@ -89,6 +93,10 @@ public class DocumentLinkServiceImpl implements DocumentLinkService {
 	 */
 	public DocumentLink getLinkedDocument(DocumentLink link) {
 		return getDocumentLinkDAO().getLinkedDocument(link);
+	}
+	
+	public DocumentLink getDocumentLink(Long documentLinkId) {
+		return getDocumentLinkDAO().getDocumentLink(documentLinkId);
 	}
 
 

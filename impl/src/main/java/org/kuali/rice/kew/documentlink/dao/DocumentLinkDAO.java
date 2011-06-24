@@ -30,6 +30,8 @@ public interface DocumentLinkDAO {
 	//get all docs linked to orgn doc
     public List<DocumentLink> getLinkedDocumentsByDocId(String docId);
     
+    public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId);
+    
     //get a link between 2 docs
     public DocumentLink getLinkedDocument(DocumentLink link);
     
@@ -41,5 +43,7 @@ public interface DocumentLinkDAO {
     
     //delete all links to orgn doc
     public void deleteDocmentLinksByDocId(String docId);
+    
+    public DocumentLink getDocumentLink(Long documentLinkId);
 
 }

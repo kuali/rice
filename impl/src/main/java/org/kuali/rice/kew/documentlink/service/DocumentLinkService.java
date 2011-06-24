@@ -29,6 +29,8 @@ public interface DocumentLinkService {
 
     public List<DocumentLink> getLinkedDocumentsByDocId(String docId);
     
+    public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId);
+    
     public DocumentLink getLinkedDocument(DocumentLink link);
     
     public void saveDocumentLink(DocumentLink link);
@@ -36,5 +38,7 @@ public interface DocumentLinkService {
     public void deleteDocumentLink(DocumentLink link); 
     
     public void deleteDocumentLinksByDocId(String docId); 
+    
+    public DocumentLink getDocumentLink(Long documentLinkId);
 
 }

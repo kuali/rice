@@ -107,18 +107,11 @@ public class LookupDaoJpa implements LookupDao {
 	}
 
 	public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-		return findCollectionBySearchHelper(businessObjectClass, formProps, unbounded, usePrimaryKeyValuesOnly, null);
-	}
-
-	public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly, Object additionalCriteria) {
 		PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
 		if (usePrimaryKeyValuesOnly) {
 			return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, formProps), unbounded);
 		} else {
 			Criteria crit = getCollectionCriteriaFromMap(businessObject, formProps);
-			if (additionalCriteria != null && additionalCriteria instanceof Criteria) {
-				crit.and((Criteria) additionalCriteria);
-			}
 			return executeSearch(businessObjectClass, crit, unbounded);
 		}
 	}

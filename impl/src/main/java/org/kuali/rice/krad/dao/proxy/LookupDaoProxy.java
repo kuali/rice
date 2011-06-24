@@ -121,13 +121,6 @@ public class LookupDaoProxy implements LookupDao {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.dao.LookupDao#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean, boolean, java.lang.Object)
-	 */
-	public Collection findCollectionBySearchHelper(Class example, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly, Object additionalCriteria) {
-		return getDao(example).findCollectionBySearchHelper(example, formProps, unbounded, usePrimaryKeyValuesOnly, additionalCriteria);
-	}
-
-	/**
 	 * @see org.kuali.rice.krad.dao.LookupDao#findCountByMap(java.lang.Object, java.util.Map)
 	 */
 	public Long findCountByMap(Object example, Map formProps) {

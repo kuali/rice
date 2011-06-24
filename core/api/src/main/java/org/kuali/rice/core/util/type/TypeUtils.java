@@ -87,6 +87,7 @@ public class TypeUtils {
     }
 
     //use ConcurrentReferenceHashMap if it makes it into the jdk, since Class tokens always use identity for equality
+    //also shouldn't this be some kind of weak reference map?
     private static final ConcurrentHashMap<Class<?>, Boolean> IS_BOOLEAN_CACHE = new ConcurrentHashMap<Class<?>, Boolean>();
     private static final ConcurrentHashMap<Class<?>, Boolean> IS_INTEGRAL_CACHE = new ConcurrentHashMap<Class<?>, Boolean>();
     private static final ConcurrentHashMap<Class<?>, Boolean> IS_DECIMAL_CACHE = new ConcurrentHashMap<Class<?>, Boolean>();

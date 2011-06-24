@@ -28,10 +28,6 @@ public interface LookupDao {
 			Class<T> example, Map<String, String> formProps, boolean unbounded,
 			boolean usePrimaryKeyValuesOnly);
 
-	public <T extends Object> Collection<T> findCollectionBySearchHelper(
-			Class<T> example, Map<String, String> formProps, boolean unbounded,
-			boolean usePrimaryKeyValuesOnly, Object additionalCriteria);
-
 	/**
 	 * Retrieves a Object based on the search criteria, which should uniquely
 	 * identify a record.

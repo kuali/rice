@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
@@ -37,27 +38,27 @@ public class SuperUserDisapproveTest extends KEWTestCase {
     }
 	
     @Test public void testSuperUserDisapprove() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.route("");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
         document.superUserDisapprove("");
         assertTrue("Document should be final after Super User Disapprove", document.isDisapproved());
 	}
 	
     @Test public void testSuperUserInitiatorDisapprove() throws Exception {
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
         document.superUserDisapprove("");
         assertTrue("Document should be final after Super User Disapprove", document.isDisapproved());
 	}
 	
     @Test public void testSuperUserDisapproveInvalidUser() throws Exception {
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.route("");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId());
         try {
         	assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isSuperUser());
         	document.superUserDisapprove("");

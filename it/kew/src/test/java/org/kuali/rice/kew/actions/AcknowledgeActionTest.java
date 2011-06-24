@@ -21,6 +21,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -37,11 +38,11 @@ public class AcknowledgeActionTest extends KEWTestCase {
     }
 
     @Test public void testSavedDocumentAdhocRequest() throws Exception {
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
         doc.adHocToPrincipal(ActionRequestType.ACKNOWLEDGE, "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false);
         String userId = getPrincipalIdForName("dewey");
-        doc = WorkflowDocument.loadDocument(userId, doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(userId, doc.getDocumentId());
         assertTrue("Acknowledge should be requested of user " + userId, doc.isAcknowledgeRequested());
         try {
             doc.acknowledge("");
@@ -51,11 +52,11 @@ public class AcknowledgeActionTest extends KEWTestCase {
         assertTrue("Document should be " + getSavedStatusDisplayValue(), doc.isSaved());
 
         String workgroupUserId = getPrincipalIdForName("dewey");
-        doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
 
         doc.adHocToGroup(ActionRequestType.ACKNOWLEDGE, "annotation1", getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT"), "respDesc1", false);
-        doc = WorkflowDocument.loadDocument(workgroupUserId, doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(workgroupUserId, doc.getDocumentId());
         assertTrue("Acknowledge should be requested of user " + workgroupUserId, doc.isAcknowledgeRequested());
         try {
             doc.acknowledge("");

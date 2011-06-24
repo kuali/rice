@@ -27,6 +27,7 @@ import java.util.Set;
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -45,12 +46,12 @@ public class MoveDocumentTest extends KEWTestCase {
      *
      */
     @Test public void testMoveDocumentSequential() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), SeqSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.route("");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Bmcgough should have an approve.", document.isApprovalRequested());
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Rkirkend should have an approve.", document.isApprovalRequested());
         assertEquals("Should be at the WorkflowDocument Node.", SeqSetup.WORKFLOW_DOCUMENT_NODE, document.getNodeNames().iterator().next());
         
@@ -62,12 +63,12 @@ public class MoveDocumentTest extends KEWTestCase {
         assertEquals("Should be at the WorkflowDocument2 Node.", SeqSetup.WORKFLOW_DOCUMENT_2_NODE, document.getNodeNames().iterator().next());
         
         // after moving the document forward, bmcgough and rkirkend should no longer have requests, but phil should
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertFalse("Bmcgough should NOT have an approve.", document.isApprovalRequested());
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertFalse("Rkirkend should NOT have an approve.", document.isApprovalRequested());
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         assertTrue("Pmckown should have an approve.", document.isApprovalRequested());
         ActionRequestValue pmckownRequest = (ActionRequestValue)actionRequests.get(0);
         
@@ -89,15 +90,15 @@ public class MoveDocumentTest extends KEWTestCase {
         assertEquals("Should be 2 pending requests.", 2, actionRequests.size());
         
         assertEquals("Should be at the WorkflowDocument Node.", SeqSetup.WORKFLOW_DOCUMENT_NODE, document.getNodeNames().iterator().next());
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Bmcgough should have an approve.", document.isApprovalRequested());
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Rkirkend should have an approve.", document.isApprovalRequested());
         
         
         // Let's do a sanity check to make sure we're still ENROUTE and move the doc to an ack node, rendering it PROCESSED,
         // also, we'll check that there are no permissions enforced on the move document action by moving as a random user
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("xqi"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("xqi"), document.getDocumentId());
         assertTrue("Doc should be ENROUTE.", document.isEnroute());
         document.move(MovePoint.create(SeqSetup.WORKFLOW_DOCUMENT_NODE, 2), "");
         assertTrue("Doc should be PROCESSED.", document.isProcessed());
@@ -107,14 +108,14 @@ public class MoveDocumentTest extends KEWTestCase {
      * This tests that we can invoke the move document command inside of a sub process.
      */
     @Test public void testMoveDocumentInsideProcess() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "MoveInProcessTest");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "MoveInProcessTest");
         document.route("");
         
         // approve as bmcgough and rkirkend to move into process
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("bmcgough should have approve", document.isApprovalRequested());
         document.approve("");
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should have approve", document.isApprovalRequested());
         document.approve("");
         
@@ -140,7 +141,7 @@ public class MoveDocumentTest extends KEWTestCase {
     }
     
     @Test public void testMoveDocumentParallel() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
     	document.blanketApprove("", new String[] { ParallelSetup.WORKFLOW_DOCUMENT_2_B2_NODE, ParallelSetup.WORKFLOW_DOCUMENT_3_B1_NODE, ParallelSetup.WORKFLOW_DOCUMENT_4_B3_NODE });
     	Set nodeNames = TestUtilities.createNodeInstanceNameSet(KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId()));
     	assertEquals("There should be 3 active nodes.", 3, nodeNames.size());

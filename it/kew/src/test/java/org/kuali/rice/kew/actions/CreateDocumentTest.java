@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.document.Document;
@@ -43,7 +44,7 @@ public class CreateDocumentTest extends KEWTestCase {
 	 */
 	@Test public void testCreateNonExistentDocumentType() throws Exception {
 		try {
-			WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "flim-flam-flooey");
+			WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "flim-flam-flooey");
 			fail("A DocumentTypeNotFoundException exception should have been thrown.");
 		} catch (DocumentTypeNotFoundException e) {
 			e.printStackTrace();
@@ -57,7 +58,7 @@ public class CreateDocumentTest extends KEWTestCase {
 		// the BlanketApproveTest is a parent document type that has no routing path defined.  Attempts to
 		// create documents of this type should return a DocumentCreationException
 		try {
-			WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveTest");
+			WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveTest");
 			fail("A workflow exception should have been thrown.");
 		} catch (DocumentCreationException e) {
 			e.printStackTrace();
@@ -71,7 +72,7 @@ public class CreateDocumentTest extends KEWTestCase {
         // the CreatedDocumentInactive document type is inactive and should not be able to 
         // be initiated for a new document
     	try {
-    		WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "CreatedDocumentInactive");
+    		WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "CreatedDocumentInactive");
             fail("A workflow exception should have been thrown.");
         } catch (InvalidActionTakenException e) {
             e.printStackTrace();
@@ -84,7 +85,7 @@ public class CreateDocumentTest extends KEWTestCase {
     @Test
     public void testCreateSimpleDocumentType() throws Exception {
     	String principalId = getPrincipalIdForName("ewestfal");
-    	WorkflowDocument workflowDocument = WorkflowDocument.createDocument(principalId, "TestDocumentType");
+    	WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(principalId, "TestDocumentType");
     	assertNotNull(workflowDocument);
     	
     	assertNotNull(workflowDocument.getDocumentId());

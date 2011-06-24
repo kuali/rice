@@ -26,6 +26,7 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
@@ -48,7 +49,7 @@ public class FutureRequestsTest extends KEWTestCase {
 
     /**
      * Verify future requests status are being preserved on {@link DocumentRouteHeaderValue} objects when set from the
-     * {@link WorkflowDocument}
+     * {@link WorkflowDocumentFactory}
      *
      * @throws Exception
      */
@@ -61,7 +62,7 @@ public class FutureRequestsTest extends KEWTestCase {
         // Test receiving future requests
 
         String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
-        WorkflowDocument document = WorkflowDocument.createDocument(rkirkendPrincipalId, "TestDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(rkirkendPrincipalId, "TestDocumentType");
         document.setReceiveFutureRequests();
         document.route("");
 
@@ -74,7 +75,7 @@ public class FutureRequestsTest extends KEWTestCase {
 
         // Test not receiving future requests
 
-        document = WorkflowDocument.createDocument(rkirkendPrincipalId, "TestDocumentType");
+        document = WorkflowDocumentFactory.createDocument(rkirkendPrincipalId, "TestDocumentType");
         document.setDoNotReceiveFutureRequests();
         document.route("");
 
@@ -86,7 +87,7 @@ public class FutureRequestsTest extends KEWTestCase {
         assertTrue(futRequestStateMan.isDoNotReceiveFutureRequests());
 
         // test clearing state from existing document
-        document = WorkflowDocument.loadDocument(rkirkendPrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(rkirkendPrincipalId, document.getDocumentId());
         document.setClearFutureRequests();
         document.approve("");
 
@@ -108,7 +109,7 @@ public class FutureRequestsTest extends KEWTestCase {
         }
         assertEquals(2, deactivatedCount);
         // test standard scenario of not setting a future request status on the document
-        document = WorkflowDocument.createDocument(rkirkendPrincipalId, "TestDocumentType");
+        document = WorkflowDocumentFactory.createDocument(rkirkendPrincipalId, "TestDocumentType");
         document.route("");
         routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
         futRequestStateMan = new FutureRequestDocumentStateManager(routeHeader, rkirkendPrincipalId);
@@ -134,21 +135,21 @@ public class FutureRequestsTest extends KEWTestCase {
         // Node 2 - NonSIT approval (forceAction false)
         //          user1 approval (forceAction true)
         // Node 3 - user2 approval (forceAction false)
-        WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, "FutureRequestsDoc");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user1PrincipalId, "FutureRequestsDoc");
         document.setDoNotReceiveFutureRequests();
         document.route("");
 
-        document = WorkflowDocument.loadDocument(user1PrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(user1PrincipalId, document.getDocumentId());
         assertFalse(document.isApprovalRequested());
 
-        document = WorkflowDocument.loadDocument(user2PrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(user2PrincipalId, document.getDocumentId());
         assertTrue(document.isApprovalRequested());
         document.setReceiveFutureRequests();
         document.approve("");
 
         // should have another request from second rule that is not force action because
         // of policy
-        document = WorkflowDocument.loadDocument(user2PrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(user2PrincipalId, document.getDocumentId());
         assertTrue(document.isApprovalRequested());
 
         // user2 should have action items. user1 should not
@@ -158,7 +159,7 @@ public class FutureRequestsTest extends KEWTestCase {
         document.approve("");
 
         // test for request to user2 and not a workgroup
-        document = WorkflowDocument.loadDocument(user2PrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(user2PrincipalId, document.getDocumentId());
         assertTrue(document.isApprovalRequested());
     }
 
@@ -174,12 +175,12 @@ public class FutureRequestsTest extends KEWTestCase {
         String user1PrincipalId = getPrincipalIdForName("user1");
         String user2PrincipalId = getPrincipalIdForName("user2");
 
-        WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, "FutureRequestsDoc");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user1PrincipalId, "FutureRequestsDoc");
         document.route("");
 
         // Node1
         //user1 should have approval requested
-        document = WorkflowDocument.loadDocument(user1PrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(user1PrincipalId, document.getDocumentId());
         WorkflowInfo info = new WorkflowInfo();
         ReportCriteriaDTO reportCriteriaDTO = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
         reportCriteriaDTO.setTargetPrincipalIds(new String[]{user1PrincipalId});
@@ -204,11 +205,11 @@ public class FutureRequestsTest extends KEWTestCase {
         documentVO = info.routingReport(reportCriteriaDTO);
         assertTrue("User " + delyeaPrincipalId + " should not have any requests on the document but routingReport() method should return all action requests anyway", documentVO.getActionRequests().length > 0);
 
-        document = WorkflowDocument.createDocument(user1PrincipalId, "FutureRequestsDoc");
+        document = WorkflowDocumentFactory.createDocument(user1PrincipalId, "FutureRequestsDoc");
         document.setDoNotReceiveFutureRequests();
         document.route("");
 
-        document = WorkflowDocument.loadDocument(user1PrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(user1PrincipalId, document.getDocumentId());
         assertFalse(document.isApprovalRequested());
 
         // user1 should not have approval requested
@@ -255,13 +256,13 @@ public class FutureRequestsTest extends KEWTestCase {
         String user2PrincipalId = getPrincipalIdForName("user2");
         String user3PrincipalId = getPrincipalIdForName("earl");
 
-        WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, "FutureRequestsDoc");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user1PrincipalId, "FutureRequestsDoc");
         document.route("");
        
 
         // Node1
         //user1 should have approval requested
-        document = WorkflowDocument.loadDocument(user3PrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(user3PrincipalId, document.getDocumentId());
         assertTrue("should have approval status", document.isApprovalRequested());
 
         document.setReceiveFutureRequests();
@@ -273,16 +274,16 @@ public class FutureRequestsTest extends KEWTestCase {
         
         document.approve("route node 1");
 
-        document =WorkflowDocument.loadDocument(user1PrincipalId, document.getDocumentId());
+        document =WorkflowDocumentFactory.loadDocument(user1PrincipalId, document.getDocumentId());
         assertFalse("should not have approval status 1", document.isApprovalRequested());
 
-        document = WorkflowDocument.loadDocument(user2PrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(user2PrincipalId, document.getDocumentId());
         assertTrue("should have approval status 2", document.isApprovalRequested());
         document.approve("routing node 2");
         
         // Node3
         //user1 should have approval requested bc of future action requests
-        document = WorkflowDocument.loadDocument(user3PrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(user3PrincipalId, document.getDocumentId());
         assertTrue("should have approval status 3", document.isApprovalRequested());
         document.approve("routing node 3");
 

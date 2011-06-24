@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.ActionRequestType;
@@ -58,7 +59,7 @@ public class AdHocRouteTest extends KEWTestCase {
     public void testRequestLabel() throws Exception{
     	String note = "test note";
     	Person per = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
-    	WorkflowDocument doc = WorkflowDocument.createDocument(per.getPrincipalId(), ADHOC_DOC);
+    	WorkflowDocument doc = WorkflowDocumentFactory.createDocument(per.getPrincipalId(), ADHOC_DOC);
 
     	docId = doc.getDocumentId();
 
@@ -73,7 +74,7 @@ public class AdHocRouteTest extends KEWTestCase {
 
 	@Test
 	public void testParallelAdHocRouting() throws Exception {
-    	WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
+    	WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
     	docId = doc.getDocumentId();
     	doc.adHocToPrincipal(ActionRequestType.APPROVE, "AdHoc", "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false);
 
@@ -118,7 +119,7 @@ public class AdHocRouteTest extends KEWTestCase {
 	@Test
 	public void testAdHocToInitiator() throws Exception {
         final String ADHOC_NODE = "AdHoc";
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
         docId = doc.getDocumentId();
         doc.adHocToPrincipal(ActionRequestType.APPROVE, ADHOC_NODE, "annotation1", getPrincipalIdForName("rkirkend"), "", true);
 
@@ -130,7 +131,7 @@ public class AdHocRouteTest extends KEWTestCase {
         TestUtilities.assertAtNodeNew(doc, ADHOC_NODE);
 
         // now try it with force action=false
-        doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
+        doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
         docId = doc.getDocumentId();
         doc.adHocToPrincipal(ActionRequestType.APPROVE, ADHOC_NODE, "annotation1", getPrincipalIdForName("rkirkend"), "", false);
 
@@ -146,7 +147,7 @@ public class AdHocRouteTest extends KEWTestCase {
 
 	@Test
 	public void testSerialAdHocRouting() throws Exception {
-    	WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
+    	WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
     	docId = doc.getDocumentId();
     	doc.route("");
     	doc = getDocument("user1");
@@ -166,7 +167,7 @@ public class AdHocRouteTest extends KEWTestCase {
 	@Test
     public void testRepeatedAdHocRouting() throws Exception {
         final String ADHOC_NODE = "AdHoc";
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
         docId = doc.getDocumentId();
         doc.adHocToPrincipal(ActionRequestType.APPROVE, ADHOC_NODE, "annotation1", getPrincipalIdForName("user2"), "", false);
         doc.route("");
@@ -215,7 +216,7 @@ public class AdHocRouteTest extends KEWTestCase {
     }
 
     @Test public void testAdHocWhenDocumentIsInitiated() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TakeWorkgroupAuthorityDoc");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TakeWorkgroupAuthorityDoc");
         document.saveDocumentData();
         assertTrue(document.isInitiated());
 
@@ -223,22 +224,22 @@ public class AdHocRouteTest extends KEWTestCase {
         document.adHocToPrincipal(ActionRequestType.FYI, "My Annotation", getPrincipalIdForName("user1"), "", true);
 
         // this is an initiated document, the requests should not be activated yet
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertFalse(document.isApprovalRequested());
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
         assertFalse(document.isFYIRequested());
 
         // now route the document, the requests should be activated
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.route("");
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue(document.isApprovalRequested());
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
         assertTrue(document.isFYIRequested());
     }
 
     @Test public void testAdHocWhenDocumentIsFinal() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TakeWorkgroupAuthorityDoc");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TakeWorkgroupAuthorityDoc");
         document.route("");
         TestUtilities.assertAtNodeNew(document, "WorkgroupByDocument");
 
@@ -249,13 +250,13 @@ public class AdHocRouteTest extends KEWTestCase {
 		}
 
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should have request", document.isApprovalRequested());
         document.approve("");
 
         assertTrue("Document should be final", document.isFinal());
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
         List<ActionRequest> requests = document.getRootActionRequests();
         for (ActionRequest request : requests) {
 			if (request.isActivated()) {
@@ -272,27 +273,27 @@ public class AdHocRouteTest extends KEWTestCase {
         }
 
         // it should be legal to adhoc an FYI on a FINAL document
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertFalse("rkirkend should not have an FYI request.", document.isFYIRequested());
     	document.adHocToPrincipal(ActionRequestType.FYI, "WorkgroupByDocument", "", getPrincipalIdForName("rkirkend"), "", true);
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
     	assertTrue("rkirkend should have an FYI request", document.isFYIRequested());
     }
 
     @Test public void testAdHocWhenDocumentIsSaved() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TakeWorkgroupAuthorityDoc");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TakeWorkgroupAuthorityDoc");
         document.saveDocument("");
 
         // TODO test adhocing of approve requests
 
         assertTrue("Document should be saved.", document.isSaved());
     	document.adHocToPrincipal(ActionRequestType.FYI, "AdHoc", "", getPrincipalIdForName("rkirkend"), "", true);
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
     	assertTrue("rkirkend should have an FYI request", document.isFYIRequested());
     }
 
     @Test public void testAdHocFieldsSavedCorrectly() throws Exception  {
-    	WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
+    	WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
     	docId = doc.getDocumentId();
     	doc.route("");
     	// find all current request and get a list of ids for elimination purposes later
@@ -327,7 +328,7 @@ public class AdHocRouteTest extends KEWTestCase {
 
 	@Test
 	public void testAdHocDissaprovedDocument() throws Exception {
-    	WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), ADHOC_DOC);
+    	WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), ADHOC_DOC);
     	docId = doc.getDocumentId();
     	doc.route("");
 
@@ -348,7 +349,7 @@ public class AdHocRouteTest extends KEWTestCase {
     	doc.acknowledge("");
 
     	//make sure we cant ad hoc approves or completes
-    	doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
+    	doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), ADHOC_DOC);
     	docId = doc.getDocumentId();
     	doc.route("");
 
@@ -395,7 +396,7 @@ public class AdHocRouteTest extends KEWTestCase {
      */
 	@Test
 	public void testAdHocNoNodeName() throws Exception {
-    	WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), ADHOC_DOC);
+    	WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), ADHOC_DOC);
     	docId = doc.getDocumentId();
 
 		// do an appspecific route to jitrue and NonSIT (w/ force action =
@@ -477,7 +478,7 @@ public class AdHocRouteTest extends KEWTestCase {
 	
 	@Test
 	public void testAdHocWithRequestLabel_ToPrincipal() throws Exception {
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), ADHOC_DOC);
+		WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), ADHOC_DOC);
 		String label = "MY PRINCIPAL LABEL";
 		doc.adHocToPrincipal(ActionRequestType.APPROVE, null, "", getPrincipalIdForName("ewestfal"), "", true, label);
 		
@@ -500,7 +501,7 @@ public class AdHocRouteTest extends KEWTestCase {
 
 	@Test
 	public void testAdHocWithRequestLabel_ToGroup() throws Exception {
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), ADHOC_DOC);
+		WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), ADHOC_DOC);
 		String label = "MY GROUP LABEL";
 		Group workflowAdmin = KEWServiceLocator.getIdentityHelperService().getGroupByName("KR-WKFLW", "WorkflowAdmin");
 		doc.adHocToGroup(ActionRequestType.APPROVE, null, "", workflowAdmin.getId(), "", true, label);
@@ -525,7 +526,7 @@ public class AdHocRouteTest extends KEWTestCase {
 	
 	   @Test
 	    public void testAdHocWithNoNodes() throws Exception {
-	        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), ADHOC_NO_NODE_DOC);
+	        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), ADHOC_NO_NODE_DOC);
 	        String label = "MY PRINCIPAL LABEL";
 	        //DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
 	        
@@ -550,10 +551,10 @@ public class AdHocRouteTest extends KEWTestCase {
 
 	
     private WorkflowDocument getDocument(String netid) throws WorkflowException {
-    	return WorkflowDocument.loadDocument(getPrincipalIdForName(netid), docId);
+    	return WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(netid), docId);
     }
     private WorkflowDocument getDocument(String principalId, String docId) throws WorkflowException {
-    	return WorkflowDocument.loadDocument(principalId, docId);
+    	return WorkflowDocumentFactory.loadDocument(principalId, docId);
     }
 
 }

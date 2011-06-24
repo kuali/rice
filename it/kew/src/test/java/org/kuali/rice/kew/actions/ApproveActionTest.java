@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 public class ApproveActionTest extends KEWTestCase {
@@ -30,44 +31,44 @@ public class ApproveActionTest extends KEWTestCase {
     }
     
     @Test public void testPreapprovals() throws Exception {
-    	WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "PreApprovalTest");
+    	WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "PreApprovalTest");
     	doc.route("");
     	
     	//rock some preapprovals and other actions... 
-    	doc = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), doc.getDocumentId());
+    	doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), doc.getDocumentId());
     	doc.approve("");
     	
-    	doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
+    	doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
     	doc.acknowledge("");
     	
-    	doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
+    	doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
     	doc.complete("");
     	
     	//approve as the person the doc is routed to so we can move the documen on and hopefully to final
-    	doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
+    	doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
     	doc.approve("");
     	
-    	doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
+    	doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
     	assertTrue("the document should be final", doc.isFinal());
     }
 
     @Test public void testInitiatorRole() throws Exception {
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "InitiatorRoleApprovalTest");
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "InitiatorRoleApprovalTest");
         doc.route("");
         //rock some preapprovals and other actions... 
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), doc.getDocumentId());
         doc.approve("");
         
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
         doc.acknowledge("");
         
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
         doc.complete("");
 
         assertFalse("the document should NOT be final", doc.isFinal());
 
         //approve as the person the doc is routed (initiator) to so we can move the document on and hopefully to final
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
         doc.approve("");
         
         assertTrue("the document should be final", doc.isFinal());

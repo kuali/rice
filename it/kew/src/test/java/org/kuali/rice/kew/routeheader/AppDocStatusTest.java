@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
@@ -55,7 +56,7 @@ public class AppDocStatusTest extends KEWTestCase {
      */
     @Test public void testValidAppDocStatus() throws Exception {
     	// Create document
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc2");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc2");
     	document.saveDocumentData();
     	assertNotNull(document.getDocumentId());
     	assertTrue("Document should be initiatied", document.isInitiated());
@@ -67,7 +68,7 @@ public class AppDocStatusTest extends KEWTestCase {
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Approval in Progress".equalsIgnoreCase(appDocStatus));
         
         // should have generated a request to "bmcgough"
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Document should be enroute", document.isEnroute());
     	Set<String> nodeNames = document.getNodeNames();
     	assertEquals("Wrong number of node names.", 1, nodeNames.size());
@@ -86,7 +87,7 @@ public class AppDocStatusTest extends KEWTestCase {
         document.approve("Test approve by bmcgough");
         
         // check status 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         Document rh = document.getDocument();
     	appDocStatus = rh.getApplicationDocumentStatus();
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Submitted".equalsIgnoreCase(appDocStatus));
@@ -103,7 +104,7 @@ public class AppDocStatusTest extends KEWTestCase {
         document.saveDocumentData();
 
         // get a refreshed document and check it out
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
 //        assertTrue("Document should be processed.", document.stateIsProcessed());        
         rh = document.getDocument();
     	appDocStatus = rh.getApplicationDocumentStatus();
@@ -121,7 +122,7 @@ public class AppDocStatusTest extends KEWTestCase {
     	assertTrue("Third History record has incorrect new status", "Completed".equalsIgnoreCase(history[2].getNewAppDocStatus()));
                
     	// TODO when we are able to, we should also verify the RouteNodeInstances are correct
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertTrue("Document should be final.", document.isFinal());
     }        
 
@@ -134,7 +135,7 @@ public class AppDocStatusTest extends KEWTestCase {
      */
     @Test public void testAppDocStatusValuesNotDefined() throws Exception {
     	// Create document
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc1");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc1");
     	document.saveDocumentData();
     	assertNotNull(document.getDocumentId());
     	assertTrue("Document should be initiatied", document.isInitiated());
@@ -147,7 +148,7 @@ public class AppDocStatusTest extends KEWTestCase {
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Approval in Progress".equalsIgnoreCase(appDocStatus));
         
         // should have generated a request to "bmcgough"
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Document should be enroute", document.isEnroute());
     	Set<String> nodeNames = document.getNodeNames();
     	assertEquals("Wrong number of node names.", 1, nodeNames.size());
@@ -166,7 +167,7 @@ public class AppDocStatusTest extends KEWTestCase {
         document.approve("Test approve by bmcgough");
         
         // check status 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         rh = document.getDocument();
     	appDocStatus = rh.getApplicationDocumentStatus();
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Submitted".equalsIgnoreCase(appDocStatus));
@@ -183,7 +184,7 @@ public class AppDocStatusTest extends KEWTestCase {
         document.saveDocumentData();
 
         // get a refreshed document and check it out
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
 //        assertTrue("Document should be processed.", document.stateIsProcessed());        
         rh = document.getDocument();
     	appDocStatus = rh.getApplicationDocumentStatus();
@@ -201,7 +202,7 @@ public class AppDocStatusTest extends KEWTestCase {
     	assertTrue("Third History record has incorrect new status", "Some Random Value".equalsIgnoreCase(history[2].getNewAppDocStatus()));
                
     	// TODO when we are able to, we should also verify the RouteNodeInstances are correct
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertTrue("Document should be final.", document.isFinal());
     }        
 
@@ -214,7 +215,7 @@ public class AppDocStatusTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testInvalidAppDocStatusValue() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc2");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestAppDocStatusDoc2");
     	document.saveDocumentData();
     	assertNotNull(document.getDocumentId());
     	assertTrue("Document should be initiatied", document.isInitiated());

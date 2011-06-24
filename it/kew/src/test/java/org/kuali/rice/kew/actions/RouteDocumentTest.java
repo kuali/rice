@@ -26,6 +26,7 @@ import java.util.Collection;
 import org.junit.Test;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -44,7 +45,7 @@ public class RouteDocumentTest extends KEWTestCase {
      * Tests that an exception is thrown if you try to execute a "route" command on an already routed document.
      */
     @Test public void testRouteAlreadyRoutedDocument() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_NAME);
     	document.route("");
     	
     	assertTrue("Document should be ENROUTE.", document.isEnroute());
@@ -71,15 +72,15 @@ public class RouteDocumentTest extends KEWTestCase {
      * Tests that an exception is not thrown if you try to execute a "route" command on a document you did not initiate.
      */
     @Test public void testRouteDocumentAsNonInitiatorUser() throws Exception {
-        WorkflowDocument firstDocument = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_POLICY_TEST_NAME);
-        WorkflowDocument document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), firstDocument.getDocumentId());
+        WorkflowDocument firstDocument = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_POLICY_TEST_NAME);
+        WorkflowDocument document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), firstDocument.getDocumentId());
         try {
             document.route("");
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception thrown but should not have have been... Exception was of type " + e.getClass().getName() + " and message was " + e.getMessage());
         }
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), firstDocument.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), firstDocument.getDocumentId());
         assertEquals("Document should be in Enroute status.", DocumentStatus.ENROUTE, document.getStatus());
 
         // verify that there is 1 action taken
@@ -91,8 +92,8 @@ public class RouteDocumentTest extends KEWTestCase {
      * Tests that an exception is not thrown if you try to execute a "route" command on a document you did not initiate.
      */
     @Test public void testRouteDefaultDocumentAsNonInitiatorUser() throws Exception {
-        WorkflowDocument firstDocument = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_NAME);
-        WorkflowDocument document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), firstDocument.getDocumentId());
+        WorkflowDocument firstDocument = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), firstDocument.getDocumentId());
         try {
             document.route("");
             fail("Exception should have been thrown.");

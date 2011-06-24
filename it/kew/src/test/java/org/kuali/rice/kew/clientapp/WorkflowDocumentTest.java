@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.test.KEWTestCase;
 
@@ -42,19 +43,19 @@ public class WorkflowDocumentTest extends KEWTestCase {
 
     @Test public void testLoadNonExistentDocument() throws Exception {
     	try {
-    		WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), "123456789");
+    		WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), "123456789");
     		fail("load of non-existent document should have thrown IllegalArgumentException");
     	} catch (IllegalArgumentException e) {}
     }
 
     @Test public void testWorkflowDocument() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
         document.route("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.approve("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         document.approve("");
 
         boolean containsInitiated = false;
@@ -82,29 +83,29 @@ public class WorkflowDocumentTest extends KEWTestCase {
      */
     @Test public void testReturnToPreviousCorrectlyUpdatingDocumentStatus() throws Exception {
 
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
         document.route("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.returnToPreviousNode("Initiated", "");
 
         assertFalse("ewestfal should no longer have approval status", document.isApprovalRequested());
         assertFalse("ewestfal should no long have blanket approve status", document.isBlanketApproveCapable());
 
         //just for good measure
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should now have an approve request", document.isApprovalRequested());
     }
 
     @Test public void testGetPreviousRouteNodeNames() throws Exception {
 
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
         document.route("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.approve("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         List<String> previousNodeNames = document.getPreviousNodeNames();
         assertEquals("Should have 2 previous Node Names", 2, previousNodeNames.size());
         assertEquals("Last node name should be the first visisted", "Initiated", previousNodeNames.get(0));
@@ -121,7 +122,7 @@ public class WorkflowDocumentTest extends KEWTestCase {
 
     @Test public void testIsRouteCapable() throws Exception {
 
-    	WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
+    	WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
 
     	verifyIsRouteCapable(false, getPrincipalIdForName("ewestfal"), doc.getDocumentId());
     	verifyIsRouteCapable(false, "2001", doc.getDocumentId());
@@ -129,7 +130,7 @@ public class WorkflowDocumentTest extends KEWTestCase {
     	verifyIsRouteCapable(true, getPrincipalIdForName("rkirkend"), doc.getDocumentId());
     	verifyIsRouteCapable(true, "2002", doc.getDocumentId());
 
-        doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "NonInitiatorCanRouteDocument");
+        doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "NonInitiatorCanRouteDocument");
 
         verifyIsRouteCapable(true, getPrincipalIdForName("ewestfal"), doc.getDocumentId());
         verifyIsRouteCapable(true, "2001", doc.getDocumentId());
@@ -139,7 +140,7 @@ public class WorkflowDocumentTest extends KEWTestCase {
     }
 
     private void verifyIsRouteCapable(boolean routeCapable, String userId, String docId) throws Exception {
-    	WorkflowDocument doc = WorkflowDocument.loadDocument(userId, docId);
+    	WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(userId, docId);
     	assertEquals(routeCapable, doc.isRouteCapable());
     }
 

@@ -41,6 +41,7 @@ import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowDocumentExceptionRoutingService;
 import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
+import org.kuali.rice.kew.impl.document.WorkflowDocumentPrototype;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.notes.service.NoteService;
@@ -212,27 +213,28 @@ public final class KEWServiceLocator {
 	public static final String ENTITY_MANAGER_FACTORY = "kewEntityManagerFactory";
 	
 	public static final String MAILER = "mailer";
+	
+	public static final String WORKFLOW_DOCUMENT_PROTOTYPE = "rice.kew.workflowDocumentPrototype";
 
 
     public static EntityManagerFactory getEntityManagerFactory() {
         return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
     }
-	
-	
+		
 	/**
 	 * @param serviceName
 	 *            the name of the service bean
 	 * @return the service
 	 */
-	public static Object getService(String serviceName) {
+	public static <T> T getService(String serviceName) {
 		return getBean(serviceName);
 	}
 	
-	public static Object getBean(String serviceName) {
+	public static <T> T getBean(String serviceName) {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.getResourceLoader().getService(
+		return GlobalResourceLoader.getResourceLoader().<T>getService(
 				(RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY)))) ?
 						new QName(KEWConstants.KEW_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
 	}
@@ -419,5 +421,9 @@ public final class KEWServiceLocator {
 
     public static PlatformTransactionManager getPlatformTransactionManager() {
 	return (PlatformTransactionManager) getBean(TRANSACTION_MANAGER);
+    }
+    
+    public static WorkflowDocumentPrototype getWorkflowDocumentPrototype() {
+    	return getBean(WORKFLOW_DOCUMENT_PROTOTYPE);
     }
 }

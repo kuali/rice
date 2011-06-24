@@ -38,6 +38,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl;
@@ -78,13 +79,13 @@ public class DocumentTypeTest extends KEWTestCase {
     @Ignore
     @Test public void testDuplicateNodeNameInRoutePath() throws Exception {
         loadXmlFile("DoctypeConfig_duplicateNodes.xml");
-        WorkflowDocument document = WorkflowDocument.createDocument("user1", "TestDoubleNodeDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument("user1", "TestDoubleNodeDocumentType");
         document.setTitle("");
         document.route("");
-        document = WorkflowDocument.loadDocument("rkirkend", document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument("rkirkend", document.getDocumentId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
         document.approve("");
-        document = WorkflowDocument.loadDocument("user2", document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument("user2", document.getDocumentId());
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
         document.approve("");
     }
@@ -94,11 +95,11 @@ public class DocumentTypeTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testChangingDocumentTypeOnEnrouteDocument() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "DocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "DocumentType");
         document.setTitle("");
         document.route("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
 
         WorkflowInfo info = new WorkflowInfo();
@@ -113,12 +114,12 @@ public class DocumentTypeTest extends KEWTestCase {
         assertTrue("Version2 should be larger than verison1", version2.intValue() > version1.intValue());
 
         //the new version would take the document final
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
 
         document.approve("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
         Integer versionDocument = info.getDocTypeById(document.getDocument().getDocumentTypeId()).getDocTypeVersion();
 
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
@@ -133,17 +134,17 @@ public class DocumentTypeTest extends KEWTestCase {
      */
     @Test public void testFinalApproverRouting() throws Exception {
 
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "FinalApproverDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "FinalApproverDocumentType");
         document.setTitle("");
         document.route("");
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         try {
             document.approve("");
             fail("document should have thrown routing exception");
         } catch (Exception e) {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
-        	document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
             assertTrue("Document should be in exception routing", document.isException());
         }
     }
@@ -156,7 +157,7 @@ public class DocumentTypeTest extends KEWTestCase {
      */
     @Test public void testEmptyRoutePath() throws Exception {
 
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "EmptyRoutePathDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "EmptyRoutePathDocumentType");
         document.setTitle("");
         document.route("");
         assertTrue("Document should be in final state", document.isFinal());
@@ -167,14 +168,14 @@ public class DocumentTypeTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testMandatoryRoute() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "MandatoryRouteDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "MandatoryRouteDocumentType");
         document.setTitle("");
         try {
             document.route("");
         } catch (Exception e) {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
-        	document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
+        	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
             assertTrue("Document should be in exception routing", document.isException());
         }
     }

@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.note.Note;
 import org.kuali.rice.kew.api.note.NoteService;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -96,7 +97,7 @@ public class NoteServiceTest extends KEWTestCase {
 	@Test public void testNotesClient() throws Exception {
 		NoteService noteService = KewApiServiceLocator.getNoteService();
 		
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		assertTrue(noteService.getNotes(doc.getDocumentId()).isEmpty());
 		

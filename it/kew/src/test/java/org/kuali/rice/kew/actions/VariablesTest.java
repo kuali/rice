@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.engine.node.Branch;
@@ -67,24 +68,24 @@ public class VariablesTest extends KEWTestCase {
     }
 
     @Test public void testVariables() throws Exception {
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "VariablesTest");
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "VariablesTest");
         doc.route("");
 
         //rock some preapprovals and other actions...
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), doc.getDocumentId());
         dumpInfoAboutDoc(doc);
         doc.setVariable("myexcellentvariable", "righton");
         doc.approve("");
         assertEquals("startedVariableValue", doc.getVariableValue("started"));
         assertEquals("startedVariableValue", doc.getVariableValue("copiedVar"));
 
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
         assertEquals("righton", doc.getVariableValue("myexcellentvariable"));
         doc.setVariable("vartwo", "two");
         doc.setVariable("myexcellentvariable", "ichangedit");
         doc.acknowledge("");
 
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
         assertEquals("ichangedit", doc.getVariableValue("myexcellentvariable"));
         assertEquals("two", doc.getVariableValue("vartwo"));
         doc.setVariable("another", "another");
@@ -92,7 +93,7 @@ public class VariablesTest extends KEWTestCase {
         doc.complete("");
 
         //approve as the person the doc is routed to so we can move the documen on and hopefully to final
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
         assertEquals("ichangedit", doc.getVariableValue("myexcellentvariable"));
         assertEquals(null, doc.getVariableValue("vartwo"));
         assertEquals("another", doc.getVariableValue("another"));

@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -64,7 +65,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
 
     @Test public void testTakeWorkgroupAuthorityAction() throws Exception {
 
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), DOC_TYPE);
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), DOC_TYPE);
         doc.route("");
 
         String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
@@ -79,7 +80,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         }
 
         //have member rkirkend take authority
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
         doc.takeGroupAuthority("", groupId);
 
         //verify that only rkirkend has an action item now.

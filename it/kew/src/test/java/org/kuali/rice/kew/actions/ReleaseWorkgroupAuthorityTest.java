@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.util.KimConstants;
@@ -41,12 +42,12 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
     }
 
     @Test public void testReleaseWorkgroupAuthority() throws Exception {
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
         doc.route("");
 
         String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
         //have member rkirkend take authority
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
         doc.takeGroupAuthority("", groupId);
 
         // verify there is only one action item and that it's to rkirkend
@@ -58,7 +59,7 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
         assertEquals("action item should be to group", groupId, ai.getGroupId());
         
         //have rkirkend release authority
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
 
         doc.releaseGroupAuthority("", groupId);
 

@@ -22,10 +22,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
-import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentStatus;
@@ -46,7 +46,7 @@ public class CreateDocumentTest extends KEWTestCase {
 		try {
 			WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "flim-flam-flooey");
 			fail("A DocumentTypeNotFoundException exception should have been thrown.");
-		} catch (DocumentTypeNotFoundException e) {
+		} catch (RiceIllegalArgumentException e) {
 			e.printStackTrace();
 		}
 	}

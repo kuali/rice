@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.kim.api.group.Group;
 
 /**
  * Represents a group control, which is a special control to handle
@@ -26,7 +27,7 @@ import org.kuali.rice.krad.uif.field.AttributeField;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class GroupControl extends ControlBase {
+public class GroupControl extends TextControl {
     private static final long serialVersionUID = 5598459655735440981L;
     private String namespaceCodePropertyName;
     private String groupIdPropertyName;
@@ -47,7 +48,7 @@ public class GroupControl extends ControlBase {
             }
 
             if (StringUtils.isBlank(field.getFieldLookup().getDataObjectClassName())) {
-            //    field.getFieldLookup().setDataObjectClassName(GroupEbo.class.getName());
+                field.getFieldLookup().setDataObjectClassName(Group.class.getName());
             }
 
             if (field.getFieldLookup().getFieldConversions().isEmpty()) {

@@ -431,7 +431,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                                 <bean class="org.kuali.rice.krad.lookup.keyvalues.AdHocActionRequestCodesValuesFinder"/>
                             </property>
                         </bean>
-                        <bean parent="AttributeField" p:propertyName="name" p:label="Person" p:required="True" />
+                        <bean parent="AttributeField" p:propertyName="name" p:label="Person" p:required="True">
+                            <property name="control">
+                                <bean parent="UserControl" p:principalIdPropertyName="id" p:personNamePropertyName="person.name" />
+                            </property>
+                        </bean>
                     </list>
                 </property>
             </bean>

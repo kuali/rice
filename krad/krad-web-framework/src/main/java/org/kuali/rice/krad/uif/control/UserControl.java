@@ -30,7 +30,7 @@ import org.kuali.rice.krad.uif.field.AttributeQuery;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UserControl extends ControlBase {
+public class UserControl extends TextControl {
 
     private static final long serialVersionUID = 7468340793076585869L;
     private String principalIdPropertyName;

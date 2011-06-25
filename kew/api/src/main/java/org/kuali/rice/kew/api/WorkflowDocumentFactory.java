@@ -115,6 +115,9 @@ public final class WorkflowDocumentFactory {
 		} catch (IllegalAccessException e) {
 			throw new ConfigurationException("Failed to invoke " + CREATE_METHOD_NAME, e);
 		} catch (InvocationTargetException e) {
+			if (e.getCause() instanceof RuntimeException) {
+				throw (RuntimeException)e.getCause();
+			}
 			throw new ConfigurationException("Failed to invoke " + CREATE_METHOD_NAME, e);
 		}
 
@@ -149,6 +152,9 @@ public final class WorkflowDocumentFactory {
 		} catch (IllegalAccessException e) {
 			throw new ConfigurationException("Failed to invoke " + LOAD_METHOD_NAME, e);
 		} catch (InvocationTargetException e) {
+			if (e.getCause() instanceof RuntimeException) {
+				throw (RuntimeException)e.getCause();
+			}
 			throw new ConfigurationException("Failed to invoke " + LOAD_METHOD_NAME, e);
 		}
 

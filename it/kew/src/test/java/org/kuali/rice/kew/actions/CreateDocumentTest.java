@@ -25,7 +25,6 @@ import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentStatus;
@@ -74,7 +73,7 @@ public class CreateDocumentTest extends KEWTestCase {
     	try {
     		WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "CreatedDocumentInactive");
             fail("A workflow exception should have been thrown.");
-        } catch (InvalidActionTakenException e) {
+        } catch (IllegalDocumentTypeException e) {
             e.printStackTrace();
         }
     }

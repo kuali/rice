@@ -27,7 +27,6 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionTaken;
@@ -109,8 +108,8 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     protected ModifiableDocument getModifiableDocument() {
     	return modifiableDocument;
     }
-    
-    protected ModifiableDocumentContent getModifiableDocumentContent() {
+
+	protected ModifiableDocumentContent getModifiableDocumentContent() {
     	if (this.modifiableDocumentContent == null) {
     		DocumentContent documentContent = getWorkflowDocumentService().getDocumentContent(getDocumentId());
     		if (documentContent == null) {
@@ -472,24 +471,16 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
 
     @Override
 	public boolean isBlanketApproveCapable() {
-    	return isActionValid(ActionType.BLANKET_APPROVE) && (isCompletionRequested() || isApprovalRequested() || isInitiated());
+    	return isValidAction(ActionType.BLANKET_APPROVE) && (isCompletionRequested() || isApprovalRequested() || isInitiated());
     }
     
     @Override
 	public boolean isRouteCapable() {
-    	return isActionValid(ActionType.ROUTE);
-    }
-
-    @Override
-	public boolean isActionCodeValid(String actionCode) {
-    	if (StringUtils.isBlank(actionCode)) {
-    		throw new IllegalArgumentException("actionTakenCode was null or blank");
-    	}
-    	return getValidActions().getValidActions().contains(ActionType.fromCode(actionCode));
+    	return isValidAction(ActionType.ROUTE);
     }
     
     @Override
-	public boolean isActionValid(ActionType actionType) {
+	public boolean isValidAction(ActionType actionType) {
     	if (actionType == null) {
     		throw new IllegalArgumentException("actionType was null");
     	}
@@ -531,11 +522,6 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     	DocumentActionResult result = getWorkflowDocumentActionsService().superUserReturnToPreviousNode(constructDocumentActionParameters(annotation), true, returnPoint);
     	resetStateAfterAction(result);
     }
-
-    @Override
-	public boolean isSuperUser() {
-    	return KewApiServiceLocator.getDocumentTypeService().isSuperUser(principalId, getDocument().getDocumentTypeId());
-	}
 
     @Override
 	public void complete(String annotation) {

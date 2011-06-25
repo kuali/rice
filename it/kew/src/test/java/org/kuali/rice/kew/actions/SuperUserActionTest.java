@@ -28,6 +28,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -52,7 +53,7 @@ public class SuperUserActionTest extends KEWTestCase {
         document.route("");
         
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
-        assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
+        assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
         document.superUserBlanketApprove("");
         assertTrue("Document should be 'processed' after Super User Approve", document.isProcessed());
         List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
@@ -109,7 +110,7 @@ public class SuperUserActionTest extends KEWTestCase {
     
     @Test public void testSuperUserInitiatorApprove() throws Exception {
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
+        assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
         document.superUserBlanketApprove("");
         assertTrue("Document should be 'processed' after Super User Approve", document.isProcessed());
         List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
@@ -124,7 +125,7 @@ public class SuperUserActionTest extends KEWTestCase {
 	
 	@Test public void testSuperUserApproveWithNotifications() throws Exception {
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "NotificationTestChild");
-        assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
+        assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
         document.superUserBlanketApprove("");
         assertTrue("Document should be 'processed' after Super User Approve", document.isProcessed());
         List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
@@ -143,7 +144,7 @@ public class SuperUserActionTest extends KEWTestCase {
         
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId());
         try {
-        	assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isSuperUser());
+        	assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
         	document.superUserBlanketApprove("");
         	fail("invalid user attempted to SuperUserApprove");
         } catch (Exception e) {

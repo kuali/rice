@@ -166,9 +166,7 @@ public interface WorkflowDocument {
 
 	boolean isRouteCapable();
 
-	boolean isActionCodeValid(String actionCode);
-
-	boolean isActionValid(ActionType actionType);
+	boolean isValidAction(ActionType actionType);
 
 	void superUserBlanketApprove(String annotation);
 
@@ -182,8 +180,6 @@ public interface WorkflowDocument {
 
 	void superUserReturnToPreviousNode(ReturnPoint returnPoint,
 			String annotation);
-
-	boolean isSuperUser();
 
 	void complete(String annotation);
 

@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
@@ -41,7 +42,7 @@ public class SuperUserCancelTest extends KEWTestCase {
 	document.route("");
 
 	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
-	assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
+	assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isValidAction(ActionType.SU_CANCEL));
 	document.superUserCancel("");
 	assertTrue("Document should be final after Super User Cancel", document.isCanceled());
     }
@@ -49,7 +50,7 @@ public class SuperUserCancelTest extends KEWTestCase {
     @Test
     public void testSuperUserInitiatorCancel() throws Exception {
 	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-	assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
+	assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isValidAction(ActionType.SU_CANCEL));
 	document.superUserCancel("");
 	assertTrue("Document should be final after Super User Cancel", document.isCanceled());
     }
@@ -58,7 +59,7 @@ public class SuperUserCancelTest extends KEWTestCase {
     public void testSuperUserNonInitiatorCancel() throws Exception {
 	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("delyea"), NotifySetup.DOCUMENT_TYPE_NAME);
 	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-	assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
+	assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isValidAction(ActionType.SU_CANCEL));
 	document.superUserCancel("");
 	assertTrue("Document should be final after Super User Cancel", document.isCanceled());
     }
@@ -70,7 +71,7 @@ public class SuperUserCancelTest extends KEWTestCase {
 
 	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId());
 	try {
-	    assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isSuperUser());
+	    assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isValidAction(ActionType.SU_CANCEL));
 	    document.superUserCancel("");
 	    fail("invalid user attempted to SuperUserApprove");
 	} catch (Exception e) {

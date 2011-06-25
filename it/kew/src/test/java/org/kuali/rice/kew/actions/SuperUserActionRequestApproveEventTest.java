@@ -28,6 +28,7 @@ import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -155,7 +156,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertFalse("rkirkend should not have Complete request", document.isCompletionRequested());
         assertFalse("rkirkend should not have Approve request", document.isApprovalRequested());
-        assertTrue("rkirkend should be a super user of the document", document.isSuperUser());
+        assertTrue("rkirkend should be a super user of the document", document.isValidAction(ActionType.SU_APPROVE));
         
         List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(ewestfalPrincipalId, document.getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         assertEquals("There should only be 1 complete request to ewestfal as result of the save.", 1, actionRequests.size());
@@ -183,7 +184,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertFalse("rkirkend should not have Complete request", document.isCompletionRequested());
         assertFalse("rkirkend should not have Approve request", document.isApprovalRequested());
-        assertTrue("rkirkend should be a super user of the document", document.isSuperUser());
+        assertTrue("rkirkend should be a super user of the document", document.isValidAction(ActionType.SU_APPROVE));
         String adhocPrincipalId = getPrincipalIdForName(adhocActionUserNetworkId);
         List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(adhocPrincipalId, document.getDocumentId(), ActionRequestType.APPROVE.getCode());
         assertEquals("There should only be 1 approve request to " + adhocActionUserNetworkId + ".", 1, actionRequests.size());

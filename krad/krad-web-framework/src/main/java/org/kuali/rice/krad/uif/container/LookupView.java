@@ -112,7 +112,7 @@ public class LookupView extends FormView {
      * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.container.View, java.lang.Object)
      */
     @Override
-    public void performApplyModel(View view, Object model) {
+    public void performApplyModel(View view, Object model, Component parent) {
 	    if (isRenderActionsFields()) {
 	        ((List<Field>)getResultsGroup().getItems()).add(0, getResultsActionsField());
 	    }
@@ -120,7 +120,7 @@ public class LookupView extends FormView {
 	        ((List<Field>)getResultsGroup().getItems()).add(0, getResultsReturnField());
 	    }
 	    applyConditionalLogicForFieldDisplay();
-	    super.performApplyModel(view, model);
+	    super.performApplyModel(view, model, parent);
     }
 
 	public void applyConditionalLogicForFieldDisplay() {

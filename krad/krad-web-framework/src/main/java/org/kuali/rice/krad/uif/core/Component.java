@@ -157,7 +157,7 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
      *            - Top level object containing the data (could be the form or a
      *            top level business object, dto)
      */
-    public void performApplyModel(View view, Object model);
+    public void performApplyModel(View view, Object model, Component parent);
 
     /**
      * The last phase before the view is rendered. Here final preparations can

@@ -83,5 +83,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <ref bean="DatePicker"/>
       </property>
   </bean>
-  
+
+  <bean id="UserControl" parent="UserControl-parentBean"/>
+  <bean id="UserControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.UserControl" scope="prototype">
+  </bean>
 </beans>

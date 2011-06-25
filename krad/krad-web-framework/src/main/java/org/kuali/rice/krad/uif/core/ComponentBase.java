@@ -189,7 +189,7 @@ public abstract class ComponentBase implements Component {
      * @see org.kuali.rice.krad.uif.core.Component#performApplyModel(org.kuali.rice.krad.uif.container.View,
      *      java.lang.Object)
      */
-    public void performApplyModel(View view, Object model) {
+    public void performApplyModel(View view, Object model, Component parent) {
 
     }
 

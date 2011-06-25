@@ -179,8 +179,8 @@ public class CollectionGroup extends Group implements DataBinding {
      *      java.lang.Object)
      */
     @Override
-    public void performApplyModel(View view, Object model) {
-        super.performApplyModel(view, model);
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
 
         pushCollectionGroupToReference();
 

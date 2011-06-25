@@ -523,7 +523,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         }
 
         // invoke component to perform its conditional logic
-        component.performApplyModel(view, model);
+        component.performApplyModel(view, model, component);
 
         // invoke service override hook
         performCustomApplyModel(view, component, model);

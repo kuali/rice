@@ -97,8 +97,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void performApplyModel(View view, Object model) {
-		super.performApplyModel(view, model);
+	public void performApplyModel(View view, Object model, Component parent) {
+		super.performApplyModel(view, model, parent);
 
 		if (layoutManager != null) {
 			layoutManager.performApplyModel(view, model, this);

@@ -105,8 +105,8 @@ public class TreeGroup extends Group {
      *      java.lang.Object)
      */
     @Override
-    public void performApplyModel(View view, Object model) {
-        super.performApplyModel(view, model);
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
 
         buildTreeGroups(view, model);
     }

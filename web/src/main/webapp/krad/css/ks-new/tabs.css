@@ -29,7 +29,10 @@
 .ui-tabs .ui-tabs-hide { display: none !important; }
 
 .ui-corner-all {
-	borer-radius: 4px 4px 4px 4px;
+	-moz-border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius:  4px 4px 4px 4px;
+    -o-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
 }
 
 /* UI Widget */
@@ -73,6 +76,8 @@
 	color:#ffffff;
 }
 .ui-corner-top {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    -o-border-radius:5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
 }

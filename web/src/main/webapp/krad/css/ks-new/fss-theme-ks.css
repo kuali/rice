@@ -123,8 +123,7 @@ table td, table th {
 	text-shadow: none;
 }
 /* Data Table Styles */
-    tbody{ border-bottom: 1px solid #000;
-    }
+
     .dataTables_info {margin-top:5px;}
     th.sorting, th.sorting_asc, th.sorting_desc, th.sorting_disabled {
         border-top: 3px solid #000;

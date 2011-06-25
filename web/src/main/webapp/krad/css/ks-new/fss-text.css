@@ -50,7 +50,7 @@
 .fl-font-size-150 body,
 .fl-font-size-150 input, 
 .fl-font-size-150 select, 
-.fl-font-size-150 textarea {font-size:1.5em !important; line-height:1.8em !important;}
+.fl-font-size-150 textarea {font-size:1.5em; line-height:1.8em !important;}     /* removed !important so that font-size can be overridden */
 
 /* fix for Safari 3 ignoring input font size */
 @media screen and (-webkit-min-device-pixel-ratio:0) {

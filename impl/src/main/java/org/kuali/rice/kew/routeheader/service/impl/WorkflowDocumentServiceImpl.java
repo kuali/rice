@@ -58,6 +58,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.MovePoint;
+import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -236,7 +237,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
         if (!routeHeader.getDocumentType().isDocTypeActive()) {
             // don't allow creation if document type is inactive
-            throw new InvalidActionTakenException("Document type '" + routeHeader.getDocumentType().getName() + "' is inactive");
+            throw new IllegalDocumentTypeException("Document type '" + routeHeader.getDocumentType().getName() + "' is inactive");
         }
 
 		routeHeader.setInitiatorWorkflowId(principalId);

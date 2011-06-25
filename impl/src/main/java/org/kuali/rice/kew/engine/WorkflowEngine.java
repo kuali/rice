@@ -31,7 +31,7 @@ public interface WorkflowEngine {
     public void process(String documentId, Long nodeInstanceId) throws Exception;
     
     /**
-     * @throws DocumentCreationException if the given document could not be initialized successfully
+     * @throws IllegalDocumentTypeException if the given document could not be initialized successfully
      */
     public void initializeDocument(DocumentRouteHeaderValue document);
     

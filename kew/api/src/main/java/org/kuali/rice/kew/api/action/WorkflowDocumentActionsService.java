@@ -3,23 +3,94 @@ package org.kuali.rice.kew.api.action;
 import java.util.List;
 import java.util.Set;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.xml.bind.annotation.XmlElement;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
-import org.kuali.rice.kew.api.document.DocumentCreationException;
+import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 
-// TODO still need to add JAX-WS annotations to this class
-
+/**
+ * This service defines various operations which are used to perform actions
+ * against a workflow document.  These actions include creation, routing, 
+ * approving, acknowledging, saving, updating document data, etc.
+ * 
+ * <p>It also includes operations that allow for loading information about
+ * actions that for a given principal to execute against the document, as well
+ * as providing information about what actions a particular principal has been
+ * requested to execute against a document.
+ * 
+ * <p>This service can be used in conjunction with the {@link WorkflowDocumentService}
+ * which provides additional operations that relate to documents (but not document
+ * actions).
+ * 
+ * <p>Implementations of this service are required to be thread-safe and should
+ * be able to be invoked either locally or remotely.
+ * 
+ * @see WorkflowDocumentService
+ * @see WorkflowDocument
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * 
+ */
 public interface WorkflowDocumentActionsService {
 
-	public Document create(String documentTypeName, String initiatorPrincipalId, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate)
-		throws RiceIllegalArgumentException, DocumentTypeNotFoundException, DocumentCreationException;
+	/**
+	 * Creates a new document instance from the given document type.  The
+	 * initiator of the resulting document will be the same as the initiator
+	 * that is passed to this method.  Optional {@link DocumentUpdate} and
+	 * {@link DocumentContentUpdate} parameters can be supplied in order to
+	 * create the document with these additional pieces of data already set.
+	 * 
+	 * <p>By default, if neither the {@link DocumentUpdate} or
+	 * {@link DocumentContentUpdate} is passed to this method, the document
+	 * that is created and returned from this operation will have the following
+	 * initial state:
+	 * 
+	 * <ul>
+	 *   <ol>{@code status} set to {@link DocumentStatus#INITIATED}</ol>
+	 *   <ol>{@code createDate} set to the current date and time</ol>
+	 *   <ol>{@code current} set to 'true'</ol> 
+	 *   <ol>{@code documentContent} set to the default and empty content</ol>
+	 * </ul>
+	 * 
+	 * <p>Additionally, the initial {@link RouteNodeInstance} for the workflow
+	 * process on the document will be created and linked to the document as
+	 * it's initial node.  Once the document is created, the
+	 * {@link #route(DocumentActionParameters)} operation must be invoked in
+	 * order to submit it to the workflow engine for initial processing.
+	 * 
+	 * <p>In certain situations, the given principal may not be permitted to
+	 * initiate documents of the given type.  In these cases an
+	 * {@link InvalidActionTakenException} will be thrown.
+	 * 
+	 * @throws RiceIllegalArgumentException if principalId is null or blank
+	 * @throws RiceIllegalArgumentException if principalId does not identify a valid principal
+	 * @throws RiceIllegalArgumentException if documentTypeName is null or blank
+	 * @throws RiceIllegalArgumentException if documentTypeName does not identify an existing document type
+	 * @throws IllegalDocumentTypeException if the given document type is not active
+	 * @throws IllegalDocumentTypeException if the document type does not support document creation (in other words, it's a document type that is only used as a parent)
+	 * @throws InvalidActionTakenException if the caller is not allowed to execute this action
+	 */
+	@WebMethod(operationName = "create")
+	@WebResult(name = "document")
+	@XmlElement(name = "document", required = true)
+	public Document create(
+			@WebParam(name = "documentTypeName") String documentTypeName,
+			@WebParam(name = "initiatorPrincipalId") String initiatorPrincipalId,
+			@WebParam(name = "documentUpdate") DocumentUpdate documentUpdate,
+			@WebParam(name = "documentContentUpdate") DocumentContentUpdate documentContentUpdate)
+		throws RiceIllegalArgumentException, IllegalDocumentTypeException, InvalidActionTakenException;
 	
 	public ValidActions determineValidActions(String documentId, String principalId);
 
@@ -125,11 +196,6 @@ public interface WorkflowDocumentActionsService {
 //	public boolean isFinalApprover(
 //			@WebParam(name = "documentId") String documentId,
 //			@WebParam(name = "principalId") String principalId)
-//			throws WorkflowException;
-//
-//	public boolean isSuperUserForDocumentType(
-//			@WebParam(name = "principalId") String principalId,
-//			@WebParam(name = "documentTypeId") Long documentTypeId)
 //			throws WorkflowException;
 //
 //	public boolean isLastApproverAtNode(

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.identity.service;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.workgroup.GroupId;
@@ -40,50 +41,87 @@ public interface IdentityHelperService {
 	/**
 	 * Returns the KimPrincipal for the given principal id.  Throws an exception
 	 * if the principal id cannot be resolved to a principal.
+	 * 
+	 * @throws RiceIllegalArgumentException if the principal id cannot be resolved to a principal.
 	 */
 	public Principal getPrincipal(String principalId);
 
 	/**
 	 * Returns the KimPrincipal for the given principal name.  Throws an exception
 	 * if the principal name cannot be resolved to a principal.
+	 * 
+	 * @throws RiceIllegalArgumentException if the principal name cannot be resolved to a principal
 	 */
 	public Principal getPrincipalByPrincipalName(String principalName);
 
 	/**
 	 * Returns the Person for the given principal id.  Throws an exception
 	 * if the principal id cannot be resolved to a person.
+	 * 
+	 * @throws RiceIllegalArgumentException if the principal id cannot be resolved to a person.
 	 */
 	public Person getPerson(String principalId);
 
 	/**
 	 * Returns the Person for the given principal name.  Throws an exception
 	 * if the principal name cannot be resolved to a person.
+	 * 
+	 * @throws RiceIllegalArgumentException if the principal name cannot be resolved to a person.
 	 */
 	public Person getPersonByPrincipalName(String principalName);
 
 	/**
 	 * Returns the Person for the given employee id.  Throws an exception
 	 * if the principal name cannot be resolved to a person.
+	 * 
+	 * @throws RiceIllegalArgumentException if the principal name cannot be resolved to a person.
 	 */
 	public Person getPersonByEmployeeId(String employeeId);
 
 	/**
 	 * Checks that the given principalId is valid.  Throws a RiceRuntimeException if it is not.
+	 * 
+	 * @throws RiceIllegalArgumentException if the given principalId is valid
 	 */
 	public void validatePrincipalId(String principalId);
 
+	/**
+	 * Returns the principal for the given UserId.
+	 * 
+	 * @throws RiceIllegalArgumentException if the given UserId does not resolve to a valid principal
+	 */
 	public Principal getPrincipal(UserId userId);
 
 	/**
 	 * Returns the Group for the given groupId.  Throws an exception
 	 * if the groupId cannot be resolved to a group.
+	 * 
+	 * @throws RiceIllegalArgumentException if the groupId cannot be resolved to a group.
 	 */
 	public Group getGroup(String groupId);
 
+	/**
+	 * Returns the Group for the given GroupId.  Throws an exception
+	 * if the groupId cannot be resolved to a group.
+	 * 
+	 * @throws RiceIllegalArgumentException if the GroupId cannot be resolved to a group.
+	 */
 	public Group getGroup(GroupId groupId);
 
+	/**
+	 * Returns the Group for the given namespaceCode and name.  Throws an exception
+	 * if the namespaceCode and name cannot be resolved to a group.
+	 * 
+	 * @throws RiceIllegalArgumentException if the namespaceCode and name cannot be resolved to a group.
+	 */
 	public Group getGroupByName(String namespaceCode, String name);
 
+	/**
+	 * Returns the Recipient for the given principalId.  Throws an exception
+	 * if the principalId cannot be resolved to a recipient.
+	 * 
+	 * @throws RiceIllegalArgumentException if the principalId cannot be resolved to a recipient
+	 */
 	public Recipient getPrincipalRecipient(String principalId);
 
 	/**

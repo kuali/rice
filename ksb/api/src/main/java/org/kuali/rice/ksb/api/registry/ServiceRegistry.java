@@ -167,7 +167,7 @@ public interface ServiceRegistry {
 	@WebMethod(operationName = "getServiceDescriptors")
 	@WebResult(name = "serviceDescriptors")
 	@XmlElementWrapper(name = "serviceDescriptors", required = true)
-	@XmlElement(name = "serviceDescriptor", required = false, nillable = true)
+	@XmlElement(name = "serviceDescriptor", required = false)
 	List<ServiceDescriptor> getServiceDescriptors(@WebParam(name = "serviceDescriptorId") List<String> serviceDescriptorIds) throws RiceIllegalArgumentException;
 	
 	/**

@@ -40,6 +40,7 @@ import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
@@ -700,6 +701,9 @@ public class ActionListAction extends KualiAction {
         }
         catch (RiceRuntimeException rre)
         {
+        	GlobalVariables.getMessageMap().putError(HELPDESK_ACTIONLIST_USERNAME, HELPDESK_LOGIN_INVALID_ERRKEY, name);
+        }
+        catch (RiceIllegalArgumentException e) {
         	GlobalVariables.getMessageMap().putError(HELPDESK_ACTIONLIST_USERNAME, HELPDESK_LOGIN_INVALID_ERRKEY, name);
         }
         catch (NullPointerException npe)

@@ -28,8 +28,8 @@ import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
+import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
-import org.kuali.rice.kew.api.document.DocumentCreationException;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 
 /**
@@ -52,7 +52,7 @@ public final class WorkflowDocumentFactory {
      * @throws IllegalArgumentException if principalId is null or blank
      * @throws IllegalArgumentException if documentTypeName is null or blank
      * @throws DocumentTypeNotFoundException if documentTypeName does not represent a valid document type
-     * @throws DocumentCreationException if the document type does not allow for creation of a document,
+     * @throws IllegalDocumentTypeException if the document type does not allow for creation of a document,
      * this can occur when the given document type is used only as a parent and has no route path configured
      * @throws InvalidActionTakenException if the caller is not allowed to execute this action
      */

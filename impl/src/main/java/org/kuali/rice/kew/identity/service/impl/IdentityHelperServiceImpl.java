@@ -17,11 +17,12 @@ package org.kuali.rice.kew.identity.service.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.identity.PrincipalName;
+import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -29,9 +30,9 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 
 
@@ -46,11 +47,11 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 
 		public String getIdForPrincipalName(String principalName) {
 		if (principalName == null) {
-			throw new IllegalArgumentException("Can't lookup a principal ID for a null principal name.");
+			throw new RiceIllegalArgumentException("Can't lookup a principal ID for a null principal name.");
 		}
 		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		if (principal == null) {
-			throw new RiceRuntimeException("Given principal name of '" + principalName + "' was invalid.  Failed to lookup a corresponding principal ID.");
+			throw new RiceIllegalArgumentException("Given principal name of '" + principalName + "' was invalid.  Failed to lookup a corresponding principal ID.");
 		}
 		return principal.getPrincipalId();
 	}
@@ -63,7 +64,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public String getIdForGroupName(String namespace, String groupName) {
 		Group group = KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName);
 		if (group == null) {
-			throw new RiceRuntimeException("Given namespace of '" + namespace + "' and name of '" + groupName + "' was invalid.  Failed to lookup a corresponding group ID.");
+			throw new RiceIllegalArgumentException("Given namespace of '" + namespace + "' and name of '" + groupName + "' was invalid.  Failed to lookup a corresponding group ID.");
 		}
 		return group.getId();
 	}
@@ -77,7 +78,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public Principal getPrincipal(String principalId) {
 		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
 		if (principal == null) {
-			throw new RiceRuntimeException("Could not locate a principal with the given principalId of " + principalId);
+			throw new RiceIllegalArgumentException("Could not locate a principal with the given principalId of " + principalId);
 		}
 		return principal;
 	}
@@ -85,7 +86,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public Principal getPrincipalByPrincipalName(String principalName) {
 		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		if (principal == null) {
-			throw new RiceRuntimeException("Could not locate a principal with the given principalName of " + principalName);
+			throw new RiceIllegalArgumentException("Could not locate a principal with the given principalName of " + principalName);
 		}
 		return principal;
 	}
@@ -93,7 +94,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public Group getGroupByName(String namespaceCode, String name) {
 		Group group = KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, name);
 		if (group == null) {
-			throw new RiceRuntimeException("Could not locate a group with the given namspace of '" + namespaceCode + "' and group name of '" + name + "'");
+			throw new RiceIllegalArgumentException("Could not locate a group with the given namspace of '" + namespaceCode + "' and group name of '" + name + "'");
 		}
 		return group;
 	}
@@ -101,7 +102,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public Person getPerson(String principalId) {
 		Person person = KimApiServiceLocator.getPersonService().getPerson(principalId);
 		if (person == null) {
-			throw new RiceRuntimeException("Could not locate a person with the given principal id of " + principalId);
+			throw new RiceIllegalArgumentException("Could not locate a person with the given principal id of " + principalId);
 		}
 		return person;
 	}
@@ -109,7 +110,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public Person getPersonByPrincipalName(String principalName) {
 		Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
 		if (person == null) {
-			throw new RiceRuntimeException("Could not locate a person with the given principal name of " + principalName);
+			throw new RiceIllegalArgumentException("Could not locate a person with the given principal name of " + principalName);
 		}
 		return person;
 	}
@@ -117,7 +118,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public Person getPersonByEmployeeId(String employeeId) {
 		Person person = KimApiServiceLocator.getPersonService().getPersonByEmployeeId(employeeId);
 		if (person == null) {
-			throw new RiceRuntimeException("Could not locate a person with the given employee id of " + employeeId);
+			throw new RiceIllegalArgumentException("Could not locate a person with the given employee id of " + employeeId);
 		}
 		return person;
 	}
@@ -126,7 +127,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public Group getGroup(String groupId) {
 		Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(groupId);
 		if (group == null) {
-			throw new RiceRuntimeException("Could not locate a group with the given groupId of " + groupId);
+			throw new RiceIllegalArgumentException("Could not locate a group with the given groupId of " + groupId);
 		}
 		return group;
 	}
@@ -139,7 +140,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		} else if (groupId instanceof GroupNameId) {
 			return KimApiServiceLocator.getIdentityManagementService().getGroupByName(((GroupNameId)groupId).getNamespace(), ((GroupNameId)groupId).getNameId());
 		}
-		throw new IllegalArgumentException("Invalid GroupId type was passed: " + groupId);
+		throw new RiceIllegalArgumentException("Invalid GroupId type was passed: " + groupId);
 	}
 
 	public Principal getPrincipal(UserId userId) {
@@ -156,7 +157,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 			Person person = getPersonByEmployeeId(employeeId);
 			return getPrincipal(person.getPrincipalId());
 		}
-		throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
+		throw new RiceIllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
 	}
 	
 	public Principal getSystemPrincipal() {

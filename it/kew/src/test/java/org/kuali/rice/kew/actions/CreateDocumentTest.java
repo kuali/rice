@@ -26,8 +26,8 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
+import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.document.Document;
-import org.kuali.rice.kew.api.document.DocumentCreationException;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -60,7 +60,7 @@ public class CreateDocumentTest extends KEWTestCase {
 		try {
 			WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveTest");
 			fail("A workflow exception should have been thrown.");
-		} catch (DocumentCreationException e) {
+		} catch (IllegalDocumentTypeException e) {
 			e.printStackTrace();
 		}
 	}

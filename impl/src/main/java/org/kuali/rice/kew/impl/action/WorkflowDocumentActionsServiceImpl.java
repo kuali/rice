@@ -22,11 +22,10 @@ import org.kuali.rice.kew.api.action.RequestedActions;
 import org.kuali.rice.kew.api.action.ReturnPoint;
 import org.kuali.rice.kew.api.action.ValidActions;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
-import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
+import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
-import org.kuali.rice.kew.api.document.DocumentCreationException;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
@@ -37,6 +36,12 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 
+/**
+ * Reference implementation of the {@link WorkflowDocumentActionsService} api. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActionsService {
 
 	private static final Logger LOG = Logger.getLogger(WorkflowDocumentActionsServiceImpl.class);
@@ -200,21 +205,11 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     	
     }
 	
-	/**
-	 * 
-	 * TODO
-	 * 
-	 * @throws RiceIllegalArgumentException if principalId is null or blank
-	 * @throws RiceIllegalArgumentException if documentTypeName is null or blank
-	 * @throws DocumentTypeNotFoundException if documentTypeName does not represent a valid document type
-	 * @throws DocumentCreationException if document for the given document type could not be created
-	 * @throws InvalidActionTakenException if the caller is not allowed to execute this action
-	 */
 	@Override
 	public Document create(String documentTypeName,
 			String initiatorPrincipalId, DocumentUpdate documentUpdate,
 			DocumentContentUpdate documentContentUpdate)
-			throws RiceIllegalArgumentException, DocumentTypeNotFoundException, DocumentCreationException, InvalidActionTakenException {
+			throws RiceIllegalArgumentException, IllegalDocumentTypeException, InvalidActionTakenException {
 		
 		incomingParamCheck(documentTypeName, "documentTypeName");
 		incomingParamCheck(initiatorPrincipalId, "initiatorPrincipalId");
@@ -225,7 +220,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		
 		String documentTypeId = documentTypeService.getDocumentTypeIdByName(documentTypeName);
 		if (documentTypeId == null) {
-			throw new DocumentTypeNotFoundException("Failed to locate a document type with the given name: " + documentTypeName);
+			throw new RiceIllegalArgumentException("Failed to locate a document type with the given name: " + documentTypeName);
 		}
 		
 		DocumentRouteHeaderValue documentBo = new DocumentRouteHeaderValue();

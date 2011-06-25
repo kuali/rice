@@ -61,7 +61,6 @@ import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.MovePoint;
-import org.kuali.rice.kew.api.doctype.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
@@ -255,7 +254,7 @@ public class DTOConverter {
         if (routeHeaderVO.getDocTypeName() != null) {
             DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(routeHeaderVO.getDocTypeName());
             if (documentType == null) {
-                throw new DocumentTypeNotFoundException("Could not locate the given document type name: " + routeHeaderVO.getDocTypeName());
+                throw new RiceRuntimeException("Could not locate the given document type name: " + routeHeaderVO.getDocTypeName());
             }
             routeHeader.setDocumentTypeId(documentType.getDocumentTypeId());
         }

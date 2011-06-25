@@ -19,10 +19,8 @@
 <div class="body">
   <strong>Maintenance Docs</strong>
   <ul class="chan">
-    <li>todo<!-- portal:portalLink displayTitle="true" title="Context Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.ContextBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" / --></li>
-    <li><portal:portalLink displayTitle="true" title="KRMS Editor Maintenance" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.ui.EditorDocument&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
-    <li><portal:portalLink displayTitle="true" title="Agenda Editor" url="${ConfigProperties.application.url}/spring/krmsAgendaEditor?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.ui.EditorDocument&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
-    <li><portal:portalLink displayTitle="true" title="Agenda Maintenance" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.AgendaBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
+    <li><portal:portalLink displayTitle="true" title="Agenda Editor" url="${ConfigProperties.application.url}/spring/krmsAgendaEditor?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.ui.AgendaEditor&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
+    <li><portal:portalLink displayTitle="true" title="Agenda BO Maintenance" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.AgendaBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
   </ul>
   <strong>Lookups</strong>
   <ul class="chan">
@@ -33,7 +31,7 @@
   </ul>
   <strong>Views</strong>
   <ul class="chan">
-    <li><portal:portalLink displayTitle="true" title="Junk Agenda Editor View" url="${ConfigProperties.application.url}/spring/krmsEditor?viewId=EditorView&methodToCall=start"/></li> 
+    <li><portal:portalLink displayTitle="true" title="Agenda Editor View (junk)" url="${ConfigProperties.application.url}/spring/krmsEditor?viewId=EditorView&methodToCall=start"/></li> 
   </ul>
 </div>
 <channel:portalChannelBottom />

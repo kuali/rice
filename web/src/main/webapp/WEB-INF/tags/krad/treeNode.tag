@@ -29,7 +29,7 @@
       <c:forEach items="${node.children}" var="childNode" varStatus="itemVarStatus">
          <%-- ran into recursive tag problem on Linux, see KULRICE-5161 --%>
          <%-- krad:treeNode node="${childNode}" / --%>
-         <%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul2"%>
+         <%@ taglib tagdir="/WEB-INF/tags/krad" prefix="kul2"%>
          <kul2:containerTreeNode node="${childNode}"/>
       </c:forEach>
    </ul>

@@ -21,6 +21,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -28,12 +29,12 @@ import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 
 /**
- * This is a description of what this class does - gilesp don't forget to fill this in. 
+ * {@link Maintainable} for the {@link AgendaEditor}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class EditorDocumentMaintainable extends KualiMaintainableImpl {
+public class AgendaEditorMaintainable extends KualiMaintainableImpl {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -53,25 +54,25 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 
 		super.setupMaintenanceObject(document, maintenanceAction, requestParameters);
 		
-		if (KRADConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
-			String[] agendaIds = requestParameters.get("agendaId");
-			if (agendaIds == null || agendaIds.length != 1) { 
-				//throw new RiceRuntimeException("one and only one agendaId request parameter may be passed");
-			} else {
-				// TODO: change this, it makes more sense for MAINTENANCE_EDIT_ACTION
-				String agendaId = agendaIds[0];
-
-				AgendaBo agenda = getBoService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
-				String contextId = agenda.getContextId();
-
-				ContextBo context = getBoService().findBySinglePrimaryKey(ContextBo.class, contextId);
-
-				EditorDocument editor = (EditorDocument) document.getDocumentBusinessObject();
-
-				editor.setContext(context);
-				editor.setAgenda(agenda);
-			}
-		}
+//		if (KRADConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
+//			String[] agendaIds = requestParameters.get("agendaId");
+//			if (agendaIds == null || agendaIds.length != 1) { 
+//				//throw new RiceRuntimeException("one and only one agendaId request parameter may be passed");
+//			} else {
+//				// TODO: change this, it makes more sense for MAINTENANCE_EDIT_ACTION
+//				String agendaId = agendaIds[0];
+//
+//				AgendaBo agenda = getBoService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
+//				String contextId = agenda.getContextId();
+//
+//				ContextBo context = getBoService().findBySinglePrimaryKey(ContextBo.class, contextId);
+//
+//				AgendaEditor editor = (AgendaEditor) document.getDocumentBusinessObject();
+//
+//				editor.setContext(context);
+//				editor.setAgenda(agenda);
+//			}
+//		}
 		
 		
 	}
@@ -101,16 +102,6 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 //		editor.getContext().setName("new");
 //	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#getBusinessObject()
-	 */
-	@Override
-	public PersistableBusinessObject getBusinessObject() {
-		// TODO gilesp - THIS METHOD NEEDS JAVADOCS
-		return super.getBusinessObject();
-	}
 	
 	/**
 	 * This overridden method ...
@@ -119,7 +110,6 @@ public class EditorDocumentMaintainable extends KualiMaintainableImpl {
 	 */
 	@Override
 	public void prepareBusinessObject(BusinessObject businessObject) {
-		// TODO gilesp - THIS METHOD NEEDS JAVADOCS
 		super.prepareBusinessObject(businessObject);
 	}
 	

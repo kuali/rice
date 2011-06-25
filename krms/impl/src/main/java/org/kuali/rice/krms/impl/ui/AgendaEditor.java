@@ -31,7 +31,7 @@ import org.kuali.rice.krms.impl.repository.ContextBo;
  *
  */
 // TODO: this is not a document, rename?
-public class EditorDocument extends PersistableBusinessObjectBase {
+public class AgendaEditor extends PersistableBusinessObjectBase {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -91,55 +91,7 @@ public class EditorDocument extends PersistableBusinessObjectBase {
             }
 
             if (firstItem != null) addAgendaItemAndChildren(rootNode, firstItem);
-        } else {
-            agenda = new AgendaBo();
-
-            // TODO: Remove.
-            // For demo purposes, populate the tree even though it's bogus.
-            
-            Node<AgendaTreeNode, String> child1 = new Node<AgendaTreeNode, String>();
-            child1.setNodeLabel("Bogus Agenda Data Check -- YES, this is bogus data.");
-            child1.setNodeType("agendaNode ruleNode");
-            child1.setData(new AgendaTreeRuleNode(new AgendaItemBo()));
-            rootNode.getChildren().add(child1);
-
-            Node<AgendaTreeNode, String> whenTrue1 = new Node<AgendaTreeNode, String>();
-            whenTrue1.setNodeLabel("When TRUE");
-            whenTrue1.setNodeType("agendaNode logicNode whenTrueNode");
-            whenTrue1.setData(new AgendaTreeLogicNode());
-            child1.getChildren().add(whenTrue1);
-
-            Node<AgendaTreeNode, String> whenFalse1 = new Node<AgendaTreeNode, String>();
-            whenFalse1.setNodeLabel("When FALSE");
-            whenFalse1.setNodeType("agendaNode logicNode whenFalseNode");
-            whenFalse1.setData(new AgendaTreeLogicNode());
-            child1.getChildren().add(whenFalse1);
-
-            Node<AgendaTreeNode, String> child2 = new Node<AgendaTreeNode, String>();
-            child2.setNodeLabel("Check for Animal Facility space");
-            child2.setNodeType("agendaNode ruleNode");
-            child2.setData(new AgendaTreeRuleNode(new AgendaItemBo()));
-            whenTrue1.getChildren().add(child2);
-
-            Node<AgendaTreeNode, String> child3 = new Node<AgendaTreeNode, String>();
-            child3.setNodeLabel("Exotic animal check");
-            child3.setNodeType("agendaNode ruleNode");
-            child3.setData(new AgendaTreeRuleNode(new AgendaItemBo()));
-            whenFalse1.getChildren().add(child3);
-
-            Node<AgendaTreeNode, String> child4 = new Node<AgendaTreeNode, String>();
-            child4.setNodeLabel("Reptile escape insurance check");
-            child4.setNodeType("agendaNode ruleNode");
-            child4.setData(new AgendaTreeRuleNode(new AgendaItemBo()));
-            whenFalse1.getChildren().add(child4);
-
-            Node<AgendaTreeNode, String> child5 = new Node<AgendaTreeNode, String>();
-            child5.setNodeLabel("Alien abduction permitting check");
-            child5.setNodeType("agendaNode ruleNode");
-            child5.setData(new AgendaTreeRuleNode(new AgendaItemBo()));
-            rootNode.getChildren().add(child5);
-
-        }
+        } 
         
         return agendaTree;
     }	

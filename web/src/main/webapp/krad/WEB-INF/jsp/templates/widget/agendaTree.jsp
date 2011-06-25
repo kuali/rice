@@ -29,6 +29,23 @@
 <%--
     Invokes JS method to implement a tree plug-in
  --%>
+<script type="text/javascript">
+      jq(document).ready(function() {
+    	  // rule nodes should set the selected item
+    	  jq('a.ruleNode').click( function() {
+        	  var agendaItemId = jq(this.parentNode).find('input').attr('value');
+        	  var selectedItemTracker = jq('input[name="agenda_item_selected"]');
+        	  selectedItemTracker.val(agendaItemId);
+          });
+    	  // logic nodes should clear the selected item
+          jq('a.logicNode').click( function() {
+              var selectedItemTracker = jq('input[name="agenda_item_selected"]');
+              selectedItemTracker.val('');
+          });
+      });
+</script> 
+<!-- keep track of the agenda item that is selected: -->
+<input type="hidden" name="agenda_item_selected" value=""/>
 
 <krad:script value="
 
@@ -39,9 +56,9 @@ jq('#' + '${componentId}').bind('loaded.jstree', function (event, data) {
 
 /* create the tree */
 createTree('${componentId}', { 
-    'plugins' : ['themes','html_data', 'ui', 'crrm', 'dnd'], 
+    'plugins' : ['themes','html_data', 'ui', 'crrm', /*, 'dnd' */ ], // disabled drag and drop plugin 
     'ui' : { 'select_limit' : 1 }, 
-    'themes' : { 'theme':'default','dots': true ,'icons': false },
+    'themes' : { 'theme':'krms','dots': true ,'icons': false },
     'crrm' : {
         /* This is where you can control what is draggable onto what within the tree: */
         'move' : {
@@ -64,5 +81,6 @@ createTree('${componentId}', {
         },
   'dnd' : { 'drag_target' : false, 'drop_target' : false } 
 } );
+
 
 "/>

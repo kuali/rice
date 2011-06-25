@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="node" required="true"
               description="Node instance in the tree to be rendered"

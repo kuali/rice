@@ -728,6 +728,6 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 		
 		protected abstract String getActionName();
 		
-	}
-	
+    }
+
 }

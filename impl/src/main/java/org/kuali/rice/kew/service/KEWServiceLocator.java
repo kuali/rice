@@ -226,11 +226,11 @@ public final class KEWServiceLocator {
 	 *            the name of the service bean
 	 * @return the service
 	 */
-	public static <T> T getService(String serviceName) {
+	public static <T extends Object> T getService(String serviceName) {
 		return getBean(serviceName);
 	}
 	
-	public static <T> T getBean(String serviceName) {
+	public static <T extends Object> T getBean(String serviceName) {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}

@@ -1,9 +1,8 @@
-
 body {font-family: Verdana, Arial, Helvetica, sans-serif;}
 
 
 .group_docheader th,.group_docheader td {
-font-size:.8em;
+	font-size:0.8em;
 }
 
 h2, h3 {

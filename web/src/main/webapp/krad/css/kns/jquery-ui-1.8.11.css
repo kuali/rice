@@ -98,14 +98,14 @@
 ----------------------------------*/
 .ui-widget {
 	font-family: Verdana, Arial, sans-serif;
-	font-size: 1.1em;
+	/* [disabled]font-size: 1.1em; */
 }
 .ui-widget .ui-widget {
 	font-size: 1em;
 }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
 	font-family: Verdana, Arial, sans-serif;
-	font-size: 1em;
+	font-size: .7em;
 }
 .ui-widget-content {
 	/* [disabled]border: 1px solid #aaaaaa; */
@@ -116,8 +116,8 @@
 	color: #222222;
 }
 .ui-widget-header {
-	border: 1px solid #aaaaaa;
-	background: #cccccc url(../../images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;
+	/* [disabled]border: 1px solid #aaaaaa; */
+	/* [disabled]background: #cccccc url(../../images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x; */
 	color: #222222;
 	font-weight: bold;
 }
@@ -136,11 +136,12 @@
 	border: 1px solid #999;
 	background: #e6e6e6 url(../../images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
 	font-weight: normal;
-	font-size: 0.7em;
+	/* [disabled]font-size: 0.7em; */
 }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
 	color: #9c1c1c;
 	text-decoration: none;
+	font-size: .7em;
 }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
 	border: 1px solid #999999;

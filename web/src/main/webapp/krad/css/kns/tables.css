@@ -44,11 +44,12 @@ table.datatable td, th {
 	padding-top: 0.2em;
 	padding-bottom: 0.2em;
 	vertical-align: middle;
-	font-size:.7em;
+	font-size:0.7em;
+	
 }
 
 table.datatable th[scope="row"].collection-header {
-	padding: 0em;
+	padding: 0px;
 	text-align: left;
 }	
 
@@ -60,19 +61,21 @@ table.datatable td.collection-header {
 
 table.datatable th[scope="col"] {
 	text-align:center;
-	font-size:0.7em;padding:.5em;
+	font-size:0.7em;
+	padding:0.5em;
 }
 
 table.datatable th[scope="row"] {
 	text-align:right;
 	vertical-align: middle;
-	background: url(../../images/th-back.gif); padding:.5em;
+	background: url(../../images/th-back.gif);
+	padding:0.5em;
 }
 
 table.datatable th[colspan="2"] {
 	text-align:left;
 	background-image:none;
-	background-color:#CCC	
+	background-color:#CCC;
 }
 
 
@@ -101,8 +104,8 @@ tr .field_attribute.group_docnotes-addField {
  tr .collection-header {
 	color:#000;
 	background-image:none;
-	background-color:#C3C3C3;
-	padding:0.5em
+	/* [disabled]background-color:#C3C3C3; */
+	padding-top: 0.5em;
 }
 #viewpage_div  h3 {
 	background-color:#666;
@@ -110,4 +113,27 @@ tr .field_attribute.group_docnotes-addField {
 	color: #FFF;
 	padding: 0.3em 0.5em;
 	border-bottom: 1px solid #999;
+	text-align: left;
+}
+
+
+#viewpage_div  h4 {
+	background-color:#CCC;
+	font-weight: bold;
+	font-size:.7em;
+	color: #000;
+	padding: 0.3em 0.5em;
+	border-bottom: 1px solid #999;
+}
+
+
+#viewpage_div th h4 {
+	font-weight: bold;
+	/* [disabled]background-color:#E0E1E1; */
+	/* [disabled]font-size:0.7em; */
+	color: #000;
+	/* [disabled]padding:0.5em; */
+	border-bottom: none;
+}
+ #view_div #kualiForm #viewlayout_div #viewpage_div span .fieldLine.boxLayoutVerticalItem.clearfix span tbody tr th  span  .fl-font-serif.fl-font-size-120.page-section-title { font-size:1em
 }

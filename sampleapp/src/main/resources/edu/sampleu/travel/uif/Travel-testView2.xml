@@ -105,7 +105,7 @@
                 <bean parent="HeaderThree" p:headerText="Header Level Three"/>
                 <bean parent="HeaderFour" p:headerText="Header Level Four"/>
                 <bean parent="HeaderFour" p:headerText="Header Level Four (underline)" p:styleClasses="foo"
-                      p:headerStyleClasses="foo"/>
+                      p:headerStyleClasses="fl-font-arial fl-font-size-110 section-subhead"/>
             </list>
         </property>
     </bean>
@@ -136,6 +136,7 @@
 
     <bean id="testValidationSection1" parent="Group">
         <property name="id" value="testValidationSection1"/>
+        <property name="title" value="Test Section 1"/>
         <property name="title" value="Test Section 1"/>
         <property name="accordion.render" value="false"/>
         <property name="styleClasses" value="group_header"/>

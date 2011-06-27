@@ -34,19 +34,19 @@
 
 
 .button-secondary2 {
-	border: 1px solid #054ccf;
+	border: 1px solid #999999;
 	/*defines gradient background*/
 	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #e6e6e6));
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#e6e6e6')";
 	/* fallback for < 8 versions of IE*/
-	background-color:#73C561;
+	background-color:#FFFFFF;
 	font-weight: normal;
-	color: #2c60e5;
-	font-size:1em;
+	color: #990000;
+	font-size:0.7em;
 	/*remove extra padding in IE*/
 	overflow: visible;
-	padding: 0.1em 2.1em;
+	/* [disabled]padding: 0.1em 2.1em; */
 }
 
  .button-primary a, .button-primary a:link, .button-primary a:visited {

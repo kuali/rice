@@ -135,16 +135,19 @@
   
   
   .constraint {
-	font-size: 10px;
+	font-size: 11px;
 	color: gray;
 	margin-bottom: 5px;
 	margin-top: 5px;
 	display: block;
 }
 .summary {
-	font-size: 12px;
+	
 	margin-bottom: auto;
 	display: block;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+
 }
 .boxLayoutVerticalItem{
 	padding-bottom: 20px;

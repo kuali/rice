@@ -6,6 +6,7 @@ a:hover {
 	color: #900;
 }
 
+
 .doc_view_header {
 	background: #EBEBEB url(../../images/masthead1.gif);
 	border-bottom: 1px solid #999;
@@ -123,6 +124,7 @@ div.globalbuttons { text-align:center;	padding-top: 10px; padding-bottom: 10px;}
 .group_docheader {
 	float: right;
 	font-size: .9em;
+	
 }
 
 span.desc {
@@ -140,6 +142,7 @@ span.desc {
 .group_expandclose #msg_reqind_span {
 	display:block;
 	font-size: .8em;
+
 }
 
 .expand_collapse-buttons {
@@ -188,8 +191,8 @@ td.field_attribute
 }
 
 .errorMessages{
-	padding-left: 20px;
-	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
+	padding-left: 30px;
+	background: transparent url(../../images/exclamation-red.png) no-repeat scroll 6px 4px;
 }
 
 .warningMessages{
@@ -203,14 +206,17 @@ td.field_attribute
 }
 
 .errorsFieldForContainer .errorMessages{
-
-	border: 1px solid red;
+	border: 1px solid #E9B2DE;
 	background-color: #FFE0E9;
 	margin-top: 3px;
 	margin-bottom: 3px;
 	padding-bottom: 5px;
 	padding-top: 5px;
 	padding-right: 10px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
 }
 
 .errorsFieldForContainer .warningMessages{
@@ -247,7 +253,8 @@ td.field_attribute
 
 .errorsField .errorMessages{
 	color: #DF0000;
-	font-weight: bold;
+	font-weight:;
+	font-size:.7em;
 }
 
 span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError{
@@ -352,11 +359,16 @@ Tab menu
  }
  #viewpage_div h2 {
 	color:#666666;
+	margin-top:4px;
+	margin-bottom: 4px;
+	vertical-align: middle;
+	font-size:0.7em;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 .action {
 	text-decoration:underline;
-	/* [disabled]font-size: 0.8em; */
+	font-size: 0.8em;
 }
 
 input.amount
@@ -387,7 +399,8 @@ table.datatable th[scope="row"].collection-header {
 	letter-spacing: 0.02em;
 	padding: 3px 0 3px 15px;
 	background: #666666;
-	font-size: 0.8em;
+	font-size: 0.7em;
+	
  }
  
  .breadcrumbs span{
@@ -625,4 +638,43 @@ Navigation Slide Control
 .sorting_desc_disabled {
 	background: url('../../images/sort_desc_disabled_kns.png') no-repeat center right;
 }
+
+
+
+
+
+.ui-tabs .ui-tabs-nav { margin: 0 0 0 15px; padding: .2em .2em 0;}
+.ui-tabs .ui-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0 10px; white-space: nowrap; }
+.ui-tabs .ui-tabs-nav li.ui-state-default a { float: left; padding: .1em 1em; text-decoration: none; }
+.ui-tabs .ui-tabs-nav li.ui-state-active a, .ui-tabs .ui-tabs-nav li.ui-state-default a { float: left; padding: .3em 1em; text-decoration: none; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected, .ui-tabs .ui-tabs-nav li.ui-state-default { margin-bottom: 0; padding-bottom: 1px; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
+.ui-tabs .ui-tabs-panel {
+	background: none repeat scroll 0 0 transparent;
+	border-top: 1px solid #CCC;
+	clear: left;
+	display: block;
+	padding: 1em 1.4em;
+	border-right-width: 0;
+	border-bottom-width: 0;
+	border-left-width: 0;
+	}
+.ui-tabs .ui-tabs-hide { display: none !important; }
+
+
+
+
+
+span.labelTop{ font-size:.7em}
+
+
+
+table.datatable table.datatable {
+	font-size:1.4em;
+}
+
+
+
+
 

@@ -563,7 +563,7 @@ public interface WorkflowDocumentActionsService {
      * Executes a {@link ActionType#CANCEL} action for the given principal and document specified in
      * the supplied parameters. When a principal cancels a document, all pending action requests on
      * the document are deactivated and the the principal's action will be recorded on the document
-     * as an {@link ActionTaken}. Additionally, the document will be (sychronously) transitioned to
+     * as an {@link ActionTaken}. Additionally, the document will be (synchronously) transitioned to
      * the {@link DocumentStatus#CANCELED} status.
      * 
      * <p>

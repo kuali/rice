@@ -16,8 +16,19 @@
 
 package org.kuali.rice.kim.api.type;
 
+import org.kuali.rice.kim.api.KimConstants;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.Collection;
 
+@WebService(name = "kimTypeInfoServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface KimTypeInfoService {
 
     /**
@@ -31,7 +42,9 @@ public interface KimTypeInfoService {
      * @return a {@link KimType} or null
      * @throws IllegalArgumentException if the id is null
      */
-    KimType getKimType(String id);
+    @WebMethod(operationName="getKimType")
+    @WebResult(name = "kimType")
+    KimType getKimType(@WebParam(name = "id") String id);
 
     /**
      * Gets a {@link KimType} from a kim type name and namespace code.
@@ -50,7 +63,9 @@ public interface KimTypeInfoService {
      * @throws IllegalArgumentException if the namespaceCode or name is null
      * @throws IllegalStateException    if multiple active results are found for a namespaceCode and name
      */
-    KimType findKimTypeByNameAndNamespace(String namespaceCode, String name);
+    @WebMethod(operationName="findKimTypeByNameAndNamespace")
+    @WebResult(name = "kimType")
+    KimType findKimTypeByNameAndNamespace(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "name") String name);
 
     /**
      * Gets all the {@link KimType KimTypes}.
@@ -66,5 +81,9 @@ public interface KimTypeInfoService {
      *
      * @return an immutable collection of kim types
      */
+    @WebMethod(operationName="findAllKimTypes")
+    @XmlElementWrapper(name = "kimTypes", required = true)
+    @XmlElement(name = "kimType", required = false)
+    @WebResult(name = "kimTypes")
     Collection<KimType> findAllKimTypes();
 }

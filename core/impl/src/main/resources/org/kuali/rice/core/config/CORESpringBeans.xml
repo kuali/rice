@@ -57,6 +57,7 @@
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+    <import resource="classpath:org/kuali/rice/core/config/CoreOjbSpringBeans.xml" />
 
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="interceptorNames">
@@ -74,6 +75,14 @@
 			</list>
 		</property>
 	</bean>
+
+    <bean id="platformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
+		<property name="jcdAlias" value="coreApplicationDataSource" />
+		<property name="dbPlatform" ref="dbPlatform" />
+	</bean>
+
+    <!-- this should go in the core spring beans once ojb is available-->
+    <bean id="criteriaLookupService" class="org.kuali.rice.core.impl.criteria.CriteriaLookupServiceOjbImpl" parent="platformAwareDao"/>
 
 	<!-- Mail Sender Factory -->
 	<bean id="mailSender" class="org.kuali.rice.core.mail.MailSenderFactoryBean" />

@@ -54,22 +54,49 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-<!--
   <import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
 
-	 <bean id="coreOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
+
+  	<bean id="coreOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
 			<list>
-				<value>coreDataSource</value>
+				<value>coreApplicationDataSource</value>
+				<value>coreServerDataSource</value>
 			</list>
 		</property>
 		<property name="metadataLocation" value="classpath:org/kuali/rice/core/impl/config/OJB-repository-core.xml" />
 	</bean>
 
+	<bean id="coreApplicationDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
+		<property name="preferredDataSourceParams">
+			<list>
+				<value>coreClient.datasource</value>
+			</list>
+		</property>
+		<property name="preferredDataSourceJndiParams">
+			<list>
+				<value>coreClient.datasource.jndi.location</value>
+			</list>
+		</property>
+		<property name="serverDataSource" value="false"/>
+	</bean>
+
+	<bean id="coreServerDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
+		<property name="preferredDataSourceParams">
+			<list>
+				<value>coreServer.datasource</value>
+			</list>
+		</property>
+		<property name="preferredDataSourceJndiParams">
+			<list>
+				<value>coreServer.datasource.jndi.location</value>
+			</list>
+		</property>
+		<property name="serverDataSource" value="true"/>
+	</bean>
+
   <bean id="styleDao" class="org.kuali.rice.core.impl.style.StyleDaoOjb">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
-  
-  -->
   
 </beans>

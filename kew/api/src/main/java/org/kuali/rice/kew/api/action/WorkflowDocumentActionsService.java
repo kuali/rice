@@ -671,24 +671,165 @@ public interface WorkflowDocumentActionsService {
     DocumentActionResult complete(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Executes a {@link ActionType#DISAPPROVE} action for the given principal and document
+     * specified in the supplied parameters. When a principal disapproves a document, all pending
+     * action requests on the document are deactivated and the the principal's action will be
+     * recorded on the document as an {@link ActionTaken}. Additionally, the document will be
+     * (synchronously) transitioned to the {@link DocumentStatus#DISAPPROVED} status.
+     * 
+     * <p>
+     * Depending on document type policy and configuration, notifications may be sent to past
+     * approvers of the document. By default, an "acknowledge" request will be sent to each
+     * principal who took an "approve" or "complete" action on the document previously.
+     * 
+     * <p>
+     * In order to disapprove a document, the principal must have a pending approve or complete
+     * request on the document.
+     * 
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * 
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     * 
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "disapprove")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult disapprove(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Submits a document that is in either the "initiated" or "saved" state to the workflow engine
+     * for processing. The route action triggers the beginning of the routing process and
+     * (synchronously) switches the status of the document to {@link DocumentStatus#ENROUTE}. It
+     * then queues up a request to the workflow engine to process the document.
+     * 
+     * <p>
+     * When the route action is executed, an {@link ActionType#COMPLETE} action is recorded on the
+     * document for the principal who executed the route action. At this point in time, any action
+     * requests that are currently on the document in an "initialized" state will be activated.
+     * Requests of this nature can commonly exist if ad hoc requests have been attached to the
+     * document prior to execution of the route action.
+     * 
+     * <p>
+     * By default, the principal who initiated the document is the same principal who must submit
+     * the route command. However, a document type policy can be set which will relax this
+     * constraint.
+     * 
+     * <p>
+     * The route action should ideally only ever be executed once for a given document. Depending on
+     * document type policy, attempting to execute a "route" action against a document which is
+     * already enroute or in a terminal state may result in an {@link InvalidActionTakenException}
+     * being thrown.
+     * 
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * 
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     * 
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "route")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult route(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a full {@link ActionType#BLANKET_APPROVE} action for the given
+     * principal and document specified in the supplied parameters. Blanket approval will
+     * orchestrate a document from it's current node all the way to the end of the document's
+     * workflow process. During this process, it will automatically act on all "approve" and
+     * "complete" requests, effectively bypassing them. When it does this, it will notify the
+     * original recipients of these requests by routing acknowledge requests to them.
+     * 
+     * <p>
+     * Blanket approve processing is handled by a special mode of the workflow engine which runs the
+     * document through it's full processing lifecycle, ensuring that it makes it's way to the end
+     * of it's route path (by bypassing any steps that would cause the process to halt, such as
+     * approval requests). Because of this nature, blanket approve processing behavior is governed
+     * by the same configuration as the rest of the workflow engine. So depending on whether the
+     * engine is configured or synchronous or asynchronous operation, the blanket approve processing
+     * will behave in the same manner.
+     * 
+     * <p>
+     * In order to execute a blanket approve operation, the principal must have permissions to do
+     * so.
+     * 
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * 
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     * 
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "blanketApprove")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult blanketApprove(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a {@link ActionType#BLANKET_APPROVE} action which orchestrates the
+     * document to the given set of node names for the given principal and document specified in the
+     * supplied parameters. This method functions the same as
+     * {@link #blanketApprove(DocumentActionParameters)} with the exception that the blanket approve
+     * process will be halted once all node names in the given set have been reached.
+     * 
+     * <p>
+     * If null or an empty set is passed for {@code nodeNames} on this method, it's behavior will be
+     * equivalent to {@link #blanketApprove(DocumentActionParameters)}.
+     * 
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param nodeNames a set of node names to which to blanket approve the given document
+     * 
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     * 
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "blanketApproveToNodes")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -697,6 +838,41 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "nodeName") Set<String> nodeNames)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a {@link ActionType#RETURN_TO_PREVIOUS} action for the given
+     * principal and document specified in the supplied parameters. Return a document to a previous
+     * node will allow for the document to be pushed back to an earlier node in the process based on
+     * the criteria present in the {@link ReturnPoint} that is passed to this method.
+     * 
+     * <p>
+     * The document is synchronously returned to the suggested return point (assuming the desired
+     * return point can be identified for the given document), and then the document will be
+     * submitted to the engine for further processing (effectively, re-establishing the flow of the
+     * document from the target return point).
+     * 
+     * <p>
+     * Return the document to the first node in the document is treated as a special case and,
+     * rather then transitioning the document back to the "initiated" status, will route a
+     * "complete" request to the initiator of the document. The effectively enacts a return to the
+     * document initiator in these cases.
+     * 
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * 
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     * 
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "returnToPreviousNode")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -831,8 +1007,6 @@ public interface WorkflowDocumentActionsService {
 
     // TODO add the following methods to this service
 
-
-    
     //	boolean isUserInRouteLog(
     //			@WebParam(name = "documentId") String documentId,
     //			@WebParam(name = "principalId") String principalId,

@@ -610,16 +610,20 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     }
 
     @Override
-    public void delete(String documentId, String principalId) {
+    public Document delete(String documentId, String principalId) {
         DocumentRouteHeaderValue documentBo = init(DocumentActionParameters.create(documentId, principalId, null));
         if (LOG.isDebugEnabled()) {
             LOG.debug("Delete [principalId=" + principalId + ", documentId=" + documentId + "]");
         }
+        Document document = null;
         try {
+            document = DocumentRouteHeaderValue.to(documentBo);
             KEWServiceLocator.getWorkflowDocumentService().deleteDocument(principalId, documentBo);
+            
         } catch (WorkflowException e) {
             translateException(e);
         }
+        return document;
     }
 
     @Override
@@ -635,7 +639,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public void initiateIndexing(String documentId) {
         // TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-
+        throw new UnsupportedOperationException("implement me!!!");
     }
 
     @Override
@@ -757,7 +761,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     public List<WorkflowAttributeValidationError> validateWorkflowAttributeDefinition(
             WorkflowAttributeDefinition definition) {
         // TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-        return null;
+        throw new UnsupportedOperationException("implement me!!!");
     }
 
     private void incomingParamCheck(Object object, String name) {

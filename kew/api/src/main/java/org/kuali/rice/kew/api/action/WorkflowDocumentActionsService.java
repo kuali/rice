@@ -24,6 +24,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -670,25 +671,67 @@ public interface WorkflowDocumentActionsService {
     DocumentActionResult complete(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    @WebMethod(operationName = "disapprove")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult disapprove(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    @WebMethod(operationName = "route")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult route(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    @WebMethod(operationName = "blanketApprove")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult blanketApprove(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    DocumentActionResult blanketApproveToNodes(DocumentActionParameters parameters, Set<String> nodeNames);
+    @WebMethod(operationName = "blanketApproveToNodes")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult blanketApproveToNodes(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "nodeName") Set<String> nodeNames)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    DocumentActionResult returnToPreviousNode(DocumentActionParameters parameters, ReturnPoint returnPoint);
+    @WebMethod(operationName = "returnToPreviousNode")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult returnToPreviousNode(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "returnPoint") ReturnPoint returnPoint)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    DocumentActionResult move(DocumentActionParameters parameters, MovePoint movePoint);
+    @WebMethod(operationName = "move")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult move(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "movePoint") MovePoint movePoint)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    DocumentActionResult takeGroupAuthority(DocumentActionParameters parameters, String groupId);
+    @WebMethod(operationName = "takeGroupAuthority")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult takeGroupAuthority(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "groupId") String groupId)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    DocumentActionResult releaseGroupAuthority(DocumentActionParameters parameters, String groupId);
+    @WebMethod(operationName = "releaseGroupAuthority")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult releaseGroupAuthority(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "groupId") String groupId)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    @WebMethod(operationName = "save")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult save(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
@@ -696,39 +739,100 @@ public interface WorkflowDocumentActionsService {
      * TODO - document the fact that passing an annotation to this will have no effect as it's not
      * actually recorded on the route log
      */
+    @WebMethod(operationName = "saveDocumentData")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult saveDocumentData(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    void delete(String documentId, String principalId);
+    @WebMethod(operationName = "delete")
+    @WebResult(name = "document")
+    @XmlElement(name = "document", required = true)
+    Document delete(
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "principalId") String principalId)
+            throws RiceIllegalArgumentException, InvalidActionTakenException;
 
-    void logAnnotation(String documentId, String principalId, String annotation);
+    @WebMethod(operationName = "logAnnotation")
+    void logAnnotation(
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "annotation") String annotation)
+            throws RiceIllegalArgumentException, InvalidActionTakenException;
 
-    void initiateIndexing(String documentId);
+    @WebMethod(operationName = "initiateIndexing")
+    void initiateIndexing(@WebParam(name = "documentId") String documentId)
+            throws RiceIllegalArgumentException;
 
-    DocumentActionResult superUserBlanketApprove(DocumentActionParameters parameters,
-            boolean executePostProcessor);
+    @WebMethod(operationName = "superUserBlanketApprove")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult superUserBlanketApprove(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "executePostProcessor") boolean executePostProcessor)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    DocumentActionResult superUserNodeApprove(DocumentActionParameters parameters, boolean executePostProcessor,
-            String nodeName);
+    @WebMethod(operationName = "superUserNodeApprove")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult superUserNodeApprove(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "executePostProcessor") boolean executePostProcessor,
+            @WebParam(name = "nodeName") String nodeName)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    DocumentActionResult superUserTakeRequestedAction(DocumentActionParameters parameters,
-            boolean executePostProcessor, String actionRequestId);
+    @WebMethod(operationName = "superUserTakeRequestedAction")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult superUserTakeRequestedAction(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "executePostProcessor") boolean executePostProcessor,
+            @WebParam(name = "actionRequestId") String actionRequestId)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    DocumentActionResult superUserDisapprove(DocumentActionParameters parameters, boolean executePostProcessor);
+    @WebMethod(operationName = "superUserDisapprove")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult superUserDisapprove(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "executePostProcessor") boolean executePostProcessor)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    DocumentActionResult superUserCancel(DocumentActionParameters parameters, boolean executePostProcessor);
+    @WebMethod(operationName = "superUserCancel")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult superUserCancel(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "executePostProcessor") boolean executePostProcessor)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
-    DocumentActionResult superUserReturnToPreviousNode(DocumentActionParameters parameters,
-            boolean executePostProcessor, ReturnPoint returnPoint);
+    @WebMethod(operationName = "superUserReturnToPreviousNode")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult superUserReturnToPreviousNode(
+            @WebParam(name = "parameters") DocumentActionParameters parameters,
+            @WebParam(name = "executePostProcessor") boolean executePostProcessor,
+            @WebParam(name = "returnPoint") ReturnPoint returnPoint)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    @WebMethod(operationName = "placeInExceptionRouting")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult placeInExceptionRouting(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    @WebMethod(operationName = "validateWorkflowAttributeDefinition")
+    @WebResult(name = "validationErrors")
+    @XmlElementWrapper(name = "validationErrors", required = true)
+    @XmlElement(name = "validationError", required = true)
+    List<WorkflowAttributeValidationError> validateWorkflowAttributeDefinition(
+            @WebParam(name = "definition") WorkflowAttributeDefinition definition)
+            throws RiceIllegalArgumentException;
+
     // TODO add the following methods to this service
 
-    List<WorkflowAttributeValidationError> validateWorkflowAttributeDefinition(
-            @WebParam(name = "definition") WorkflowAttributeDefinition definition);
 
+    
     //	boolean isUserInRouteLog(
     //			@WebParam(name = "documentId") String documentId,
     //			@WebParam(name = "principalId") String principalId,

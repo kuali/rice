@@ -17,6 +17,7 @@ package org.kuali.rice.kew.api.action;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -31,6 +32,7 @@ public final class AdHocToPrincipal extends AdHocCommand {
 
 	private static final long serialVersionUID = -4512561589558793736L;
 
+	@XmlElement(name = Elements.TARGET_PRINCIPAL_ID, required = true)
 	private final String targetPrincipalId;
 
 	private AdHocToPrincipal() {

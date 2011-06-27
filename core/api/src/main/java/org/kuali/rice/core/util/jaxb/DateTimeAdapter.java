@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.core.util.jaxb;
 
+import java.util.Calendar;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.joda.time.DateTime;
 
@@ -27,16 +27,21 @@ import org.joda.time.DateTime;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DateTimeAdapter extends XmlAdapter<XMLGregorianCalendar, DateTime> {
+public class DateTimeAdapter extends XmlAdapter<Calendar, DateTime> {
 
 	@Override
-	public XMLGregorianCalendar marshal(DateTime dateTime) throws Exception {
-		return dateTime == null ? null : DatatypeFactory.newInstance().newXMLGregorianCalendar(dateTime.toGregorianCalendar());
+	public Calendar marshal(DateTime dateTime) throws Exception {
+		if (dateTime == null) {
+		    return null;
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(dateTime.getMillis());
+		return calendar;
 	}
 
 	@Override
-	public DateTime unmarshal(XMLGregorianCalendar calendar) throws Exception {
-		return calendar == null ? null : new DateTime(calendar.toGregorianCalendar());
+	public DateTime unmarshal(Calendar calendar) throws Exception {
+		return calendar == null ? null : new DateTime(calendar.getTimeInMillis());
 	}
 	
 }

@@ -35,6 +35,10 @@ import org.w3c.dom.Element;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AdHocCommand.Constants.TYPE_NAME, propOrder = {
 		AdHocCommand.Elements.ACTION_REQUESTED_CODE,
+		AdHocCommand.Elements.NODE_NAME,
+		AdHocCommand.Elements.RESPONSIBILITY_DESCRIPTION,
+		AdHocCommand.Elements.FORCE_ACTION,
+		AdHocCommand.Elements.REQUEST_LABEL,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 abstract class AdHocCommand implements Serializable {

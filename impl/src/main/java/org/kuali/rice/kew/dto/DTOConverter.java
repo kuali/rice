@@ -63,6 +63,7 @@ import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentDetail;
+import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
@@ -480,11 +481,11 @@ public class DTOConverter {
         } catch (ParserConfigurationException e) {
         	throw new RiceRuntimeException("Failed to initialize XML parser.", e);
         } catch (SAXException e) {
-        	throw new RiceRuntimeException("Failed to parse XML.", e);
+        	throw new InvalidDocumentContentException("Failed to parse XML.", e);
 		} catch (IOException e) {
-			throw new RiceRuntimeException("Failed to parse XML.", e);
+			throw new InvalidDocumentContentException("Failed to parse XML.", e);
 		} catch (TransformerException e) {
-			throw new RiceRuntimeException("Failed to parse XML.", e);
+			throw new InvalidDocumentContentException("Failed to parse XML.", e);
 		}
         return documentContent;
     }

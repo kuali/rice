@@ -63,6 +63,16 @@ public final class AdHocRevoke implements Serializable {
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 	
+    /**
+     * Private constructor used only by JAXB.
+     */
+    private AdHocRevoke() {
+        this.nodeNames = null;
+        this.principalIds = null;
+        this.groupIds = null;
+    }
+
+    
     private AdHocRevoke(Set<String> nodeNames, Set<String> principalIds, Set<String> groupIds) {
     	this.nodeNames = nodeNames;
     	this.principalIds = principalIds;

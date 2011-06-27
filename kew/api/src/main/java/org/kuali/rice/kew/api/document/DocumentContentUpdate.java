@@ -83,6 +83,17 @@ public final class DocumentContentUpdate implements Serializable {
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
     
+	/**
+     * Private constructor used only by JAXB.
+     */
+	private DocumentContentUpdate() {
+	    this.applicationContent = null;
+	    this.attributeContent = null;
+	    this.searchableContent = null;
+	    this.attributeDefinitions = null;
+	    this.searchableDefinitions = null;
+	}
+	
     private DocumentContentUpdate(Builder builder) {
     	this.applicationContent = builder.getApplicationContent();
     	this.attributeContent = builder.getAttributeContent();

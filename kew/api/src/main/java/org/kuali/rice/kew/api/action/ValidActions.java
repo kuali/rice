@@ -101,7 +101,7 @@ public final class ValidActions implements ModelObjectComplete {
 
 
     /**
-     * A builder which can be used to construct {@link ValidActions} instances.  Enforces the constraints of the {@link ValidActionsContract}.
+     * A builder which can be used to construct {@link ValidActions} instances.
      */
     public final static class Builder implements Serializable, ModelBuilder {
 

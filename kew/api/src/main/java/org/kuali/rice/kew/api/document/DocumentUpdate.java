@@ -25,9 +25,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -35,6 +35,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
 
@@ -72,8 +73,8 @@ public final class DocumentUpdate implements Serializable {
 	@XmlElement(name = Elements.APPLICATION_DOCUMENT_STATUS, required = false)
 	private final String applicationDocumentStatus;
 	
-	@XmlElementWrapper(name = Elements.VARIABLES, required = false)
-	@XmlElement(name = Elements.VARIABLE, required = false)
+	@XmlElement(name = Elements.VARIABLES, required = false)
+	@XmlJavaTypeAdapter(MapStringStringAdapter.class)
 	private final Map<String, String> variables;
     
 	@SuppressWarnings("unused")
@@ -241,7 +242,6 @@ public final class DocumentUpdate implements Serializable {
         final static String APPLICATION_DOCUMENT_ID = "applicationDocumentId";
         final static String APPLICATION_DOCUMENT_STATUS = "applicationDocumentStatus";
         final static String VARIABLES = "variables";
-        final static String VARIABLE = "variable";
     }
 
 }

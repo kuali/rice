@@ -1,4 +1,4 @@
-#Sun Jun 26 01:48:06 EDT 2011
+#Sun Jun 26 19:21:06 EDT 2011
 eclipse.preferences.version=1
 org.eclipse.jdt.core.formatter.align_type_members_on_columns=false
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression=16
@@ -54,10 +54,10 @@ org.eclipse.jdt.core.formatter.comment.format_javadoc_comments=true
 org.eclipse.jdt.core.formatter.comment.format_line_comments=false
 org.eclipse.jdt.core.formatter.comment.format_source_code=false
 org.eclipse.jdt.core.formatter.comment.indent_parameter_description=false
-org.eclipse.jdt.core.formatter.comment.indent_root_tags=false
+org.eclipse.jdt.core.formatter.comment.indent_root_tags=true
 org.eclipse.jdt.core.formatter.comment.insert_new_line_before_root_tags=do not insert
 org.eclipse.jdt.core.formatter.comment.insert_new_line_for_parameter=do not insert
-org.eclipse.jdt.core.formatter.comment.line_length=90
+org.eclipse.jdt.core.formatter.comment.line_length=100
 org.eclipse.jdt.core.formatter.comment.new_lines_at_block_boundaries=true
 org.eclipse.jdt.core.formatter.comment.new_lines_at_javadoc_boundaries=true
 org.eclipse.jdt.core.formatter.compact_else_if=true

@@ -220,9 +220,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 	public DocumentRouteHeaderValue createDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws WorkflowException {
 
-		LOG.debug("Rmi createDocument() with "); // add some sort of a
-													// routeheader logger
-
 		if (routeHeader.getDocumentId() != null) { // this is a debateable
 														// check - means the
 														// client is off

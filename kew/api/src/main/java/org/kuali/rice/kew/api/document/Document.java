@@ -25,7 +25,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -61,7 +60,6 @@ import org.w3c.dom.Element;
     Document.Elements.APPLICATION_DOCUMENT_STATUS,
     Document.Elements.APPLICATION_DOCUMENT_STATUS_DATE,
     Document.Elements.VARIABLES,
-    CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Document implements ModelObjectComplete, DocumentContract {
@@ -115,10 +113,10 @@ public final class Document implements ModelObjectComplete, DocumentContract {
     private final String applicationDocumentStatus;
     
     @XmlElement(name = Elements.APPLICATION_DOCUMENT_STATUS_DATE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime applicationDocumentStatusDate;
     
-    @XmlElementWrapper(name = Elements.VARIABLES, required = false)
-    @XmlElement(name = Elements.VARIABLE, required = false)
+    @XmlElement(name = Elements.VARIABLES, required = false)
     @XmlJavaTypeAdapter(MapStringStringAdapter.class)
     private final Map<String, String> variables;
         
@@ -539,7 +537,6 @@ public final class Document implements ModelObjectComplete, DocumentContract {
         final static String DOCUMENT_HANDLER_URL = "documentHandlerUrl";
         final static String APPLICATION_DOCUMENT_STATUS = "applicationDocumentStatus";
         final static String APPLICATION_DOCUMENT_STATUS_DATE = "applicationDocumentStatusDate";
-        final static String VARIABLE = "variable";
         final static String VARIABLES = "variables";
     }
 

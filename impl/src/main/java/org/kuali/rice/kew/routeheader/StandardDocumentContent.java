@@ -16,8 +16,18 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.io.StringReader;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
@@ -26,11 +36,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
 
 
 /**
@@ -58,16 +63,16 @@ public class StandardDocumentContent implements DocumentContent, Serializable {
 
 	private RouteContext routeContext;
 
-	public StandardDocumentContent(String docContent) throws XmlException {
+	public StandardDocumentContent(String docContent) {
 		this(docContent, null);
 	}
 
-	public StandardDocumentContent(String docContent, RouteContext routeContext) throws XmlException {
+	public StandardDocumentContent(String docContent, RouteContext routeContext) {
 		this.routeContext = routeContext;
 		initialize(docContent, routeContext);
 	}
 
-	private void initialize(String docContent, RouteContext routeContext) throws XmlException {
+	private void initialize(String docContent, RouteContext routeContext) {
 		if (org.apache.commons.lang.StringUtils.isEmpty(docContent)) {
 			this.docContent = "";
 			this.document = null;
@@ -77,11 +82,11 @@ public class StandardDocumentContent implements DocumentContent, Serializable {
 				this.document = parseDocContent(docContent);
 				extractElements(this.document);
 			} catch (IOException e) {
-				throw new XmlException("I/O Error when attempting to parse document content.", e);
+				throw new InvalidDocumentContentException("I/O Error when attempting to parse document content.", e);
 			} catch (SAXException e) {
-				throw new XmlException("XML parse error when attempting to parse document content.", e);
+				throw new InvalidDocumentContentException("XML parse error when attempting to parse document content.", e);
 			} catch (ParserConfigurationException e) {
-				throw new XmlException("XML parser configuration error when attempting to parse document content.", e);
+				throw new RiceRuntimeException("XML parser configuration error when attempting to parse document content.", e);
 			}
 		}
 	}
@@ -153,11 +158,7 @@ public class StandardDocumentContent implements DocumentContent, Serializable {
 
 	private void readObject(ObjectInputStream ais) throws IOException, ClassNotFoundException {
 		ais.defaultReadObject();
-		try {
-			initialize(this.docContent, this.routeContext);
-		} catch (Exception e) {
-			throw new WorkflowRuntimeException(e);
-		}
+		initialize(this.docContent, this.routeContext);
 	}
 
 }

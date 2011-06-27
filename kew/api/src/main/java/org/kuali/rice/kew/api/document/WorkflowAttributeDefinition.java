@@ -61,6 +61,15 @@ public final class WorkflowAttributeDefinition {
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 	
+	/**
+     * Private constructor used only by JAXB.
+     */
+	private WorkflowAttributeDefinition() {
+	    this.attributeName = null;
+	    this.parameters = null;
+	    this.propertyDefinitions = null;
+	}
+	
 	private WorkflowAttributeDefinition(Builder builder) {
 		this.attributeName = builder.getAttributeName();
 		if (builder.getParameters() == null) {

@@ -16,6 +16,10 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -36,11 +40,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
-
-import javax.xml.namespace.QName;
-import java.util.List;
 
 
 /**
@@ -193,8 +193,7 @@ public abstract class ActionTakenEvent {
 			}
 
 		} catch (Exception ex) {
-			LOG.warn(ex, ex);
-			throw new WorkflowRuntimeException(ex.getMessage(), ex);
+		    processPostProcessorException(ex);
 		}
 	}
 
@@ -212,7 +211,7 @@ public abstract class ActionTakenEvent {
 				throw new InvalidActionTakenException(report.getMessage());
 			}
 		} catch (Exception ex) {
-			throw new WorkflowRuntimeException(ex);
+		    processPostProcessorException(ex);
 		}
 	}
 
@@ -228,7 +227,7 @@ public abstract class ActionTakenEvent {
 			String content = element.translate();
 			documentRoutingService.invoke(content);
 		} catch (Exception e) {
-			throw new WorkflowRuntimeException(e);
+		    processPostProcessorException(e);
 		}
 	}
 
@@ -301,6 +300,12 @@ public abstract class ActionTakenEvent {
 		this.queueDocumentAfterAction = queueDocumentAfterAction;
 	}
 
+	private void processPostProcessorException(Exception e) {
+        if (e instanceof RuntimeException) {
+            throw (RuntimeException)e;
+        }
+        throw new WorkflowRuntimeException(e);
+	}
 
 	
 }

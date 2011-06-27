@@ -85,6 +85,10 @@ public final class DocumentActionParameters implements Serializable {
     	this.documentContentUpdate = builder.getDocumentContentUpdate();
     }
     
+    public static DocumentActionParameters create(String documentId, String principalId) {
+        return create(documentId, principalId, "");
+    }
+    
     public static DocumentActionParameters create(String documentId, String principalId, String annotation) {
     	Builder builder = Builder.create(documentId, principalId);
     	builder.setAnnotation(annotation);

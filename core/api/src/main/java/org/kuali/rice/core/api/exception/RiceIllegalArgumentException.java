@@ -10,8 +10,10 @@ import javax.xml.ws.WebFault;
  * within Rice.
  */
 @WebFault(name = "IllegalArgumentFault", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
-@SuppressWarnings("unused")
 public class RiceIllegalArgumentException extends IllegalArgumentException {
+
+    private static final long serialVersionUID = 3246611328810430837L;
+
     public RiceIllegalArgumentException() {
     }
 

@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Stream-based XML doc
+ * Stream-based XML doc.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

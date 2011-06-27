@@ -26,6 +26,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.Collection;
 
 /**
@@ -169,6 +171,8 @@ public interface ParameterRepositoryService {
      * @throws IllegalArgumentException if the key is null
      */
     @WebMethod(operationName="getParameterValuesAsString")
+    @XmlElementWrapper(name = "values", required = true)
+    @XmlElement(name = "value", required = false)
     @WebResult(name = "values")
     Collection<String> getParameterValuesAsString(@WebParam(name = "key") ParameterKey key);
 
@@ -258,6 +262,8 @@ public interface ParameterRepositoryService {
      * @throws IllegalArgumentException if the key is null or if the subParameterName is blank
      */
     @WebMethod(operationName="getSubParameterValuesAsString")
+    @XmlElementWrapper(name = "values", required = true)
+    @XmlElement(name = "value", required = false)
     @WebResult(name = "values")
     Collection<String> getSubParameterValuesAsString(@WebParam(name = "key") ParameterKey key,
                                                      @WebParam(name = "subParameterName") String subParameterName)

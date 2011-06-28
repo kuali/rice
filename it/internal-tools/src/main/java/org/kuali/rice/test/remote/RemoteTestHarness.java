@@ -1,5 +1,7 @@
 package org.kuali.rice.test.remote;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -17,6 +19,9 @@ import javax.xml.ws.Endpoint;
  * endpoint.
  */
 public class RemoteTestHarness {
+
+    private static final Log LOG = LogFactory.getLog(RemoteTestHarness.class);
+
     private Endpoint endpoint;
 
     @SuppressWarnings("unchecked")
@@ -31,8 +36,6 @@ public class RemoteTestHarness {
 
             endpoint = Endpoint.publish(ServiceEndpointLocation.ENDPOINT_URL, serviceImplementation);
 
-
-
             JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
             factory.setServiceClass(jaxWsAnnotatedInterface);
             factory.setAddress(ServiceEndpointLocation.ENDPOINT_URL);
@@ -40,6 +43,9 @@ public class RemoteTestHarness {
             T serviceProxy = (T) factory.create();
             Client cxfClient = ClientProxy.getClient(serviceProxy);
             cxfClient.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
+
+            waitAndCheck(endpoint, false);
+
             return serviceProxy;
         } else {
             throw new IllegalArgumentException("Passed in interface class type must be annotated with @WebService " +
@@ -55,6 +61,19 @@ public class RemoteTestHarness {
     public void stopEndpoint() {
         if (endpoint != null) {
             endpoint.stop();
+            waitAndCheck(endpoint, true);
+        }
+    }
+
+    private static void waitAndCheck(Endpoint ep, boolean published) {
+        try {
+            Thread.sleep(3000 * 60);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (ep.isPublished() == published) {
+            LOG.warn("endpoint: " + ep + " published: " + published);
         }
     }
 }

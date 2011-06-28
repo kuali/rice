@@ -68,32 +68,12 @@ public class KIMWebServiceConstants {
 		}
 	}
 
-	public static final class GroupService {
-		public static final String WEB_SERVICE_NAME = "kimGroupServiceSOAP";
-		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.group.GroupService";
-		public static final String WEB_SERVICE_PORT = "GroupServicePort";
-		
-		private GroupService() {
-			throw new UnsupportedOperationException("do not call");
-		}
-	}
-
 	public static final class GroupUpdateService {
 		public static final String WEB_SERVICE_NAME = "kimGroupUpdateServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.group.GroupUpdateService";
 		public static final String WEB_SERVICE_PORT = "GroupUpdateServicePort";
 		
 		private GroupUpdateService() {
-			throw new UnsupportedOperationException("do not call");
-		}
-	}
-
-	public static final class ResponsibilityService {
-		public static final String WEB_SERVICE_NAME = "kimResponsibilityServiceSOAP";
-		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.ResponsibilityService";
-		public static final String WEB_SERVICE_PORT = "ResponsibilityServicePort";
-		
-		private ResponsibilityService() {
 			throw new UnsupportedOperationException("do not call");
 		}
 	}

@@ -16,6 +16,7 @@
 
 package org.kuali.rice.kim.api.group;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;
@@ -40,7 +41,7 @@ public interface GroupUpdateService {
      */
     @WebMethod(operationName = "createGroup")
     @WebResult(name = "group")
-	Group createGroup(@WebParam(name="group") Group group) throws UnsupportedOperationException;
+	Group createGroup(@WebParam(name="group") Group group) throws RiceIllegalArgumentException;
 
     /**
      * Updates an existing group using the given Group.
@@ -55,7 +56,7 @@ public interface GroupUpdateService {
      */
     @WebMethod(operationName = "updateGroup")
     @WebResult(name = "group")
-	Group updateGroup(@WebParam(name="group") Group group) throws UnsupportedOperationException;
+	Group updateGroup(@WebParam(name="group") Group group) throws RiceIllegalArgumentException;
 
 	/**
      * Updates a group using the given Group.
@@ -71,7 +72,7 @@ public interface GroupUpdateService {
      */
     @WebMethod(operationName = "updateGroupWithId")
     @WebResult(name = "group")
-    Group updateGroup(@WebParam(name="groupId") String groupId, @WebParam(name="group") Group group) throws UnsupportedOperationException;
+    Group updateGroup(@WebParam(name="groupId") String groupId, @WebParam(name="group") Group group) throws RiceIllegalArgumentException;
 
     /**
      * Adds the group with the id supplied in childId as a member of the group with the id supplied in parentId.
@@ -82,7 +83,7 @@ public interface GroupUpdateService {
      */
     @WebMethod(operationName = "addGroupToGroup")
     @WebResult(name = "addedToGroup")
-    boolean addGroupToGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws UnsupportedOperationException;
+    boolean addGroupToGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws RiceIllegalArgumentException;
 
     /**
      * Removes the group with the id supplied in childId from the group with the id supplied in parentId.
@@ -93,7 +94,7 @@ public interface GroupUpdateService {
      */
     @WebMethod(operationName = "removeGroupFromGroup")
     @WebResult(name = "removedFromGroup")
-    boolean removeGroupFromGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws UnsupportedOperationException;
+    boolean removeGroupFromGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws RiceIllegalArgumentException;
 
     /**
      * Add the principal with the given principalId as a member of the group with the given groupId.
@@ -104,7 +105,7 @@ public interface GroupUpdateService {
      */
     @WebMethod(operationName = "addPrincipalToGroup")
     @WebResult(name = "addedToGroup")
-    boolean addPrincipalToGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws UnsupportedOperationException;
+    boolean addPrincipalToGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
     /**
      * Removes the member principal with the given principalId from the group with the given groupId.
@@ -115,7 +116,7 @@ public interface GroupUpdateService {
      */
     @WebMethod(operationName = "removePrincipalFromGroup")
     @WebResult(name = "removedFromGroup")
-    boolean removePrincipalFromGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws UnsupportedOperationException;
+    boolean removePrincipalFromGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
     /**
      * Removes all members from the group with the given groupId.
@@ -123,5 +124,5 @@ public interface GroupUpdateService {
      * @param groupId  Id of the Group object to remove the members from
      */
     @WebMethod(operationName = "removeAllMembers")
-    void removeAllMembers( @WebParam(name="groupId") String groupId ) throws UnsupportedOperationException;
+    void removeAllMembers( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 }

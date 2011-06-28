@@ -66,11 +66,11 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
      */
     public boolean addGroupToGroup(String childId, String parentId) {
         if(childId.equals(parentId)) {
-            throw new IllegalArgumentException("Can't add group to itself.");
+            throw new RiceIllegalArgumentException("Can't add group to itself.");
         }
 
         if(isGroupMemberOfGroup(parentId, childId)) {
-            throw new IllegalArgumentException("Circular group reference.");
+            throw new RiceIllegalArgumentException("Circular group reference.");
         }
 
         GroupMemberBo groupMember = new GroupMemberBo();

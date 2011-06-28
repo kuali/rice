@@ -145,8 +145,8 @@
     <javadoc.plugin.version>2.7</javadoc.plugin.version>
     <project.info.reports.plugin.version>2.4</project.info.reports.plugin.version>
     <site.plugin.version>3.0-beta-3</site.plugin.version>
-    <surefire.plugin.version>2.8.1</surefire.plugin.version>
-    <failsafe.plugin.version>2.8.1</failsafe.plugin.version>
+    <surefire.plugin.version>2.9</surefire.plugin.version>
+    <failsafe.plugin.version>2.9</failsafe.plugin.version>
     <source.plugin.version>2.1.2</source.plugin.version>
     <assembly.plugin.version>2.2.1</assembly.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>

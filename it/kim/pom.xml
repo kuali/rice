@@ -33,6 +33,20 @@
 
 	<dependencies>
         <dependency>
+            <groupId>org.kuali.rice</groupId>
+            <version>${project.version}</version>
+            <artifactId>rice-kim-impl</artifactId>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.kuali.rice</groupId>
+            <version>${project.version}</version>
+            <artifactId>rice-impl</artifactId>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>rice-impl</artifactId>
             <version>${project.version}</version>
@@ -69,11 +83,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.kuali.db.ojb</groupId>
             <artifactId>db-ojb</artifactId>
             <scope>test</scope>
@@ -103,5 +112,27 @@
             <artifactId>commons-lang</artifactId>
             <scope>test</scope>
         </dependency>
+
+      <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-core</artifactId>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-frontend-jaxws</artifactId>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-transports-http</artifactId>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-transports-http-jetty</artifactId>
+          <scope>test</scope>
+      </dependency>
+
 	</dependencies>
 </project>

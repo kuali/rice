@@ -23,6 +23,7 @@ import org.junit.Test
 import org.kuali.rice.kim.api.type.KimType
 import org.kuali.rice.kim.api.type.KimTypeAttributeContract
 import org.kuali.rice.kim.api.type.KimTypeContract
+import org.kuali.rice.kim.api.type.KimTypeInfoService
 import org.kuali.rice.krad.service.BusinessObjectService
 
 class KimTypeInfoServiceImplTest {
@@ -35,23 +36,30 @@ class KimTypeInfoServiceImplTest {
 
     private static final KimType kimType = create();
     private static final String key = "the_id";
-    private KimTypeBo bo = KimTypeBo.from(kimType)
+    KimTypeBo bo = KimTypeBo.from(kimType)
 
-    private KimTypeInfoServiceImpl ktiservice;
+    KimTypeInfoServiceImpl kimTypeInfoServiceImpl;
+    KimTypeInfoService kimTypeInfoService;
 
     @Before
     void setupBoServiceMockContext() {
         mock = new MockFor(BusinessObjectService)
-        ktiservice = new KimTypeInfoServiceImpl()
+
+    }
+
+    @Before
+    void setupServiceUnderTest() {
+        kimTypeInfoServiceImpl = new KimTypeInfoServiceImpl()
+        kimTypeInfoService = kimTypeInfoServiceImpl
     }
 
     @Test
     void test_get_kim_type_null_id() {
         def boService = mock.proxyDelegateInstance()
-        ktiservice.setBusinessObjectService(boService);
+        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
 
         shouldFail(IllegalArgumentException.class) {
-            ktiservice.getKimType(null)
+            kimTypeInfoServiceImpl.getKimType(null)
         }
         mock.verify(boService)
     }
@@ -60,18 +68,18 @@ class KimTypeInfoServiceImplTest {
     void test_get_kim_type_exists() {
         mock.demand.findBySinglePrimaryKey (1) { clazz, obj -> bo }
         def boService = mock.proxyDelegateInstance()
-        ktiservice.setBusinessObjectService(boService);
-        Assert.assertEquals (kimType, ktiservice.getKimType(key))
+        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        Assert.assertEquals (kimType, kimTypeInfoServiceImpl.getKimType(key))
         mock.verify(boService)
     }
 
     @Test
     void test_find_kim_type_by_name_namespace_null_first() {
         def boService = mock.proxyDelegateInstance()
-        ktiservice.setBusinessObjectService(boService);
+        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
 
         shouldFail(IllegalArgumentException.class) {
-            ktiservice.findKimTypeByNameAndNamespace(null, "the_name")
+            kimTypeInfoServiceImpl.findKimTypeByNameAndNamespace(null, "the_name")
         }
         mock.verify(boService)
     }
@@ -79,10 +87,10 @@ class KimTypeInfoServiceImplTest {
     @Test
     void test_find_kim_type_by_name_namespace_null_second() {
         def boService = mock.proxyDelegateInstance()
-        ktiservice.setBusinessObjectService(boService);
+        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
 
         shouldFail(IllegalArgumentException.class) {
-            ktiservice.findKimTypeByNameAndNamespace("ns", null)
+            kimTypeInfoServiceImpl.findKimTypeByNameAndNamespace("ns", null)
         }
         mock.verify(boService)
     }
@@ -91,8 +99,8 @@ class KimTypeInfoServiceImplTest {
     void test_find_kim_type_by_name_namespace_exists() {
         mock.demand.findMatching (1) { clazz, map -> [bo] }
         def boService = mock.proxyDelegateInstance()
-        ktiservice.setBusinessObjectService(boService);
-        Assert.assertEquals (kimType, ktiservice.findKimTypeByNameAndNamespace("ns", "the_name"))
+        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        Assert.assertEquals (kimType, kimTypeInfoServiceImpl.findKimTypeByNameAndNamespace("ns", "the_name"))
         mock.verify(boService)
     }
 
@@ -100,9 +108,9 @@ class KimTypeInfoServiceImplTest {
     void test_find_kim_type_by_name_namespace_multiple() {
         mock.demand.findMatching (1) { clazz, map -> [bo, bo] }
         def boService = mock.proxyDelegateInstance()
-        ktiservice.setBusinessObjectService(boService);
+        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
         shouldFail(IllegalStateException.class) {
-            ktiservice.findKimTypeByNameAndNamespace("ns", "the_name")
+            kimTypeInfoServiceImpl.findKimTypeByNameAndNamespace("ns", "the_name")
         }
         mock.verify(boService)
     }
@@ -111,8 +119,8 @@ class KimTypeInfoServiceImplTest {
     void test_find_all_kim_types_none() {
         mock.demand.findMatching (1) { clazz, map -> null }
         def boService = mock.proxyDelegateInstance()
-        ktiservice.setBusinessObjectService(boService);
-        def values = ktiservice.findAllKimTypes();
+        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        def values = kimTypeInfoServiceImpl.findAllKimTypes();
         Assert.assertTrue(values.isEmpty())
 
         //is this unmodifiable?
@@ -126,8 +134,8 @@ class KimTypeInfoServiceImplTest {
     void test_find_all_kim_types_exists() {
         mock.demand.findMatching (1) { clazz, map -> [bo, bo] }
         def boService = mock.proxyDelegateInstance()
-        ktiservice.setBusinessObjectService(boService);
-        def values = ktiservice.findAllKimTypes();
+        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        def values = kimTypeInfoServiceImpl.findAllKimTypes();
         Assert.assertTrue(values.size() == 2)
         Assert.assertEquals(KimTypeBo.to(bo), new ArrayList(values)[0]);
         Assert.assertEquals(KimTypeBo.to(bo), new ArrayList(values)[1]);

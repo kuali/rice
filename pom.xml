@@ -755,6 +755,27 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>remove-fo-files</id>
+            <phase>pre-site</phase>
+            <configuration>
+              <target>
+                <delete quiet="true">
+                  <fileset dir="${rice.docbook.dest}/pdf" includes="**/*.fo"/>
+                </delete>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
       </plugin>
 

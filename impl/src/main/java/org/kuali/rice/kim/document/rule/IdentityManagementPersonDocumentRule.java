@@ -19,12 +19,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeService;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -111,7 +111,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         //KRADServiceLocatorInternal.getDictionaryValidationService().validateDocument(document);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validDuplicatePrincipalName(personDoc);
-        KimEntityDefaultInfo origEntity = getIdentityManagementService().getEntityDefaultInfo(personDoc.getEntityId());
+        EntityDefault origEntity = getIdentityManagementService().getEntityDefaultInfo(personDoc.getEntityId());
         boolean isCreatingNew = origEntity==null?true:false;
         if(getUIDocumentService().canModifyEntity(GlobalVariables.getUserSession().getPrincipalId(), personDoc.getPrincipalId()) || isCreatingNew)
         	valid &= validateEntityInformation(isCreatingNew, personDoc);

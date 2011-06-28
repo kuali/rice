@@ -1,18 +1,14 @@
 package org.kuali.rice.kim.api.identity.personal
 
-import org.kuali.rice.kim.api.test.JAXBAssert
-import org.junit.Test
 import junit.framework.Assert
-import java.text.SimpleDateFormat
-
+import org.junit.Test
+import org.kuali.rice.kim.api.test.JAXBAssert
 
 class EntityBioDemographicsTest {
 	private static final String ENTITY_ID = "190192";
     
     private static final String DECEASED_DATE_STRING = "2020-12-25";
-    private static final Date DECEASED_DATE = new SimpleDateFormat("yyyy-MM-dd").parse(DECEASED_DATE_STRING)
     private static final String BIRTH_DATE_STRING = "1980-01-01";
-    private static final Date BIRTH_DATE = new SimpleDateFormat("yyyy-MM-dd").parse(BIRTH_DATE_STRING)
     private static final String GENDER_CODE = "M";
     private static final String MARITAL_STATUS_CODE = "M";
     private static final String PRIMARY_LANGUAGE_CODE = "E";
@@ -92,11 +88,11 @@ class EntityBioDemographicsTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityBioDemographics.class)
 	}
 
-    private create() {
+    public static create() {
 		return EntityBioDemographics.Builder.create(new EntityBioDemographicsContract() {
             def String entityId = EntityBioDemographicsTest.ENTITY_ID
-            def Date deceasedDate = EntityBioDemographicsTest.DECEASED_DATE
-            def Date birthDate = EntityBioDemographicsTest.BIRTH_DATE
+            def String deceasedDate = EntityBioDemographicsTest.DECEASED_DATE_STRING
+            def String birthDate = EntityBioDemographicsTest.BIRTH_DATE_STRING
             def String genderCode = EntityBioDemographicsTest.GENDER_CODE
             def String maritalStatusCode = EntityBioDemographicsTest.MARITAL_STATUS_CODE
             def String primaryLanguageCode = EntityBioDemographicsTest.PRIMARY_LANGUAGE_CODE
@@ -106,7 +102,7 @@ class EntityBioDemographicsTest {
             def String birthStateCode = EntityBioDemographicsTest.BIRTH_STATE_CODE
             def String cityOfBirth = EntityBioDemographicsTest.CITY_OF_BIRTH
             def String geographicOrigin = EntityBioDemographicsTest.GEOGRAPHIC_ORIGIN
-            def Date birthDateUnmasked = EntityBioDemographicsTest.BIRTH_DATE
+            def String birthDateUnmasked = EntityBioDemographicsTest.BIRTH_DATE_STRING
             def String genderCodeUnmasked = EntityBioDemographicsTest.GENDER_CODE
             def String maritalStatusCodeUnmasked = EntityBioDemographicsTest.MARITAL_STATUS_CODE
             def String primaryLanguageCodeUnmasked = EntityBioDemographicsTest.PRIMARY_LANGUAGE_CODE

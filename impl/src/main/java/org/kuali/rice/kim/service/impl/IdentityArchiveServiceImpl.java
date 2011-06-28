@@ -20,9 +20,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.services.IdentityArchiveService;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -102,7 +102,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	}
 
 	@Override
-	public KimEntityDefaultInfo getEntityDefaultInfoFromArchive( String entityId ) {
+	public EntityDefault getEntityDefaultInfoFromArchive( String entityId ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put(KimConstants.PrimaryKeyConstants.ENTITY_ID, entityId);
     	KimEntityDefaultInfoCacheImpl cachedValue = getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
@@ -110,7 +110,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
     }
 
     @Override
-	public KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalId( String principalId ) {
+	public EntityDefault getEntityDefaultInfoFromArchiveByPrincipalId( String principalId ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principalId", principalId);
     	KimEntityDefaultInfoCacheImpl cachedValue = getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
@@ -118,7 +118,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
     }
 
     @Override
-	public KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalName( String principalName ) {
+	public EntityDefault getEntityDefaultInfoFromArchiveByPrincipalName( String principalName ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principalName", principalName);
     	Collection<KimEntityDefaultInfoCacheImpl> entities = getBusinessObjectService().findMatching(KimEntityDefaultInfoCacheImpl.class, criteria);
@@ -126,7 +126,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
     }
 
     @Override
-	public void saveDefaultInfoToArchive( KimEntityDefaultInfo entity ) {
+	public void saveDefaultInfoToArchive( EntityDefault entity ) {
     	// if the max size has been reached, schedule now
     	if (getMaxWriteQueueSize() <= writeQueue.offerAndGetSize(entity) /* <- this enqueues the KEDI */ &&
     			writer.requestSubmit()) {
@@ -195,15 +195,15 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 		};
 
 		/**
-		 * Comparator that attempts to impose a total ordering on KimEntityDefaultInfo instances
+		 * Comparator that attempts to impose a total ordering on EntityDefault instances
 		 */
-		private final Comparator<KimEntityDefaultInfo> kediComparator = new Comparator<KimEntityDefaultInfo>() {
+		private final Comparator<EntityDefault> kediComparator = new Comparator<EntityDefault>() {
 			/**
 			 * compares by entityId value
 			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 			 */
 			@Override
-			public int compare(KimEntityDefaultInfo o1, KimEntityDefaultInfo o2) {
+			public int compare(EntityDefault o1, EntityDefault o2) {
 				String entityId1 = (o1 == null) ? null : o1.getEntityId();
 				String entityId2 = (o2 == null) ? null : o2.getEntityId();
 
@@ -222,7 +222,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 			 * @param entity
 			 * @return
 			 */
-			private String getPrincipalIdsString(KimEntityDefaultInfo entity) {
+			private String getPrincipalIdsString(EntityDefault entity) {
 				String result = "";
 				if (entity != null) {
 					List<Principal> principals = entity.getPrincipals();
@@ -263,8 +263,8 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 				template.execute(new TransactionCallback() {
 					@Override
 					public Object doInTransaction(TransactionStatus status) {
-						KimEntityDefaultInfo entity = null;
-						ArrayList<KimEntityDefaultInfo> entitiesToInsert = new ArrayList<KimEntityDefaultInfo>(getMaxWriteQueueSize());
+						EntityDefault entity = null;
+						ArrayList<EntityDefault> entitiesToInsert = new ArrayList<EntityDefault>(getMaxWriteQueueSize());
 						Set<String> deduper = new HashSet<String>(getMaxWriteQueueSize());
 
 						// order is important in this conditional so that elements aren't dequeued and then ignored
@@ -276,7 +276,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 
 						Collections.sort(entitiesToInsert, kediComparator);
 
-						for (KimEntityDefaultInfo entityToInsert : entitiesToInsert) {
+						for (EntityDefault entityToInsert : entitiesToInsert) {
 							getBusinessObjectService().save( new KimEntityDefaultInfoCacheImpl( entityToInsert ) );
 						}
 						return null;
@@ -300,15 +300,15 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	 */
 	private static class WriteQueue {
 		AtomicInteger writeQueueSize = new AtomicInteger(0);
-		ConcurrentLinkedQueue<KimEntityDefaultInfo> queue = new ConcurrentLinkedQueue<KimEntityDefaultInfo>();
+		ConcurrentLinkedQueue<EntityDefault> queue = new ConcurrentLinkedQueue<EntityDefault>();
 
-		public int offerAndGetSize(KimEntityDefaultInfo entity) {
+		public int offerAndGetSize(EntityDefault entity) {
 			queue.add(entity);
 			return writeQueueSize.incrementAndGet();
 		}
 
-		private KimEntityDefaultInfo poll() {
-			KimEntityDefaultInfo result = queue.poll();
+		private EntityDefault poll() {
+			EntityDefault result = queue.poll();
 			if (result != null) { writeQueueSize.decrementAndGet(); }
 			return result;
 		}

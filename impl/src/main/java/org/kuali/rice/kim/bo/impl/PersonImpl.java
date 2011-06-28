@@ -17,13 +17,13 @@ package org.kuali.rice.kim.bo.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
+import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
-import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -31,7 +31,6 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
@@ -70,16 +69,17 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected String firstName = "";
 	protected String middleName = "";
 	protected String lastName = "";
-	
+
 	protected String name = "";
 	// address data
-	protected String addressLine1 = "";
+    protected EntityAddress address;
+	/*protected String addressLine1 = "";
 	protected String addressLine2 = "";
 	protected String addressLine3 = "";
 	protected String addressCityName = "";
 	protected String addressStateCode = "";
 	protected String addressPostalCode = "";
-	protected String addressCountryCode = "";
+	protected String addressCountryCode = "";*/
 	// email data
 	protected String emailAddress = "";
 	// phone data
@@ -114,7 +114,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		this( principal, null, personEntityTypeCode );
 	}
 
-	public PersonImpl( Principal principal, KimEntityDefaultInfo entity, String personEntityTypeCode ) {
+	public PersonImpl( Principal principal, EntityDefault entity, String personEntityTypeCode ) {
 		setPrincipal( principal, entity, personEntityTypeCode );
 	}
 	
@@ -141,7 +141,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * Sets the principal object and populates the person object from that. 
 	 */
-	public void setPrincipal(Principal principal, KimEntityDefaultInfo entity, String personEntityTypeCode) {
+	public void setPrincipal(Principal principal, EntityDefault entity, String personEntityTypeCode) {
 		populatePrincipalInfo( principal );
 		if ( entity == null ) {
 			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
@@ -157,7 +157,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		active = principal.isActive();
 	}
 	
-	protected void populateEntityInfo( KimEntityDefaultInfo entity, Principal principal, String personEntityTypeCode ) {
+	protected void populateEntityInfo( EntityDefault entity, Principal principal, String personEntityTypeCode ) {
 		if(entity!=null){
 		    populatePrivacyInfo (entity );
 			EntityTypeDataDefault entityTypeDataDefault = entity.getEntityType( personEntityTypeCode );
@@ -172,9 +172,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateNameInfo( String entityTypeCode, KimEntityDefaultInfo entity, Principal principal ) {
+	protected void populateNameInfo( String entityTypeCode, EntityDefault entity, Principal principal ) {
 		if(entity!=null){
-			EntityName entityName = entity.getDefaultName();
+			EntityName entityName = entity.getName();
 			if ( entityName != null ) {
 				firstName = unNullify( entityName.getFirstName());
 				middleName = unNullify( entityName.getMiddleName() );
@@ -201,7 +201,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populatePrivacyInfo (KimEntityDefaultInfo entity) {
+	protected void populatePrivacyInfo (EntityDefault entity) {
 	    if(entity!=null) {
     	    if (entity.getPrivacyPreferences() != null) {
         	    suppressName = entity.getPrivacyPreferences().isSuppressName();
@@ -215,23 +215,21 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	protected void populateAddressInfo( EntityTypeDataDefault entityTypeData ) {
 		if(entityTypeData!=null){
-			EntityAddressContract defaultAddress = entityTypeData.getDefaultAddress();
-			if ( defaultAddress != null ) {			
-				addressLine1 = unNullify( defaultAddress.getLine1Unmasked() );
-				addressLine2 = unNullify( defaultAddress.getLine2Unmasked() );
-				addressLine3 = unNullify( defaultAddress.getLine3Unmasked() );
-				addressCityName = unNullify( defaultAddress.getCityNameUnmasked() );
-				addressStateCode = unNullify( defaultAddress.getStateCodeUnmasked() );
-				addressPostalCode = unNullify( defaultAddress.getPostalCodeUnmasked() );
-				addressCountryCode = unNullify( defaultAddress.getCountryCodeUnmasked() );
+			EntityAddress defaultAddress = entityTypeData.getDefaultAddress();
+			if ( defaultAddress != null ) {
+                address = defaultAddress;
 			} else {
-				addressLine1 = "";
-				addressLine2 = "";
-				addressLine3 = "";
-				addressCityName = "";
-				addressStateCode = "";
-				addressPostalCode = "";
-				addressCountryCode = "";
+                EntityAddress.Builder builder = EntityAddress.Builder.create();
+                builder.setCityName("");
+                builder.setCountryCode("");
+                builder.setLine1("");
+                builder.setLine2("");
+                builder.setLine3("");
+                builder.setCityName("");
+                builder.setPostalCode("");
+                builder.setStateCode("");
+                builder.setActive(true);
+				address = builder.build();
 			}
 		}
 	}
@@ -258,7 +256,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateAffiliationInfo( KimEntityDefaultInfo entity ) {
+	protected void populateAffiliationInfo(EntityDefault entity ) {
 		if(entity!=null){
 			affiliations = entity.getAffiliations();
 			EntityAffiliation defaultAffiliation = entity.getDefaultAffiliation();
@@ -270,9 +268,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateEmploymentInfo( KimEntityDefaultInfo entity ) {
+	protected void populateEmploymentInfo( EntityDefault entity ) {
 		if(entity!=null){
-			EntityEmployment employmentInformation = entity.getPrimaryEmployment();
+			EntityEmployment employmentInformation = entity.getEmployment();
 			if ( employmentInformation != null ) {
 				employeeStatusCode = unNullify( employmentInformation.getEmployeeStatus() != null ? employmentInformation.getEmployeeStatus().getCode() : null);
 				employeeTypeCode = unNullify( employmentInformation.getEmployeeType() != null ? employmentInformation.getEmployeeStatus().getCode() : null);
@@ -293,7 +291,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		}
 	}
 	
-	protected void populateExternalIdentifiers( KimEntityDefaultInfo entity ) {
+	protected void populateExternalIdentifiers( EntityDefault entity ) {
 		if(entity!=null){
 			List<? extends EntityExternalIdentifier> externalIds = entity.getExternalIdentifiers();
 			externalIdentifiers = new HashMap<String,String>( externalIds.size() );
@@ -502,80 +500,59 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 
 	public String getAddressLine1() {
-	    if (KimCommonUtilsInternal.isSuppressAddress(getEntityId())){
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return this.addressLine1;
+	    return address.getLine1();
 	}
 	
 	public String getAddressLine1Unmasked() {
-	    return this.addressLine1;
+	    return address.getLine1Unmasked();
 	}
 
 	public String getAddressLine2() {
-	    if (KimCommonUtilsInternal.isSuppressAddress(getEntityId())){
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return this.addressLine2;
+	    return address.getLine2();
 	}
 	
 	public String getAddressLine2Unmasked() {
-        return this.addressLine2;
+        return address.getLine2Unmasked();
     }
 
 	public String getAddressLine3() {
-	    if (KimCommonUtilsInternal.isSuppressAddress(getEntityId())){
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return this.addressLine3;
+	    return address.getLine3();
 	}
 	
 	public String getAddressLine3Unmasked() {
-        return this.addressLine3;
+        return address.getLine3Unmasked();
     }
 
 	public String getAddressCityName() {
-	    if (KimCommonUtilsInternal.isSuppressAddress(getEntityId())){
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return this.addressCityName;
+	    return address.getCityName();
 	}
 	
 	public String getAddressCityNameUnmasked() {
-        return this.addressCityName;
+        return address.getCityNameUnmasked();
     }
 
 	public String getAddressStateCode() {
-	    if (KimCommonUtilsInternal.isSuppressAddress(getEntityId())){
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return this.addressStateCode;
+	    return address.getStateCode();
 	}
 	
 	public String getAddressStateCodeUnmasked() {
-        return this.addressStateCode;
+        return address.getStateCodeUnmasked();
     }
 
 	public String getAddressPostalCode() {
-	    if (KimCommonUtilsInternal.isSuppressAddress(getEntityId())){
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return this.addressPostalCode;
+	    return address.getPostalCode();
 	}
 	
 	public String getAddressPostalCodeUnmasked() {
-        return this.addressPostalCode;
+        return address.getPostalCodeUnmasked();
     }
 
 	public String getAddressCountryCode() {
-	    if (KimCommonUtilsInternal.isSuppressAddress(getEntityId())){
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return this.addressCountryCode;
+	    return address.getCountryCode();
 	}
 	
 	public String getAddressCountryCodeUnmasked() {
-        return this.addressCountryCode;
+        return address.getCountryCodeUnmasked();
     }
 
 	public String getEmployeeStatusCode() {

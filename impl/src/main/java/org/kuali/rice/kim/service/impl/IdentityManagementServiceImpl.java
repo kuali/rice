@@ -27,6 +27,9 @@ import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.TypeContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.entity.EntityContract;
+import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
@@ -36,9 +39,6 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.impl.identity.EntityTypeBo;
@@ -89,9 +89,9 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected int responsibilityCacheMaxSize = 200;
 	protected int responsibilityCacheMaxAgeSeconds = 30;
 
-	protected Map<String,MaxAgeSoftReference<KimEntityDefaultInfo>> entityDefaultInfoCache;
-	protected Map<String,MaxAgeSoftReference<KimEntity>> entityCache;
-	protected Map<String,MaxAgeSoftReference<KimEntityInfo>> entityInfoCache;
+	protected Map<String,MaxAgeSoftReference<EntityDefault>> entityDefaultInfoCache;
+	protected Map<String,MaxAgeSoftReference<EntityContract>> entityCache;
+	protected Map<String,MaxAgeSoftReference<Entity>> entityInfoCache;
 	protected Map<String,MaxAgeSoftReference<Principal>> principalByIdCache;
 	protected Map<String,MaxAgeSoftReference<Principal>> principalByNameCache;
 	protected Map<String,MaxAgeSoftReference<Group>> groupByIdCache;
@@ -110,9 +110,9 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     protected HashMap<String,TypeContract> kimReferenceTypeCacheMap = new HashMap<String, TypeContract>();
 
 	public void afterPropertiesSet() throws Exception {
-		entityDefaultInfoCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimEntityDefaultInfo>>( entityPrincipalCacheMaxSize ) );
-		entityCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimEntity>>( entityPrincipalCacheMaxSize ) );
-		entityInfoCache = Collections.synchronizedMap( new MaxSizeMap<String, MaxAgeSoftReference<KimEntityInfo>>(entityPrincipalCacheMaxSize));
+		entityDefaultInfoCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<EntityDefault>>( entityPrincipalCacheMaxSize ) );
+		entityCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<EntityContract>>( entityPrincipalCacheMaxSize ) );
+		entityInfoCache = Collections.synchronizedMap( new MaxSizeMap<String, MaxAgeSoftReference<Entity>>(entityPrincipalCacheMaxSize));
 		principalByIdCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Principal>>( entityPrincipalCacheMaxSize ) );
 		principalByNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Principal>>( entityPrincipalCacheMaxSize ) );
 		groupByIdCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Group>>( groupCacheMaxSize ) );
@@ -163,72 +163,72 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		// nothing currently being cached
 	}
 
-	protected KimEntityDefaultInfo getEntityDefaultInfoFromCache( String entityId ) {
-		MaxAgeSoftReference<KimEntityDefaultInfo> entityRef = entityDefaultInfoCache.get( "entityId="+entityId );
+	protected EntityDefault getEntityDefaultInfoFromCache( String entityId ) {
+		MaxAgeSoftReference<EntityDefault> entityRef = entityDefaultInfoCache.get( "entityId="+entityId );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
 	}
 
-	protected KimEntityDefaultInfo getEntityDefaultInfoFromCacheByPrincipalId( String principalId ) {
-		MaxAgeSoftReference<KimEntityDefaultInfo> entityRef = entityDefaultInfoCache.get( "principalId="+principalId );
+	protected EntityDefault getEntityDefaultInfoFromCacheByPrincipalId( String principalId ) {
+		MaxAgeSoftReference<EntityDefault> entityRef = entityDefaultInfoCache.get( "principalId="+principalId );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
 	}
 
-	protected KimEntityDefaultInfo getEntityDefaultInfoFromCacheByPrincipalName( String principalName ) {
-		MaxAgeSoftReference<KimEntityDefaultInfo> entityRef = entityDefaultInfoCache.get( "principalName="+principalName );
+	protected EntityDefault getEntityDefaultInfoFromCacheByPrincipalName( String principalName ) {
+		MaxAgeSoftReference<EntityDefault> entityRef = entityDefaultInfoCache.get( "principalName="+principalName );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
 	}
 
-	protected KimEntityInfo getEntityInfoFromCache( String entityId ) {
-		MaxAgeSoftReference<KimEntityInfo> entityRef = entityInfoCache.get( "entityId="+entityId );
+	protected Entity getEntityInfoFromCache( String entityId ) {
+		MaxAgeSoftReference<Entity> entityRef = entityInfoCache.get( "entityId="+entityId );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
 	}
 
-	protected KimEntityInfo getEntityInfoFromCacheByPrincipalId( String principalId ) {
-		MaxAgeSoftReference<KimEntityInfo> entityRef = entityInfoCache.get( "principalId="+principalId );
+	protected Entity getEntityInfoFromCacheByPrincipalId( String principalId ) {
+		MaxAgeSoftReference<Entity> entityRef = entityInfoCache.get( "principalId="+principalId );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
 	}
 
-	protected KimEntityInfo getEntityInfoFromCacheByPrincipalName( String principalName ) {
-		MaxAgeSoftReference<KimEntityInfo> entityRef = entityInfoCache.get( "principalName="+principalName );
+	protected Entity getEntityInfoFromCacheByPrincipalName( String principalName ) {
+		MaxAgeSoftReference<Entity> entityRef = entityInfoCache.get( "principalName="+principalName );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
 	}
 
-	protected KimEntity getEntityFromCache( String entityId ) {
-		MaxAgeSoftReference<KimEntity> entityRef = entityCache.get( "entityId="+entityId );
+	protected EntityContract getEntityFromCache( String entityId ) {
+		MaxAgeSoftReference<EntityContract> entityRef = entityCache.get( "entityId="+entityId );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
 	}
 
-	protected KimEntity getEntityFromCacheByPrincipalId( String principalId ) {
-		MaxAgeSoftReference<KimEntity> entityRef = entityCache.get( "principalId="+principalId );
+	protected EntityContract getEntityFromCacheByPrincipalId( String principalId ) {
+		MaxAgeSoftReference<EntityContract> entityRef = entityCache.get( "principalId="+principalId );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
 		return null;
 	}
 
-	protected KimEntity getEntityFromCacheByPrincipalName( String principalName ) {
-		MaxAgeSoftReference<KimEntity> entityRef = entityCache.get( "principalName="+principalName );
+	protected EntityContract getEntityFromCacheByPrincipalName( String principalName ) {
+		MaxAgeSoftReference<EntityContract> entityRef = entityCache.get( "principalName="+principalName );
 		if ( entityRef != null ) {
 			return entityRef.get();
 		}
@@ -340,32 +340,32 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return null;
 	}
 
-	protected void addEntityToCache( KimEntity entity ) {
+	protected void addEntityToCache( EntityContract entity ) {
 		if ( entity != null ) {
-			entityCache.put( "entityId="+entity.getEntityId(), new MaxAgeSoftReference<KimEntity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
+			entityCache.put( "entityId="+entity.getId(), new MaxAgeSoftReference<EntityContract>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 			for ( PrincipalContract p : entity.getPrincipals() ) {
-				entityCache.put( "principalId="+p.getPrincipalId(), new MaxAgeSoftReference<KimEntity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
-				entityCache.put( "principalName="+p.getPrincipalName(), new MaxAgeSoftReference<KimEntity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
+				entityCache.put( "principalId="+p.getPrincipalId(), new MaxAgeSoftReference<EntityContract>( entityPrincipalCacheMaxAgeSeconds, entity ) );
+				entityCache.put( "principalName="+p.getPrincipalName(), new MaxAgeSoftReference<EntityContract>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 			}
 		}
 	}
 
-	protected void addEntityDefaultInfoToCache( KimEntityDefaultInfo entity ) {
+	protected void addEntityDefaultInfoToCache( EntityDefault entity ) {
 		if ( entity != null ) {
-			entityDefaultInfoCache.put( "entityId="+entity.getEntityId(), new MaxAgeSoftReference<KimEntityDefaultInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
+			entityDefaultInfoCache.put( "entityId="+entity.getEntityId(), new MaxAgeSoftReference<EntityDefault>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 			for ( PrincipalContract p : entity.getPrincipals() ) {
-				entityDefaultInfoCache.put( "principalId="+p.getPrincipalId(), new MaxAgeSoftReference<KimEntityDefaultInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
-				entityDefaultInfoCache.put( "principalName="+p.getPrincipalName(), new MaxAgeSoftReference<KimEntityDefaultInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
+				entityDefaultInfoCache.put( "principalId="+p.getPrincipalId(), new MaxAgeSoftReference<EntityDefault>( entityPrincipalCacheMaxAgeSeconds, entity ) );
+				entityDefaultInfoCache.put( "principalName="+p.getPrincipalName(), new MaxAgeSoftReference<EntityDefault>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 			}
 		}
 	}
 
-	protected void addEntityInfoToCache( KimEntityInfo entity ) {
+	protected void addEntityInfoToCache( Entity entity ) {
 		if ( entity != null ) {
-			entityInfoCache.put( "entityId="+entity.getEntityId(), new MaxAgeSoftReference<KimEntityInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
+			entityInfoCache.put( "entityId="+entity.getId(), new MaxAgeSoftReference<Entity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 			for ( PrincipalContract p : entity.getPrincipals() ) {
-				entityInfoCache.put( "principalId="+p.getPrincipalId(), new MaxAgeSoftReference<KimEntityInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
-				entityInfoCache.put( "principalName="+p.getPrincipalName(), new MaxAgeSoftReference<KimEntityInfo>( entityPrincipalCacheMaxAgeSeconds, entity ) );
+				entityInfoCache.put( "principalId="+p.getPrincipalId(), new MaxAgeSoftReference<Entity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
+				entityInfoCache.put( "principalName="+p.getPrincipalName(), new MaxAgeSoftReference<Entity>( entityPrincipalCacheMaxAgeSeconds, entity ) );
 			}
 		}
 	}
@@ -827,8 +827,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
      *
      * @see org.kuali.rice.kim.api.services.IdentityManagementService#getEntityDefaultInfo(java.lang.String)
      */
-    public KimEntityDefaultInfo getEntityDefaultInfo(String entityId) {
-    	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCache(entityId);
+    public EntityDefault getEntityDefaultInfo(String entityId) {
+    	EntityDefault entity = getEntityDefaultInfoFromCache(entityId);
     	if ( entity == null ) {
     		entity = getIdentityService().getEntityDefaultInfo(entityId);
     		addEntityDefaultInfoToCache( entity );
@@ -841,9 +841,9 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
      *
      * @see org.kuali.rice.kim.api.services.IdentityManagementService#getEntityDefaultInfoByPrincipalId(java.lang.String)
      */
-    public KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId(
+    public EntityDefault getEntityDefaultInfoByPrincipalId(
     		String principalId) {
-    	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCacheByPrincipalId(principalId);
+    	EntityDefault entity = getEntityDefaultInfoFromCacheByPrincipalId(principalId);
     	if ( entity == null ) {
 	    	entity = getIdentityService().getEntityDefaultInfoByPrincipalId(principalId);
 			addEntityDefaultInfoToCache( entity );
@@ -856,9 +856,9 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
      *
      * @see org.kuali.rice.kim.api.services.IdentityManagementService#getEntityDefaultInfoByPrincipalName(java.lang.String)
      */
-    public KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName(
+    public EntityDefault getEntityDefaultInfoByPrincipalName(
     		String principalName) {
-    	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCacheByPrincipalName( principalName );
+    	EntityDefault entity = getEntityDefaultInfoFromCacheByPrincipalName( principalName );
     	if ( entity == null ) {
 	    	entity = getIdentityService().getEntityDefaultInfoByPrincipalName(principalName);
 			addEntityDefaultInfoToCache( entity );
@@ -871,7 +871,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
      *
      * @see org.kuali.rice.kim.api.services.IdentityManagementService#lookupEntityDefaultInfo(Map, boolean)
      */
-    public List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo(
+    public List<EntityDefault> lookupEntityDefaultInfo(
     		Map<String, String> searchCriteria, boolean unbounded) {
     	return getIdentityService().lookupEntityDefaultInfo(searchCriteria, unbounded);
     }
@@ -880,10 +880,10 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     /**
 	 * @see org.kuali.rice.kim.api.services.IdentityManagementService#getEntityInfo(java.lang.String)
 	 */
-	public KimEntityInfo getEntityInfo(String entityId) {
-    	KimEntityInfo entity = getEntityInfoFromCache(entityId);
+	public Entity getEntity(String entityId) {
+    	Entity entity = getEntityInfoFromCache(entityId);
     	if ( entity == null ) {
-    		entity = getIdentityService().getEntityInfo(entityId);
+    		entity = getIdentityService().getEntity(entityId);
     		addEntityInfoToCache( entity );
     	}
     	return entity;
@@ -892,8 +892,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	/**
 	 * @see org.kuali.rice.kim.api.services.IdentityManagementService#getEntityInfoByPrincipalId(java.lang.String)
 	 */
-	public KimEntityInfo getEntityInfoByPrincipalId(String principalId) {
-    	KimEntityInfo entity = getEntityInfoFromCacheByPrincipalId(principalId);
+	public Entity getEntityByPrincipalId(String principalId) {
+    	Entity entity = getEntityInfoFromCacheByPrincipalId(principalId);
     	if ( entity == null ) {
 	    	entity = getIdentityService().getEntityInfoByPrincipalId(principalId);
 			addEntityInfoToCache( entity );
@@ -906,8 +906,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	 *
 	 * @see org.kuali.rice.kim.api.services.IdentityManagementService#getEntityInfoByPrincipalName(java.lang.String)
 	 */
-	public KimEntityInfo getEntityInfoByPrincipalName(String principalName) {
-		KimEntityInfo entity = getEntityInfoFromCacheByPrincipalName( principalName );
+	public Entity getEntityByPrincipalName(String principalName) {
+		Entity entity = getEntityInfoFromCacheByPrincipalName( principalName );
     	if ( entity == null ) {
 	    	entity = getIdentityService().getEntityInfoByPrincipalName( principalName );
 			addEntityInfoToCache( entity );
@@ -918,7 +918,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	/**
 	 * @see org.kuali.rice.kim.api.services.IdentityManagementService#lookupEntityInfo(java.util.Map, boolean)
 	 */
-	public List<KimEntityInfo> lookupEntityInfo(
+	public List<Entity> lookupEntityInfo(
 			Map<String, String> searchCriteria, boolean unbounded) {
 		return getIdentityService().lookupEntityInfo(searchCriteria, unbounded);
 	}

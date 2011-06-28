@@ -10,8 +10,10 @@ import org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kim.api.util.KualiDateMask
+import org.kuali.rice.kim.api.util.KualiDateTimeMask
 import org.kuali.rice.kim.api.KimConstants
+import org.joda.time.DateTime
+import java.text.SimpleDateFormat
 
 @Entity
 @Table(name = "KRIM_ENTITY_BIO_T")
@@ -23,13 +25,13 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     String entityId;
 
     @Column(name = "BIRTH_DT")
-    Date birthDate;
+    Date birthDateValue;
 
     @Column(name = "GNDR_CD")
     String genderCode;
 
     @Column(name = "DECEASED_DT")
-    Date deceasedDate;
+    Date deceasedDateValue;
 
     @Column(name = "MARITAL_STATUS")
     String maritalStatusCode;
@@ -75,11 +77,15 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
 
     EntityBioDemographicsBo bo = new EntityBioDemographicsBo()
     bo.entityId = immutable.entityId
-    bo.birthDate = immutable.birthDateUnmasked
+    if (immutable.birthDateUnmasked != null) {
+        bo.birthDateValue = new SimpleDateFormat("yyyy-MM-dd").parse(immutable.birthDateUnmasked)
+    }
     bo.birthStateCode = immutable.birthStateCodeUnmasked
     bo.cityOfBirth = immutable.cityOfBirthUnmasked
     bo.countryOfBirthCode = immutable.countryOfBirthCodeUnmasked
-    bo.deceasedDate = immutable.deceasedDate
+    if (immutable.deceasedDate != null) {
+        bo.deceasedDateValue = new SimpleDateFormat("yyyy-MM-dd").parse(immutable.deceasedDate)
+    }
     bo.genderCode = immutable.genderCodeUnmasked
     bo.geographicOrigin = immutable.geographicOriginUnmasked
     bo.maritalStatusCode = immutable.maritalStatusCodeUnmasked
@@ -90,6 +96,33 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
 
     return bo;
   }
+
+    @Override
+    String getBirthDate() {
+        if (this.birthDateValue != null) {
+            if (isSuppressPersonal()) {
+                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+            }
+            return new SimpleDateFormat("yyyy-MM-dd").format(this.birthDateValue)
+        }
+        return null;
+    }
+
+    @Override
+    String getDeceasedDate() {
+        if (this.deceasedDateValue != null) {
+            return new SimpleDateFormat("yyyy-MM-dd").format(this.deceasedDateValue)
+        }
+        return null
+    }
+
+    @Override
+    String getBirthDateUnmasked() {
+        if (this.birthDateValue != null) {
+            return new SimpleDateFormat("yyyy-MM-dd").format(this.birthDateValue)
+        }
+        return null;
+    }
 
     @Override
     boolean isSuppressPersonal() {
@@ -105,18 +138,13 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
         return suppressPersonal;
     }
 
-    Date getBirthDate() {
-        if (isSuppressPersonal()) {
-            return KualiDateMask.getInstance()
-        }
-        return this.birthDate
-    }
     String getGenderCode() {
         if (isSuppressPersonal()) {
             return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
         return this.genderCode
     }
+
     String getMaritalStatusCode() {
         if (isSuppressPersonal()) {
             return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
@@ -160,9 +188,7 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
         return this.geographicOrigin
     }
 
-    Date getBirthDateUnmasked() {
-        return this.birthDate
-    }
+
     String getGenderCodeUnmasked() {
         return this.genderCode
     }

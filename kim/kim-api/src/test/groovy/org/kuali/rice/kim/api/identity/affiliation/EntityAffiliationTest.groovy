@@ -65,7 +65,7 @@ class EntityAffiliationTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityAffiliation.class)
 	}
 
-    private create() {
+    public static create() {
 		return EntityAffiliation.Builder.create(new EntityAffiliationContract() {
 			def String id = EntityAffiliationTest.ID
             def String entityId = EntityAffiliationTest.ENTITY_ID

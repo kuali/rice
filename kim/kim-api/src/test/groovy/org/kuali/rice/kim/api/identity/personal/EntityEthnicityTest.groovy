@@ -53,7 +53,7 @@ class EntityEthnicityTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityEthnicity.class)
 	}
 
-    private create() {
+    public static create() {
 		return EntityEthnicity.Builder.create(new EntityEthnicityContract() {
             def String id = EntityEthnicityTest.ID
             def String entityId = EntityEthnicityTest.ENTITY_ID

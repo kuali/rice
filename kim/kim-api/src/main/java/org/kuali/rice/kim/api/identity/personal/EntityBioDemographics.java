@@ -4,10 +4,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.kim.api.util.KualiDateMask;
+import org.kuali.rice.core.util.jaxb.DateTimeAdapter;
+import org.kuali.rice.kim.api.util.KualiDateTimeMask;
 import org.kuali.rice.kim.util.KimConstants;
 import org.w3c.dom.Element;
 
@@ -17,9 +19,12 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 
 @XmlRootElement(name = EntityBioDemographics.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -56,9 +61,9 @@ public final class EntityBioDemographics
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
     @XmlElement(name = Elements.DECEASED_DATE, required = false)
-    private final Date deceasedDate;
+    private final String deceasedDate;
     @XmlElement(name = Elements.BIRTH_DATE, required = false)
-    private final Date birthDate;
+    private final String birthDate;
     @XmlElement(name = Elements.GENDER_CODE, required = false)
     private final String genderCode;
     @XmlElement(name = Elements.MARITAL_STATUS_CODE, required = false)
@@ -76,7 +81,7 @@ public final class EntityBioDemographics
     @XmlElement(name = Elements.GEOGRAPHIC_ORIGIN, required = false)
     private final String geographicOrigin;
     @XmlElement(name = Elements.BIRTH_DATE_UNMASKED, required = false)
-    private final Date birthDateUnmasked;
+    private final String birthDateUnmasked;
     @XmlElement(name = Elements.GENDER_CODE_UNMASKED, required = false)
     private final String genderCodeUnmasked;
     @XmlElement(name = Elements.MARITAL_STATUS_CODE_UNMASKED, required = false)
@@ -165,12 +170,12 @@ public final class EntityBioDemographics
     }
 
     @Override
-    public Date getDeceasedDate() {
+    public String getDeceasedDate() {
         return this.deceasedDate;
     }
 
     @Override
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return this.birthDate;
     }
 
@@ -215,7 +220,7 @@ public final class EntityBioDemographics
     }
 
     @Override
-    public Date getBirthDateUnmasked() {
+    public String getBirthDateUnmasked() {
         return this.birthDateUnmasked;
     }
 
@@ -299,8 +304,8 @@ public final class EntityBioDemographics
     {
 
         private String entityId;
-        private Date deceasedDate;
-        private Date birthDate;
+        private String deceasedDate;
+        private String birthDate;
         private String genderCode;
         private String maritalStatusCode;
         private String primaryLanguageCode;
@@ -353,14 +358,14 @@ public final class EntityBioDemographics
         }
 
         @Override
-        public Date getDeceasedDate() {
+        public String getDeceasedDate() {
             return this.deceasedDate;
         }
 
         @Override
-        public Date getBirthDate() {
+        public String getBirthDate() {
             if (isSuppressPersonal()) {
-                return KualiDateMask.getInstance();
+                return KimConstants.RESTRICTED_DATA_MASK;
             }
             return this.birthDate;
         }
@@ -430,7 +435,7 @@ public final class EntityBioDemographics
         }
 
         @Override
-        public Date getBirthDateUnmasked() {
+        public String getBirthDateUnmasked() {
             return this.birthDate;
         }
 
@@ -496,12 +501,38 @@ public final class EntityBioDemographics
             this.entityId = entityId;
         }
 
+        public void setDeceasedDate(String deceasedDate) {
+            if (deceasedDate != null) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                try{
+                    format.parse(deceasedDate);
+                    this.deceasedDate = deceasedDate;
+                }
+                catch(ParseException e) {
+                    throw new IllegalArgumentException("deceasedDate is not of the format 'yyyy-MM-DD'");
+                }
+            }
+        }
+
+        public void setBirthDate(String birthDate) {
+            if (birthDate != null) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                try{
+                    format.parse(birthDate);
+                    this.birthDate = birthDate;
+                }
+                catch(ParseException e) {
+                    throw new IllegalArgumentException("birthDate is not of the format 'yyyy-MM-DD'");
+                }
+            }
+        }
+
         public void setDeceasedDate(Date deceasedDate) {
-            this.deceasedDate = deceasedDate;
+            this.deceasedDate = new SimpleDateFormat("yyyy-MM-dd").format(deceasedDate);
         }
 
         public void setBirthDate(Date birthDate) {
-            this.birthDate = birthDate;
+            this.birthDate = new SimpleDateFormat("yyyy-MM-dd").format(birthDate);
         }
 
         public void setGenderCode(String genderCode) {

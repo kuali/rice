@@ -1,13 +1,11 @@
 package org.kuali.rice.kim.api.identity.citizenship;
 
-
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.TypeContract;
-
-import java.sql.Timestamp;
 
 public interface EntityCitizenshipContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
 	/**
@@ -32,11 +30,11 @@ public interface EntityCitizenshipContract extends Versioned, GloballyUnique, In
      * Gets this {@link EntityCitizenshipContract}'s start date.
      * @return the start date for this {@link EntityCitizenshipContract}, or null if none has been assigned.
      */
-	Timestamp getStartDate();
+	DateTime getStartDate();
 
 	/**
      * Gets this {@link EntityCitizenshipContract}'s end date.
      * @return the end date for this {@link EntityCitizenshipContract}, or null if none has been assigned.
      */
-	Timestamp getEndDate();
+	DateTime getEndDate();
 }

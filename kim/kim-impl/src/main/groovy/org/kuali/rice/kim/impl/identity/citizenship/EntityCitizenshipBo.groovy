@@ -12,6 +12,7 @@ import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.joda.time.DateTime
 
 @Entity
 @Table(name = "KRIM_ENTITY_CTZNSHP_T")
@@ -32,10 +33,10 @@ class EntityCitizenshipBo extends PersistableBusinessObjectBase implements Entit
 	String statusCode;
 
 	@Column(name = "strt_dt")
-	Timestamp startDate;
+	Timestamp startDateValue;
 
 	@Column(name = "end_dt")
-	Timestamp endDate;
+	Timestamp endDateValue;
 
 	@ManyToOne(targetEntity=EntityCitizenshipStatusBo.class, fetch=FetchType.EAGER, cascade=[])
 	@JoinColumn(name = "CTZNSHP_STAT_CD", insertable = false, updatable = false)
@@ -72,8 +73,12 @@ class EntityCitizenshipBo extends PersistableBusinessObjectBase implements Entit
     bo.id = immutable.id
     bo.entityId = immutable.entityId
     bo.countryCode = immutable.countryCode
-    bo.startDate = immutable.startDate
-    bo.endDate = immutable.endDate
+    if (immutable.startDate != null) {
+        bo.startDateValue = immutable.startDate.toDate().toTimestamp()
+    }
+    if (immutable.endDate != null) {
+        bo.endDateValue = immutable.endDate.toDate().toTimestamp()
+    }
     bo.active = immutable.active
     bo.versionNumber = immutable.versionNumber
     bo.objectId = immutable.objectId
@@ -81,6 +86,21 @@ class EntityCitizenshipBo extends PersistableBusinessObjectBase implements Entit
     return bo;
   }
 
+    @Override
+    DateTime getStartDate() {
+        if (this.startDateValue != null) {
+            return new DateTime(this.startDateValue)
+        }
+        return null
+    }
+
+    @Override
+    DateTime getEndDate() {
+        if (this.endDateValue != null) {
+            return new DateTime(this.endDateValue)
+        }
+        return null
+    }
 
     @Override
     EntityCitizenshipStatusBo getStatus() {

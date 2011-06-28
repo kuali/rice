@@ -26,7 +26,7 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 public final class KIMPropertyConstants {
 
 	public static final class Entity {
-		public static final String ENTITY_ID = "entityId";
+		public static final String ENTITY_ID = "id";
 		
 		private Entity() {
 			throw new UnsupportedOperationException("do not call");
@@ -45,7 +45,7 @@ public final class KIMPropertyConstants {
 	}
 
 	public static final class Person {
-		public static final String ENTITY_ID = Entity.ENTITY_ID;
+		public static final String ENTITY_ID = "entityId";
 		public static final String PRINCIPAL_ID = Principal.PRINCIPAL_ID;
 		public static final String PRINCIPAL_NAME = Principal.PRINCIPAL_NAME;
 		public static final String FIRST_NAME = "firstName";

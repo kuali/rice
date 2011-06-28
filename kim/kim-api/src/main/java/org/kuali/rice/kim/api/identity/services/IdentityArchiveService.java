@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.api.identity.services;
 
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 
 /**
  * 
- * This service archives KimEntityDefaultInfo.  It's purpose is to provide long term 
+ * This service archives EntityDefault.  It's purpose is to provide long term 
  * storage for basic identity data that may be removed from the IdentityService implementation's
  * backing store.
  * 
@@ -29,23 +29,23 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 public interface IdentityArchiveService {
 
 	/**
-	 * Gets the KimEntityDefaultInfo from the cache for the given entityId.
+	 * Gets the EntityDefault from the cache for the given entityId.
 	 */
-    KimEntityDefaultInfo getEntityDefaultInfoFromArchive( String entityId );
+    EntityDefault getEntityDefaultInfoFromArchive( String entityId );
 
 	/**
-	 * Gets the KimEntityDefaultInfo from the cache for the identity with the given principalId.
+	 * Gets the EntityDefault from the cache for the identity with the given principalId.
 	 */
-    KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalId( String principalId );
+    EntityDefault getEntityDefaultInfoFromArchiveByPrincipalId( String principalId );
 
 	/**
-	 * Gets the KimEntityDefaultInfo from the cache for the identity with the given principalName.
+	 * Gets the EntityDefault from the cache for the identity with the given principalName.
 	 */
-	KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalName( String principalName );
+	EntityDefault getEntityDefaultInfoFromArchiveByPrincipalName( String principalName );
 	
 	/**
-	 * Saves the given KimEntityDefaultInfo into the cache.
+	 * Saves the given EntityDefault into the cache.
 	 */
-	void saveDefaultInfoToArchive( KimEntityDefaultInfo entity );
+	void saveDefaultInfoToArchive( EntityDefault entity );
 	
 }

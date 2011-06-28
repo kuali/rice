@@ -54,7 +54,7 @@ class PrincipalTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, Principal.class)
 	}
 
-    private create() {
+    public static create() {
 		return Principal.Builder.create(new PrincipalContract() {
 			def String principalId = PrincipalTest.PRINCIPAL_ID
             def String principalName = PrincipalTest.PRINCIPAL_NAME

@@ -16,7 +16,11 @@
 package org.kuali.rice.kim.api.util;
 
 
-import java.util.Date;
+import org.joda.time.Chronology;
+import org.joda.time.ReadableDateTime;
+import org.joda.time.base.AbstractDateTime;
+import org.joda.time.chrono.AssembledChronology;
+import org.joda.time.chrono.ISOChronology;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -25,29 +29,40 @@ import org.kuali.rice.kim.util.KimConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KualiDateMask extends Date{
+public class KualiDateTimeMask extends AbstractDateTime implements ReadableDateTime {
 
 	private static final long serialVersionUID = 1L;
 	
 	private String mask;
 	
-	private KualiDateMask(String s){
+	private KualiDateTimeMask(String s){
 		
 		mask = s;
 	}
 
-	public static KualiDateMask getInstance(){
+	public static KualiDateTimeMask getInstance(){
 		
-		return new KualiDateMask(KimConstants.RESTRICTED_DATA_MASK);
+		return new KualiDateTimeMask(KimConstants.RESTRICTED_DATA_MASK);
 	}
-	
-	public String toString(){
+
+    @Override
+    public long getMillis() {
+        return 0;
+    }
+
+    @Override
+    public Chronology getChronology() {
+        return ISOChronology.getInstance();
+    }
+
+    public String toString(){
 		
 		return this.mask;
 	}
-	
+
 	public static void main(String[] args){
-		System.out.println("masked date\t" + KualiDateMask.getInstance());
+		System.out.println("masked date\t" + KualiDateTimeMask.getInstance().toString());
+
 	}
 
 }

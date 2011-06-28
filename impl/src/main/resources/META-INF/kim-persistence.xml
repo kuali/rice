@@ -36,7 +36,7 @@
     <class>org.kuali.rice.kim.impl.common.attribute.KimAttributeBo</class>
     <class>org.kuali.rice.kim.impl.type.KimTypeAttributeBo</class>
     <class>org.kuali.rice.kim.impl.identity.principal.PrincipalBo</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityImpl</class>
+    <class>org.kuali.rice.kim.impl.identity.entity.EntityBo</class>
     <class>org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo</class>
     <class>org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo</class>
     <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo</class>
@@ -97,9 +97,6 @@
     <class>org.kuali.rice.kim.bo.impl.GenericPermission</class>
     
     <!-- mapped superclasses -->
-    <class>org.kuali.rice.kim.bo.entity.impl.KimDefaultableEntityDataBase</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityDataBase</class>
-    <class>org.kuali.rice.kim.bo.entity.impl.KimInactivatableEntityDataBase</class>
     <class>org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl</class>
     <class>org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase</class>

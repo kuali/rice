@@ -7,6 +7,7 @@ import org.kuali.rice.kim.api.identity.Type
 import org.kuali.rice.kim.api.identity.TypeContract
 import org.kuali.rice.kim.api.test.JAXBAssert
 import org.junit.Assert
+import org.joda.time.DateTime
 
 
 class EntityCitizenshipTest {
@@ -19,10 +20,10 @@ class EntityCitizenshipTest {
     private static final Long STATUS_VERSION_NUMBER = new Integer(1)
 	private static final String STATUS_OBJECT_ID = UUID.randomUUID()
     private static final String COUNTRY_CODE = "MX";
-    static final String START_DATE_STRING = "2011-01-01 12:00:00.0"
-    static final Timestamp START_DATE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(START_DATE_STRING).toTimestamp()
-    static final String END_DATE_STRING = "2012-01-01 12:00:00.0"
-    static final Timestamp END_DATE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(END_DATE_STRING).toTimestamp()
+    static final String START_DATE_STRING = "2011-01-01"
+    static final DateTime START_DATE = new DateTime(START_DATE_STRING)
+    static final String END_DATE_STRING = "2012-01-01"
+    static final DateTime END_DATE = new DateTime(END_DATE_STRING)
     private static final String ACTIVE = "true"
     private static final Long VERSION_NUMBER = new Integer(1);
 	private static final String OBJECT_ID = UUID.randomUUID();
@@ -40,8 +41,8 @@ class EntityCitizenshipTest {
             <objectId>${STATUS_OBJECT_ID}</objectId>
         </status>
         <countryCode>${COUNTRY_CODE}</countryCode>
-        <startDate>${START_DATE.time}</startDate>
-        <endDate>${END_DATE.time}</endDate>
+        <startDate>${START_DATE_STRING}</startDate>
+        <endDate>${END_DATE_STRING}</endDate>
         <active>${ACTIVE}</active>
         <versionNumber>${VERSION_NUMBER}</versionNumber>
         <objectId>${OBJECT_ID}</objectId>
@@ -72,22 +73,22 @@ class EntityCitizenshipTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityCitizenship.class)
 	}
 
-    private create() {
+    public static create() {
 		return EntityCitizenship.Builder.create(new EntityCitizenshipContract() {
 			def String id = EntityCitizenshipTest.ID
             def String entityId = EntityCitizenshipTest.ENTITY_ID
 			def Type getStatus() { Type.Builder.create(new TypeContract() {
 				def String code = EntityCitizenshipTest.STATUS_CODE
 				def String name = EntityCitizenshipTest.STATUS_NAME
-				def boolean active = EntityCitizenshipTest.STATUS_ACTIVE
+				def boolean active = EntityCitizenshipTest.STATUS_ACTIVE.toBoolean()
                 def String sortCode = EntityCitizenshipTest.STATUS_SORT_CODE
                 def Long versionNumber = EntityCitizenshipTest.STATUS_VERSION_NUMBER
 				def String objectId = EntityCitizenshipTest.STATUS_OBJECT_ID
 			}).build()
             }
             def String countryCode = EntityCitizenshipTest.COUNTRY_CODE
-            def Timestamp startDate = EntityCitizenshipTest.START_DATE
-            def Timestamp endDate = EntityCitizenshipTest.END_DATE
+            def DateTime startDate = EntityCitizenshipTest.START_DATE
+            def DateTime endDate = EntityCitizenshipTest.END_DATE
             def boolean active = EntityCitizenshipTest.ACTIVE.toBoolean()
             def Long versionNumber = EntityCitizenshipTest.VERSION_NUMBER;
 			def String objectId = EntityCitizenshipTest.OBJECT_ID

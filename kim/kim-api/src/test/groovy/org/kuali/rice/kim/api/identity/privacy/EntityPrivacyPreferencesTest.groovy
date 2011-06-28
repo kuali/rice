@@ -55,7 +55,7 @@ class EntityPrivacyPreferencesTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityPrivacyPreferences.class)
 	}
 
-    private create() {
+    public static create() {
 		return EntityPrivacyPreferences.Builder.create(new EntityPrivacyPreferencesContract() {
             def String entityId = EntityPrivacyPreferencesTest.ENTITY_ID
 			def boolean suppressName = EntityPrivacyPreferencesTest.SUPPRESS_NAME.toBoolean()

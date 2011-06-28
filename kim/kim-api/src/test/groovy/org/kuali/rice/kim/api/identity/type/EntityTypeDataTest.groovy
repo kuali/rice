@@ -292,7 +292,7 @@ class EntityTypeDataTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityTypeData.class)
 	}
 
-    private create() {
+    public static create() {
 
         EntityAddress addr = EntityAddress.Builder.create(new EntityAddressContract() {
                     def String id = EntityTypeDataTest.ADDR_ID

@@ -16,11 +16,11 @@
 package org.kuali.rice.kim.service.support.impl;
 
 import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -79,7 +79,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
             return false;
         }
         // check that the identity is active
-        KimEntityDefaultInfo entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
+        EntityDefault entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
         if ( entity == null || !entity.isActive() ) {
             return false;
         }

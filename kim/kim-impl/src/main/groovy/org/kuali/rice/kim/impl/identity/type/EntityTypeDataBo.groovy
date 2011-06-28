@@ -45,7 +45,7 @@ public class EntityTypeDataBo extends PersistableBusinessObjectBase implements E
     @JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)
     EntityTypeBo entityType;
 
-    @OneToMany(targetEntity = EntityEmailBo.class, fetch = FetchType.EAGER, cascade = [ CascadeType.ALL ])
+    @OneToMany(targetEntity = EntityTypeDataBo.class, fetch = FetchType.EAGER, cascade = [ CascadeType.ALL ])
     @JoinColumns([
         @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false),
         @JoinColumn(name="ENT_TYP_CD", insertable = false, updatable = false)
@@ -71,9 +71,9 @@ public class EntityTypeDataBo extends PersistableBusinessObjectBase implements E
     boolean active;
 
          /*
-       * Converts a mutable EntityEmailBo to an immutable EntityEmail representation.
+       * Converts a mutable EntityTypeDataBo to an immutable EntityTypeData representation.
        * @param bo
-       * @return an immutable EntityEmail
+       * @return an immutable EntityTypeData
        */
       static EntityTypeData to(EntityTypeDataBo bo) {
         if (bo == null) { return null }
@@ -84,7 +84,7 @@ public class EntityTypeDataBo extends PersistableBusinessObjectBase implements E
           if (bo == null) { return null }
           return new EntityTypeDataDefault(bo.getEntityTypeCode(),
                                         EntityAddressBo.to(bo.getDefaultAddress()),
-                                        EntityEmailBo.to(bo.getDefaultEmailAddress()),
+                                        EntityTypeDataBo.to(bo.getDefaultEmailAddress()),
                                         EntityPhoneBo.to(bo.getDefaultPhoneNumber()))
       }
 
@@ -113,10 +113,10 @@ public class EntityTypeDataBo extends PersistableBusinessObjectBase implements E
                 bo.phoneNumbers.add(EntityPhoneBo.from(phone))
             }
         }
-        bo.emailAddresses = new ArrayList<EntityEmailBo>()
+        bo.emailAddresses = new ArrayList<EntityTypeDataBo>()
         if (CollectionUtils.isNotEmpty(immutable.emailAddresses)) {
-            for (EntityEmail email : immutable.emailAddresses) {
-                bo.emailAddresses.add(EntityEmailBo.from(email))
+            for (EntityTypeData email : immutable.emailAddresses) {
+                bo.emailAddresses.add(EntityTypeDataBo.from(email))
             }
         }
         bo.versionNumber = immutable.versionNumber

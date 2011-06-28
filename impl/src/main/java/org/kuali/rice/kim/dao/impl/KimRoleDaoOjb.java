@@ -26,11 +26,11 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
@@ -455,10 +455,10 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     private List<String> getPrincipalIdsForPrincipalName(String principalName){
     	Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("principals.principalName", principalName);
-        List<? extends KimEntityDefaultInfo> entities = KimApiServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
+        List<EntityDefault> entities = KimApiServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
 
         List<String> principalIds = new ArrayList<String>();
-        for (KimEntityDefaultInfo entity : entities) {
+        for (EntityDefault entity : entities) {
             for (Principal principal : entity.getPrincipals()) {
                 principalIds.add(principal.getPrincipalId());
             }
@@ -474,14 +474,14 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		Criteria memberSubCrit = new Criteria();
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("principals.principalName", principalName);
-        List<? extends KimEntityDefaultInfo> entities = KimApiServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
+        List<EntityDefault> entities = KimApiServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
         if (entities == null
                 || entities.size() == 0) {
             return roleIds;
         }
 
         List<String> principalIds = new ArrayList<String>();
-        for (KimEntityDefaultInfo entity : entities) {
+        for (EntityDefault entity : entities) {
             for (Principal principal : entity.getPrincipals()) {
                 principalIds.add(principal.getPrincipalId());
             }

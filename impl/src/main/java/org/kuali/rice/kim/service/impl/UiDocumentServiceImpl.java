@@ -16,19 +16,6 @@
 
 package org.kuali.rice.kim.service.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -47,6 +34,7 @@ import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
+import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
@@ -63,8 +51,6 @@ import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -107,6 +93,7 @@ import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
+import org.kuali.rice.kim.impl.identity.entity.EntityBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
@@ -140,6 +127,18 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
+import javax.xml.namespace.QName;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
  *
@@ -168,11 +167,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 */
 	public void saveEntityPerson(
 			IdentityManagementPersonDocument identityManagementPersonDocument) {
-		KimEntityImpl kimEntity = new KimEntityImpl();
-		KimEntityImpl origEntity = getEntityImpl(identityManagementPersonDocument.getEntityId());
+		EntityBo kimEntity = new EntityBo();
+		EntityBo origEntity = getEntityBo(identityManagementPersonDocument.getEntityId());
 		boolean creatingNew = true;
 		if (origEntity == null) {
-			origEntity = new KimEntityImpl();
+			origEntity = new EntityBo();
 			kimEntity.setActive(true);
 		} else {
 			// TODO : in order to resolve optimistic locking issue. has to get identity and set the version number if identity records matched
@@ -183,7 +182,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			creatingNew = false;
 		}
 
-		kimEntity.setEntityId(identityManagementPersonDocument.getEntityId());
+		kimEntity.setId(identityManagementPersonDocument.getEntityId());
 		String initiatorPrincipalId = getInitiatorPrincipalId(identityManagementPersonDocument);
 		boolean inactivatingPrincipal = false;
 		if(canModifyEntity(initiatorPrincipalId, identityManagementPersonDocument.getPrincipalId())){
@@ -342,8 +341,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementPersonDocument.setPrincipalName(principal.getPrincipalName());
         identityManagementPersonDocument.setPassword(principal.getPassword());
         identityManagementPersonDocument.setActive(principal.isActive());
-        KimEntityInfo kimEntity = this.getIdentityService().getEntityInfo(principal.getEntityId());
-		identityManagementPersonDocument.setEntityId(kimEntity.getEntityId());
+        Entity kimEntity = this.getIdentityService().getEntity(principal.getEntityId());
+		identityManagementPersonDocument.setEntityId(kimEntity.getId());
 		if ( ObjectUtils.isNotNull( kimEntity.getPrivacyPreferences() ) ) {
 			identityManagementPersonDocument.setPrivacy(loadPrivacyReferences(kimEntity.getPrivacyPreferences()));
 		}
@@ -646,7 +645,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	public List<EntityEmployment> getEntityEmploymentInformationInfo(String entityId) {
-        KimEntityImpl entityImpl = getEntityImpl(entityId);
+        EntityBo entityImpl = getEntityBo(entityId);
         List<EntityEmployment> empInfos = new ArrayList<EntityEmployment>();
         EntityEmployment empInfo;
         if(ObjectUtils.isNotNull(entityImpl) && CollectionUtils.isNotEmpty(entityImpl.getEmploymentInformation())){
@@ -657,8 +656,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         return empInfos;
 	}
 
-	private KimEntityImpl getEntityImpl(String entityId) {
-		KimEntityImpl entityImpl = (KimEntityImpl)getBusinessObjectService().findBySinglePrimaryKey(KimEntityImpl.class, entityId);
+	private EntityBo getEntityBo(String entityId) {
+		EntityBo entityImpl = getBusinessObjectService().findBySinglePrimaryKey(EntityBo.class, entityId);
         //TODO - remove this hack... This is here because currently jpa only seems to be going 2 levels deep on the eager fetching.
 		if(entityImpl!=null  && entityImpl.getEntityTypes() != null) {
         	for (EntityTypeDataBo et : entityImpl.getEntityTypes()) {
@@ -896,7 +895,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	}
 
-    protected boolean setupPrincipal(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<PrincipalBo> origPrincipals) {
+    protected boolean setupPrincipal(IdentityManagementPersonDocument identityManagementPersonDocument, EntityBo kimEntity, List<PrincipalBo> origPrincipals) {
     	boolean inactivatingPrincipal = false;
 		List<PrincipalBo> principals = new ArrayList<PrincipalBo>();
 		Principal.Builder principal = Principal.Builder.create(identityManagementPersonDocument.getPrincipalName());
@@ -922,7 +921,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return inactivatingPrincipal;
 	}
 
-    protected void setupPrivacy(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, EntityPrivacyPreferencesBo origPrivacy) {
+    protected void setupPrivacy(IdentityManagementPersonDocument identityManagementPersonDocument, EntityBo kimEntity, EntityPrivacyPreferencesBo origPrivacy) {
 		EntityPrivacyPreferencesBo privacyPreferences = new EntityPrivacyPreferencesBo();
 		privacyPreferences.setEntityId(identityManagementPersonDocument.getEntityId());
 		privacyPreferences.setSuppressAddress(identityManagementPersonDocument.getPrivacy().isSuppressAddress());
@@ -947,7 +946,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return docPrivacy;
 	}
 
-    protected void setupName(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<EntityNameBo> origNames) {
+    protected void setupName(IdentityManagementPersonDocument identityManagementPersonDocument, EntityBo kimEntity, List<EntityNameBo> origNames) {
     	if ( !identityManagementPersonDocument.getPrivacy().isSuppressName() ||
     			canOverrideEntityPrivacyPreferences( getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId() ) ) {
 	    	List<EntityNameBo> entityNames = new ArrayList<EntityNameBo>();
@@ -979,7 +978,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	}
 	}
 
-    protected void setupAffiliation(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity,List<EntityAffiliationBo> origAffiliations, List<EntityEmploymentBo> origEmpInfos) {
+    protected void setupAffiliation(IdentityManagementPersonDocument identityManagementPersonDocument, EntityBo kimEntity,List<EntityAffiliationBo> origAffiliations, List<EntityEmploymentBo> origEmpInfos) {
 		List<EntityAffiliationBo> entityAffiliations = new ArrayList<EntityAffiliationBo>();
 		// employment informations
 		List<EntityEmploymentBo> entityEmploymentInformations = new ArrayList<EntityEmploymentBo>();

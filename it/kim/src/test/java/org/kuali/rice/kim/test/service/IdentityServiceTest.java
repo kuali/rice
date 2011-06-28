@@ -18,6 +18,8 @@ package org.kuali.rice.kim.test.service;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.services.IdentityService;
@@ -64,8 +66,8 @@ public class IdentityServiceTest extends KIMTestCase {
 		principalIds.add("KULUSER");
 		List<String> entityIds= new ArrayList<String>();
 		for (String principalId : principalIds) {
-			KimEntityInfo entityInfo = identityService.getEntityInfoByPrincipalId(principalId);
-			entityIds.add(entityInfo.getEntityId());
+			Entity entityInfo = identityService.getEntityInfoByPrincipalId(principalId);
+			entityIds.add(entityInfo.getId());
 		}
 		
 		Map<String,EntityName> results = identityService.getDefaultNamesForEntityIds(entityIds);
@@ -104,7 +106,7 @@ public class IdentityServiceTest extends KIMTestCase {
 	@Test
 	public void testGetDefaultEntityByPrincipalId() {
 		String principalId = "KULUSER";
-		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalId(principalId);
+		EntityDefault info = identityService.getEntityDefaultInfoByPrincipalId(principalId);
 		assertNotNull("entity must not be null", info);
 		assertNotNull("entity principals must not be null", info.getPrincipals());
 		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
@@ -117,7 +119,7 @@ public class IdentityServiceTest extends KIMTestCase {
 	@Test
 	public void testGetDefaultEntityByPrincipalName() {
 		String principalName = "kuluser";
-		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalName(principalName);
+		EntityDefault info = identityService.getEntityDefaultInfoByPrincipalName(principalName);
 		assertNotNull("entity must not be null", info);
 		assertNotNull("entity principals must not be null", info.getPrincipals());
 		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
@@ -130,7 +132,7 @@ public class IdentityServiceTest extends KIMTestCase {
 	@Test
 	public void testGetEntityByPrincipalId() {
 		String principalId = "KULUSER";
-		KimEntityInfo info = identityService.getEntityInfoByPrincipalId(principalId);
+		Entity info = identityService.getEntityInfoByPrincipalId(principalId);
 		assertNotNull("entity must not be null", info);
 		assertNotNull("entity principals must not be null", info.getPrincipals());
 		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
@@ -144,7 +146,7 @@ public class IdentityServiceTest extends KIMTestCase {
 	@Test
 	public void testGetEntityByPrincipalName() {
 		String principalName = "kuluser";
-		KimEntityInfo info = identityService.getEntityInfoByPrincipalName(principalName);
+		Entity info = identityService.getEntityInfoByPrincipalName(principalName);
 		assertNotNull("entity must not be null", info);
 		assertNotNull("entity principals must not be null", info.getPrincipals());
 		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
@@ -159,10 +161,10 @@ public class IdentityServiceTest extends KIMTestCase {
 	public void testGetContainedAttributes() {
 		Principal principal = identityService.getPrincipal("p1");
 		
-		KimEntityDefaultInfo entity = identityService.getEntityDefaultInfo( principal.getEntityId() );
+		EntityDefault entity = identityService.getEntityDefaultInfo( principal.getEntityId() );
 		assertNotNull( "Entity Must not be null", entity );
 		EntityTypeDataDefault eet = entity.getEntityType( "PERSON" );
-		assertNotNull( "PERSON EntityEntityType must not be null", eet );
+		assertNotNull( "PERSON EntityTypeData must not be null", eet );
 		assertNotNull( "EntityEntityType's default email address must not be null", eet.getDefaultEmailAddress() );
 		assertEquals( "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );
 	}
@@ -177,10 +179,10 @@ public class IdentityServiceTest extends KIMTestCase {
 	@Test
 	public void testLookupEntityDefaultInfo() {
 		String principalIdToTest = "p1";
-		List<KimEntityDefaultInfo> results = identityService.lookupEntityDefaultInfo(setUpEntityLookupCriteria(principalIdToTest), false);
+		List<EntityDefault> results = identityService.lookupEntityDefaultInfo(setUpEntityLookupCriteria(principalIdToTest), false);
 		assertNotNull("Lookup results should never be null", results);
 		assertEquals("Lookup result count is invalid", 1, results.size());
-		for (KimEntityDefaultInfo kimEntityDefaultInfo : results) {
+		for (EntityDefault kimEntityDefaultInfo : results) {
 			assertEquals("Entity should have only one principal for this test", 1, kimEntityDefaultInfo.getPrincipals().size());
 			assertEquals("Principal Ids should match", principalIdToTest, kimEntityDefaultInfo.getPrincipals().get(0).getPrincipalId());
 		}
@@ -189,10 +191,10 @@ public class IdentityServiceTest extends KIMTestCase {
 	@Test
 	public void testLookupEntityInfo() {
 		String principalIdToTest = "p1";
-		List<KimEntityInfo> results = identityService.lookupEntityInfo(setUpEntityLookupCriteria(principalIdToTest), false);
+		List<Entity> results = identityService.lookupEntityInfo(setUpEntityLookupCriteria(principalIdToTest), false);
 		assertNotNull("Lookup results should never be null", results);
 		assertEquals("Lookup result count is invalid", 1, results.size());
-		for (KimEntityInfo kimEntityInfo : results) {
+		for (Entity kimEntityInfo : results) {
 			assertEquals("Entity should have only one principal for this test", 1, kimEntityInfo.getPrincipals().size());
 			assertEquals("Principal Ids should match", principalIdToTest, kimEntityInfo.getPrincipals().get(0).getPrincipalId());
 		}

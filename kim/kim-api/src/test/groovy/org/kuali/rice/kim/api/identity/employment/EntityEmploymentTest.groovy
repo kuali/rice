@@ -128,7 +128,7 @@ class EntityEmploymentTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityEmployment.class)
 	}
 
-    private create() {
+    public static create() {
 		return EntityEmployment.Builder.create(new EntityEmploymentContract() {
 			def String id = EntityEmploymentTest.ID
             def String entityId = EntityEmploymentTest.ENTITY_ID

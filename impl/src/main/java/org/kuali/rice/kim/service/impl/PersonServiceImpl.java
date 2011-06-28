@@ -20,13 +20,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleManagementService;
@@ -99,7 +99,7 @@ public class PersonServiceImpl implements PersonService {
 		baseLookupCriteria.put( ENTITY_TYPE_PROPERTY_PREFIX + KRADPropertyConstants.ACTIVE, "Y" );
 		
 		// create the field mappings between the Person object and the KimEntity object
-		criteriaConversion.put( KIMPropertyConstants.Person.ENTITY_ID, KIMPropertyConstants.Person.ENTITY_ID );
+		criteriaConversion.put( KIMPropertyConstants.Person.ENTITY_ID, KIMPropertyConstants.Entity.ENTITY_ID );
 		criteriaConversion.put( KIMPropertyConstants.Person.ACTIVE, PRINCIPAL_PROPERTY_PREFIX + KRADPropertyConstants.ACTIVE );
 		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_ID, PRINCIPAL_PROPERTY_PREFIX + KIMPropertyConstants.Person.PRINCIPAL_ID );
 		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_NAME, PRINCIPAL_PROPERTY_PREFIX + KIMPropertyConstants.Person.PRINCIPAL_NAME );
@@ -149,7 +149,7 @@ public class PersonServiceImpl implements PersonService {
 		if ( person != null ) {
 			return person;
 		}
-		KimEntityDefaultInfo entity = null;
+		EntityDefault entity = null;
 		// get the corresponding principal
 		Principal principal = getIdentityManagementService().getPrincipal( principalId );
 		// get the identity
@@ -165,7 +165,7 @@ public class PersonServiceImpl implements PersonService {
 		return person;
 	}
 
-	protected PersonImpl convertEntityToPerson( KimEntityDefaultInfo entity, Principal principal ) {
+	protected PersonImpl convertEntityToPerson( EntityDefault entity, Principal principal ) {
 		try {
 			// get the EntityEntityType for the EntityType corresponding to a Person
 			for ( String entityTypeCode : personEntityTypeCodes ) {
@@ -240,7 +240,7 @@ public class PersonServiceImpl implements PersonService {
 		if ( person != null ) {
 			return person;
 		}
-		KimEntityDefaultInfo entity = null;
+		EntityDefault entity = null;
 		// get the corresponding principal
 		Principal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
 		// get the identity
@@ -376,9 +376,9 @@ public class PersonServiceImpl implements PersonService {
 
 		List<Person> people = new ArrayList<Person>(); 
 
-		List<? extends KimEntityDefaultInfo> entities = getIdentityManagementService().lookupEntityDefaultInfo( entityCriteria, unbounded );
+		List<EntityDefault> entities = getIdentityManagementService().lookupEntityDefaultInfo( entityCriteria, unbounded );
 
-		for ( KimEntityDefaultInfo e : entities ) {
+		for ( EntityDefault e : entities ) {
 			// get to get all principals for the identity as well
 			for ( Principal p : e.getPrincipals() ) {
 				people.add( convertEntityToPerson( e, p ) );

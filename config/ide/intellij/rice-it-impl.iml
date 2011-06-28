@@ -176,6 +176,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jdt.core.compiler:ecj:3.5.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jsp-api-2.1-glassfish:2.1.v20100127" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: ant:ant:1.6.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.subethamail:subethasmtp:3.1.5" level="project" />
   </component>

@@ -18,11 +18,9 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.services.IdentityArchiveService;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl;
@@ -58,8 +56,8 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 
 	/**
 	 * This tests
-	 * <ol><li>trying to retrieve a non-existant {@link KimEntityDefaultInfo}
-	 * <li>saving a {@link KimEntityDefaultInfo} and retrieving it.
+	 * <ol><li>trying to retrieve a non-existant {@link EntityDefault}
+	 * <li>saving a {@link EntityDefault} and retrieving it.
 	 * </ol>
 	 * This test is specific to {@link IdentityArchiveServiceImpl}
 	 */
@@ -68,15 +66,15 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 		final int maxWriteQueueSize =
 			Integer.valueOf(ConfigContext.getCurrentContextConfig().getProperty("kim.identityArchiveServiceImpl.maxWriteQueueSize"));
 
-		List<KimEntityDefaultInfo> added = new ArrayList<KimEntityDefaultInfo>();
+		List<EntityDefault> added = new ArrayList<EntityDefault>();
 
 		// exceed the max write queue size to initiate a flush
 		for (int i=1; i<=maxWriteQueueSize; i++) {
 			MinimalKEDIBuilder builder = new MinimalKEDIBuilder("bogusUser" + i);
 			builder.setEntityId("bogusUser" + i);
-			KimEntityDefaultInfo bogusUserInfo = builder.build();
+			EntityDefault bogusUserInfo = builder.build();
 
-			KimEntityDefaultInfo retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalId(builder.getPrincipalId());
+			EntityDefault retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalId(builder.getPrincipalId());
 			assertNull(retrieved);
 			retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalName(builder.getPrincipalName());
 			assertNull(retrieved);
@@ -94,9 +92,9 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 
 		// these should have been flushed by now, test retrieval
 
-		for (KimEntityDefaultInfo kedi : added) {
+		for (EntityDefault kedi : added) {
 			// retrieve it every way we can
-			KimEntityDefaultInfo retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalId(kedi.getPrincipals().get(0).getPrincipalId());
+			EntityDefault retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalId(kedi.getPrincipals().get(0).getPrincipalId());
 			assertTrue(kedi.getPrincipals().get(0).getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
 			retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalName(kedi.getPrincipals().get(0).getPrincipalName());
 			assertTrue(kedi.getPrincipals().get(0).getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
@@ -116,7 +114,7 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 			principalId = principalName = name;
 		}
 
-		public KimEntityDefaultInfo build() {
+		public EntityDefault build() {
 			if (entityId == null) entityId = UUID.randomUUID().toString();
 			if (principalId == null) principalId = UUID.randomUUID().toString();
 			if (principalName == null) principalName = principalId;
@@ -127,11 +125,11 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 			principal.setEntityId(entityId);
 			principal.setPrincipalId(principalId);
 
-			KimEntityDefaultInfo kedi = new KimEntityDefaultInfo();
-			kedi.setPrincipals(Collections.singletonList(principal.build()));
+			EntityDefault.Builder kedi = EntityDefault.Builder.create();
+			kedi.setPrincipals(Collections.singletonList(principal));
 			kedi.setEntityId(entityId);
 
-			return kedi;
+			return kedi.build();
 		}
 
 		/**

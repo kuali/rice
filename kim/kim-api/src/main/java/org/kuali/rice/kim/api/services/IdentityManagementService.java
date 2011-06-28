@@ -21,12 +21,12 @@ import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
@@ -70,11 +70,11 @@ public interface IdentityManagementService {
             @WebParam(name = "password") String password
     );
 
-	KimEntityDefaultInfo getEntityDefaultInfo(@WebParam(name = "entityId") String entityId);
-	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId(@WebParam(name = "principalId") String principalId);
-	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName(@WebParam(name = "principalName") String principalName);
+	EntityDefault getEntityDefaultInfo(@WebParam(name = "entityId") String entityId);
+	EntityDefault getEntityDefaultInfoByPrincipalId(@WebParam(name = "principalId") String principalId);
+	EntityDefault getEntityDefaultInfoByPrincipalName(@WebParam(name = "principalName") String principalName);
 
-	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo(
+	List<EntityDefault> lookupEntityDefaultInfo(
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
             @WebParam(name = "searchCriteria") Map<String, String> searchCriteria,
             @WebParam(name = "unbounded") boolean unbounded
@@ -85,11 +85,11 @@ public interface IdentityManagementService {
 
 	//KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
 
-	KimEntityInfo getEntityInfo(@WebParam(name = "entityId") String entityId);
-	KimEntityInfo getEntityInfoByPrincipalId(@WebParam(name = "principalId") String principalId);
-	KimEntityInfo getEntityInfoByPrincipalName(@WebParam(name = "principalName") String principalName);
+	Entity getEntity(@WebParam(name = "entityId") String entityId);
+	Entity getEntityByPrincipalId(@WebParam(name = "principalId") String principalId);
+	Entity getEntityByPrincipalName(@WebParam(name = "principalName") String principalName);
 
-	List<KimEntityInfo> lookupEntityInfo(
+	List<Entity> lookupEntityInfo(
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
             @WebParam(name = "searchCriteria") Map<String, String> searchCriteria,
             @WebParam(name = "unbounded") boolean unbounded

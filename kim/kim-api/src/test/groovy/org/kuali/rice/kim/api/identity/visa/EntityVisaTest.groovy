@@ -50,7 +50,7 @@ class EntityVisaTest {
         JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityVisa.class)
     }
 
-    private create() {
+    public static create() {
         return EntityVisa.Builder.create(new EntityVisaContract() {
             def String entityId = EntityVisaTest.ENTITY_ID
             def String visaTypeKey = EntityVisaTest.VISA_TYPE_KEY

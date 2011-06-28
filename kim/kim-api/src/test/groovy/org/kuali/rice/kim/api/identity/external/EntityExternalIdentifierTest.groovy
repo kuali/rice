@@ -62,7 +62,7 @@ class EntityExternalIdentifierTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityExternalIdentifier.class)
 	}
 
-    private create() {
+    public static create() {
 		return EntityExternalIdentifier.Builder.create(new EntityExternalIdentifierContract() {
 			def String id = EntityExternalIdentifierTest.ID
             def String entityId = EntityExternalIdentifierTest.ENTITY_ID
@@ -82,4 +82,5 @@ class EntityExternalIdentifierTest {
         }).build()
 
 	}
+
 }

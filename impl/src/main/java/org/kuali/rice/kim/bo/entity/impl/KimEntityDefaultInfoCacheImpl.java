@@ -15,16 +15,13 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
-import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
 import org.kuali.rice.kim.api.identity.name.EntityName;
-import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
@@ -33,7 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Used to store a cache of person information to be used if the user's information disappears from KIM. 
@@ -89,7 +86,7 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 	public KimEntityDefaultInfoCacheImpl() {
 	}
 	
-	public KimEntityDefaultInfoCacheImpl( KimEntityDefaultInfo entity ) {
+	public KimEntityDefaultInfoCacheImpl( EntityDefault entity ) {
 		if ( entity != null ) {
 			entityId = entity.getEntityId();
 			if ( entity.getPrincipals() != null && !entity.getPrincipals().isEmpty() ) {
@@ -99,28 +96,27 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 			if ( entity.getEntityTypes() != null && !entity.getEntityTypes().isEmpty() ) {
 				entityTypeCode = entity.getEntityTypes().get(0).getEntityTypeCode();
 			}
-			if ( entity.getDefaultName() != null ) {
-				firstName = entity.getDefaultName().getFirstNameUnmasked();
-				middleName = entity.getDefaultName().getMiddleNameUnmasked();
-				lastName = entity.getDefaultName().getLastNameUnmasked();
-				name = entity.getDefaultName().getFormattedNameUnmasked();
+			if ( entity.getName() != null ) {
+				firstName = entity.getName().getFirstNameUnmasked();
+				middleName = entity.getName().getMiddleNameUnmasked();
+				lastName = entity.getName().getLastNameUnmasked();
+				name = entity.getName().getFormattedNameUnmasked();
 			}
 			if ( entity.getDefaultAffiliation() != null ) {
 				campusCode = entity.getDefaultAffiliation().getCampusCode();
 			}
-			if ( entity.getPrimaryEmployment() != null ) {
-				primaryDepartmentCode = entity.getPrimaryEmployment().getPrimaryDepartmentCode();
-				employeeId = entity.getPrimaryEmployment().getEmployeeId();
+			if ( entity.getEmployment() != null ) {
+				primaryDepartmentCode = entity.getEmployment().getPrimaryDepartmentCode();
+				employeeId = entity.getEmployment().getEmployeeId();
 			}
 		}
 	}
 
     @SuppressWarnings("unchecked")
-	public KimEntityDefaultInfo convertCacheToEntityDefaultInfo() {
-		KimEntityDefaultInfo info = new KimEntityDefaultInfo();
+	public EntityDefault convertCacheToEntityDefaultInfo() {
+		EntityDefault.Builder info = EntityDefault.Builder.create(this.entityId);
 		
 		// identity info
-		info.setEntityId( this.getEntityId() );
 		info.setActive( this.isActive() );
 
 		// principal info
@@ -128,8 +124,7 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 		principalInfo.setEntityId(this.getEntityId());
 		principalInfo.setPrincipalId(this.getPrincipalId());
 		principalInfo.setActive(this.isActive());
-		info.setPrincipals( new ArrayList<Principal>( 1 ) );
-		((ArrayList<Principal>)info.getPrincipals()).add(principalInfo.build());
+		info.setPrincipals(Collections.singletonList(principalInfo));
 
 		// name info
 		EntityName.Builder nameInfo = EntityName.Builder.create();
@@ -137,38 +132,31 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 		nameInfo.setFirstName( this.getFirstName() );
 		nameInfo.setLastName( this.getLastName() );
 		nameInfo.setMiddleName( this.getMiddleName() );
-		info.setDefaultName(nameInfo.build());
+		info.setName(nameInfo);
 
 		// identity type information
-		ArrayList<EntityTypeDataDefault> entityTypesInfo = new ArrayList<EntityTypeDataDefault>( 1 );
-		info.setEntityTypes( entityTypesInfo );
-		EntityTypeDataDefault entityTypeInfo = new EntityTypeDataDefault(this.getEntityTypeCode(),
-                EntityAddress.Builder.create().build(),
-                EntityEmail.Builder.create().build(),
-                EntityPhone.Builder.create().build());
-		entityTypesInfo.add(entityTypeInfo);
-		info.setEntityTypes(entityTypesInfo);
+		EntityTypeDataDefault.Builder entityTypeInfo = EntityTypeDataDefault.Builder.create();
+        entityTypeInfo.setEntityTypeCode(this.getEntityTypeCode());
+		info.setEntityTypes(Collections.singletonList(entityTypeInfo));
 
 		// affiliations
-		ArrayList<EntityAffiliation> affInfo = new ArrayList<EntityAffiliation>( 1 );
-		info.setAffiliations( affInfo );
 		EntityAffiliation.Builder aff = EntityAffiliation.Builder.create();
 		aff.setCampusCode(this.getCampusCode());
 		aff.setDefaultValue(true);
         aff.setEntityId(info.getEntityId());
-		info.setDefaultAffiliation(aff.build());
-		info.setAffiliations(affInfo);
+		info.setDefaultAffiliation(aff);
+		info.setAffiliations(Collections.singletonList(aff));
 
 		// employment information
 		EntityEmployment.Builder empInfo = EntityEmployment.Builder.create();
 		empInfo.setEmployeeId( this.getEmployeeId() );
 		empInfo.setPrimary(true);
 		empInfo.setPrimaryDepartmentCode(this.getPrimaryDepartmentCode());
-		info.setPrimaryEmployment( empInfo.build() );
+		info.setEmployment(empInfo);
 		
 		// external identifiers
-		info.setExternalIdentifiers( new ArrayList<EntityExternalIdentifier>(0) );
-		return info;
+		info.setExternalIdentifiers( Collections.singletonList(EntityExternalIdentifier.Builder.create()) );
+		return info.build();
     	
     }
 

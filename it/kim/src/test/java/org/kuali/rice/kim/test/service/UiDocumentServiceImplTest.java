@@ -20,15 +20,17 @@ import org.junit.Test;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
+import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.identity.type.EntityTypeData;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmail;
@@ -38,9 +40,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
-import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
@@ -87,16 +87,16 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
         }
 		uiDocumentService.saveEntityPerson(personDoc);
         Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put("entityId", "entity124eId");
+        criteria.put("id", "entity124eId");
         criteria.put("entityTypeCode", "PERSON");
 
-		KimEntityImpl entity = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
-        EntityTypeDataBo entityType = entity.getEntityTypes().get(0);
+		Entity entity = KimApiServiceLocator.getIdentityService().getEntity(personDoc.getEntityId());
+        EntityTypeData entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
 		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));
 		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), entityType.getEmailAddresses().get(0));
-		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), entity.getNames().get(0));
+		assertNameTrue((PersonDocumentName) personDoc.getNames().get(0), entity.getNames().get(0));
 		assertPrincipalTrue(personDoc, entity.getPrincipals().get(0));
 
 		assertAffiliationTrue(personDoc.getAffiliations().get(0), entity.getAffiliations().get(0));
@@ -105,8 +105,9 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		//verify that update doesn't cause external identifier to be encrypted twice
 		// and that update doesn't cause any problems
 		uiDocumentService.saveEntityPerson(personDoc);
-		KimEntityImpl entity2 = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
-        EntityTypeDataBo entityType2 = entity2.getEntityTypes().get(0);
+		Entity entity2 = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntity(
+                personDoc.getEntityId());
+        EntityTypeData entityType2 = entity2.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
         assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType2.getAddresses().get(0));
         assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType2.getPhoneNumbers().get(0));
@@ -131,11 +132,12 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	@Test
 	public void testLoadToPersonDocument() {
 
-		KimEntityImpl entity = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntityImpl("entity123eId");
+		Entity entity = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntity(
+                "entity123eId");
 		assertNotNull(entity);
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
 		uiDocumentService.loadEntityToPersonDoc(personDoc, "entity123pId");
-        EntityTypeDataBo entityType = entity.getEntityTypes().get(0);
+        EntityTypeData entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
 		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));
@@ -368,8 +370,8 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEquals(docName.getTitle(), entityName.getTitle());
 	}
 
-	private void assertAffiliationTrue(PersonDocumentAffiliation docAffln, EntityAffiliationBo entityAffln) {
-		assertEquals(docAffln.getAffiliationTypeCode(), entityAffln.getAffiliationTypeCode());
+	private void assertAffiliationTrue(PersonDocumentAffiliation docAffln, EntityAffiliation entityAffln) {
+		assertEquals(docAffln.getAffiliationTypeCode(), entityAffln.getAffiliationType().getCode());
 		assertEquals(docAffln.getCampusCode(), entityAffln.getCampusCode());
 		assertEquals(docAffln.getEntityAffiliationId(), entityAffln.getId());
 	}

@@ -186,31 +186,11 @@ class GroupTest {
         Assert.assertEquals(NAME,group.name)
         Assert.assertEquals(NAMESPACE,group.namespaceCode)
         Assert.assertEquals(new Boolean(ACTIVE).booleanValue(),group.active)
-	    /*Assert.assertEquals(2, group.members.size())
-        Assert.assertEquals(MEMBER_1_ID, group.members[0].id)
-        Assert.assertEquals(MEMBER_1_GROUP_ID, group.members[0].assignedToId)
-        Assert.assertEquals(MEMBER_1_MEMBER_ID, group.members[0].memberId)
-        Assert.assertEquals(MEMBER_1_TYPE_CD, group.members[0].typeCode)
-        Assert.assertEquals(MEMBER_1_ACTIVE_FROM, group.members[0].activeFromDate)
-        Assert.assertEquals(MEMBER_1_ACTIVE_TO, group.members[0].activeToDate)
-        Assert.assertEquals(MEMBER_1_OBJ_ID, group.members[0].objectId)
-        Assert.assertEquals(MEMBER_1_VER_NBR, group.members[0].versionNumber)
-
-        Assert.assertEquals(MEMBER_2_ID, group.members[1].id)
-        Assert.assertEquals(MEMBER_2_GROUP_ID, group.members[1].assignedToId)
-        Assert.assertEquals(MEMBER_2_MEMBER_ID, group.members[1].memberId)
-        Assert.assertEquals(MEMBER_2_TYPE_CD, group.members[1].typeCode)
-        Assert.assertEquals(null, group.members[1].activeFromDate)
-        Assert.assertEquals(null, group.members[1].activeToDate)
-        Assert.assertEquals(MEMBER_2_OBJ_ID, group.members[1].objectId)
-        Assert.assertEquals(MEMBER_2_VER_NBR, group.members[1].versionNumber)*/
 
 	    Assert.assertEquals(2, group.attributes.size())
         Assert.assertEquals(ATTRIBUTES_1_VALUE, group.attributes.get(ATTRIBUTES_1_NAME))
 
         Assert.assertEquals(ATTRIBUTES_2_VALUE, group.attributes.get(ATTRIBUTES_2_NAME))
-
-
 
         Assert.assertEquals(VERSION_NUMBER, group.versionNumber)
 	    Assert.assertEquals(OBJECT_ID, group.objectId)

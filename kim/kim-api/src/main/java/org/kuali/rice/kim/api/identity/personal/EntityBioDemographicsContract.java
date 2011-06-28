@@ -1,5 +1,6 @@
 package org.kuali.rice.kim.api.identity.personal;
 
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
@@ -17,13 +18,13 @@ public interface EntityBioDemographicsContract extends Versioned, GloballyUnique
      * Gets this {@link EntityBioDemographicsContract}'s deceased date.
      * @return the deceased date for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
      */
-	Date getDeceasedDate();
+	String getDeceasedDate();
 
 	/**
      * Gets this {@link EntityBioDemographicsContract}'s birth date.
      * @return the birth date for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
      */
-	Date getBirthDate();
+	String getBirthDate();
 
 	/**
      * Gets this {@link EntityBioDemographicsContract}'s gender code.
@@ -77,7 +78,7 @@ public interface EntityBioDemographicsContract extends Versioned, GloballyUnique
      * Gets this {@link EntityBioDemographicsContract}'s unmasked birth date.
      * @return the unmasked birth date for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
      */
-	Date getBirthDateUnmasked();
+	String getBirthDateUnmasked();
 
 	/**
      * Gets this {@link EntityBioDemographicsContract}'s unmasked gender code.

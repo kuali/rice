@@ -85,7 +85,7 @@ class EntityNameTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityName.class)
 	}
 
-    private create() {
+    public static create() {
 		return EntityName.Builder.create(new EntityNameContract() {
 			def String id = EntityNameTest.ID
             def String entityId = EntityNameTest.ENTITY_ID

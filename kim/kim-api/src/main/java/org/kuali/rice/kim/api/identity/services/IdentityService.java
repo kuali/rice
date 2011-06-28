@@ -18,14 +18,14 @@ package org.kuali.rice.kim.api.identity.services;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.jaxb.StringToKimEntityNameInfoMapAdapter;
 import org.kuali.rice.kim.api.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
@@ -85,32 +85,32 @@ public interface IdentityService {
 	/**
 	 * Get the identity default info for the identity with the given id.
 	 */
-	KimEntityDefaultInfo getEntityDefaultInfo( @WebParam(name="entityId") String entityId );
+	EntityDefault getEntityDefaultInfo( @WebParam(name="entityId") String entityId );
 
 	/**
 	 * Get the identity default info for the identity of the principal with the given principal id.
 	 */
-	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( @WebParam(name="principalId") String principalId );
+	EntityDefault getEntityDefaultInfoByPrincipalId( @WebParam(name="principalId") String principalId );
 
 	/**
 	 * Get the identity default info for the identity of the principal with the given principal name.
 	 */
-	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( @WebParam(name="principalName") String principalName );
+	EntityDefault getEntityDefaultInfoByPrincipalName( @WebParam(name="principalName") String principalName );
 
 	/**
 	 * Get the identity info for the identity with the given id.
 	 */
-	KimEntityInfo getEntityInfo( @WebParam(name="entityId") String entityId );
+	Entity getEntity( @WebParam(name="entityId") String entityId );
 
 	/**
 	 * Get the identity info for the identity of the principal with the given principal id.
 	 */
-	KimEntityInfo getEntityInfoByPrincipalId( @WebParam(name="principalId") String principalId );
+	Entity getEntityInfoByPrincipalId( @WebParam(name="principalId") String principalId );
 
 	/**
 	 * Get the identity info for the identity of the principal with the given principal name.
 	 */
-	KimEntityInfo getEntityInfoByPrincipalName( @WebParam(name="principalName") String principalName );
+	Entity getEntityInfoByPrincipalName( @WebParam(name="principalName") String principalName );
 
 	/**
 	 * Gets a List of identity default info for entities based on the given search criteria.
@@ -121,9 +121,9 @@ public interface IdentityService {
 	 * 
 	 * <p>The searchCriteria Map is a map of identity field names to search values.
 	 */
-	List<KimEntityDefaultInfo> lookupEntityDefaultInfo( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "searchCriteria") Map<String,String> searchCriteria, @WebParam(name="unbounded") boolean unbounded );
+	List<EntityDefault> lookupEntityDefaultInfo( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "searchCriteria") Map<String,String> searchCriteria, @WebParam(name="unbounded") boolean unbounded );
 
-	List<KimEntityInfo> lookupEntityInfo( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "searchCriteria") Map<String,String> searchCriteria, @WebParam(name="unbounded") boolean unbounded );
+	List<Entity> lookupEntityInfo( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "searchCriteria") Map<String,String> searchCriteria, @WebParam(name="unbounded") boolean unbounded );
 
 	/**
 	 * Returns a count of the number of entities that match the given search criteria.

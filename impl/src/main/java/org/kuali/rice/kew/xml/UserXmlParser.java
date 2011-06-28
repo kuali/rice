@@ -24,9 +24,9 @@ import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
+import org.kuali.rice.kim.impl.identity.entity.EntityBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
@@ -38,6 +38,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -87,13 +88,13 @@ public class UserXmlParser {
     		Element usersElement = (Element) usersElementIt.next();
     		for (Iterator iterator = usersElement.getChildren(USER_ELEMENT, NAMESPACE).iterator(); iterator.hasNext();) {
     			Element userElement = (Element) iterator.next();
-    			KimEntityImpl entity = constructEntity(userElement);
-    			constructPrincipal(userElement, entity.getEntityId());
+    			EntityBo entity = constructEntity(userElement);
+    			constructPrincipal(userElement, entity.getId());
     		}
     	}
     }
     
-    protected KimEntityImpl constructEntity(Element userElement) {
+    protected EntityBo constructEntity(Element userElement) {
         SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
     	
     	String firstName = userElement.getChildTextTrim(GIVEN_NAME_ELEMENT, NAMESPACE);
@@ -120,9 +121,9 @@ public class UserXmlParser {
         }
         
     	
-		KimEntityImpl entity = new KimEntityImpl();
+		EntityBo entity = new EntityBo();
 		entity.setActive(true);
-		entity.setEntityId("" + entityId);
+		entity.setId("" + entityId);
 		List<EntityEmploymentBo> emplInfos = new ArrayList<EntityEmploymentBo>();
 		if (emplInfo != null) {
 			emplInfos.add(emplInfo);
@@ -132,7 +133,7 @@ public class UserXmlParser {
 		EntityTypeDataBo entityType = new EntityTypeDataBo();
 		//identity.getEntityTypes().add(entityType);
 		entityType.setEntityTypeCode(entityTypeCode);
-		entityType.setEntityId(entity.getEntityId());
+		entityType.setEntityId(entity.getId());
 		entityType.setActive(true);
 		entityType.setVersionNumber(new Long(1));
 		String emailAddress = userElement.getChildTextTrim(EMAIL_ELEMENT, NAMESPACE);
@@ -148,7 +149,7 @@ public class UserXmlParser {
 			email.setVersionNumber(new Long(1));
 			email.setEmailAddress(emailAddress);
 			email.setDefaultValue(true);
-			email.setEntityId(entity.getEntityId());
+			email.setEntityId(entity.getId());
 			List<EntityEmailBo> emailAddresses = new ArrayList<EntityEmailBo>(1);
 			emailAddresses.add(EntityEmailBo.from(email.build()));
 			entityType.setEmailAddresses(emailAddresses);
@@ -164,7 +165,7 @@ public class UserXmlParser {
 			EntityNameBo name = new EntityNameBo();
 			name.setActive(true);
 			name.setId("" + entityNameId);
-			name.setEntityId(entity.getEntityId());
+			name.setEntityId(entity.getId());
 			// must be in krim_ent_nm_typ_t.ent_nm_typ_cd
 			name.setNameTypeCode("PRFR");
 			name.setFirstName(firstName);
@@ -172,10 +173,10 @@ public class UserXmlParser {
 			name.setLastName(lastName);
 			name.setDefaultValue(true);
 			
-			entity.getNames().add(name);
+			entity.setNames(Collections.singletonList(name));
 		}
 
-		entity = (KimEntityImpl) KRADServiceLocator.getBusinessObjectService().save(entity);
+		entity =  KRADServiceLocator.getBusinessObjectService().save(entity);
 		
 		return entity;
     }

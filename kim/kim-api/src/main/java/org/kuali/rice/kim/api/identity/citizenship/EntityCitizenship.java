@@ -4,10 +4,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
+import org.kuali.rice.core.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.kim.api.identity.Type;
 import org.w3c.dom.Element;
 
@@ -19,7 +20,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Collection;
 
 @XmlRootElement(name = EntityCitizenship.Constants.ROOT_ELEMENT_NAME)
@@ -47,12 +47,12 @@ public final class EntityCitizenship
     private final Type status;
     @XmlElement(name = Elements.COUNTRY_CODE, required = false)
     private final String countryCode;
-    @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     @XmlElement(name = Elements.START_DATE, required = false)
-    private final Timestamp startDate;
-    @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
+    private final DateTime startDate;
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     @XmlElement(name = Elements.END_DATE, required = false)
-    private final Timestamp endDate;
+    private final DateTime endDate;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
     @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
@@ -107,12 +107,12 @@ public final class EntityCitizenship
     }
 
     @Override
-    public Timestamp getStartDate() {
+    public DateTime getStartDate() {
         return this.startDate;
     }
 
     @Override
-    public Timestamp getEndDate() {
+    public DateTime getEndDate() {
         return this.endDate;
     }
 
@@ -162,8 +162,8 @@ public final class EntityCitizenship
         private String entityId;
         private Type.Builder status;
         private String countryCode;
-        private Timestamp startDate;
-        private Timestamp endDate;
+        private DateTime startDate;
+        private DateTime endDate;
         private Long versionNumber;
         private String objectId;
         private boolean active;
@@ -215,12 +215,12 @@ public final class EntityCitizenship
         }
 
         @Override
-        public Timestamp getStartDate() {
+        public DateTime getStartDate() {
             return this.startDate;
         }
 
         @Override
-        public Timestamp getEndDate() {
+        public DateTime getEndDate() {
             return this.endDate;
         }
 
@@ -255,11 +255,11 @@ public final class EntityCitizenship
             this.countryCode = countryCode;
         }
 
-        public void setStartDate(Timestamp startDate) {
+        public void setStartDate(DateTime startDate) {
             this.startDate = startDate;
         }
 
-        public void setEndDate(Timestamp endDate) {
+        public void setEndDate(DateTime endDate) {
             this.endDate = endDate;
         }
 

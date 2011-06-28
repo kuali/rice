@@ -17,34 +17,26 @@
 package org.kuali.rice.krms.impl.repository
 
 import groovy.mock.interceptor.MockFor
-
 import org.junit.Before
-import org.junit.BeforeClass
-
 import org.junit.Test
-
 import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.krms.api.repository.RuleRepositoryService
 
 class RuleRepositoryServiceImplTest {
     private def MockFor mock
     private final shouldFail = new GroovyTestCase().&shouldFail
-	private RuleRepositoryServiceImpl pservice;
+    RuleRepositoryServiceImpl ruleRepositoryServiceImpl;
+    RuleRepositoryService ruleRepositoryService;
 
-	
-
-	@BeforeClass
-	static void createSampleBOs() {
-	}
-	
-	@BeforeClass
-	static void createSampleParameters() {
-	}
-
+    @Before
+    void setupServiceUnderTest() {
+        ruleRepositoryServiceImpl = new RuleRepositoryServiceImpl()
+        ruleRepositoryService = ruleRepositoryServiceImpl
+    }
 
     @Before
     void setupBoServiceMockContext() {
         mock = new MockFor(BusinessObjectService.class)
-		pservice = new RuleRepositoryServiceImpl()
     }
 
 //
@@ -55,7 +47,7 @@ class RuleRepositoryServiceImplTest {
 	@Test
 	public void test_get_agend_tree_single_node_tree() {
 		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService)
+		ruleRepositoryServiceImpl.setBusinessObjectService(boService)
 
 				mock.verify(boService)
 	}

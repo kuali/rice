@@ -29,7 +29,9 @@
         <ref bean="RuleBo-id"/>
         <ref bean="RuleBo-name"/>
         <ref bean="RuleBo-namespace"/>
+        <ref bean="RuleBo-description"/>
         <ref bean="RuleBo-typeId"/>
+        <ref bean="RuleBo-propId"/>
       </list>
     </property>
     <property name="objectLabel" value="Rule"/>
@@ -82,6 +84,28 @@
     <property name="label" value="Rule Type Id"/>
   </bean>
     
+  <bean id="RuleBo-description" parent="RuleBo-description-parentBean"/>
+  <bean id="RuleBo-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Description"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="description"/>
+    <property name="label" value="Rule Description"/>
+  </bean>
+    
+  <bean id="RuleBo-propId" parent="RuleBo-propId-parentBean"/>
+  <bean id="RuleBo-propId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Prop Id"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="propId"/>
+    <property name="label" value="Proposition Id"/>
+  </bean>
+    
   <bean id="RuleBo-LookupView" parent="LookupView">
     <property name="title" value="Rule Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo" />
@@ -90,6 +114,7 @@
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="description" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="typeId" />        
       </list>
     </property>
@@ -98,6 +123,8 @@
         <bean parent="AttributeField" p:propertyName="id" />
         <bean parent="AttributeField" p:propertyName="name" />
         <bean parent="AttributeField" p:propertyName="namespace" />
+        <bean parent="AttributeField" p:propertyName="description" />
+        <bean parent="AttributeField" p:propertyName="propId" />
         <bean parent="AttributeField" p:propertyName="typeId" />
       </list>
     </property>
@@ -119,6 +146,7 @@
 					          <bean parent="AttributeField" p:propertyName="id"/>
 					          <bean parent="AttributeField" p:propertyName="name"/>
 					          <bean parent="AttributeField" p:propertyName="namespace"/>
+					          <bean parent="AttributeField" p:propertyName="description"/>
 					        </list>
 					      </property>
 					      <property name="title" value="Rule Attributes"/>

@@ -55,4 +55,11 @@
       </build>
     </profile>
   </profiles>
+  <dependencies>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-license-bundle</artifactId>
+      <version>1.0-legacy</version>
+    </dependency>
+  </dependencies>
 </project>

@@ -84,6 +84,9 @@
                         </map>
                       </property>
                       <property name="label" value="Name"/>
+                      <property name="fieldSuggest.render" value="true" />
+                      <property name="fieldSuggest.sourcePropertyName" value="name" />
+                      <property name="fieldSuggest.suggestQuery.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo" />
                     </bean>
                     <bean parent="AttributeField" p:propertyName="context.namespace"
                           p:label="Namespace" p:labelPlacement="LEFT">
@@ -214,7 +217,15 @@
               <entry key="id" value="document.newMaintainableObject.dataObject.agenda.id"/>
               <entry key="active" value="document.newMaintainableObject.dataObject.agenda.active"/>
             </map>
-          </property>                                
+          </property>
+          <property name="fieldSuggest.render" value="true" />
+          <property name="fieldSuggest.sourcePropertyName" value="name" />
+          <property name="fieldSuggest.suggestQuery.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo" />
+          <property name="fieldSuggest.suggestQuery.additionalCriteria">
+            <map>
+              <entry key="active" value="true" />
+            </map>
+          </property>
         </bean>
         <bean parent="ActionField" p:methodToCall="saveAgenda"
               p:actionLabel="save" p:styleClasses-ref="buttonClasses"/>

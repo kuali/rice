@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.datadictionary;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +29,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+
 
 /**
  * Extends the DataDictionary to add reloading of changed dictionary files
@@ -47,12 +52,15 @@ import org.springframework.core.io.Resource;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReloadingDataDictionary extends DataDictionary implements FileListener {
+public class ReloadingDataDictionary extends DataDictionary implements FileListener, URLMonitor.URLContentChangedListener {
 	private static final Log LOG = LogFactory.getLog(DataDictionary.class);
 
 	private static final String CLASS_DIR_CONFIG_PARM = "reload.data.dictionary.classes.dir";
 	private static final String SOURCE_DIR_CONFIG_PARM = "reload.data.dictionary.source.dir";
 	private static final String INTERVAL_CONFIG_PARM = "reload.data.dictionary.interval";
+
+    private URLMonitor dictionaryUrlMonitor;
+
 
 	public ReloadingDataDictionary() {
 		super();
@@ -79,6 +87,9 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
 
 		FileMonitor dictionaryFileMonitor = new FileMonitor(reloadInterval);
 
+        dictionaryUrlMonitor = new URLMonitor(reloadInterval);
+        dictionaryUrlMonitor.addListener(this);
+
 		// need to copy the configFileLocations list here because it gets
 		// cleared out after processing by super
 		List<String> configLocations = new ArrayList<String>(configFileLocations);
@@ -87,14 +98,18 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
 		for (String configLocation : configLocations) {
 			Resource classFileResource = getFileResource(configLocation);
 			try {
-				String filePathClassesDir = classFileResource.getFile().getAbsolutePath();
-				String sourceFilePath = StringUtils.replace(filePathClassesDir, classesDir, sourceDir);
-
-				File dictionaryFile = new File(filePathClassesDir);
-				if (dictionaryFile.exists()) {
-					LOG.debug("Monitoring dictionary file: " + dictionaryFile.getName());
-					dictionaryFileMonitor.addFile(dictionaryFile);
-				}
+                if (classFileResource.getURI().toString().startsWith("jar:")) {
+                    LOG.debug("Monitoring dictionary file at URI: " + classFileResource.getURI().toString());
+                    dictionaryUrlMonitor.addURI(classFileResource.getURL());
+                } else {
+                    String filePathClassesDir = classFileResource.getFile().getAbsolutePath();
+                    String sourceFilePath = StringUtils.replace(filePathClassesDir, classesDir, sourceDir);
+                    File dictionaryFile = new File(filePathClassesDir);
+                    if (dictionaryFile.exists()) {
+                        LOG.debug("Monitoring dictionary file: " + dictionaryFile.getName());
+                        dictionaryFileMonitor.addFile(dictionaryFile);
+                    }
+                }
 			}
 			catch (Exception e) {
 				LOG.info("Exception in picking up dictionary file for monitoring:  " + e.getMessage(), e);
@@ -127,4 +142,22 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
 		}
 	}
 
+    public void urlContentChanged(final URL url) {
+        LOG.info("reloading dictionary configuration for " + url.toString());
+        try {
+            InputStream urlStream = url.openStream();
+            InputStreamResource resource = new InputStreamResource(urlStream);
+
+            int originalValidationMode = xmlReader.getValidationMode();
+            xmlReader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_XSD);
+            xmlReader.loadBeanDefinitions(resource);
+            xmlReader.setValidationMode(originalValidationMode);
+
+            // re-index
+            ddIndex.run();
+        }
+        catch (Exception e) {
+            LOG.info("Exception in dictionary hot deploy: " + e.getMessage(), e);
+        }
+    }
 }

@@ -866,16 +866,6 @@
     </reference-descriptor>
   </class-descriptor>
 
-
-  <class-descriptor class="org.kuali.rice.core.impl.style.StyleBo" table="KREW_STYLE_T">
-    <field-descriptor column="STYLE_ID" name="styleId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_S"/>
-    <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
-    <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>
-    <field-descriptor column="ACTV_IND" name="active" jdbc-type="BIT" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion3"/>
-    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
-    <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
-  </class-descriptor>
-
   <class-descriptor class="org.kuali.rice.kew.documentlink.DocumentLink" table="KREW_DOC_LNK_T">
     <field-descriptor column="DOC_LNK_ID" name="docLinkId" jdbc-type="BIGINT" primarykey="true"
          autoincrement="true" sequence-name="KREW_DOC_LNK_S" />

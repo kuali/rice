@@ -204,68 +204,7 @@
         <field-descriptor name="encrypted" column="CONTENT_ENCRYPTED_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     </class-descriptor>
     
-    <!-- The following need to be moved to an OJB file in the "core" module -->
-	
-	<class-descriptor class="org.kuali.rice.core.impl.namespace.NamespaceBo" table="KRCR_NMSPC_T">
-		<field-descriptor name="code" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 
-	    <field-descriptor name="applicationId" column="APPL_ID" jdbc-type="VARCHAR" />
-		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-	</class-descriptor>
-
-	<class-descriptor class="org.kuali.rice.core.impl.parameter.ParameterTypeBo" table="KRCR_PARM_TYP_T">
-		<field-descriptor name="code" column="PARM_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
-
-		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-	</class-descriptor>
-
-	<class-descriptor class="org.kuali.rice.core.impl.component.ComponentBo" table="KRCR_PARM_DTL_TYP_T">
-		<field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="code" column="PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
-
-		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-
-		<reference-descriptor name="namespace" class-ref="org.kuali.rice.core.impl.namespace.NamespaceBo"
-			auto-retrieve="true" auto-update="none" auto-delete="none">
-			<foreignkey field-ref="namespaceCode" target-field-ref="code"/>
-		</reference-descriptor>
-	</class-descriptor>
-
-	<class-descriptor class="org.kuali.rice.core.impl.parameter.ParameterBo" table="KRCR_PARM_T">
-		<field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
-        <field-descriptor name="componentCode" column="PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="name" column="PARM_NM" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="value" column="TXT" jdbc-type="VARCHAR" />
-		<field-descriptor name="description" column="PARM_DESC_TXT" jdbc-type="VARCHAR" />
-		<field-descriptor name="parameterTypeCode" column="PARM_TYP_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="evaluationOperatorCode" column="CONS_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="applicationId" column="APPL_ID" jdbc-type="VARCHAR" primarykey="true"/>
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-
-		<reference-descriptor name="component" class-ref="org.kuali.rice.core.impl.component.ComponentBo"
-			auto-retrieve="true" auto-update="none" auto-delete="none">
-            <foreignkey field-ref="namespaceCode" />
-			<foreignkey field-ref="componentCode" target-field-ref="code"/>
-		</reference-descriptor>
-        <reference-descriptor name="parameterType" class-ref="org.kuali.rice.core.impl.parameter.ParameterTypeBo"
-            auto-retrieve="true" auto-update="none" auto-delete="none">
-            <foreignkey field-ref="parameterTypeCode" target-field-ref="code"/>
-        </reference-descriptor>
-		<reference-descriptor name="namespace" class-ref="org.kuali.rice.core.impl.namespace.NamespaceBo"
-			auto-retrieve="true" auto-update="none" auto-delete="none">
-			<foreignkey field-ref="namespaceCode" target-field-ref="code"/>
-		</reference-descriptor>
-	</class-descriptor>
 
 	<!-- The following need to be moved to an OJB file in the "location" module -->
 

@@ -31,11 +31,13 @@ public class ActiveCollectionFilter implements CollectionFilter {
 
         // iterate through and filter out inactive records
         List<Object> activeRecords = new ArrayList<Object>();
-        for (Object line : modelCollection) {
-            if (line instanceof Inactivatable) {
-                boolean active = ((Inactivatable) line).isActive();
-                if (active) {
-                    activeRecords.add(line);
+        if (modelCollection != null) {
+            for (Object line : modelCollection) {
+                if (line instanceof Inactivatable) {
+                    boolean active = ((Inactivatable) line).isActive();
+                    if (active) {
+                        activeRecords.add(line);
+                    }
                 }
             }
         }

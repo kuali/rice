@@ -44,7 +44,7 @@ public class ValidCharactersConstraint extends BaseConstraint {
 
     /**
      * The Java based regex for valid characters
-     * This value should include the ^ and $ symbols after "regex:" if needed
+     * This value should include the ^ and $ symbols if needed
      * @return the value
      */
     public String getValue() {

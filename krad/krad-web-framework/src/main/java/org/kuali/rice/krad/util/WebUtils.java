@@ -960,7 +960,7 @@ public class WebUtils {
 	public static Map<String, String> getMapFromParameterString(String parameterString) {
 		Map<String, String> map = new HashMap<String, String>();
 
-		String[] entries = parameterString.split(".");
+		String[] entries = parameterString.split(",");
 		for (int i = 0; i < entries.length; i++) {
 			String[] keyValue = entries[i].split(":");
 			if (keyValue.length != 2) {

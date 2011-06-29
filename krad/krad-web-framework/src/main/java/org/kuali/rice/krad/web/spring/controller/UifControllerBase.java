@@ -35,6 +35,7 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.service.SessionDocumentService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
@@ -368,7 +369,7 @@ public abstract class UifControllerBase {
                 String lookupParameterValue = LookupInquiryUtils.retrieveLookupParameterValue(form, request,
                         lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
                 if (StringUtils.isNotBlank(lookupParameterValue)) {
-                    lookupParameters.put(lookupParameter.getValue(), lookupParameterValue);
+                    lookupParameters.put(UifPropertyPaths.CRITERIA_FIELDS + "['" + lookupParameter.getValue() + "']", lookupParameterValue);
                 }
             }
         }

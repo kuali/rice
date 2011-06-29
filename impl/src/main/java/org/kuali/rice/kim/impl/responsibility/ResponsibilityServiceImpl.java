@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -95,7 +96,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public List<Responsibility> findRespsByNamespaceCodeAndName(final String namespaceCode, final String name) {
+    public Responsibility findRespByNamespaceCodeAndName(final String namespaceCode, final String name) {
         if (namespaceCode == null) {
             throw new RiceIllegalArgumentException("namespaceCode is null");
         }
@@ -110,16 +111,16 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         crit.put("active", "Y");
 
         final Collection<ResponsibilityBo> bos = businessObjectService.findMatching(ResponsibilityBo.class, Collections.unmodifiableMap(crit));
-        final List<Responsibility> ims = new ArrayList<Responsibility>();
-        if (bos != null) {
-            for (ResponsibilityBo bo : bos) {
-                if (bo != null) {
-                    ims.add(ResponsibilityBo.to(bo));
-                }
-            }
-        }
 
-        return Collections.unmodifiableList(ims);
+        if (bos != null) {
+            if (bos.size() > 1) {
+                throw new RiceIllegalStateException("more than one Responsibility found with namespace code: " + namespaceCode + " and name: " + name);
+            }
+
+            final Iterator<ResponsibilityBo> i = bos.iterator();
+            return i.hasNext() ? ResponsibilityBo.to(i.next()) : null;
+        }
+        return null;
     }
 
     @Override
@@ -132,7 +133,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public List<Template> findRespTemplatesByNamespaceCodeAndName(final String namespaceCode, final String name) {
+    public Template findRespTemplateByNamespaceCodeAndName(final String namespaceCode, final String name) {
         if (namespaceCode == null) {
             throw new RiceIllegalArgumentException("namespaceCode is null");
         }
@@ -147,22 +148,21 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         crit.put("active", "Y");
 
         final Collection<ResponsibilityTemplateBo> bos = businessObjectService.findMatching(ResponsibilityTemplateBo.class, Collections.unmodifiableMap(crit));
-        final List<Template> ims = new ArrayList<Template>();
         if (bos != null) {
-            for (ResponsibilityTemplateBo bo : bos) {
-                if (bo != null) {
-                    ims.add(ResponsibilityTemplateBo.to(bo));
-                }
+            if (bos.size() > 1) {
+                throw new RiceIllegalStateException("more than one Responsibility Template found with namespace code: " + namespaceCode + " and name: " + name);
             }
-        }
 
-        return Collections.unmodifiableList(ims);
+            final Iterator<ResponsibilityTemplateBo> i = bos.iterator();
+            return i.hasNext() ? ResponsibilityTemplateBo.to(i.next()) : null;
+        }
+        return null;
     }
 
     @Override
     public boolean hasResponsibility(final String principalId, final String namespaceCode, final String respName, final Attributes qualification, final Attributes responsibilityDetails) {
         // get all the responsibility objects whose name match that requested
-        final List<Responsibility> responsibilities = findRespsByNamespaceCodeAndName(namespaceCode, respName);
+        final List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, respName));
         return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
@@ -186,7 +186,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     @Override
     public List<ResponsibilityAction> getResponsibilityActions(final String namespaceCode, final String responsibilityName, final Attributes qualification, final Attributes responsibilityDetails) {
         // get all the responsibility objects whose name match that requested
-        List<Responsibility> responsibilities = findRespsByNamespaceCodeAndName(namespaceCode, responsibilityName);
+        List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, responsibilityName));
         return getRespActions(namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 

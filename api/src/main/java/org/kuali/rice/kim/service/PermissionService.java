@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kim.service;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
@@ -30,6 +22,13 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
+
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This service provides operations for evaluating permissions and querying for permission data.
@@ -254,14 +253,14 @@ public interface PermissionService {
 	 * Return the permission object for the given unique combination of namespace,
 	 * component and permission template name.
 	 */
-    List<KimPermissionInfo> getPermissionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
+    KimPermissionInfo getPermissionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
     													  @WebParam(name="permissionTemplateName") String permissionTemplateName );
 
 	/** 
 	 * Return the permission object for the given unique combination of namespace,
 	 * component and permission name.
 	 */
-    List<KimPermissionInfo> getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
+    KimPermissionInfo getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
 			    											  @WebParam(name="permissionName") String permissionName );
     
     KimPermissionTemplateInfo getPermissionTemplate( @WebParam(name="permissionTemplateId") String permissionTemplateId );

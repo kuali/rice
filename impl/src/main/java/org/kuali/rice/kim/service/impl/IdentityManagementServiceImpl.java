@@ -27,9 +27,9 @@ import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.TypeContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.api.identity.entity.EntityContract;
 import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.entity.EntityContract;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
@@ -1062,8 +1062,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return getResponsibilityService().hasResponsibility( principalId, namespaceCode, responsibilityName, Attributes.fromMap(qualification), Attributes.fromMap(responsibilityDetails) );
 	}
 
-	public List<Responsibility> getResponsibilitiesByName( String namespaceCode, String responsibilityName) {
-		return getResponsibilityService().findRespsByNamespaceCodeAndName(namespaceCode, responsibilityName);
+	public Responsibility getResponsibilityByName( String namespaceCode, String responsibilityName) {
+		return getResponsibilityService().findRespByNamespaceCodeAndName(namespaceCode, responsibilityName);
 	}
 
 	public List<ResponsibilityAction> getResponsibilityActions( String namespaceCode, String responsibilityName,

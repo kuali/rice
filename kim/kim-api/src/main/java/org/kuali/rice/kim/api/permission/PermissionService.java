@@ -29,7 +29,6 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import java.util.List;
 import java.util.Map;
 
@@ -304,8 +303,8 @@ public interface PermissionService {
 	 * component and permission template name.
 	 */
 	@WebMethod(operationName = "getPermissionsByTemplateName")
-    @WebResult(name = "permissions")
-    List<Permission> getPermissionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
+    @WebResult(name = "permission")
+    Permission getPermissionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
     													  @WebParam(name="permissionTemplateName") String permissionTemplateName );
 
 	/** 
@@ -314,7 +313,7 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionsByName")
     @WebResult(name = "permissions")
-    List<Permission> getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
+    Permission getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
 			    											  @WebParam(name="permissionName") String permissionName );
     
 	/**

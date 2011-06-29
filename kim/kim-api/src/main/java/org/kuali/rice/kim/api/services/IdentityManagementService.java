@@ -21,8 +21,8 @@ import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
@@ -280,7 +280,7 @@ public interface IdentityManagementService {
  	 * Return the responsibility object for the given unique combination of namespace,
  	 * component and responsibility name.
  	 */
-    List<? extends Responsibility> getResponsibilitiesByName(
+    Responsibility getResponsibilityByName(
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "responsibilityName") String responsibilityName
     );

@@ -96,15 +96,11 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		if ( service == null ) {
 			KimPermissionTemplateImpl permTemplate = null;
 			if ( permissionTemplateName != null ) {
-				List<KimPermissionImpl> perms = getPermissionImplsByTemplateName(namespaceCode, permissionTemplateName);
-				if ( !perms.isEmpty() ) {
-					permTemplate = perms.get(0).getTemplate();
-				}
+				KimPermissionImpl perms = getPermissionImplsByTemplateName(namespaceCode, permissionTemplateName);
+				permTemplate = perms.getTemplate();
 			} else if ( permissionName != null ) {
-				List<KimPermissionImpl> perms = getPermissionImplsByName(namespaceCode, permissionName); 
-				if ( !perms.isEmpty() ) {
-					permTemplate = perms.get(0).getTemplate();
-				}
+				KimPermissionImpl perms = getPermissionImplsByName(namespaceCode, permissionName);
+				permTemplate = perms.getTemplate();
 			} else if ( permissionId != null ) {
 				KimPermissionImpl perm = getPermissionImpl(permissionId);
 				if ( perm != null ) {
@@ -192,9 +188,9 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      */
     public List<KimPermissionInfo> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	// get all the permission objects whose name match that requested
-    	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
+    	KimPermissionImpl permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
-    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );  
+    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( Collections.singletonList(permissions), permissionDetails );
     	return getPermissionsForUser(principalId, applicablePermissions, qualification);
     }
 
@@ -203,9 +199,9 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      */
     public List<KimPermissionInfo> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	// get all the permission objects whose name match that requested
-    	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
+    	KimPermissionImpl permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
-    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );  
+    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( Collections.singletonList(permissions), permissionDetails );
     	return getPermissionsForUser(principalId, applicablePermissions, qualification);
     }
     
@@ -325,23 +321,23 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     
     public boolean isPermissionDefined( String namespaceCode, String permissionName, AttributeSet permissionDetails ) {
     	// get all the permission objects whose name match that requested
-    	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
+    	KimPermissionImpl permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
-    	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();   
+    	return !getMatchingPermissions( Collections.singletonList(permissions), permissionDetails ).isEmpty();
     }
     
     public boolean isPermissionDefinedForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails ) {
     	// get all the permission objects whose name match that requested
-    	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
+    	KimPermissionImpl permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
-    	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();   
+    	return !getMatchingPermissions( Collections.singletonList(permissions), permissionDetails ).isEmpty();
     }
  
     public List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, AttributeSet permissionDetails) {
     	// get all the permission objects whose name match that requested
-    	List<KimPermissionImpl> permissions = getPermissionImplsByName( namespaceCode, permissionName );
+    	KimPermissionImpl permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
-    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );    	
+    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( Collections.singletonList( permissions ), permissionDetails );
     	List<String> roleIds = getRolesForPermissionsFromCache( applicablePermissions );
     	if ( roleIds == null ) {
     		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
@@ -352,9 +348,9 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 
     protected List<String> getRoleIdsForPermissionTemplate( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails ) {
     	// get all the permission objects whose name match that requested
-    	List<KimPermissionImpl> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
+    	KimPermissionImpl permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
-    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
+    	List<KimPermissionInfo> applicablePermissions = getMatchingPermissions( Collections.singletonList(permissions), permissionDetails );
     	List<String> roleIds = getRolesForPermissionsFromCache( applicablePermissions );
     	if ( roleIds == null ) {
     		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
@@ -390,25 +386,17 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     /**
      * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByTemplateName(String, String)
      */
-    public List<KimPermissionInfo> getPermissionsByTemplateName(String namespaceCode, String permissionTemplateName) {
-    	List<KimPermissionImpl> impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
-    	List<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>( impls.size() );
-    	for ( KimPermissionImpl impl : impls ) {
-    		results.add( impl.toSimpleInfo() );
-    	}
-    	return results;
+    public KimPermissionInfo getPermissionsByTemplateName(String namespaceCode, String permissionTemplateName) {
+    	KimPermissionImpl impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
+    	return impls.toSimpleInfo();
     }
 
 	/**
      * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByName(String, String)
      */
-    public List<KimPermissionInfo> getPermissionsByName(String namespaceCode, String permissionName) {
-    	List<KimPermissionImpl> impls = getPermissionImplsByName( namespaceCode, permissionName );
-    	List<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>( impls.size() );
-    	for ( KimPermissionImpl impl : impls ) {
-    		results.add( impl.toSimpleInfo() );
-    	}
-    	return results;
+    public KimPermissionInfo getPermissionsByName(String namespaceCode, String permissionName) {
+    	KimPermissionImpl impls = getPermissionImplsByName( namespaceCode, permissionName );
+    	return impls.toSimpleInfo();
     }
     
     @SuppressWarnings("unchecked")
@@ -428,30 +416,30 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     }
     
     @SuppressWarnings("unchecked")
-	protected List<KimPermissionImpl> getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ) {
+	protected KimPermissionImpl getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ) {
     	String cacheKey = getPermissionImplByTemplateNameCacheKey(namespaceCode, permissionTemplateName);
-    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
+    	KimPermissionImpl permissions = (KimPermissionImpl)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
     	if ( permissions == null ) {    	
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( "template.namespaceCode", namespaceCode );
 	    	pk.put( "template.name", permissionTemplateName );
 			pk.put( KRADPropertyConstants.ACTIVE, "Y" );
-	    	permissions = (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
+	    	permissions = ((List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk )).get(0);
 	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
     	}
     	return permissions;
     }
 
     @SuppressWarnings("unchecked")
-	protected List<KimPermissionImpl> getPermissionImplsByName( String namespaceCode, String permissionName ) {
+	protected KimPermissionImpl getPermissionImplsByName( String namespaceCode, String permissionName ) {
     	String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName);
-    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
+    	KimPermissionImpl permissions = (KimPermissionImpl)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
     	if ( permissions == null ) {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
 	    	pk.put( KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName );
 			pk.put( KRADPropertyConstants.ACTIVE, "Y" );
-	    	permissions = (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
+	    	permissions = ((List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk )).get(0);
 	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
     	}
     	return permissions;

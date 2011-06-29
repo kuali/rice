@@ -97,10 +97,10 @@ public interface ResponsibilityService {
     @WebResult(name = "responsibility")
     Responsibility getResponsibility(@WebParam(name = "id") String id);
 
-    @WebMethod(operationName = "findRespsByNamespaceCodeAndName")
-    @WebResult(name = "responsibilities")
-    List<Responsibility> findRespsByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
-                                                         @WebParam(name = "name") String name);
+    @WebMethod(operationName = "findRespByNamespaceCodeAndName")
+    @WebResult(name = "responsibility")
+    Responsibility findRespByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
+                                                  @WebParam(name = "name") String name);
     /**
      * Gets a {@link Template} from an id.
      *
@@ -116,10 +116,10 @@ public interface ResponsibilityService {
     @WebResult(name = "template")
     Template getResponsibilityTemplate(@WebParam(name = "id") String id);
 
-    @WebMethod(operationName = "findRespTemplatesByNamespaceCodeAndName")
-    @WebResult(name = "templates")
-    List<Template> findRespTemplatesByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
-                                                           @WebParam(name = "name") String name);
+    @WebMethod(operationName = "findRespTemplateByNamespaceCodeAndName")
+    @WebResult(name = "template")
+    Template findRespTemplateByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
+                                                    @WebParam(name = "name") String name);
 
     @WebMethod(operationName = "hasResponsibility")
     @WebResult(name = "result")

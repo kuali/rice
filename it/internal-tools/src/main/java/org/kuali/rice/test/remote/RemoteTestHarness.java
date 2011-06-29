@@ -66,12 +66,12 @@ public class RemoteTestHarness {
     }
 
     private static void waitAndCheck(Endpoint ep, boolean published) {
-        try {
-            Thread.sleep(3000 * 60);
+        /*try {
+            Thread.sleep(3 * 60);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
+        */
         if (ep.isPublished() == published) {
             LOG.warn("endpoint: " + ep + " published: " + published);
         }

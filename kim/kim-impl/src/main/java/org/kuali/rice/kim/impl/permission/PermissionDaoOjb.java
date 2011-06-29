@@ -23,9 +23,8 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
-import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
-import org.kuali.rice.kim.dao.KimPermissionDao;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -33,19 +32,19 @@ import org.kuali.rice.kim.dao.KimPermissionDao;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PermissionDaoOjb extends PlatformAwareDaoBaseOjb implements KimPermissionDao {
+public class PermissionDaoOjb extends PlatformAwareDaoBaseOjb implements PermissionDao {
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimPermissionDao#getRoleIdsForPermissions(java.util.Collection)
+	 * @see org.kuali.rice.kim.impl.permission.PermissionDao#getRoleIdsForPermissions(java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getRoleIdsForPermissions(Collection<? extends KimPermission> permissions) {
+	public List<String> getRoleIdsForPermissions(Collection<? extends Permission> permissions) {
 		if ( permissions.isEmpty() ) {
 			return new ArrayList<String>(0);
 		}
 		List<String> permissionIds = new ArrayList<String>( permissions.size() );
-		for ( KimPermission kp : permissions ) {
-			permissionIds.add( kp.getPermissionId() );
+		for ( Permission kp : permissions ) {
+			permissionIds.add( kp.getId() );
 		}
 		Criteria c = new Criteria();
 		c.addIn( "permissionId", permissionIds );
@@ -59,5 +58,4 @@ public class PermissionDaoOjb extends PlatformAwareDaoBaseOjb implements KimPerm
 		}
 		return roleIds;
 	}
-
 }

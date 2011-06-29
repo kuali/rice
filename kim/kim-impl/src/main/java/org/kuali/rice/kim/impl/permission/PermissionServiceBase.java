@@ -20,15 +20,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.api.permission.PermissionTypeService;
 import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
-import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
 /**
@@ -45,43 +44,37 @@ public class PermissionServiceBase {
 
 	protected static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
 	
-	private BusinessObjectService businessObjectService;
-	private SequenceAccessorService sequenceAccessorService;
-	private RiceCacheAdministrator cacheAdministrator;
+	protected BusinessObjectService businessObjectService;
+	protected CriteriaLookupService criteriaLookupService;
+	protected SequenceAccessorService sequenceAccessorService;
+	protected RiceCacheAdministrator cacheAdministrator;
 	
-	private Map<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>> permissionToRoleCache = Collections.synchronizedMap( new HashMap<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>>() );
+	private Map<List<Permission>,MaxAgeSoftReference<List<String>>> permissionToRoleCache = Collections.synchronizedMap( new HashMap<List<Permission>,MaxAgeSoftReference<List<String>>>() );
 
     // Not ThreadLocal or time limited- should not change during the life of the system
-	private Map<String,KimPermissionTypeService> permissionTypeServiceByNameCache = Collections.synchronizedMap( new HashMap<String, KimPermissionTypeService>() );
+	private Map<String,PermissionTypeService> permissionTypeServiceByNameCache = Collections.synchronizedMap( new HashMap<String, PermissionTypeService>() );
 	
 
 	private static final long CACHE_MAX_AGE_SECONDS = 60L;
-	
-	protected BusinessObjectService getBusinessObjectService() {
-		if ( businessObjectService == null ) {
-			businessObjectService = KRADServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
-	}
    
 	public void flushPermissionImplCache() {
-    	getCacheAdministrator().flushGroup(PERMISSION_IMPL_CACHE_GROUP);
+    	cacheAdministrator.flushGroup(PERMISSION_IMPL_CACHE_GROUP);
     }
 	
 	/**
 	 * @return the permissionTypeServiceByNameCache
 	 */
-	protected Map<String, KimPermissionTypeService> getPermissionTypeServiceByNameCache() {
+	protected Map<String, PermissionTypeService> getPermissionTypeServiceByNameCache() {
 		return this.permissionTypeServiceByNameCache;
 	}
 	
-	protected void addRolesForPermissionsToCache( List<KimPermissionInfo> key, List<String> roleIds ) {
-    	permissionToRoleCache.put( key, new MaxAgeSoftReference<List<String>>( CACHE_MAX_AGE_SECONDS, roleIds ) );
+	protected void addRolesForPermissionsToCache( List<Permission> applicablePermissions, List<String> roleIds ) {
+    	permissionToRoleCache.put( applicablePermissions, new MaxAgeSoftReference<List<String>>( CACHE_MAX_AGE_SECONDS, roleIds ) );
     }
 	
-	protected List<String> getRolesForPermissionsFromCache( List<KimPermissionInfo> key ) {
+	protected List<String> getRolesForPermissionsFromCache( List<Permission> applicablePermissions ) {
     	List<String> roleIds = null; 
-    	MaxAgeSoftReference<List<String>> cacheRef = permissionToRoleCache.get( key );
+    	MaxAgeSoftReference<List<String>> cacheRef = permissionToRoleCache.get( applicablePermissions );
     	if ( cacheRef != null ) {
     		roleIds = cacheRef.get();
     	}
@@ -98,25 +91,47 @@ public class PermissionServiceBase {
     	return PERMISSION_IMPL_ID_CACHE_PREFIX + permissionId;
     }
     
-	protected String getNewAttributeDataId(){
-		SequenceAccessorService sas = getSequenceAccessorService();		
-		Long nextSeq = sas.getNextAvailableSequenceNumber(
+	protected String getNewAttributeDataId(){	
+		Long nextSeq = sequenceAccessorService.getNextAvailableSequenceNumber(
 				KimConstants.SequenceNames.KRIM_ATTR_DATA_ID_S, 
 				RoleMemberAttributeDataBo.class );
 		return nextSeq.toString();
     }
 	
-	protected SequenceAccessorService getSequenceAccessorService() {
-		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
-		}
-		return sequenceAccessorService;
-	}
+    /**
+     * Sets the sequenceAccessorService attribute value.
+     *
+     * @param sequenceAccessorService The sequenceAccessorService to set.
+     */
+    public void setSequenceAccessorService(final SequenceAccessorService sequenceAccessorService) {
+        this.sequenceAccessorService = sequenceAccessorService;
+    }
+    
+    /**
+     * Sets the businessObjectService attribute value.
+     *
+     * @param businessObjectService The businessObjectService to set.
+     */
+    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
+    }
+
+    /**
+     * Sets the criteriaLookupService attribute value.
+     *
+     * @param criteriaLookupService The criteriaLookupService to set.
+     */
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
+    }
 	
-	protected RiceCacheAdministrator getCacheAdministrator() {
-		if ( cacheAdministrator == null ) {
-			cacheAdministrator = KsbApiServiceLocator.getCacheAdministrator();
-		}
-		return cacheAdministrator;
+
+    /**
+     * Sets the cacheAdministrator attribute value.
+     *
+     * @param cacheAdministrator The cacheAdministrator to set.
+     */
+    protected void setCacheAdministrator(RiceCacheAdministrator cacheAdministrator) {
+		this.cacheAdministrator = cacheAdministrator;
 	}
 }

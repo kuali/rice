@@ -24,9 +24,8 @@ import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
-import org.kuali.rice.kim.dao.KimPermissionDao;
 ;
 
 /**
@@ -35,22 +34,19 @@ import org.kuali.rice.kim.dao.KimPermissionDao;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PermissionDaoJpa implements KimPermissionDao {
+public class PermissionDaoJpa implements PermissionDao {
 
-    @PersistenceContext(unitName="kim-unit")
-    private EntityManager entityManager;
-    
 	/**
-	 * @see org.kuali.rice.kim.dao.KimPermissionDao#getRoleIdsForPermissions(java.util.Collection)
+	 * @see org.kuali.rice.kim.impl.permission.PermissionDao#getRoleIdsForPermissions(java.util.List)
 	 */
-	@SuppressWarnings("unchecked")
-	public List<String> getRoleIdsForPermissions(Collection<? extends KimPermission> permissions) {
+	@Override
+	public List<String> getRoleIdsForPermissions(Collection<? extends Permission> permissions) {
 		if ( permissions.isEmpty() ) {
 			return new ArrayList<String>(0);
 		}
 		List<String> permissionIds = new ArrayList<String>( permissions.size() );
-		for ( KimPermission kp : permissions ) {
-			permissionIds.add( kp.getPermissionId() );
+		for ( Permission kp : permissions ) {
+			permissionIds.add( kp.getId() );
 		}
 		Criteria c = new Criteria(RolePermissionImpl.class.getName());
 		c.in( "permissionId", permissionIds );
@@ -63,7 +59,10 @@ public class PermissionDaoJpa implements KimPermissionDao {
 		}
 		return roleIds;
 	}
-
+	
+    @PersistenceContext(unitName="kim-unit")
+    private EntityManager entityManager;
+    
 	public EntityManager getEntityManager() {
         return this.entityManager;
     }
@@ -71,4 +70,6 @@ public class PermissionDaoJpa implements KimPermissionDao {
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
+
 }

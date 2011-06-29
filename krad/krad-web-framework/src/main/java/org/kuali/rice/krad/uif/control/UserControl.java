@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
+import org.kuali.rice.krad.uif.widget.QuickFinder;
 
 /**
  * Represents a user control, which is a special control to handle
@@ -81,6 +82,27 @@ public class UserControl extends TextControl {
             }
 
             field.setFieldAttributeQuery(attributeQuery);
+
+            QuickFinder quickFinder = field.getFieldLookup();
+
+            if (quickFinder.isRender()) {
+                if (StringUtils.isBlank(quickFinder.getDataObjectClassName())) {
+                    quickFinder.setDataObjectClassName("org.kuali.rice.kim.bo.Person");
+                }
+
+                if (quickFinder.getFieldConversions().isEmpty()) {
+                    quickFinder.getFieldConversions().put("principalId", principalIdPropertyName);
+
+                    if (StringUtils.isNotBlank(personNamePropertyName)) {
+                        quickFinder.getFieldConversions().put("name", personNamePropertyName);
+                    }
+                    else {
+                        quickFinder.getFieldConversions().put("name", personObjectPropertyName + ".name");
+                    }
+
+                    quickFinder.getFieldConversions().put("principalName", field.getPropertyName());
+                }
+            }
         }
     }
 

@@ -523,7 +523,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         }
 
         // invoke component to perform its conditional logic
-        component.performApplyModel(view, model, component);
+        Component parent = (Component) component.getContext().get(UifConstants.ContextVariableNames.PARENT);
+        component.performApplyModel(view, model, parent);
 
         // invoke service override hook
         performCustomApplyModel(view, component, model);

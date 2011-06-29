@@ -51,14 +51,17 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
     @Override
     public String getName() {
         if ( person == null || person.getPrincipalName() == null || !person.getPrincipalName().equalsIgnoreCase( getId() ) ) {
-            person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName( getId() );
+            if (getId() != null) {
+                person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName( getId() );
+            }
+            else {
+                return "";
+            }
         }
         if ( person == null ) {
             return "";
         }
         return person.getName();
     }
-    
-    
 }
 

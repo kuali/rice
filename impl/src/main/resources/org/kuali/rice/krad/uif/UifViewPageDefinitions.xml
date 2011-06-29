@@ -135,11 +135,15 @@
 		<property name="resultsGroup">
 			<bean parent="CollectionGroupTableLayout"
 				p:layoutManager.suppressLineWrapping="true">
+				<property name="showInactive" value="true" />
 				<property name="propertyName" value="searchResults" />
 				<property name="layoutManager.renderSequenceField" value="false" />
 				<property name="renderAddLine" value="false" />
 				<property name="conditionalReadOnly" value="true" />
 				<property name="accordion.render" value="false" />
+				<property name="header.group">
+         			<bean parent="GroupBodyOnly"/>
+     		 	</property>
 			</bean>
 		</property>
 	</bean>

@@ -148,7 +148,8 @@
   </bean>
   
   <bean id="treeExpandCollapse" parent="FieldGroup" p:label="Field Group 4" 
-    p:conditionalRender="document.newMaintainableObject.dataObject.agenda != null" p:style="font-size: smaller;">
+    p:conditionalRender="document.newMaintainableObject.dataObject.agenda != null and document.newMaintainableObject.dataObject.agenda.name != null and !document.newMaintainableObject.dataObject.agenda.name.isEmpty()"
+    p:style="font-size: smaller;">
     <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
     <property name="items">
       <list>                            

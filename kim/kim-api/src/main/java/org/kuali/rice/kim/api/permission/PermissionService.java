@@ -397,5 +397,5 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getPermissionsByNameIncludingInactive")
     @WebResult(name = "permissionsIncludingInactive")
-    List<Permission> getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
+    Permission getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
 }

@@ -303,5 +303,5 @@ public interface PermissionService {
      * Return the permission object for the given unique combination of namespace, component and permission name. Inactive
      * permissions are also returned
      */
-    List<KimPermissionInfo> getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
+    KimPermissionInfo getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
 }

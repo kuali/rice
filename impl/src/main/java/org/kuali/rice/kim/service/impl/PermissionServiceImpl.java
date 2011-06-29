@@ -597,24 +597,20 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         return roleIds;
     }
 
-    public List<KimPermissionInfo> getPermissionsByNameIncludingInactive(String namespaceCode, String permissionName) {
-        List<KimPermissionImpl> impls = getPermissionImplsByNameIncludingInactive(namespaceCode, permissionName);
-        List<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>(impls.size());
-        for (KimPermissionImpl impl : impls) {
-            results.add(impl.toSimpleInfo());
-        }
-        return results;
+    public KimPermissionInfo getPermissionsByNameIncludingInactive(String namespaceCode, String permissionName) {
+        KimPermissionImpl impls = getPermissionImplsByNameIncludingInactive(namespaceCode, permissionName);
+        return impls.toSimpleInfo();
     }
 	
     @SuppressWarnings("unchecked")
-    protected List<KimPermissionImpl> getPermissionImplsByNameIncludingInactive(String namespaceCode, String permissionName) {
+    protected KimPermissionImpl getPermissionImplsByNameIncludingInactive(String namespaceCode, String permissionName) {
         String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName + "inactive");
-        List<KimPermissionImpl> permissions = (List<KimPermissionImpl>) getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
+        KimPermissionImpl permissions = (KimPermissionImpl) getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
         if (permissions == null) {
             HashMap<String, Object> pk = new HashMap<String, Object>(2);
             pk.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
             pk.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName);
-            permissions = (List<KimPermissionImpl>) getBusinessObjectService().findMatching(KimPermissionImpl.class, pk);
+            permissions = ((List<KimPermissionImpl>) getBusinessObjectService().findMatching(KimPermissionImpl.class, pk)).get(0);
             getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
         }
         return permissions;

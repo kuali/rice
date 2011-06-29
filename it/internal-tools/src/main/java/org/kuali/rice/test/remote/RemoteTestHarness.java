@@ -23,6 +23,7 @@ public class RemoteTestHarness {
     private static final Log LOG = LogFactory.getLog(RemoteTestHarness.class);
 
     private Endpoint endpoint;
+    private static final int MAX_WAIT_ITR = 500;
 
     @SuppressWarnings("unchecked")
     /**
@@ -66,10 +67,14 @@ public class RemoteTestHarness {
     }
 
     private static void waitAndCheck(Endpoint ep, boolean published) {
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+
+        if (ep.isPublished() == published) {
+            for (int i = 0; i < MAX_WAIT_ITR; i++) {
+                if (ep.isPublished() != published) {
+                    LOG.info("took " + i + " iterations to change published state of endpoint: " + ep);
+                    break;
+                }
+            }
         }
 
         if (ep.isPublished() == published) {

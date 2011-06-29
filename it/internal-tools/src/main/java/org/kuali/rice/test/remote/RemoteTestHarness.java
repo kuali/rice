@@ -23,7 +23,7 @@ public class RemoteTestHarness {
     private static final Log LOG = LogFactory.getLog(RemoteTestHarness.class);
 
     private Endpoint endpoint;
-    private static final int MAX_WAIT_ITR = 500;
+    private static final int MAX_WAIT_ITR = 1000;
 
     @SuppressWarnings("unchecked")
     /**
@@ -67,7 +67,7 @@ public class RemoteTestHarness {
     }
 
     private static void waitAndCheck(Endpoint ep, boolean published) {
-
+        //Thread.sleep() seems to be causing deadlock...using another mechanism for wait
         if (ep.isPublished() == published) {
             for (int i = 0; i < MAX_WAIT_ITR; i++) {
                 if (ep.isPublished() != published) {

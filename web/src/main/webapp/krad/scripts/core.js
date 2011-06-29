@@ -775,6 +775,7 @@ function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetri
 						retrieveComponent(disclosureId);
 					}
 					else{
+						columnShownCheck(refreshDisclosure, true);
 						refreshDisclosure.fadeIn("slow");
 						//re-enable validation on now shown inputs
 						hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
@@ -783,6 +784,7 @@ function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetri
 				}
 				else{
 					refreshDisclosure.hide();
+					columnShownCheck(refreshDisclosure, false);
 					//ignore validation on hidden inputs
 					hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
 					jq(".displayWith-" + actualId).hide();
@@ -791,6 +793,74 @@ function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetri
 		});
 	}
 
+}
+
+function columnShownCheck(refreshDisclosure, beingShown){
+	var table = refreshDisclosure.closest('table.datatable');
+	var td = refreshDisclosure.closest('td');
+
+	if(table.length){
+		if(beingShown){
+			if(td.not(":visible")){
+				var classes = td.attr("class").split(" ");
+				var columnCss = "";
+				for(var i =0; i < classes.length; i++){
+					if(classes[i].indexOf("col") === 0){
+						columnCss = classes[i];
+						break;
+					}
+				}
+				
+				if(columnCss){
+					var dataTablesWrap = td.closest(".dataTables_wrapper");
+					var column;
+					if(dataTablesWrap.length){
+						column = dataTablesWrap.find("." + columnCss);
+					}
+					else{
+						column = td.closest("table").find("." + columnCss);
+					}
+					column.show();
+				}
+			}
+		}
+		else{
+			if(td.is(":visible")){
+				var classes = td.attr("class").split(" ");
+				var columnCss = "";
+				for(var i =0; i < classes.length; i++){
+					if(classes[i].indexOf("col") === 0){
+						columnCss = classes[i];
+						break;
+					}
+				}
+				
+				if(columnCss){
+					var tds = table.find("td." + columnCss);
+					
+					var hide = true;
+					tds.each(function(index){
+						if(jq(this).children().find(":visible").length > 0){
+							 hide = false;
+							 return false;
+						}
+					});
+					
+					if(hide){
+						var dataTablesWrap = td.closest(".dataTables_wrapper");
+						var column;
+						if(dataTablesWrap.length){
+							column = dataTablesWrap.find("." + columnCss);
+						}
+						else{
+							column = td.closest("table").find("." + columnCss);
+						}
+						column.hide();
+					}
+				}
+			}
+		}
+	}	
 }
 
 /**
@@ -1115,25 +1185,37 @@ function dependsOnCheck(element){
  */
 function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction){
 	if(jq("[name='"+ controlName + "']").length){
+		
+		var id = jq("[name='"+ requiredName + "']").attr("id");
+		var indicator;
+		if(id){
+			var label = jq("#" + id + "_label_span");
+			if(label.length){
+				indicator = label.find(".required");
+			}
+		}
+		
+		//check right now if it satisfies the condition, only if an indicator is not shown
+		//(indicators that are shown stay shown for this check, as the server or another check must have shown them)
+		if(indicator != null && indicator.length && indicator.is(':hidden')){
+			checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
+		}
+		
+		//also check condition when corresponding control is changed
 		jq("[name='"+ controlName + "']").change(function(){
-			var id = jq("[name='"+ requiredName + "']").attr("id");
-			var indicator;
-			if(id){
-				var label = jq("#" + id + "_label_span");
-				if(label.length){
-					indicator = label.find(".required");
-				}
-			}
-			
-			if(indicator != null && indicator.length){
-				if(booleanFunction()){
-					indicator.show();
-				}
-				else{
-					indicator.hide();
-				}
-			}
+			checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
 		});
+	}
+}
+
+function checkForRequiredness(controlName, requiredName, booleanFunction, indicator){
+	if(indicator != null && indicator.length){
+		if(booleanFunction()){
+			indicator.show();
+		}
+		else{
+			indicator.hide();
+		}
 	}
 }
 

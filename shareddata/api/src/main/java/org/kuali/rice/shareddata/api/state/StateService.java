@@ -24,6 +24,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 /**
@@ -71,6 +73,8 @@ public interface StateService {
      * @throws IllegalArgumentException country code is blank
      */
     @WebMethod(operationName = "findAllStatesInCountry")
+    @XmlElementWrapper(name = "states", required = true)
+    @XmlElement(name = "state", required = false)
     @WebResult(name = "states")
     List<State> findAllStatesInCountry(@WebParam(name = "countryCode") String countryCode)
             throws RiceIllegalArgumentException;

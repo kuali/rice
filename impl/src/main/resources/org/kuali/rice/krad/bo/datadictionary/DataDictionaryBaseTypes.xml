@@ -351,45 +351,55 @@
     <!-- End Character Level Constraints -->
     <!-- Begin Field Level Constraints -->
 
+    <bean id="FixedPointPatternConstraint" 
+        abstract="true" 
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint"
+        p:patternTypeKey="validationPatternRegex.fixedPoint" />
+
+    <bean id="FloatingPointPatternConstraint" 
+        abstract="true" 
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.FloatingPointPatternConstraint"
+        p:patternTypeKey="validationPatternRegex.floatingPoint" />
+
     <bean id="PhoneNumberPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypePropertyString="validationPatternRegex.phoneNumber" />
+        p:patternTypeKey="validationPatternRegex.phoneNumber" />
 
     <bean id="JavaClassPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypePropertyString="validationPatternRegex.javaClass" />
+        p:patternTypeKey="validationPatternRegex.javaClass" />
 
     <bean id="EmailAddressPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypePropertyString="validationPatternRegex.emailAddress" />
+        p:patternTypeKey="validationPatternRegex.emailAddress" />
 
     <bean id="DateConfigPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypePropertyString="validationPatternRegex.date" />
+        p:patternTypeKey="validationPatternRegex.date" />
 
     <bean id="TimestampPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypePropertyString="validationPatternRegex.timestamp" />
+        p:patternTypeKey="validationPatternRegex.timestamp" />
 
     <bean id="YearPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypePropertyString="validationPatternRegex.year" />
+        p:patternTypeKey="validationPatternRegex.year" />
 
     <bean id="MonthPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypePropertyString="validationPatternRegex.month" />
+        p:patternTypeKey="validationPatternRegex.month" />
 
     <bean id="ZipcodePatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypePropertyString="validationPatternRegex.zipcode" />
+        p:patternTypeKey="validationPatternRegex.zipcode" />
 
     <!-- End Field Level Constraints -->
 

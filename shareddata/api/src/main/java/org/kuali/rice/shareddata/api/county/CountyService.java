@@ -24,6 +24,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 @WebService(name = "CountyService", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE)
@@ -70,6 +72,8 @@ public interface CountyService {
      * @throws IllegalArgumentException country code, postal state code is blank
      */
     @WebMethod(operationName = "findAllCountiesInCountryAndState")
+    @XmlElementWrapper(name = "counties", required = true)
+    @XmlElement(name = "county", required = false)
     @WebResult(name = "counties")
     List<County> findAllCountiesInCountryAndState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode)
             throws RiceIllegalArgumentException;

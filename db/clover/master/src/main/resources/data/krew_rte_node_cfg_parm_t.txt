@@ -1,0 +1,127 @@
+rte_node_cfg_parm_id|rte_node_id|key_cd|val|
+2012.0|2004.0|contentFragment|<start name="placeholder"><activationType>S</activationType></start>|
+2013.0|2004.0|activationType|S|
+2014.0|2004.0|ruleSelector|Template|
+2015.0|2006.0|contentFragment|<start name="placeholder"><activationType>S</activationType></start>|
+2016.0|2006.0|activationType|S|
+2017.0|2006.0|ruleSelector|Template|
+2118.0|2039.0|contentFragment|<start name="Adhoc Routing"><activationType>S</activationType><mandatoryRoute>false</mandatoryRoute><finalApproval>true</finalApproval></start>|
+2119.0|2039.0|activationType|S|
+2120.0|2039.0|mandatoryRoute|false|
+2121.0|2039.0|finalApproval|true|
+2122.0|2039.0|ruleSelector|Template|
+2123.0|2041.0|contentFragment|<start name="Initiated"><activationType>S</activationType></start>|
+2124.0|2041.0|activationType|S|
+2125.0|2041.0|ruleSelector|Template|
+2126.0|2042.0|contentFragment|<requests name="ReviewersNode"><ruleTemplate>ReviewersRouting</ruleTemplate></requests>|
+2127.0|2042.0|ruleTemplate|ReviewersRouting|
+2128.0|2042.0|ruleSelector|Template|
+2129.0|2043.0|contentFragment|<requests name="RequestsNode"><ruleTemplate>NotificationRouting</ruleTemplate></requests>|
+2130.0|2043.0|ruleTemplate|NotificationRouting|
+2131.0|2043.0|ruleSelector|Template|
+2162.0|2057.0|contentFragment|<start name="Initiated"><activationType>P</activationType><mandatoryRoute>false</mandatoryRoute><finalApproval>false</finalApproval></start>|
+2163.0|2057.0|activationType|P|
+2164.0|2057.0|mandatoryRoute|false|
+2165.0|2057.0|finalApproval|false|
+2166.0|2057.0|ruleSelector|Template|
+2167.0|2059.0|contentFragment|<start name="Initiated"><activationType>P</activationType></start>|
+2168.0|2059.0|activationType|P|
+2169.0|2059.0|ruleSelector|Template|
+2170.0|2061.0|contentFragment|<start name="Initiated"><activationType>P</activationType><mandatoryRoute>false</mandatoryRoute><finalApproval>false</finalApproval></start>|
+2171.0|2061.0|activationType|P|
+2172.0|2061.0|mandatoryRoute|false|
+2173.0|2061.0|finalApproval|false|
+2174.0|2061.0|ruleSelector|Template|
+2175.0|2063.0|contentFragment|<start name="Initiated"><activationType>P</activationType><mandatoryRoute>false</mandatoryRoute><finalApproval>false</finalApproval></start>|
+2176.0|2063.0|activationType|P|
+2177.0|2063.0|mandatoryRoute|false|
+2178.0|2063.0|finalApproval|false|
+2179.0|2063.0|ruleSelector|Template|
+2180.0|2065.0|contentFragment|<start name="Initiated"><activationType>P</activationType><mandatoryRoute>false</mandatoryRoute><finalApproval>false</finalApproval></start>|
+2181.0|2065.0|activationType|P|
+2182.0|2065.0|mandatoryRoute|false|
+2183.0|2065.0|finalApproval|false|
+2184.0|2065.0|ruleSelector|Template|
+2185.0|2067.0|contentFragment|<start name="Initiated"><activationType>P</activationType><mandatoryRoute>false</mandatoryRoute><finalApproval>false</finalApproval></start>|
+2186.0|2067.0|activationType|P|
+2187.0|2067.0|mandatoryRoute|false|
+2188.0|2067.0|finalApproval|false|
+2189.0|2067.0|ruleSelector|Template|
+2243.0|2344.0|contentFragment|<start name="AdHoc"><activationType>P</activationType></start>|
+2244.0|2344.0|activationType|P|
+2245.0|2344.0|ruleSelector|Template|
+2360.0|2580.0|contentFragment|<start name="Initiated"><activationType>P</activationType><mandatoryRoute>false</mandatoryRoute><finalApproval>false</finalApproval></start>|
+2361.0|2580.0|activationType|P|
+2362.0|2580.0|mandatoryRoute|false|
+2363.0|2580.0|finalApproval|false|
+2364.0|2580.0|ruleSelector|Template|
+2365.0|2581.0|contentFragment|<requests name="eDoc.Example1.Node1"><activationType>P</activationType><ruleTemplate>eDoc.Example1.Node1</ruleTemplate><mandatoryRoute>false</mandatoryRoute><finalApproval>false</finalApproval></requests>|
+2366.0|2581.0|activationType|P|
+2367.0|2581.0|ruleTemplate|eDoc.Example1.Node1|
+2368.0|2581.0|mandatoryRoute|false|
+2369.0|2581.0|finalApproval|false|
+2370.0|2581.0|ruleSelector|Template|
+2380.0|2840.0|contentFragment|<start name="PreRoute"><activationType>S</activationType><mandatoryRoute>false</mandatoryRoute><finalApproval>false</finalApproval></start>|
+2381.0|2840.0|activationType|S|
+2382.0|2840.0|mandatoryRoute|false|
+2383.0|2840.0|finalApproval|false|
+2384.0|2840.0|ruleSelector|Template|
+2397.0|2846.0|contentFragment|<start name="PreRoute"><activationType>P</activationType></start>|
+2398.0|2846.0|activationType|P|
+2399.0|2846.0|ruleSelector|Template|
+2400.0|2847.0|contentFragment|<requests name="DestinationApproval"><ruleTemplate>TravelRequest-DestinationRouting</ruleTemplate></requests>|
+2401.0|2847.0|ruleTemplate|TravelRequest-DestinationRouting|
+2402.0|2847.0|ruleSelector|Template|
+2403.0|2848.0|contentFragment|<requests name="TravelerApproval"><ruleTemplate>TravelRequest-TravelerRouting</ruleTemplate></requests>|
+2404.0|2848.0|ruleTemplate|TravelRequest-TravelerRouting|
+2405.0|2848.0|ruleSelector|Template|
+2406.0|2849.0|contentFragment|<requests name="SupervisorApproval"><ruleTemplate>TravelRequest-SupervisorRouting</ruleTemplate></requests>|
+2407.0|2849.0|ruleTemplate|TravelRequest-SupervisorRouting|
+2408.0|2849.0|ruleSelector|Template|
+2409.0|2850.0|contentFragment|<requests name="AccountApproval"><ruleTemplate>TravelRequest-AccountRouting</ruleTemplate></requests>|
+2410.0|2850.0|ruleTemplate|TravelRequest-AccountRouting|
+2411.0|2850.0|ruleSelector|Template|
+2412.0|2892.0|contentFragment|<start name="Adhoc Routing"><activationType>P</activationType><mandatoryRoute>false</mandatoryRoute><finalApproval>false</finalApproval></start>|
+2413.0|2892.0|activationType|P|
+2414.0|2892.0|mandatoryRoute|false|
+2415.0|2892.0|finalApproval|false|
+2416.0|2892.0|ruleSelector|Template|
+2417.0|2893.0|contentFragment|<requests name="Recipe Masters Group Approval"><activationType>S</activationType><ruleSelector>Named</ruleSelector><ruleName>RecipeMastersGroupApproval</ruleName></requests>|
+2418.0|2893.0|activationType|S|
+2419.0|2893.0|ruleSelector|Named|
+2420.0|2893.0|ruleName|RecipeMastersGroupApproval|
+2421.0|2895.0|contentFragment|<start name="Adhoc Routing"><activationType>P</activationType><mandatoryRoute>false</mandatoryRoute><finalApproval>false</finalApproval></start>|
+2422.0|2895.0|activationType|P|
+2423.0|2895.0|mandatoryRoute|false|
+2424.0|2895.0|finalApproval|false|
+2425.0|2895.0|ruleSelector|Template|
+2426.0|2896.0|contentFragment|<requests name="Chicken Recipe Masters Group Approval"><activationType>S</activationType><ruleSelector>Named</ruleSelector><ruleName>ChickenRecipeMastersGroupApproval</ruleName></requests>|
+2427.0|2896.0|activationType|S|
+2428.0|2896.0|ruleSelector|Named|
+2429.0|2896.0|ruleName|ChickenRecipeMastersGroupApproval|
+2430.0|2898.0|contentFragment|<start name="AdHoc"/>|
+2431.0|2898.0|ruleSelector|Template|
+2432.0|2899.0|contentFragment|<role name="RoleType"><qualifierResolverClass>org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver</qualifierResolverClass><activationType>P</activationType></role>|
+2433.0|2899.0|qualifierResolverClass|org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver|
+2434.0|2899.0|activationType|P|
+2435.0|2899.0|ruleSelector|Template|
+2436.0|2901.0|contentFragment|<start name="AdHoc"/>|
+2437.0|2901.0|ruleSelector|Template|
+2438.0|2902.0|contentFragment|<role name="GroupType"><qualifierResolverClass>org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver</qualifierResolverClass><activationType>P</activationType></role>|
+2439.0|2902.0|qualifierResolverClass|org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver|
+2440.0|2902.0|activationType|P|
+2441.0|2902.0|ruleSelector|Template|
+2442.0|2904.0|contentFragment|<start name="AdHoc"/>|
+2443.0|2904.0|ruleSelector|Template|
+2444.0|2905.0|contentFragment|<role name="GroupType"><qualifierResolverClass>org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver</qualifierResolverClass><activationType>P</activationType></role>|
+2445.0|2905.0|qualifierResolverClass|org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver|
+2446.0|2905.0|activationType|P|
+2447.0|2905.0|ruleSelector|Template|
+2448.0|2906.0|contentFragment|<role name="RoleType"><qualifierResolverClass>org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver</qualifierResolverClass><activationType>P</activationType></role>|
+2449.0|2906.0|qualifierResolverClass|org.kuali.rice.kim.workflow.attribute.KimTypeQualifierResolver|
+2450.0|2906.0|activationType|P|
+2451.0|2906.0|ruleSelector|Template|
+2452.0|2908.0|contentFragment|<start name="AdHoc"/>|
+2453.0|2908.0|ruleSelector|Template|
+2454.0|2910.0|contentFragment|<start name="AdHoc"/>|
+2455.0|2910.0|ruleSelector|Template|

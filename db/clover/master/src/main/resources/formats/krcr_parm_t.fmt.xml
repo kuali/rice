@@ -1,0 +1,12 @@
+<Record name="krcr_parm_t" type="delimited">
+  <Field name="nmspc_cd"                        type="string"     nullable="true"  trim="false" delimiter="|"  />
+  <Field name="parm_dtl_typ_cd"                 type="string"     nullable="true"  trim="false" delimiter="|"  />
+  <Field name="parm_nm"                         type="string"     nullable="true"  trim="false" delimiter="|"  />
+  <Field name="obj_id"                          type="string"     nullable="true"  trim="false" delimiter="|"  />
+  <Field name="ver_nbr"                         type="numeric"    nullable="true"  trim="false" delimiter="|"  />
+  <Field name="parm_typ_cd"                     type="string"     nullable="true"  trim="false" delimiter="|"  />
+  <Field name="txt"                             type="string"     nullable="true"  trim="false" delimiter="|"  />
+  <Field name="parm_desc_txt"                   type="string"     nullable="true"  trim="false" delimiter="|"  />
+  <Field name="cons_cd"                         type="string"     nullable="true"  trim="false" delimiter="|"  />
+  <Field name="appl_id"                         type="string"     nullable="true"  trim="false" delimiter="|\r\n" />
+</Record>

@@ -26,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.MockAddress;
+import org.kuali.rice.krad.datadictionary.validation.Address;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
@@ -53,8 +53,8 @@ public class ValidCharactersConstraintProcessorTest {
 	
 	private ValidCharactersConstraintProcessor processor;
 	
-	private MockAddress washingtonDCAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
-	private MockAddress newYorkNYAddress = new MockAddress("5 Presidential Street", "Suite 800", "New York", "NY", "", "USA", null);
+	private Address washingtonDCAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
+	private Address newYorkNYAddress = new Address("5 Presidential Street", "Suite 800", "New York", "NY", "", "USA", null);
 	
 	private ValidCharactersConstraint street1ValidCharactersConstraint;
 	private ValidCharactersConstraint stateValidCharactersConstraint;

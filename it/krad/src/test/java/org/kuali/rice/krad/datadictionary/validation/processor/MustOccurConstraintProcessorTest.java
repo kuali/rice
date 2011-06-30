@@ -19,7 +19,7 @@ package org.kuali.rice.krad.datadictionary.validation.processor;
 import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.MockAddress;
+import org.kuali.rice.krad.datadictionary.validation.Address;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 
 /**
@@ -33,9 +33,9 @@ import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidation
  */
 public class MustOccurConstraintProcessorTest extends BaseConstraintProcessorTest<MustOccurConstraintProcessor> {
 
-	private MockAddress noPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
-	private MockAddress noStateOrPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "", "USA", null);
-	private MockAddress noCityStateAddress = new MockAddress("893 Presidential Ave", "Suite 800", "", "", "12340", "USA", null);
+	private Address noPostalCodeAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
+	private Address noStateOrPostalCodeAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "", "", "USA", null);
+	private Address noCityStateAddress = new Address("893 Presidential Ave", "Suite 800", "", "", "12340", "USA", null);
 	
 	@Test
 	public void testCityStateNoPostalSuccess() {

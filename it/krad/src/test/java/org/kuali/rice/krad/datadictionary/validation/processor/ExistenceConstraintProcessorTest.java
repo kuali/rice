@@ -24,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.DataType;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.MockAddress;
+import org.kuali.rice.krad.datadictionary.validation.Address;
 import org.kuali.rice.krad.datadictionary.validation.SingleAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
@@ -49,9 +49,9 @@ public class ExistenceConstraintProcessorTest {
 	private AttributeDefinition countryNoConstraintDefinition;
 	private ExistenceConstraintProcessor processor;
 	
-	private MockAddress noPostalCodeOrCityAddress = new MockAddress("893 Presidential Ave", "Suite 800", "", "", "12340", "USA", null);
-	private MockAddress noPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "12340", "USA", null);
-	private MockAddress noPostalCodeOrCountryAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "12340", "", null);
+	private Address noPostalCodeOrCityAddress = new Address("893 Presidential Ave", "Suite 800", "", "", "12340", "USA", null);
+	private Address noPostalCodeAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "", "12340", "USA", null);
+	private Address noPostalCodeOrCountryAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "", "12340", "", null);
 	
 	
 	@Before

@@ -21,11 +21,15 @@ import java.util.Date;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class MockAddress {
+public class Address {
 	private String street1, street2, city, state, postalCode, country;
 	private Date effectiveDate;
 	
-	public MockAddress(String street1, String street2, String city, String state, String postalCode, String country, Date effectiveDate) {
+
+	public Address(){
+	}
+	
+	public Address(String street1, String street2, String city, String state, String postalCode, String country, Date effectiveDate) {
 		this.street1 = street1;
 		this.street2 = street2;
 		this.city = city;

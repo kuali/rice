@@ -20,7 +20,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.MockAddress;
+import org.kuali.rice.krad.datadictionary.validation.Address;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
@@ -34,8 +34,8 @@ import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
  */
 public class CaseConstraintProcessorTest extends BaseConstraintProcessorTest<CaseConstraintProcessor> {
 
-	private MockAddress londonAddress = new MockAddress("812 Maiden Lane", "", "London", "", "", "UK", null);
-	private MockAddress noStateAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
+	private Address londonAddress = new Address("812 Maiden Lane", "", "London", "", "", "UK", null);
+	private Address noStateAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
 	
 	
 	@Test

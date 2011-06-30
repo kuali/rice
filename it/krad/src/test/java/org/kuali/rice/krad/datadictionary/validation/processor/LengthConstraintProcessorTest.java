@@ -26,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.DataType;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.MockCompany;
+import org.kuali.rice.krad.datadictionary.validation.Company;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 
@@ -53,14 +53,14 @@ public class LengthConstraintProcessorTest {
 	private AttributeDefinition constrained5to12;
 	private AttributeDefinition unconstrained;
 	
-	private MockCompany companyWith3LetterName;
+	private Company companyWith3LetterName;
 	
 	@Before
 	public void setUp() throws Exception {
 		
 		processor = new LengthConstraintProcessor();
 		
-		companyWith3LetterName = new MockCompany("ABC");
+		companyWith3LetterName = new Company("ABC");
 
 		constrained0to2 = new AttributeDefinition() {
 

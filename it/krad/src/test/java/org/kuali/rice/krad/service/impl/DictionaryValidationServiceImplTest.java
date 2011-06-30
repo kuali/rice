@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -26,93 +26,71 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.datadictionary.DataDictionary;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
+import org.kuali.rice.krad.datadictionary.validation.Address;
+import org.kuali.rice.krad.datadictionary.validation.Company;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.MockAddress;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint;
-import org.kuali.rice.krad.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider;
-import org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider;
-import org.kuali.rice.krad.datadictionary.validation.constraint.provider.DataObjectEntryConstraintProvider;
-import org.kuali.rice.krad.datadictionary.validation.processor.CaseConstraintProcessor;
-import org.kuali.rice.krad.datadictionary.validation.processor.CollectionConstraintProcessor;
-import org.kuali.rice.krad.datadictionary.validation.processor.CollectionSizeConstraintProcessor;
-import org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor;
-import org.kuali.rice.krad.datadictionary.validation.processor.DataTypeConstraintProcessor;
-import org.kuali.rice.krad.datadictionary.validation.processor.ExistenceConstraintProcessor;
-import org.kuali.rice.krad.datadictionary.validation.processor.LengthConstraintProcessor;
 import org.kuali.rice.krad.datadictionary.validation.processor.MustOccurConstraintProcessor;
-import org.kuali.rice.krad.datadictionary.validation.processor.PrerequisiteConstraintProcessor;
-import org.kuali.rice.krad.datadictionary.validation.processor.RangeConstraintProcessor;
-import org.kuali.rice.krad.datadictionary.validation.processor.ValidCharactersConstraintProcessor;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.test.KRADTestCase;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DictionaryValidationServiceImplTest {
+public class DictionaryValidationServiceImplTest extends KRADTestCase{
 
+	ClassPathXmlApplicationContext context;
 	private DictionaryValidationServiceImpl service;
+	DataDictionary dataDictionary = new DataDictionary();	
 	
 	protected AttributeDefinition street1Definition;
 	protected AttributeDefinition street2Definition;
 	protected AttributeDefinition stateDefinition;
 	protected AttributeDefinition postalCodeDefinition;
 	protected AttributeDefinition countryDefinition;
-	protected BusinessObjectEntry addressEntry;
+	protected DataObjectEntry addressEntry;
 	
 	protected CaseConstraint countryIsUSACaseConstraint;
 	protected MustOccurConstraint topLevelConstraint;
 	
 	
-	private MockAddress validLondonAddress = new MockAddress("8129 Maiden Lane", "", "London", "", "SE1 0P3", "UK", null);
-	private MockAddress validUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "12031", "USA", null);
-	private MockAddress noStateUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
-	private MockAddress noZipNoCityUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "", "DC", "", "USA", null);
-	private MockAddress validNonDCUSAddress = new MockAddress("89 11th Street", "Suite 800", "Seattle", "WA", "", "USA", null);
-	private MockAddress invalidDCUSAddress = new MockAddress("89 Presidential Ave", "Suite 800", "Washington", "DC", "12031", "USA", null);
-	
-	
-    @SuppressWarnings("rawtypes")
-	private static final ConstraintProvider[] DEFAULT_CONSTRAINT_PROVIDERS = 
-    {
-    	new AttributeDefinitionConstraintProvider(),
-    	new DataObjectEntryConstraintProvider()
-    };
-    
-	@SuppressWarnings("rawtypes")
-	private static final List<ConstraintProcessor> DEFAULT_ELEMENT_PROCESSORS = 
-		Arrays.asList((ConstraintProcessor)new CaseConstraintProcessor(), 
-				(ConstraintProcessor)new ExistenceConstraintProcessor(),
-				(ConstraintProcessor)new DataTypeConstraintProcessor(), 
-				(ConstraintProcessor)new RangeConstraintProcessor(),
-				(ConstraintProcessor)new LengthConstraintProcessor(),
-				(ConstraintProcessor)new ValidCharactersConstraintProcessor(),
-				(ConstraintProcessor)new PrerequisiteConstraintProcessor(),
-				(ConstraintProcessor)new MustOccurConstraintProcessor());
-	
-	@SuppressWarnings("rawtypes")
-	private static final List<CollectionConstraintProcessor> DEFAULT_COLLECTION_PROCESSORS = 
-		Arrays.asList((CollectionConstraintProcessor)new CollectionSizeConstraintProcessor());
+	private Address validLondonAddress = new Address("8129 Maiden Lane", "", "London", "", "SE1 0P3", "UK", null);
+	private Address validUSAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "DC", "12031", "USA", null);
+	private Address noStateUSAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
+	private Address noZipNoCityUSAddress = new Address("893 Presidential Ave", "Suite 800", null, "DC", null, "USA", null);
+	private Address validNonDCUSAddress = new Address("89 11th Street", "Suite 800", "Seattle", "WA", "", "USA", null);
+	private Address invalidDCUSAddress = new Address("89 Presidential Ave", "Suite 800", "Washington", "DC", "12031", "USA", null);
 	
 	
 	@Before
 	public void setUp() throws Exception {
-		service = new DictionaryValidationServiceImpl();
+		//super.setUp();
 		
-		service.setCollectionConstraintProcessors(DEFAULT_COLLECTION_PROCESSORS);
-		service.setElementConstraintProcessors(DEFAULT_ELEMENT_PROCESSORS);
-		service.setConstraintProviders(Arrays.asList(DEFAULT_CONSTRAINT_PROVIDERS));
+		context = new ClassPathXmlApplicationContext("classpath:DictionaryValidationServiceSpringBeans.xml");
+		
+		service = (DictionaryValidationServiceImpl)context.getBean("dictionaryValidationService");
 	
+		dataDictionary.addConfigFileLocation("classpath:org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml");
+		dataDictionary.addConfigFileLocation("classpath:org/kuali/rice/krad/test/datadictionary/validation/Company.xml");
+		dataDictionary.addConfigFileLocation("classpath:org/kuali/rice/krad/test/datadictionary/validation/Address.xml");
+		dataDictionary.addConfigFileLocation("classpath:org/kuali/rice/krad/test/datadictionary/validation/Employee.xml");
+		dataDictionary.addConfigFileLocation("classpath:org/kuali/rice/krad/test/datadictionary/validation/Person.xml");		
+
+		dataDictionary.parseDataDictionaryConfigurationFiles(false);
 		
-		addressEntry = new BusinessObjectEntry();
-		
-		
+		addressEntry = new DataObjectEntry();
+				
 		List<MustOccurConstraint> mustOccurConstraints = new ArrayList<MustOccurConstraint>();
 		
 		PrerequisiteConstraint postalCodeConstraint = new PrerequisiteConstraint();
@@ -243,7 +221,7 @@ public class DictionaryValidationServiceImplTest {
 	
 	@Test
 	public void testValidNonDCAddress() {
-		DictionaryValidationResult dictionaryValidationResult = service.validate(validNonDCUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+		DictionaryValidationResult dictionaryValidationResult = service.validate(validNonDCUSAddress, "org.kuali.rice.krad.datadictionary.validation.Address", addressEntry, true);
 		
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
@@ -251,7 +229,7 @@ public class DictionaryValidationServiceImplTest {
 	
 	@Test
 	public void testInvalidDCAddress() {
-		DictionaryValidationResult dictionaryValidationResult = service.validate(invalidDCUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+		DictionaryValidationResult dictionaryValidationResult = service.validate(invalidDCUSAddress, "org.kuali.rice.krad.datadictionary.validation.Address", addressEntry, true);
 		
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
@@ -259,7 +237,7 @@ public class DictionaryValidationServiceImplTest {
 	
 	@Test
 	public void testNoStateNoZipUSAddress() {
-		DictionaryValidationResult dictionaryValidationResult = service.validate(noZipNoCityUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+		DictionaryValidationResult dictionaryValidationResult = service.validate(noZipNoCityUSAddress, "org.kuali.rice.krad.datadictionary.validation.Address", addressEntry, true);
 		
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
@@ -295,6 +273,47 @@ public class DictionaryValidationServiceImplTest {
 	    		}
 	    	}
     	}
+	}
+	
+	
+	@Test
+	public void testRequiredNestedAttribute() throws IOException{	
+		DataDictionaryService dataDictionaryService = new DataDictionaryServiceImpl(dataDictionary);
+		service.setDataDictionaryService(dataDictionaryService);
+		
+		DataObjectEntry addressEntry = dataDictionary.getDataObjectEntry("org.kuali.rice.krad.datadictionary.validation.Address");
+		
+		DictionaryValidationResult dictionaryValidationResult;		
+
+		Company acmeCompany = new Company();
+
+		DataObjectEntry companyEntry = dataDictionary.getDataObjectEntry("org.kuali.rice.krad.datadictionary.validation.Company");		
+		dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
+		
+		//Main address is required this should result in error
+		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+		ConstraintValidationResult constraintValidationResult = dictionaryValidationResult.iterator().next();
+		Assert.assertEquals("mainAddress", constraintValidationResult.getAttributePath());
+		
+		//Adding an invalid mainAddress for company 
+		Address acmeMainAddress = new Address();
+		acmeCompany.setMainAddress(acmeMainAddress);
+		
+		dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
+		
+		//This should result in missing country error
+		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+		constraintValidationResult = dictionaryValidationResult.iterator().next();		
+		Assert.assertEquals("mainAddress.country", constraintValidationResult.getAttributePath());
+		
+		//Set items to valid address
+		acmeMainAddress.setCountry("US");
+		
+		dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
+		
+		//This should result in no error
+		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+		
 	}
 	
 }

@@ -25,11 +25,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.CollectionDefinition;
+import org.kuali.rice.krad.datadictionary.validation.Address;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.krad.datadictionary.validation.Company;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
+import org.kuali.rice.krad.datadictionary.validation.Employee;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.MockAddress;
-import org.kuali.rice.krad.datadictionary.validation.MockCompany;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 
@@ -56,38 +57,38 @@ public class CollectionSizeConstraintProcessorTest {
 	private CollectionDefinition constrained3to6;
 	private CollectionDefinition constrained5to12;
 	private CollectionDefinition unconstrained;
-	private MockCompany companyWithThreeAddressesAndThreeContactEmails; 
+	private Company companyWithThreeAddressesAndThreeEmployees; 
 	
 	@Before
 	public void setUp() throws Exception {
 		
 		processor = new CollectionSizeConstraintProcessor();
 		
-		companyWithThreeAddressesAndThreeContactEmails = new MockCompany("3M");
+		companyWithThreeAddressesAndThreeEmployees = new Company("3M");
 		
-		List<MockAddress> addresses = new ArrayList<MockAddress>();
-		addresses.add(new MockAddress("123 Broadway", "Suite 1200", "New York", "NY", "10005", "USA", null));
-		addresses.add(new MockAddress("124 Broadway", "Suite 1300", "New York", "NY", "10005", "USA", null));
-		addresses.add(new MockAddress("125 Broadway", "Suite 1400", "New York", "NY", "10005", "USA", null));
-		companyWithThreeAddressesAndThreeContactEmails.setAddresses(addresses);
+		List<Address> addresses = new ArrayList<Address>();
+		addresses.add(new Address("123 Broadway", "Suite 1200", "New York", "NY", "10005", "USA", null));
+		addresses.add(new Address("124 Broadway", "Suite 1300", "New York", "NY", "10005", "USA", null));
+		addresses.add(new Address("125 Broadway", "Suite 1400", "New York", "NY", "10005", "USA", null));
+		companyWithThreeAddressesAndThreeEmployees.setLocations(addresses);
 		
-		List<String> contactEmails = new ArrayList<String>();
-		contactEmails.add("corporate@3m.com");
-		contactEmails.add("help@3m.com");
-		contactEmails.add("support@3m.com");
-		companyWithThreeAddressesAndThreeContactEmails.setContactEmails(contactEmails);
+		List<Employee> employees = new ArrayList<Employee>();
+		employees.add(new Employee());
+		employees.add(new Employee());
+		employees.add(new Employee());
+		companyWithThreeAddressesAndThreeEmployees.setEmployees(employees);
 		
 		constrained0to2 = new CollectionDefinition() {
 
 
 			@Override
 			public String getLabel() {
-				return "Contact Email(s)";
+				return "Employees(s)";
 			}
 
 			@Override
 			public String getName() {
-				return "contactEmails";
+				return "employees";
 			}
 
 			@Override
@@ -105,12 +106,12 @@ public class CollectionSizeConstraintProcessorTest {
 
 			@Override
 			public String getLabel() {
-				return "Contact Email(s)";
+				return "Employee(s)";
 			}
 
 			@Override
 			public String getName() {
-				return "contactEmails";
+				return "employees";
 			}
 
 			@Override
@@ -128,12 +129,12 @@ public class CollectionSizeConstraintProcessorTest {
 
 			@Override
 			public String getLabel() {
-				return "Contact Email(s)";
+				return "Employees";
 			}
 
 			@Override
 			public String getName() {
-				return "contactEmails";
+				return "employees";
 			}
 
 			@Override
@@ -151,12 +152,12 @@ public class CollectionSizeConstraintProcessorTest {
 
 			@Override
 			public String getLabel() {
-				return "Contact Email(s)";
+				return "Employees";
 			}
 
 			@Override
 			public String getName() {
-				return "contactEmails";
+				return "employees";
 			}
 
 			@Override
@@ -174,12 +175,12 @@ public class CollectionSizeConstraintProcessorTest {
 
 			@Override
 			public String getLabel() {
-				return "Contact Email(s)";
+				return "Employee(s)";
 			}
 
 			@Override
 			public String getName() {
-				return "contactEmails";
+				return "employees";
 			}
 
 			@Override
@@ -197,12 +198,12 @@ public class CollectionSizeConstraintProcessorTest {
 
 			@Override
 			public String getLabel() {
-				return "Contact Email(s)";
+				return "Empployee(s)";
 			}
 
 			@Override
 			public String getName() {
-				return "contactEmails";
+				return "employees";
 			}
 
 			@Override
@@ -222,7 +223,7 @@ public class CollectionSizeConstraintProcessorTest {
 	public void testSimpleCollectionSizeWithinRangeSuccess() {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeContactEmails, constrained2to4, "contactEmails");
+		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeEmployees, constrained2to4, "employees");
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
@@ -233,7 +234,7 @@ public class CollectionSizeConstraintProcessorTest {
 	public void testSimpleCollectionSizeAtTopOfRangeSuccess() {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeContactEmails, constrained0to3, "contactEmails");
+		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeEmployees, constrained0to3, "employees");
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
@@ -244,7 +245,7 @@ public class CollectionSizeConstraintProcessorTest {
 	public void testSimpleCollectionSizeAtBottomOfRangeSuccess() {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeContactEmails, constrained3to6, "contactEmails");
+		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeEmployees, constrained3to6, "employees");
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
@@ -259,7 +260,7 @@ public class CollectionSizeConstraintProcessorTest {
 	public void testSimpleCollectionSizeBelowRangeFailure() {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeContactEmails, constrained5to12, "contactEmails");
+		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeEmployees, constrained5to12, "employees");
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
@@ -274,7 +275,7 @@ public class CollectionSizeConstraintProcessorTest {
 	public void testSimpleCollectionSizeAboveRangeFailure() {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeContactEmails, constrained0to2, "contactEmails");
+		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeEmployees, constrained0to2, "employees");
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
@@ -285,7 +286,7 @@ public class CollectionSizeConstraintProcessorTest {
 	public void testSimpleCollectionSizeUnconstrainedSuccess() {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.NOCONSTRAINT);
-		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeContactEmails, unconstrained, "contactEmails");
+		ConstraintValidationResult result = process(dictionaryValidationResult, companyWithThreeAddressesAndThreeEmployees, unconstrained, "employees");
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.NOCONSTRAINT, result.getStatus());
@@ -296,7 +297,7 @@ public class CollectionSizeConstraintProcessorTest {
 		BusinessObjectEntry entry = new BusinessObjectEntry();
 		entry.setCollections(Collections.singletonList((CollectionDefinition)definition));
 		
-		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockCompany", entry);
+		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.Company", entry);
 		attributeValueReader.setAttributeName(attributeName);
 		
 		Collection<?> value = (Collection<?>)attributeValueReader.getValue();

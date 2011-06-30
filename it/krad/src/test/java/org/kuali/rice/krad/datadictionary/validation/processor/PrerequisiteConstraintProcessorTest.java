@@ -26,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.MockAddress;
+import org.kuali.rice.krad.datadictionary.validation.Address;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
@@ -51,10 +51,10 @@ public class PrerequisiteConstraintProcessorTest {
 	
 	private PrerequisiteConstraintProcessor processor;
 	
-	private MockAddress street1PostalCodeCityStateAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
-	private MockAddress noStreet1PostalCodeAddress = new MockAddress("", "Suite 800", "Washington", "DC", "", "USA", null);
-	private MockAddress noStreet1CityStateAddress = new MockAddress("", "Suite 800", "", "", "12340", "USA", null);
-	private MockAddress noStreet2Address = new MockAddress("893 Presidential Ave", null, "Washington", "DC", "12340", "USA", null);
+	private Address street1PostalCodeCityStateAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
+	private Address noStreet1PostalCodeAddress = new Address("", "Suite 800", "Washington", "DC", "", "USA", null);
+	private Address noStreet1CityStateAddress = new Address("", "Suite 800", "", "", "12340", "USA", null);
+	private Address noStreet2Address = new Address("893 Presidential Ave", null, "Washington", "DC", "12340", "USA", null);
 	
 	private PrerequisiteConstraint street1Constraint, cityConstraint, stateConstraint;
 	

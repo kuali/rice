@@ -27,7 +27,7 @@ import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.DataType;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.MockAddress;
+import org.kuali.rice.krad.datadictionary.validation.Address;
 import org.kuali.rice.krad.datadictionary.validation.capability.RangeConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
@@ -49,12 +49,12 @@ public class RangeConstraintProcessorTest {
 	
 	private RangeConstraintProcessor processor;
 	
-	private MockAddress washingtonDCAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "20500", "USA", null);
-	private MockAddress newYorkNYAddress = new MockAddress("5 Presidential Street", "Suite 800", "New York", "NY", "10012", "USA", null);
-	private MockAddress timbucktooAddress = new MockAddress("5 Presidential Street", "Suite 800", "Timbucktoo", "ZZ", "100000", "USA", null);
-	private MockAddress sydneyAUSAddress = new MockAddress("5 Presidential Street", "Suite 800", "Sydney", "ZZ", "999", "USA", null);
-	private MockAddress londonUKAddress = new MockAddress("5 Presidential Street", "Suite 800", "Timbucktoo", "ZZ", "99999", "USA", null);
-	private MockAddress torontoONAddress = new MockAddress("5 Presidential Street", "Suite 800", "Sydney", "ZZ", "1000", "USA", null);
+	private Address washingtonDCAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "DC", "20500", "USA", null);
+	private Address newYorkNYAddress = new Address("5 Presidential Street", "Suite 800", "New York", "NY", "10012", "USA", null);
+	private Address timbucktooAddress = new Address("5 Presidential Street", "Suite 800", "Timbucktoo", "ZZ", "100000", "USA", null);
+	private Address sydneyAUSAddress = new Address("5 Presidential Street", "Suite 800", "Sydney", "ZZ", "999", "USA", null);
+	private Address londonUKAddress = new Address("5 Presidential Street", "Suite 800", "Timbucktoo", "ZZ", "99999", "USA", null);
+	private Address torontoONAddress = new Address("5 Presidential Street", "Suite 800", "Sydney", "ZZ", "1000", "USA", null);
 	
 	@Before
 	public void setUp() throws Exception {

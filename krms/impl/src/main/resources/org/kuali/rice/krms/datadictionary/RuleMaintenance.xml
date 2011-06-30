@@ -49,7 +49,7 @@
          <bean parent="MaintenanceCollectionGroupSection">
            <property name="title" value="Attributes"/>  
            <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.RuleAttributeBo"/>
-           <property name="propertyName" value="attributeList"/>
+           <property name="propertyName" value="attributeBos"/>
              <property name="items">
                <list>
                  <bean parent="AttributeField" p:propertyName="id"/>

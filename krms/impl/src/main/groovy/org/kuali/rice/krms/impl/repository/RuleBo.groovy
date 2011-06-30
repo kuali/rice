@@ -19,9 +19,8 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 
     def PropositionBo proposition
     def List<ActionBo> actions
-    def Set<RuleAttributeBo> attributeBos
+    def List<RuleAttributeBo> attributeBos
     //def List<PropositionBo> allChildPropositions
-    def List<RuleAttributeBo> attributeList
     
     public PropositionBo getProposition(){
         return proposition
@@ -35,13 +34,6 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
         return attributes;
     }
 
-//    public List<RuleAttributeBo> getAttributeList(){
-//        List<RuleAttributeBo> attrs = new ArrayList<RuleAttributeBo>();
-//        for (attr in attributeBos){
-//            attrs.add(attr);
-//        }
-//        return attrs;
-//    }
 	/**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object
@@ -76,7 +68,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	   }
 
 	   // build the set of agenda attribute BOs
-	   Set<RuleAttributeBo> attrs = new HashSet<RuleAttributeBo>();
+	   List<RuleAttributeBo> attrs = new ArrayList<RuleAttributeBo>();
 
 	   // for each converted pair, build an AgendaAttributeBo and add it to the set
 	   RuleAttributeBo attributeBo;

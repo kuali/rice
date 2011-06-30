@@ -27,18 +27,20 @@ import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.permission.PermissionTypeService;
+import org.kuali.rice.kim.api.role.RoleManagementService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
-import org.kuali.rice.kim.api.role.RoleService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.lookup.Lookupable;
+import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
@@ -58,6 +60,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@SuppressWarnings("unused")
 @WebService(endpointInterface = KIMWebServiceConstants.PermissionService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.PermissionService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.PermissionService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class PermissionServiceImpl extends PermissionServiceBase implements PermissionService {
 	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
@@ -66,6 +69,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	private PermissionDao permissionDao;
     private PermissionTypeService defaultPermissionTypeService;
     private DataDictionaryService dataDictionaryService;
+    private KimTypeInfoService kimTypeInfoService;
+    private BusinessObjectDictionaryService businessObjectDictionaryService;
 	
  	private List<Template> allTemplates;
 	
@@ -116,11 +121,11 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( permissionTemplate == null ) {
     		throw new IllegalArgumentException( "permissionTemplate may not be null" );
     	}
-    	KimType kimType = KimApiServiceLocator.getKimTypeInfoService().getKimType( permissionTemplate.getKimTypeId() );
+    	KimType kimType = kimTypeInfoService.getKimType( permissionTemplate.getKimTypeId() );
     	String serviceName = kimType.getServiceName();
     	// if no service specified, return a default implementation
     	if ( StringUtils.isBlank( serviceName ) ) {
-    		return getDefaultPermissionTypeService();
+    		return defaultPermissionTypeService;
     	}
     	try {
 	    	Object service = KIMServiceLocatorWeb.getService(serviceName);
@@ -139,14 +144,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	}
     }
     
-    protected PermissionTypeService getDefaultPermissionTypeService() {
-    	if ( defaultPermissionTypeService == null ) {
-    		//TODO getBean() -> getService()?
-    		defaultPermissionTypeService = (PermissionTypeService) KIMServiceLocatorWeb.getService(DEFAULT_PERMISSION_TYPE_SERVICE);
-    	}
-		return defaultPermissionTypeService;
-	}
-	
     /**
      * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, String, java.lang.String, AttributeSet)
      */
@@ -162,7 +159,11 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
-		return getRoleService().principalHasRole( principalId, roleIds, qualification);
+
+		//return roleService.principalHasRole( principalId, roleIds, new AttributeSet(qualification.toMap()));
+
+		return roleService.principalHasRole( principalId, roleIds, qualification);
+
     }
 
     /**
@@ -180,7 +181,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
-    	return getRoleService().principalHasRole( principalId, roleIds, qualification);
+    	return roleService.principalHasRole( principalId, roleIds, qualification);
     }
 
     /**
@@ -219,7 +220,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     		// a set and then processing the distinct list rather than a check
     		// for every permission
     		if ( roleIds != null && !roleIds.isEmpty() ) {
-    			if ( getRoleService().principalHasRole( principalId, roleIds, qualification) ) {
+    			if ( roleService.principalHasRole( principalId, roleIds, qualification) ) {
     				results.add( perm );
     			}
     		}
@@ -287,7 +288,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return results;
     	}
-    	Collection<RoleMembership> roleMembers = getRoleService().getRoleMembers( roleIds,qualification );
+    	Collection<RoleMembership> roleMembers = roleService.getRoleMembers( roleIds,qualification );
     	for ( RoleMembership rm : roleMembers ) {
 			List<DelegateType.Builder> delegateBuilderList = new ArrayList<DelegateType.Builder>();
 			if (!rm.getDelegates().isEmpty()) {
@@ -310,7 +311,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return results;
     	}
-    	Collection<RoleMembership> roleMembers = getRoleService().getRoleMembers( roleIds,qualification);
+    	Collection<RoleMembership> roleMembers = roleService.getRoleMembers( roleIds,qualification);
     	for ( RoleMembership rm : roleMembers ) {
 			List<DelegateType.Builder> delegateBuilderList = new ArrayList<DelegateType.Builder>();
 			if (!rm.getDelegates().isEmpty()) {
@@ -427,8 +428,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return permissions.get( 0 );
     }
     
-    @SuppressWarnings("unchecked")
-	protected PermissionBo getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ) {
+    protected PermissionBo getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ) {
     	String cacheKey = getPermissionImplByTemplateNameCacheKey(namespaceCode, permissionTemplateName);
     	PermissionBo permissions = (PermissionBo) cacheAdministrator.getFromCache(cacheKey);
     	if ( permissions == null ) {    	
@@ -442,8 +442,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return permissions;
     }
 
-    @SuppressWarnings("unchecked")
-	protected PermissionBo getPermissionImplsByName( String namespaceCode, String permissionName ) {
+    protected PermissionBo getPermissionImplsByName( String namespaceCode, String permissionName ) {
     	String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName);
     	PermissionBo permissions = (PermissionBo) cacheAdministrator.getFromCache(cacheKey);
     	if ( permissions == null ) {
@@ -464,19 +463,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     // --------------------
 	
 	
-	protected RoleService getRoleService() {
-		if ( roleService == null ) {
-			roleService = (RoleService) KimApiServiceLocator.getRoleManagementService();
-		}
-
-		return roleService;
-	}
-
-	public void setRoleService(RoleService roleService) {
-		this.roleService = roleService;
-	}
-
-	public PermissionDao getPermissionDao() {
+    public PermissionDao getPermissionDao() {
 		return this.permissionDao;
 	}
 
@@ -488,7 +475,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	public List<Permission> lookupPermissions(Map<String, String> searchCriteria, boolean unbounded ){
 		Collection baseResults = null;
 		Lookupable permissionLookupable = KRADServiceLocatorWeb.getLookupable(
-				KRADServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(PermissionBo.class)
+				businessObjectDictionaryService.getLookupableID(PermissionBo.class)
         );
 		permissionLookupable.setBusinessObjectClass(PermissionBo.class);
 		if ( unbounded ) {
@@ -581,17 +568,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 			allTemplates = infos;
 		}
 		return allTemplates;
-	}
-
-    /**
-     * Sets the dataDictionaryService attribute value.
-     *
-     * @param dataDictionaryService The dataDictionaryService to set.
-     */
-	protected void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
-		this.dataDictionaryService = dataDictionaryService;
-	}
-	
+	}	
 
     public List<String> getRoleIdsForPermissionId(String permissionId) {
         Permission permissionInfo = getPermission(permissionId);
@@ -613,7 +590,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         return PermissionBo.to(impls);
     }
 	
-    @SuppressWarnings("unchecked")
     protected PermissionBo getPermissionImplsByNameIncludingInactive(String namespaceCode, String permissionName) {
         String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName + "inactive");
         PermissionBo permissions = (PermissionBo) cacheAdministrator.getFromCache(cacheKey);
@@ -649,6 +625,51 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 			throws RiceIllegalArgumentException, RiceIllegalStateException {
 		// TODO eldavid - THIS METHOD NEEDS JAVADOCS
 		
+	}
+	
+    /**
+     * Sets the dataDictionaryService attribute value.
+     *
+     * @param dataDictionaryService The dataDictionaryService to set.
+     */
+	protected void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+		this.dataDictionaryService = dataDictionaryService;
+	}
+	
+	/**
+     * Sets the kimTypeInfoService attribute value.
+     *
+     * @param kimTypeInfoService The kimTypeInfoService to set.
+     */
+	protected void setKimTypeInfoService(KimTypeInfoService kimTypeInfoService) {
+		this.kimTypeInfoService = kimTypeInfoService;
+	}
+	
+	/**
+     * Sets the defaultPermissionTypeService attribute value.
+     *
+     * @param defaultPermissionTypeService The defaultPermissionTypeService to set.
+     */
+	protected void setDefaultPermissionTypeService(PermissionTypeService defaultPermissionTypeService) {
+    	this.defaultPermissionTypeService = defaultPermissionTypeService;
+	}
+	
+	/**
+     * Sets the businessObjectDictionaryService attribute value.
+     *
+     * @param businessObjectDictionaryService The businessObjectDictionaryService to set.
+     */
+	protected void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
+		this.businessObjectDictionaryService = businessObjectDictionaryService;
+	}
+	
+	/**
+     * Sets the roleService attribute value.
+     *
+     * @param roleService The roleService to set.
+     */
+	public void setRoleService(RoleManagementService roleService) {
+		this.roleService = roleService;
 	}
 	
 }

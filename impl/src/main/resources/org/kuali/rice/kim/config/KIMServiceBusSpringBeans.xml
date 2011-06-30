@@ -130,8 +130,7 @@
 
   <bean parent="kimLocalServiceExporter">
 	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property impl/src/main/resources/org/kuali/rice/kim/config/KIMServiceBusSOAPDefaultSpringBeans.xml
-name="serviceDefinition">
+    <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="kimRoleUpdateService"
         p:localServiceName="kimRoleUpdateService" />

@@ -43,6 +43,8 @@
   </ciManagement>
 
   <properties>
+    <oracle.ojdbc.version>10.2.0.3.0</oracle.ojdbc.version>
+    <mysql.connector.version>5.1.13</mysql.connector.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm z</maven.build.timestamp.format>
     <kuali.build.timestamp>${maven.build.timestamp}</kuali.build.timestamp>
@@ -442,6 +444,7 @@
           </dependencies>
           <executions>
             <execution>
+              <id>gmaven-generate-stubs</id>
               <goals>
                 <goal>generateStubs</goal>
                 <goal>compile</goal>

@@ -46,9 +46,9 @@
     <!-- Oracle specific properties -->
     <rice.impex.masterdb.url><!-- Fill this in later -->
     </rice.impex.masterdb.url>
-    <rice.impex.masterdb.schema>KSMASTER</rice.impex.masterdb.schema>
-    <rice.impex.masterdb.username>KSMASTER</rice.impex.masterdb.username>
-    <rice.impex.masterdb.password>KSMASTER</rice.impex.masterdb.password>
+    <rice.impex.masterdb.schema>RICEMASTER</rice.impex.masterdb.schema>
+    <rice.impex.masterdb.username>RICEMASTER</rice.impex.masterdb.username>
+    <rice.impex.masterdb.password>RICEMASTER</rice.impex.masterdb.password>
     <rice.impex.oracle.driver>oracle.jdbc.driver.OracleDriver</rice.impex.oracle.driver>
     <rice.impex.oracle.default.url>jdbc:oracle:thin:@localhost:1521:XE</rice.impex.oracle.default.url>
     <rice.impex.oracle.delimiter>/</rice.impex.oracle.delimiter>
@@ -228,11 +228,98 @@
             </execution>
           </executions>
         </plugin>
-
         <plugin>
           <groupId>org.kuali.maven.impex</groupId>
           <artifactId>maven-impex-plugin</artifactId>
           <version>1.0.17</version>
+          <dependencies>
+            <dependency>
+              <groupId>mysql</groupId>
+              <artifactId>mysql-connector-java</artifactId>
+              <version>${mysql.connector.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.oracle</groupId>
+              <artifactId>ojdbc14</artifactId>
+              <version>${oracle.ojdbc.version}</version>
+            </dependency>
+          </dependencies>
+          <configuration>
+            <username>${rice.impex.username}</username>
+            <password>${rice.impex.password}</password>
+            <url>${rice.impex.url}</url>
+            <driver>${rice.impex.driver}</driver>
+            <dataXMLDir>${project.build.directory}/generated-impex/xml</dataXMLDir>
+            <schemaDir>${project.build.directory}/generated-impex</schemaDir>
+            <schemaXMLFile>${project.build.directory}/generated-impex/${project.artifactId}.xml</schemaXMLFile>
+            <dateFormat>${rice.impex.date.format}</dateFormat>
+            <includeVersionInComment>${rice.impex.include.version.in.comment}</includeVersionInComment>
+            <antCompatibilityMode>${rice.impex.ant.compatibility.mode}</antCompatibilityMode>
+          </configuration>
+          <executions>
+            <execution>
+              <id>morph-xml</id>
+              <phase>${rice.impex.generate.morph.phase}</phase>
+              <goals>
+                <goal>morphschema</goal>
+                <goal>morphdata</goal>
+              </goals>
+              <configuration>
+                <oldSchemaXMLFile>${basedir}/src/main/resources/schema.xml</oldSchemaXMLFile>
+                <oldDataXMLDir>${basedir}/src/main/resources</oldDataXMLDir>
+              </configuration>
+            </execution>
+            <execution>
+              <id>generate-data-dtd</id>
+              <phase>${rice.impex.generate.dtd.phase}</phase>
+              <goals>
+                <goal>datadtd</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>generate-oracle-sql</id>
+              <phase>${rice.impex.generate.sql.oracle.phase}</phase>
+              <goals>
+                <goal>schemasql</goal>
+                <goal>datasql</goal>
+              </goals>
+              <configuration>
+                <targetDatabase>oracle</targetDatabase>
+              </configuration>
+            </execution>
+            <execution>
+              <id>generate-mysql-sql</id>
+              <phase>${rice.impex.generate.sql.mysql.phase}</phase>
+              <goals>
+                <goal>schemasql</goal>
+                <goal>datasql</goal>
+              </goals>
+              <configuration>
+                <targetDatabase>mysql</targetDatabase>
+              </configuration>
+            </execution>
+            <execution>
+              <id>import-data</id>
+              <phase>none</phase>
+              <goals>
+                <goal>import</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>export-db</id>
+              <phase>none</phase>
+              <goals>
+                <goal>exportschema</goal>
+                <goal>exportdata</goal>
+                <goal>datadtd</goal>
+              </goals>
+              <configuration>
+                <schemaXMLFile>${basedir}/src/main/resources/schema.xml</schemaXMLFile>
+                <dataXMLDir>${basedir}/src/main/resources</dataXMLDir>
+                <copyToFile>${basedir}/src/main/resources/data.dtd</copyToFile>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -329,6 +416,12 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.kuali.maven.impex</groupId>
+        <artifactId>maven-impex-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
   <profiles>
     <profile>

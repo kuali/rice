@@ -122,7 +122,7 @@ public final class KimConstants {
 	}
 
 	public final static class PermissionNames {
-		public static final String LOG_IN = "Log In";
+		public static final String LOG_IN = "Log In Kuali Portal";
 		public static final String ADMIN_PESSIMISTIC_LOCKING = "Administer Pessimistic Locking";
 		public static final String OVERRIDE_ENTITY_PRIVACY_PREFERENCES = "Override Entity Privacy Preferences";
     	public static final String MODIFY_ENTITY = "Modify Entity";

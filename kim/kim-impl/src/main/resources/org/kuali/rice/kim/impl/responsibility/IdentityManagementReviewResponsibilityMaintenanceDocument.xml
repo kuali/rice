@@ -58,7 +58,7 @@
         <bean parent="MaintainableFieldDefinition" p:name="id"
             p:unconditionallyReadOnly="true" />
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="namespaceCode"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name" p:defaultValue="Review" />
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name" />
         <bean parent="MaintainableFieldDefinition" p:required="false" p:name="description"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="active" p:defaultValue="Y" />
       </list>

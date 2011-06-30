@@ -16,4 +16,39 @@
     <version>2.0.0-m6-SNAPSHOT</version>
   </parent>
   <artifactId>rice-impex-master</artifactId>
+  <properties>
+    <rice.impex.username>RICEMASTER</rice.impex.username>
+    <rice.impex.password>RICEMASTER</rice.impex.password>
+  </properties>
+  <profiles>
+    <profile>
+      <id>rice-db</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>drop-db-config</id>
+                <phase>pre-clean</phase>
+              </execution>
+              <execution>
+                <id>dba-config</id>
+                <phase>validate</phase>
+              </execution>
+              <execution>
+                <id>init-db-config</id>
+                <phase>initialize</phase>
+              </execution>
+              <execution>
+                <id>db-config</id>
+                <phase>verify</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

@@ -136,33 +136,68 @@
     <property name="singlePageView" value="true"/>
     <property name="items">
         <list>
-            <bean parent="Page" p:id="page1">
-                <property name="items">
-                    <list>
-					  <bean parent="GroupSectionGridLayout">
-					      <property name="layoutManager.numberOfColumns" value="2"/>
-					      <property name="items">
-					        <list>
-					          <bean parent="AttributeField" p:propertyName="id"/>
-					          <bean parent="AttributeField" p:propertyName="name"/>
-					          <bean parent="AttributeField" p:propertyName="namespace"/>
-					          <bean parent="AttributeField" p:propertyName="description"/>
-					        </list>
-					      </property>
-					      <property name="title" value="Rule Attributes"/>
-					  </bean>
-                      <bean parent="GroupSectionGridLayout">
-                          <property name="layoutManager.numberOfColumns" value="2"/>
-                          <property name="items">
-                            <list>
-                              <bean parent="AttributeField" p:propertyName="typeId"/>
-                            </list>
-                          </property>
-                          <property name="title" value="Rule Type"/>
-                      </bean>
-                    </list>
-                </property>
-            </bean>
+		  <bean parent="GroupSection">
+			<property name="title" value="Rule" />
+			<property name="items">
+			  <list>
+			    <bean parent="GroupGridBodyOnly">
+				  <property name="layoutManager.numberOfColumns" value="2" />
+				  <property name="items">
+					<list>
+						<bean parent="AttributeField" p:propertyName="id" />
+						<bean parent="AttributeField" p:propertyName="name" />
+						<bean parent="AttributeField" p:propertyName="namespace" />
+						<bean parent="AttributeField" p:propertyName="description" />
+						<bean parent="AttributeField" p:propertyName="typeId" />
+					</list>
+				  </property>
+			    </bean>
+			    <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="2">
+				  <property name="title" value="Rule Attributes" />
+				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.RuleAttributeBo" />
+				  <property name="propertyName" value="attributeBos" />
+				  <property name="layoutManager.renderSequenceField" value="false" />
+				  <property name="items">
+				    <list>
+					  <bean parent="AttributeField" p:propertyName="attributeDefinition.name" />
+					  <bean parent="AttributeField" p:propertyName="value" />
+				    </list>
+				   </property>
+			    </bean>
+			  </list>
+			</property>
+		  </bean>
+		  <bean parent="GroupSection">
+			<property name="title" value="Proposition" />
+			<property name="items">
+			  <list>
+		  		<bean parent="GroupGridBodyOnly">
+				  <property name="layoutManager.numberOfColumns" value="2" />
+				  <property name="items">
+			  		<list>
+					  <bean parent="AttributeField" p:propertyName="proposition.id" />
+				      <bean parent="AttributeField" p:propertyName="proposition.description" />
+				      <bean parent="AttributeField" p:propertyName="proposition.propositionTypeCode" />
+			        </list>
+			      </property>
+                  <property name="title" value="Proposition"/>
+                </bean>
+			    <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3">
+				  <property name="title" value="Proposition Parameters" />
+				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
+				  <property name="propertyName" value="proposition.parameters" />
+				  <property name="layoutManager.renderSequenceField" value="false" />
+				  <property name="items">
+				    <list>
+					  <bean parent="AttributeField" p:propertyName="sequenceNumber" />
+					  <bean parent="AttributeField" p:propertyName="value" />
+					  <bean parent="AttributeField" p:propertyName="parameterType" />
+				    </list>
+				   </property>
+			    </bean>
+              </list>
+			</property>
+		  </bean>
         </list>
     </property>
   </bean>

@@ -22,7 +22,13 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
     <property name="items">
       <list merge="true">
-         <bean parent="MaintenanceGroupSectionGridLayout">
+		  <bean parent="GroupSection">
+			<property name="title" value="Rule Information" />
+			<property name="items">
+			  <list>
+<!--          <bean parent="MaintenanceGroupSectionGridLayout">
+ -->
+			    <bean parent="GroupGridBodyOnly">
             <property name="title" value="Rule Information"/>
             <property name="items">
               <list>
@@ -35,9 +41,31 @@
               </list>
             </property>
          </bean>
-         <bean parent="GroupSectionGridLayout">
-            <property name="title" value="Proposition Information"/>
-            <property name="items">
+        <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="4">
+           <property name="title" value="Rule Attributes"/>  
+           <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.RuleAttributeBo"/>
+           <property  name="propertyName" value="attributeBos"/>
+		   <property name="layoutManager.renderSequenceField" value="false" />
+           <property name="items">
+               <list>
+                 <bean parent="AttributeField" p:propertyName="id"/>
+                 <bean parent="AttributeField" p:propertyName="attributeDefinitionId"/>
+                 <bean parent="AttributeField" p:propertyName="attributeDefinition.name"/>
+                 <bean parent="AttributeField" p:propertyName="value"/>
+                </list>
+              </property>
+           </bean>  
+           </list>
+           </property>
+           </bean>
+         
+   		  <bean parent="GroupSection">
+			<property name="title" value="Proposition" />
+			<property name="items">
+			  <list>
+		  		<bean parent="GroupGridBodyOnly">
+				  <property name="layoutManager.numberOfColumns" value="2" />
+	              <property name="items">
               <list>
                <bean parent="AttributeField" p:propertyName="proposition.id"/>
                <bean parent="AttributeField" p:propertyName="proposition.description"/>
@@ -45,29 +73,27 @@
               </list>
             </property>
          </bean>
+			    <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3">
+				  <property name="title" value="Proposition Parameters" />
+				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
+				  <property name="propertyName" value="proposition.parameters" />
+				  <property name="layoutManager.renderSequenceField" value="false" />
+				  <property name="items">
+				    <list>
+					  <bean parent="AttributeField" p:propertyName="sequenceNumber" />
+					  <bean parent="AttributeField" p:propertyName="value" />
+					  <bean parent="AttributeField" p:propertyName="parameterType" />
+				    </list>
+				   </property>
+			    </bean>
+              </list>
+			</property>
+		  </bean>
           
-         <bean parent="MaintenanceCollectionGroupSection">
-           <property name="title" value="Attributes"/>  
-           <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.RuleAttributeBo"/>
-           <property name="propertyName" value="attributeBos"/>
-             <property name="items">
-               <list>
-                 <bean parent="AttributeField" p:propertyName="id"/>
-                 <bean parent="AttributeField" p:propertyName="ruleId"/>
-                 <bean parent="AttributeField" p:propertyName="attributeDefinitionId"/>
-                 <bean parent="AttributeField" p:propertyName="attributeDefinition.name"/>
-                 <bean parent="AttributeField" p:propertyName="value"/>
-                </list>
-              </property>   
-              <property name="layoutManager.summaryTitle" value="Rule Attributes"/> 
-              <property name="layoutManager.summaryFields">
-                <list>
-                  <value>id</value>
-                </list>
-              </property>
-           </bean>  
+<!--          <bean parent="MaintenanceCollectionGroupSection">
+ -->
+ <!-- 
 
-<!-- 
          <bean parent="MaintenanceGroupSectionGridLayout">
            <property name="title" value="Proposition Information"/>  
              <property name="items">

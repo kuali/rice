@@ -43,7 +43,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Attribute Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextControl" p:size="10" />
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Rule Attribute Id"/>
@@ -54,7 +54,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Rule Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="100"/>
+      <bean parent="TextControl" p:size="20"/>
     </property>
     <property name="name" value="ruleId"/>
     <property name="label" value="Rule Id"/>
@@ -65,7 +65,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Attribute Definition Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextControl" p:size="10"/>
     </property>
     <property name="name" value="attributeDefinitionId"/>
     <property name="label" value="Attribute Definition Id"/>
@@ -76,7 +76,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Value"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextControl" p:size="20"/>
     </property>
     <property name="name" value="value"/>
     <property name="label" value="Attribute Value"/>

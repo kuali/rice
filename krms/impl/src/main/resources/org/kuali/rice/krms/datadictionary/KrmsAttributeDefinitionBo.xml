@@ -44,7 +44,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Attribute Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextControl" p:size="10"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Attribute Id"/>
@@ -55,7 +55,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="100"/>
+      <bean parent="TextControl" p:size="20"/>
     </property>
     <property name="name" value="name"/>
     <property name="label" value="Attribute Name"/>
@@ -66,7 +66,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Namespace"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextControl" p:size="20"/>
     </property>
     <property name="name" value="namespace"/>
     <property name="label" value="Attribute Namespace"/>
@@ -77,7 +77,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Label"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextControl" p:size="20"/>
     </property>
     <property name="name" value="label"/>
     <property name="label" value="Attribute Label"/>
@@ -88,7 +88,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Component"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextControl" p:size="20"/>
     </property>
     <property name="name" value="componentName"/>
     <property name="label" value="Attribute Component Name"/>

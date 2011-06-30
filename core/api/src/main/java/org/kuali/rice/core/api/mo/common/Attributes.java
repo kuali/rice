@@ -45,6 +45,7 @@ public final class Attributes implements Serializable {
     /**
      * This constructor should never be called except during JAXB unmarshalling.
      */
+    @SuppressWarnings("unused")
     private Attributes() {
         this.keyValues = null;
     }

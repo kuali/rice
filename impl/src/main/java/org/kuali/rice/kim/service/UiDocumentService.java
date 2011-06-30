@@ -19,16 +19,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
+import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.krad.bo.BusinessObject;
 
 /**
@@ -68,7 +68,7 @@ public interface UiDocumentService {
 	 * 
 	 * @param identityManagementRoleDocument
 	 */
-	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, KimRoleInfo kimRole);
+	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, Role kimRole);
 	
 	/**
 	 * 
@@ -105,9 +105,9 @@ public interface UiDocumentService {
 	
 	public String getMemberNamespaceCode(String memberTypeCode, BusinessObject member);
 
-	public List<RoleResponsibilityActionImpl> getRoleMemberResponsibilityActionImpls(String roleMemberId);
+	public List<RoleResponsibilityActionBo> getRoleMemberResponsibilityActionImpls(String roleMemberId);
 	
-	public List<KimDelegationImpl> getRoleDelegations(String roleId);
+	public List<DelegateBo> getRoleDelegations(String roleId);
 	
 	public KimDocumentRoleMember getKimDocumentRoleMember(String memberTypeCode, String memberId, String roleId);
 	
@@ -115,7 +115,7 @@ public interface UiDocumentService {
 
 	public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument);
 	
-	public RoleMemberImpl getRoleMember(String roleMemberId);
+	public RoleMemberBo getRoleMember(String roleMemberId);
 	
 	public List<KimDocumentRoleMember> getRoleMembers(Map<String,String> fieldValues);
 	

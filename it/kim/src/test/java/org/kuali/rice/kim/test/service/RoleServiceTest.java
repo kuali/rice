@@ -16,9 +16,10 @@
 package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 import java.util.ArrayList;
@@ -50,12 +51,12 @@ public class RoleServiceTest extends KIMTestCase {
 		//assertFalse( "p4 has no direct/higher level role r1", getRoleService().principalHasRole("p4", roleIds, null ));	
 		AttributeSet qualification = new AttributeSet();
 		qualification.put("Attribute 2", "CHEM");
-		assertTrue( "p1 has direct role r1 with rp2 attr data", getRoleService().principalHasRole("p1", roleIds, qualification ));	
+		assertTrue( "p1 has direct role r1 with rp2 attr data", getRoleService().principalHasRole("p1", roleIds, Attributes.fromMap(qualification)));
 		qualification.clear();
 		//requested qualification rolls up to a higher element in some hierarchy 
 		// method not implemented yet, not quite clear how this works
 		qualification.put("Attribute 3", "PHYS");
-		assertTrue( "p1 has direct role r1 with rp2 attr data", getRoleService().principalHasRole("p1", roleIds, qualification ));	
+		assertTrue( "p1 has direct role r1 with rp2 attr data", getRoleService().principalHasRole("p1", roleIds, Attributes.fromMap(qualification)));
 	}
 
 	@Test
@@ -78,7 +79,7 @@ public class RoleServiceTest extends KIMTestCase {
 	public void testGetPrincipalsFromCircularRoles() {
 		// "p2" is in "g1" and "g1" assigned to "r2"
 		List <String>roleIds = new ArrayList<String>();
-		Collection <String>rolePrincipalIds = null;
+		Collection <String>rolePrincipalIds;
 		roleIds.add("r101");
 		rolePrincipalIds = getRoleService().getRoleMemberPrincipalIds("ADDL_ROLES_TESTS", "Role A", null);
 		assertNotNull(rolePrincipalIds);

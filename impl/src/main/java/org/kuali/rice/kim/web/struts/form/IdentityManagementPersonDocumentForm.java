@@ -219,7 +219,7 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
 	public void setNewDelegationMemberRoleId(String newDelegationMemberRoleId) {
 		this.newDelegationMemberRoleId = newDelegationMemberRoleId;
 		if(StringUtils.isNotEmpty(newDelegationMemberRoleId)){
-			newDelegationMember.getRoleImpl().setRoleId(newDelegationMemberRoleId);
+			newDelegationMember.getRoleBo().setId(newDelegationMemberRoleId);
 		}
 	}
 

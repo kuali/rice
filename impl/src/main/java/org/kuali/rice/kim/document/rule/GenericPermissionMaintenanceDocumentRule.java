@@ -61,7 +61,7 @@ public class GenericPermissionMaintenanceDocumentRule extends
 				rulesPassed = false;
 			} else {
 				KimType kimType = KimApiServiceLocator.getKimTypeInfoService().getKimType(template.getKimTypeId());
-				Attributes details = Attributes.fromMap(perm.getDetails());
+				Attributes details = perm.getDetails();
 				// check that add passed attributes are defined
 				for ( String attributeName : details.keySet() ) {
 					if ( kimType.getAttributeDefinitionByName(attributeName) == null ) {

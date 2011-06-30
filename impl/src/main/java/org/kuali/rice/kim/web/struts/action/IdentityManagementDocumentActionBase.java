@@ -24,10 +24,10 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeService;
-import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
@@ -107,7 +107,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 
 	@Override
     protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
-        ActionForward dest = null;
+        ActionForward dest;
         if (form.isReturnToActionList()) {
             String workflowBase = getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY);
             String actionListUrl = workflowBase + "/ActionList.do";
@@ -174,7 +174,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 			try {
 				KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
 				if ( service != null && service instanceof KimRoleTypeService ) {
-					return (KimRoleTypeService)service;
+					return service;
 				} else {
 					return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 				}

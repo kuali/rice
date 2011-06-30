@@ -16,11 +16,14 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -29,19 +32,20 @@ public class DocumentTypeAndAttachmentTypePermissionTypeService extends
 		DocumentTypePermissionTypeServiceImpl {
 
 	@Override
-	public List<KimPermissionInfo> performPermissionMatches(
+	public List<Permission> performPermissionMatches(
 			Attributes requestedDetails,
-			List<KimPermissionInfo> permissionsList) {
+			List<Permission> permissionsList) {
 		
-		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		List<Permission> matchingPermissions = new ArrayList<Permission>();
 		if (requestedDetails == null) {
 			return matchingPermissions; // empty list
 		}
 		// loop over the permissions, checking the non-document-related ones
-		for (KimPermissionInfo kimPermissionInfo : permissionsList) {
-			if (!kimPermissionInfo.getDetails().containsKey(
+		for (Permission kimPermissionInfo : permissionsList) {
+            PermissionBo bo = PermissionBo.from(kimPermissionInfo);
+			if (!bo.getDetails().containsKey(
 						KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE)
-			  || kimPermissionInfo.getDetails().get(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE)
+			  || bo.getDetails().get(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE)
 				 .equals(requestedDetails.get(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE)))
 			{
 				matchingPermissions.add(kimPermissionInfo);

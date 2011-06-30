@@ -15,19 +15,19 @@
  limitations under the License.
 -->
 
-  <bean id="KimPermissionImpl" parent="KimPermissionImpl-parentBean"/>
+  <bean id="PermissionBo" parent="PermissionBo-parentBean"/>
 
-  <bean id="KimPermissionImpl-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl" p:titleAttribute="permissionId" p:objectLabel="Permission" p:inquiryDefinition-ref="KimPermissionImpl-inquiryDefinition">
+  <bean id="PermissionBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.permission.PermissionBo" p:titleAttribute="id" p:objectLabel="Permission" p:inquiryDefinition-ref="PermissionBo-inquiryDefinition">
     <property name="attributes">
       <list>
-        <ref bean="KimPermissionImpl-template.namespaceCode"/>
-        <ref bean="KimPermissionImpl-template.name"/>
-        <ref bean="KimPermissionImpl-namespaceCode"/>
-        <ref bean="KimPermissionImpl-name"/>
-        <ref bean="KimPermissionImpl-description"/>
-        <ref bean="KimPermissionImpl-detailObjects"/>
-        <ref bean="KimPermissionImpl-templateId"/>
-        <ref bean="KimPermissionImpl-detailObjectsValues"/>
+        <ref bean="PermissionBo-template.namespaceCode"/>
+        <ref bean="PermissionBo-template.name"/>
+        <ref bean="PermissionBo-namespaceCode"/>
+        <ref bean="PermissionBo-name"/>
+        <ref bean="PermissionBo-description"/>
+        <ref bean="PermissionBo-attributeDetails"/>
+        <ref bean="PermissionBo-templateId"/>
+        <ref bean="PermissionBo-detailObjectsValues"/>
       </list>
     </property>
 	<property name="relationships">
@@ -36,7 +36,7 @@
           <property name="objectAttributeName" value="template"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="templateId" p:targetName="permissionTemplateId"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="templateId" p:targetName="id"/>
             </list>
           </property>
           <property name="supportAttributes">
@@ -50,38 +50,38 @@
     </property>
   </bean>
 
-  <bean id="KimPermissionImpl-template.namespaceCode" parent="KimPermissionImpl-template.namespaceCode-parentBean"/>
-  <bean id="KimPermissionImpl-template.namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
+  <bean id="PermissionBo-template.namespaceCode" parent="PermissionBo-template.namespaceCode-parentBean"/>
+  <bean id="PermissionBo-template.namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
   </bean>
     
-  <bean id="KimPermissionImpl-templateId" parent="KimPermissionImpl-templateId-parentBean"/>
-  <bean id="KimPermissionImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="templateId" p:label="Template Id" p:shortLabel="Template Id" p:maxLength="40" p:required="false">
+  <bean id="PermissionBo-templateId" parent="PermissionBo-templateId-parentBean"/>
+  <bean id="PermissionBo-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="templateId" p:label="Template Id" p:shortLabel="Template Id" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
     
-  <bean id="KimPermissionImpl-template.name" parent="KimPermissionImpl-template.name-parentBean"/>
-  <bean id="KimPermissionImpl-template.name-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.name" p:label="Template Name" p:shortLabel="Template Name" p:maxLength="40" p:required="false">
+  <bean id="PermissionBo-template.name" parent="PermissionBo-template.name-parentBean"/>
+  <bean id="PermissionBo-template.name-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.name" p:label="Template Name" p:shortLabel="Template Name" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
   
   
-  <bean id="KimPermissionImpl-namespaceCode" parent="KimPermissionImpl-namespaceCode-parentBean"/>
-  <bean id="KimPermissionImpl-namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Permission Namespace" p:shortLabel="Permission Namespace">
+  <bean id="PermissionBo-namespaceCode" parent="PermissionBo-namespaceCode-parentBean"/>
+  <bean id="PermissionBo-namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Permission Namespace" p:shortLabel="Permission Namespace">
   </bean>
   
-  <bean id="KimPermissionImpl-name" parent="KimPermissionImpl-name-parentBean"/>
-  <bean id="KimPermissionImpl-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
+  <bean id="PermissionBo-name" parent="PermissionBo-name-parentBean"/>
+  <bean id="PermissionBo-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
 
-  <bean id="KimPermissionImpl-description" parent="KimPermissionImpl-description-parentBean"/>
-  <bean id="KimPermissionImpl-description-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="PermissionBo-description" parent="PermissionBo-description-parentBean"/>
+  <bean id="PermissionBo-description-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Desc"/>
     <property name="maxLength" value="400"/>
@@ -95,18 +95,18 @@
     <property name="label" value="Permission Description"/>
   </bean>
 
-  <bean id="KimPermissionImpl-detailObjects" parent="KimPermissionImpl-detailObjects-parentBean"/>
-  <bean id="KimPermissionImpl-detailObjects-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailObjects" p:label="Permission Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
+  <bean id="PermissionBo-attributeDetails" parent="PermissionBo-attributeDetails-parentBean"/>
+  <bean id="PermissionBo-attributeDetails-parentBean" parent="AttributeDefinition" abstract="true" p:name="attributeDetails" p:label="Permission Attribute Detail Values" p:shortLabel="Attribute Details" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
 
-  <bean id="KimPermissionImpl-detailObjectsValues" parent="KimPermissionImpl-detailObjects" p:name="detailObjectsValues">
+  <bean id="PermissionBo-detailObjectsValues" parent="PermissionBo-attributeDetails" p:name="detailObjectsValues">
   </bean>
 
-  <bean id="KimPermissionImpl-inquiryDefinition" parent="KimPermissionImpl-inquiryDefinition-parentBean"/>
-  <bean id="KimPermissionImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Permission Inquiry">
+  <bean id="PermissionBo-inquiryDefinition" parent="PermissionBo-inquiryDefinition-parentBean"/>
+  <bean id="PermissionBo-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Permission Inquiry">
     <property name="inquirySections">
       <list>
         <bean parent="InquirySectionDefinition" p:title="Permission Attributes" p:numberOfColumns="1">

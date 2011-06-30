@@ -49,7 +49,7 @@
   </bean>
 
   <bean id="IdentityManagementRoleDocument-roleNamespace" parent="IdentityManagementRoleDocument-roleNamespace-parentBean"/>
-  <bean id="IdentityManagementRoleDocument-roleNamespace-parentBean" parent="RoleImpl-namespaceCode" abstract="true" p:name="roleNamespace" p:label="Role Namespace" p:shortLabel="Role Namespace" p:required="true">
+  <bean id="IdentityManagementRoleDocument-roleNamespace-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="roleNamespace" p:label="Role Namespace" p:shortLabel="Role Namespace" p:required="true">
   </bean>
 
   <bean id="IdentityManagementRoleDocument-roleName" parent="IdentityManagementRoleDocument-roleName-parentBean"/>

@@ -24,6 +24,7 @@ import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.TypeContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
@@ -511,23 +512,23 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	return hasPerm;
     }
 
-    public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Attributes permissionDetails, Attributes qualification ) {
     	if ( qualification == null || qualification.isEmpty() ) {
-    		return hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
+    		return hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails.toMap()) );
     	}
     	if ( LOG.isDebugEnabled() ) {
-    		logAuthorizationCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
+    		logAuthorizationCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails.toMap()), new AttributeSet(qualification.toMap()));
     	}
     	StringBuffer cacheKey = new StringBuffer();
     	cacheKey.append( principalId ).append(  '/' );
     	cacheKey.append( namespaceCode ).append( '-' ).append( permissionTemplateName ).append( '/' );
-    	addAttributeSetToKey( permissionDetails, cacheKey );
+    	addAttributeSetToKey( new AttributeSet(permissionDetails.toMap()), cacheKey );
     	cacheKey.append( '/' );
-    	addAttributeSetToKey( qualification, cacheKey );
+    	addAttributeSetToKey( new AttributeSet(qualification.toMap()), cacheKey );
     	String key = cacheKey.toString();
     	Boolean isAuthorized = getIsAuthorizedByTemplateNameFromCache( key );
     	if ( isAuthorized == null ) {
-    		isAuthorized = getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification );
+    		isAuthorized = getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails.toMap()), new AttributeSet(qualification.toMap()) );
     		addIsAuthorizedByTemplateNameToCache( key, isAuthorized );
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Result: " + isAuthorized );
@@ -553,13 +554,13 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     /**
      * @see org.kuali.rice.kim.api.services.IdentityManagementService#getAuthorizedPermissions(java.lang.String, String, java.lang.String, org.kuali.rice.core.util.AttributeSet, org.kuali.rice.core.util.AttributeSet)
      */
-    public List<? extends KimPermissionInfo> getAuthorizedPermissions(String principalId,
-    		String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
+    public List<Permission> getAuthorizedPermissions(String principalId,
+                                                     String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
     	return getPermissionService().getAuthorizedPermissions(principalId, namespaceCode, permissionName, permissionDetails, qualification);
     }
 
-    public List<? extends KimPermissionInfo> getAuthorizedPermissionsByTemplateName(String principalId,
-    		String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification) {
+    public List<Permission> getAuthorizedPermissionsByTemplateName(String principalId,
+                                                                   String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification) {
     	return getPermissionService().getAuthorizedPermissionsByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
     }
 
@@ -587,10 +588,10 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	}
 
 	public List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(String namespaceCode,
-			String permissionTemplateName, AttributeSet permissionDetails,
-			AttributeSet qualification) {
+			String permissionTemplateName, Attributes permissionDetails,
+			Attributes qualification) {
 		return this.permissionService.getPermissionAssigneesForTemplateName( namespaceCode,
-				permissionTemplateName, permissionDetails, qualification );
+				permissionTemplateName, new AttributeSet(permissionDetails.toMap()), new AttributeSet(qualification.toMap()) );
 	}
 
     // GROUP SERVICE
@@ -758,9 +759,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     /**
 	 * This delegate method ...
 	 *
-	 * @param groupInfo
+	 * @param group
 	 * @return
-	 * @see org.kuali.rice.kim.service.GroupUpdateService#createGroup(org.kuali.rice.kim.bo.group.dto.GroupInfo)
 	 */
 	public Group createGroup(Group group) {
     	clearGroupCachesForPrincipalAndGroup(null,group.getId());

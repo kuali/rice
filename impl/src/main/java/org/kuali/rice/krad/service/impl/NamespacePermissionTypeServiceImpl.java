@@ -17,7 +17,8 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -42,27 +43,27 @@ public class NamespacePermissionTypeServiceImpl extends
 	 * i.e. KR-NS will have priority over KR-*
 	 * 
      * If ExactMatchPriority is false, then this method will return all exact AND partial matching permissions.  By default, ExactMatchPriority will be set to true.
-	 *  
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
 	@Override
-	protected List<KimPermissionInfo> performPermissionMatches(Attributes requestedDetails, List<KimPermissionInfo> permissionsList) {
-		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+	protected List<Permission> performPermissionMatches(Attributes requestedDetails, List<Permission> permissionsList) {
+		List<Permission> matchingPermissions = new ArrayList<Permission>();
 		
 		String requestedNamespaceCode = requestedDetails.get(KimConstants.AttributeConstants.NAMESPACE_CODE);
 		
 		// Add all exact matches to the list 
-		for ( KimPermissionInfo kpi : permissionsList ) {
-			String permissionNamespaceCode = kpi.getDetails().get(KimConstants.AttributeConstants.NAMESPACE_CODE);
+		for ( Permission permission : permissionsList ) {
+            PermissionBo bo = PermissionBo.from(permission);
+			String permissionNamespaceCode = bo.getDetails().get(KimConstants.AttributeConstants.NAMESPACE_CODE);
 			if ( StringUtils.equals(requestedNamespaceCode, permissionNamespaceCode ) ) {
-				matchingPermissions.add(kpi);
+				matchingPermissions.add(permission);
 			} 
 		}
 		
 		// Add partial matches to the list if there are no exact matches or if exactMatchPriority is false
 		if ((exactMatchPriority && matchingPermissions.isEmpty()) || (!(exactMatchPriority))) {
-			for ( KimPermissionInfo kpi : permissionsList ) {
-				String permissionNamespaceCode = kpi.getDetails().get(KimConstants.AttributeConstants.NAMESPACE_CODE);
+			for ( Permission kpi : permissionsList ) {
+                PermissionBo bo = PermissionBo.from(kpi);
+				String permissionNamespaceCode = bo.getDetails().get(KimConstants.AttributeConstants.NAMESPACE_CODE);
 				if ( requestedNamespaceCode != null
 					 && permissionNamespaceCode != null
 					 && (!( StringUtils.equals(requestedNamespaceCode, permissionNamespaceCode ))) 

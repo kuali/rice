@@ -104,7 +104,7 @@
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimRoleService"
         p:localServiceName="kimRoleServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.RoleService" />
+        p:serviceInterface="org.kuali.rice.kim.api.role.RoleService" />
     </property>
     <property name="exportIf" value="kimRoleServiceSOAP.expose"/>
   </bean>
@@ -124,7 +124,7 @@
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimRoleUpdateService"
         p:localServiceName="kimRoleUpdateServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.RoleUpdateService" />
+        p:serviceInterface="org.kuali.rice.kim.api.role.RoleUpdateService" />
     </property>
     <property name="exportIf" value="kimRoleUpdateServiceSOAP.expose"/>
   </bean>

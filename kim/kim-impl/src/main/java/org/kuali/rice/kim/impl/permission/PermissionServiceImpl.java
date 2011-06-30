@@ -22,16 +22,16 @@ import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
-import org.kuali.rice.kim.api.common.delegate.Delegate;
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.permission.PermissionTypeService;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
@@ -162,7 +162,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
-		return getRoleService().principalHasRole( principalId, roleIds, new AttributeSet(qualification.toMap()));
+		return getRoleService().principalHasRole( principalId, roleIds, qualification);
     }
 
     /**
@@ -180,7 +180,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
-    	return getRoleService().principalHasRole( principalId, roleIds, new AttributeSet(qualification.toMap()));
+    	return getRoleService().principalHasRole( principalId, roleIds, qualification);
     }
 
     /**
@@ -219,7 +219,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     		// a set and then processing the distinct list rather than a check
     		// for every permission
     		if ( roleIds != null && !roleIds.isEmpty() ) {
-    			if ( getRoleService().principalHasRole( principalId, roleIds, new AttributeSet(qualification.toMap())) ) {
+    			if ( getRoleService().principalHasRole( principalId, roleIds, qualification) ) {
     				results.add( perm );
     			}
     		}
@@ -287,12 +287,12 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return results;
     	}
-    	Collection<RoleMembership> roleMembers = getRoleService().getRoleMembers( roleIds, new AttributeSet(qualification.toMap()) );
+    	Collection<RoleMembership> roleMembers = getRoleService().getRoleMembers( roleIds,qualification );
     	for ( RoleMembership rm : roleMembers ) {
-			List<Delegate.Builder> delegateBuilderList = new ArrayList<Delegate.Builder>();
+			List<DelegateType.Builder> delegateBuilderList = new ArrayList<DelegateType.Builder>();
 			if (!rm.getDelegates().isEmpty()) {
-    			for (Delegate delegate : rm.getDelegates()){        				
-    				delegateBuilderList.add(Delegate.Builder.create(delegate.getDelegationId(), delegate.getDelegationTypeCode(), delegate.getMemberId(), delegate.getMemberTypeCode(), delegate.getRoleMemberId(), delegate.getQualifier()));
+    			for (DelegateType delegate : rm.getDelegates()){
+                    delegateBuilderList.add(DelegateType.Builder.create(delegate));
     			}
 			}
     		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
@@ -310,12 +310,12 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return results;
     	}
-    	Collection<RoleMembership> roleMembers = getRoleService().getRoleMembers( roleIds, new AttributeSet(qualification.toMap()));
+    	Collection<RoleMembership> roleMembers = getRoleService().getRoleMembers( roleIds,qualification);
     	for ( RoleMembership rm : roleMembers ) {
-			List<Delegate.Builder> delegateBuilderList = new ArrayList<Delegate.Builder>();
+			List<DelegateType.Builder> delegateBuilderList = new ArrayList<DelegateType.Builder>();
 			if (!rm.getDelegates().isEmpty()) {
-    			for (Delegate delegate : rm.getDelegates()){        				
-    				delegateBuilderList.add(Delegate.Builder.create(delegate.getDelegationId(), delegate.getDelegationTypeCode(), delegate.getMemberId(), delegate.getMemberTypeCode(), delegate.getRoleMemberId(), delegate.getQualifier()));
+    			for (DelegateType delegate : rm.getDelegates()){
+                    delegateBuilderList.add(DelegateType.Builder.create(delegate));
     			}
 			}
     		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {

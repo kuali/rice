@@ -13,29 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role.impl;
+package org.kuali.rice.kim.impl.common.delegate;
 
 
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name="KRIM_DLGN_MBR_ATTR_DATA_T")
-public class KimDelegationMemberAttributeDataImpl extends KimAttributeDataBo {
-    @Column(name="DLGN_MBR_ID")
-    protected String assignedToId;
-
-    public String getAssignedToId() {
-        return this.assignedToId;
-    }
-
-    public void setAssignedToId(String delegationMemberId) {
-        this.assignedToId = delegationMemberId;
-    }
+@Table(name = "KRIM_DLGN_MBR_ATTR_DATA_T")
+public class DelegateMemberAttributeDataBo extends KimAttributeDataBo {
+    @Column(name = "DLGN_MBR_ID")
+    String assignedToId;
 }

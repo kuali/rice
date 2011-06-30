@@ -31,11 +31,10 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
@@ -264,20 +263,19 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
                 newMember.setMemberNamespaceCode(groupInfo.getNamespaceCode());
         	}
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
-        	KimRoleInfo roleInfo = null;
-        	roleInfo = KimApiServiceLocator.getRoleService().getRole(newMember.getMemberId());
-        	if (roleInfo == null) {
+        	Role role = KimApiServiceLocator.getRoleService().getRole(newMember.getMemberId());
+        	if (role == null) {
         		GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
             			new String[] {newMember.getMemberId()});
             	return false;
         	}
         	else if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) 
-            		&& !validateRole(newMember.getMemberId(), (Role)roleInfo, "document.member.memberId", "Role")){
+            		&& !validateRole(newMember.getMemberId(), role, "document.member.memberId", "Role")){
             	return false;
             }
         	else {
-        		newMember.setMemberName(roleInfo.getRoleName());
-                newMember.setMemberNamespaceCode(roleInfo.getNamespaceCode());
+        		newMember.setMemberName(role.getName());
+                newMember.setMemberNamespaceCode(role.getNamespaceCode());
         	}
 		}
         return true;

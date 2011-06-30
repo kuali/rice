@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
+import org.kuali.rice.kim.api.role.RoleResponsibility;
+
 import java.io.Serializable;
 
 /**
@@ -30,7 +32,7 @@ public class RoleResponsibilityActionInfo implements Serializable {
 	protected boolean forceAction;
 	protected Integer priorityNumber;
 	
-	protected RoleResponsibilityInfo roleResponsibilityInfo;
+	protected RoleResponsibility roleResponsibility;
 	
 	public String getRoleResponsibilityActionId() {
 		return this.roleResponsibilityActionId;
@@ -69,11 +71,11 @@ public class RoleResponsibilityActionInfo implements Serializable {
 	public void setRoleMemberId(String roleMemberId) {
 		this.roleMemberId = roleMemberId;
 	}
-	public RoleResponsibilityInfo getRoleResponsibilityInfo() {
-		return this.roleResponsibilityInfo;
+	public RoleResponsibility getRoleResponsibility() {
+		return this.roleResponsibility;
 	}
-	public void setRoleResponsibilityInfo(RoleResponsibilityInfo roleResponsibilityInfo) {
-		this.roleResponsibilityInfo = roleResponsibilityInfo;
+	public void setRoleResponsibility(RoleResponsibility roleResponsibility) {
+		this.roleResponsibility = roleResponsibility;
 	}
 	/**
 	 * @return the forceAction

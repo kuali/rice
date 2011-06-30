@@ -22,6 +22,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -30,15 +31,18 @@ import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.service.PermissionService;
 
@@ -143,7 +147,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	public void populatePermissions( DocumentConfigurationViewForm form ) {
 		
 		DocumentType docType = form.getDocumentType();
-		Map<String,List<KimRoleInfo>> permRoles = new HashMap<String, List<KimRoleInfo>>(); 
+		Map<String,List<Role>> permRoles = new HashMap<String, List<Role>>();
 		Map<String,String> searchCriteria = new HashMap<String,String>();
 		searchCriteria.put("attributeName", "documentTypeName" );
 		searchCriteria.put("active", "Y");
@@ -154,29 +158,31 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			searchCriteria.put("detailCriteria",
 					KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+docType.getName()
 					);
-			List<KimPermissionInfo> perms = getPermissionService().lookupPermissions( searchCriteria, true );
-			for ( KimPermissionInfo perm : perms ) {
+			List<Permission> perms = getPermissionService().lookupPermissions(searchCriteria, true);
+			for ( Permission perm : perms ) {
+                PermissionBo permBo = PermissionBo.from(perm);
 				List<String> roleIds = getPermissionService().getRoleIdsForPermissions(Collections.singletonList(perm));
-				permRoles.put( perm.getPermissionId(), getRoleService().getRoles(roleIds) );
-				for ( String attributeName : perm.getDetails().keySet() ) {
+				permRoles.put( perm.getId(), getRoleService().getRoles(roleIds) );
+				for ( String attributeName : permBo.getDetails().keySet() ) {
 					addAttributeLabel(form, attributeName);
 				}
 			}
 			// show the section if the current document or permissions exist
 			if ( perms.size() > 0 || documentTypeName.equals( form.getDocumentTypeName() ) ) {
 				ArrayList<PermissionForDisplay> dispPerms = new ArrayList<PermissionForDisplay>( perms.size() );
-				for ( KimPermissionInfo perm : perms ) {
-					if ( perm.getDetails().size() == 1  ) { // only the document type
+				for ( Permission perm : perms ) {
+                    PermissionBo permBo = PermissionBo.from(perm);
+					if ( permBo.getDetails().size() == 1  ) { // only the document type
 						// this is a document type-specific permission, check if seen earlier
 						if ( seenDocumentPermissions.contains(perm.getTemplate().getNamespaceCode()+"|"+perm.getTemplate().getName()) ) {
-							dispPerms.add( new PermissionForDisplay( perm, true ) );
+							dispPerms.add( new PermissionForDisplay( permBo, true ) );
 						} else {
-							dispPerms.add( new PermissionForDisplay( perm, false ) );
+							dispPerms.add( new PermissionForDisplay( permBo, false ) );
 							seenDocumentPermissions.add(perm.getTemplate().getNamespaceCode()+"|"+perm.getTemplate().getName());
 						}
 					} else {
 						// other attributes, can't determine whether this is overridden at another level
-						dispPerms.add( new PermissionForDisplay( perm, false ) );						
+						dispPerms.add( new PermissionForDisplay( permBo, false ) );
 					}
 				}
 				form.setPermissionsForDocumentType(documentTypeName, dispPerms );
@@ -327,7 +333,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		}
 		form.setResponsibilityMap( nodeToRespMap );
 		
-		Map<String,List<KimRoleInfo>> respToRoleMap = new HashMap<String, List<KimRoleInfo>>();
+		Map<String,List<Role>> respToRoleMap = new HashMap<String, List<Role>>();
 		for (Responsibility responsibility : responsibilities ) {
 			List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getId(), null);
 			respToRoleMap.put( responsibility.getId(), getRoleService().getRoles(roleIds) );
@@ -392,10 +398,10 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	}
 
 	public static class PermissionForDisplay {
-		private KimPermissionInfo perm;
+		private PermissionBo perm;
 		private boolean overridden = false;
 		
-		public PermissionForDisplay( KimPermissionInfo perm, boolean overridden ) {
+		public PermissionForDisplay( PermissionBo perm, boolean overridden ) {
 			this.perm = perm;
 			this.overridden = overridden;
 		}
@@ -406,7 +412,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		public void setOverridden(boolean overridden) {
 			this.overridden = overridden;
 		}
-		public AttributeSet getDetails() {
+		public Attributes getDetails() {
 			return this.perm.getDetails();
 		}
 		public String getName() {
@@ -416,9 +422,9 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			return this.perm.getNamespaceCode();
 		}
 		public String getPermissionId() {
-			return this.perm.getPermissionId();
+			return this.perm.getId();
 		}
-		public KimPermissionTemplateInfo getTemplate() {
+		public PermissionTemplateBo getTemplate() {
 			return this.perm.getTemplate();
 		}
 		

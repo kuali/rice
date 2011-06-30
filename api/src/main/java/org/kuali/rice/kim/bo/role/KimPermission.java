@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.krad.bo.Inactivatable;
 
@@ -33,7 +34,7 @@ public interface KimPermission extends Inactivatable {
 	String getPermissionId();
 	
 	/** List of details for this role/permission relationship.  See the class comment for more information. */
-	AttributeSet getDetails();
+	Attributes getDetails();
 	
 	public boolean hasDetails();
 	

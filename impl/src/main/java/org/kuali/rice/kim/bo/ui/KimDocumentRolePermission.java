@@ -26,8 +26,8 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -51,7 +51,7 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 	@Column(name="PERM_ID")
 	protected String permissionId;
 	@Transient
-	protected KimPermissionInfo kimPermission;
+	protected Permission permission;
 	
 	public String getPermissionId() {
 		return permissionId;
@@ -78,20 +78,20 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 	}
 
 	/**
-	 * @return the kimPermission
+	 * @return the permission
 	 */
-	public KimPermissionInfo getKimPermission() {
-		if ( kimPermission == null || !StringUtils.equals( kimPermission.getPermissionId(), permissionId ) ) {
-			kimPermission = KimApiServiceLocator.getPermissionService().getPermission(permissionId);
+	public Permission getPermission() {
+		if ( permission == null || !StringUtils.equals( permission.getId(), permissionId ) ) {
+			permission = KimApiServiceLocator.getPermissionService().getPermission(permissionId);
 		}
-		return kimPermission;
+		return permission;
 	}
 
 	/**
-	 * @param kimPermission the kimPermission to set
+	 * @param permission the permission to set
 	 */
-	public void setKimPermission(KimPermissionInfo kimPermission) {
-		this.kimPermission = kimPermission;
+	public void setPermission(Permission permission) {
+		this.permission = permission;
 	}
 	
 }

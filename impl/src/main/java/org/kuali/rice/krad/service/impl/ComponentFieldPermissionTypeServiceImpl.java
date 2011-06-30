@@ -17,7 +17,8 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -28,31 +29,25 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
-
-	{
-//		requiredAttributes.add(KimAttributes.COMPONENT_NAME);
-//		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
-	}
 	
 	/**
 	 * Compare the component and property names between the request and matching permissions.
 	 * Make entries with a matching property name take precedence over those with blank property 
 	 * names on the stored permissions.  Only match entries with blank property names if
 	 * no entries match on the exact property name. 
-	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
 	@Override
-	protected List<KimPermissionInfo> performPermissionMatches(Attributes requestedDetails,
-			List<KimPermissionInfo> permissionsList) {
-		List<KimPermissionInfo> propertyMatches = new ArrayList<KimPermissionInfo>();
-		List<KimPermissionInfo> prefixPropertyMatches = new ArrayList<KimPermissionInfo>();
-		List<KimPermissionInfo> blankPropertyMatches = new ArrayList<KimPermissionInfo>();
+	protected List<Permission> performPermissionMatches(Attributes requestedDetails,
+			List<Permission> permissionsList) {
+		List<Permission> propertyMatches = new ArrayList<Permission>();
+		List<Permission> prefixPropertyMatches = new ArrayList<Permission>();
+		List<Permission> blankPropertyMatches = new ArrayList<Permission>();
 		String propertyName = requestedDetails.get(KimConstants.AttributeConstants.PROPERTY_NAME);
 		String componentName = requestedDetails.get(KimConstants.AttributeConstants.COMPONENT_NAME);
-		for ( KimPermissionInfo kpi : permissionsList ) {
-			if ( StringUtils.equals( componentName, kpi.getDetails().get( KimConstants.AttributeConstants.COMPONENT_NAME ) ) ) {
-				String permPropertyName = kpi.getDetails().get(KimConstants.AttributeConstants.PROPERTY_NAME);
+		for ( Permission kpi : permissionsList ) {
+            PermissionBo bo = PermissionBo.from(kpi);
+			if ( StringUtils.equals( componentName, bo.getDetails().get( KimConstants.AttributeConstants.COMPONENT_NAME ) ) ) {
+				String permPropertyName = bo.getDetails().get(KimConstants.AttributeConstants.PROPERTY_NAME);
 				if ( StringUtils.isBlank( permPropertyName ) ) {
 					blankPropertyMatches.add( kpi );
 				} else if ( StringUtils.equals( propertyName, permPropertyName ) ) {

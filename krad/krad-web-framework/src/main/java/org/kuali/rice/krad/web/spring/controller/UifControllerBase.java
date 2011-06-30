@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -156,8 +157,8 @@ public abstract class UifControllerBase {
         AttributeSet permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
 
         if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId,
-                KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails,
-                roleQualifier)) {
+                KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, Attributes.fromMap(permissionDetails),
+                Attributes.fromMap(roleQualifier))) {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
                     methodToCall, this.getClass().getSimpleName());
         }

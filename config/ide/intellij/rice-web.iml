@@ -32,8 +32,8 @@
     <output url="file://$MODULE_DIR$/../../../web/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../web/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../web">
-      <sourceFolder url="file://$MODULE_DIR$/../../../web/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../web/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../web/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../web/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../web/target" />
     </content>

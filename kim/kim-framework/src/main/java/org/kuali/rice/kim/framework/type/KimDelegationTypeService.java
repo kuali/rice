@@ -17,7 +17,6 @@ package org.kuali.rice.kim.framework.type;
 
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.type.KimTypeService;
-
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 

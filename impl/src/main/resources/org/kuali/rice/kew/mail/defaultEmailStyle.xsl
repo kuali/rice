@@ -48,7 +48,7 @@ For additional help, email <![CDATA[<mailto:]]><xsl:choose><xsl:when test="strin
 <xsl:if test="@env != 'prd'">
 Action Item sent to <xsl:value-of select="actionItem/actionItemPrincipalName"/>
 <xsl:if test="string(actionItem/actionItem/delegationType)">
- for delegation type <xsl:value-of select="actionItem/actionItem/delegationType"/>
+ for delegate type <xsl:value-of select="actionItem/actionItem/delegationType"/>
 </xsl:if>
 </xsl:if>
 

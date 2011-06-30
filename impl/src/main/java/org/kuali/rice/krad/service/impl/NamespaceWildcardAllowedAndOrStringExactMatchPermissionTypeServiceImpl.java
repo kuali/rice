@@ -19,8 +19,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.namespace.Namespace;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
@@ -39,12 +40,13 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	protected boolean namespaceRequiredOnStoredAttributeSet;
 
 	@Override
-	protected List<KimPermissionInfo> performPermissionMatches(Attributes requestedDetails, List<KimPermissionInfo> permissionsList) {
-	    List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
-        List<KimPermissionInfo> matchingBlankPermissions = new ArrayList<KimPermissionInfo>();
+	protected List<Permission> performPermissionMatches(Attributes requestedDetails, List<Permission> permissionsList) {
+	    List<Permission> matchingPermissions = new ArrayList<Permission>();
+        List<Permission> matchingBlankPermissions = new ArrayList<Permission>();
 	    String requestedAttributeValue = requestedDetails.get(exactMatchStringAttributeName);
-	    for ( KimPermissionInfo kpi : permissionsList ) {
-	        String permissionAttributeValue = kpi.getDetails().get(exactMatchStringAttributeName);
+	    for ( Permission kpi : permissionsList ) {
+            PermissionBo bo = PermissionBo.from(kpi);
+	        String permissionAttributeValue = bo.getDetails().get(exactMatchStringAttributeName);
 	        if ( StringUtils.equals(requestedAttributeValue, permissionAttributeValue) ) {
 	            matchingPermissions.add(kpi);
 	        } else if ( StringUtils.isBlank(permissionAttributeValue) ) {
@@ -54,7 +56,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	    // if the exact match worked, use those when checking the namespace
 	    // otherwise, use those with a blank additional property value
 	    if ( !matchingPermissions.isEmpty() ) {
-            List<KimPermissionInfo> matchingWithNamespace = super.performPermissionMatches(requestedDetails, matchingPermissions);
+            List<Permission> matchingWithNamespace = super.performPermissionMatches(requestedDetails, matchingPermissions);
 	        if ( !namespaceRequiredOnStoredAttributeSet ) {
 	            // if the namespace is not required and the namespace match would have excluded
 	            // the results, return the original set of matches
@@ -64,7 +66,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	        }
             return matchingWithNamespace;
 	    } else if ( !matchingBlankPermissions.isEmpty() ) {
-            List<KimPermissionInfo> matchingWithNamespace = super.performPermissionMatches(requestedDetails, matchingBlankPermissions);
+            List<Permission> matchingWithNamespace = super.performPermissionMatches(requestedDetails, matchingBlankPermissions);
             if ( !namespaceRequiredOnStoredAttributeSet ) {
                 // if the namespace is not required and the namespace match would have excluded
                 // the results, return the original set of matches

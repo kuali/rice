@@ -113,7 +113,7 @@
   </bean>
 
   <bean id="ResponsibilityImpl-template.namespaceCode" parent="ResponsibilityImpl-template.namespaceCode-parentBean"/>
-  <bean id="ResponsibilityImpl-template.namespaceCode-parentBean" parent="RoleImpl-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
+  <bean id="ResponsibilityImpl-template.namespaceCode-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
   </bean>
     
   <bean id="ResponsibilityImpl-templateId" parent="ResponsibilityImpl-templateId-parentBean"/>
@@ -157,7 +157,7 @@
   
   
   <bean id="ResponsibilityImpl-namespaceCode" parent="ResponsibilityImpl-namespaceCode-parentBean"/>
-  <bean id="ResponsibilityImpl-namespaceCode-parentBean" parent="RoleImpl-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Responsibility Namespace" p:shortLabel="Responsibility Namespace">
+  <bean id="ResponsibilityImpl-namespaceCode-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Responsibility Namespace" p:shortLabel="Responsibility Namespace">
   </bean>
   
   <bean id="ResponsibilityImpl-id" parent="ResponsibilityImpl-id-parentBean"/>
@@ -181,11 +181,11 @@
   </bean>
 
   <bean id="ResponsibilityImpl-assignedToRoleNamespaceForLookup" parent="ResponsibilityImpl-assignedToRoleNamespaceForLookup-parentBean"/>
-  <bean id="ResponsibilityImpl-assignedToRoleNamespaceForLookup-parentBean" parent="RoleImpl-namespaceCode" abstract="true" p:name="assignedToRoleNamespaceForLookup" p:label="Role Namespace" p:shortLabel="Role Namespace">
+  <bean id="ResponsibilityImpl-assignedToRoleNamespaceForLookup-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="assignedToRoleNamespaceForLookup" p:label="Role Namespace" p:shortLabel="Role Namespace">
   </bean>
 
   <bean id="ResponsibilityImpl-assignedToRoleNameForLookup" parent="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean"/>
-  <bean id="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean" parent="RoleImpl-roleName" abstract="true" p:name="assignedToRole.name">
+  <bean id="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean" parent="RoleBo-name" abstract="true" p:name="assignedToRole.name">
   </bean>
 
   <bean id="ResponsibilityImpl-assignedToPrincipalNameForLookup" parent="ResponsibilityImpl-assignedToPrincipalNameForLookup-parentBean"/>

@@ -123,14 +123,15 @@
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimRoleService"
         p:localServiceName="kimRoleServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.RoleService" />
+        p:serviceInterface="org.kuali.rice.kim.api.role.RoleService" />
     </property>
     <property name="exportIf" value="kimRoleServiceSOAP.expose"/>
   </bean>
 
   <bean parent="kimLocalServiceExporter">
 	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
+    <property impl/src/main/resources/org/kuali/rice/kim/config/KIMServiceBusSOAPDefaultSpringBeans.xml
+name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="kimRoleUpdateService"
         p:localServiceName="kimRoleUpdateService" />

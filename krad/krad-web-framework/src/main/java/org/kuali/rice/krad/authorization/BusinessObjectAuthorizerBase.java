@@ -18,6 +18,7 @@ package org.kuali.rice.krad.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -133,8 +134,8 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			String principalId) {
 		return getIdentityManagementService().isAuthorizedByTemplateName(
 				principalId, namespaceCode, permissionTemplateName,
-				new AttributeSet(getPermissionDetailValues(dataObject)),
-				new AttributeSet(getRoleQualification(dataObject, principalId)));
+				Attributes.fromMap(getPermissionDetailValues(dataObject)),
+				Attributes.fromMap(getRoleQualification(dataObject, principalId)));
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,
@@ -183,7 +184,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		
 		return getIdentityManagementService().isAuthorizedByTemplateName(
 				principalId, namespaceCode, permissionTemplateName,
-				permissionDetails, roleQualifiers);
+				Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifiers));
 	}
 
 	/**

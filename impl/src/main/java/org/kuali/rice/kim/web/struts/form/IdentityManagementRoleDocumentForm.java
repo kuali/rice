@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -140,53 +140,66 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	}
 
 	public String getMemberFieldConversions(){
-		if(member==null)
+		if(member==null) {
 			return "";
+        }
 		return getMemberFieldConversions(member.getMemberTypeCode());
 	}
 
 	public String getMemberBusinessObjectName(){
-		if(member==null)
+		if(member==null) {
 			return "";
+        }
 		return getMemberBusinessObjectName(member.getMemberTypeCode());
 	}
 
 	public String getDelegationMemberFieldConversions(){
-		if(getDelegationMember()==null)
+		if(getDelegationMember()==null) {
 			return "";
+        }
 		String memberTypeCode = getDelegationMember().getMemberTypeCode();
-		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
+		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
 			return "principalId:delegationMember.memberId,principalName:delegationMember.memberName";
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
+        }
+		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
 			return "roleId:delegationMember.memberId,roleName:delegationMember.memberName,namespaceCode:delegationMember.memberNamespaceCode";
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
+        }
+		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
 			return "groupId:delegationMember.memberId,groupName:delegationMember.memberName,namespaceCode:delegationMember.memberNamespaceCode";
+        }
 		return "";
 	}
 
 	public String getDelegationMemberBusinessObjectName(){
-		if(getDelegationMember()==null)
+		if(getDelegationMember()==null) {
 			return "";
+        }
 		return getMemberBusinessObjectName(getDelegationMember().getMemberTypeCode());
 	}
 
 	protected String getMemberFieldConversions(String memberTypeCode){
-		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
+		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
 			return "principalId:member.memberId,principalName:member.memberName";
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
+        }
+		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
 			return "roleId:member.memberId,roleName:member.memberName,namespaceCode:member.memberNamespaceCode";
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
+        }
+		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
 			return "groupId:member.memberId,groupName:member.memberName,namespaceCode:member.memberNamespaceCode";
+        }
 		return "";
 	}
 
 	protected String getMemberBusinessObjectName(String memberTypeCode){
-		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
+		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
 			return PersonImpl.class.getName();
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
-			return RoleImpl.class.getName();
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
+        }
+		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+			return RoleBo.class.getName();
+        }
+		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
 			return GroupBo.class.getName();
+        }
 		return "";
 	}
 
@@ -251,7 +264,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	}
 
 	public int getPageNumberOfRoleMemberId(String roleMemberId){
-		if(StringUtils.isEmpty(roleMemberId)) return 1;
+		if(StringUtils.isEmpty(roleMemberId)) {return 1;}
 		int index = getIndexOfRoleMemberFromMemberRows(roleMemberId);
 		return TableRenderUtil.computeTotalNumberOfPages(index+1, getRecordsPerPage())-1;
 	}

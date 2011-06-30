@@ -71,7 +71,7 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/impl/group/Group.xml");
-		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml");
+		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/RoleBo.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/impl/type/KimType.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/krad/test/document");
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/Campus.xml");

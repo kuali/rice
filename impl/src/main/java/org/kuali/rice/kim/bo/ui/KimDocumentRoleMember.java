@@ -20,8 +20,8 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.util.AutoPopulatingList;
 
@@ -133,8 +133,9 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 
 	public KimDocumentRoleQualifier getQualifier(String kimAttributeDefnId) {
 		for(KimDocumentRoleQualifier qualifier:qualifiers){
-			if(qualifier.getKimAttrDefnId().equals(kimAttributeDefnId))
+			if(qualifier.getKimAttrDefnId().equals(kimAttributeDefnId)) {
 				return qualifier;
+            }
 		}
 		return null;
 	}
@@ -211,18 +212,16 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
         		setMemberName(principalInfo.getPrincipalName());
         	}        	        	
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())){
-        	Group groupInfo = null;
-        	groupInfo = KimApiServiceLocator.getIdentityManagementService().getGroup(getMemberId());
+        	Group groupInfo = KimApiServiceLocator.getIdentityManagementService().getGroup(getMemberId());
         	if (groupInfo != null) {
         		setMemberName(groupInfo.getName());
         		setMemberNamespaceCode(groupInfo.getNamespaceCode());
         	}
         	
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())){
-        	KimRoleInfo roleInfo = null;
-        	roleInfo = KimApiServiceLocator.getRoleService().getRole(getMemberId());
-        	setMemberName(roleInfo.getRoleName());
-        	setMemberNamespaceCode(roleInfo.getNamespaceCode());
+        	Role role = KimApiServiceLocator.getRoleService().getRole(getMemberId());
+        	setMemberName(role.getName());
+        	setMemberNamespaceCode(role.getNamespaceCode());
         }
 	}
 	

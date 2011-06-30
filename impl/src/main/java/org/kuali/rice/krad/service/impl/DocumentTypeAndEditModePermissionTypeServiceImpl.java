@@ -16,7 +16,8 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
@@ -32,13 +33,14 @@ public class DocumentTypeAndEditModePermissionTypeServiceImpl extends DocumentTy
 	}
 	
 	@Override
-	protected List<KimPermissionInfo> performPermissionMatches(
+	protected List<Permission> performPermissionMatches(
 			Attributes requestedDetails,
-			List<KimPermissionInfo> permissionsList) {
-		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
-		for (KimPermissionInfo kimPermissionInfo : permissionsList) {
-			if (requestedDetails.get(KimConstants.AttributeConstants.EDIT_MODE).equals(kimPermissionInfo.getDetails().get(KimConstants.AttributeConstants.EDIT_MODE))) {
-				matchingPermissions.add(kimPermissionInfo);
+			List<Permission> permissionsList) {
+		List<Permission> matchingPermissions = new ArrayList<Permission>();
+		for (Permission permission : permissionsList) {
+            PermissionBo bo = PermissionBo.from(permission);
+			if (requestedDetails.get(KimConstants.AttributeConstants.EDIT_MODE).equals(bo.getDetails().get(KimConstants.AttributeConstants.EDIT_MODE))) {
+				matchingPermissions.add(permission);
 			}
 		}
 		return super.performPermissionMatches(requestedDetails, matchingPermissions);

@@ -17,7 +17,8 @@ package org.kuali.rice.kim.service.support.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 
@@ -32,10 +33,8 @@ import java.util.List;
  */
 public class KimPermissionTypeServiceBase extends KimTypeServiceBase implements KimPermissionTypeService {
 
-	/**
-	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#getMatchingPermissions(Attributes, List)
-	 */
-	public final List<KimPermissionInfo> getMatchingPermissions( Attributes requestedDetails, List<KimPermissionInfo> permissionsList ) {
+	@Override
+	public final List<Permission> getMatchingPermissions(Attributes requestedDetails, List<Permission> permissionsList) {
 		requestedDetails = translateInputAttributes(requestedDetails);
 		validateRequiredAttributesAgainstReceived(requestedDetails);
 		return performPermissionMatches(requestedDetails, permissionsList);
@@ -47,10 +46,11 @@ public class KimPermissionTypeServiceBase extends KimTypeServiceBase implements 
 	 * This base implementation uses the {@link #performMatch(Attributes, Attributes)} method
 	 * to perform an exact match on the permission details and return all that are equal.
 	 */
-	protected List<KimPermissionInfo> performPermissionMatches(Attributes requestedDetails, List<KimPermissionInfo> permissionsList) {
-		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
-		for (KimPermissionInfo permission : permissionsList) {
-			if ( performMatch(requestedDetails, Attributes.fromMap(permission.getDetails())) ) {
+	protected List<Permission> performPermissionMatches(Attributes requestedDetails, List<Permission> permissionsList) {
+		List<Permission> matchingPermissions = new ArrayList<Permission>();
+		for (Permission permission : permissionsList) {
+            PermissionBo bo = PermissionBo.from(permission);
+			if ( performMatch(requestedDetails, bo.getDetails()) ) {
 				matchingPermissions.add( permission );
 			}
 		}

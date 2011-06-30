@@ -29,7 +29,7 @@
   </bean>
   
   <bean id="DocRoleMember-roleId" parent="DocRoleMember-roleId-parentBean"/>
-  <bean id="DocRoleMember-roleId-parentBean" parent="RoleImpl-roleId"/>
+  <bean id="DocRoleMember-roleId-parentBean" parent="RoleBo-id" p:name="roleId"/>
   
   <bean id="DocRoleMember-memberId" parent="DocRoleMember-memberId-parentBean"/>
   <bean id="DocRoleMember-memberId-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberId" p:forceUppercase="true" p:label="Member Identifier" p:shortLabel="Member Identifier" p:maxLength="40" p:required="false">

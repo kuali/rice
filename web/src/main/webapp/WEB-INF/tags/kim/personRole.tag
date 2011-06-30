@@ -40,7 +40,7 @@
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
                 	<kul:htmlControlAttribute property="newRole.roleId" attributeEntry="${docRoleAttributes.roleId}" readOnly="${readOnly}" />
-                	<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.RoleImpl" fieldConversions="roleId:newRole.newRolePrncpl.memberId,roleId:newRole.roleId,kimTypeId:newRole.kimTypeId,roleName:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.kimTypeServiceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
+                	<kul:lookup boClassName="org.kuali.rice.kim.impl.role.RoleBo" fieldConversions="roleId:newRole.newRolePrncpl.memberId,roleId:newRole.roleId,kimTypeId:newRole.kimTypeId,roleName:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.kimTypeServiceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
 					
 					<html:hidden property="newRole.roleName" />
 					<html:hidden property="newRole.roleId" />

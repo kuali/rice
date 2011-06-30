@@ -17,23 +17,16 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMembership;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -84,120 +77,120 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		permissionService = KimApiServiceLocator.getPermissionService();
 		roleService = KimApiServiceLocator.getRoleService();
 		
-		if (true) return;
-		
-		// set up Role "r1" with principal p1
-		RoleImpl role1 = new RoleImpl();
-		role1.setRoleId(role1Id);
-		role1.setActive(true);
-		role1.setKimTypeId(getDefaultKimType().getId());
-		role1.setNamespaceCode(role1NamespaceCode);
-		role1.setRoleDescription(role1Description);
-		role1.setRoleName(role1Name);
-		List<RoleMemberImpl> members1 = new ArrayList<RoleMemberImpl>();
-		role1.setMembers(members1);
-		RoleMemberImpl p1Member = new RoleMemberImpl();
-		p1Member.setMemberId(principal1Id);
-		p1Member.setMemberTypeCode("P");
-		p1Member.setRoleId(role1Id);
-		p1Member.setRoleMemberId(getNewRoleMemberId());
-		members1.add(p1Member);
-		KRADServiceLocator.getBusinessObjectService().save(role1);
-		
-		// set up Role "r2" with principal p3, group g1 and role r1
-		RoleImpl role2 = new RoleImpl();
-		role2.setRoleId(role2Id);
-		role2.setActive(true);
-		role2.setKimTypeId(getDefaultKimType().getId());
-		role2.setNamespaceCode(role2NamespaceCode);
-		role2.setRoleDescription(role2Description);
-		role2.setRoleName(role2Name);
-		List<RoleMemberImpl> members2 = new ArrayList<RoleMemberImpl>();
-		role2.setMembers(members2);
-		RoleMemberImpl p3Member = new RoleMemberImpl();
-		p3Member.setMemberId(principal3Id);
-		p3Member.setMemberTypeCode("P");
-		p3Member.setRoleId(role2Id);
-		p3Member.setRoleMemberId(getNewRoleMemberId());
-		members2.add(p3Member);
-		RoleMemberImpl g1Member = new RoleMemberImpl();
-		g1Member.setMemberId(group1Id);
-		g1Member.setMemberTypeCode("G");
-		g1Member.setRoleId(role2Id);
-		g1Member.setRoleMemberId(getNewRoleMemberId());
-		members2.add(g1Member);
-		RoleMemberImpl r1Member = new RoleMemberImpl();
-		r1Member.setMemberId(role1Id);
-		r1Member.setMemberTypeCode("R");
-		r1Member.setRoleId(role2Id);
-		r1Member.setRoleMemberId(getNewRoleMemberId());
-		members2.add(r1Member);
-		KRADServiceLocator.getBusinessObjectService().save(role2);
-		
-		// setup permissions
-		
-		KimPermissionTemplateImpl defaultTemplate = getDefaultPermissionTemplate();
-		
-		KimPermissionImpl permission1 = new KimPermissionImpl();
-		permission1.setActive(true);
-		permission1.setDescription("permission1");
-		permission1.setName(permission1Name);
-		permission1.setNamespaceCode(permission1NamespaceCode);
-		permission1.setPermissionId(permission1Id);
-		permission1.setTemplateId(defaultTemplate.getPermissionTemplateId());
-		permission1.setTemplate(defaultTemplate);
-		KRADServiceLocator.getBusinessObjectService().save(permission1);
-		
-		KimPermissionImpl permission2 = new KimPermissionImpl();
-		permission2.setActive(true);
-		permission2.setDescription("permission2");
-		permission2.setName(permission2Name);
-		permission2.setNamespaceCode(permission2NamespaceCode);
-		permission2.setPermissionId(permission2Id);
-		permission2.setTemplateId(defaultTemplate.getPermissionTemplateId());
-		permission2.setTemplate(defaultTemplate);
-		KRADServiceLocator.getBusinessObjectService().save(permission2);
-		
-		KimPermissionImpl permission3 = new KimPermissionImpl();
-		permission3.setActive(true);
-		permission3.setDescription("permission3");
-		permission3.setName(permission3Name);
-		permission3.setNamespaceCode(permission3NamespaceCode);
-		permission3.setPermissionId(permission3Id);
-		permission3.setTemplateId(defaultTemplate.getPermissionTemplateId());
-		permission3.setTemplate(defaultTemplate);
-		KRADServiceLocator.getBusinessObjectService().save(permission3);
-
-		// assign permissions to roles
-		// p1 -> r1
-		// p2 -> r1
-		// p3 -> r2
-		
-		RolePermissionImpl role1Perm1 = new RolePermissionImpl();
-		role1Perm1.setActive(true);
-		role1Perm1.setRoleId(role1Id);
-		role1Perm1.setPermissionId(permission1Id);
-		role1Perm1.setRolePermissionId(getNewRolePermissionId());
-		KRADServiceLocator.getBusinessObjectService().save(role1Perm1);
-		
-		RolePermissionImpl role1Perm2 = new RolePermissionImpl();
-		role1Perm2.setActive(true);
-		role1Perm2.setRoleId(role1Id);
-		role1Perm2.setPermissionId(permission2Id);
-		role1Perm2.setRolePermissionId(getNewRolePermissionId());
-		KRADServiceLocator.getBusinessObjectService().save(role1Perm2);
-		
-		RolePermissionImpl role2Perm3 = new RolePermissionImpl();
-		role2Perm3.setActive(true);
-		role2Perm3.setRoleId(role2Id);
-		role2Perm3.setPermissionId(permission3Id);
-		role2Perm3.setRolePermissionId(getNewRolePermissionId());
-		KRADServiceLocator.getBusinessObjectService().save(role2Perm3);
+//
+//
+//		// set up Role "r1" with principal p1
+//		RoleBo role1 = new RoleBo();
+//		role1.setId(role1Id);
+//		role1.setActive(true);
+//		role1.setKimTypeId(getDefaultKimType().getId());
+//		role1.setNamespaceCode(role1NamespaceCode);
+//		role1.setDescription(role1Description);
+//		role1.setName(role1Name);
+//		List<RoleMemberBo> members1 = new ArrayList<RoleMemberBo>();
+//		role1.setMembers(members1);
+//		RoleMemberBo p1Member = new RoleMemberBo();
+//		p1Member.setMemberId(principal1Id);
+//		p1Member.setMemberTypeCode("P");
+//		p1Member.setRoleId(role1Id);
+//		p1Member.setRoleMemberId(getNewRoleMemberId());
+//		members1.add(p1Member);
+//		KRADServiceLocator.getBusinessObjectService().save(role1);
+//
+//		// set up Role "r2" with principal p3, group g1 and role r1
+//		RoleBo role2 = new RoleBo();
+//		role2.setId(role2Id);
+//		role2.setActive(true);
+//		role2.setKimTypeId(getDefaultKimType().getId());
+//		role2.setNamespaceCode(role2NamespaceCode);
+//		role2.setDescription(role2Description);
+//		role2.setName(role2Name);
+//		List<RoleMemberBo> members2 = new ArrayList<RoleMemberBo>();
+//		role2.setMembers(members2);
+//		RoleMemberBo p3Member = new RoleMemberBo();
+//		p3Member.setMemberId(principal3Id);
+//		p3Member.setMemberTypeCode("P");
+//		p3Member.setRoleId(role2Id);
+//		p3Member.setRoleMemberId(getNewRoleMemberId());
+//		members2.add(p3Member);
+//		RoleMemberBo g1Member = new RoleMemberBo();
+//		g1Member.setMemberId(group1Id);
+//		g1Member.setMemberTypeCode("G");
+//		g1Member.setRoleId(role2Id);
+//		g1Member.setRoleMemberId(getNewRoleMemberId());
+//		members2.add(g1Member);
+//		RoleMemberBo r1Member = new RoleMemberBo();
+//		r1Member.setMemberId(role1Id);
+//		r1Member.setMemberTypeCode("R");
+//		r1Member.setRoleId(role2Id);
+//		r1Member.setRoleMemberId(getNewRoleMemberId());
+//		members2.add(r1Member);
+//		KRADServiceLocator.getBusinessObjectService().save(role2);
+//
+//		// setup permissions
+//
+//		KimPermissionTemplateImpl defaultTemplate = getDefaultPermissionTemplate();
+//
+//		KimPermissionImpl permission1 = new KimPermissionImpl();
+//		permission1.setActive(true);
+//		permission1.setDescription("permission1");
+//		permission1.setName(permission1Name);
+//		permission1.setNamespaceCode(permission1NamespaceCode);
+//		permission1.setPermissionId(permission1Id);
+//		permission1.setTemplateId(defaultTemplate.getPermissionTemplateId());
+//		permission1.setTemplate(defaultTemplate);
+//		KRADServiceLocator.getBusinessObjectService().save(permission1);
+//
+//		KimPermissionImpl permission2 = new KimPermissionImpl();
+//		permission2.setActive(true);
+//		permission2.setDescription("permission2");
+//		permission2.setName(permission2Name);
+//		permission2.setNamespaceCode(permission2NamespaceCode);
+//		permission2.setPermissionId(permission2Id);
+//		permission2.setTemplateId(defaultTemplate.getPermissionTemplateId());
+//		permission2.setTemplate(defaultTemplate);
+//		KRADServiceLocator.getBusinessObjectService().save(permission2);
+//
+//		KimPermissionImpl permission3 = new KimPermissionImpl();
+//		permission3.setActive(true);
+//		permission3.setDescription("permission3");
+//		permission3.setName(permission3Name);
+//		permission3.setNamespaceCode(permission3NamespaceCode);
+//		permission3.setPermissionId(permission3Id);
+//		permission3.setTemplateId(defaultTemplate.getPermissionTemplateId());
+//		permission3.setTemplate(defaultTemplate);
+//		KRADServiceLocator.getBusinessObjectService().save(permission3);
+//
+//		// assign permissions to roles
+//		// p1 -> r1
+//		// p2 -> r1
+//		// p3 -> r2
+//
+//		RolePermissionImpl role1Perm1 = new RolePermissionImpl();
+//		role1Perm1.setActive(true);
+//		role1Perm1.setRoleId(role1Id);
+//		role1Perm1.setPermissionId(permission1Id);
+//		role1Perm1.setRolePermissionId(getNewRolePermissionId());
+//		KRADServiceLocator.getBusinessObjectService().save(role1Perm1);
+//
+//		RolePermissionImpl role1Perm2 = new RolePermissionImpl();
+//		role1Perm2.setActive(true);
+//		role1Perm2.setRoleId(role1Id);
+//		role1Perm2.setPermissionId(permission2Id);
+//		role1Perm2.setRolePermissionId(getNewRolePermissionId());
+//		KRADServiceLocator.getBusinessObjectService().save(role1Perm2);
+//
+//		RolePermissionImpl role2Perm3 = new RolePermissionImpl();
+//		role2Perm3.setActive(true);
+//		role2Perm3.setRoleId(role2Id);
+//		role2Perm3.setPermissionId(permission3Id);
+//		role2Perm3.setRolePermissionId(getNewRolePermissionId());
+//		KRADServiceLocator.getBusinessObjectService().save(role2Perm3);
 	}
 
 	@Test
 	public void testRoleMembership() {
-		KimRoleInfo role = roleService.getRole( role2Id );
+		Role role = roleService.getRole( role2Id );
 		assertNotNull( "r2 must exist", role );
 		ArrayList<String> roleList = new ArrayList<String>( 1 );
 		roleList.add( role2Id );
@@ -209,14 +202,14 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		assertTrue( "p2 must belong to role (assigned via group)", memberPrincipalIds.contains(principal2Id) );
 		assertTrue( "p1 must belong to r2 (via r1)", memberPrincipalIds.contains(principal1Id) );
 		
-		Collection<RoleMembershipInfo> members = roleService.getRoleMembers( roleList, null );
+		Collection<RoleMembership> members = roleService.getRoleMembers( roleList, null );
 		assertNotNull( "returned list may not be null", members );
 		assertFalse( "list must not be empty", members.isEmpty() );
 		assertEquals("Returned list must have 4 members.", 4, members.size());
 		boolean foundP3 = false;
 		boolean foundG1 = false;
 		boolean foundR1 = false;
-		for (RoleMembershipInfo member : members) {
+		for (RoleMembership member : members) {
 			if (member.getMemberId().equals(principal3Id) && member.getMemberTypeCode().equals("P")) {
 				foundP3 = true;
 			} else if (member.getMemberId().equals(group1Id) && member.getMemberTypeCode().equals("G")) {
@@ -237,7 +230,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		members = roleService.getRoleMembers( roleList, null );
 		assertNotNull( "returned list may not be null", members );
 		assertEquals("Should have 2 members", 2, members.size());
-		Iterator<RoleMembershipInfo> iter = members.iterator();
+		Iterator<RoleMembership> iter = members.iterator();
 		assertTrue("One of those members should be p1.", principal1Id.equals(iter.next().getMemberId()) || principal1Id.equals(iter.next().getMemberId()));
 	}
 	

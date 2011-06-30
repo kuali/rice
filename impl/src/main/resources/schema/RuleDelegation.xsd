@@ -56,7 +56,7 @@
         <element name="ruleDelegation" type="rc:RuleDelegationType" minOccurs="0" maxOccurs="unbounded">
         	<annotation>
         		<documentation>
-        		 A set of rule delegations
+        		 A set of rule delegates
         		</documentation>
         	</annotation>
         </element>
@@ -68,17 +68,17 @@
     <sequence>
       <element name="parentResponsibility" type="rc:ParentResponsibilityType">
         <annotation>
-          <documentation>Defines the responsibility from which this rule delegation is delegating</documentation>
+          <documentation>Defines the responsibility from which this rule delegate is delegating</documentation>
         </annotation>
       </element>
       <element name="delegationType" type="rc:DelegationTypeType">
         <annotation>
-          <documentation>The type of delegation</documentation>
+          <documentation>The type of delegate</documentation>
         </annotation>
       </element>
       <element name="rule" type="rc:RuleType">
         <annotation>
-          <documentation>The rule definition for this delegation</documentation>
+          <documentation>The rule definition for this delegate</documentation>
         </annotation>
       </element>
     </sequence>

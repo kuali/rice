@@ -22,11 +22,12 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.role.RoleMembership;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.api.type.KimTypeService;
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
@@ -34,7 +35,6 @@ import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.workflow.attribute.QualifierResolverBase;
@@ -138,11 +138,11 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	if ( typeService != null ) {
     		// QUESTION: can roles be modified in a way which requires routing?
     		// get the existing role members
-    		List<RoleMembershipInfo> currentRoleMembers = KimApiServiceLocator.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ), null );
+    		List<RoleMembership> currentRoleMembers = KimApiServiceLocator.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ), null );
     		// loop over the role members on the document, check  if added or removed
     		for ( KimDocumentRoleMember rm : roleDoc.getMembers() ) {
     			boolean foundMember = false;
-    			for ( RoleMembershipInfo rmi : currentRoleMembers ) {
+    			for ( RoleMembership rmi : currentRoleMembers ) {
     				if ( rmi.getRoleMemberId().equals( rm.getRoleMemberId() ) ) {
     					foundMember = true;
     					if ( !rm.isActive() ) { // don't need to check the role member information 
@@ -196,7 +196,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
             	KimTypeService typeService = getTypeService(pdr.getKimTypeId());
         		for ( KimDocumentRoleMember rm : pdr.getRolePrncpls() ) {
         			boolean foundMember = false;
-            		for ( RoleMembershipInfo rmi : getRoleService().getRoleMembers( Collections.singletonList( rm.getRoleId() ), null ) ) {
+            		for ( RoleMembership rmi : getRoleService().getRoleMembers( Collections.singletonList( rm.getRoleId() ), null ) ) {
             			if ( StringUtils.equals( rmi.getRoleMemberId(), rm.getRoleMemberId() ) ) {
             				foundMember = true;
         					if ( !rm.isActive() ) { // don't need to check the role member information 

@@ -16,6 +16,7 @@
 package org.kuali.rice.core.web.parameter;
 
 import org.kuali.rice.core.api.component.Component;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.util.AttributeSet;
@@ -62,7 +63,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	protected boolean checkAllowsMaintenanceEdit(String initiatorPrincipalId, ParameterBo newBO) {
 
 		 boolean allowsEdit = false;
-	        ParameterBo parm = (ParameterBo)newBO;
+	        ParameterBo parm = newBO;
 	        
 	        AttributeSet permissionDetails = new AttributeSet();
 	        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getNamespaceCode());
@@ -72,7 +73,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        				GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 	        				KRADConstants.KRAD_NAMESPACE,
 	        				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
-	        				permissionDetails, null);
+	        				Attributes.fromMap(permissionDetails), null);
 	        if(!allowsEdit){
 	        	putGlobalError(RiceKeyConstants.AUTHORIZATION_ERROR_PARAMETER);
 	        }

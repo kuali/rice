@@ -23,6 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
@@ -64,7 +65,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     private final String roleId;
 
     @XmlElement(name = Elements.QUALIFIER)
-    private final AttributeSet qualifier;
+    private final Attributes qualifier;
 
     @XmlElement(name = Elements.ROLE_RESPONSIBILITY_ACTIONS)
     private final List<RoleResponsibilityAction> roleResponsibilityActions;
@@ -142,7 +143,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     /**
      * @return the qualifier
      */
-    public AttributeSet getQualifier() {
+    public Attributes getQualifier() {
         return this.qualifier;
     }
 
@@ -186,7 +187,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
 
         private String roleMemberId;
         private String roleId;
-        private AttributeSet qualifier;
+        private Attributes qualifier;
         private List<RoleResponsibilityAction.Builder> roleRspActions;
         private String memberId;
         private String memberTypeCode;
@@ -194,7 +195,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
         private Timestamp activeToDate;
 
         public static Builder create(String roleId, String roleMemberId, String memberId,
-                                     String memberTypeCode, Timestamp activeFromDate, Timestamp activeToDate, AttributeSet qualifier) {
+                                     String memberTypeCode, Timestamp activeFromDate, Timestamp activeToDate, Attributes qualifier) {
             Builder b = new Builder();
             b.setRoleId(roleId);
             b.setRoleMemberId(roleMemberId);
@@ -247,11 +248,11 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
             this.roleId = roleId;
         }
 
-        public AttributeSet getQualifier() {
+        public Attributes getQualifier() {
             return qualifier;
         }
 
-        public void setQualifier(AttributeSet qualifier) {
+        public void setQualifier(Attributes qualifier) {
             this.qualifier = qualifier;
         }
 

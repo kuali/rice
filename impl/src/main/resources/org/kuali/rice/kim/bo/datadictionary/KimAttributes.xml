@@ -103,7 +103,7 @@
   
   <bean id="KimAttributes-namespaceCode" parent="Namespace-code" p:name="namespaceCode"/>
   <bean id="KimAttributes-componentName" parent="Component-code" p:name="componentName"/>
-  <bean id="KimAttributes-roleName" parent="RoleImpl-roleName"/>
+  <bean id="KimAttributes-roleName" parent="RoleBo-name" p:name="roleName"/>
   <bean id="KimAttributes-groupName" parent="Group-name" p:name="groupName" />
   <bean id="KimAttributes-documentNumber" parent="DocumentHeader-documentNumber"/>
   <bean id="KimAttributes-parameterName" parent="Parameter-name"  p:name="parameterName"/>
@@ -196,9 +196,9 @@
     </property>
   </bean>
     
-  <!-- Should be converted to use KimPermissionImpl.xml once created -->
+  <!-- Should be converted to use PermissionBo.xml once created -->
   <bean id="KimAttributes-permissionName" parent="KimAttributes-permissionName-parentBean"/>
-  <bean id="KimAttributes-permissionName-parentBean" parent="KimPermissionImpl-name" abstract="true" p:name="permissionName" p:required="false">
+  <bean id="KimAttributes-permissionName-parentBean" parent="PermissionBo-name" abstract="true" p:name="permissionName" p:required="false">
   </bean>
 
   <!-- Should be converted to use Responsibility.xml once created -->

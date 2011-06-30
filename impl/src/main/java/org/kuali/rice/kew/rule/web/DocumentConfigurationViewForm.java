@@ -25,7 +25,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.rule.web.DocumentConfigurationViewAction.PermissionForDisplay;
 import org.kuali.rice.kew.rule.web.DocumentConfigurationViewAction.ResponsibilityForDisplay;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 /**
@@ -45,21 +45,21 @@ public class DocumentConfigurationViewForm extends KualiForm {
 //    protected List<KimPermissionInfo> permissions = null;
     protected List<String> docTypeHierarchyList = new ArrayList<String>();
     protected LinkedHashMap<String,List<PermissionForDisplay>> permissionsByDocumentType = new LinkedHashMap<String, List<PermissionForDisplay>>();
-    protected Map<String,List<KimRoleInfo>> permissionRoles = new HashMap<String, List<KimRoleInfo>>();
+    protected Map<String,List<Role>> permissionRoles = new HashMap<String, List<Role>>();
     protected Map<String,String> attributeLabels;
     protected List<RouteNode> routeNodes;
     protected Map<String,List<ResponsibilityForDisplay>> responsibilityMap;
-    protected Map<String,List<KimRoleInfo>> responsibilityRoles;
+    protected Map<String,List<Role>> responsibilityRoles;
     protected List<ResponsibilityForDisplay> exceptionResponsibilities;
     protected boolean canInitiateDocumentTypeDocument = false;
     protected boolean canInitiatePermissionDocument = false;
     protected boolean canInitiateResponsibilityDocument = false;
 
-	public Map<String, List<KimRoleInfo>> getPermissionRoles() {
+	public Map<String, List<Role>> getPermissionRoles() {
 		return this.permissionRoles;
 	}
 
-	public void setPermissionRoles(Map<String, List<KimRoleInfo>> permissionRoles) {
+	public void setPermissionRoles(Map<String, List<Role>> permissionRoles) {
 		this.permissionRoles = permissionRoles;
 	}
 
@@ -154,12 +154,12 @@ public class DocumentConfigurationViewForm extends KualiForm {
 		this.canInitiateDocumentTypeDocument = canInitiateDocumentTypeDocument;
 	}
 
-	public Map<String, List<KimRoleInfo>> getResponsibilityRoles() {
+	public Map<String, List<Role>> getResponsibilityRoles() {
 		return this.responsibilityRoles;
 	}
 
 	public void setResponsibilityRoles(
-			Map<String, List<KimRoleInfo>> responsibilityRoles) {
+			Map<String, List<Role>> responsibilityRoles) {
 		this.responsibilityRoles = responsibilityRoles;
 	}
 

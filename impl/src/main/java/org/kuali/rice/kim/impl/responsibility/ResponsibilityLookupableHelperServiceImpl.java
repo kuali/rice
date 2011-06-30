@@ -22,7 +22,6 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.lookup.RoleMemberLookupableHelperServiceImpl;
@@ -117,15 +116,16 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	
 	private List<UberResponsibilityBo> getAllResponsibilities(boolean unbounded){
 		List<UberResponsibilityBo> responsibilities = searchResponsibilities(new HashMap<String, String>(), unbounded);
-		for(UberResponsibilityBo responsibility: responsibilities)
+		for(UberResponsibilityBo responsibility: responsibilities) {
 			populateAssignedToRoles(responsibility);
+        }
 		return responsibilities;
 	}
 	
 	private List<UberResponsibilityBo> getCombinedSearchResults(
 			Map<String, String> responsibilitySearchCriteria, Map<String, String> roleSearchCriteria, boolean unbounded){
 		List<UberResponsibilityBo> responsibilitySearchResults = searchResponsibilities(responsibilitySearchCriteria, unbounded);
-		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria, unbounded);
+		List<RoleBo> roleSearchResults = searchRoles(roleSearchCriteria, unbounded);
 		List<UberResponsibilityBo> responsibilitiesForRoleSearchResults = getResponsibilitiesForRoleSearchResults(roleSearchResults, unbounded);
 		List<UberResponsibilityBo> matchedResponsibilities = new CollectionIncomplete<UberResponsibilityBo>(
 				new ArrayList<UberResponsibilityBo>(), getActualSizeIfTruncated(responsibilitiesForRoleSearchResults));
@@ -133,8 +133,9 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 				(responsibilitiesForRoleSearchResults!=null && !responsibilitiesForRoleSearchResults.isEmpty())){
 			for(UberResponsibilityBo responsibility: responsibilitySearchResults){
 				for(UberResponsibilityBo responsibilityFromRoleSearch: responsibilitiesForRoleSearchResults){
-					if(responsibilityFromRoleSearch.getId().equals(responsibility.getId()))
+					if(responsibilityFromRoleSearch.getId().equals(responsibility.getId())) {
 						matchedResponsibilities.add(responsibilityFromRoleSearch);
+                    }
 				}
 			}
 		}
@@ -150,20 +151,20 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	}
 	
 	private List<UberResponsibilityBo> getResponsibilitiesWithRoleSearchCriteria(Map<String, String> roleSearchCriteria, boolean unbounded){
-		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria, unbounded);
+		List<RoleBo> roleSearchResults = searchRoles(roleSearchCriteria, unbounded);
 		return getResponsibilitiesForRoleSearchResults(roleSearchResults, unbounded);
 	}
 
-	private List<UberResponsibilityBo> getResponsibilitiesForRoleSearchResults(List<RoleImpl> roleSearchResults, boolean unbounded){
+	private List<UberResponsibilityBo> getResponsibilitiesForRoleSearchResults(List<RoleBo> roleSearchResults, boolean unbounded){
 		Long actualSizeIfTruncated = getActualSizeIfTruncated(roleSearchResults);
 		List<UberResponsibilityBo> responsibilities = new ArrayList<UberResponsibilityBo>();
 		List<UberResponsibilityBo> tempResponsibilities;
 		List<String> collectedResponsibilityIds = new ArrayList<String>();
 		Map<String, String> responsibilityCriteria;
 		
-		for(RoleImpl roleImpl: roleSearchResults){
+		for(RoleBo roleImpl: roleSearchResults){
 			responsibilityCriteria = new HashMap<String, String>();
-			responsibilityCriteria.put("roleResponsibilities.roleId", roleImpl.getRoleId());
+			responsibilityCriteria.put("roleResponsibilities.roleId", roleImpl.getId());
 			tempResponsibilities = searchResponsibilities(responsibilityCriteria, unbounded);
 			actualSizeIfTruncated += getActualSizeIfTruncated(tempResponsibilities);
 			for(UberResponsibilityBo responsibility: tempResponsibilities){
@@ -173,7 +174,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 					responsibilities.add(responsibility);
 				}
 				//need to find roles that current role is a member of and build search string
-				List<String> parentRoleIds = KimApiServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
+				List<String> parentRoleIds = KimApiServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getId());
 				for (String parentRoleId : parentRoleIds) {
 					Map<String, String> roleSearchCriteria = new HashMap<String, String>();
 					roleSearchCriteria.put("roleId", parentRoleId);
@@ -190,7 +191,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		if ( responsibility.getAssignedToRoles().isEmpty() ) {
 			for(RoleResponsibilityBo roleResponsibility: responsibility.getRoleResponsibilities()){
 				criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleResponsibility.getRoleId());
-				responsibility.getAssignedToRoles().add((RoleBo)getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria));
+				responsibility.getAssignedToRoles().add(getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria));
 			}
 		}
 	}

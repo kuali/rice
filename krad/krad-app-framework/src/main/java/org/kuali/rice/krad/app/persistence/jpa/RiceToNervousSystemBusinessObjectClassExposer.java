@@ -66,7 +66,7 @@ public class RiceToNervousSystemBusinessObjectClassExposer implements Persistabl
 	    exposedClasses.add(org.kuali.rice.kim.bo.impl.GroupImpl.class.getName());
 	    exposedClasses.add(org.kuali.rice.kim.bo.group.impl.GroupMemberImpl.class.getName());
 	    exposedClasses.add(org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl.class.getName());
-	    exposedClasses.add(org.kuali.rice.kim.bo.impl.RoleImpl.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.impl.role.RoleBo.class.getName());
 	    exposedClasses.add(org.kuali.rice.kim.bo.role.impl.RoleMemberImpl.class.getName());
 	    exposedClasses.add(org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl.class.getName());
 	    exposedClasses.add(org.kuali.rice.kim.bo.role.impl.KimDelegationImpl.class.getName());

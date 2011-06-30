@@ -35,6 +35,7 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
@@ -157,7 +158,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
         private DocumentType documentType;
         private List<RouteNode> flattenedNodes = new ArrayList<RouteNode>();
         private List<DocumentTypeQuickLinksStructure> childrenDocumentTypes = new ArrayList<DocumentTypeQuickLinksStructure>();
-        private List<KimPermissionInfo> permissions = null;
+        private List<Permission> permissions = null;
         
         private DocumentTypeQuickLinksStructure(DocumentType documentType) {
 			this.documentType = documentType;
@@ -205,7 +206,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 			return true;
 		}
 
-		public List<KimPermissionInfo> getPermissions() {
+		public List<Permission> getPermissions() {
 			if ( permissions == null ) {
 //				Logger sqlLogger = Logger.getLogger(SqlGeneratorSuffixableImpl.class);
 //				sqlLogger.setLevel( Level.DEBUG );

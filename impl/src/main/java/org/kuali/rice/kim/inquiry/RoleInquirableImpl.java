@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.inquiry;
 
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.util.KimConstants;
@@ -50,7 +50,7 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 		if(ROLE_NAME.equals(propertyName)){
 			Map<String, String> primaryKeys = new HashMap<String, String>();
 			primaryKeys.put(ROLE_ID, ROLE_ID);
-			inquiry.buildInquiryLink(dataObject, propertyName, RoleImpl.class, primaryKeys);
+			inquiry.buildInquiryLink(dataObject, propertyName, RoleBo.class, primaryKeys);
 		}else if(NAMESPACE_CODE.equals(propertyName)){
 			Map<String, String> primaryKeys = new HashMap<String, String>();
 			primaryKeys.put(propertyName, "code");
@@ -70,7 +70,7 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add(ROLE_ID);
 		    //((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementRoleDocument.do?methodToCall=inquiry&command=initiate&docTypeName=IdentityManagementRoleDocument"+href.substring(idx1, idx2));
-		    String href = (getInquiryUrlForPrimaryKeys(RoleImpl.class, businessObject, primaryKeys, null)).getHref();
+		    String href = (getInquiryUrlForPrimaryKeys(RoleBo.class, businessObject, primaryKeys, null)).getHref();
 		    AnchorHtmlData htmlData = new AnchorHtmlData();
 		    htmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(href));
 			return htmlData;
@@ -82,7 +82,7 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, primaryKeys, null);
 		} else if("kimRoleType.name".equals(attributeName)){
 			KimTypeBo kimType = new KimTypeBo();
-			kimType.setId( ((RoleImpl)businessObject).getKimTypeId() );
+			kimType.setId( ((RoleBo)businessObject).getKimTypeId() );
 			return getInquiryUrlForPrimaryKeys(KimTypeBo.class, kimType, Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID ), null);
         }
 		

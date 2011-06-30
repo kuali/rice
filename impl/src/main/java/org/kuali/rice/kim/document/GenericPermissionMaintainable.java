@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.document;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
@@ -54,7 +55,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 					perm.getName(), 
 					perm.getDescription(), 
 					perm.isActive(), 
-					perm.getDetails() );
+					new AttributeSet(perm.getDetails().toMap()) );
 		} catch ( RuntimeException ex ) {
 			LOG.error( "Exception in saveBusinessObject()", ex );
 			throw ex;

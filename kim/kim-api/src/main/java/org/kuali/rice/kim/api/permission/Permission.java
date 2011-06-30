@@ -95,6 +95,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 	 *  A constructor to be used only by JAXB unmarshalling.
 	 *
 	 */
+    @SuppressWarnings("unused")
 	private Permission() {
 		this.id = null;
         this.namespaceCode = null;

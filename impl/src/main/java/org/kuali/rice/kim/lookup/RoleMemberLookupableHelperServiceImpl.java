@@ -25,8 +25,8 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
@@ -34,6 +34,7 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.Row;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -69,8 +70,9 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
     @Override
     protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
     	Map<String, String> searchCriteria = buildRoleSearchCriteria(fieldValues);
-    	if(searchCriteria == null)
+    	if(searchCriteria == null) {
     		return new ArrayList<BusinessObject>();
+        }
         return getMemberSearchResults(fieldValues, unbounded);
     }
 
@@ -116,10 +118,12 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
     }
     
     protected String getQueryString(String parameter){
-    	if(StringUtils.isEmpty(parameter))
+    	if(StringUtils.isEmpty(parameter)) {
     		return WILDCARD;
-    	else
+        }
+    	else {
     		return WILDCARD+parameter+WILDCARD;
+        }
     }
     
     @SuppressWarnings({ "unchecked" })
@@ -153,42 +157,50 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
                             like(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode)),
                             like(GROUP_NAME, getQueryString(assignedToGroupName))));
         	GroupQueryResults qr = KimApiServiceLocator.getGroupService().findGroups(builder.build());
-        	if(qr.getTotalRowCount() == 0)
+        	if(qr.getTotalRowCount() == 0) {
         		return null;
+            }
         }
 
         String assignedToRoleNamespaceCode = fieldValues.get(ASSIGNED_TO_NAMESPACE_FOR_LOOKUP);
         String assignedToRoleName = fieldValues.get(ASSIGNED_TO_ROLE_NAME);
 
     	searchCriteria = new HashMap<String, String>();
-        if(StringUtils.isNotEmpty(assignedToRoleNamespaceCode))
+        if (StringUtils.isNotEmpty(assignedToRoleNamespaceCode)) {
         	searchCriteria.put(ASSIGNED_TO_ROLE_NAMESPACE_CODE, WILDCARD+assignedToRoleNamespaceCode+WILDCARD);
-        if(StringUtils.isNotEmpty(assignedToRoleName))
+        }
+        if(StringUtils.isNotEmpty(assignedToRoleName)) {
         	searchCriteria.put(ASSIGNED_TO_ROLE_ROLE_NAME, WILDCARD+assignedToRoleName+WILDCARD);
+        }
 
     	StringBuffer memberQueryString = null;
-        if(principals!=null){
+        if(principals!=null) {
         	memberQueryString = new StringBuffer();
         	for(Principal principal: principals){
         		memberQueryString.append(principal.getPrincipalId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}
-            if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR))
+            if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR)) {
             	memberQueryString.delete(memberQueryString.length()-KimConstants.KimUIConstants.OR_OPERATOR.length(), memberQueryString.length());
+            }
         }
         if(groups!=null){
-        	if(memberQueryString==null)
+        	if(memberQueryString==null) {
         		memberQueryString = new StringBuffer();
-        	else if(StringUtils.isNotEmpty(memberQueryString.toString()))
+            }
+        	else if(StringUtils.isNotEmpty(memberQueryString.toString())) {
         		memberQueryString.append(KimConstants.KimUIConstants.OR_OPERATOR);
+            }
         	for(Group group: groups){
         		memberQueryString.append(group.getId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}
-            if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR))
+            if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR)) {
             	memberQueryString.delete(memberQueryString.length()-KimConstants.KimUIConstants.OR_OPERATOR.length(), memberQueryString.length());
+            }
         	searchCriteria.put(ASSIGNED_TO_ROLE_MEMBER_ID, memberQueryString.toString());
         }
-        if(memberQueryString!=null && StringUtils.isNotEmpty(memberQueryString.toString()))
+        if (memberQueryString!=null && StringUtils.isNotEmpty(memberQueryString.toString())) {
         	searchCriteria.put(ASSIGNED_TO_ROLE_MEMBER_ID, memberQueryString.toString());
+        }
 
         return searchCriteria;
     }
@@ -286,49 +298,55 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
     
 	protected Long getActualSizeIfTruncated(List result){
 		Long actualSizeIfTruncated = new Long(0); 
-		if(result instanceof CollectionIncomplete)
+		if(result instanceof CollectionIncomplete) {
 			actualSizeIfTruncated = ((CollectionIncomplete)result).getActualSizeIfTruncated();
+        }
 		return actualSizeIfTruncated;
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected List<RoleImpl> searchRoles(Map<String, String> roleSearchCriteria, boolean unbounded){
-		List<RoleImpl> roles = (List<RoleImpl>)getLookupService().findCollectionBySearchHelper(
-				RoleImpl.class, roleSearchCriteria, unbounded);
+	protected List<RoleBo> searchRoles(Map<String, String> roleSearchCriteria, boolean unbounded){
+		List<RoleBo> roles = (List<RoleBo>)getLookupService().findCollectionBySearchHelper(
+				RoleBo.class, roleSearchCriteria, unbounded);
 		String membersCrt = roleSearchCriteria.get("members.memberId");
-		List<RoleImpl> roles2Remove = new ArrayList<RoleImpl>();
+		List<RoleBo> roles2Remove = new ArrayList<RoleBo>();
 		if(StringUtils.isNotBlank(membersCrt)){
 			List<String> memberSearchIds = new ArrayList<String>();
 			List<String> memberIds = new ArrayList<String>(); 
-			if(membersCrt.contains(KimConstants.KimUIConstants.OR_OPERATOR))
+			if(membersCrt.contains(KimConstants.KimUIConstants.OR_OPERATOR)) {
 				memberSearchIds = new ArrayList<String>(Arrays.asList(membersCrt.split("\\|")));
-			else
+            }
+			else {
 				memberSearchIds.add(membersCrt);
-			for(RoleImpl roleImpl : roles){	
-				List<RoleMemberImpl> roleMembers = roleImpl.getMembers();
+            }
+			for(RoleBo roleBo : roles){
+				List<RoleMemberBo> roleMembers = roleBo.getMembers();
 				memberIds.clear(); 
 		        CollectionUtils.filter(roleMembers, new Predicate() {
 					public boolean evaluate(Object object) {
-						RoleMemberImpl member = (RoleMemberImpl) object;
+						RoleMemberBo member = (RoleMemberBo) object;
 						// keep active member
-						return member.isActive();
+						return member.isActive(new Timestamp(System.currentTimeMillis()));
 					}
 				});
 		       
 		        if(roleMembers != null && !roleMembers.isEmpty()){
-		        	for(RoleMemberImpl memberImpl : roleMembers)
+		        	for(RoleMemberBo memberImpl : roleMembers) {
 		        		memberIds.add(memberImpl.getMemberId());
-		        	if(((List<String>)CollectionUtils.intersection(memberSearchIds, memberIds)).isEmpty())
-		        		roles2Remove.add(roleImpl);
+                    }
+		        	if(((List<String>)CollectionUtils.intersection(memberSearchIds, memberIds)).isEmpty()) {
+		        		roles2Remove.add(roleBo);
+                    }
 		        }
 		        else
 		        {
-		        	roles2Remove.add(roleImpl);
+		        	roles2Remove.add(roleBo);
 		        }
 			}
 		}
-		if(!roles2Remove.isEmpty())
+		if(!roles2Remove.isEmpty()) {
 			roles.removeAll(roles2Remove);
+        }
 		return roles;
 	}
 

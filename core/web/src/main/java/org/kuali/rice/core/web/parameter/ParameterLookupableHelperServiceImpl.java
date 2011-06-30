@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.component.Component;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
@@ -69,7 +70,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 				KRADConstants.KRAD_NAMESPACE,
 				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
-				permissionDetails, null);
+				Attributes.fromMap(permissionDetails), null);
         
         return allowsEdit;
     }
@@ -138,9 +139,11 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
 		for (ComponentBo detailType : allDetailTypes) {
 			if (dupCheck.contains(detailType)) {
 				ComponentBo duplicate = null;
-				for (ComponentBo d : dupCheck) if (d.equals(detailType)) {
-					duplicate = d;
-					break;
+				for (ComponentBo d : dupCheck) {
+                    if (d.equals(detailType)) {
+					    duplicate = d;
+					    break;
+                    }
 				}
 				LOG.error(ComponentBo.class.getSimpleName() + "found with duplicate keys: " + detailType + " and " + duplicate);
 			} else {

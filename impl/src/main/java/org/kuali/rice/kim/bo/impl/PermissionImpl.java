@@ -40,7 +40,7 @@ public class PermissionImpl extends KimPermissionImpl {
 	@Transient
 	protected String assignedToRoleNameForLookup;
 	@Transient
-	protected RoleImpl assignedToRole;
+	protected RoleBo assignedToRole;
 	@Transient
 	protected String assignedToPrincipalNameForLookup;
 	@Transient
@@ -205,14 +205,14 @@ public class PermissionImpl extends KimPermissionImpl {
 	/**
 	 * @return the assignedToRole
 	 */
-	public RoleImpl getAssignedToRole() {
+	public RoleBo getAssignedToRole() {
 		return this.assignedToRole;
 	}
 
 	/**
 	 * @param assignedToRole the assignedToRole to set
 	 */
-	public void setAssignedToRole(RoleImpl assignedToRole) {
+	public void setAssignedToRole(RoleBo assignedToRole) {
 		this.assignedToRole = assignedToRole;
 	}
 

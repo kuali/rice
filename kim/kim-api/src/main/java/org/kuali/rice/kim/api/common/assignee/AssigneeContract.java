@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.api.common.assignee;
 
-import org.kuali.rice.kim.api.common.delegate.DelegateContract;
+import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 
 import java.util.List;
 
@@ -48,5 +48,5 @@ public interface AssigneeContract {
 	 * 
 	 * @return delegates
 	 */
-	List<? extends DelegateContract> getDelegates();
+	List<? extends DelegateTypeContract> getDelegates();
 }

@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ProcessDTO;
@@ -158,7 +159,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		return getIdentityManagementService().isAuthorizedByTemplateName(
 				user.getPrincipalId(), nameSpaceCode,
 				KimConstants.PermissionTemplateNames.INITIATE_DOCUMENT,
-				permissionDetails, null);
+				Attributes.fromMap(permissionDetails), null);
 	}
 
 	public final boolean canReceiveAdHoc(Document document, Person user,

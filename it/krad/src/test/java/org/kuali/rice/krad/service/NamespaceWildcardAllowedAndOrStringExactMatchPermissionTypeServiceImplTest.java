@@ -19,7 +19,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl;
 
 import java.util.ArrayList;
@@ -50,13 +52,16 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     public void testIngesterPermissionExampleLikeRice() {
         Attributes requestedDetails = getUseIngesterRequestedDetails();
         
-        List<KimPermissionInfo> permissionsList = new ArrayList<KimPermissionInfo>();
+        List<PermissionBo> permissionsList = new ArrayList<PermissionBo>();
 
         permissionsList.add(createPermission("Use Screen", "KR-SYS", "namespaceCode=KR*"));
-        KimPermissionInfo exactMatch = createPermission("Use Screen", "KR-WKFLW", "actionClass=org.kuali.rice.kew.batch.web.IngesterAction", "namespaceCode=KR-WKFLW");
+        PermissionBo exactMatch = createPermission("Use Screen", "KR-WKFLW", "actionClass=org.kuali.rice.kew.batch.web.IngesterAction", "namespaceCode=KR-WKFLW");
         permissionsList.add(exactMatch);
+
+        List<Permission> immutablePermissionList = new ArrayList<Permission>();
+        for (PermissionBo bo : permissionsList) { immutablePermissionList.add(PermissionBo.to(bo));}
        
-        List<KimPermissionInfo> returnedPermissions = permissionService.getMatchingPermissions(requestedDetails, permissionsList);
+        List<Permission> returnedPermissions = permissionService.getMatchingPermissions(requestedDetails, immutablePermissionList);
         assertTrue(returnedPermissions.size() == 1);
         assertTrue(returnedPermissions.get(0).equals(exactMatch));
     }
@@ -68,13 +73,16 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     public void testIngesterPermissionExampleLikeKFS() {
         Attributes requestedDetails = getUseIngesterRequestedDetails();
         
-        List<KimPermissionInfo> permissionsList = new ArrayList<KimPermissionInfo>();
+        List<PermissionBo> permissionsList = new ArrayList<PermissionBo>();
 
         permissionsList.add(createPermission("Use Screen", "KR-SYS", "namespaceCode=KR*"));
-        KimPermissionInfo exactMatch = createPermission("Use Screen", "KR-WKFLW", "actionClass=org.kuali.rice.kew.batch.web.IngesterAction");
+        PermissionBo exactMatch = createPermission("Use Screen", "KR-WKFLW", "actionClass=org.kuali.rice.kew.batch.web.IngesterAction");
         permissionsList.add(exactMatch);
+
+        List<Permission> immutablePermissionList = new ArrayList<Permission>();
+        for (PermissionBo bo : permissionsList) { immutablePermissionList.add(PermissionBo.to(bo));}
        
-        List<KimPermissionInfo> returnedPermissions = permissionService.getMatchingPermissions(requestedDetails, permissionsList);
+        List<Permission> returnedPermissions = permissionService.getMatchingPermissions(requestedDetails, immutablePermissionList);
         assertTrue(returnedPermissions.size() == 1);
         assertTrue(returnedPermissions.get(0).equals(exactMatch));
     }
@@ -93,20 +101,20 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     /**
      * @return a KimPermissionInfo object for the given name, namespace, and varargs "=" delimited attributes
      */
-    private KimPermissionInfo createPermission(String name, String namespace, String ... attrs) {
-        KimPermissionInfo perm = new KimPermissionInfo();;
+    private PermissionBo createPermission(String name, String namespace, String ... attrs) {
+        PermissionBo perm = new PermissionBo();
 
         perm.setName(name);
         perm.setNamespaceCode(namespace);
 
-        AttributeSet permissionDetails = new AttributeSet();
+        Map<String,String> permissionDetails = new HashMap<String,String>();
         
         for (String attr : attrs) {
             String [] splitAttr = attr.split("=", 2);
             permissionDetails.put(splitAttr[0], splitAttr[1]);
         }
         
-        perm.setDetails(permissionDetails);
+        perm.setDetails(Attributes.fromMap(permissionDetails));
         return perm;
     }
 

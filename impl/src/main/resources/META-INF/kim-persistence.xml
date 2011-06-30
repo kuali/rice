@@ -54,21 +54,21 @@
     <class>org.kuali.rice.kim.impl.group.GroupBo</class>
     <class>org.kuali.rice.kim.impl.group.GroupMemberBo</class>
     <class>org.kuali.rice.kim.impl.group.GroupAttributeBo</class>
-    <class>org.kuali.rice.kim.bo.impl.RoleImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.RoleMemberImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.KimPermissionImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.RolePermissionImpl</class>
-    <class>org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.impl.role.RoleBo</class>
+    <class>org.kuali.rice.kim.impl.role.RoleMemberBo</class>
+    <class>org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo</class>
+    <class>org.kuali.rice.kim.impl.common.delegate.DelegateBo</class>
+    <class>org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo</class>
+    <class>org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo</class>
+    <class>org.kuali.rice.kim.impl.permission.PermissionBo</class>
+    <class>org.kuali.rice.kim.impl.common.template.TemplateBo</class>
+    <class>org.kuali.rice.kim.impl.role.RolePermissionBo</class>
+    <class>org.kuali.rice.kim.impl.permission.PermissionAttributeBo</class>
     <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityBo</class>
     <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo</class>
-    <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl</class>
+    <class>org.kuali.rice.kim.impl.role.RoleResponsibilityBo</class>
     <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo</class>
-    <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl</class>
+    <class>org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl</class>
     <class>org.kuali.rice.kim.document.IdentityManagementKimDocument</class>
     <class>org.kuali.rice.kim.document.IdentityManagementPersonDocument</class>
@@ -82,11 +82,11 @@
     <class>org.kuali.rice.kim.bo.ui.PersonDocumentRole</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleMember</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier</class>
-    <class>org.kuali.rice.kim.impl.role.KimDocumentRoleResponsibilityAction</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction</class>
     <class>org.kuali.rice.kim.bo.ui.PersonDocumentGroup</class>
     <class>org.kuali.rice.kim.document.IdentityManagementRoleDocument</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentRolePermission</class>
-    <class>org.kuali.rice.kim.impl.role.KimDocumentRoleResponsibility</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility</class>
     <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegation</class>
     <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember</class>
     <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier</class>

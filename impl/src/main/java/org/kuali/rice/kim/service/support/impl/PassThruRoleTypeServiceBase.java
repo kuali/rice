@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
+
+
+import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 
@@ -34,7 +36,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	public abstract Attributes convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Attributes qualification);
     
     @Override
-	public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(Attributes qualification, List<RoleMembershipInfo> roleMemberList) {
+	public List<RoleMembership> doRoleQualifiersMatchQualification(Attributes qualification, List<RoleMembership> roleMemberList) {
         return roleMemberList;
     }
 
@@ -44,8 +46,8 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     }
 
     @Override
-	public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
-        return new ArrayList<RoleMembershipInfo>(0);
+	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+        return new ArrayList<RoleMembership>(0);
     }
     
     @Override
@@ -94,7 +96,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     }
     
     @Override
-	public List<RoleMembershipInfo> sortRoleMembers(List<RoleMembershipInfo> roleMembers) {
+	public List<RoleMembership> sortRoleMembers(List<RoleMembership> roleMembers) {
         return roleMembers;
     }
     

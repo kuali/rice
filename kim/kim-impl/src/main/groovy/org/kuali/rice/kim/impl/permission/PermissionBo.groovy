@@ -25,6 +25,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import javax.persistence.Table
+import javax.persistence.Transient
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
@@ -34,49 +35,75 @@ import org.kuali.rice.kim.api.permission.PermissionContract
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.role.RolePermissionBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kim.util.KimConstants
 
 @Entity
-@Table(name="KRIM_PERM_T")
+@Table(name = "KRIM_PERM_T")
 public class PermissionBo extends PersistableBusinessObjectBase implements PermissionContract {
     private static final long serialVersionUID = 1L;
 
     @Id
-	@Column(name="PERM_ID")
-	String id
+    @Column(name = "PERM_ID")
+    String id
 
-	@Column(name="NMSPC_CD")
-	String namespaceCode
-	
-    @Column(name="NM")
-	String name
+    @Column(name = "NMSPC_CD")
+    String namespaceCode
 
-	@Column(name="DESC_TXT", length=400)
-	String description;
+    @Column(name = "NM")
+    String name
 
-	@Column(name="PERM_TMPL_ID")
-	String templateId
-	
-	@Column(name="ACTV_IND")
-	@Type(type="yes_no")
-	boolean active
+    @Column(name = "DESC_TXT", length = 400)
+    String description;
 
-	@OneToOne(targetEntity=PermissionTemplateBo.class,cascade=[],fetch=FetchType.EAGER)
-	@JoinColumn(name="PERM_TMPL_ID", insertable=false, updatable=false)
-	PermissionTemplateBo template;
-	
-	@OneToMany(targetEntity=PermissionAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
-	@Fetch(value = FetchMode.SELECT)
-	List<PermissionAttributeBo> attributeDetails
-	
-	@OneToMany(targetEntity=RolePermissionBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
+    @Column(name = "PERM_TMPL_ID")
+    String templateId
+
+    @Column(name = "ACTV_IND")
+    @Type(type = "yes_no")
+    boolean active
+
+    @OneToOne(targetEntity = PermissionTemplateBo.class, cascade = [], fetch = FetchType.EAGER)
+    @JoinColumn(name = "PERM_TMPL_ID", insertable = false, updatable = false)
+    PermissionTemplateBo template;
+
+    @OneToMany(targetEntity = PermissionAttributeBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
     @Fetch(value = FetchMode.SELECT)
-	List<RolePermissionBo> rolePermissions
+    List<PermissionAttributeBo> attributeDetails
 
+    @Transient
+    Attributes attributes;
 
-    Attributes attributes
+    @OneToMany(targetEntity = RolePermissionBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
+    @Fetch(value = FetchMode.SELECT)
+    List<RolePermissionBo> rolePermissions
 
     Attributes getAttributes() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
+    }
+
+    //TODO: rename/fix later - only including this method and attributeDetails field for Role conversion
+
+    Attributes getDetails() {
+        return attributes != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributeDetails
+    }
+
+
+    void setDetails(Attributes details) {
+        //TODO:  does this need to be set back to the List<PermissionAttributeBo> attributes field?
+        attributeDetails = details
+    }
+
+    public String getDetailObjectsValues() {
+        StringBuffer detailObjectsToDisplay = new StringBuffer();
+        Iterator<PermissionAttributeBo> permIter = attributeDetails.iterator();
+        while (permIter.hasNext()) {
+            PermissionAttributeBo permissionAttributeData = permIter.next();
+            detailObjectsToDisplay.append(permissionAttributeData.getAttributeValue());
+            if (permIter.hasNext()) {
+                detailObjectsToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
+            }
+        }
+        return detailObjectsToDisplay.toString();
     }
 
     /**
@@ -112,7 +139,7 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         bo.template = PermissionTemplateBo.from(im.template)
         bo.attributes = im.attributes
         bo.versionNumber = im.versionNumber
-		bo.objectId = im.objectId;
+        bo.objectId = im.objectId;
 
         return bo
     }
@@ -120,5 +147,4 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     PermissionTemplateBo getTemplate() {
         return template;
     }
-
 }

@@ -19,13 +19,17 @@ import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.common.template.Template;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.role.KimPermission;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
+import org.kuali.rice.kim.impl.role.RolePermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -78,12 +82,12 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	
 	@OneToOne(targetEntity=KimPermissionTemplateImpl.class,cascade={},fetch=FetchType.EAGER)
     @JoinColumn(name="PERM_TMPL_ID", insertable=false, updatable=false)
-	protected KimPermissionTemplateImpl template;
+	protected PermissionTemplateBo template;
 
-	@OneToMany(targetEntity=RolePermissionImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@OneToMany(targetEntity=RolePermissionBo.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     @Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
-	protected List<RolePermissionImpl> rolePermissions = new AutoPopulatingList(RolePermissionImpl.class);
+	protected List<RolePermissionBo> rolePermissions = new AutoPopulatingList(RolePermissionBo.class);
 
 	/**
 	 * @see org.kuali.rice.krad.bo.Inactivatable#isActive()
@@ -128,18 +132,12 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		this.name = permissionName;
 	}
 
-	public KimPermissionInfo toSimpleInfo() {
-		KimPermissionInfo dto = new KimPermissionInfo();
-		dto.setPermissionId( getPermissionId() );
-		dto.setNamespaceCode( getNamespaceCode() );
-		dto.setName( getName() );
-		dto.setDescription( getDescription() );
-		dto.setActive( isActive() );
-		dto.setTemplate( getTemplate().toSimpleInfo() );
-		dto.setTemplateId( getTemplateId() );
-		dto.setDetails( getDetails() );
-		
-		return dto;
+	public Permission toSimpleInfo() {
+		Permission.Builder builder = Permission.Builder.create(getNamespaceCode(),getName(), Template.Builder.create(getTemplate()));
+        builder.setId(getPermissionId());
+        builder.setDescription(getDescription());
+        builder.setActive(isActive());
+		return builder.build();
 	}
 	
 	public List<PermissionAttributeDataImpl> getDetailObjects() {
@@ -150,11 +148,11 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		this.detailObjects = detailObjects;
 	}
 	
-	public KimPermissionTemplateImpl getTemplate() {
+	public PermissionTemplateBo getTemplate() {
 		return this.template;
 	}
 
-	public void setTemplate(KimPermissionTemplateImpl template) {
+	public void setTemplate(PermissionTemplateBo template) {
 		this.template = template;
 	}
 
@@ -168,7 +166,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	protected transient AttributeSet detailsAsAttributeSet = null;
 
-	public AttributeSet getDetails() {
+	public Attributes getDetails() {
 		if ( detailsAsAttributeSet == null ) {
 			KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 			AttributeSet m = new AttributeSet();
@@ -177,7 +175,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 				if ( kimType != null ) {
 					attribute = kimType.getAttributeDefinitionById( data.getKimAttributeId() );
 				} else {
-					LOG.warn( "Unable to get KimTypeInfo for permission: " + this + "\nKim Type ID: " + getTemplate().kimTypeId );
+					LOG.warn( "Unable to get KimTypeInfo for permission: " + this + "\nKim Type ID: " + getTemplate().getKimTypeId() );
 				}
 				if ( attribute != null ) {
 					m.put( attribute.getKimAttribute().getAttributeName(), data.getAttributeValue() );
@@ -188,7 +186,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 			}
 			detailsAsAttributeSet = m;
 		}
-		return detailsAsAttributeSet;
+		return Attributes.fromMap(detailsAsAttributeSet);
 	}
 	
 	public boolean hasDetails() {
@@ -214,14 +212,14 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	/**
 	 * @return the rolePermissions
 	 */
-	public List<RolePermissionImpl> getRolePermissions() {
+	public List<RolePermissionBo> getRolePermissions() {
 		return this.rolePermissions;
 	}
 
 	/**
 	 * @param rolePermissions the rolePermissions to set
 	 */
-	public void setRolePermissions(List<RolePermissionImpl> rolePermissions) {
+	public void setRolePermissions(List<RolePermissionBo> rolePermissions) {
 		this.rolePermissions = rolePermissions;
 	}
 	

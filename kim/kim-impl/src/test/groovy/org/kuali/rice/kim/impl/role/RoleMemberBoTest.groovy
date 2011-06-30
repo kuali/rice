@@ -5,8 +5,8 @@ import java.text.SimpleDateFormat
 import org.junit.Assert
 import org.junit.Ignore
 import org.junit.Test
-import org.kuali.rice.core.util.AttributeSet
 import org.kuali.rice.kim.api.role.RoleMember
+import org.kuali.rice.core.api.mo.common.Attributes
 
 class RoleMemberBoTest {
 
@@ -16,7 +16,7 @@ class RoleMemberBoTest {
     static final Timestamp ACTIVE_TO = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ACTIVE_TO_STRING).toTimestamp()
 
     @Test
-    @Ignore("RoleMemberBo.getQualifier(), called by RoleMemberBo.to(), requires the GRL to use both RoleService and TypeInfoService - not setup for unit tests")
+    @Ignore("RoleMemberBo.getAttributes(), called by RoleMemberBo.to(), requires the GRL to use both RoleService and TypeInfoService - not setup for unit tests")
     void test_to() {
         RoleMemberBo bo = new RoleMemberBo(
                 roleMemberId: "1",
@@ -41,7 +41,7 @@ class RoleMemberBoTest {
 
     @Test
     void test_from() {
-        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", "G", ACTIVE_FROM, ACTIVE_TO, new AttributeSet()).build()
+        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", "G", ACTIVE_FROM, ACTIVE_TO, Attributes.empty()).build()
         RoleMemberBo bo = RoleMemberBo.from(immutable)
         Assert.assertEquals(bo.roleMemberId, immutable.roleMemberId)
         Assert.assertEquals(bo.roleId, immutable.roleId)
@@ -54,7 +54,7 @@ class RoleMemberBoTest {
 
     @Test
     void test_notEqualToImmutable() {
-        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", "G", ACTIVE_FROM, ACTIVE_TO, new AttributeSet()).build()
+        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", "G", ACTIVE_FROM, ACTIVE_TO, Attributes.empty()).build()
         RoleMemberBo bo = RoleMemberBo.from(immutable)
         Assert.assertFalse(bo.equals(immutable))
         Assert.assertFalse(immutable.equals(bo))

@@ -25,22 +25,15 @@ import javax.persistence.PersistenceContext;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.permission.Permission;
-import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
-;
+import org.kuali.rice.kim.impl.role.RolePermissionBo;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class PermissionDaoJpa implements PermissionDao {
 
-	/**
-	 * @see org.kuali.rice.kim.impl.permission.PermissionDao#getRoleIdsForPermissions(java.util.List)
-	 */
-	@Override
-	public List<String> getRoleIdsForPermissions(Collection<? extends Permission> permissions) {
+	@SuppressWarnings("unchecked")
+	public List<String> getRoleIdsForPermissions(Collection<Permission> permissions) {
 		if ( permissions.isEmpty() ) {
 			return new ArrayList<String>(0);
 		}
@@ -48,13 +41,13 @@ public class PermissionDaoJpa implements PermissionDao {
 		for ( Permission kp : permissions ) {
 			permissionIds.add( kp.getId() );
 		}
-		Criteria c = new Criteria(RolePermissionImpl.class.getName());
+		Criteria c = new Criteria(RolePermissionBo.class.getName());
 		c.in( "permissionId", permissionIds );
 		c.eq( "active", true );
 		
-		ArrayList<RolePermissionImpl> coll = (ArrayList<RolePermissionImpl>) new QueryByCriteria(entityManager, c).toQuery().getResultList();
+		ArrayList<RolePermissionBo> coll = (ArrayList<RolePermissionBo>) new QueryByCriteria(entityManager, c).toQuery().getResultList();
 		List<String> roleIds = new ArrayList<String>( coll.size() );
-		for ( RolePermissionImpl rp : coll ) {
+		for ( RolePermissionBo rp : coll ) {
 			roleIds.add( rp.getRoleId() );
 		}
 		return roleIds;

@@ -18,7 +18,7 @@ package org.kuali.rice.kim.impl.responsibility;
 import java.util.Set;
 
 import org.kuali.rice.kim.api.responsibility.Responsibility;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
 
 /**
  * This is an internal serverice that was created as a proxy for kew
@@ -30,8 +30,8 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 public interface ResponsibilityInternalService {
 
 	void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds);
-	void saveRoleMember(RoleMemberImpl roleMember);
-	void removeRoleMember(RoleMemberImpl roleMember);
+	void saveRoleMember(RoleMemberBo roleMember);
+	void removeRoleMember(RoleMemberBo roleMember);
 	void updateActionRequestsForRoleChange(String roleId);
 
     /**

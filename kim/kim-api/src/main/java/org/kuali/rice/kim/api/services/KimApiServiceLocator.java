@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
+import org.kuali.rice.kim.api.role.RoleService;
+import org.kuali.rice.kim.api.role.RoleUpdateService;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
@@ -11,8 +13,6 @@ import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleManagementService;
-import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.RoleUpdateService;
 
 public class KimApiServiceLocator {
     private static final Logger LOG = Logger.getLogger(KimApiServiceLocator.class);

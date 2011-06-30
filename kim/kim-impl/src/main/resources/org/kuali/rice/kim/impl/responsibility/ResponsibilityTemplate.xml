@@ -36,7 +36,7 @@
   </bean>
 
   <bean id="ResponsibilityTemplateBo-namespaceCode" parent="ResponsibilityTemplateBo-namespaceCode-parentBean"/>
-  <bean id="ResponsibilityTemplateBo-namespaceCode-parentBean" parent="RoleImpl-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
+  <bean id="ResponsibilityTemplateBo-namespaceCode-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
   </bean>
     
   <bean id="ResponsibilityTemplateBo-name" parent="ResponsibilityTemplateBo-name-parentBean"/>

@@ -13,10 +13,11 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../core/framework/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/framework/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/framework/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/framework/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.3.Final" level="project" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />

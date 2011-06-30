@@ -20,7 +20,7 @@ import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.impl.group.GroupBo;
@@ -78,22 +78,28 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	}
 
 	protected String getMemberFieldConversions(String memberTypeCode){
-		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
+		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
 			return "principalId:member.memberId,principalName:member.memberName";
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
+        }
+		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
 			return "roleId:member.memberId,roleName:member.memberName";
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
+        }
+		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
 			return "id:member.memberId,name:member.memberName,namespaceCode:member.memberNamespaceCode";
+        }
 		return "";
 	}
 
 	protected String getMemberBusinessObjectName(String memberTypeCode){
-		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
+		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
 			return PersonImpl.class.getName();
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
-			return RoleImpl.class.getName();
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
+        }
+		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+			return RoleBo.class.getName();
+        }
+		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
 			return GroupBo.class.getName();
+        }
 		return "";
 	}
 
@@ -101,9 +107,10 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	 * @return the kimType
 	 */
 	public KimType getKimType() {
-		if(StringUtils.isNotBlank(getGroupDocument().getGroupTypeId()))
+		if(StringUtils.isNotBlank(getGroupDocument().getGroupTypeId())) {
 			return KimApiServiceLocator.getKimTypeInfoService().getKimType(getGroupDocument().getGroupTypeId());
-		else return kimType;
+        }
+		else {return kimType;}
 	}
 
 	public String getKimTypeClass(){

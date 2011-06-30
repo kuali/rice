@@ -26,9 +26,9 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
+import org.kuali.rice.kim.impl.common.template.TemplateBo;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.test.KIMTestCase;
 
@@ -118,23 +118,23 @@ public class PermissionServiceTest extends KIMTestCase {
 	
 	@Test
 	public void testGetPermission() {
-		KimPermissionInfo permInfo = getPermissionService().getPermission("p1");
+		PermissionBo permissionBo = PermissionBo.from(getPermissionService().getPermission("p1"));
+
+		assertNotNull(permissionBo);
+		assertEquals("perm1", permissionBo.getName());
+		assertEquals("KR-NS", permissionBo.getNamespaceCode());
+		assertEquals(0, permissionBo.getDetails().size());
+		assertTrue(permissionBo.isActive());
 		
-		assertNotNull(permInfo);
-		assertEquals("perm1", permInfo.getName());
-		assertEquals("KR-NS", permInfo.getNamespaceCode());
-		assertEquals(0, permInfo.getDetails().size());
-		assertTrue(permInfo.isActive());
+		TemplateBo templateBo = permissionBo.getTemplate();
+		assertNotNull(templateBo);
+		assertTrue(templateBo.isActive());
+		assertEquals("1", templateBo.getKimTypeId());
+		assertEquals("Default", templateBo.getName());
+		assertEquals("KUALI", templateBo.getNamespaceCode());
 		
-		KimPermissionTemplateInfo templateInfo = permInfo.getTemplate();
-		assertNotNull(templateInfo);
-		assertTrue(templateInfo.isActive());
-		assertEquals("1", templateInfo.getKimTypeId());
-		assertEquals("Default", templateInfo.getName());
-		assertEquals("KUALI", templateInfo.getNamespaceCode());
-		
-		permInfo = getPermissionService().getPermission("p0");
-		assertNull(permInfo);
+		permissionBo = PermissionBo.from(getPermissionService().getPermission("p0"));
+		assertNull(permissionBo);
 	}
 	
 	@Test

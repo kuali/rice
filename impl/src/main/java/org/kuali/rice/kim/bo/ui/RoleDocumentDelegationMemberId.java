@@ -44,7 +44,7 @@ public class RoleDocumentDelegationMemberId extends CompositePrimaryKeyBase {
 	}
 
 	/**
-	 * @return the delegationMemberId
+	 * @return the assignedToId
 	 */
 	public String getDelegationMemberId() {
 		return this.delegationMemberId;

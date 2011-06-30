@@ -276,43 +276,4 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
 		}
 		return String.valueOf(fieldValue);
 	}
-	
-/*
-  protected boolean isRoleAuthenticated(List<String> allowedRoles, List<String> disallowedRoles, UserSession userSession, SecuritySession session) {
-	  boolean disallowed = false;
-	  boolean allowed = false;
-	  
-
-	  allowed =  KIMServiceLocatorInternal.getRoleService().principalHasRole(session.getUserSession().getPrincipalId(), allowedRoles, null);
-	  disallowed = KIMServiceLocatorInternal.getRoleService().principalHasRole(session.getUserSession().getPrincipalId(), disallowedRoles, null);
-	  //KIMServiceLocatorInternal.getRoleService().principalHasRole(principalId, roleIds, qualification)
-	  //boolean memberOfRole = isMemberOfRole
-	  final Collection<Authentication> auths = (Collection<Authentication>) userSession.retrieveObject(KEWConstants.AUTHENTICATIONS);
-	  if (auths != null) {
-		  for (Authentication auth : auths) {
-			  String role = auth.getAuthority();
-			  if (disallowedRoles.contains(role)) {
-				  disallowed = true;
-			  }
-			  if (allowedRoles.contains(role)) {
-				  allowed = true;
-			  }
-		  }		  
-	  }
-	  
-
-	  if (allowed) {
-		  // allowed takes precedence over disallowed
-		  return true;
-	  } else if (disallowed) {
-		  // we know that we haven't been allowed at this point, if we're disallowed than we're not authenticated
-		  return false;
-	  } else if (allowedRoles.isEmpty()) {
-		  // if allowedRoles is empty, that means that disallowed roles are not empty and we know because of the previous condition
-		  // that the user has not been disallowed, therefore the user should be allowed if they aren't in the disallow set
-		  return true;
-	  }
-	  return false;
-  }
-*/
 }

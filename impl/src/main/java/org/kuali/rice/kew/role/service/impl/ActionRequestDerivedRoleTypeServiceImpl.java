@@ -21,8 +21,8 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
@@ -53,22 +53,19 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	 * @see org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@Override
-    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
-		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
+    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+		List<RoleMembership> members = new ArrayList<RoleMembership>();
 		if ( qualification != null && !qualification.isEmpty() ) {
 		    String principalId = qualification.get(KimConstants.AttributeConstants.PRINCIPAL_ID);
 			if (qualification.containsKey(KimConstants.AttributeConstants.PRINCIPAL_ID)
 					&& hasApplicationRole(principalId, null, namespaceCode,
 							roleName, qualification)) {
-                members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
+                members.add(RoleMembership.Builder.create(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null).build());
 			}
 		}
 		return members;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
-	 */
 	@Override
 	public boolean hasApplicationRole(String principalId,
 			List<String> groupIds, String namespaceCode, String roleName,

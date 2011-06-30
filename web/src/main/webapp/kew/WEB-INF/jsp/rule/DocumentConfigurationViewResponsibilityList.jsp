@@ -45,7 +45,7 @@
                                 </td>
                                 <td>
                                 	<c:forEach var="role" items="${KualiForm.responsibilityRoles[resp.responsibilityId]}">
-                                		<kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.RoleImpl" keyValues="roleId=${role.roleId}" render="true">
+                                		<kul:inquiry boClassName="org.kuali.rice.kim.impl.role.RoleBo" keyValues="roleId=${role.roleId}" render="true">
                                     		<c:out value="${role.namespaceCode} ${role.roleName}" />
                                 		</kul:inquiry>
                                 		<br />

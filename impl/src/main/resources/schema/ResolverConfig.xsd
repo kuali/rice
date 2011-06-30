@@ -59,10 +59,10 @@
       		</documentation>
       	</annotation>
       </element>
-      <element name="qualifier" type="ra:QualifierType" minOccurs="0" maxOccurs="unbounded">
+      <element name="attributes" type="ra:QualifierType" minOccurs="0" maxOccurs="unbounded">
       	<annotation>
       		<documentation>
-      		 A qualifier to resolve
+      		 A attributes to resolve
       		</documentation>
       	</annotation>
       </element>
@@ -82,7 +82,7 @@
     </sequence>
     <attribute name="name" type="c:ShortStringType" use="required">
       <annotation>
-        <documentation>The name of the key to use for this qualifier</documentation>
+        <documentation>The name of the key to use for this attributes</documentation>
       </annotation>
     </attribute>
   </complexType>

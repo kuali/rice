@@ -29,58 +29,52 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
-import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.api.role.RoleResponsibility;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
+import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
-/**
- * This is a description of what this class does - Garey don't forget to fill this in.
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public class ResponsibilityInternalServiceImpl implements ResponsibilityInternalService {
 
 	private BusinessObjectService businessObjectService;
     private ResponsibilityService responsibilityService;
 
-	public void saveRoleMember(RoleMemberImpl roleMember){
+	public void saveRoleMember(RoleMemberBo roleMember){
 
 		//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
-    	List<RoleResponsibilityInfo> oldRoleResp = getRoleResponsibilities(roleMember.getRoleId());
+    	List<RoleResponsibility> oldRoleResp = getRoleResponsibilities(roleMember.getRoleId());
 
     	// add row to member table
     	getBusinessObjectService().save( roleMember );
 
     	//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	// the new member has been added
-    	List<RoleResponsibilityInfo> newRoleResp = getRoleResponsibilities(roleMember.getRoleId());
+    	List<RoleResponsibility> newRoleResp = getRoleResponsibilities(roleMember.getRoleId());
 
     	updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(oldRoleResp, newRoleResp));
 	}
 
-	public void removeRoleMember(RoleMemberImpl roleMember){
+	public void removeRoleMember(RoleMemberBo roleMember){
 		//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
-    	List<RoleResponsibilityInfo> oldRoleResp = getRoleResponsibilities(roleMember.getRoleId());
+    	List<RoleResponsibility> oldRoleResp = getRoleResponsibilities(roleMember.getRoleId());
 
     	// add row to member table
     	getBusinessObjectService().delete( roleMember );
 
     	//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	// the new member has been added
-    	List<RoleResponsibilityInfo> newRoleResp = getRoleResponsibilities(roleMember.getRoleId());
+    	List<RoleResponsibility> newRoleResp = getRoleResponsibilities(roleMember.getRoleId());
 
     	updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(oldRoleResp, newRoleResp));
 	}
 
 	@SuppressWarnings("unchecked")
 	public void updateActionRequestsForRoleChange(String roleId) {
-    	List<RoleResponsibilityInfo> newRoleResp = getRoleResponsibilities(roleId);
+    	List<RoleResponsibility> newRoleResp = getRoleResponsibilities(roleId);
 		
     	updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(Collections.EMPTY_LIST, newRoleResp));
 	}
@@ -105,15 +99,14 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<RoleResponsibilityInfo> getRoleResponsibilities(String roleId){		
-		List<RoleResponsibilityImpl> roleResponsibilities = 
-				(List<RoleResponsibilityImpl>)getBusinessObjectService()
-				.findMatching(RoleResponsibilityImpl.class, Collections.singletonMap(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId));
-		List<RoleResponsibilityInfo> result = new ArrayList<RoleResponsibilityInfo>( roleResponsibilities.size() );
-		for ( RoleResponsibilityImpl roleResp : roleResponsibilities ) {
-			result.add( roleResp.toSimpleInfo() );
+	public List<RoleResponsibility> getRoleResponsibilities(String roleId){
+		List<RoleResponsibilityBo> rrBoList =
+				(List<RoleResponsibilityBo>)getBusinessObjectService()
+				.findMatching(RoleResponsibilityBo.class, Collections.singletonMap(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId));
+		List<RoleResponsibility> result = new ArrayList<RoleResponsibility>( rrBoList.size() );
+		for ( RoleResponsibilityBo bo : rrBoList ) {
+			result.add( RoleResponsibilityBo.to(bo) );
 		}
-
 		return result;
     }
 
@@ -126,14 +119,14 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     * @return
     */
    protected Set<String> getChangedRoleResponsibilityIds(
-			List<RoleResponsibilityInfo> oldRespList,
-			List<RoleResponsibilityInfo> newRespList) {
+			List<RoleResponsibility> oldRespList,
+			List<RoleResponsibility> newRespList) {
 		Set<String> lRet = new HashSet<String>();
 
-		for (RoleResponsibilityInfo resp : oldRespList) {
+		for (RoleResponsibility resp : oldRespList) {
 			lRet.add(resp.getResponsibilityId());
 		}
-		for (RoleResponsibilityInfo resp : newRespList) {
+		for (RoleResponsibility resp : newRespList) {
 			lRet.add(resp.getResponsibilityId());
 		}
 

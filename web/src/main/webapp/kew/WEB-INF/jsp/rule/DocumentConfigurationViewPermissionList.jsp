@@ -29,7 +29,7 @@
                             <td>
                             	<%-- TODO: update this to use the proper url for an inquiry and not use the impl class --%>
                                 <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl" 
-                                			 keyValues="permissionTemplateId=${perm.template.permissionTemplateId}" render="true">
+                                			 keyValues="permissionTemplateId=${perm.template.id}" render="true">
                                 <c:out value="${perm.template.name}" />
                                 (<c:out value="${perm.template.namespaceCode}" />)
                                 </kul:inquiry>
@@ -61,7 +61,7 @@
                             </td>
                             <td>
                             	<c:forEach var="role" items="${KualiForm.permissionRoles[perm.permissionId]}">
-                            		<kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.RoleImpl" 
+                            		<kul:inquiry boClassName="org.kuali.rice.kim.impl.role.RoleBo"
                             					 keyValues="roleId=${role.roleId}" render="true">
                             			<c:out value="${role.namespaceCode} ${role.roleName}" />
                             		</kul:inquiry>

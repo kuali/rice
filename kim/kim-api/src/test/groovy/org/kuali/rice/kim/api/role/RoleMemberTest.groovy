@@ -23,15 +23,15 @@ import javax.xml.bind.JAXBContext
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.core.util.AttributeSet
 import javax.xml.bind.Marshaller
+import org.kuali.rice.core.api.mo.common.Attributes
 
 class RoleMemberTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 
     static final String ROLE_MEMBER_ID = "1";
     static final String ROLE_ID = "23";
-    static final AttributeSet QUALIFIER = new AttributeSet();
+    static final Attributes QUALIFIER = Attributes.empty();
     static final List<RoleResponsibilityAction.Builder> ROLE_RESPONSIBILITY_ACTIONS = [create_rra_builder()];
     static final String MEMBER_NAME = "Spock";
     static final String MEMBER_NAMESPACE_CODE = "KUALI";
@@ -62,7 +62,7 @@ class RoleMemberTest {
        <roleMember xmlns="http://rice.kuali.org/kim/v2_0">
          <roleMemberId>${ROLE_MEMBER_ID}</roleMemberId>
          <roleId>${ROLE_ID}</roleId>
-         <qualifier></qualifier>
+         <qualifier/>
          <roleResponsibilityActions>
             <id>${RoleResponsibilityActionTest.ID}</id>
             <roleResponsibilityId>${RoleResponsibilityActionTest.ROLE_RESPONSIBILITY_ID}</roleResponsibilityId>

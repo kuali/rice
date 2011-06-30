@@ -21,9 +21,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimConstants;
@@ -80,7 +80,7 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 	private KimTypeAttributesHelper attributesHelper;
 	//For Person Document UI - flattening the delegation - delegation member hierarchy
 	@Transient
-	protected RoleImpl roleImpl = new RoleImpl();
+	protected RoleBo roleBo = new RoleBo();
 	
 	@Column(name="DLGN_ID")
 	protected String delegationId;
@@ -138,8 +138,9 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 
 	public RoleDocumentDelegationMemberQualifier getQualifier(String kimAttributeDefnId) {
 		for(RoleDocumentDelegationMemberQualifier qualifier:qualifiers){
-			if(qualifier.getKimAttrDefnId().equals(kimAttributeDefnId))
+			if(qualifier.getKimAttrDefnId().equals(kimAttributeDefnId)) {
 				return qualifier;
+            }
 		}
 		return null;
 	}
@@ -184,14 +185,14 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 	}
 
 	/**
-	 * @return the delegationMemberId
+	 * @return the assignedToId
 	 */
 	public String getDelegationMemberId() {
 		return this.delegationMemberId;
 	}
 
 	/**
-	 * @param delegationMemberId the delegationMemberId to set
+	 * @param delegationMemberId the assignedToId to set
 	 */
 	public void setDelegationMemberId(String delegationMemberId) {
 		this.delegationMemberId = delegationMemberId;
@@ -245,9 +246,9 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
         		setMemberNamespaceCode(groupInfo.getNamespaceCode());
         	}        	
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())){
-        	KimRoleInfo roleInfo = null;
-        	roleInfo = KimApiServiceLocator.getRoleService().getRole(getMemberId());
-        	setMemberNamespaceCode(roleInfo.getNamespaceCode());
+        	Role role;
+        	role = KimApiServiceLocator.getRoleService().getRole(getMemberId());
+        	setMemberNamespaceCode(role.getNamespaceCode());
         }
 	}
 	
@@ -306,18 +307,18 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 	}
 
 	/**
-	 * @return the roleImpl
+	 * @return the roleBo
 	 */
-	public RoleImpl getRoleImpl() {
-		return this.roleImpl;
+	public RoleBo getRoleBo() {
+		return this.roleBo;
 	}
 
 	/**
-	 * @param roleImpl the roleImpl to set
+	 * @param roleBo the roleBo to set
 	 */
-	public void setRoleImpl(RoleImpl roleImpl) {
-		this.roleImpl = roleImpl;
-		setAttributesHelper(new KimTypeAttributesHelper(KimTypeBo.to(roleImpl.getKimRoleType())));
+	public void setRoleBo(RoleBo roleBo) {
+		this.roleBo = roleBo;
+		setAttributesHelper(new KimTypeAttributesHelper(KimTypeBo.to(roleBo.getKimRoleType())));
 	}
 
 	/**

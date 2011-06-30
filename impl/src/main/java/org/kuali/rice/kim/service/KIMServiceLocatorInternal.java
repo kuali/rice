@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.identity.services.IdentityArchiveService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
+import org.kuali.rice.kim.api.role.RoleUpdateService;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -47,9 +48,8 @@ public final class KIMServiceLocatorInternal {
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
     public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";
 	public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
-	public static final String RESPONSIBILITY_INTERNAL_SERVICE = "responsibilityInternalService";
-	
-	public static Object getService(String serviceName) {
+
+    public static Object getService(String serviceName) {
 		return getBean(serviceName);
 	}
 
@@ -58,8 +58,8 @@ public final class KIMServiceLocatorInternal {
 			LOG.debug("Fetching service " + serviceName);
 		}
 		return GlobalResourceLoader.getResourceLoader().getService(
-				(RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KIM_RUN_MODE_PROPERTY)))) ?
-						new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName) : new QName(serviceName) );
+                (RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KIM_RUN_MODE_PROPERTY)))) ?
+                        new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
 	}
 
     public static IdentityUpdateService getIdentityUpdateService() {
@@ -98,10 +98,6 @@ public final class KIMServiceLocatorInternal {
 
     public static GroupInternalService getGroupInternalService() {
         return (GroupInternalService)getService(GROUP_INTERNAL_SERVICE);
-    }
-
-    public static ResponsibilityInternalService getResponsibilityInternalService() {
-        return (ResponsibilityInternalService)getService(RESPONSIBILITY_INTERNAL_SERVICE);
     }
 
 }

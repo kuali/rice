@@ -69,7 +69,7 @@ public class AttributeValidationHelper {
 		}
 		return Attributes.fromMap(m);
 	}
-    
+
 	public Attributes convertQualifiersToMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
 		Map<String, String> m = new HashMap<String, String>();
 		for ( KimDocumentAttributeDataBusinessObjectBase data : qualifiers ) {
@@ -95,7 +95,7 @@ public class AttributeValidationHelper {
 		}
 		return Attributes.fromMap(m);
 	}
-	
+
 	public Attributes convertQualifiersToAttrIdxMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
 		Map<String, String> m = new HashMap<String, String>();
 		int i = 0;
@@ -139,7 +139,7 @@ public class AttributeValidationHelper {
 		for ( String key : localErrors.keySet() ) {
 			Map<String,String> criteria = new HashMap<String,String>();
 			criteria.put(KRADPropertyConstants.ATTRIBUTE_NAME, key);
-			KimAttributeBo attribute = (KimAttributeBo) getBusinessObjectService().findByPrimaryKey(KimAttributeBo.class, criteria);
+			KimAttributeBo attribute = getBusinessObjectService().findByPrimaryKey(KimAttributeBo.class, criteria);
 			String attributeDefnId = attribute==null?"":attribute.getId();
 			errors.put(errorPath+"qualifier("+attributeDefnId+").attrVal", localErrors.get(key));
 		}

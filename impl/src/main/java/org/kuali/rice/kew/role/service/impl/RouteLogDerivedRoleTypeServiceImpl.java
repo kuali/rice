@@ -19,8 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
@@ -56,30 +56,32 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	 *	- users who are authorized by the route log, 
 	 *		i.e. initiators, people who have taken action, people with a pending action request, 
 	 *		or people who will receive an action request for the document in question get the KR-WKFLW Initiator or Reviewer Role 
-	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getRoleMembersFromApplicationRole(String, String, AttributeSet)
+	 *
 	 */
 	@Override
-    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
-		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();		
+		List<RoleMembership> members = new ArrayList<RoleMembership>();
 		if(qualification!=null && !qualification.isEmpty()){
 			String documentId = qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER);
 			if (StringUtils.isNotBlank(documentId)) {
 				try{
 					if (INITIATOR_ROLE_NAME.equals(roleName)) {
 					    String principalId = workflowInfo.getDocumentInitiatorPrincipalId(documentId);
-	                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
+                        RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, Role.PRINCIPAL_MEMBER_TYPE,null).build();
+	                    members.add(roleMembership);
 					} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
 					    List<String> ids = workflowInfo.getPrincipalIdsInRouteLog(documentId, true);
 					    for ( String id : ids ) {
 					    	if ( StringUtils.isNotBlank(id) ) {
-					    		members.add( new RoleMembershipInfo(null/*roleId*/, null, id, Role.PRINCIPAL_MEMBER_TYPE, null) );
+                                RoleMembership roleMembership = RoleMembership.Builder.create(null,null,id, Role.PRINCIPAL_MEMBER_TYPE,null).build();
+					    		members.add(roleMembership );
 					    	}
 					    }
 					} else if(ROUTER_ROLE_NAME.equals(roleName)) {
-					    String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentId);
-	                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
+                        String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentId);
+                        RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, Role.PRINCIPAL_MEMBER_TYPE,null).build();
+	                    members.add(roleMembership);
 					}
 				} catch(WorkflowException wex){
 					throw new RuntimeException(
@@ -87,12 +89,10 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 				}
 			}
 		}
+
 		return members;
 	}
 
-	/***
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
-	 */
 	@Override
 	public boolean hasApplicationRole(
 			String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification){

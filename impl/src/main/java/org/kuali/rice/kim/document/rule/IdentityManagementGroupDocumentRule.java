@@ -65,8 +65,9 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(Document document) {
-        if (!(document instanceof IdentityManagementGroupDocument))
+        if (!(document instanceof IdentityManagementGroupDocument)) {
             return false;
+        }
 
         IdentityManagementGroupDocument groupDoc = (IdentityManagementGroupDocument)document;
 
@@ -105,8 +106,9 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         Group group = KimApiServiceLocator.getGroupService().getGroupByName(groupDoc.getGroupNamespace(), groupDoc.getGroupName());
         boolean rulePassed = true;
     	if(group!=null){
-    		if(group.getId().equals(groupDoc.getGroupId()))
+    		if(group.getId().equals(groupDoc.getGroupId())) {
     			rulePassed = true;
+            }
     		else{
 	    		GlobalVariables.getMessageMap().putError("document.groupName", 
 	    				RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group Name"});

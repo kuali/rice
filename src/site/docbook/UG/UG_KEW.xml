@@ -373,8 +373,8 @@
                         <para><emphasis role="bold">Delegator</emphasis>: If someone else has
                             given authority in KEW for you to take action on their action
                             requests, their name appears in this column. KEW displays both
-                            primary and secondary delegations this way on your Action List.
-                            There are two types of delegation in KEW, you may be a Primary
+                            primary and secondary delegates this way on your Action List.
+                            There are two types of delegate in KEW, you may be a Primary
                             Delegate or a Secondary Delegate: <itemizedlist>
                                 <listitem>
                                     <para><emphasis role="bold">Primary Delegate</emphasis>: The
@@ -1008,7 +1008,7 @@
             </sect3>
             <sect3>
                 <title>Combining Role Requests and Delegation</title>
-                <para>You can combine a role request with a delegation. In fact, in the previous
+                <para>You can combine a role request with a delegate. In fact, in the previous
                     example, the action request that is sent to Joe as a fiscal officer is really a
                     role request. The action request tree for that scenario is:</para>
                 <para><inlinemediaobject>
@@ -1829,12 +1829,12 @@
                             <row>
                                 <entry>Receive Primary Delegation Emails</entry>
                                 <entry>True</entry>
-                                <entry>User will receive primary delegation emails</entry>
+                                <entry>User will receive primary delegate emails</entry>
                             </row>
                             <row>
                                 <entry>Receive Secondary Delegation Emails</entry>
                                 <entry>False</entry>
-                                <entry>User will receive secondary delegation emails</entry>
+                                <entry>User will receive secondary delegate emails</entry>
                             </row>
                             <row>
                                 <entry>Delegator Filter</entry>
@@ -2282,7 +2282,7 @@
                                                   means that the delegator turns over full authority
                                                   to the delegate. The Action Requests for this
                                                   delegator only show up in the Action List of the
-                                                  primary delegate. A primary delegation must be
+                                                  primary delegate. A primary delegate must be
                                                   registered in KEW to be in effect.</para>
                                             </listitem>
                                             <listitem>
@@ -2295,7 +2295,7 @@
                                                   the Action Lists of both the delegator and the
                                                   secondary delegate. When either person acts on the
                                                   document, it disappears from both Action Lists. A
-                                                  secondary delegation must be registered in KEW as
+                                                  secondary delegate must be registered in KEW as
                                                   being in effect for a specific time
                                                   period(s).</para>
                                             </listitem>
@@ -2306,7 +2306,7 @@
                                 </row>
                                 <row>
                                     <entry>Name</entry>
-                                    <entry>The unique Name of the routing delegation Rule you are
+                                    <entry>The unique Name of the routing delegate Rule you are
                                         creating or editing 
                                         <note><para>You are not required to enter a Name, but if you don’t, Rice assigns a unique Name to the
                                                 Rule.</para></note>

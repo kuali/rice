@@ -67,6 +67,7 @@ public final class CoreConstants {
         public static final String ACTIVE = "active";
         public static final String ACTIVE_FROM_DATE = "activeFromDate";
         public static final String ACTIVE_TO_DATE = "activeToDate";
+        public static final String ATTRIBUTES = "attributes";
 
         private CommonElements() {
 		    throw new UnsupportedOperationException("do not call");

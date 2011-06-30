@@ -23,9 +23,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.common.delegate.Delegate;
-import org.kuali.rice.kim.api.common.delegate.DelegateContract;
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -75,10 +76,10 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
     private final String roleSortingCode;
 
     @XmlElement(name=Elements.QUALIFIER)
-    private final AttributeSet qualifier;
+    private final Attributes qualifier;
 
     @XmlElement(name=Elements.DELEGATES)
-    private final List<Delegate> delegates;
+    private final List<DelegateType> delegates;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -108,9 +109,9 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
         roleSortingCode = b.getRoleSortingCode();
         qualifier = b.getQualifier();
 
-        delegates = new ArrayList<Delegate>();
+        delegates = new ArrayList<DelegateType>();
         if (!CollectionUtils.isEmpty(b.getDelegates())) {
-            for (Delegate.Builder delegateBuilder : b.getDelegates()) {
+            for (DelegateType.Builder delegateBuilder : b.getDelegates()) {
                 delegates.add(delegateBuilder.build());
             }
         }
@@ -140,11 +141,11 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
         return roleSortingCode;
     }
 
-    public AttributeSet getQualifier() {
+    public Attributes getQualifier() {
         return qualifier;
     }
 
-    public List<Delegate> getDelegates() {
+    public List<DelegateType> getDelegates() {
         return Collections.unmodifiableList(delegates);
     }
 
@@ -171,14 +172,14 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
         private String memberId;
         private String memberTypeCode;
         private String roleSortingCode;
-        private AttributeSet qualifier;
-        private List<Delegate.Builder> delegates;
+        private Attributes qualifier;
+        private List<DelegateType.Builder> delegates;
 
         private Builder() {
         }
 
         public static Builder create(String roleId, String roleMemberId, String memberId, String memberTypeCode,
-                                     AttributeSet qualifier) {
+                                     Attributes qualifier) {
 
             Builder b = new Builder();
             b.setRoleId(roleId);
@@ -199,10 +200,10 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
             b.setRoleSortingCode(contract.getRoleSortingCode());
             b.setQualifier(contract.getQualifier());
 
-            List<Delegate.Builder> delegateBuilders = new ArrayList<Delegate.Builder>();
+            List<DelegateType.Builder> delegateBuilders = new ArrayList<DelegateType.Builder>();
             if (!CollectionUtils.isEmpty(contract.getDelegates())) {
-                for (DelegateContract delegateContract : contract.getDelegates()) {
-                    delegateBuilders.add(Delegate.Builder.create(delegateContract));
+                for (DelegateTypeContract delegateContract : contract.getDelegates()) {
+                    delegateBuilders.add(DelegateType.Builder.create(delegateContract));
                 }
             }
             b.setDelegates(delegateBuilders);
@@ -223,19 +224,19 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
             this.roleId = roleId;
         }
 
-        public AttributeSet getQualifier() {
+        public Attributes getQualifier() {
             return this.qualifier;
         }
 
-        public void setQualifier(AttributeSet qualifier) {
+        public void setQualifier(Attributes qualifier) {
             this.qualifier = qualifier;
         }
 
-        public List<Delegate.Builder> getDelegates() {
+        public List<DelegateType.Builder> getDelegates() {
             return this.delegates;
         }
 
-        public void setDelegates(List<Delegate.Builder> delegates) {
+        public void setDelegates(List<DelegateType.Builder> delegates) {
             this.delegates = delegates;
         }
 

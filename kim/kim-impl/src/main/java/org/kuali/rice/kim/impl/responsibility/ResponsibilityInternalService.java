@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role.impl;
+package org.kuali.rice.kim.impl.responsibility;
 
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
 
 /**
+ * This is an internal service that was created as a proxy for kew
+ * updates
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
  */
-@Entity
-@Table(name="KRIM_ROLE_MBR_ATTR_DATA_T")
-public class RoleMemberAttributeDataImpl extends KimAttributeDataBo {
-    @Column(name="ROLE_MBR_ID")
-    protected String assignedToId;
+public interface ResponsibilityInternalService {
 
-    public String getAssignedToId() {
-        return this.assignedToId;
-    }
-
-    public void setAssignedToId(String roleMemberId) {
-        this.assignedToId = roleMemberId;
-    }
+	void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds);
+	void saveRoleMember(RoleMemberBo roleMember);
+	void removeRoleMember(RoleMemberBo roleMember);
+	void updateActionRequestsForRoleChange(String roleId);
 }

@@ -5,9 +5,10 @@
     <output-test url="file://$MODULE_DIR$/../../../edl/framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../edl/framework">
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../edl/framework/target/classes" />

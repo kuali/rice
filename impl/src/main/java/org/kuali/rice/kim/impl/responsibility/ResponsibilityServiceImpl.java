@@ -13,7 +13,8 @@ import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.common.delegate.Delegate;
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
@@ -24,13 +25,13 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
-import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
 
@@ -180,7 +181,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             ids.add(r.getId());
         }
         final List<String> roleIds = getRoleIdsForResponsibilities(ids, qualification);
-        return roleService.principalHasRole(principalId, roleIds, new AttributeSet(qualification.toMap()));
+        return roleService.principalHasRole(principalId, roleIds, qualification);
     }
 
     @Override
@@ -210,18 +211,17 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     private List<ResponsibilityAction> getActionsForResponsibilityRoles(Responsibility responsibility, List<String> roleIds, Attributes qualification) {
         List<ResponsibilityAction> results = new ArrayList<ResponsibilityAction>();
-        Collection<RoleMembershipInfo> roleMembers = roleService.getRoleMembers(roleIds, new AttributeSet(qualification.toMap()));
-        for (RoleMembershipInfo rm : roleMembers) {
+        Collection<RoleMembership> roleMembers = roleService.getRoleMembers(roleIds,qualification);
+        for (RoleMembership rm : roleMembers) {
             // only add them to the list if the member ID has been populated
             if (StringUtils.isNotBlank(rm.getMemberId())) {
                 final ResponsibilityAction.Builder rai = ResponsibilityAction.Builder.create();
                 rai.setMemberRoleId(rm.getEmbeddedRoleId());
                 rai.setRoleId(rm.getRoleId());
-                rai.setQualifier(Attributes.fromMap(rm.getQualifier()));
-                final List<Delegate.Builder> bs = new ArrayList<Delegate.Builder>();
-                for (DelegateInfo d : rm.getDelegates()) {
-                    Delegate.Builder newD = Delegate.Builder.create(d.getDelegationId(), d.getDelegationTypeCode(), d.getMemberId(), d.getMemberTypeCode(), d.getRoleMemberId(), d.getQualifier());
-                    bs.add(newD);
+                rai.setQualifier(rm.getQualifier());
+                final List<DelegateType.Builder> bs = new ArrayList<DelegateType.Builder>();
+                for (DelegateType d : rm.getDelegates()) {
+                    bs.add(DelegateType.Builder.create(d));
                 }
                 rai.setDelegates(bs);
                 rai.setResponsibilityId(responsibility.getId());

@@ -16,7 +16,8 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
@@ -29,28 +30,29 @@ public class DocumentTypeAndRelationshipToNoteAuthorPermissionTypeService
 		extends DocumentTypePermissionTypeServiceImpl {
 
 	@Override
-	protected List<KimPermissionInfo> performPermissionMatches(
+	protected List<Permission> performPermissionMatches(
 			Attributes requestedDetails,
-			List<KimPermissionInfo> permissionsList) {
+			List<Permission> permissionsList) {
 				
-		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		List<Permission> matchingPermissions = new ArrayList<Permission>();
 		if (requestedDetails == null) {
 			return matchingPermissions; // empty list
 		}
 		
 		// loop over the permissions, checking the non-document-related ones
-		for (KimPermissionInfo kimPermissionInfo : permissionsList) {
+		for (Permission permission : permissionsList) {
+            PermissionBo bo = PermissionBo.from(permission);
 			if (Boolean.parseBoolean(requestedDetails
 					.get(KimConstants.AttributeConstants.CREATED_BY_SELF))) {
-				if(Boolean.parseBoolean(kimPermissionInfo.getDetails().get(
+				if(Boolean.parseBoolean(bo.getDetails().get(
 						KimConstants.AttributeConstants.CREATED_BY_SELF_ONLY))){
-					matchingPermissions.add(kimPermissionInfo);
+					matchingPermissions.add(permission);
 				}
 				
 			}else{
-				if (!Boolean.parseBoolean(kimPermissionInfo.getDetails().get(
+				if (!Boolean.parseBoolean(bo.getDetails().get(
 						KimConstants.AttributeConstants.CREATED_BY_SELF_ONLY))) {
-					matchingPermissions.add(kimPermissionInfo);
+					matchingPermissions.add(permission);
 				}
 			}
 

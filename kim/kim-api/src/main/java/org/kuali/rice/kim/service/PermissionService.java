@@ -15,20 +15,22 @@
  */
 package org.kuali.rice.kim.service;
 
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
-import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
+import java.util.List;
+import java.util.Map;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.List;
-import java.util.Map;
+
+import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
+import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  * This service provides operations for evaluating permissions and querying for permission data.
@@ -209,11 +211,11 @@ public interface PermissionService {
      * the role's type service. 
      * 
      */
-    List<KimPermissionInfo> getAuthorizedPermissions( @WebParam(name="principalId") String principalId,
-    												  @WebParam(name="namespaceCode") String namespaceCode,
-    												  @WebParam(name="permissionName") String permissionName,
-    												  @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-    												  @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
+    List<Permission> getAuthorizedPermissions(@WebParam(name = "principalId") String principalId,
+                                              @WebParam(name = "namespaceCode") String namespaceCode,
+                                              @WebParam(name = "permissionName") String permissionName,
+                                              @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
+                                              @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification);
 
     /**
      * Returns permissions (with their details) that are granted to the principal given
@@ -234,11 +236,11 @@ public interface PermissionService {
      * the role's type service. 
      * 
      */
-    List<KimPermissionInfo> getAuthorizedPermissionsByTemplateName( @WebParam(name="principalId") String principalId,
-    																@WebParam(name="namespaceCode") String namespaceCode,
-    																@WebParam(name="permissionTemplateName") String permissionTemplateName,
-    																@WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-    																@WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
+    List<Permission> getAuthorizedPermissionsByTemplateName(@WebParam(name = "principalId") String principalId,
+                                                            @WebParam(name = "namespaceCode") String namespaceCode,
+                                                            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
+                                                            @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
+                                                            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification);
 
     // --------------------
     // Permission Data
@@ -247,21 +249,21 @@ public interface PermissionService {
     /**
      * Get the permission object with the given ID.
      */
-    KimPermissionInfo getPermission( @WebParam(name="permissionId") String permissionId );
+    Permission getPermission(@WebParam(name = "permissionId") String permissionId);
    
 	/** 
 	 * Return the permission object for the given unique combination of namespace,
 	 * component and permission template name.
 	 */
-    KimPermissionInfo getPermissionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
-    													  @WebParam(name="permissionTemplateName") String permissionTemplateName );
+    Permission getPermissionsByTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
+                                                  @WebParam(name = "permissionTemplateName") String permissionTemplateName);
 
 	/** 
 	 * Return the permission object for the given unique combination of namespace,
 	 * component and permission name.
 	 */
-    KimPermissionInfo getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
-			    											  @WebParam(name="permissionName") String permissionName );
+    Permission getPermissionsByName(@WebParam(name = "namespaceCode") String namespaceCode,
+                                          @WebParam(name = "permissionName") String permissionName);
     
     KimPermissionTemplateInfo getPermissionTemplate( @WebParam(name="permissionTemplateId") String permissionTemplateId );
 
@@ -274,8 +276,8 @@ public interface PermissionService {
      * 
      * If the searchCriteria parameter is null or empty, an empty list will be returned.
      */
-    List<KimPermissionInfo> lookupPermissions( @WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String,String> searchCriteria,
-    										   @WebParam(name="unbounded") boolean unbounded);
+    List<Permission> lookupPermissions(@WebParam(name = "searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria,
+                                       @WebParam(name = "unbounded") boolean unbounded);
     
     /**
      * Get the role IDs for the given permission.
@@ -287,7 +289,7 @@ public interface PermissionService {
     /**
      * Get the role IDs for the given list of permissions.
      */
-    List<String> getRoleIdsForPermissions( @WebParam(name="permissions") List<KimPermissionInfo> permissions );
+    List<String> getRoleIdsForPermissions( @WebParam(name="permissions") List<Permission> permissions );
     
     /**
      * Returns the label of the permission detail for the given permissionId, kimType and attributeName. 
@@ -303,5 +305,5 @@ public interface PermissionService {
      * Return the permission object for the given unique combination of namespace, component and permission name. Inactive
      * permissions are also returned
      */
-    KimPermissionInfo getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
+    Permission getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
 }

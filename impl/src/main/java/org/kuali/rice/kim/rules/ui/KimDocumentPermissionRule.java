@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
@@ -46,7 +46,7 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 			return false;
 		}
 
-		KimPermissionInfo kimPermissionInfo = newPermission.getKimPermission();
+		Permission kimPermissionInfo = newPermission.getPermission();
 		if(kimPermissionInfo==null){
 			GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
 			return false;
@@ -75,7 +75,7 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 		return rulePassed;
 	} 
 
-	public boolean hasPermissionToGrantPermission(KimPermissionInfo kimPermissionInfo , IdentityManagementRoleDocument document){
+	public boolean hasPermissionToGrantPermission(Permission kimPermissionInfo , IdentityManagementRoleDocument document){
 		Map<String,String> permissionDetails = new HashMap<String,String>();
 		permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, kimPermissionInfo.getNamespaceCode());
 		permissionDetails.put(KimConstants.AttributeConstants.PERMISSION_NAME, kimPermissionInfo.getTemplate().getName());

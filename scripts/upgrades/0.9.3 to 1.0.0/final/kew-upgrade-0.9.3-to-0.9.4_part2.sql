@@ -226,7 +226,7 @@ INSERT INTO KRNS_PARM_T ("NMSPC_CD", "OBJ_ID","PARM_DTL_TYP_CD","PARM_NM","PARM_
 /
 INSERT INTO KRNS_PARM_T ("NMSPC_CD", "OBJ_ID","PARM_DTL_TYP_CD","PARM_NM","PARM_TYP_CD","TXT","PARM_DESC_TXT","CONS_CD","GRP_NM") VALUES ('KR-WKFLW', '9BD6785416434C4D9E5F05AF077DB9B7', 'Backdoor', 'SHOW_BACK_DOOR_LOGIN_IND', 'CONFG', 'Y', 'Flag to show the backdoor login.', 'A', 'WorkflowAdmin')
 /
-INSERT INTO KRNS_PARM_T ("NMSPC_CD", "OBJ_ID","PARM_DTL_TYP_CD","PARM_NM","PARM_TYP_CD","TXT","PARM_DESC_TXT","CONS_CD","GRP_NM") VALUES ('KR-WKFLW', '21EA54B9A9E846709E76C176DE0AF47C', 'Rule', 'DELEGATE_LIMIT', 'CONFG', '20', 'Specifies that maximum number of delegation rules that will be displayed on a Rule inquiry before the screen shows a count of delegate rules and provides a link for the user to show them.', 'A', 'WorkflowAdmin')
+INSERT INTO KRNS_PARM_T ("NMSPC_CD", "OBJ_ID","PARM_DTL_TYP_CD","PARM_NM","PARM_TYP_CD","TXT","PARM_DESC_TXT","CONS_CD","GRP_NM") VALUES ('KR-WKFLW', '21EA54B9A9E846709E76C176DE0AF47C', 'Rule', 'DELEGATE_LIMIT', 'CONFG', '20', 'Specifies that maximum number of delegate rules that will be displayed on a Rule inquiry before the screen shows a count of delegate rules and provides a link for the user to show them.', 'A', 'WorkflowAdmin')
 /
 INSERT INTO KRNS_PARM_T ("NMSPC_CD", "OBJ_ID","PARM_DTL_TYP_CD","PARM_NM","PARM_TYP_CD","TXT","PARM_DESC_TXT","CONS_CD","GRP_NM") VALUES ('KR-WKFLW', '88167F03AAD0474281908E03CC681C06', 'Rule', 'RULE_LOCKING_ON_IND', 'CONFG', 'Y', 'Defines whether rule locking it enabled.', 'A', 'WorkflowAdmin')
 /

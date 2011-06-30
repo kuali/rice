@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -119,7 +120,7 @@ public abstract class KSBAction extends DispatchAction {
     	AttributeSet permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
     	
         if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
-        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
+        		KimConstants.PermissionTemplateNames.USE_SCREEN, Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifier) ))
         {
         	throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(), 
             		methodToCall,

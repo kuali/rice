@@ -16,13 +16,16 @@
 package org.kuali.rice.kim.service.impl;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
+import org.kuali.rice.kim.impl.role.RoleServiceImpl;
+import org.kuali.rice.kim.impl.role.RoleUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
@@ -54,15 +57,15 @@ public class RoleServiceImplTest extends KIMTestCase {
 		List <String>roleIds = new ArrayList<String>();
 		roleIds.add("r1");
 		assertTrue( "p1 has direct role r1", roleService.principalHasRole("p1", roleIds, null ));	
-		//assertFalse( "p4 has no direct/higher level role r1", roleService.principalHasRole("p4", roleIds, null ));	
+		//assertFalse( "p4 has no direct/higher level role r1", roleService.principalHasRole("p4", roleIds, null ));
 		AttributeSet qualification = new AttributeSet();
 		qualification.put("Attribute 2", "CHEM");
-		assertTrue( "p1 has direct role r1 with rp2 attr data", roleService.principalHasRole("p1", roleIds, qualification ));	
+		assertTrue( "p1 has direct role r1 with rp2 attr data", roleService.principalHasRole("p1", roleIds, Attributes.fromMap(qualification)));
 		qualification.clear();
 		//requested qualification rolls up to a higher element in some hierarchy 
 		// method not implemented yet, not quite clear how this works
 		qualification.put("Attribute 3", "PHYS");
-		assertTrue( "p1 has direct role r1 with rp2 attr data", roleService.principalHasRole("p1", roleIds, qualification ));	
+		assertTrue( "p1 has direct role r1 with rp2 attr data", roleService.principalHasRole("p1", roleIds, Attributes.fromMap(qualification)));
 	}
 
 	@Test
@@ -142,68 +145,70 @@ public class RoleServiceImplTest extends KIMTestCase {
 	private final class RoleServiceTestImpl extends RoleServiceImpl {
 		
 		// Used for checking the caching capabilities of RoleImpl objects.
-		private final KimObjectTestChecker<RoleImpl> ROLE_IMPL_CHECKER = new KimObjectTestChecker<RoleImpl>() {
-			public String getKimObjectName() { return "RoleImpl"; }
-			public String getKimObjectId(RoleImpl role) { return role.getRoleId(); }
-			public void assertKimObjectsAreEqual(RoleImpl oldRole, RoleImpl newRole) throws Exception {
-				assertEquals("Role IDs do not match.", oldRole.getRoleId(), newRole.getRoleId());
+		private final KimObjectTestChecker<RoleBo> ROLE_IMPL_CHECKER = new KimObjectTestChecker<RoleBo>() {
+			public String getKimObjectName() { return "RoleBo"; }
+			public String getKimObjectId(RoleBo role) { return role.getId(); }
+			public void assertKimObjectsAreEqual(RoleBo oldRole, RoleBo newRole) throws Exception {
+				assertEquals("Role IDs do not match.", oldRole.getId(), newRole.getId());
 				assertEquals("KIM type IDs do not match.", oldRole.getKimTypeId(), newRole.getKimTypeId());
 				assertEquals("Namespace codes do not match.", oldRole.getNamespaceCode(), newRole.getNamespaceCode());
-				assertEquals("Role names do not match.", oldRole.getRoleName(), newRole.getRoleName());
-				assertEquals("Role descriptions do not match.", oldRole.getRoleDescription(), newRole.getRoleDescription());
+				assertEquals("Role names do not match.", oldRole.getName(), newRole.getName());
+				assertEquals("Role descriptions do not match.", oldRole.getDescription(), newRole.getDescription());
 				assertEquals("Role active statuses do not match.", oldRole.isActive(), newRole.isActive());
 			}
-			public RoleImpl getKimObjectFromCacheById(String roleId) { return getRoleFromCache(roleId); }
-			public RoleImpl getKimObjectById(String roleId) { return getRoleImpl(roleId); }
+			public RoleBo getKimObjectFromCacheById(String roleId) { return getRoleFromCache(roleId); }
+			public RoleBo getKimObjectById(String roleId) { return getRoleBo(roleId); }
 			public boolean isUnaffectedByClearingDelegationCache() { return true; }
 		};
 		
 		// Used for checking the caching capabilities of RoleMemberImpl objects.
-		private final KimObjectTestChecker<RoleMemberImpl> ROLE_MEMBER_IMPL_CHECKER = new KimObjectTestChecker<RoleMemberImpl>() {
-			public String getKimObjectName() { return "RoleMemberImpl"; }
-			public String getKimObjectId(RoleMemberImpl roleMember) { return roleMember.getRoleMemberId(); }
-			public void assertKimObjectsAreEqual(RoleMemberImpl oldMember, RoleMemberImpl newMember) throws Exception {
+		private final KimObjectTestChecker<RoleMemberBo> ROLE_MEMBER_IMPL_CHECKER = new KimObjectTestChecker<RoleMemberBo>() {
+			public String getKimObjectName() { return "RoleMemberBo"; }
+			public String getKimObjectId(RoleMemberBo roleMember) { return roleMember.getRoleMemberId(); }
+			public void assertKimObjectsAreEqual(RoleMemberBo oldMember, RoleMemberBo newMember) throws Exception {
 				assertEquals("Role member IDs do not match.", oldMember.getRoleMemberId(), newMember.getRoleMemberId());
 				assertEquals("Role IDs do not match.", oldMember.getRoleId(), newMember.getRoleId());
 				assertEquals("Role members' member IDs do not match.", oldMember.getMemberId(), newMember.getMemberId());
 				assertEquals("Role members' member type codes do not match.", oldMember.getMemberTypeCode(), newMember.getMemberTypeCode());
-				assertEquals("Role member active statuses do not match.", oldMember.isActive(), newMember.isActive());
+				assertEquals("Role member active statuses do not match.", oldMember.isActive(
+                        new Timestamp(System.currentTimeMillis())), newMember.isActive(new Timestamp(System.currentTimeMillis())));
 			}
-			public RoleMemberImpl getKimObjectFromCacheById(String roleMemberId) { return getRoleMemberFromCache(roleMemberId); }
-			public RoleMemberImpl getKimObjectById(String roleMemberId) { return getRoleMemberImpl(roleMemberId); }
+			public RoleMemberBo getKimObjectFromCacheById(String roleMemberId) { return getRoleMemberFromCache(roleMemberId); }
+			public RoleMemberBo getKimObjectById(String roleMemberId) { return getRoleMemberBo(roleMemberId); }
 			public boolean isUnaffectedByClearingDelegationCache() { return true; }
 		};
 		
 		// Used for checking the caching capabilities of KimDelegationImpl objects.
-		private final KimObjectTestChecker<KimDelegationImpl> KIM_DELEGATION_IMPL_CHECKER = new KimObjectTestChecker<KimDelegationImpl>() {
-			public String getKimObjectName() { return "KimDelegationImpl"; }
-			public String getKimObjectId(KimDelegationImpl delegation) { return delegation.getDelegationId(); }
-			public void assertKimObjectsAreEqual(KimDelegationImpl oldDelegation, KimDelegationImpl newDelegation) throws Exception {
+		private final KimObjectTestChecker<DelegateBo> KIM_DELEGATION_IMPL_CHECKER = new KimObjectTestChecker<DelegateBo>() {
+			public String getKimObjectName() { return "DelegateBo"; }
+			public String getKimObjectId(DelegateBo delegation) { return delegation.getDelegationId(); }
+			public void assertKimObjectsAreEqual(DelegateBo oldDelegation, DelegateBo newDelegation) throws Exception {
 				assertEquals("Delegation IDs do not match.", oldDelegation.getDelegationId(), newDelegation.getDelegationId());
 				assertEquals("Role IDs do not match.", oldDelegation.getRoleId(), newDelegation.getRoleId());
 				assertEquals("KIM type IDs do not match.", oldDelegation.getKimTypeId(), newDelegation.getKimTypeId());
 				assertEquals("Delegation type codes do not match.", oldDelegation.getDelegationTypeCode(), newDelegation.getDelegationTypeCode());
 				assertEquals("Delegation active statuses do not match.", oldDelegation.isActive(), newDelegation.isActive());
 			}
-			public KimDelegationImpl getKimObjectFromCacheById(String delegationId) { return getDelegationFromCache(delegationId); }
-			public KimDelegationImpl getKimObjectById(String delegationId) { return getKimDelegationImpl(delegationId); }
+			public DelegateBo getKimObjectFromCacheById(String delegationId) { return getDelegationFromCache(delegationId); }
+			public DelegateBo getKimObjectById(String delegationId) { return getKimDelegationImpl(delegationId); }
 			public boolean isUnaffectedByClearingDelegationCache() { return false; }
 		};
 		
 		// Used for checking the caching capabilities of KimDelegationMemberImpl objects.
-		private final KimObjectTestChecker<KimDelegationMemberImpl> KIM_DLGN_MBR_IMPL_CHECKER = new KimObjectTestChecker<KimDelegationMemberImpl>() {
-			public String getKimObjectName() { return "KimDelegationMemberImpl"; }
-			public String getKimObjectId(KimDelegationMemberImpl dlgnMember) { return dlgnMember.getDelegationMemberId(); }
-			public void assertKimObjectsAreEqual(KimDelegationMemberImpl oldMember, KimDelegationMemberImpl newMember) throws Exception {
+		private final KimObjectTestChecker<DelegateMemberBo> KIM_DLGN_MBR_IMPL_CHECKER = new KimObjectTestChecker<DelegateMemberBo>() {
+			public String getKimObjectName() { return "DelegateMemberBo"; }
+			public String getKimObjectId(DelegateMemberBo dlgnMember) { return dlgnMember.getDelegationMemberId(); }
+			public void assertKimObjectsAreEqual(DelegateMemberBo oldMember, DelegateMemberBo newMember) throws Exception {
 				assertEquals("Delegation member IDs do not match.", oldMember.getDelegationMemberId(), newMember.getDelegationMemberId());
 				assertEquals("Delegation IDs do not match.", oldMember.getDelegationMemberId(), newMember.getDelegationMemberId());
 				assertEquals("Delegation members' role member IDs do not match.", oldMember.getRoleMemberId(), newMember.getRoleMemberId());
 				assertEquals("Delegation members' member IDs do not match.", oldMember.getMemberId(), newMember.getMemberId());
-				assertEquals("Delegation members' member type codes do not match.", oldMember.getMemberTypeCode(), newMember.getMemberTypeCode());
-				assertEquals("Delegation member active statuses do not match.", oldMember.isActive(), newMember.isActive());
+				assertEquals("Delegation members' member type codes do not match.", oldMember.getTypeCode(), newMember.getTypeCode());
+				assertEquals("Delegation member active statuses do not match.", oldMember.isActive(
+                        new Timestamp(System.currentTimeMillis())), newMember.isActive(new Timestamp(System.currentTimeMillis())));
 			}
-			public KimDelegationMemberImpl getKimObjectFromCacheById(String delegationMemberId) { return getDelegationMemberFromCache(delegationMemberId); }
-			public KimDelegationMemberImpl getKimObjectById(String delegationMemberId) { return getKimDelegationMemberImpl(delegationMemberId); }
+			public DelegateMemberBo getKimObjectFromCacheById(String delegationMemberId) { return getDelegationMemberFromCache(delegationMemberId); }
+			public DelegateMemberBo getKimObjectById(String delegationMemberId) { return getDelegateMemberBo(delegationMemberId); }
 			public boolean isUnaffectedByClearingDelegationCache() { return false; }
 		};
 		
@@ -231,9 +236,9 @@ public class RoleServiceImplTest extends KIMTestCase {
 			assertKimObjectCachingByIdIsWorking(roleIds, roleIds, ROLE_IMPL_CHECKER);
 			
 			// Ensure that roles can be obtained properly from the cache by name.
-			Map<String,RoleImpl> firstRoleMap = getRoleImplMapByName(roleNames);
+			Map<String,RoleBo> firstRoleMap = getRoleImplMapByName(roleNames);
 			assertRolesAreCachedByNameAsExpected(roleNames, true);
-			Map<String,RoleImpl> secondRoleMap = getRoleImplMapByName(roleNames);
+			Map<String,RoleBo> secondRoleMap = getRoleImplMapByName(roleNames);
 			assertKimObjectResultsAreEqual(roleIds.size(), firstRoleMap, secondRoleMap, ROLE_IMPL_CHECKER);
 			// Ensure that roles cached by name can be cleared properly.
 			getIdentityManagementNotificationService().roleUpdated();
@@ -335,13 +340,13 @@ public class RoleServiceImplTest extends KIMTestCase {
 			// Ensure that by-ID, by-delegation caching of individual delegation members is working properly.
 			String[] dlgnMemberIdArray = {"d1p7","d1r4","d2g7"};
 			String[][] idArray = { {"d1","d1p7"}, {"d1","d1r4"}, {"d2","d2g7"} };
-			Map<String,KimDelegationMemberImpl> firstMemberMap = getKimDelegationMemberImplMapByIdAndDelegationId(idArray);
+			Map<String,DelegateMemberBo> firstMemberMap = getKimDelegationMemberImplMapByIdAndDelegationId(idArray);
 			for (String dlgnMemberId : dlgnMemberIdArray) {
 				assertNotNull("The Map of members by delegation member ID and delegation ID should have contained an entry for ID " + dlgnMemberId,
 						firstMemberMap.get(dlgnMemberId));
 			}
 			assertDelegationMembersAreCachedByIdAndDelegationIdAsExpected(idArray, true);
-			Map<String,KimDelegationMemberImpl> secondMemberMap = getKimDelegationMemberImplMapByIdAndDelegationId(idArray);
+			Map<String,DelegateMemberBo> secondMemberMap = getKimDelegationMemberImplMapByIdAndDelegationId(idArray);
 			assertKimObjectResultsAreEqual(idArray.length, firstMemberMap, secondMemberMap, KIM_DLGN_MBR_IMPL_CHECKER);
 			// Ensure that delegation members cached by ID and delegation ID can be cleared properly.
 			getIdentityManagementNotificationService().delegationUpdated();
@@ -423,80 +428,80 @@ public class RoleServiceImplTest extends KIMTestCase {
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.assignPrincipalToRole("p8", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
-			principalRoleMemberId = assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8", attributeSet), true);
+			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
+			principalRoleMemberId = assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8", Attributes.fromMap(attributeSet)), true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.assignGroupToRole("g8", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
+			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
 			groupRoleMemberId = assertRoleMemberUpdateSucceeded("g8", getStoredRoleGroupsForGroupIdsAndRoleIds(oneRoleId, oneGroupId, null), true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.assignRoleToRole("r6", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
-			roleAsMemberRoleMemberId = assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember, attributeSet), true);
+			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
+			roleAsMemberRoleMemberId = assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember, Attributes.fromMap(attributeSet)), true);
 			
 			// Ensure that deletion tasks will reset the correct caches.
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.removePrincipalFromRole("p8", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
-			assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8", attributeSet), false);
+			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
+			assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8", Attributes.fromMap(attributeSet)), false);
 			assertRoleMemberHasExpectedExistence(principalRoleMemberId, false);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.removeGroupFromRole("g8", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
+			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
 			assertRoleMemberUpdateSucceeded("g8", getStoredRoleGroupsForGroupIdsAndRoleIds(oneRoleId, oneGroupId, null), false);
 			assertRoleMemberHasExpectedExistence(groupRoleMemberId, false);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.removeRoleFromRole("r6", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
-			assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember, attributeSet), false);
+			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
+			assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember, Attributes.fromMap(attributeSet)), false);
 			assertRoleMemberHasExpectedExistence(roleAsMemberRoleMemberId, false);
 			
 			// This time, do role-assigning tasks via the "saveRoleMemberForRole" method.
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.saveRoleMemberForRole(null, "p8", "P", "r3", attributeSet, null, null);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
-			principalRoleMemberId = assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8", attributeSet), true);
+			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
+			principalRoleMemberId = assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8", Attributes.fromMap(attributeSet)), true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.saveRoleMemberForRole(null, "g8", "G", "r3", attributeSet, null, null);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
+			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
 			groupRoleMemberId = assertRoleMemberUpdateSucceeded("g8", getStoredRoleGroupsForGroupIdsAndRoleIds(oneRoleId, oneGroupId, null), true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.saveRoleMemberForRole(null, "r6", "R", "r3", attributeSet, null, null);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
-			roleAsMemberRoleMemberId = assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember, attributeSet), true);
+			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
+			roleAsMemberRoleMemberId = assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember, Attributes.fromMap(attributeSet)), true);
 			
 			// Now perform some delegation-assigning tasks, which currently clear the role-related caches in addition to the delegation-related caches.
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.saveDelegationMemberForRole(null, principalRoleMemberId, "p6", "P", "P", "r3", attributeSet, null, null);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
 			
-			List<KimDelegationImpl> newDelegation = this.getStoredDelegationImplsForRoleIds(oneRoleId);
+			List<DelegateBo> newDelegation = this.getStoredDelegationImplsForRoleIds(oneRoleId);
 			assertEquals("The wrong number of new delegations were found for role r3.", 1, newDelegation.size());
 			delegationId = newDelegation.get(0).getDelegationId();
 			oneDelegationId = Collections.singletonList(delegationId);
 			
-			getBusinessObjectService().findBySinglePrimaryKey(KimDelegationImpl.class, delegationId).refreshReferenceObject("members");
+			getBusinessObjectService().findBySinglePrimaryKey(DelegateBo.class, delegationId).refreshReferenceObject("members");
 			principalDelegationMemberId =
 				assertDelegationMemberUpdateSucceeded("p6", this.getStoredDelegationPrincipalsForPrincipalIdAndDelegationIds(oneDelegationId, "p6"), true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.saveDelegationMemberForRole(null, principalRoleMemberId, "g7", "G", "P", "r3", attributeSet, null, null);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(KimDelegationImpl.class, delegationId).refreshReferenceObject("members");
+			getBusinessObjectService().findBySinglePrimaryKey(DelegateBo.class, delegationId).refreshReferenceObject("members");
 			groupDelegationMemberId =
 				assertDelegationMemberUpdateSucceeded("g7", this.getStoredDelegationGroupsForGroupIdsAndDelegationIds(oneDelegationId, oneGroupId2), true);
 			
@@ -504,21 +509,21 @@ public class RoleServiceImplTest extends KIMTestCase {
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			inactivatePrincipalRoleMemberships("p8", yesterday);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
+			getBusinessObjectService().findBySinglePrimaryKey(DelegateBo.class, "r3").refreshReferenceObject("members");
 			assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8", null), false);
 			assertRoleMemberHasExpectedExistence(principalRoleMemberId, true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			inactivateGroupRoleMemberships(oneGroupId, yesterday);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
+			getBusinessObjectService().findBySinglePrimaryKey(DelegateBo.class, "r3").refreshReferenceObject("members");
 			assertRoleMemberUpdateSucceeded("g8", getStoredRoleGroupsForGroupIdsAndRoleIds(oneRoleId, oneGroupId, null), false);
 			assertRoleMemberHasExpectedExistence(groupRoleMemberId, true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			inactivatePrincipalDelegations("p6", yesterday);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, true);
-			getBusinessObjectService().findBySinglePrimaryKey(KimDelegationImpl.class, delegationId).refreshReferenceObject("members");
+			getBusinessObjectService().findBySinglePrimaryKey(DelegateBo.class, delegationId).refreshReferenceObject("members");
 			assertDelegationMemberUpdateSucceeded("p6", this.getStoredDelegationPrincipalsForPrincipalIdAndDelegationIds(oneDelegationId, "p6"), false);
 			assertDelegationMemberHasExpectedExistence(principalDelegationMemberId, true);
 			
@@ -528,14 +533,14 @@ public class RoleServiceImplTest extends KIMTestCase {
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleInactivated("r6");
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
+			getBusinessObjectService().findBySinglePrimaryKey(DelegateBo.class, "r3").refreshReferenceObject("members");
 			assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember, null), false);
 			assertRoleMemberHasExpectedExistence(roleAsMemberRoleMemberId, true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleInactivated("r3");
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
-			getBusinessObjectService().findBySinglePrimaryKey(KimDelegationImpl.class, delegationId).refreshReferenceObject("members");
+			getBusinessObjectService().findBySinglePrimaryKey(DelegateBo.class, delegationId).refreshReferenceObject("members");
 			assertDelegationMemberUpdateSucceeded("g7", this.getStoredDelegationGroupsForGroupIdsAndDelegationIds(oneDelegationId, oneGroupId2), false);
 			assertDelegationMemberHasExpectedExistence(groupDelegationMemberId, true);
 			
@@ -554,8 +559,8 @@ public class RoleServiceImplTest extends KIMTestCase {
 			assertKimObjectCachingByIdIsWorking(roleIds, roleIds, ROLE_IMPL_CHECKER);
 			
 			// Ensure that roles can be obtained properly from the cache by name.
-			Map<String,RoleImpl> firstRoleMap = getRoleImplMapByName(roleNames);
-			Map<String,RoleImpl> secondRoleMap = getRoleImplMapByName(roleNames);
+			Map<String,RoleBo> firstRoleMap = getRoleImplMapByName(roleNames);
+			Map<String,RoleBo> secondRoleMap = getRoleImplMapByName(roleNames);
 			assertKimObjectResultsAreEqual(roleIds.size(), firstRoleMap, secondRoleMap, ROLE_IMPL_CHECKER);
 
 			assertRolesAreCachedByNameAsExpected(roleNames, true);
@@ -600,7 +605,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 * memberList is empty, that does not necessarily mean the member was deleted; use assertRoleMemberHasExpectedExistence() to find inactive members.
 		 * If the assertions succeed, this method will return null if shouldBeInList is false, or the role member's ID if shouldBeInList is true.
 		 */
-		private String assertRoleMemberUpdateSucceeded(String memberId, List<RoleMemberImpl> memberList, boolean shouldBeInList) {
+		private String assertRoleMemberUpdateSucceeded(String memberId, List<RoleMemberBo> memberList, boolean shouldBeInList) {
 			if (shouldBeInList) {
 				assertEquals("The role member list has the wrong number of members.", 1, memberList.size());
 				assertEquals("The role member does not have the expected member ID", memberId, memberList.get(0).getMemberId());
@@ -615,10 +620,10 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 * A convenience method for checking whether or not a given role member is truly deleted or is just inactive.
 		 */
 		private void assertRoleMemberHasExpectedExistence(String roleMemberId, boolean justInactive) {
-			RoleMemberImpl roleMember = getRoleMemberImpl(roleMemberId);
+			RoleMemberBo roleMember = getRoleMemberBo(roleMemberId);
 			if (justInactive) {
 				assertNotNull("There should be an inactive but existing role member with ID " + roleMemberId, roleMember);
-				assertFalse(roleMemberId + " should be an inactive role member", roleMember.isActive());
+				assertFalse(roleMemberId + " should be an inactive role member", roleMember.isActive(new Timestamp(System.currentTimeMillis())));
 			} else {
 				assertNull("There should not be an existing role member with ID " + roleMemberId, roleMember);
 			}
@@ -630,7 +635,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 * memberList is empty, that does not always mean the member was deleted; use assertDelegationMemberHasExpectedExistence() to find inactive members.
 		 * If the assertions succeed, this method will return null if shouldBeInList is false, or the delegation member's ID if shouldBeInList is true.
 		 */
-		private String assertDelegationMemberUpdateSucceeded(String memberId, List<KimDelegationMemberImpl> memberList, boolean shouldBeInList) {
+		private String assertDelegationMemberUpdateSucceeded(String memberId, List<DelegateMemberBo> memberList, boolean shouldBeInList) {
 			if (shouldBeInList) {
 				assertEquals("The delegation member list has the wrong number of members.", 1, memberList.size());
 				assertEquals("The delegation member does not have the expected member ID", memberId, memberList.get(0).getMemberId());
@@ -645,10 +650,10 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 * A convenience method for checking whether or not a given delegation member is truly deleted or is just inactive.
 		 */
 		private void assertDelegationMemberHasExpectedExistence(String delegationMemberId, boolean justInactive) {
-			KimDelegationMemberImpl delegationMember = getKimDelegationMemberImpl(delegationMemberId);
+			DelegateMemberBo delegationMember = getDelegateMemberBo(delegationMemberId);
 			if (justInactive) {
 				assertNotNull("There should be an inactive but existing delegation member with ID " + delegationMemberId, delegationMember);
-				assertFalse(delegationMemberId + " should be an inactive delegation member", delegationMember.isActive());
+				assertFalse(delegationMemberId + " should be an inactive delegation member", delegationMember.isActive(new Timestamp(System.currentTimeMillis())));
 			} else {
 				assertNull("There should not be an existing delegation member with ID " + delegationMemberId, delegationMember);
 			}
@@ -760,12 +765,12 @@ public class RoleServiceImplTest extends KIMTestCase {
 		/*
 		 * A convenience method for retrieving multiple RoleImpl objects by namespace code and name.
 		 */
-		private Map<String,RoleImpl> getRoleImplMapByName(String[][] roleNames) {
-			Map<String,RoleImpl> roleMap = new HashMap<String,RoleImpl>();
+		private Map<String,RoleBo> getRoleImplMapByName(String[][] roleNames) {
+			Map<String,RoleBo> roleMap = new HashMap<String,RoleBo>();
 			for (int i = 0; i < roleNames.length; i++) {
-				RoleImpl tempRole = getRoleImplByName(roleNames[i][0], roleNames[i][1]);
+				RoleBo tempRole = getRoleBoByName(roleNames[i][0], roleNames[i][1]);
 				if (tempRole != null && tempRole.isActive()) {
-					roleMap.put(tempRole.getRoleId(), tempRole);
+					roleMap.put(tempRole.getId(), tempRole);
 				}
 			}
 			return roleMap;
@@ -776,7 +781,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 */
 		private void assertRolesAreCachedByNameAsExpected(String[][] roleNames, boolean shouldBeInCache) {
 			for (int i = 0; i < roleNames.length; i++) {
-				RoleImpl tempRole = getRoleFromCache(roleNames[i][0], roleNames[i][1]);
+				RoleBo tempRole = getRoleFromCache(roleNames[i][0], roleNames[i][1]);
 				if (shouldBeInCache) {
 					if (tempRole == null) {
 						assertNotNull("Role with namespace '" + roleNames[i][0] + "' and name '" + roleNames[i][1] +
@@ -796,7 +801,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		/*
 		 * A convenience method for choosing the correct helper method that accesses "getRoleMemberImplList".
 		 */
-		private List<RoleMemberImpl> getCorrectRoleMemberImplList(RoleDaoAction daoAction, List<String> roleIds, String principalId,
+		private List<RoleMemberBo> getCorrectRoleMemberImplList(RoleDaoAction daoAction, List<String> roleIds, String principalId,
 				List<String> groupIds, String memberTypeCode) {
 			switch (daoAction) {
 				case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS : return getStoredRolePrincipalsForPrincipalIdAndRoleIds(roleIds, principalId, null);
@@ -815,8 +820,8 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 */
 		private boolean listShouldBeAllowedInCache(RoleDaoAction daoAction, String roleId) {
 			if (RoleDaoAction.ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS.equals(daoAction)) {
-				List<RoleMemberImpl> roleMembers = getRoleDao().getRoleMembershipsForRoleIdsAsMembers(Collections.singletonList(roleId), null);
-				for (RoleMemberImpl roleMember : roleMembers) {
+				List<RoleMemberBo> roleMembers = getRoleDao().getRoleMembershipsForRoleIdsAsMembers(Collections.singletonList(roleId), null);
+				for (RoleMemberBo roleMember : roleMembers) {
 					if (!shouldCacheMembersOfRole(roleMember.getRoleId())) {
 						return false;
 					}
@@ -835,13 +840,13 @@ public class RoleServiceImplTest extends KIMTestCase {
 			List<String> expectedCachedMembers = Arrays.asList(expectedCachedMembersArray);
 			List<String> expectedMembers = Arrays.asList(expectedMembersArray);
 			// Ensure that the RoleMemberImpl lists are getting cached as expected.
-			Map<String,RoleMemberImpl> firstMemberMap = convertKimObjectListToMap(
+			Map<String,RoleMemberBo> firstMemberMap = convertKimObjectListToMap(
 					getCorrectRoleMemberImplList(daoAction, roleIds, principalId, groupIds, memberTypeCode), ROLE_MEMBER_IMPL_CHECKER);
 			for (String expectedMember : expectedMembers) {
 				assertNotNull("The retrieved role members should have included the member with ID " + expectedMember, firstMemberMap.get(expectedMember));
 			}
 			assertRoleMemberListsAreCachedAsExpected(daoAction, roleIds, principalId, groupIds, memberTypeCode, expectedCachedMembers, true);
-			Map<String,RoleMemberImpl> secondMemberMap = convertKimObjectListToMap(
+			Map<String,RoleMemberBo> secondMemberMap = convertKimObjectListToMap(
 					getCorrectRoleMemberImplList(daoAction, roleIds, principalId, groupIds, memberTypeCode), ROLE_MEMBER_IMPL_CHECKER);
 			assertKimObjectResultsAreEqual(expectedMembers.size(), firstMemberMap, secondMemberMap, ROLE_MEMBER_IMPL_CHECKER);
 			
@@ -869,7 +874,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 */
 		private void assertRoleMemberListsAreCachedAsExpected(RoleDaoAction daoAction, List<String> roleIds, String principalId,
 				List<String> groupIds, String memberTypeCode, List<String> expectedMembers, boolean shouldBeInCache) {
-			Map<String,RoleMemberImpl> cachedMembers = new HashMap<String,RoleMemberImpl>();
+			Map<String,RoleMemberBo> cachedMembers = new HashMap<String,RoleMemberBo>();
 			// Generate the cache keys to use.
 			List<String[]> cacheKeyHelp = new ArrayList<String[]>();
 			if (roleIds == null || roleIds.isEmpty()) { roleIds = Collections.singletonList(null); }
@@ -912,7 +917,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 			
 			// Ensure that the lists are present or absent from the cache as expected.
 			for (String[] cacheData : cacheKeyHelp) {
-				List<RoleMemberImpl> cachedList = (List<RoleMemberImpl>) getCacheAdministrator().getFromCache(cacheData[1]);
+				List<RoleMemberBo> cachedList = (List<RoleMemberBo>) getCacheAdministrator().getFromCache(cacheData[1]);
 				if (cachedList == null) {
 					if (shouldBeInCache && listShouldBeAllowedInCache(daoAction, cacheData[0])) {
 						fail("The role member list with key '" + cacheData[1] + "' should have been cached");
@@ -921,7 +926,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 					fail("The role member list with key '" + cacheData[1] +
 							((shouldBeInCache) ? "' should have been excluded from the cache" : "' should not have been cached"));
 				} else {
-					for (RoleMemberImpl cachedObject : cachedList) { cachedMembers.put(cachedObject.getRoleMemberId(), cachedObject); }
+					for (RoleMemberBo cachedObject : cachedList) { cachedMembers.put(cachedObject.getRoleMemberId(), cachedObject); }
 				}
 			}
 			
@@ -947,10 +952,10 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 */
 		private void assertDelegationListCachingIsWorking(List<String> roleIds, List<String> expectedDelegations, boolean getsMaps) throws Exception {
 			// Ensure that the KimDelegationImpl lists are getting cached as expected.
-			Map<String,KimDelegationImpl> firstDelegationMap = (getsMaps) ? getStoredDelegationImplMapFromRoleIds(roleIds) :
+			Map<String,DelegateBo> firstDelegationMap = (getsMaps) ? getStoredDelegationImplMapFromRoleIds(roleIds) :
 				convertKimObjectListToMap(getStoredDelegationImplsForRoleIds(roleIds), KIM_DELEGATION_IMPL_CHECKER);
 			assertDelegationListsAreCachedAsExpected(roleIds, expectedDelegations, true);
-			Map<String,KimDelegationImpl> secondDelegationMap = (getsMaps) ? getStoredDelegationImplMapFromRoleIds(roleIds) :
+			Map<String,DelegateBo> secondDelegationMap = (getsMaps) ? getStoredDelegationImplMapFromRoleIds(roleIds) :
 				convertKimObjectListToMap(getStoredDelegationImplsForRoleIds(roleIds), KIM_DELEGATION_IMPL_CHECKER);
 			assertKimObjectResultsAreEqual(expectedDelegations.size(), firstDelegationMap, secondDelegationMap, KIM_DELEGATION_IMPL_CHECKER);
 			
@@ -976,12 +981,12 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 * A convenience method for checking whether or not certain delegation Lists are in the cache.
 		 */
 		private void assertDelegationListsAreCachedAsExpected(List<String> roleIds, List<String> expectedDelegations, boolean shouldBeInCache) {
-			Map<String,KimDelegationImpl> cachedDelegations = new HashMap<String,KimDelegationImpl>();
+			Map<String,DelegateBo> cachedDelegations = new HashMap<String,DelegateBo>();
 			
 			// Ensure that the lists are present or absent from the cache as expected.
 			if (roleIds != null && !roleIds.isEmpty()) {
 				for (String roleId : roleIds) {
-					List<KimDelegationImpl> cachedList = (List<KimDelegationImpl>) getCacheAdministrator().getFromCache(getDelegationListCacheKey(roleId));
+					List<DelegateBo> cachedList = (List<DelegateBo>) getCacheAdministrator().getFromCache(getDelegationListCacheKey(roleId));
 					if (cachedList == null) {
 						if (shouldBeInCache) {
 							fail("The delegation list for role ID '" + roleId + "' should have been cached");
@@ -989,7 +994,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 					} else if (!shouldBeInCache) {
 						fail("The delegation list for role ID '" + roleId + "' should not have been cached");
 					} else {
-						for (KimDelegationImpl cachedObject : cachedList) { cachedDelegations.put(cachedObject.getDelegationId(), cachedObject); }
+						for (DelegateBo cachedObject : cachedList) { cachedDelegations.put(cachedObject.getDelegationId(), cachedObject); }
 					}
 				}
 			}
@@ -1015,11 +1020,11 @@ public class RoleServiceImplTest extends KIMTestCase {
 		/*
 		 * A convenience method for retrieving Maps of delegation members by delegation and delegation member ID.
 		 */
-		private Map<String,KimDelegationMemberImpl> getKimDelegationMemberImplMapByIdAndDelegationId(String[][] idArray) {
-			Map<String,KimDelegationMemberImpl> finalResults = new HashMap<String,KimDelegationMemberImpl>();
+		private Map<String,DelegateMemberBo> getKimDelegationMemberImplMapByIdAndDelegationId(String[][] idArray) {
+			Map<String,DelegateMemberBo> finalResults = new HashMap<String,DelegateMemberBo>();
 			for (String[] ids : idArray) {
-				KimDelegationMemberImpl delegationMember = getKimDelegationMemberImplByDelegationAndId(ids[0], ids[1]);
-				if (delegationMember != null && delegationMember.isActive()) {
+				DelegateMemberBo delegationMember = getKimDelegationMemberImplByDelegationAndId(ids[0], ids[1]);
+				if (delegationMember != null && delegationMember.isActive(new Timestamp(System.currentTimeMillis()))) {
 					finalResults.put(delegationMember.getDelegationMemberId(), delegationMember);
 				}
 			}
@@ -1029,13 +1034,13 @@ public class RoleServiceImplTest extends KIMTestCase {
 		/*
 		 * A convenience method for retrieving Maps of delegation members by member ID and delegation ID.
 		 */
-		private Map<String,KimDelegationMemberImpl> getKimDelegationMemberImplMapByMemberAndDelegationId(String[][] idArray) {
-			Map<String,KimDelegationMemberImpl> finalResults = new HashMap<String,KimDelegationMemberImpl>();
+		private Map<String,DelegateMemberBo> getKimDelegationMemberImplMapByMemberAndDelegationId(String[][] idArray) {
+			Map<String,DelegateMemberBo> finalResults = new HashMap<String,DelegateMemberBo>();
 			for (String[] ids : idArray) {
-				List<KimDelegationMemberImpl> memberList = getKimDelegationMemberImplListByMemberAndDelegationId(ids[0], ids[1]);
+				List<DelegateMemberBo> memberList = getDelegationMemberListByMemberAndDelegationIdFromCache(ids[0], ids[1]);
 				if (memberList != null && !memberList.isEmpty()) {
-					for (KimDelegationMemberImpl delegationMember : memberList) {
-						if (delegationMember != null && delegationMember.isActive()) {
+					for (DelegateMemberBo delegationMember : memberList) {
+						if (delegationMember != null && delegationMember.isActive(new Timestamp(System.currentTimeMillis()))) {
 							finalResults.put(delegationMember.getDelegationMemberId(), delegationMember);
 						}
 					}
@@ -1049,7 +1054,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 */
 		private void assertDelegationMembersAreCachedByIdAndDelegationIdAsExpected(String[][] idArray, boolean shouldBeInCache) throws Exception {
 			for (String[] ids : idArray) {
-				KimDelegationMemberImpl tempMember = getDelegationMemberByDelegationAndIdFromCache(ids[0], ids[1]);
+				DelegateMemberBo tempMember = getDelegationMemberByDelegationAndIdFromCache(ids[0], ids[1]);
 				if (shouldBeInCache) {
 					if (tempMember == null) {
 						assertNotNull("Delegation member with ID '" + ids[1] + "' and belonging to delegation with ID '" + ids[0] +
@@ -1067,7 +1072,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 */
 		private void assertDelegationMemberListsAreCachedByMemberAndDelegationIdAsExpected(String[][] idArray, boolean shouldBeInCache) throws Exception {
 			for (String[] ids : idArray) {
-				List<KimDelegationMemberImpl> tempList = getDelegationMemberListByMemberAndDelegationIdFromCache(ids[0], ids[1]);
+				List<DelegateMemberBo> tempList = getDelegationMemberListByMemberAndDelegationIdFromCache(ids[0], ids[1]);
 				if (shouldBeInCache) {
 					if (tempList == null) {
 						assertNotNull("Delegation member list for member ID '" + ids[0] + "' and delegation ID '" + ids[1] +
@@ -1079,7 +1084,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 						} else {
 							for (int i = 2; i < ids.length; i++) {
 								boolean foundMember = false;
-								for (KimDelegationMemberImpl tempMember : tempList) {
+								for (DelegateMemberBo tempMember : tempList) {
 									if (tempMember.getDelegationMemberId().equals(ids[i])) {
 										foundMember = true;
 										break;
@@ -1102,7 +1107,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		/*
 		 * A convenience method for choosing the correct helper method for retrieving delegation member lists (or maps converted to lists).
 		 */
-		private List<KimDelegationMemberImpl> getCorrectKimDelegationMemberImplList(RoleDaoAction daoAction, List<String> delegationIds,
+		private List<DelegateMemberBo> getCorrectKimDelegationMemberImplList(RoleDaoAction daoAction, List<String> delegationIds,
 				String principalId, List<String> groupIds) {
 			switch (daoAction) {
 				case DELEGATION_PRINCIPALS_FOR_PRINCIPAL_ID_AND_DELEGATION_IDS :
@@ -1110,9 +1115,9 @@ public class RoleServiceImplTest extends KIMTestCase {
 				case DELEGATION_GROUPS_FOR_GROUP_IDS_AND_DELEGATION_IDS :
 					return getStoredDelegationGroupsForGroupIdsAndDelegationIds(delegationIds, groupIds);
 				case DELEGATION_MEMBERS_FOR_DELEGATION_IDS :
-					Map<String,List<KimDelegationMemberImpl>> memberMap = getStoredDelegationMembersForDelegationIds(delegationIds);
-					List<KimDelegationMemberImpl> finalResults = new ArrayList<KimDelegationMemberImpl>();
-					for (List<KimDelegationMemberImpl> subList : memberMap.values()) {
+					Map<String,List<DelegateMemberBo>> memberMap = getStoredDelegationMembersForDelegationIds(delegationIds);
+					List<DelegateMemberBo> finalResults = new ArrayList<DelegateMemberBo>();
+					for (List<DelegateMemberBo> subList : memberMap.values()) {
 						finalResults.addAll(subList);
 					}
 					return finalResults;
@@ -1127,10 +1132,10 @@ public class RoleServiceImplTest extends KIMTestCase {
 				List<String> groupIds, String[] expectedMembersArray) throws Exception {
 			List<String> expectedMembers = Arrays.asList(expectedMembersArray);
 			// Ensure that the KimDelegationMemberImpl lists are getting cached as expected.
-			Map<String,KimDelegationMemberImpl> firstMemberMap = convertKimObjectListToMap(getCorrectKimDelegationMemberImplList(
+			Map<String,DelegateMemberBo> firstMemberMap = convertKimObjectListToMap(getCorrectKimDelegationMemberImplList(
 					daoAction, delegationIds, principalId, groupIds), KIM_DLGN_MBR_IMPL_CHECKER);
 			assertDelegationMemberListsAreCachedAsExpected(daoAction, delegationIds, principalId, groupIds, expectedMembers, true);
-			Map<String,KimDelegationMemberImpl> secondMemberMap = convertKimObjectListToMap(getCorrectKimDelegationMemberImplList(
+			Map<String,DelegateMemberBo> secondMemberMap = convertKimObjectListToMap(getCorrectKimDelegationMemberImplList(
 					daoAction, delegationIds, principalId, groupIds), KIM_DLGN_MBR_IMPL_CHECKER);
 			assertKimObjectResultsAreEqual(expectedMembers.size(), firstMemberMap, secondMemberMap, KIM_DLGN_MBR_IMPL_CHECKER);
 			
@@ -1157,7 +1162,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		 */
 		private void assertDelegationMemberListsAreCachedAsExpected(RoleDaoAction daoAction, List<String> delegationIds, String principalId,
 				List<String> groupIds, List<String> expectedMembers, boolean shouldBeInCache) {
-			Map<String,KimDelegationMemberImpl> cachedMembers = new HashMap<String,KimDelegationMemberImpl>();
+			Map<String,DelegateMemberBo> cachedMembers = new HashMap<String,DelegateMemberBo>();
 			List<String[]> cacheKeys = new ArrayList<String[]>();
 			if (delegationIds == null || delegationIds.isEmpty()) { delegationIds = Collections.singletonList(null); }
 			if (groupIds == null || groupIds.isEmpty()) { groupIds = Collections.singletonList(null); }
@@ -1187,7 +1192,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 			
 			// Ensure that the lists are present or absent from the cache as expected.
 			for (String[] cacheKey : cacheKeys) {
-				List<KimDelegationMemberImpl> cachedList = (List<KimDelegationMemberImpl>) getCacheAdministrator().getFromCache(
+				List<DelegateMemberBo> cachedList = (List<DelegateMemberBo>) getCacheAdministrator().getFromCache(
 						getDelegationMemberListCacheKey(daoAction, cacheKey[0], cacheKey[1], cacheKey[2]));
 				if (cachedList == null) {
 					if (shouldBeInCache) {
@@ -1198,7 +1203,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 					fail("The delegation member list with key '" +
 							getDelegationMemberListCacheKey(daoAction, cacheKey[0], cacheKey[1], cacheKey[2]) + "' should not have been cached");
 				} else {
-					for (KimDelegationMemberImpl cachedObject : cachedList) { cachedMembers.put(cachedObject.getDelegationMemberId(), cachedObject); }
+					for (DelegateMemberBo cachedObject : cachedList) { cachedMembers.put(cachedObject.getDelegationMemberId(), cachedObject); }
 				}
 			}
 			

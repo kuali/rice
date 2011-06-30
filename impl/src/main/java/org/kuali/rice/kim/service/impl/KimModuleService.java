@@ -20,16 +20,16 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeContract;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.framework.group.GroupEbo;
+import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
@@ -37,6 +37,7 @@ import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -77,9 +78,8 @@ public class KimModuleService extends ModuleServiceBase {
 			// otherwise, fall through since critieria is not known
 		} else if(Role.class.isAssignableFrom(businessObjectClass)){
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.ROLE_ID)){
-				KimRoleInfo roleInfo = getKimRoleService().getRole((String)fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID));
-				//RoleImpl roleImpl
-				return (T) roleInfo;
+				Role role = getKimRoleService().getRole((String)fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID));
+				return (T) RoleEbo.from(role);
 			}
 		} else if(Group.class.isAssignableFrom(businessObjectClass)){
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID)) {
@@ -105,10 +105,16 @@ public class KimModuleService extends ModuleServiceBase {
 	public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsList(
 			Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues) {
 		// for Person objects (which are not real PersistableBOs) pull them through the person service
+
 		if ( Person.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
+            //TODO Leave as is until Person is converted
 			return (List)getPersonService().findPeople( (Map)fieldValues );
-		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
-			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
+		}
+        else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
+            List<Role> roles = getKimRoleService().getRolesSearchResults((Map)fieldValues);
+            List<T> eboList = new ArrayList<T>();
+            for (Role role : roles) { eboList.add((T) RoleEbo.from(role));}
+			return eboList;
 		} else if ( Group.class.isAssignableFrom(externalizableBusinessObjectClass) ) {
             QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
 

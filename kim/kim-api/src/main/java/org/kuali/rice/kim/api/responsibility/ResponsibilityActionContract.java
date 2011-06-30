@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.api.responsibility;
 
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.api.common.delegate.DelegateContract;
+import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 
 import java.util.List;
 
@@ -130,7 +130,7 @@ public interface ResponsibilityActionContract {
      * The delegates for this responsibility action. Cannot be null but can be an empty list.
      * @return delegates
      */
-	List<? extends DelegateContract> getDelegates();
+	List<? extends DelegateTypeContract> getDelegates();
 
     /**
      * The roleId the responsibility action is associated with.  Cannot be null or blank.

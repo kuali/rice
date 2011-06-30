@@ -106,7 +106,7 @@
     
 
 
-    <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="kimPlatformAwareDao" />
+    <bean id="kimRoleDao" class="org.kuali.rice.kim.impl.role.RoleDaoOjb" parent="kimPlatformAwareDao" />
 	<!--<bean id="kimGroupDao" class="org.kuali.rice.kim.impl.group.GroupDaoOjb" parent="kimPlatformAwareDao" />-->
 	<bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="kimPlatformAwareDao" />
 
@@ -142,10 +142,10 @@
   <!--
         Role Service
   -->
-  <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
+  <bean id="kimRoleService" class="org.kuali.rice.kim.impl.role.RoleServiceImpl"
   	p:roleDao-ref="kimRoleDao" />
 
-  <bean id="kimRoleUpdateService" class="org.kuali.rice.kim.service.impl.RoleUpdateServiceImpl" 
+  <bean id="kimRoleUpdateService" class="org.kuali.rice.kim.impl.role.RoleUpdateServiceImpl"
     p:roleDao-ref="kimRoleDao"/>
 
   <!--

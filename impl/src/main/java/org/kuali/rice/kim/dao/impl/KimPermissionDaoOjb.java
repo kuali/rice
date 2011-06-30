@@ -23,9 +23,10 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
-import org.kuali.rice.kim.bo.role.KimPermission;
-import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.dao.KimPermissionDao;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.kim.impl.role.RolePermissionBo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -39,22 +40,22 @@ public class KimPermissionDaoOjb extends PlatformAwareDaoBaseOjb implements KimP
 	 * @see org.kuali.rice.kim.dao.KimPermissionDao#getRoleIdsForPermissions(java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getRoleIdsForPermissions(Collection<? extends KimPermission> permissions) {
+	public List<String> getRoleIdsForPermissions(Collection<PermissionBo> permissions) {
 		if ( permissions.isEmpty() ) {
 			return new ArrayList<String>(0);
 		}
 		List<String> permissionIds = new ArrayList<String>( permissions.size() );
-		for ( KimPermission kp : permissions ) {
-			permissionIds.add( kp.getPermissionId() );
+		for ( PermissionBo kp : permissions ) {
+			permissionIds.add( kp.getId() );
 		}
 		Criteria c = new Criteria();
 		c.addIn( "permissionId", permissionIds );
 		c.addEqualTo( "active", true );
 		
-		Query query = QueryFactory.newQuery( RolePermissionImpl.class, c, true );
-		Collection<RolePermissionImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		Query query = QueryFactory.newQuery( RolePermissionBo.class, c, true );
+		Collection<RolePermissionBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		List<String> roleIds = new ArrayList<String>( coll.size() );
-		for ( RolePermissionImpl rp : coll ) {
+		for ( RolePermissionBo rp : coll ) {
 			roleIds.add( rp.getRoleId() );
 		}
 		return roleIds;

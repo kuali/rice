@@ -735,11 +735,13 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
 			parameters.put(primaryKey, titleAttributeValue);
 			fieldList.put(primaryKey, titleAttributeValue);
 		}
-		if (StringUtils.isEmpty(displayText))
+		if (StringUtils.isEmpty(displayText)) {
 			return getHyperLink(clazz, fieldList, UrlFactory.parameterizeUrl(KRADConstants.INQUIRY_ACTION, parameters));
-		else
+        }
+		else {
 			return getHyperLink(clazz, fieldList, UrlFactory.parameterizeUrl(KRADConstants.INQUIRY_ACTION, parameters),
 					displayText);
+        }
 	}
 
 	@Deprecated

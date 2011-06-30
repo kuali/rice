@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RedirectingActionForward;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -66,8 +67,9 @@ public class KualiInquiryAction extends KualiAction {
             try {
             	if(!KRADConstants.DOWNLOAD_BO_ATTACHMENT_METHOD.equals(methodToCall)){
             		Class businessObjectClass = Class.forName(((InquiryForm) form).getBusinessObjectClassName());
-            		if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.INQUIRE_INTO_RECORDS, KRADUtils
-                            .getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+            		if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.INQUIRE_INTO_RECORDS,
+                            Attributes.fromMap(KRADUtils.getNamespaceAndComponentSimpleName(businessObjectClass)), null)) {
+
             			throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
                     		"inquire",
                     		businessObjectClass.getSimpleName());

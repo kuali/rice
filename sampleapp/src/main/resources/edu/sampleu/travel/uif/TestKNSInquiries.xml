@@ -99,7 +99,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>
           <bean parent="CollectionGroup">
              <property name="title" value="Permission Assigned Roles"/>  
-             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.impl.RoleImpl"/>
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.role.RoleBo"/>
              <property name="propertyName" value="assignedToRoles"/>
              <property name="layoutManager.summaryTitle" value="Assigned Roles"/>
              <property name="layoutManager.summaryFields">
@@ -161,7 +161,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>
           <bean parent="CollectionGroup">
              <property name="title" value="Permission Assigned Roles"/>  
-             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.impl.RoleImpl"/>
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.role.RoleBo"/>
              <property name="propertyName" value="assignedToRoles"/>
              <property name="layoutManager.summaryTitle" value="Assigned Roles"/>
              <property name="layoutManager.summaryFields">
@@ -205,7 +205,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="RoleImpl-InquiryView" parent="InquiryView">
 	<property name="title" value="Role Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.kim.bo.impl.RoleImpl"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.role.RoleBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.RoleInquirableImpl"/>
     <property name="Items">
         <list>

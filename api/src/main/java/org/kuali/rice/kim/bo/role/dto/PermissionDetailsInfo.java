@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.role.dto;
 
 import java.io.Serializable;
 
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 
 /**
@@ -31,7 +32,7 @@ public class PermissionDetailsInfo implements Serializable {
 
 	protected String permissionId;
 
-	protected AttributeSet details;
+	protected Attributes details;
 
 	public String getPermissionId() {
 		return this.permissionId;
@@ -41,11 +42,11 @@ public class PermissionDetailsInfo implements Serializable {
 		this.permissionId = permissionId;
 	}
 
-	public AttributeSet getDetails() {
+	public Attributes getDetails() {
 		return this.details;
 	}
 
-	public void setDetails(AttributeSet permissionDetails) {
+	public void setDetails(Attributes permissionDetails) {
 		this.details = permissionDetails;
 	}
 	

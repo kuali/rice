@@ -167,8 +167,8 @@
 				<!-- from KIM -->
 
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleMemberImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/role/RoleBo.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/role/RoleMemberBo.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/group/Group.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml</value>
@@ -194,11 +194,11 @@
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/ResponsibilityTemplate.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/Responsibility.xml</value>
-		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/impl/permission/PermissionBo.xml</value>
 		        <value>classpath:org/kuali/rice/kim/impl/responsibility/UberResponsibility.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/IdentityManagementReviewResponsibilityMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
-		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/impl/common/delegate/DelegateBo.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/common/attribute/KimAttribute.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/ResponsibilityAttribute.xml</value>

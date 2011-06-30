@@ -24,14 +24,11 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeService;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
@@ -49,6 +46,9 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.rule.AttributeValidationHelper;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
+import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
+import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
@@ -90,7 +90,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
+		ActionForward forward;
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         // accept either the principal name or principal ID, looking up the latter if necessary
         // this allows inquiry links to work even when only the principal name is present
@@ -342,11 +342,11 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentRole newRole = personDocumentForm.getNewRole();
         if (getKualiRuleService().applyRules(new AddRoleEvent("",personDocumentForm.getPersonDocument(), newRole))) {
-	        KimRoleInfo role = KimApiServiceLocator.getRoleService().getRole(newRole.getRoleId());
+	        Role role = KimApiServiceLocator.getRoleService().getRole(newRole.getRoleId());
 	        if(!validateRole(newRole.getRoleId(), role, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	        }
-	        newRole.setRoleName(role.getRoleName());
+	        newRole.setRoleName(role.getName());
 	        newRole.setNamespaceCode(role.getNamespaceCode());
 	        newRole.setKimTypeId(role.getKimTypeId());
 	        if(!validateRoleAssignment(personDocumentForm.getPersonDocument(), newRole)){
@@ -393,8 +393,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	}
 
     protected void setupRoleRspActions(PersonDocumentRole role, KimDocumentRoleMember rolePrncpl) {
-        for (RoleResponsibilityImpl roleResp : role.getAssignedResponsibilities()) {
-        	if (getResponsibilityInternalService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
+        for (RoleResponsibilityBo roleResp : role.getAssignedResponsibilities()) {
+        	if (getResponsibilityInternalService().areActionsAtAssignmentLevelById(roleResp.getRoleResponsibilityId())) {
         		KimDocumentRoleResponsibilityAction roleRspAction = new KimDocumentRoleResponsibilityAction();
         		roleRspAction.setRoleResponsibilityId("*");        		
         		roleRspAction.refreshReferenceObject("roleResponsibility");
@@ -470,17 +470,17 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         RoleDocumentDelegationMember newDelegationMember = personDocumentForm.getNewDelegationMember();
         KimTypeAttributesHelper attrHelper = newDelegationMember.getAttributesHelper();
         if (getKualiRuleService().applyRules(new AddPersonDelegationMemberEvent("", personDocumentForm.getPersonDocument(), newDelegationMember))) {
-	        //RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newDelegationMember.getRoleImpl().getRoleId());
-	        KimRoleInfo roleInfo = null;
-        	roleInfo = KimApiServiceLocator.getRoleService().getRole(newDelegationMember.getRoleImpl().getRoleId());
-	        if (roleInfo != null) {
-		        if(!validateRole(newDelegationMember.getRoleImpl().getRoleId(),roleInfo, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+	        //RoleImpl roleBo = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newDelegationMember.getRoleDao().getRoleId());
+	        Role role;
+        	role = KimApiServiceLocator.getRoleService().getRole(newDelegationMember.getRoleBo().getId());
+	        if (role != null) {
+		        if(!validateRole(newDelegationMember.getRoleBo().getId(),role, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 		        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 		        }
-		        newDelegationMember.setRoleImpl(convertRoleInfoToRoleImpl(roleInfo));
+		        newDelegationMember.setRoleBo(RoleBo.from(role));
 	        }
 	        AttributeDefinition attrDefinition;
-	        RoleMemberImpl roleMember = KIMServiceLocatorInternal.getUiDocumentService().getRoleMember(newDelegationMember.getRoleMemberId());
+	        RoleMemberBo roleMember = KIMServiceLocatorInternal.getUiDocumentService().getRoleMember(newDelegationMember.getRoleMemberId());
 	        Attributes
                     roleMemberAttributes = (new AttributeValidationHelper()).convertAttributesToMap(roleMember.getAttributes());
 	        for (String key: attrHelper.getDefinitions().keySet()) {
@@ -552,19 +552,19 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         String roleMemberId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID);
         if(StringUtils.isNotBlank(roleMemberId)){
             impdForm.getNewDelegationMember().setRoleMemberId(roleMemberId);
-            RoleMemberImpl roleMember = getUiDocumentService().getRoleMember(roleMemberId);
+            RoleMemberBo roleMember = getUiDocumentService().getRoleMember(roleMemberId);
             impdForm.getNewDelegationMember().setRoleMemberMemberId(roleMember.getMemberId());
             impdForm.getNewDelegationMember().setRoleMemberMemberTypeCode(roleMember.getMemberTypeCode());
             impdForm.getNewDelegationMember().setRoleMemberName(getUiDocumentService().getMemberName(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
             impdForm.getNewDelegationMember().setRoleMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
-	        //RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
-            KimRoleInfo roleInfo = null;
-        	roleInfo = KimApiServiceLocator.getRoleService().getRole(impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
-	        if (roleInfo != null) {
-		        if(!validateRole(impdForm.getNewDelegationMember().getRoleImpl().getRoleId(), roleInfo, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+
+            Role role;
+        	role = KimApiServiceLocator.getRoleService().getRole(impdForm.getNewDelegationMember().getRoleBo().getId());
+	        if (role != null) {
+		        if(!validateRole(impdForm.getNewDelegationMember().getRoleBo().getId(), role, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 		        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 		        }
-		        impdForm.getNewDelegationMember().setRoleImpl(convertRoleInfoToRoleImpl(roleInfo));
+		        impdForm.getNewDelegationMember().setRoleBo(RoleBo.from(role));
 	        }
         }
         impdForm.setNewDelegationMemberRoleId(null);
@@ -588,7 +588,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 
         props.put(KRADConstants.CONVERSION_FIELDS_PARAMETER, fieldConversion);
 
-        props.put(KimConstants.PrimaryKeyConstants.ROLE_ID, impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
+        props.put(KimConstants.PrimaryKeyConstants.ROLE_ID, impdForm.getNewDelegationMember().getRoleBo().getId());
 
         props.put(KRADConstants.RETURN_LOCATION_PARAMETER, this.getReturnLocation(request, mapping));
         props.put(KRADConstants.BACK_LOCATION, this.getReturnLocation(request, mapping));
@@ -606,21 +606,11 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 
         return new ActionForward(url, true);
     }
-    
-    private RoleImpl convertRoleInfoToRoleImpl(KimRoleInfo roleInfo) {
-	    RoleImpl roleImpl = new RoleImpl();
-	    roleImpl.setKimTypeId(roleInfo.getKimTypeId());
-	    roleImpl.setNamespaceCode(roleInfo.getNamespaceCode());
-	    roleImpl.setRoleDescription(roleInfo.getRoleDescription());
-	    roleImpl.setRoleId(roleInfo.getRoleId());
-	    roleImpl.setRoleName(roleInfo.getRoleName());
-	    roleImpl.setActive(roleInfo.isActive());
-	    return roleImpl;
-    }
+
 
     public ResponsibilityInternalService getResponsibilityInternalService() {
     	if ( responsibilityInternalService == null ) {
-    		responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
+    		responsibilityInternalService = org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal.getResponsibilityInternalService();
     	}
 		return responsibilityInternalService;
 	}

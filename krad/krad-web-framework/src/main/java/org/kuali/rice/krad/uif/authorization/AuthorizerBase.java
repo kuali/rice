@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -144,15 +145,15 @@ public class AuthorizerBase implements Authorizer {
     public final boolean isAuthorizedByTemplate(Object dataObject, String namespaceCode, String permissionTemplateName,
             String principalId) {
         return getIdentityManagementService().isAuthorizedByTemplateName(principalId, namespaceCode,
-                permissionTemplateName, new AttributeSet(getPermissionDetailValues(dataObject)),
-                new AttributeSet(getRoleQualification(dataObject, principalId)));
+                permissionTemplateName, Attributes.fromMap(getPermissionDetailValues(dataObject)),
+                Attributes.fromMap((getRoleQualification(dataObject, principalId))));
     }
 
     public final boolean isAuthorized(Object dataObject, String namespaceCode, String permissionName,
             String principalId, Map<String, String> collectionOrFieldLevelPermissionDetails,
             Map<String, String> collectionOrFieldLevelRoleQualification) {
-        AttributeSet roleQualifiers = null;
-        AttributeSet permissionDetails = null;
+        AttributeSet roleQualifiers;
+        AttributeSet permissionDetails;
         if (collectionOrFieldLevelRoleQualification != null) {
             roleQualifiers = new AttributeSet(getRoleQualification(dataObject, principalId));
             roleQualifiers.putAll(collectionOrFieldLevelRoleQualification);
@@ -186,7 +187,7 @@ public class AuthorizerBase implements Authorizer {
         }
 
         return getIdentityManagementService().isAuthorizedByTemplateName(principalId, namespaceCode,
-                permissionTemplateName, permissionDetails, roleQualifiers);
+                permissionTemplateName, Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifiers));
     }
 
     /**

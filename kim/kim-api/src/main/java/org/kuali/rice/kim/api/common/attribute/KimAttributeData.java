@@ -78,6 +78,7 @@ public final class KimAttributeData implements KimAttributeDataContract, ModelOb
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
+    @SuppressWarnings("unused")
     private KimAttributeData() {
         this.id = null;
         this.assignedToId = null;

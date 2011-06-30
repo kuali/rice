@@ -53,7 +53,7 @@ public class RolePermissionBo extends PersistableBusinessObjectBase implements R
 
 	@OneToOne(targetEntity=PermissionBo.class,cascade=[],fetch=FetchType.EAGER)
 	@JoinColumn(name = "PERM_ID", insertable = false, updatable = false)
-	PermissionBo kimPermission;
+	PermissionBo permission;
 		
     /**
      * Converts a mutable bo to its immutable counterpart

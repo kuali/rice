@@ -10,8 +10,8 @@
     <output-test url="file://$MODULE_DIR$/../../../kim/kim-impl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../kim/kim-impl">
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-impl/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-impl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-impl/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-impl/target/generated-sources/annotations" isTestSource="false" />

@@ -89,8 +89,8 @@ logic is executed together to determine documents match the rule -->
       	<annotation>
       		<documentation>
       	 	 Delegation through rule is configured by embedding one template into another.  Any request generated 
-      	 	 from the delegation template are delegation of the request generated from this template.  Delegation 
-      	     templates may not have delegation templates -->
+      	 	 from the delegate template are delegate of the request generated from this template.  Delegation
+      	     templates may not have delegate templates -->
       		</documentation>
       	</annotation>
       </element>
@@ -173,7 +173,7 @@ logic is executed together to determine documents match the rule -->
 	  	<element name="delegationType" type="c:ShortStringType" minOccurs="0">
 	  		<annotation>
 	  			<documentation>
-	  			Defaults the delegation type on a delegation template primary or secondary.
+	  			Defaults the delegate type on a delegate template primary or secondary.
 	  			</documentation>
 	  		</annotation>
 	  	</element>

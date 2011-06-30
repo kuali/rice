@@ -23,10 +23,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
@@ -394,7 +394,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
                 delegationMember.setDocumentNumber(getDocumentNumber());
                 for (RoleDocumentDelegationMemberQualifier qualifier: delegationMember.getQualifiers()) {
                     qualifier.setDocumentNumber(getDocumentNumber());
-                    qualifier.setKimTypId(delegationMember.getRoleImpl().getKimTypeId());
+                    qualifier.setKimTypId(delegationMember.getRoleBo().getKimTypeId());
                 }
                 addDelegationMemberToDelegation(delegationMember);
             }
@@ -501,8 +501,8 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     }
 
     public KimTypeAttributesHelper getKimTypeAttributesHelper(String roleId) {
-        KimRoleInfo roleInfo = KimApiServiceLocator.getRoleService().getRole(roleId);
-        KimType kimTypeInfo = KimApiServiceLocator.getKimTypeInfoService().getKimType(roleInfo.getKimTypeId());
+        Role role = KimApiServiceLocator.getRoleService().getRole(roleId);
+        KimType kimTypeInfo = KimApiServiceLocator.getKimTypeInfoService().getKimType(role.getKimTypeId());
         return new KimTypeAttributesHelper(kimTypeInfo);
         //addDelegationRoleKimTypeAttributeHelper(roleId, helper);
     }

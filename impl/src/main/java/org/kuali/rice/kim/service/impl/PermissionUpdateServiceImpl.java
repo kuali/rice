@@ -19,9 +19,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
@@ -77,7 +80,8 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
 	    		attributesToAdd.remove(attrName);
 	    	}
 	    	for ( String attrName : attributesToAdd.keySet() ) {
-	    		KimTypeAttribute attr = perm.getTemplate().getKimType().getAttributeDefinitionByName(attrName);
+                KimType type = KimApiServiceLocator.getKimTypeInfoService().getKimType(perm.getTemplate().getKimTypeId());
+	    		KimTypeAttribute attr = type.getAttributeDefinitionByName(attrName);
 	    		if ( attr != null ) {
 		    		PermissionAttributeDataImpl newDetail = new PermissionAttributeDataImpl();
 		    		newDetail.setId(getNewAttributeDataId());

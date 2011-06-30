@@ -23,8 +23,9 @@ import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.util.AttributeSet
-import org.kuali.rice.kim.api.common.delegate.Delegate
-import org.kuali.rice.kim.api.common.delegate.DelegateTest
+import org.kuali.rice.kim.api.common.delegate.DelegateType
+import org.kuali.rice.kim.api.common.delegate.DelegateTypeTest
+import org.kuali.rice.core.api.mo.common.Attributes
 
 public class RoleMembershipTest {
 
@@ -36,17 +37,25 @@ public class RoleMembershipTest {
     final static String MEMBER_ID = "42"
     final static String MEMBER_TYPE_CODE = "P"
     final static String ROLE_SORTING_CODE = "DESC"
-    final static AttributeSet QUALIFIER = new AttributeSet()
-    final static List<Delegate.Builder> DELEGATES = [create_delegate()]
+    final static Attributes QUALIFIER = Attributes.empty()
+    final static List<DelegateType.Builder> DELEGATES = [create_delegate_type()]
 
-    private static create_delegate() {
-        return Delegate.Builder.create(
-                DelegateTest.DELEGATION_ID, DelegateTest.DELEGATION_TYPE_CODE, DelegateTest.MEMBER_ID,
-                DelegateTest.MEMBER_TYPE_CODE, DelegateTest.ROLE_MEMBER_ID, DelegateTest.QUALIFIER)
+    private static DelegateType.Builder create_delegate_type() {
+        DelegateType.Builder builder =  DelegateType.Builder.create(
+            DelegateTypeTest.ROLE_ID,
+            DelegateTypeTest.DELEGATION_ID,
+            DelegateTypeTest.DELEGATION_TYPE_CODE,
+            DelegateTypeTest.DELEGATE_MEMBERS)
+        builder.kimTypeId = DelegateTypeTest.KIM_TYPE_ID
+        builder.active = true
+
+
+        return builder
     }
 
+
     final static String XML = """
-        <roleMembership xmlns="http://rice.kuali.org/kim/v2_0">
+    <roleMembership xmlns="http://rice.kuali.org/kim/v2_0">
         <roleId>${ROLE_ID}</roleId>
         <roleMemberId>${ROLE_MEMBER_ID}</roleMemberId>
         <embeddedRoleId>${EMBEDDED_ROLE_ID}</embeddedRoleId>
@@ -55,14 +64,25 @@ public class RoleMembershipTest {
         <roleSortingCode>${ROLE_SORTING_CODE}</roleSortingCode>
         <qualifier></qualifier>
         <delegates>
-            <delegationId>${DelegateTest.DELEGATION_ID}</delegationId>
-            <delegationTypeCode>${DelegateTest.DELEGATION_TYPE_CODE}</delegationTypeCode>
-            <memberId>${DelegateTest.MEMBER_ID}</memberId>
-            <memberTypeCode>${DelegateTest.MEMBER_TYPE_CODE}</memberTypeCode>
-            <qualifier> </qualifier>
-            <roleMemberId>${DelegateTest.ROLE_MEMBER_ID}</roleMemberId>
+            <roleId>${DelegateTypeTest.ROLE_ID}</roleId>
+            <delegationId>${DelegateTypeTest.DELEGATION_ID}</delegationId>
+            <delegationTypeCode>${DelegateTypeTest.DELEGATION_TYPE_CODE}</delegationTypeCode>
+            <kimTypeId>${DelegateTypeTest.KIM_TYPE_ID}</kimTypeId>
+            <members>
+                <delegationMemberId>${DelegateTypeTest.DELEGATION_MEMBER_ID}</delegationMemberId>
+                <delegationId>${DelegateTypeTest.DELEGATION_ID}</delegationId>
+                <memberId>${DelegateTypeTest.MEMBER_ID}</memberId>
+                <roleMemberId>${DelegateTypeTest.ROLE_MEMBER_ID}</roleMemberId>
+                <typeCode>${DelegateTypeTest.DELEGATION_TYPE_CODE}</typeCode>
+                <delegationTypeCode>${DelegateTypeTest.DELEGATION_TYPE_CODE}</delegationTypeCode>
+                <memberTypeCode>${DelegateTypeTest.DELEGATION_TYPE_CODE}</memberTypeCode>
+                <roleMemberId>${DelegateTypeTest.ROLE_MEMBER_ID}</roleMemberId>
+                <versionNumber>${DelegateTypeTest.VERSION}</versionNumber>
+                <active>true</active>
+            </members>
+            <active>${DelegateTypeTest.ACTIVE}</active>
         </delegates>
-        </roleMembership>
+    </roleMembership>
     """
 
     @Test
@@ -75,6 +95,7 @@ public class RoleMembershipTest {
         builder.embeddedRoleId = EMBEDDED_ROLE_ID
         builder.roleSortingCode = ROLE_SORTING_CODE
         builder.delegates = DELEGATES
+
 
         marshaller.marshal(builder.build(), sw)
         String xml = sw.toString()
@@ -151,7 +172,7 @@ public class RoleMembershipTest {
         builder.delegates = DELEGATES
         RoleMembership rm = builder.build()
         shouldFail(UnsupportedOperationException) {
-            rm.delegates.add(create_delegate())
+            rm.delegates.add(create_delegate_type())
         }
     }
 }

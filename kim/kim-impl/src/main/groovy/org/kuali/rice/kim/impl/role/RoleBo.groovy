@@ -70,7 +70,7 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleContrac
     List<RoleMemberBo> members = new AutoPopulatingList(RoleMemberBo.class);
 
     @Transient
-    protected String principalName;
+    String principalName;
 
     @Transient
     String groupNamespaceCode;

@@ -145,7 +145,7 @@
     </td>
     <td align="left" class="<c:out value="${headerClass}"/>">
         &nbsp;<c:out value="${actionRequest.annotation}" />
-        <%-- If we are dealing with a primary delegation, display the annotations for the primary delegations at top level --%>
+        <%-- If we are dealing with a primary delegate, display the annotations for the primary delegates at top level --%>
         <c:if test="${actionRequest.roleRequest}">
           <c:forEach var="roleRequest" items="${actionRequest.childrenRequests}" varStatus="arStatus">
               <c:if test="${roleRequest.primaryDelegator}">

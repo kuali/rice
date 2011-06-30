@@ -17,7 +17,8 @@ package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl;
@@ -37,31 +38,27 @@ public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermission
 	{
 		requiredAttributes.add( KimConstants.AttributeConstants.ACTION_REQUEST_CD );
 	}
-	
-	/**
-	 * @see org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.core.util.AttributeSet,
-	 *      java.util.List)
-	 */
+
 	@Override
-	public List<KimPermissionInfo> performPermissionMatches(
+	public List<Permission> performPermissionMatches(
 			Attributes requestedDetails,
-			List<KimPermissionInfo> permissionsList) {
-		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+			List<Permission> permissionsList) {
+        List<Permission> matchingPermissions = new ArrayList<Permission>();
 		if (requestedDetails == null) {
 			return matchingPermissions; // empty list
 		}
 		// loop over the permissions, checking the non-document-related ones
-		for (KimPermissionInfo kpi : permissionsList) {
-			if (!kpi.getDetails().containsKey(KimConstants.AttributeConstants.ACTION_REQUEST_CD)
-			  || StringUtils.equals(kpi.getDetails().
+		for (Permission kpi : permissionsList) {
+            PermissionBo bo = PermissionBo.from(kpi);
+			if (!bo.getDetails().containsKey(KimConstants.AttributeConstants.ACTION_REQUEST_CD)
+			  || StringUtils.equals(bo.getDetails().
 				 get(KimConstants.AttributeConstants.ACTION_REQUEST_CD), requestedDetails
 					.get(KimConstants.AttributeConstants.ACTION_REQUEST_CD))) {
 				matchingPermissions.add(kpi);
 			}
 		}
 		// now, filter the list to just those for the current document
-		matchingPermissions = super.performPermissionMatches(requestedDetails,
-				matchingPermissions);
+		matchingPermissions = super.performPermissionMatches(requestedDetails,matchingPermissions);
 		return matchingPermissions;
 	}
 }

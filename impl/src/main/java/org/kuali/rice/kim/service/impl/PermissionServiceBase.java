@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.util.MaxAgeSoftReference;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -49,7 +49,7 @@ public class PermissionServiceBase {
 	private SequenceAccessorService sequenceAccessorService;
 	private RiceCacheAdministrator cacheAdministrator;
 	
-	private Map<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>> permissionToRoleCache = Collections.synchronizedMap( new HashMap<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>>() );
+	private Map<List<PermissionBo>, MaxAgeSoftReference<List<String>>> permissionToRoleCache = Collections.synchronizedMap(new HashMap<List<PermissionBo>, MaxAgeSoftReference<List<String>>>());
 
     // Not ThreadLocal or time limited- should not change during the life of the system
 	private Map<String,KimPermissionTypeService> permissionTypeServiceByNameCache = Collections.synchronizedMap( new HashMap<String, KimPermissionTypeService>() );
@@ -75,11 +75,11 @@ public class PermissionServiceBase {
 		return this.permissionTypeServiceByNameCache;
 	}
 	
-	protected void addRolesForPermissionsToCache( List<KimPermissionInfo> key, List<String> roleIds ) {
+	protected void addRolesForPermissionsToCache( List<PermissionBo> key, List<String> roleIds ) {
     	permissionToRoleCache.put( key, new MaxAgeSoftReference<List<String>>( CACHE_MAX_AGE_SECONDS, roleIds ) );
     }
 	
-	protected List<String> getRolesForPermissionsFromCache( List<KimPermissionInfo> key ) {
+	protected List<String> getRolesForPermissionsFromCache( List<PermissionBo> key ) {
     	List<String> roleIds = null; 
     	MaxAgeSoftReference<List<String>> cacheRef = permissionToRoleCache.get( key );
     	if ( cacheRef != null ) {
@@ -102,7 +102,7 @@ public class PermissionServiceBase {
 		SequenceAccessorService sas = getSequenceAccessorService();		
 		Long nextSeq = sas.getNextAvailableSequenceNumber(
 				KimConstants.SequenceNames.KRIM_ATTR_DATA_ID_S, 
-				RoleMemberAttributeDataImpl.class );
+				RoleMemberAttributeDataBo.class );
 		return nextSeq.toString();
     }
 	

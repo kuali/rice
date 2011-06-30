@@ -16,102 +16,100 @@
  */
 package org.kuali.rice.ksb.api.messaging;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
-import org.kuali.rice.ksb.api.messaging.AsynchronousCallback;
+
+import java.io.Serializable;
 
 /**
  * Encapsulates an asynchronous call to a service.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AsynchronousCall implements Serializable {
 
-	private static final long serialVersionUID = -1036656564567726747L;
+    private static final long serialVersionUID = -1036656564567726747L;
 
-	private Object[] arguments;
+    private Object[] arguments;
 
-	private Class<?>[] paramTypes;
+    private Class<?>[] paramTypes;
 
-	private ServiceConfiguration serviceConfiguration;
-	
-	private Serializable context;
-	
-	private String methodName;
+    private ServiceConfiguration serviceConfiguration;
 
-	private AsynchronousCallback callback;
-	
-	private boolean ignoreStoreAndForward;
-	
-	public AsynchronousCall(Class<?>[] paramTypes, Object[] arguments, ServiceConfiguration serviceConfiguration, String methodName, AsynchronousCallback callback, Serializable context) {
-	    this.arguments = arguments;
-		this.paramTypes = paramTypes;
-		this.serviceConfiguration = serviceConfiguration;
-		this.methodName = methodName;
-		this.callback = callback;
-		this.context = context;
-	}
+    private Serializable context;
 
-	public Object[] getArguments() {
-		return this.arguments;
-	}
+    private String methodName;
 
-	public Class<?>[] getParamTypes() {
-		return this.paramTypes;
-	}
+    private AsynchronousCallback callback;
 
-	public ServiceConfiguration getServiceConfiguration() {
-		return this.serviceConfiguration;
-	}
+    private boolean ignoreStoreAndForward;
 
-	public String getMethodName() {
-		return this.methodName;
-	}
+    public AsynchronousCall(Class<?>[] paramTypes, Object[] arguments, ServiceConfiguration serviceConfiguration, String methodName, AsynchronousCallback callback, Serializable context) {
+        this.arguments = arguments;
+        this.paramTypes = paramTypes;
+        this.serviceConfiguration = serviceConfiguration;
+        this.methodName = methodName;
+        this.callback = callback;
+        this.context = context;
+    }
 
-	public AsynchronousCallback getCallback() {
-		return this.callback;
-	}
+    public Object[] getArguments() {
+        return this.arguments;
+    }
 
-	public String toString() {
-		return "[AsynchronousCall: " + "serviceInfo=" + this.serviceConfiguration + ", methodName=" + this.methodName + ", paramTypes=" + getStringifiedArray(this.paramTypes) + ", arguments=" + getStringifiedArray(this.arguments) + "]";
-	}
+    public Class<?>[] getParamTypes() {
+        return this.paramTypes;
+    }
 
-	/**
-	 * Takes an Object[] and returns a human-readable String of the contents
-	 * Candidate for relocation to a utility class
-	 * 
-	 * @param array
-	 *            the Object[]
-	 * @return a human-readable String of the contents
-	 */
-	private static final String getStringifiedArray(Object[] array) {
-		if (array == null) {
-			return null;
-		}
-		StringBuffer sb = new StringBuffer(array.getClass().toString());
-		sb.append("[");
-		StringUtils.join(array, ", ");
-		sb.append("]");
-		return sb.toString();
-	}
+    public ServiceConfiguration getServiceConfiguration() {
+        return this.serviceConfiguration;
+    }
 
-	public boolean isIgnoreStoreAndForward() {
-		return this.ignoreStoreAndForward;
-	}
+    public String getMethodName() {
+        return this.methodName;
+    }
 
-	public void setIgnoreStoreAndForward(boolean ignoreStoreAndForward) {
-		this.ignoreStoreAndForward = ignoreStoreAndForward;
-	}
+    public AsynchronousCallback getCallback() {
+        return this.callback;
+    }
 
-	public Serializable getContext() {
-	    return this.context;
-	}
+    public String toString() {
+        return "[AsynchronousCall: " + "serviceInfo=" + this.serviceConfiguration + ", methodName=" + this.methodName + ", paramTypes=" + getStringifiedArray(this.paramTypes) + ", arguments=" + getStringifiedArray(this.arguments) + "]";
+    }
 
-	public void setContext(Serializable context) {
-	    this.context = context;
-	}
+    /**
+     * Takes an Object[] and returns a human-readable String of the contents
+     * Candidate for relocation to a utility class
+     *
+     * @param array the Object[]
+     * @return a human-readable String of the contents
+     */
+    private static final String getStringifiedArray(Object[] array) {
+        if (array == null) {
+            return null;
+        }
+        StringBuffer sb = new StringBuffer(array.getClass().toString());
+        sb.append("[");
+        StringUtils.join(array, ", ");
+        sb.append("]");
+        return sb.toString();
+    }
+
+    public boolean isIgnoreStoreAndForward() {
+        return this.ignoreStoreAndForward;
+    }
+
+    public void setIgnoreStoreAndForward(boolean ignoreStoreAndForward) {
+        this.ignoreStoreAndForward = ignoreStoreAndForward;
+    }
+
+    public Serializable getContext() {
+        return this.context;
+    }
+
+    public void setContext(Serializable context) {
+        this.context = context;
+    }
 
 
 }

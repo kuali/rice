@@ -21,9 +21,9 @@ import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
@@ -69,7 +69,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 	@Column(name="ROLE_NM")
 	protected String roleName;
 	@Transient
-	protected RoleImpl roleImpl;
+	protected RoleBo roleBo;
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 	@Transient
@@ -99,7 +99,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 	//	@JoinColumn(name="ROLE_ID",insertable=false,updatable=false),
 	//	@JoinColumn(name="FDOC_NBR", insertable=false, updatable=false, table="KRIM_PERSON_DOCUMENT_T")
 	//})
-	protected List<RoleResponsibilityImpl> assignedResponsibilities = new AutoPopulatingList(RoleResponsibilityImpl.class);
+	protected List<RoleResponsibilityBo> assignedResponsibilities = new AutoPopulatingList(RoleResponsibilityBo.class);
 
 	@Transient
     protected boolean isEditable = true;
@@ -219,27 +219,27 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 		this.namespaceCode = namespaceCode;
 	}
 
-	public List<RoleResponsibilityImpl> getAssignedResponsibilities() {
+	public List<RoleResponsibilityBo> getAssignedResponsibilities() {
 		return this.assignedResponsibilities;
 	}
 
 	public void setAssignedResponsibilities(
-			List<RoleResponsibilityImpl> assignedResponsibilities) {
+			List<RoleResponsibilityBo> assignedResponsibilities) {
 		this.assignedResponsibilities = assignedResponsibilities;
 	}
 
 	/**
-	 * @return the roleImpl
+	 * @return the roleBo
 	 */
-	public RoleImpl getRoleImpl() {
-		return this.roleImpl;
+	public RoleBo getRoleBo() {
+		return this.roleBo;
 	}
 
 	/**
-	 * @param roleImpl the roleImpl to set
+	 * @param roleBo the roleBo to set
 	 */
-	public void setRoleImpl(RoleImpl roleImpl) {
-		this.roleImpl = roleImpl;
+	public void setRoleBo(RoleBo roleBo) {
+		this.roleBo = roleBo;
 	}
 
 	/**

@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -519,11 +520,14 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	public boolean canFullyUnmaskField(Person user,
 			Class<?> dataObjectClass, String fieldName, Document document) {
 		// KFSMI-5095
-		if(isNonProductionEnvAndUnmaskingTurnedOff())
+		if(isNonProductionEnvAndUnmaskingTurnedOff()) {
 			return false;
+        }
 
-		if(user==null || StringUtils.isEmpty(user.getPrincipalId())) 
-			return false;
+		if(user==null || StringUtils.isEmpty(user.getPrincipalId())) {
+            return false;
+        }
+
 		Boolean result = null;
 		if (document != null) { // if a document was passed, evaluate the permission in the context of a document
 			try { // try/catch and fallthrough is a fix for KULRICE-3365
@@ -542,7 +546,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 					user.getPrincipalId(),
 					KRADConstants.KRAD_NAMESPACE,
 					KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD,
-					new AttributeSet(getFieldPermissionDetails(dataObjectClass, fieldName)), 
+					Attributes.fromMap(getFieldPermissionDetails(dataObjectClass, fieldName)),
 					null);
 		}
 		return result; // should be safe to return Boolean here since the only circumstances that
@@ -552,18 +556,20 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	public boolean canPartiallyUnmaskField(
 			Person user, Class<?> dataObjectClass, String fieldName, Document document) {
 		// KFSMI-5095
-		if(isNonProductionEnvAndUnmaskingTurnedOff())
+		if(isNonProductionEnvAndUnmaskingTurnedOff()) {
 			return false;
+        }
 		
-		if(user==null || StringUtils.isEmpty(user.getPrincipalId())) 
+		if(user==null || StringUtils.isEmpty(user.getPrincipalId())) {
 			return false;
+        }
 
 		if ( document == null ) {
 			return getIdentityManagementService().isAuthorizedByTemplateName(
 					user.getPrincipalId(),
 					KRADConstants.KRAD_NAMESPACE,
 					KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD,
-					new AttributeSet(getFieldPermissionDetails(dataObjectClass,fieldName)), 
+					Attributes.fromMap(getFieldPermissionDetails(dataObjectClass,fieldName)),
 					null);
 		} else { // if a document was passed, evaluate the permission in the context of a document
 			return getDocumentHelperService().getDocumentAuthorizer( document )

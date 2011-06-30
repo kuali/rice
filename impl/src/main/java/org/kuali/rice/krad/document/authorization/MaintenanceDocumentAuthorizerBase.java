@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
@@ -51,7 +52,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 								user.getPrincipalId(),
 								KRADConstants.KRAD_NAMESPACE,
 								KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-								permissionDetails, new AttributeSet());
+								Attributes.fromMap(permissionDetails), Attributes.empty());
 	}
 
 	public final boolean canMaintain(Object dataObject, Person user) {

@@ -17,7 +17,8 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
@@ -44,17 +45,16 @@ public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends Docum
 	 *	- if the field value passed in starts with the value on the permission detail it is a match.  so...
 	 *	permision detail sourceAccountingLines will match passed in value of sourceAccountingLines.amount and sourceAccountingLines 
 	 *	permission detail sourceAccountingLines.objectCode will match sourceAccountingLines.objectCode but not sourceAccountingLines
-	 *
-	 * @see org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
 	@Override
-	protected List<KimPermissionInfo> performPermissionMatches(Attributes requestedDetails,
-			List<KimPermissionInfo> permissionsList) {
-		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+	protected List<Permission> performPermissionMatches(Attributes requestedDetails,
+			List<Permission> permissionsList) {
+		List<Permission> matchingPermissions = new ArrayList<Permission>();
 		// loop over the permissions, checking the non-document-related ones
-		for ( KimPermissionInfo kpi : permissionsList ) {
-			if ( routeNodeMatches(requestedDetails, Attributes.fromMap(kpi.getDetails())) &&
-					doesPropertyNameMatch(requestedDetails.get(KimConstants.AttributeConstants.PROPERTY_NAME), kpi.getDetails().get(KimConstants.AttributeConstants.PROPERTY_NAME)) ) {
+		for ( Permission kpi : permissionsList ) {
+            PermissionBo bo = PermissionBo.from(kpi);
+			if ( routeNodeMatches(requestedDetails, bo.getDetails()) &&
+					doesPropertyNameMatch(requestedDetails.get(KimConstants.AttributeConstants.PROPERTY_NAME), bo.getDetails().get(KimConstants.AttributeConstants.PROPERTY_NAME)) ) {
 				matchingPermissions.add( kpi );
 			}			
 		}

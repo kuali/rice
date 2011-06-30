@@ -47,15 +47,14 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
-import org.kuali.rice.kim.api.common.delegate.Delegate;
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -387,8 +386,8 @@ public class ActionRequestFactory {
     		}
         	// KFSMI-2381 - pull information from KIM to populate annotation
     		annotation.setLength( 0 );
-    		KimRoleInfo role = getRoleManagementService().getRole(responsibility.getRoleId());
-    		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getRoleName() ).append( ' ' );
+    		Role role = getRoleManagementService().getRole(responsibility.getRoleId());
+    		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getName() ).append( ' ' );
     		Attributes qualifier = responsibility.getQualifier();
     		if ( qualifier != null ) {
 	    		for ( String key : qualifier.toMap().keySet() ) {
@@ -436,46 +435,46 @@ public class ActionRequestFactory {
     }
 
     private void generateRoleResponsibilityDelegationRequests(ResponsibilityAction responsibility, ActionRequestValue parentRequest) {
-    	List<Delegate> delegates = responsibility.getDelegates();
-    	for (Delegate delegate : delegates) {
-    		Recipient recipient = null;
-    		boolean isPrincipal = delegate.getMemberTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE);
-            boolean isGroup = delegate.getMemberTypeCode().equals(Role.GROUP_MEMBER_TYPE);
+    	List<DelegateType> delegates = responsibility.getDelegates();
+    	for (DelegateType delegate : delegates) {
+    		Recipient recipient;
+    		boolean isPrincipal = delegate.getDelegationTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE);
+            boolean isGroup = delegate.getDelegationTypeCode().equals(Role.GROUP_MEMBER_TYPE);
     		if (isPrincipal) {
-    			recipient = new KimPrincipalRecipient(delegate.getMemberId());
+    			recipient = new KimPrincipalRecipient(delegate.getDelegationId());
     		} else if (isGroup) {
-    			recipient = new KimGroupRecipient(delegate.getMemberId());
+    			recipient = new KimGroupRecipient(delegate.getDelegationId());
     		} else {
-    			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getMemberTypeCode() + "'");
+    			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getDelegationTypeCode() + "'");
     		}
     		String delegationAnnotation = generateRoleResponsibilityDelegateAnnotation(delegate, isPrincipal, isGroup, parentRequest);
     		addDelegationRequest(parentRequest, recipient, new Long(delegate.getDelegationId()), parentRequest.getForceAction(), delegate.getDelegationTypeCode(), delegationAnnotation, null);
     	}
     }
 
-    private String generateRoleResponsibilityDelegateAnnotation(Delegate delegate, boolean isPrincipal, boolean isGroup, ActionRequestValue parentRequest) {
+    private String generateRoleResponsibilityDelegateAnnotation(DelegateType delegate, boolean isPrincipal, boolean isGroup, ActionRequestValue parentRequest) {
     	StringBuffer annotation = new StringBuffer( "Delegation of: " );
     	annotation.append( parentRequest.getAnnotation() );
     	annotation.append( " to " );
     	if (isPrincipal) {
     		annotation.append( "principal " );
-    		Principal principal = getIdentityManagementService().getPrincipal( delegate.getMemberId() );
+    		Principal principal = getIdentityManagementService().getPrincipal( delegate.getDelegationId() );
     		if ( principal != null ) {
     			annotation.append( principal.getPrincipalName() );
     		} else {
-    			annotation.append( delegate.getMemberId() );
+    			annotation.append( delegate.getDelegationId() );
     		}
     	} else if (isGroup) {
     		annotation.append( "group " );
-    		Group group = getIdentityManagementService().getGroup( delegate.getMemberId() );
+    		Group group = getIdentityManagementService().getGroup( delegate.getDelegationId() );
     		if ( group != null ) {
     			annotation.append( group.getNamespaceCode() ).append( '/' ).append( group.getName() );
     		} else {
-    			annotation.append( delegate.getMemberId() );
+    			annotation.append( delegate.getDelegationId() );
     		}
     	} else {
     		annotation.append( "?????? '" );
-			annotation.append( delegate.getMemberId() );
+			annotation.append( delegate.getDelegationId() );
     		annotation.append( "'" );
     	}
     	return annotation.toString();

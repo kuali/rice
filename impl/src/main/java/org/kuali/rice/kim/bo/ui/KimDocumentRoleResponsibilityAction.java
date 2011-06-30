@@ -20,8 +20,8 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
+import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -67,7 +67,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 	@Transient
 	protected ResponsibilityBo kimResponsibility;
 	@Transient
-	protected RoleResponsibilityImpl roleResponsibility;
+	protected RoleResponsibilityBo roleResponsibility;
 
 
 	
@@ -156,19 +156,19 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 	/**
 	 * @return the roleResponsibility
 	 */
-	public RoleResponsibilityImpl getRoleResponsibility() {
+	public RoleResponsibilityBo getRoleResponsibility() {
 		if ( ObjectUtils.isNull( roleResponsibility ) && roleResponsibilityId != null ) {
 			//TODO: this needs to be changed to use the KimResponsibilityInfo object
 			// but the changes are involved in the UiDocumentService based on the copyProperties method used
 			// to move the data to/from the document/real objects
-			roleResponsibility = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(RoleResponsibilityImpl.class, getRoleResponsibilityId());
+			roleResponsibility = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(RoleResponsibilityBo.class, getRoleResponsibilityId());
 		}
 		return roleResponsibility;
 	}
 	/**
 	 * @param roleResponsibility the roleResponsibility to set
 	 */
-	public void setRoleResponsibility(RoleResponsibilityImpl roleResponsibility) {
+	public void setRoleResponsibility(RoleResponsibilityBo roleResponsibility) {
 		this.roleResponsibility = roleResponsibility;
 	}
 

@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Type;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
@@ -26,7 +27,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,7 +60,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	@Transient
 	protected String detailValues;
 	@Transient
-	protected AttributeSet details;
+	protected Attributes details;
 	
 	/**
 	 * This constructs a ...
@@ -98,7 +101,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	public void setDetailValues( String detailValues ) {
 		this.detailValues = detailValues;
 		String detailValuesTemp = detailValues;
-		AttributeSet details = new AttributeSet();
+		Map<String,String> details = new HashMap<String,String>();
 		if ( detailValuesTemp != null ) {
 			// ensure that all line delimiters are single linefeeds
 			detailValuesTemp = detailValuesTemp.replace( "\r\n", "\n" );
@@ -113,10 +116,10 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 				}
 			}
 		}
-		this.details = details;
+		this.details = Attributes.fromMap(details);
 	}
 	
-	public void setDetailValues( AttributeSet detailsAttribs ) {
+	public void setDetailValues( Attributes detailsAttribs ) {
 		StringBuffer sb = new StringBuffer();
 		if ( detailsAttribs != null ) {
 			Iterator<String> keyIter = detailsAttribs.keySet().iterator();
@@ -174,7 +177,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 		this.name = permissionName;
 	}
 
-	public void setDetails( AttributeSet details ) {
+	public void setDetails( Attributes details ) {
 		this.details = details;
 		setDetailValues(details);
 	}
@@ -187,7 +190,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 		this.templateId = templateId;
 	}
 
-	public AttributeSet getDetails() {
+	public Attributes getDetails() {
 		return details;
 	}
 	

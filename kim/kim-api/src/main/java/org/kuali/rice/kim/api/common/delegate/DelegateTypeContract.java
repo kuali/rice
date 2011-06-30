@@ -33,5 +33,5 @@ public interface DelegateTypeContract extends Inactivatable {
 
     String getDelegationTypeCode();
 
-    List<? extends DelegateContract> getMembers();
+    List<? extends DelegateMemberContract> getMembers();
 }

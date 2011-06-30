@@ -30,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -64,8 +65,8 @@ public class KualiLookupAction extends KualiAction {
         } else {
             try {
                 Class businessObjectClass = Class.forName(((LookupForm) form).getBusinessObjectClassName());
-                if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KRADUtils
-                        .getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+                if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
+                        Attributes.fromMap(KRADUtils.getNamespaceAndComponentSimpleName(businessObjectClass)), null)) {
                     throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
                     		KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
                     		businessObjectClass.getSimpleName());

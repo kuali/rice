@@ -31,9 +31,7 @@ import java.util.List;
 public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 		implements KimResponsibilityTypeService {
 
-	/**
-	 * @see org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService#getMatchingResponsibilities(Attributes, List)
-	 */
+	@Override
 	public final List<Responsibility> getMatchingResponsibilities( Attributes requestedDetails, List<Responsibility> responsibilitiesList ) {
 		requestedDetails = translateInputAttributes(requestedDetails);
 		validateRequiredAttributesAgainstReceived(requestedDetails);
@@ -49,7 +47,7 @@ public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 	protected List<Responsibility> performResponsibilityMatches(Attributes requestedDetails, List<Responsibility> responsibilitiesList) {
 		List<Responsibility> matchingResponsibilities = new ArrayList<Responsibility>();
 		for (Responsibility responsibility : responsibilitiesList) {
-			if ( performMatch(requestedDetails, responsibility.getAttributes()) ) {
+			if ( performMatch(requestedDetails, responsibility.getAttributes())) {
 				matchingResponsibilities.add( responsibility );
 			}
 		}

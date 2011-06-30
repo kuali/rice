@@ -24,8 +24,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.kim.api.common.delegate.Delegate;
-import org.kuali.rice.kim.api.common.delegate.DelegateContract;
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -60,7 +60,7 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
     @XmlElementWrapper(name = Elements.DELEGATES, required = false)
     @XmlElement(name = Elements.DELEGATE, required = false)
     // TODO Need modelized DelegateInfo
-    private final List<Delegate> delegates;
+    private final List<DelegateType> delegates;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -84,9 +84,9 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
     public Assignee(Builder builder) {
         this.principalId = builder.getPrincipalId();
         this.groupId = builder.getGroupId();
-        final List<Delegate> temp = new ArrayList<Delegate>();
+        final List<DelegateType> temp = new ArrayList<DelegateType>();
         if (!CollectionUtils.isEmpty(builder.getDelegates())) {
-            for (Delegate.Builder delegate: builder.getDelegates()) {
+            for (DelegateType.Builder delegate: builder.getDelegates()) {
                 temp.add(delegate.build());
             }
         }
@@ -113,7 +113,7 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
 	 * @see AssigneeContract#getDelegates()
 	 */
 	@Override
-	public List<Delegate> getDelegates() {
+	public List<DelegateType> getDelegates() {
 		return this.delegates;
 	}
 	
@@ -138,9 +138,9 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
     public static final class Builder implements AssigneeContract, ModelBuilder, Serializable {
         private String principalId;
         private String groupId;
-        private List<Delegate.Builder> delegates;
+        private List<DelegateType.Builder> delegates;
 
-        private Builder(String principalId, String groupId, List<Delegate.Builder> delegates) {
+        private Builder(String principalId, String groupId, List<DelegateType.Builder> delegates) {
             setPrincipalId(principalId);
             setGroupId(groupId);
             setDelegates(delegates);
@@ -149,7 +149,7 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
         /**
          * Creates a KimAttributeData with the required fields.
          */
-        public static Builder create(String principalId, String groupId, List<Delegate.Builder> delegates) {
+        public static Builder create(String principalId, String groupId, List<DelegateType.Builder> delegates) {
             return new Builder(principalId, groupId, delegates);
         }
 
@@ -157,9 +157,9 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
          * creates a KimAttributeData from an existing {@link org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract}.
          */
         public static Builder create(AssigneeContract contract) {
-            final List<Delegate.Builder> builders = new ArrayList<Delegate.Builder>();
-            for (DelegateContract d : contract.getDelegates()) {
-                builders.add(Delegate.Builder.create(d));
+            final List<DelegateType.Builder> builders = new ArrayList<DelegateType.Builder>();
+            for (DelegateTypeContract d : contract.getDelegates()) {
+                builders.add(DelegateType.Builder.create(d));
             }
 
             Builder builder = new Builder(contract.getPrincipalId(), contract.getGroupId(), builders);
@@ -191,15 +191,15 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
         }
 
 		@Override
-		public List<Delegate.Builder> getDelegates() {
+		public List<DelegateType.Builder> getDelegates() {
 			return delegates;
 		}
 		
-        public void setDelegates(final List<Delegate.Builder> delegates) {
+        public void setDelegates(final List<DelegateType.Builder> delegates) {
         	if (delegates == null || delegates.isEmpty()) {
                 throw new IllegalArgumentException("delegates is null or empty");
             }
-        	this.delegates = Collections.unmodifiableList(new ArrayList<Delegate.Builder>(delegates));
+        	this.delegates = Collections.unmodifiableList(new ArrayList<DelegateType.Builder>(delegates));
         }		
 		
 		@Override

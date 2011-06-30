@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kim.service;
 
+import org.kuali.rice.kim.api.role.RoleService;
+import org.kuali.rice.kim.api.role.RoleUpdateService;
+
 /**
  * This service adds caching on top of the RoleService. 
  * 

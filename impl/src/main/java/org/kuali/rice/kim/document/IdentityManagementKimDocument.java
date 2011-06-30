@@ -74,15 +74,16 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 		}
 		delegationMember.setDelegationId(delegation.getDelegationId());
 		delegation.getMembers().add(delegationMember);
-		delegation.setRoleId(delegationMember.getRoleImpl().getRoleId());
-		delegation.setKimTypeId(delegationMember.getRoleImpl().getKimTypeId());
+		delegation.setRoleId(delegationMember.getRoleBo().getId());
+		delegation.setKimTypeId(delegationMember.getRoleBo().getKimTypeId());
 	}
 
 	protected RoleDocumentDelegation getPrimaryDelegation(){
 		RoleDocumentDelegation primaryDelegation = null;
 		for(RoleDocumentDelegation delegation: getDelegations()){
-			if(delegation.isDelegationPrimary())
+			if(delegation.isDelegationPrimary()) {
 				primaryDelegation = delegation;
+            }
 		}
 		if(primaryDelegation==null){
 			primaryDelegation = new RoleDocumentDelegation();
@@ -100,8 +101,9 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	protected RoleDocumentDelegation getSecondaryDelegation(){
 		RoleDocumentDelegation secondaryDelegation = null;
 		for(RoleDocumentDelegation delegation: getDelegations()){
-			if(delegation.isDelegationSecondary())
+			if(delegation.isDelegationSecondary()) {
 				secondaryDelegation = delegation;
+            }
 		}
 		if(secondaryDelegation==null){
 			secondaryDelegation = new RoleDocumentDelegation();

@@ -65,7 +65,7 @@ public final class DelegateType implements DelegateTypeContract, ModelObjectComp
     private final String kimTypeId;
 
     @XmlElement(name = Elements.MEMBERS)
-    private final List<Delegate> members;
+    private final List<DelegateMember> members;
 
     @XmlElement(name = Elements.ACTIVE)
     private final boolean active;
@@ -94,9 +94,9 @@ public final class DelegateType implements DelegateTypeContract, ModelObjectComp
         kimTypeId = b.getKimTypeId();
         active = b.isActive();
 
-        List<Delegate> delegateMembers = new ArrayList<Delegate>();
+        List<DelegateMember> delegateMembers = new ArrayList<DelegateMember>();
         if (!CollectionUtils.isEmpty(b.getMembers())) {
-            for (Delegate.Builder delgateBuilder : b.getMembers()) {
+            for (DelegateMember.Builder delgateBuilder : b.getMembers()) {
                 delegateMembers.add(delgateBuilder.build());
             }
         }
@@ -129,7 +129,7 @@ public final class DelegateType implements DelegateTypeContract, ModelObjectComp
     }
 
     @Override
-    public List<Delegate> getMembers() {
+    public List<DelegateMember> getMembers() {
         return Collections.unmodifiableList(this.members);
     }
 
@@ -154,7 +154,7 @@ public final class DelegateType implements DelegateTypeContract, ModelObjectComp
         private String delegationId;
         private String delegationTypeCode;
         private String kimTypeId;
-        private List<Delegate.Builder> members;
+        private List<DelegateMember.Builder> members;
         private boolean active;
 
         public static Builder create(DelegateTypeContract dtc) {
@@ -164,16 +164,16 @@ public final class DelegateType implements DelegateTypeContract, ModelObjectComp
             b.setDelegationTypeCode(dtc.getDelegationTypeCode());
             b.setActive(dtc.isActive());
 
-            ArrayList<Delegate.Builder> delegateBuilders = new ArrayList<Delegate.Builder>();
-            for (DelegateContract delegate : dtc.getMembers()) {
-                delegateBuilders.add(Delegate.Builder.create(delegate));
+            ArrayList<DelegateMember.Builder> delegateBuilders = new ArrayList<DelegateMember.Builder>();
+            for (DelegateMemberContract delegate : dtc.getMembers()) {
+                delegateBuilders.add(DelegateMember.Builder.create(delegate));
             }
             b.setMembers(delegateBuilders);
 
             return b;
         }
 
-        public static Builder create(String roleId, String delegationId, String delegationTypeCode, List<Delegate.Builder> members) {
+        public static Builder create(String roleId, String delegationId, String delegationTypeCode, List<DelegateMember.Builder> members) {
             Builder b = new Builder();
             b.setRoleId(roleId);
             b.setDelegationId(delegationId);
@@ -236,11 +236,11 @@ public final class DelegateType implements DelegateTypeContract, ModelObjectComp
         }
 
         @Override
-        public List<Delegate.Builder> getMembers() {
+        public List<DelegateMember.Builder> getMembers() {
             return members;
         }
 
-        public void setMembers(List<Delegate.Builder> members) {
+        public void setMembers(List<DelegateMember.Builder> members) {
             this.members = members;
         }
 

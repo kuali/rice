@@ -50,7 +50,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class Role implements RoleContract, ModelObjectComplete {
+public final class Role implements RoleContract, ModelObjectComplete {
     private static final long serialVersionUID = 1L;
 
     public static final String GROUP_MEMBER_TYPE = "G";

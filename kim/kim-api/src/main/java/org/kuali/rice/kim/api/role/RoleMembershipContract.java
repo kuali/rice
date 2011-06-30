@@ -16,8 +16,10 @@
 package org.kuali.rice.kim.api.role;
 
 
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.common.delegate.DelegateContract;
+
+import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 
 import java.util.List;
 
@@ -25,9 +27,9 @@ public interface RoleMembershipContract {
 
     String getRoleId();
 
-    AttributeSet getQualifier();
+    Attributes getQualifier();
 
-    List<? extends DelegateContract> getDelegates();
+    List<? extends DelegateTypeContract> getDelegates();
 
     String getRoleMemberId();
 

@@ -18,10 +18,10 @@ package org.kuali.rice.kim.service.support.impl;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
@@ -42,10 +42,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 		requiredAttributes.add( KimConstants.AttributeConstants.PRINCIPAL_ID );
 		checkRequiredAttributes = false;
 	}
-	
-	/**
-	 * @see org.kuali.rice.kim.impl.type.KimTypeServiceBase#performMatch(org.kuali.rice.core.util.Attributes, org.kuali.rice.core.util.Attributes)
-	 */
+
 	@Override
 	public boolean performMatch(Attributes inputAttributes, Attributes storedAttributes) {
 		return true;
@@ -53,12 +50,10 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 
 	/**
 	 * Since this is potentially the entire set of users, just check the qualification for the user we are interested in and return it.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#getRoleMembersFromApplicationRole(String, String, Attributes)
 	 */
 	@Override
-    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
-		ArrayList<RoleMembershipInfo> tempIdList = new ArrayList<RoleMembershipInfo>();
+    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+		ArrayList<RoleMembership> tempIdList = new ArrayList<RoleMembership>();
 		if ( qualification == null || qualification.isEmpty() ) {
 			return tempIdList;
 		}
@@ -66,7 +61,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 		// check that the principal ID is not null
 		String principalId = qualification.get( KimConstants.AttributeConstants.PRINCIPAL_ID );
 		if ( hasApplicationRole(principalId, null, namespaceCode, roleName, qualification)) {
-	        tempIdList.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
+	        tempIdList.add( RoleMembership.Builder.create(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null).build());
 		}
 		return tempIdList;
 	}
@@ -80,10 +75,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
         }
         // check that the identity is active
         EntityDefault entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
-        if ( entity == null || !entity.isActive() ) {
-            return false;
-        }
-        return true;
+        return entity != null && entity.isActive();
 	}
 	
 	protected IdentityManagementService getIdentityManagementService() {

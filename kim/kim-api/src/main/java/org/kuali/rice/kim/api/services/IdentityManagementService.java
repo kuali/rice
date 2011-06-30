@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kim.api.services;
 
+import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.entity.Entity;
@@ -230,14 +232,14 @@ public interface IdentityManagementService {
             @WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,
-            @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification
+            @WebParam(name = "permissionDetails") Attributes permissionDetails,
+            @WebParam(name = "qualification") Attributes qualification
     );
 
     /**
      * Returns the matching permission objects for a principal.
      */
-    List<? extends KimPermissionInfo> getAuthorizedPermissions(
+    List<Permission> getAuthorizedPermissions(
             @WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionName") String permissionName,
@@ -245,7 +247,7 @@ public interface IdentityManagementService {
             @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification
     );
 
-    List<? extends KimPermissionInfo> getAuthorizedPermissionsByTemplateName(
+    List<Permission> getAuthorizedPermissionsByTemplateName(
             @WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,
@@ -263,8 +265,8 @@ public interface IdentityManagementService {
     List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,
-            @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification
+            @WebParam(name = "permissionDetails") Attributes permissionDetails,
+            @WebParam(name = "qualification") Attributes qualification
     );
 
     // ----------------------

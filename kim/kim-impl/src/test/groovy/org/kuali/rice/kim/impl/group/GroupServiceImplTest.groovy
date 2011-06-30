@@ -36,6 +36,8 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*
 import org.kuali.rice.kim.api.group.GroupQueryResults
 import org.kuali.rice.krad.service.BusinessObjectService
 
+
+
 class GroupServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 

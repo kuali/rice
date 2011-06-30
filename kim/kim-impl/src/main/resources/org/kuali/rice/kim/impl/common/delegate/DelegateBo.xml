@@ -15,54 +15,54 @@
  limitations under the License.
 -->
 
-  <bean id="KimDelegationImpl" parent="KimDelegationImpl-parentBean"/>
+  <bean id="DelegateBo" parent="DelegateBo-parentBean"/>
 
-  <bean id="KimDelegationImpl-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.role.impl.KimDelegationImpl" p:titleAttribute="delegationId" p:objectLabel="Delegations" p:inquiryDefinition-ref="KimDelegationImpl-inquiryDefinition" p:lookupDefinition-ref="KimDelegationImpl-lookupDefinition">
+  <bean id="DelegateBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.common.delegate.DelegateBo" p:titleAttribute="delegationId" p:objectLabel="Delegations" p:inquiryDefinition-ref="DelegateBo-inquiryDefinition" p:lookupDefinition-ref="DelegateBo-lookupDefinition">
     <property name="attributes">
       <list>
-        <ref bean="KimDelegationImpl-delegationId"/>
-        <ref bean="KimDelegationImpl-roleId"/>
-        <ref bean="KimDelegationImpl-active"/>
-        <ref bean="KimDelegationImpl-kimTypeId"/>
-        <ref bean="KimDelegationImpl-delegationTypeCode"/>
+        <ref bean="DelegateBo-delegationId"/>
+        <ref bean="DelegateBo-roleId"/>
+        <ref bean="DelegateBo-active"/>
+        <ref bean="DelegateBo-kimTypeId"/>
+        <ref bean="DelegateBo-delegationTypeCode"/>
       </list>
     </property>
   </bean>
 
-  <bean id="KimDelegationImpl-delegationId" parent="KimDelegationImpl-delegationId-parentBean"/>
-  <bean id="KimDelegationImpl-delegationId-parentBean" parent="AttributeDefinition" abstract="true" p:name="delegationId" p:forceUppercase="true" p:label="Delegation" p:shortLabel="Delegation" p:maxLength="10" p:required="false">
+  <bean id="DelegateBo-delegationId" parent="DelegateBo-delegationId-parentBean"/>
+  <bean id="DelegateBo-delegationId-parentBean" parent="AttributeDefinition" abstract="true" p:name="delegationId" p:forceUppercase="true" p:label="Delegation" p:shortLabel="Delegation" p:maxLength="10" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
   </bean>
  
-  <bean id="KimDelegationImpl-roleId" parent="KimDelegationImpl-roleId-parentBean"/>
-  <bean id="KimDelegationImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true" p:name="roleId" p:forceUppercase="true" p:label="Role" p:shortLabel="Role" p:maxLength="10" p:required="false">
+  <bean id="DelegateBo-roleId" parent="DelegateBo-roleId-parentBean"/>
+  <bean id="DelegateBo-roleId-parentBean" parent="AttributeDefinition" abstract="true" p:name="roleId" p:forceUppercase="true" p:label="Role" p:shortLabel="Role" p:maxLength="10" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
   </bean>
   
-  <bean id="KimDelegationImpl-kimTypeId" parent="KimDelegationImpl-kimTypeId-parentBean"/>
-  <bean id="KimDelegationImpl-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true" p:name="kimTypeId" p:forceUppercase="true" p:label="Delegation Type" p:shortLabel="Delegation Type" p:maxLength="40" p:required="false">
+  <bean id="DelegateBo-kimTypeId" parent="DelegateBo-kimTypeId-parentBean"/>
+  <bean id="DelegateBo-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true" p:name="kimTypeId" p:forceUppercase="true" p:label="Delegation Type" p:shortLabel="Delegation Type" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
   </bean>
     
-  <bean id="KimDelegationImpl-delegationTypeCode" parent="KimDelegationImpl-delegationTypeCode-parentBean"/>
-  <bean id="KimDelegationImpl-delegationTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="delegationTypeCode" p:forceUppercase="true" p:label="Delegation Type Code" p:shortLabel="Delegation Type" p:maxLength="40" p:required="false">
+  <bean id="DelegateBo-delegationTypeCode" parent="DelegateBo-delegationTypeCode-parentBean"/>
+  <bean id="DelegateBo-delegationTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="delegationTypeCode" p:forceUppercase="true" p:label="Delegation Type Code" p:shortLabel="Delegation Type" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.lookup.valuefinder.DelegationTypeValuesFinder"/>
     </property>
   </bean>
   
-  <bean id="KimDelegationImpl-active" parent="KimDelegationImpl-active-parentBean"/>
-  <bean id="KimDelegationImpl-active-parentBean" parent="KimType-active" abstract="true"/>
+  <bean id="DelegateBo-active" parent="DelegateBo-active-parentBean"/>
+  <bean id="DelegateBo-active-parentBean" parent="KimType-active" abstract="true"/>
   
-  <bean id="KimDelegationImpl-inquiryDefinition" parent="KimDelegationImpl-inquiryDefinition-parentBean"/>
+  <bean id="DelegateBo-inquiryDefinition" parent="DelegateBo-inquiryDefinition-parentBean"/>
 
-  <bean id="KimDelegationImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Delegation Impl Inquiry">
+  <bean id="DelegateBo-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Delegate Bo Inquiry">
     <property name="inquirySections">
       <list>
         <bean parent="InquirySectionDefinition" p:title="Delegation Details" p:numberOfColumns="1">
@@ -80,9 +80,9 @@
     </property>
   </bean>
 
-  <bean id="KimDelegationImpl-lookupDefinition" parent="KimDelegationImpl-lookupDefinition-parentBean"/>
+  <bean id="DelegateBo-lookupDefinition" parent="DelegateBo-lookupDefinition-parentBean"/>
 
-  <bean id="KimDelegationImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Delegation Lookup">
+  <bean id="DelegateBo-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Delegation Lookup">
     <property name="defaultSort">
       <bean parent="SortDefinition">
         <property name="attributeNames">

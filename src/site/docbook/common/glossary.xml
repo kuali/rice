@@ -274,15 +274,15 @@
         <glossentry id="glossary.delegate"><glossterm>Delegate</glossterm>
             <glossdef>
                 <para>A user who has been registered to act on behalf of another user. The Delegate acts with the full 
-                    authority of the Delegator.  Delegation may be either <glossterm linkend="glossary.primary.delegation">Primary Delegation</glossterm> 
-                    or <glossterm linkend="glossary.secondary.delegation">Secondary Delegation</glossterm>.</para>                
+                    authority of the Delegator.  Delegation may be either <glossterm linkend="glossary.primary.delegate">Primary Delegation</glossterm>
+                    or <glossterm linkend="glossary.secondary.delegate">Secondary Delegation</glossterm>.</para>
             </glossdef>
         </glossentry>
         <glossentry id="glossary.delegate.action.list"><glossterm>Delegate Action List</glossterm>
             <glossdef>
                 <para>A separate Action List for Delegate actions.  When a Delegate selects a Delegator for whom to act, an Action List of all documents sent to the Delegator is displayed.</para>
-                <para>For both <glossterm linkend="glossary.primary.delegation">Primary</glossterm> and 
-                    <glossterm linkend="glossary.secondary.delegation">Secondary Delegation</glossterm> the Delegate may act on any of the entries with the full authority of the Delegator.</para>
+                <para>For both <glossterm linkend="glossary.primary.delegate">Primary</glossterm> and
+                    <glossterm linkend="glossary.secondary.delegate">Secondary Delegation</glossterm> the Delegate may act on any of the entries with the full authority of the Delegator.</para>
             </glossdef>
         </glossentry>
         <glossentry id="glossary.disapprove"><glossterm>Disapprove</glossterm>
@@ -841,7 +841,7 @@
                 <para>User options in an Action List for displaying the list of documents.  Users can click the Preferences button in the top margin of the Action List to display the Action List Preferences screen.  On the Preferences screen, users may change the columns displayed, the background colors by Route Status, and the number of documents displayed per page.</para>
             </glossdef>
         </glossentry> 
-        <glossentry id="glossary.primary.delegation"><glossterm>Primary Delegation</glossterm>
+        <glossentry id="glossary.primary.delegate"><glossterm>Primary Delegation</glossterm>
             <glossdef>
                 <para>The Delegator turns over full authority to the Delegate.  The Action Requests for the Delegator only appear in the Action List of the Primary Delegate.  The Delegation must be registered in KEW or KIM to be in effect.</para>
             </glossdef>
@@ -1032,7 +1032,7 @@
         </glossentry>
         <glossentry id="glossary.rule.quickLinks"><glossterm>Rule QuickLinks</glossterm>
             <glossdef>
-                <para>A list of document groups with their document hierarchies and actions that can be selected.  For specific document types, you can create the rule delegation.</para>
+                <para>A list of document groups with their document hierarchies and actions that can be selected.  For specific document types, you can create the rule delegate.</para>
             </glossdef>
         </glossentry>
         <glossentry id="glossary.rule.template"><glossterm>Rule Template</glossterm>
@@ -1042,7 +1042,7 @@
                     <para>Technical considerations for a Rule Templates are:</para>
                     <listitem>They are a composition of Rule Attributes</listitem>
                     <listitem>Adding a ‘Role’ attribute to a template allows for the use of the Role on any rules created against the template</listitem>
-                    <listitem>When rule attributes are used for matching on rules, each attribute is associated with the other attributes on the template using an implicit ‘and’ logic qualifier</listitem>
+                    <listitem>When rule attributes are used for matching on rules, each attribute is associated with the other attributes on the template using an implicit ‘and’ logic attributes</listitem>
                     <listitem>Can be used to define various other aspects to be used by the rule creation GUI such as rule data defaults (effective dates, ignore previous, available request types, etc)</listitem>
                 </itemizedlist>
             </glossdef>
@@ -1072,7 +1072,7 @@
                 </itemizedlist>
             </glossdef>
         </glossentry> 
-        <glossentry id="glossary.secondary.delegation"><glossterm>Secondary Delegation</glossterm>
+        <glossentry id="glossary.secondary.delegate"><glossterm>Secondary Delegation</glossterm>
             <glossdef>
                 <para>The Secondary Delegate acts as a temporary backup Delegator who acts with the same authority as the primary Approver/the Delegator when the Delegator is not available.  Documents appear in the Action Lists of both the Delegator and the Delegate.  When either acts on the document, it disappears from both Action Lists.</para>
                 <para>Secondary Delegation is often configured for a range of dates and it must be registered in KEW or KIM to be in effect.</para>

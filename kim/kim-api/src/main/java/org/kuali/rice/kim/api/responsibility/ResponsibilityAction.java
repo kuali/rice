@@ -8,8 +8,8 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.api.common.delegate.Delegate;
-import org.kuali.rice.kim.api.common.delegate.DelegateContract;
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -74,7 +74,7 @@ public final class ResponsibilityAction
     @XmlElement(name = Elements.QUALIFIER, required = true)
     private final Attributes qualifier;
     @XmlElement(name = Elements.DELEGATES, required = true)
-    private final List<Delegate> delegates;
+    private final List<DelegateType> delegates;
     @XmlElement(name = Elements.ROLE_ID, required = true)
     private final String roleId;
     @SuppressWarnings("unused")
@@ -116,8 +116,8 @@ public final class ResponsibilityAction
         this.responsibilityNamespaceCode = builder.getResponsibilityNamespaceCode();
         this.forceAction = builder.isForceAction();
         this.qualifier = builder.getQualifier();
-        final List<Delegate> ds = new ArrayList<Delegate>();
-        for (Delegate.Builder d : builder.getDelegates()) {
+        final List<DelegateType> ds = new ArrayList<DelegateType>();
+        for (DelegateType.Builder d : builder.getDelegates()) {
             if (d != null) {
                 ds.add(d.build());
             }
@@ -192,7 +192,7 @@ public final class ResponsibilityAction
     }
 
     @Override
-    public List<Delegate> getDelegates() {
+    public List<DelegateType> getDelegates() {
         return Collections.unmodifiableList(this.delegates);
     }
 
@@ -236,7 +236,7 @@ public final class ResponsibilityAction
         private String responsibilityNamespaceCode;
         private boolean forceAction;
         private Attributes qualifier;
-        private List<Delegate.Builder> delegates;
+        private List<DelegateType.Builder> delegates;
         private String roleId;
 
         private Builder() {
@@ -271,10 +271,10 @@ public final class ResponsibilityAction
             builder.setResponsibilityNamespaceCode(contract.getResponsibilityNamespaceCode());
             builder.setForceAction(contract.isForceAction());
             builder.setQualifier(contract.getQualifier());
-            final List<Delegate.Builder> dbs = new ArrayList<Delegate.Builder>();
-            for (DelegateContract d : contract.getDelegates()) {
+            final List<DelegateType.Builder> dbs = new ArrayList<DelegateType.Builder>();
+            for (DelegateTypeContract d : contract.getDelegates()) {
                 if (d != null) {
-                    dbs.add(Delegate.Builder.create(d));
+                    dbs.add(DelegateType.Builder.create(d));
                 }
             }
             builder.setDelegates(dbs);
@@ -365,7 +365,7 @@ public final class ResponsibilityAction
         }
 
         @Override
-        public List<Delegate.Builder> getDelegates() {
+        public List<DelegateType.Builder> getDelegates() {
             return Collections.unmodifiableList(this.delegates);
         }
 
@@ -444,11 +444,11 @@ public final class ResponsibilityAction
             this.qualifier = qualifier;
         }
 
-        public void setDelegates(List<Delegate.Builder> delegates) {
+        public void setDelegates(List<DelegateType.Builder> delegates) {
             if (delegates == null) {
                 throw new IllegalArgumentException("delegates is null");
             }
-            this.delegates = new ArrayList<Delegate.Builder>(delegates);
+            this.delegates = new ArrayList<DelegateType.Builder>(delegates);
         }
 
         public void setRoleId(String roleId) {

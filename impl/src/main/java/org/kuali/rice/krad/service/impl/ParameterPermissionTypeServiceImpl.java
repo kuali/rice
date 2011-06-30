@@ -17,7 +17,8 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
@@ -36,13 +37,14 @@ public class ParameterPermissionTypeServiceImpl extends
     }
     
     @Override
-    protected List<KimPermissionInfo> performPermissionMatches(Attributes requestedDetails, List<KimPermissionInfo> permissionsList) {
+    protected List<Permission> performPermissionMatches(Attributes requestedDetails, List<Permission> permissionsList) {
         String requestedParameterName = requestedDetails.get(KimConstants.AttributeConstants.PARAMETER_NAME);
         String requestedComponentName = requestedDetails.get(KimConstants.AttributeConstants.COMPONENT_NAME);
-        List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
-        for ( KimPermissionInfo kpi : permissionsList ) {
-            String parameterName = kpi.getDetails().get(KimConstants.AttributeConstants.PARAMETER_NAME);
-            String componentName = kpi.getDetails().get(KimConstants.AttributeConstants.COMPONENT_NAME);
+        List<Permission> matchingPermissions = new ArrayList<Permission>();
+        for (Permission kpi : permissionsList ) {
+            PermissionBo bo = PermissionBo.from(kpi);
+            String parameterName = bo.getDetails().get(KimConstants.AttributeConstants.PARAMETER_NAME);
+            String componentName = bo.getDetails().get(KimConstants.AttributeConstants.COMPONENT_NAME);
             if ( (StringUtils.isBlank(parameterName)
                     || StringUtils.equals(requestedParameterName, parameterName)) 
                 &&(StringUtils.isBlank(componentName)

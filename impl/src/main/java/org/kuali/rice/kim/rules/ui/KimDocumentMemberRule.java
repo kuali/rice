@@ -54,9 +54,10 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
             GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Member"});
             return false;
         }
-    	if(!validAssignRole(newMember, document))
+    	if(!validAssignRole(newMember, document)) {
     		return false;
-		Map<String, String> validationErrors = new HashMap<String, String>();
+        }
+		Map<String,String> validationErrors = new HashMap<String,String>();
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(document.getKimType());
         
         Long newMemberFromTime = newMember.getActiveFromDate() == null ? 0L : newMember.getActiveFromDate().getTime();

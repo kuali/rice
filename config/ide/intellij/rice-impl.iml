@@ -18,8 +18,8 @@
     <output-test url="file://$MODULE_DIR$/../../../impl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../impl">
       <sourceFolder url="file://$MODULE_DIR$/../../../impl/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../impl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../impl/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../impl/target/generated-sources/test-annotations" isTestSource="true" />

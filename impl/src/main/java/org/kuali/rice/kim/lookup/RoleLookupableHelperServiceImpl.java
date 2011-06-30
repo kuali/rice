@@ -21,9 +21,9 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.dao.KimRoleDao;
+import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleDao;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
@@ -71,32 +71,30 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 	// 2nd pass for jsp, no populate, so return the existing one. 
 	private List<Row> roleRows = new ArrayList<Row>();
 	private List<Row> attrRows = new ArrayList<Row>();
-	private KimRoleDao roleDao; 
+	private RoleDao roleDao;
 	private String typeId;
 	private AttributeDefinitionMap attrDefinitions;
 	
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
-    	RoleImpl roleImpl = (RoleImpl) bo;
+    	RoleBo roleBo = (RoleBo) bo;
         List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
     	if(allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME)){
-    		anchorHtmlDataList.add(getEditRoleUrl(roleImpl));
+    		anchorHtmlDataList.add(getEditRoleUrl(roleBo));
     	}
     	return anchorHtmlDataList;
     }
     
-    protected HtmlData getEditRoleUrl(RoleImpl roleImpl) {
-    	String href = "";
-
+    protected HtmlData getEditRoleUrl(RoleBo roleBo) {
         Properties parameters = new Properties();
         parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOC_HANDLER_METHOD);
         parameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
         parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
-        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleImpl.getRoleId());
+        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleBo.getId());
         if (StringUtils.isNotBlank(getReturnLocation())) {
         	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 		}
-        href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
+        String href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
         		KRADConstants.DOC_HANDLER_METHOD, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
@@ -105,13 +103,13 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 
     @Override
 	protected HtmlData getReturnAnchorHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions){
-    	RoleImpl roleImpl = (RoleImpl) businessObject;
+    	RoleBo roleBo = (RoleBo) businessObject;
     	HtmlData anchorHtmlData = super.getReturnAnchorHtmlData(businessObject, parameters, lookupForm, returnKeys, businessObjectRestrictions);
     	
     	// prevent derived roles from being selectable (except for identityManagementRoleDocuments)	
     	KualiForm myForm = (KualiForm) GlobalVariables.getUserSession().retrieveObject(getDocFormKey());
     	if (myForm == null || !(myForm instanceof IdentityManagementRoleDocumentForm)){
-    		if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(KimTypeBo.to(roleImpl.getKimRoleType()))){
+    		if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(KimTypeBo.to(roleBo.getKimRoleType()))){
     			((AnchorHtmlData)anchorHtmlData).setHref("");
     		}
     	}
@@ -127,7 +125,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         	}
         }
   //  	List<RoleImpl> roles = roleDao.getRoles(fieldValues, kimTypeId);
-        List<RoleImpl> baseLookup = (List<RoleImpl>)super.getSearchResults(fieldValues);
+        List<RoleBo> baseLookup = (List<RoleBo>)super.getSearchResults(fieldValues);
 
         return baseLookup;
     }
@@ -165,11 +163,11 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		this.roleRows = roleRows;
 	}
 
-	public KimRoleDao getRoleDao() {
+	public RoleDao getRoleDao() {
 		return this.roleDao;
 	}
 
-	public void setRoleDao(KimRoleDao roleDao) {
+	public void setRoleDao(RoleDao roleDao) {
 		this.roleDao = roleDao;
 	}
 

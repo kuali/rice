@@ -18,14 +18,13 @@ package org.kuali.rice.kim.impl.responsibility;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.inquiry.RoleMemberInquirableImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
-import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.lookup.HtmlData;
@@ -119,10 +118,10 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 			List<String> primaryKeys = Collections.singletonList(ROLE_ID);
 			RoleService roleService = KimApiServiceLocator.getRoleService();
 			for(RoleBo roleImpl: assignedToRoles){
-				KimRoleInfo roleInfo = roleService.getRole(roleImpl.getId());
-				AnchorHtmlData inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleImpl.class, roleInfo, primaryKeys,
-        				roleInfo.getNamespaceCode()+" "+
-        				roleInfo.getRoleName());
+				Role role = roleService.getRole(roleImpl.getId());
+				AnchorHtmlData inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleBo.class, role, primaryKeys,
+        				role.getNamespaceCode()+" "+
+        				role.getName());
 				inquiryHtmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
         		htmlData.add(inquiryHtmlData);
         	}
@@ -161,10 +160,10 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		}
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("responsibilityId", responsibilitySearchResultCopy.getId());
-		List<RoleResponsibilityImpl> roleResponsibilitys =
-			(List<RoleResponsibilityImpl>) KRADServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityImpl.class, criteria);
+		List<RoleResponsibilityBo> roleResponsibilitys =
+			(List<RoleResponsibilityBo>) KRADServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityBo.class, criteria);
 		List<RoleBo> assignedToRoles = new ArrayList<RoleBo>();
-		for(RoleResponsibilityImpl roleResponsibilityImpl: roleResponsibilitys){
+		for(RoleResponsibilityBo roleResponsibilityImpl: roleResponsibilitys){
 			assignedToRoles.add(getRoleImpl(roleResponsibilityImpl.getRoleId()));
 		}
 		responsibilitySearchResultCopy.setAssignedToRoles(assignedToRoles);

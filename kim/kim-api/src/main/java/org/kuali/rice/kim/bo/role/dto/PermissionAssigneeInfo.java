@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +29,13 @@ import java.util.List;
 public class PermissionAssigneeInfo {
 	protected String principalId;
 	protected String groupId;
-	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
+	protected List<DelegateType> delegates = new ArrayList<DelegateType>();
 	
 	// for jax-ws service construction
 	@SuppressWarnings("unused")
 	private PermissionAssigneeInfo() {}
 	
-	public PermissionAssigneeInfo(String principalId, String groupId, List<DelegateInfo> delegates) {
+	public PermissionAssigneeInfo(String principalId, String groupId, List<DelegateType> delegates) {
 		this.principalId = principalId;
 		this.groupId = groupId;
 		this.delegates = delegates;
@@ -51,10 +53,10 @@ public class PermissionAssigneeInfo {
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
-	public List<DelegateInfo> getDelegates() {
+	public List<DelegateType> getDelegates() {
 		return this.delegates;
 	}
-	public void setDelegates(List<DelegateInfo> delegates) {
+	public void setDelegates(List<DelegateType> delegates) {
 		this.delegates = delegates;
 	}
 }

@@ -258,7 +258,9 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( permissionDetails == null || permissionDetails.isEmpty() ) {
     		// if no details passed, assume that all match
     		for ( KimPermissionImpl perm : permissions ) {
-    			applicablePermissions.add( perm.toSimpleInfo() );
+    			if (perm != null) {
+                    applicablePermissions.add( perm.toSimpleInfo() );
+                }
     		}
     	} else {
     		// otherwise, attempt to match the permission details
@@ -424,7 +426,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	    	pk.put( "template.namespaceCode", namespaceCode );
 	    	pk.put( "template.name", permissionTemplateName );
 			pk.put( KRADPropertyConstants.ACTIVE, "Y" );
-	    	permissions = ((List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk )).get(0);
+	    	Collection<KimPermissionImpl> c = getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
+	    	permissions = c != null && c.iterator().hasNext() ? c.iterator().next() : null;
 	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
     	}
     	return permissions;
@@ -439,7 +442,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	    	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
 	    	pk.put( KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName );
 			pk.put( KRADPropertyConstants.ACTIVE, "Y" );
-	    	permissions = ((List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk )).get(0);
+            Collection<KimPermissionImpl> c = getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
+	    	permissions = c != null && c.iterator().hasNext() ? c.iterator().next() : null;
 	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
     	}
     	return permissions;
@@ -610,7 +614,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
             HashMap<String, Object> pk = new HashMap<String, Object>(2);
             pk.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
             pk.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName);
-            permissions = ((List<KimPermissionImpl>) getBusinessObjectService().findMatching(KimPermissionImpl.class, pk)).get(0);
+            Collection<KimPermissionImpl> c = getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
+	    	permissions = c != null && c.iterator().hasNext() ? c.iterator().next() : null;
             getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
         }
         return permissions;

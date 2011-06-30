@@ -18,10 +18,5 @@
 <tiles:useAttribute name="control" classname="org.kuali.rice.krad.uif.control.FileControl"/>
 <tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.AttributeField"/>
 
-<%--
-    Standard HTML File Input
-    
- --%>
+<form:input id="${field.id}" path="${field.bindingInfo.bindingPath}" type="file" size="${control.size}" class="${control.styleClassesAsString}" tabIndex="${control.tabIndex}"/>
  
-<input type="file" id="${field.id}"
-       size="${control.size}" class="${control.styleClassesAsString}" tabIndex="${control.tabIndex}"/> 

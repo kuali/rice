@@ -269,8 +269,8 @@
 	    <collection-descriptor name="actions" element-class-ref="org.kuali.rice.krms.impl.repository.ActionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       		<inverse-foreignkey field-ref="ruleId" />
     	</collection-descriptor>
-	    <collection-descriptor name="attributeBos" element-class-ref="org.kuali.rice.krms.impl.repository.ActionAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
-      		<inverse-foreignkey field-ref="actionId" />
+	    <collection-descriptor name="attributeList" element-class-ref="org.kuali.rice.krms.impl.repository.RuleAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      		<inverse-foreignkey field-ref="ruleId" />
     	</collection-descriptor>
 	</class-descriptor>
 

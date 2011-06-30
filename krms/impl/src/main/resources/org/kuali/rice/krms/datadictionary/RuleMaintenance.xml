@@ -34,18 +34,28 @@
                <bean parent="AttributeField" p:propertyName="propId"/>
               </list>
             </property>
-         </bean> 
-<!--           
-
+         </bean>
+         <bean parent="GroupSectionGridLayout">
+            <property name="title" value="Proposition Information"/>
+            <property name="items">
+              <list>
+               <bean parent="AttributeField" p:propertyName="proposition.id"/>
+               <bean parent="AttributeField" p:propertyName="proposition.description"/>
+               <bean parent="AttributeField" p:propertyName="proposition.propositionTypeCode"/>
+              </list>
+            </property>
+         </bean>
+          
          <bean parent="MaintenanceCollectionGroupSection">
            <property name="title" value="Attributes"/>  
            <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.RuleAttributeBo"/>
-           <property name="propertyName" value="attributeBos"/>
+           <property name="propertyName" value="attributeList"/>
              <property name="items">
                <list>
                  <bean parent="AttributeField" p:propertyName="id"/>
                  <bean parent="AttributeField" p:propertyName="ruleId"/>
                  <bean parent="AttributeField" p:propertyName="attributeDefinitionId"/>
+                 <bean parent="AttributeField" p:propertyName="attributeDefinition.name"/>
                  <bean parent="AttributeField" p:propertyName="value"/>
                 </list>
               </property>   
@@ -57,17 +67,16 @@
               </property>
            </bean>  
 
-         <bean parent="MaintenanceCollectionGroupSection">
-           <property name="title" value="Proposition"/>  
-           <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.PropositionBo"/>
-           <property name="propertyName" value="proposition"/>
+<!-- 
+         <bean parent="MaintenanceGroupSectionGridLayout">
+           <property name="title" value="Proposition Information"/>  
              <property name="items">
                <list>
-                 <bean parent="AttributeField" p:propertyName="id"/>
-                 <bean parent="AttributeField" p:propertyName="ruleId"/>
-                 <bean parent="AttributeField" p:propertyName="description"/>
-                 <bean parent="AttributeField" p:propertyName="propositionTypeCode"/>
-                 <bean parent="AttributeField" p:propertyName="typeId"/>
+                 <bean parent="AttributeField" p:propertyName="proposition.id"/>
+                 <bean parent="AttributeField" p:propertyName="proposition.description"/>
+                 <bean parent="AttributeField" p:propertyName="proposition.ruleId"/>
+                 <bean parent="AttributeField" p:propertyName="proposition.typeId"/>
+                 <bean parent="AttributeField" p:propertyName="proposition.propositionTypeCode"/>
                 </list>
               </property>   
               <property name="layoutManager.summaryTitle" value="Proposition"/> 
@@ -77,9 +86,10 @@
                 </list>
               </property>
            </bean>  
- -->                   
+--> 
+                  
        </list>
      </property>
   </bean>      
-   
+    
 </beans>

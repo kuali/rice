@@ -17,23 +17,31 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	def String typeId
 	def String propId
 
-	def PropositionBo proposition
-	def List<ActionBo> actions	
-	def Set<RuleAttributeBo> attributeBos
+    def PropositionBo proposition
+    def List<ActionBo> actions
+    def Set<RuleAttributeBo> attributeBos
     //def List<PropositionBo> allChildPropositions
-	
-   public PropositionBo getProposition(){
-	   return proposition
-   }
-   
-	public Map<String, String> getAttributes() {
-		HashMap<String, String> attributes = new HashMap<String, String>();
-		for (attr in attributeBos) {
-			attributes.put( attr.attributeDefinition.name, attr.value )
-		}
-		return attributes;
-	}
-	
+    def List<RuleAttributeBo> attributeList
+    
+    public PropositionBo getProposition(){
+        return proposition
+    }
+
+    public Map<String, String> getAttributes() {
+        HashMap<String, String> attributes = new HashMap<String, String>();
+        for (attr in attributeBos) {
+            attributes.put( attr.attributeDefinition.name, attr.value )
+        }
+        return attributes;
+    }
+
+//    public List<RuleAttributeBo> getAttributeList(){
+//        List<RuleAttributeBo> attrs = new ArrayList<RuleAttributeBo>();
+//        for (attr in attributeBos){
+//            attrs.add(attr);
+//        }
+//        return attrs;
+//    }
 	/**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object

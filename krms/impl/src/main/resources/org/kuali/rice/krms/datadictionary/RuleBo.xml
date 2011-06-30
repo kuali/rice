@@ -105,7 +105,7 @@
     <property name="name" value="propId"/>
     <property name="label" value="Proposition Id"/>
   </bean>
-    
+   
   <bean id="RuleBo-LookupView" parent="LookupView">
     <property name="title" value="Rule Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo" />

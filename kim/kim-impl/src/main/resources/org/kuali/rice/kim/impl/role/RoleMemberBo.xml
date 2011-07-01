@@ -3,7 +3,7 @@
   <bean id="RoleMemberBo" parent="RoleMemberBo-parentBean"/>
 
   <bean id="RoleMemberBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.role.RoleMemberBo" p:titleAttribute="roleMemberId" p:objectLabel="Names" p:inquiryDefinition-ref="RoleMemberBo-inquiryDefinition" p:lookupDefinition-ref="RoleMemberBo-lookupDefinition">
-    <property name="exporterClass" value="org.kuali.rice.kim.impl.jaxb.KimImporterAndExporter" />
+    <!--<property name="exporterClass" value="org.kuali.rice.kim.impl.jaxb.KimImporterAndExporter" />-->
     <property name="attributes">
       <list>
         <ref bean="RoleMemberBo-roleId"/>

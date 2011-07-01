@@ -18,7 +18,7 @@
   <bean id="RoleBo" parent="RoleBo-parentBean"/>
 
   <bean id="RoleBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.role.RoleBo" p:titleAttribute="id" p:objectLabel="Names" p:inquiryDefinition-ref="RoleBo-inquiryDefinition" p:lookupDefinition-ref="RoleBo-lookupDefinition">
-    <property name="exporterClass" value="org.kuali.rice.kim.impl.jaxb.KimImporterAndExporter" />
+    <!--<property name="exporterClass" value="org.kuali.rice.kim.impl.jaxb.KimImporterAndExporter" />-->
     <property name="attributes">
       <list>
         <ref bean="RoleBo-id"/>

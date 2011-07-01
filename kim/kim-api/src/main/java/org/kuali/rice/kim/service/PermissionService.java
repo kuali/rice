@@ -255,8 +255,8 @@ public interface PermissionService {
 	 * Return the permission object for the given unique combination of namespace,
 	 * component and permission template name.
 	 */
-    Permission getPermissionsByTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
-                                                  @WebParam(name = "permissionTemplateName") String permissionTemplateName);
+    List<Permission> getPermissionsByTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "permissionTemplateName") String permissionTemplateName);
 
 	/** 
 	 * Return the permission object for the given unique combination of namespace,

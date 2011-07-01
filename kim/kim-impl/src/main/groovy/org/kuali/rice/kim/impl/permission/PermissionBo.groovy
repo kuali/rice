@@ -84,7 +84,7 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     //TODO: rename/fix later - only including this method and attributeDetails field for Role conversion
 
     Attributes getDetails() {
-        return attributes != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributeDetails
+        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 
 

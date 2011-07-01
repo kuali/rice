@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="roleAttributes" value="${DataDictionary.RoleImpl.attributes}" />
+<c:set var="roleAttributes" value="${DataDictionary.RoleBo.attributes}" />
 <c:set var="roleTypeAttributes" value="${DataDictionary.KimTypeImpl.attributes}" />
 
 <kul:tab tabTitle="Overview" defaultOpen="true" transparentBackground="${inquiry}" tabErrorKey="document.role*,document.active">

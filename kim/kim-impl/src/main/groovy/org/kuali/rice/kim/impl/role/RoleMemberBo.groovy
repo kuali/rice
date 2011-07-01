@@ -100,9 +100,9 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
                     m.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
                 }
             }
-            qualifier = m;
+            qualifier = Attributes.fromMap(m);
         }
-        return Attributes.fromMap(qualifier);
+        return qualifier;
     }
 
     private transient static KimTypeInfoService kimTypeInfoService;

@@ -47,7 +47,7 @@
 						<c:set var="attrEntry" value="${delegationMember.attributesHelper.attributeEntry[fieldName]}" />
 				       	<td align="left" valign="middle">
 				       		<div align="center"> 
-				      		   <kul:htmlControlAttribute kimTypeId="${delegationMember.roleImpl.kimTypeId}" property="document.delegationMembers[${delegationMemberIdx}].qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
+				      		   <kul:htmlControlAttribute kimTypeId="${delegationMember.roleBo.kimTypeId}" property="document.delegationMembers[${delegationMemberIdx}].qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
 				       		   <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
                                    <c:if test="${!empty attr.lookupBoClass and not readOnly}">
     				       		       <kim:attributeLookup attributeDefinitions="${delegationMember.attributesHelper.definitions}" pathPrefix="document.delegationMembers[${delegationMemberIdx}]" attr="${attr}" />

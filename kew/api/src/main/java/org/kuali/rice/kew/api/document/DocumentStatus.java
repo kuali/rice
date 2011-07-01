@@ -53,6 +53,10 @@ public enum DocumentStatus implements Coded {
 		return code;
 	}
 	
+	public String getLabel() {
+	    return name();
+	}
+	
 	public static DocumentStatus fromCode(String code) {
 		if (code == null) {
 			return null;

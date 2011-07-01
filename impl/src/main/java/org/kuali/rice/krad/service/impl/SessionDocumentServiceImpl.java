@@ -27,7 +27,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.SessionDocument;
@@ -40,7 +40,6 @@ import org.kuali.rice.krad.service.SessionDocumentService;
 import org.kuali.rice.krad.util.KualiLRUMap;
 import org.kuali.rice.krad.web.spring.form.DocumentFormBase;
 import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,7 +107,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 			documentForm = (KualiDocumentFormBase)retrieveDocumentForm(userSession, userSession.getKualiSessionId(), documentNumber, ipAddress);
          
 			//re-store workFlowDocument into session
-			KualiWorkflowDocument workflowDocument = documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
+			WorkflowDocument workflowDocument = documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
 			addDocumentToUserSession(userSession, workflowDocument);				
 		} catch(Exception e) {
 		    LOG.error("getDocumentForm failed for SessId/DocNum/PrinId/IP:"
@@ -131,7 +130,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 			documentForm = (DocumentFormBase)retrieveDocumentForm(userSession, docFormKey, documentNumber, ipAddress);
          
 			//re-store workFlowDocument into session
-			KualiWorkflowDocument workflowDocument = documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
+			WorkflowDocument workflowDocument = documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
 			addDocumentToUserSession(userSession, workflowDocument);				
 		} catch(Exception e) {
 		    LOG.error("getDocumentForm failed for SessId/DocNum/PrinId/IP:"
@@ -167,12 +166,12 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 	}
 	
 	@Override
-	public KualiWorkflowDocument getDocumentFromSession(UserSession userSession, String docId) {
+	public WorkflowDocument getDocumentFromSession(UserSession userSession, String docId) {
 		@SuppressWarnings("unchecked")
-		Map<String, KualiWorkflowDocument> workflowDocMap = (Map<String, KualiWorkflowDocument>) userSession.retrieveObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
+		Map<String, WorkflowDocument> workflowDocMap = (Map<String, WorkflowDocument>) userSession.retrieveObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
 		
 		if (workflowDocMap == null) {
-			workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
+			workflowDocMap = new HashMap<String, WorkflowDocument>();
 			userSession.addObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
 			return null;
 		}
@@ -184,18 +183,14 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 	 * 		org.kuali.rice.krad.workflow.service.KualiWorkflowDocument)
 	 */
 	@Override
-	public void addDocumentToUserSession(UserSession userSession, KualiWorkflowDocument document) {
-		try {
-			@SuppressWarnings("unchecked")
-			Map<String, KualiWorkflowDocument> workflowDocMap = (Map<String, KualiWorkflowDocument>) userSession.retrieveObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
-			if (workflowDocMap == null) {
-				workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
-			}
-			workflowDocMap.put(document.getDocumentId(), document);
-			userSession.addObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
-		} catch (WorkflowException e) {
-			throw new IllegalStateException("could not save the document in the session", e);
-		}
+	public void addDocumentToUserSession(UserSession userSession, WorkflowDocument document) {
+	    @SuppressWarnings("unchecked")
+	    Map<String, WorkflowDocument> workflowDocMap = (Map<String, WorkflowDocument>) userSession.retrieveObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
+	    if (workflowDocMap == null) {
+	        workflowDocMap = new HashMap<String, WorkflowDocument>();
+	    }
+	    workflowDocMap.put(document.getDocumentId(), document);
+	    userSession.addObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
 	}
 
     /**
@@ -255,7 +250,6 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     	synchronized ( userSession ) { 
 	    	//formKey was set in KualiDocumentActionBase execute method
 			String formKey = form.getFormKey();
-			String key = userSession.getKualiSessionId() + "-" + formKey;
 			  	    	
 			String documentNumber = form.getDocument().getDocumentNumber();
 			if( StringUtils.isNotBlank(formKey)) {

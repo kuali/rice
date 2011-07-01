@@ -26,6 +26,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
@@ -48,7 +49,6 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.SessionTicket;
 import org.kuali.rice.krad.util.WebUtils;
 import org.kuali.rice.krad.web.spring.form.DocumentFormBase;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -137,7 +137,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 					"Document no longer exists.  It may have been cancelled before being saved.");
 		}
 
-		KualiWorkflowDocument workflowDocument = doc.getDocumentHeader().getWorkflowDocument();
+		WorkflowDocument workflowDocument = doc.getDocumentHeader().getWorkflowDocument();
 		if (!getDocumentHelperService().getDocumentAuthorizer(doc).canOpen(doc,
 				GlobalVariables.getUserSession().getPerson())) {
 			throw buildAuthorizationException("open", doc);
@@ -151,8 +151,8 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 		}
 
 		form.setDocument(doc);
-		KualiWorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();
-		form.setDocTypeName(workflowDoc.getDocumentType());
+		WorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();
+		form.setDocTypeName(workflowDoc.getDocumentTypeName());
 
 		KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDoc);
 	}
@@ -170,7 +170,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 		Document doc = getDocumentService().getNewDocument(form.getDocTypeName());
 
 		form.setDocument(doc);
-		form.setDocTypeName(doc.getDocumentHeader().getWorkflowDocument().getDocumentType());
+		form.setDocTypeName(doc.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 	}
 
 	/**

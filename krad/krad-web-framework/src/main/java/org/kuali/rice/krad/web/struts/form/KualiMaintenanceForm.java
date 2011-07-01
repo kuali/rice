@@ -16,12 +16,23 @@
 
 package org.kuali.rice.krad.web.struts.form;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -37,16 +48,6 @@ import org.kuali.rice.krad.util.FieldUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
-
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -299,8 +300,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         Maintainable newMaintainable = ((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject();
         newMaintainable.setMaintenanceAction(getMaintenanceAction());
         List newMaintSections = newMaintainable.getSections((MaintenanceDocument) getDocument(), oldMaintainable);
-        KualiWorkflowDocument workflowDocument = this.getDocument().getDocumentHeader().getWorkflowDocument();
-        String documentStatus =  workflowDocument.getRouteHeader().getDocRouteStatus();
+        WorkflowDocument workflowDocument = this.getDocument().getDocumentHeader().getWorkflowDocument();
+        String documentStatus =  workflowDocument.getStatus().getCode();
         String documentInitiatorPrincipalId = workflowDocument.getInitiatorPrincipalId();
         
 

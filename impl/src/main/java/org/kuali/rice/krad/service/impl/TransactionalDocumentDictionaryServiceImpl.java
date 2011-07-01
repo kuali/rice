@@ -97,7 +97,7 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
         Class<? extends BusinessRule> businessRulesClass = null;
 
         //TransactionalDocumentEntry entry = getTransactionalDocumentEntry(document);
-        String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+        String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
         TransactionalDocumentEntry entry = getTransactionalDocumentEntryBydocumentTypeName(docTypeName);
         if (entry != null) {
             businessRulesClass = entry.getBusinessRulesClass();

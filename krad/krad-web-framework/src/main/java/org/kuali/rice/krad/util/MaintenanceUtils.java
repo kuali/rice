@@ -16,9 +16,20 @@
 
 package org.kuali.rice.krad.util;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
@@ -42,18 +53,7 @@ import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.Row;
 import org.kuali.rice.krad.web.ui.Section;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.StringTokenizer;
 
 public final class MaintenanceUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceUtils.class);
@@ -347,7 +347,7 @@ public final class MaintenanceUtils {
         }
 
         // load the blocking locked document
-        KualiWorkflowDocument lockedDocument = null;
+        WorkflowDocument lockedDocument = null;
         try {
             // need to perform this check to prevent an exception from being thrown by the
             // createWorkflowDocument call - the throw itself causes transaction rollback problems to
@@ -379,7 +379,7 @@ public final class MaintenanceUtils {
         String blockingUrl = UrlFactory.parameterizeUrl(getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY) + "/" + KRADConstants.DOC_HANDLER_ACTION, parameters);
         if (LOG.isDebugEnabled()) {
             LOG.debug("blockingUrl = '" + blockingUrl + "'");
-            LOG.debug("Maintenance record: " + lockedDocument.getAppDocId() + "is locked.");
+            LOG.debug("Maintenance record: " + lockedDocument.getApplicationDocumentId() + "is locked.");
         }
         String[] errorParameters = {blockingUrl, blockingDocId};
 
@@ -402,7 +402,7 @@ public final class MaintenanceUtils {
      * @return
      * @throws WorkflowException
      */
-    private static boolean lockCanBeIgnored(KualiWorkflowDocument lockedDocument) {
+    private static boolean lockCanBeIgnored(WorkflowDocument lockedDocument) {
         // TODO: implement real authorization for Maintenance Document Save/Route - KULNRVSYS-948
         if (lockedDocument == null) {
             return true;
@@ -415,12 +415,12 @@ public final class MaintenanceUtils {
         }
 
         // if the current user is not the initiator of the blocking document
-        if (!userId.equalsIgnoreCase(lockedDocument.getRouteHeader().getInitiatorPrincipalId().trim())) {
+        if (!userId.equalsIgnoreCase(lockedDocument.getInitiatorPrincipalId().trim())) {
             return false;
         }
 
         // if the blocking document hasn't been routed, we can ignore it
-        return lockedDocument.stateIsInitiated();
+        return lockedDocument.isInitiated();
     }
 
     private static void cleanOrphanLocks(String lockingDocumentNumber, Exception workflowException) {

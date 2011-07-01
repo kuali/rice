@@ -96,7 +96,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
                     "invalid (null) document.documentHeader.workflowDocument");
         }
 
-        String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+        String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
 
         DocumentAuthorizer documentAuthorizer = getDocumentAuthorizer(documentType);
         return documentAuthorizer;
@@ -154,7 +154,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
             throw new IllegalArgumentException("invalid (null) document.documentHeader.workflowDocument");
         }
 
-        String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+        String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
 
         DocumentPresentationController documentPresentationController = getDocumentPresentationController(documentType);
         return documentPresentationController;

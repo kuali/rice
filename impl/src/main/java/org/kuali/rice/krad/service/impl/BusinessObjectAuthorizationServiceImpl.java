@@ -166,7 +166,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 				maintenanceDocument, user, maintenanceDocumentRestrictions);
 		
 		MaintenanceDocumentEntry maintenanceDocumentEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(maintenanceDocument
-				.getDocumentHeader().getWorkflowDocument().getDocumentType());
+				.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 		for (MaintainableSectionDefinition maintainableSectionDefinition : maintenanceDocumentEntry.getMaintainableSections()) {
 			addMaintainableItemRestrictions(maintainableSectionDefinition.getMaintainableItems(), maintenanceDocumentAuthorizer, maintenanceDocumentRestrictions,
 					maintenanceDocument, maintenanceDocument.getNewMaintainableObject().getBusinessObject(), "", user);

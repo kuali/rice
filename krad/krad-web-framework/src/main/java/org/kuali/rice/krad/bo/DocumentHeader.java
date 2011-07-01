@@ -23,7 +23,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
 
 
 /**
@@ -48,7 +48,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
 	private String explanation;
     
     @Transient
-    private KualiWorkflowDocument workflowDocument;
+    private WorkflowDocument workflowDocument;
 
     /**
      * Constructor - creates empty instances of dependent objects
@@ -62,7 +62,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
      * 
      * @return workflowDocument
      */
-    public KualiWorkflowDocument getWorkflowDocument() {
+    public WorkflowDocument getWorkflowDocument() {
         if (workflowDocument == null) {
             throw new RiceRuntimeException("The workflow document is null.  This indicates that the DocumentHeader has not been initialized properly.  This can be caused by not retrieving a document using the DocumentService.");
         }
@@ -82,7 +82,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
      * 
      * @param workflowDocument
      */
-    public void setWorkflowDocument(KualiWorkflowDocument workflowDocument) {
+    public void setWorkflowDocument(WorkflowDocument workflowDocument) {
         this.workflowDocument = workflowDocument;
     }
 

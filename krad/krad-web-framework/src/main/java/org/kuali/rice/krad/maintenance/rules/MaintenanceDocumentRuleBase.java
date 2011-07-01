@@ -16,6 +16,15 @@
 
 package org.kuali.rice.krad.maintenance.rules;
 
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -23,6 +32,7 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -59,18 +69,8 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.util.AutoPopulatingList;
-
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 
 /**
@@ -205,8 +205,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // business rules stop it.
         boolean success = true;
 
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()){
+        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        if (workflowDocument.isInitiated() || workflowDocument.isSaved()){
         	success &= documentAuthorizer.canCreateOrMaintain((MaintenanceDocument)document, GlobalVariables.getUserSession().getPerson());
         	if (success == false) {
         		GlobalVariables.getMessageMap().putError(KRADConstants.DOCUMENT_ERRORS, RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT, new String[]{GlobalVariables.getUserSession().getPerson().getPrincipalName(), "Create/Maintain", this.getMaintDocDictionaryService().getDocumentTypeName(newBo.getClass())});
@@ -659,7 +659,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // if the Maintainable object is a PBO and there is a legacy maintDefinition
         // then use the old validation methods
         if(newBo instanceof PersistableBusinessObject &&
-                CollectionUtils.isNotEmpty(maintDocDictionaryService.getMaintainableSections(document.getDocumentHeader().getWorkflowDocument().getDocumentType()))) {
+                CollectionUtils.isNotEmpty(maintDocDictionaryService.getMaintainableSections(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()))) {
             
             BusinessObject businessObject = (BusinessObject)newBo;
             
@@ -671,7 +671,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     
             // run the DD DictionaryValidation (non-recursive)
             dictionaryValidationService.validateBusinessObjectOnMaintenanceDocument(businessObject,
-            		document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+            		document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
     
             // do default (ie, mandatory) existence checks
             dictionaryValidationService.validateDefaultExistenceChecks(businessObject);
@@ -1512,12 +1512,12 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     	boolean valid = true;
     	PersistableBusinessObject maintBo = document.getNewMaintainableObject().getBusinessObject();
         Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(maintBo, collectionName);
-        List<String> duplicateIdentifier = document.getNewMaintainableObject().getDuplicateIdentifierFieldsFromDataDictionary(document.getDocumentHeader().getWorkflowDocument().getDocumentType(), collectionName);
+        List<String> duplicateIdentifier = document.getNewMaintainableObject().getDuplicateIdentifierFieldsFromDataDictionary(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName(), collectionName);
     	if (duplicateIdentifier.size()>0) {
             List<String> existingIdentifierString = document.getNewMaintainableObject().getMultiValueIdentifierList(maintCollection, duplicateIdentifier);
             if (document.getNewMaintainableObject().hasBusinessObjectExisted(bo, existingIdentifierString, duplicateIdentifier)) {
     		    valid = false;
-    		    GlobalVariables.getMessageMap().putError(duplicateIdentifier.get(0), RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, "entries in ", document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+    		    GlobalVariables.getMessageMap().putError(duplicateIdentifier.get(0), RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, "entries in ", document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
     	    }
     	}
     	return valid;

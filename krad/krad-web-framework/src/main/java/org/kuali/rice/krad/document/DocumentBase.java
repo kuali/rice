@@ -139,7 +139,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     public String getDocumentTitle() {
         try {
-            String documentTypeLabel = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(this.getDocumentHeader().getWorkflowDocument().getDocumentType()).getDocTypeLabel();
+            String documentTypeLabel = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(this.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()).getDocTypeLabel();
             if (null == documentTypeLabel) {
                 documentTypeLabel = "";
             }
@@ -294,7 +294,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @throws WorkflowException
      */
     protected void setNewDocumentHeader() throws WorkflowException {
-        TransactionalDocument newDoc = (TransactionalDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument(getDocumentHeader().getWorkflowDocument().getDocumentType());
+        TransactionalDocument newDoc = (TransactionalDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument(getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
         newDoc.getDocumentHeader().setDocumentDescription(getDocumentHeader().getDocumentDescription());
         newDoc.getDocumentHeader().setOrganizationDocumentNumber(getDocumentHeader().getOrganizationDocumentNumber());
 
@@ -360,7 +360,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public KualiDocumentXmlMaterializer wrapDocumentWithMetadataForXmlSerialization() {
         KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
         DocumentInitiator initiator = new DocumentInitiator();
-        String initiatorPrincipalId = getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
+        String initiatorPrincipalId = getDocumentHeader().getWorkflowDocument().getDocument().getInitiatorPrincipalId();
         Person initiatorUser = KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
         initiator.setPerson(initiatorUser);
         transInfo.setDocumentInitiator(initiator);
@@ -378,7 +378,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.krad.document.Document#getDocumentPropertySerizabilityEvaluator()
      */
     public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator() {
-        String docTypeName = getDocumentHeader().getWorkflowDocument().getDocumentType();
+        String docTypeName = getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
         DocumentEntry documentEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(docTypeName);
         WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
         WorkflowAttributes workflowAttributes = documentEntry.getWorkflowAttributes();

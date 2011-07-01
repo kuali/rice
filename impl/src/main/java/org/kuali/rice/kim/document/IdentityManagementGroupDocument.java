@@ -15,6 +15,22 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
@@ -32,21 +48,6 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -142,7 +143,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	@Override
 	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
 		super.doRouteStatusChange(statusChangeEvent);
-		if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
+		if (getDocumentHeader().getWorkflowDocument().isProcessed()) {
 			KIMServiceLocatorInternal.getUiDocumentService().saveGroup(this);
 		}
 	}

@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -34,16 +34,16 @@ public class MaintenanceDocumentPresentationControllerBase extends DocumentPrese
 
     @Override
     protected boolean canSave(Document document) {
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
 
-        return (!workflowDocument.stateIsEnroute() && super.canSave(document));
+        return (!workflowDocument.isEnroute() && super.canSave(document));
     }
 
     @Override
     protected boolean canBlanketApprove(Document document) {
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
 
-        return (!workflowDocument.stateIsEnroute() && super.canBlanketApprove(document));
+        return (!workflowDocument.isEnroute() && super.canBlanketApprove(document));
     }
 
     protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {

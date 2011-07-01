@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
@@ -37,10 +41,6 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 
 /**
@@ -417,7 +417,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     @Override
 	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
 		super.doRouteStatusChange(statusChangeEvent);
-		if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
+		if (getDocumentHeader().getWorkflowDocument().isProcessed()) {
 			KIMServiceLocatorInternal.getUiDocumentService().saveRole(this);
 		}
 	}

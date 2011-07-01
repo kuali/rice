@@ -16,6 +16,21 @@
 
 package org.kuali.rice.krad.web.struts.action;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.OptimisticLockException;
@@ -31,6 +46,7 @@ import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -88,22 +104,7 @@ import org.kuali.rice.krad.web.struts.form.BlankFormFile;
 import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.krad.web.struts.form.KualiForm;
 import org.kuali.rice.krad.web.struts.form.KualiMaintenanceForm;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 import org.springmodules.orm.ojb.OjbOperationException;
-
-import javax.persistence.EntityManagerFactory;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 
 /**
@@ -184,7 +185,7 @@ public class KualiDocumentActionBase extends KualiAction {
             Document document = formBase.getDocument();
 
             //KULRICE-2210 fix location of document header population
-            KualiWorkflowDocument workflowDocument = formBase.getDocument().getDocumentHeader().getWorkflowDocument();
+            WorkflowDocument workflowDocument = formBase.getDocument().getDocumentHeader().getWorkflowDocument();
             formBase.populateHeaderFields(workflowDocument);
             formBase.setDocId(document.getDocumentNumber());
             //End of KULRICE-2210 fix
@@ -341,7 +342,7 @@ public class KualiDocumentActionBase extends KualiAction {
             LOG.debug("kualiDocumentFormBase.getAdditionalScriptFiles(): " + kualiDocumentFormBase.getAdditionalScriptFiles());
         }
         if (kualiDocumentFormBase.getAdditionalScriptFiles().isEmpty()) {
-            DocumentEntry docEntry = getDataDictionaryService().getDataDictionary().getDocumentEntry(kualiDocumentFormBase.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentType());
+            DocumentEntry docEntry = getDataDictionaryService().getDataDictionary().getDocumentEntry(kualiDocumentFormBase.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
             kualiDocumentFormBase.getAdditionalScriptFiles().addAll(docEntry.getWebScriptFiles());
         }
         if (KEWConstants.SUPERUSER_COMMAND.equalsIgnoreCase(command)) {
@@ -364,7 +365,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if (doc == null) {
             throw new UnknownDocumentIdException("Document no longer exists.  It may have been cancelled before being saved.");
         }
-        KualiWorkflowDocument workflowDocument = doc.getDocumentHeader().getWorkflowDocument();
+        WorkflowDocument workflowDocument = doc.getDocumentHeader().getWorkflowDocument();
         if (!getDocumentHelperService().getDocumentAuthorizer(doc).canOpen(doc, GlobalVariables.getUserSession().getPerson())) {
             throw buildAuthorizationException("open", doc);
         }
@@ -374,8 +375,8 @@ public class KualiDocumentActionBase extends KualiAction {
             doc.getDocumentHeader().setWorkflowDocument(workflowDocument);
         }
         kualiDocumentFormBase.setDocument(doc);
-        KualiWorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();
-        kualiDocumentFormBase.setDocTypeName(workflowDoc.getDocumentType());
+        WorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();
+        kualiDocumentFormBase.setDocTypeName(workflowDoc.getDocumentTypeName());
         // KualiDocumentFormBase.populate() needs this updated in the session
         KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDoc);
     }
@@ -392,7 +393,7 @@ public class KualiDocumentActionBase extends KualiAction {
         Document doc = getDocumentService().getNewDocument(kualiDocumentFormBase.getDocTypeName());
 
         kualiDocumentFormBase.setDocument(doc);
-        kualiDocumentFormBase.setDocTypeName(doc.getDocumentHeader().getWorkflowDocument().getDocumentType());
+        kualiDocumentFormBase.setDocTypeName(doc.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
     }
 
     /**
@@ -724,8 +725,8 @@ public class KualiDocumentActionBase extends KualiAction {
         // setup route report form variables
         request.setAttribute("workflowRouteReportUrl", getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY) + "/" + KEWConstants.DOCUMENT_ROUTING_REPORT_PAGE);
         List<KeyValue> generalRouteReportFormParameters = new ArrayList<KeyValue>();
-        generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId()));
-        generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
+        generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getDocument().getInitiatorPrincipalId()));
+        generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()));
         // prepareForRouteReport() method should populate document header workflow document application content xml
         String xml = document.getXmlForRouteReport();
         if (LOG.isDebugEnabled()) {
@@ -1406,7 +1407,7 @@ public class KualiDocumentActionBase extends KualiAction {
             // persist the note if the document is already saved the getObjectId check is to get around a bug with certain documents where
             // "saved" doesn't really persist, if you notice any problems with missing notes check this line
             //maintenance document BO note should only be saved into table when document is in the PROCESSED workflow status
-            if (!documentHeader.getWorkflowDocument().stateIsInitiated() && StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
+            if (!documentHeader.getWorkflowDocument().isInitiated() && StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
                     && !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT.getCode().equals(tmpNote.getNoteTypeCode()))
                     ) {
                 getNoteService().save(tmpNote);
@@ -1418,7 +1419,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 tmpNote.addAttachment(attachment);
                 // save again for attachment, note this is because sometimes the attachment is added first to the above then ojb tries to save
                 //without the PK on the attachment I think it is safer then trying to get the sequence manually
-                if (!documentHeader.getWorkflowDocument().stateIsInitiated() && StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
+                if (!documentHeader.getWorkflowDocument().isInitiated() && StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
                         && !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT.getCode().equals(tmpNote.getNoteTypeCode()))
                         ) {
                     getNoteService().save(tmpNote);
@@ -1483,7 +1484,7 @@ public class KualiDocumentActionBase extends KualiAction {
             getAttachmentService().deleteAttachmentContents(attachment);
         }
         // delete the note if the document is already saved
-        if (!document.getDocumentHeader().getWorkflowDocument().stateIsInitiated()) {
+        if (!document.getDocumentHeader().getWorkflowDocument().isInitiated()) {
             getNoteService().deleteNote(note);
         }
         document.removeNote(note);
@@ -1525,7 +1526,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         // if document is saved, send notification
-        if (!document.getDocumentHeader().getWorkflowDocument().stateIsInitiated()) {
+        if (!document.getDocumentHeader().getWorkflowDocument().isInitiated()) {
             getDocumentService().sendNoteRouteNotification(document, note, GlobalVariables.getUserSession().getPerson());
 
             // add success message
@@ -1706,10 +1707,10 @@ public class KualiDocumentActionBase extends KualiAction {
         if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, GlobalVariables.getUserSession().getPerson())) {
             adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
         }
-        if (!document.getDocumentHeader().getWorkflowDocument().stateIsFinal() && documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, GlobalVariables.getUserSession().getPerson())) {
+        if (!document.getDocumentHeader().getWorkflowDocument().isFinal() && documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, GlobalVariables.getUserSession().getPerson())) {
             adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
         }
-        if (!(document.getDocumentHeader().getWorkflowDocument().stateIsApproved() || document.getDocumentHeader().getWorkflowDocument().stateIsProcessed() || document.getDocumentHeader().getWorkflowDocument().stateIsFinal()) && documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, GlobalVariables.getUserSession().getPerson())) {
+        if (!(document.getDocumentHeader().getWorkflowDocument().isApproved() || document.getDocumentHeader().getWorkflowDocument().isProcessed() || document.getDocumentHeader().getWorkflowDocument().isFinal()) && documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, GlobalVariables.getUserSession().getPerson())) {
             adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
         }
 

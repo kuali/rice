@@ -203,7 +203,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 					form.getDocTypeName(), maintenanceAction);
 
 			form.setDocument(document);
-			form.setDocTypeName(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+			form.setDocTypeName(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 		}
 
 		// set action on form
@@ -223,7 +223,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 		// document
 		// TODO: should be in the view as permission
 		DocumentEntry entry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(
-				document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+				document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 		document.setDisplayTopicFieldInNotes(entry.getDisplayTopicFieldInNotes());
 	}
 

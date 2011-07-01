@@ -72,7 +72,6 @@ import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.service.impl.DocumentViewHelperServiceImpl;
-import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.FieldUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -556,7 +555,7 @@ public class KualiMaintainableImpl extends DocumentViewHelperServiceImpl impleme
 	public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName,
 			Collection<PersistableBusinessObject> rawValues, boolean needsBlank, PersistableBusinessObject bo) {
 		Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(bo, collectionName);
-		String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+		String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
 
 		List<String> duplicateIdentifierFieldsFromDataDictionary = getDuplicateIdentifierFieldsFromDataDictionary(
 				docTypeName, collectionName);
@@ -1676,12 +1675,12 @@ public class KualiMaintainableImpl extends DocumentViewHelperServiceImpl impleme
 		if (KRADConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
 			boolean allowsEdit = getBusinessObjectAuthorizationService().canMaintain(
 					oldBusinessObject, GlobalVariables.getUserSession().getPerson(),
-					document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+					document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 			if (!allowsEdit) {
-				LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentType()
+				LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()
 						+ " does not allow edit actions.");
 				throw new DocumentTypeAuthorizationException(GlobalVariables.getUserSession().getPerson()
-						.getPrincipalId(), "edit", document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+						.getPrincipalId(), "edit", document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 			}
 
 			// invoke custom processing method
@@ -1691,13 +1690,13 @@ public class KualiMaintainableImpl extends DocumentViewHelperServiceImpl impleme
 		else if (KRADConstants.MAINTENANCE_DELETE_ACTION.equals(maintenanceAction)) {
 			boolean allowsDelete = getBusinessObjectAuthorizationService().canMaintain(
 					(BusinessObject) oldBusinessObject, GlobalVariables.getUserSession().getPerson(),
-					document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+					document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 			if (!allowsDelete) {
-				LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentType()
+				LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()
 						+ " does not allow delete actions.");
 				throw new DocumentTypeAuthorizationException(GlobalVariables.getUserSession().getPerson()
 						.getPrincipalId(), "delete", document.getDocumentHeader().getWorkflowDocument()
-						.getDocumentType());
+						.getDocumentTypeName());
 			}
 		}
 	}

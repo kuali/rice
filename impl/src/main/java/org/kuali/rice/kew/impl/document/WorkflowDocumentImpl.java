@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -55,585 +56,620 @@ import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 /**
  * TODO ..
  * 
- * TODO - it is intended that operations against document data on this are only "flushed" when an action is performed...
+ * TODO - it is intended that operations against document data on this are only "flushed" when an
+ * action is performed...
  * 
- * <p>This class is *not* thread safe.
- *
+ * <p>
+ * This class is *not* thread safe.
+ * 
  */
 public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentPrototype {
 
-	private static final long serialVersionUID = -3672966990721719088L;
+    private static final long serialVersionUID = -3672966990721719088L;
 
-    private String principalId;    
-    private ModifiableDocument modifiableDocument;    
+    private String principalId;
+    private ModifiableDocument modifiableDocument;
     private ModifiableDocumentContent modifiableDocumentContent;
     private ValidActions validActions;
     private RequestedActions requestedActions;
-    
+
     private boolean documentDeleted = false;
-    
+
     private WorkflowDocumentActionsService workflowDocumentActionsService;
     private WorkflowDocumentService workflowDocumentService;
-	
-	public void init(String principalId, Document document) {
-		if (StringUtils.isBlank("principalId")) {
-			throw new IllegalArgumentException("principalId was null or blank");
-		}
-		if (document == null) {
-			throw new IllegalArgumentException("document was null");
-		}
-		this.principalId = principalId;
-		this.modifiableDocument = new ModifiableDocument(document);
-		this.modifiableDocumentContent = null;
-	    this.validActions = null;
-	    this.requestedActions = null;
-	}
+
+    public void init(String principalId, Document document) {
+        if (StringUtils.isBlank("principalId")) {
+            throw new IllegalArgumentException("principalId was null or blank");
+        }
+        if (document == null) {
+            throw new IllegalArgumentException("document was null");
+        }
+        this.principalId = principalId;
+        this.modifiableDocument = new ModifiableDocument(document);
+        this.modifiableDocumentContent = null;
+        this.validActions = null;
+        this.requestedActions = null;
+    }
 
     public WorkflowDocumentActionsService getWorkflowDocumentActionsService() {
-    	return workflowDocumentActionsService;
-    }
-    
-    public void setWorkflowDocumentActionsService(WorkflowDocumentActionsService workflowDocumentActionsService) {
-    	this.workflowDocumentActionsService = workflowDocumentActionsService;
-    }
-    
-    public WorkflowDocumentService getWorkflowDocumentService() {
-    	return workflowDocumentService;
-    }
-    
-    public void setWorkflowDocumentService(WorkflowDocumentService workflowDocumentService) {
-    	this.workflowDocumentService = workflowDocumentService;
-    }
-    
-    protected ModifiableDocument getModifiableDocument() {
-    	return modifiableDocument;
+        return workflowDocumentActionsService;
     }
 
-	protected ModifiableDocumentContent getModifiableDocumentContent() {
-    	if (this.modifiableDocumentContent == null) {
-    		DocumentContent documentContent = getWorkflowDocumentService().getDocumentContent(getDocumentId());
-    		if (documentContent == null) {
-    			throw new IllegalStateException("Failed to load document content for documentId: " + getDocumentId());
-    		}
-    		this.modifiableDocumentContent = new ModifiableDocumentContent(documentContent);
-    	}
-    	return this.modifiableDocumentContent;
+    public void setWorkflowDocumentActionsService(WorkflowDocumentActionsService workflowDocumentActionsService) {
+        this.workflowDocumentActionsService = workflowDocumentActionsService;
     }
-    
-    @Override
-	public String getDocumentId() {
-    	if (documentDeleted) {
-    		throw new IllegalStateException("Document has been deleted.");
-    	}
-    	return getModifiableDocument().getDocumentId();
+
+    public WorkflowDocumentService getWorkflowDocumentService() {
+        return workflowDocumentService;
     }
-    
+
+    public void setWorkflowDocumentService(WorkflowDocumentService workflowDocumentService) {
+        this.workflowDocumentService = workflowDocumentService;
+    }
+
+    protected ModifiableDocument getModifiableDocument() {
+        return modifiableDocument;
+    }
+
+    protected ModifiableDocumentContent getModifiableDocumentContent() {
+        if (this.modifiableDocumentContent == null) {
+            DocumentContent documentContent = getWorkflowDocumentService().getDocumentContent(getDocumentId());
+            if (documentContent == null) {
+                throw new IllegalStateException("Failed to load document content for documentId: " + getDocumentId());
+            }
+            this.modifiableDocumentContent = new ModifiableDocumentContent(documentContent);
+        }
+        return this.modifiableDocumentContent;
+    }
+
     @Override
-	public Document getDocument() {
+    public String getDocumentId() {
+        if (documentDeleted) {
+            throw new IllegalStateException("Document has been deleted.");
+        }
+        return getModifiableDocument().getDocumentId();
+    }
+
+    @Override
+    public Document getDocument() {
         return getModifiableDocument().getDocument();
     }
-    
+
     @Override
-	public DocumentContent getDocumentContent() {
-    	return getModifiableDocumentContent().getDocumentContent();
+    public DocumentContent getDocumentContent() {
+        return getModifiableDocumentContent().getDocumentContent();
     }
 
     @Override
-	public String getApplicationContent() {
+    public String getApplicationContent() {
         return getDocumentContent().getApplicationContent();
     }
 
     @Override
-	public void setApplicationContent(String applicationContent) {
-    	getModifiableDocumentContent().setApplicationContent(applicationContent);
+    public void setApplicationContent(String applicationContent) {
+        getModifiableDocumentContent().setApplicationContent(applicationContent);
     }
 
     @Override
-	public void clearAttributeContent() {
-    	getModifiableDocumentContent().setAttributeContent("");
+    public void clearAttributeContent() {
+        getModifiableDocumentContent().setAttributeContent("");
     }
 
     @Override
-	public String getAttributeContent() {
+    public String getAttributeContent() {
         return getDocumentContent().getAttributeContent();
     }
 
     @Override
-	public void addAttributeDefinition(WorkflowAttributeDefinition attributeDefinition) {
-    	getModifiableDocumentContent().addAttributeDefinition(attributeDefinition);
+    public void addAttributeDefinition(WorkflowAttributeDefinition attributeDefinition) {
+        getModifiableDocumentContent().addAttributeDefinition(attributeDefinition);
     }
 
     @Override
-	public void removeAttributeDefinition(WorkflowAttributeDefinition attributeDefinition) {
-    	getModifiableDocumentContent().removeAttributeDefinition(attributeDefinition);
+    public void removeAttributeDefinition(WorkflowAttributeDefinition attributeDefinition) {
+        getModifiableDocumentContent().removeAttributeDefinition(attributeDefinition);
     }
 
     @Override
-	public void clearAttributeDefinitions() {
-    	getAttributeDefinitions().clear();
+    public void clearAttributeDefinitions() {
+        getAttributeDefinitions().clear();
     }
 
     @Override
-	public List<WorkflowAttributeDefinition> getAttributeDefinitions() {
+    public List<WorkflowAttributeDefinition> getAttributeDefinitions() {
         return getModifiableDocumentContent().getAttributeDefinitions();
     }
 
     @Override
-	public void addSearchableDefinition(WorkflowAttributeDefinition searchableDefinition) {
-    	getModifiableDocumentContent().addSearchableDefinition(searchableDefinition);
+    public void addSearchableDefinition(WorkflowAttributeDefinition searchableDefinition) {
+        getModifiableDocumentContent().addSearchableDefinition(searchableDefinition);
     }
 
     @Override
-	public void removeSearchableDefinition(WorkflowAttributeDefinition searchableDefinition) {
-    	getModifiableDocumentContent().removeSearchableDefinition(searchableDefinition);
+    public void removeSearchableDefinition(WorkflowAttributeDefinition searchableDefinition) {
+        getModifiableDocumentContent().removeSearchableDefinition(searchableDefinition);
     }
 
     @Override
-	public void clearSearchableDefinitions() {
-    	getSearchableDefinitions().clear();
+    public void clearSearchableDefinitions() {
+        getSearchableDefinitions().clear();
     }
 
     @Override
-	public void clearSearchableContent() {
-    	getModifiableDocumentContent().setSearchableContent("");
+    public void clearSearchableContent() {
+        getModifiableDocumentContent().setSearchableContent("");
     }
 
     @Override
-	public List<WorkflowAttributeDefinition> getSearchableDefinitions() {
+    public List<WorkflowAttributeDefinition> getSearchableDefinitions() {
         return getModifiableDocumentContent().getSearchableDefinitions();
     }
-    
+
     @Override
-	public List<WorkflowAttributeValidationError> validateAttributeDefinition(WorkflowAttributeDefinition attributeDefinition) {
-    	return getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attributeDefinition);
+    public List<WorkflowAttributeValidationError> validateAttributeDefinition(
+            WorkflowAttributeDefinition attributeDefinition) {
+        return getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attributeDefinition);
     }
 
     @Override
-	public List<ActionRequest> getRootActionRequests() {
-    	return getWorkflowDocumentService().getRootActionRequests(getDocumentId());
+    public List<ActionRequest> getRootActionRequests() {
+        return getWorkflowDocumentService().getRootActionRequests(getDocumentId());
     }
 
     @Override
-	public List<ActionTaken> getActionsTaken() {
-    	return getWorkflowDocumentService().getActionsTaken(getDocumentId());
+    public List<ActionTaken> getActionsTaken() {
+        return getWorkflowDocumentService().getActionsTaken(getDocumentId());
     }
 
     @Override
-	public void setApplicationDocumentId(String applicationDocumentId) {
-    	getModifiableDocument().setApplicationDocumentId(applicationDocumentId);
+    public void setApplicationDocumentId(String applicationDocumentId) {
+        getModifiableDocument().setApplicationDocumentId(applicationDocumentId);
     }
 
     @Override
-	public String getApplicationDocumentId() {
-    	return getModifiableDocument().getApplicationDocumentId();
+    public String getApplicationDocumentId() {
+        return getModifiableDocument().getApplicationDocumentId();
     }
 
     @Override
-	public DateTime getDateCreated() {
-    	return getModifiableDocument().getDateCreated();
+    public DateTime getDateCreated() {
+        return getModifiableDocument().getDateCreated();
     }
 
     @Override
-	public String getTitle() {
+    public String getTitle() {
         return getModifiableDocument().getTitle();
     }
-    
+
     @Override
-	public ValidActions getValidActions() {
-    	if (validActions == null) {
-    		validActions = getWorkflowDocumentActionsService().determineValidActions(getDocumentId(), getPrincipalId());
-    	}
-    	return validActions;
+    public ValidActions getValidActions() {
+        if (validActions == null) {
+            validActions = getWorkflowDocumentActionsService().determineValidActions(getDocumentId(), getPrincipalId());
+        }
+        return validActions;
     }
-    
+
     @Override
-	public RequestedActions getRequestedActions() {
-    	if (requestedActions == null) {
-    		requestedActions = getWorkflowDocumentActionsService().determineRequestedActions(getDocumentId(), getPrincipalId());
-    	}
-    	return requestedActions;
+    public RequestedActions getRequestedActions() {
+        if (requestedActions == null) {
+            requestedActions = getWorkflowDocumentActionsService().determineRequestedActions(getDocumentId(),
+                    getPrincipalId());
+        }
+        return requestedActions;
     }
-    
+
     protected DocumentUpdate getDocumentUpdateIfDirty() {
-    	if (getModifiableDocument().isDirty()) {
-    		return getModifiableDocument().build();
-    	}
-    	return null;
+        if (getModifiableDocument().isDirty()) {
+            return getModifiableDocument().build();
+        }
+        return null;
     }
-    
+
     protected DocumentContentUpdate getDocumentContentUpdateIfDirty() {
-    	if (getModifiableDocumentContent().isDirty()) {
-    		return getModifiableDocumentContent().build();
-    	}
-    	return null;
+        if (getModifiableDocumentContent().isDirty()) {
+            return getModifiableDocumentContent().build();
+        }
+        return null;
     }
-    
+
     protected void resetStateAfterAction(DocumentActionResult response) {
-    	this.modifiableDocument = new ModifiableDocument(response.getDocument());
-    	this.validActions = null;
-    	if (response.getValidActions() != null) {
-    		this.validActions = response.getValidActions();
-    	}
-    	this.requestedActions = null;
-    	if (response.getRequestedActions() != null) {
-    		this.requestedActions = response.getRequestedActions();
-    	}
-    	// regardless of whether modifiable document content is dirty, we null it out so it will be re-fetched next time it's needed
-    	this.modifiableDocumentContent = null;
-    }
-    
-    @Override
-	public void saveDocument(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().save(constructDocumentActionParameters(annotation));
-    	resetStateAfterAction(result);
+        this.modifiableDocument = new ModifiableDocument(response.getDocument());
+        this.validActions = null;
+        if (response.getValidActions() != null) {
+            this.validActions = response.getValidActions();
+        }
+        this.requestedActions = null;
+        if (response.getRequestedActions() != null) {
+            this.requestedActions = response.getRequestedActions();
+        }
+        // regardless of whether modifiable document content is dirty, we null it out so it will be re-fetched next time it's needed
+        this.modifiableDocumentContent = null;
     }
 
     @Override
-	public void route(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().route(constructDocumentActionParameters(annotation));
-    	resetStateAfterAction(result);
-    }
-    
-    @Override
-	public void disapprove(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().disapprove(constructDocumentActionParameters(annotation));
-    	resetStateAfterAction(result);
+    public void saveDocument(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().save(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void approve(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().approve(constructDocumentActionParameters(annotation));
-    	resetStateAfterAction(result);
+    public void route(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().route(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void cancel(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().cancel(constructDocumentActionParameters(annotation));
-    	resetStateAfterAction(result);
+    public void disapprove(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().disapprove(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void blanketApprove(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().blanketApprove(constructDocumentActionParameters(annotation));
- 		resetStateAfterAction(result);
-    }
-    
-    @Override
-	public void blanketApprove(String annotation, String ... nodeNames) {
-    	if (nodeNames == null) {
-    		throw new IllegalArgumentException("nodeNames was null");
-    	}
-    	Set<String> nodeNamesSet = new HashSet<String>(Arrays.asList(nodeNames));
-    	DocumentActionResult result = getWorkflowDocumentActionsService().blanketApproveToNodes(constructDocumentActionParameters(annotation), nodeNamesSet);
- 		resetStateAfterAction(result);
+    public void approve(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().approve(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void saveDocumentData() {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().saveDocumentData(constructDocumentActionParameters(null));
-    	resetStateAfterAction(result);
-    }
-    
-    @Override
-	public void setApplicationDocumentStatus(String applicationDocumentStatus) {
-    	getModifiableDocument().setApplicationDocumentStatus(applicationDocumentStatus);
-    }
-    
-    @Override
-	public void acknowledge(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().acknowledge(constructDocumentActionParameters(annotation));
-    	resetStateAfterAction(result);
+    public void cancel(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().cancel(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void fyi(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().clearFyi(constructDocumentActionParameters(annotation));
-    	resetStateAfterAction(result);
+    public void blanketApprove(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().blanketApprove(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
     }
-    
+
     @Override
-	public void fyi() {
-    	fyi("");
+    public void blanketApprove(String annotation, String... nodeNames) {
+        if (nodeNames == null) {
+            throw new IllegalArgumentException("nodeNames was null");
+        }
+        Set<String> nodeNamesSet = new HashSet<String>(Arrays.asList(nodeNames));
+        DocumentActionResult result = getWorkflowDocumentActionsService().blanketApproveToNodes(
+                constructDocumentActionParameters(annotation), nodeNamesSet);
+        resetStateAfterAction(result);
+    }
+
+    @Override
+    public void saveDocumentData() {
+        DocumentActionResult result = getWorkflowDocumentActionsService().saveDocumentData(
+                constructDocumentActionParameters(null));
+        resetStateAfterAction(result);
+    }
+
+    @Override
+    public void setApplicationDocumentStatus(String applicationDocumentStatus) {
+        getModifiableDocument().setApplicationDocumentStatus(applicationDocumentStatus);
+    }
+
+    @Override
+    public void acknowledge(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().acknowledge(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
+    }
+
+    @Override
+    public void fyi(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().clearFyi(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
+    }
+
+    @Override
+    public void fyi() {
+        fyi("");
     }
 
     /**
-     * TODO - be sure to mention that once this document is deleted, this api effectively becomes "dead" when you try to
-     * execute any document operation
+     * TODO - be sure to mention that once this document is deleted, this api effectively becomes
+     * "dead" when you try to execute any document operation
      */
     @Override
-	public void delete() {
-    	getWorkflowDocumentActionsService().delete(getDocumentId(), principalId);
-    	documentDeleted = true;
+    public void delete() {
+        getWorkflowDocumentActionsService().delete(getDocumentId(), principalId);
+        documentDeleted = true;
     }
 
     @Override
-	public void refresh() {    	
-    	Document document = getWorkflowDocumentService().getDocument(getDocumentId());
-    	this.modifiableDocument = new ModifiableDocument(document);
-    	this.validActions = null;
-    	this.requestedActions = null;
-    	this.modifiableDocumentContent = null;
+    public void refresh() {
+        Document document = getWorkflowDocumentService().getDocument(getDocumentId());
+        this.modifiableDocument = new ModifiableDocument(document);
+        this.validActions = null;
+        this.requestedActions = null;
+        this.modifiableDocumentContent = null;
     }
 
     @Override
-	public void adHocToPrincipal(ActionRequestType actionRequested, String annotation, String targetPrincipalId, String responsibilityDescription, boolean forceAction) {
-    	adHocToPrincipal(actionRequested, null, annotation, targetPrincipalId, responsibilityDescription, forceAction);
+    public void adHocToPrincipal(ActionRequestType actionRequested, String annotation, String targetPrincipalId,
+            String responsibilityDescription, boolean forceAction) {
+        adHocToPrincipal(actionRequested, null, annotation, targetPrincipalId, responsibilityDescription, forceAction);
     }
 
     @Override
-	public void adHocToPrincipal(ActionRequestType actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDescription, boolean forceAction) {
-    	adHocToPrincipal(actionRequested, nodeName, annotation, targetPrincipalId, responsibilityDescription, forceAction, null);
+    public void adHocToPrincipal(ActionRequestType actionRequested, String nodeName, String annotation,
+            String targetPrincipalId, String responsibilityDescription, boolean forceAction) {
+        adHocToPrincipal(actionRequested, nodeName, annotation, targetPrincipalId, responsibilityDescription,
+                forceAction, null);
     }
 
     @Override
-	public void adHocToPrincipal(ActionRequestType actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDescription, boolean forceAction, String requestLabel) {
-    	AdHocToPrincipal.Builder builder = AdHocToPrincipal.Builder.create(actionRequested, nodeName, targetPrincipalId);
-    	builder.setResponsibilityDescription(responsibilityDescription);
-    	builder.setForceAction(forceAction);
-    	builder.setRequestLabel(requestLabel);
-    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToPrincipal(constructDocumentActionParameters(annotation), builder.build());
-    	resetStateAfterAction(result);
+    public void adHocToPrincipal(ActionRequestType actionRequested, String nodeName, String annotation,
+            String targetPrincipalId, String responsibilityDescription, boolean forceAction, String requestLabel) {
+        AdHocToPrincipal.Builder builder = AdHocToPrincipal.Builder
+                .create(actionRequested, nodeName, targetPrincipalId);
+        builder.setResponsibilityDescription(responsibilityDescription);
+        builder.setForceAction(forceAction);
+        builder.setRequestLabel(requestLabel);
+        DocumentActionResult result = getWorkflowDocumentActionsService().adHocToPrincipal(
+                constructDocumentActionParameters(annotation), builder.build());
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void adHocToGroup(ActionRequestType actionRequested, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction) {
-    	adHocToGroup(actionRequested, null, annotation, targetGroupId, responsibilityDescription, forceAction);
+    public void adHocToGroup(ActionRequestType actionRequested, String annotation, String targetGroupId,
+            String responsibilityDescription, boolean forceAction) {
+        adHocToGroup(actionRequested, null, annotation, targetGroupId, responsibilityDescription, forceAction);
     }
 
     @Override
-	public void adHocToGroup(ActionRequestType actionRequested, String nodeName, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction) {
-    	adHocToGroup(actionRequested, nodeName, annotation, targetGroupId, responsibilityDescription, forceAction, null);
+    public void adHocToGroup(ActionRequestType actionRequested, String nodeName, String annotation,
+            String targetGroupId, String responsibilityDescription, boolean forceAction) {
+        adHocToGroup(actionRequested, nodeName, annotation, targetGroupId, responsibilityDescription, forceAction, null);
     }
 
     @Override
-	public void adHocToGroup(ActionRequestType actionRequested, String nodeName, String annotation, String targetGroupId, String responsibilityDescription, boolean forceAction, String requestLabel) {
-    	AdHocToGroup.Builder builder = AdHocToGroup.Builder.create(actionRequested, nodeName, targetGroupId);
-    	builder.setResponsibilityDescription(responsibilityDescription);
-    	builder.setForceAction(forceAction);
-    	builder.setRequestLabel(requestLabel);
-    	DocumentActionResult result = getWorkflowDocumentActionsService().adHocToGroup(constructDocumentActionParameters(annotation), builder.build());
-    	resetStateAfterAction(result);
+    public void adHocToGroup(ActionRequestType actionRequested, String nodeName, String annotation,
+            String targetGroupId, String responsibilityDescription, boolean forceAction, String requestLabel) {
+        AdHocToGroup.Builder builder = AdHocToGroup.Builder.create(actionRequested, nodeName, targetGroupId);
+        builder.setResponsibilityDescription(responsibilityDescription);
+        builder.setForceAction(forceAction);
+        builder.setRequestLabel(requestLabel);
+        DocumentActionResult result = getWorkflowDocumentActionsService().adHocToGroup(
+                constructDocumentActionParameters(annotation), builder.build());
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void revokeAdHocRequestById(String actionRequestId, String annotation) {
-    	if (StringUtils.isBlank(actionRequestId)) {
-    		throw new IllegalArgumentException("actionRequestId was null or blank");
-    	}
-    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequestById(constructDocumentActionParameters(annotation), actionRequestId);
-    	resetStateAfterAction(result);
-    }
-    
-    @Override
-	public void revokeAdHocRequests(AdHocRevoke revoke, String annotation) {
-    	if (revoke == null) {
-    		throw new IllegalArgumentException("revokeFromPrincipal was null");
-    	}
-    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequests(constructDocumentActionParameters(annotation), revoke);
-    	resetStateAfterAction(result);
-    }
-    
-    @Override
-	public void revokeAllAdHocRequests(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().revokeAllAdHocRequests(constructDocumentActionParameters(annotation));
-    	resetStateAfterAction(result);
+    public void revokeAdHocRequestById(String actionRequestId, String annotation) {
+        if (StringUtils.isBlank(actionRequestId)) {
+            throw new IllegalArgumentException("actionRequestId was null or blank");
+        }
+        DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequestById(
+                constructDocumentActionParameters(annotation), actionRequestId);
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void setTitle(String title) {
+    public void revokeAdHocRequests(AdHocRevoke revoke, String annotation) {
+        if (revoke == null) {
+            throw new IllegalArgumentException("revokeFromPrincipal was null");
+        }
+        DocumentActionResult result = getWorkflowDocumentActionsService().revokeAdHocRequests(
+                constructDocumentActionParameters(annotation), revoke);
+        resetStateAfterAction(result);
+    }
+
+    @Override
+    public void revokeAllAdHocRequests(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().revokeAllAdHocRequests(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
+    }
+
+    @Override
+    public void setTitle(String title) {
         getModifiableDocument().setTitle(title);
     }
 
     @Override
-	public String getDocumentTypeName() {
-    	return getDocument().getDocumentTypeName();
+    public String getDocumentTypeName() {
+        return getDocument().getDocumentTypeName();
     }
 
     @Override
-	public boolean isCompletionRequested() {
+    public boolean isCompletionRequested() {
         return getRequestedActions().isCompleteRequested();
     }
-    
+
     @Override
-	public boolean isApprovalRequested() {
+    public boolean isApprovalRequested() {
         return getRequestedActions().isApproveRequested();
     }
-    
+
     @Override
-	public boolean isAcknowledgeRequested() {
-    	return getRequestedActions().isAcknowledgeRequested();
+    public boolean isAcknowledgeRequested() {
+        return getRequestedActions().isAcknowledgeRequested();
     }
-    
+
     @Override
-	public boolean isFYIRequested() {
+    public boolean isFYIRequested() {
         return getRequestedActions().isFyiRequested();
     }
 
     @Override
-	public boolean isBlanketApproveCapable() {
-    	return isValidAction(ActionType.BLANKET_APPROVE) && (isCompletionRequested() || isApprovalRequested() || isInitiated());
-    }
-    
-    @Override
-	public boolean isRouteCapable() {
-    	return isValidAction(ActionType.ROUTE);
-    }
-    
-    @Override
-	public boolean isValidAction(ActionType actionType) {
-    	if (actionType == null) {
-    		throw new IllegalArgumentException("actionType was null");
-    	}
-    	return getValidActions().getValidActions().contains(actionType);
-    }
-    
-    @Override
-	public void superUserBlanketApprove(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserBlanketApprove(constructDocumentActionParameters(annotation), true);
-    	resetStateAfterAction(result);
-    }
-    
-    @Override
-	public void superUserNodeApprove(String nodeName, String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserNodeApprove(constructDocumentActionParameters(annotation), true, nodeName);
-    	resetStateAfterAction(result);    	
+    public boolean isBlanketApproveCapable() {
+        return isValidAction(ActionType.BLANKET_APPROVE)
+                && (isCompletionRequested() || isApprovalRequested() || isInitiated());
     }
 
     @Override
-	public void superUserTakeRequestedAction(String actionRequestId, String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserTakeRequestedAction(constructDocumentActionParameters(annotation), true, actionRequestId);
-    	resetStateAfterAction(result);
+    public boolean isRouteCapable() {
+        return isValidAction(ActionType.ROUTE);
     }
 
     @Override
-	public void superUserDisapprove(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserDisapprove(constructDocumentActionParameters(annotation), true);
-    	resetStateAfterAction(result);
+    public boolean isValidAction(ActionType actionType) {
+        if (actionType == null) {
+            throw new IllegalArgumentException("actionType was null");
+        }
+        return getValidActions().getValidActions().contains(actionType);
     }
 
     @Override
-	public void superUserCancel(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserCancel(constructDocumentActionParameters(annotation), true);
-    	resetStateAfterAction(result);
-    }
-    
-    @Override
-	public void superUserReturnToPreviousNode(ReturnPoint returnPoint, String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().superUserReturnToPreviousNode(constructDocumentActionParameters(annotation), true, returnPoint);
-    	resetStateAfterAction(result);
+    public void superUserBlanketApprove(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().superUserBlanketApprove(
+                constructDocumentActionParameters(annotation), true);
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void complete(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().complete(constructDocumentActionParameters(annotation));
-    	resetStateAfterAction(result);
+    public void superUserNodeApprove(String nodeName, String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().superUserNodeApprove(
+                constructDocumentActionParameters(annotation), true, nodeName);
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void logAnnotation(String annotation) {
-    	getWorkflowDocumentActionsService().logAnnotation(getDocumentId(), principalId, annotation);
+    public void superUserTakeRequestedAction(String actionRequestId, String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().superUserTakeRequestedAction(
+                constructDocumentActionParameters(annotation), true, actionRequestId);
+        resetStateAfterAction(result);
     }
-  
+
     @Override
-	public DocumentStatus getStatus() {
-    	return getDocument().getStatus();
+    public void superUserDisapprove(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().superUserDisapprove(
+                constructDocumentActionParameters(annotation), true);
+        resetStateAfterAction(result);
     }
-    
+
     @Override
-	public boolean checkStatus(DocumentStatus status) {
-    	if (status == null) {
-    		throw new IllegalArgumentException("status was null");
-    	}
-    	return status == getStatus();
+    public void superUserCancel(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().superUserCancel(
+                constructDocumentActionParameters(annotation), true);
+        resetStateAfterAction(result);
     }
-    
+
+    @Override
+    public void superUserReturnToPreviousNode(ReturnPoint returnPoint, String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().superUserReturnToPreviousNode(
+                constructDocumentActionParameters(annotation), true, returnPoint);
+        resetStateAfterAction(result);
+    }
+
+    @Override
+    public void complete(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().complete(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
+    }
+
+    @Override
+    public void logAnnotation(String annotation) {
+        getWorkflowDocumentActionsService().logAnnotation(getDocumentId(), principalId, annotation);
+    }
+
+    @Override
+    public DocumentStatus getStatus() {
+        return getDocument().getStatus();
+    }
+
+    @Override
+    public boolean checkStatus(DocumentStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("status was null");
+        }
+        return status == getStatus();
+    }
+
     /**
      * Indicates if the document is in the initiated state or not.
-     *
+     * 
      * @return true if in the specified state
      */
     @Override
-	public boolean isInitiated() {
+    public boolean isInitiated() {
         return checkStatus(DocumentStatus.INITIATED);
     }
 
     /**
      * Indicates if the document is in the saved state or not.
-     *
+     * 
      * @return true if in the specified state
      */
     @Override
-	public boolean isSaved() {
+    public boolean isSaved() {
         return checkStatus(DocumentStatus.SAVED);
     }
 
     /**
      * Indicates if the document is in the enroute state or not.
-     *
+     * 
      * @return true if in the specified state
      */
     @Override
-	public boolean isEnroute() {
+    public boolean isEnroute() {
         return checkStatus(DocumentStatus.ENROUTE);
     }
 
     /**
      * Indicates if the document is in the exception state or not.
-     *
+     * 
      * @return true if in the specified state
      */
     @Override
-	public boolean isException() {
+    public boolean isException() {
         return checkStatus(DocumentStatus.EXCEPTION);
     }
 
     /**
      * Indicates if the document is in the canceled state or not.
-     *
+     * 
      * @return true if in the specified state
      */
     @Override
-	public boolean isCanceled() {
+    public boolean isCanceled() {
         return checkStatus(DocumentStatus.CANCELED);
     }
 
     /**
      * Indicates if the document is in the disapproved state or not.
-     *
+     * 
      * @return true if in the specified state
      */
     @Override
-	public boolean isDisapproved() {
+    public boolean isDisapproved() {
         return checkStatus(DocumentStatus.DISAPPROVED);
     }
 
     /**
      * Indicates if the document is in the Processed or Finalized state.
-     *
+     * 
      * @return true if in the specified state
      */
     @Override
-	public boolean isApproved() {
-    	return isProcessed() || isFinal();
+    public boolean isApproved() {
+        return isProcessed() || isFinal();
     }
 
     /**
      * Indicates if the document is in the processed state or not.
-     *
+     * 
      * @return true if in the specified state
      */
     @Override
-	public boolean isProcessed() {
+    public boolean isProcessed() {
         return checkStatus(DocumentStatus.PROCESSED);
     }
 
     /**
      * Indicates if the document is in the final state or not.
-     *
+     * 
      * @return true if in the specified state
      */
     @Override
-	public boolean isFinal() {
+    public boolean isFinal() {
         return checkStatus(DocumentStatus.FINAL);
     }
 
@@ -643,330 +679,386 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
      * @return the principalId with which this WorkflowDocument was constructed
      */
     @Override
-	public String getPrincipalId() {
+    public String getPrincipalId() {
         return principalId;
     }
-    
+
     @Override
-	public void switchPrincipal(String principalId) {
-    	if (StringUtils.isBlank(this.principalId)) {
-    		throw new IllegalArgumentException("principalId was null or blank");
-    	}
-    	this.principalId = principalId;
-    	this.validActions = null;
-    	this.requestedActions = null;
+    public void switchPrincipal(String principalId) {
+        if (StringUtils.isBlank(this.principalId)) {
+            throw new IllegalArgumentException("principalId was null or blank");
+        }
+        this.principalId = principalId;
+        this.validActions = null;
+        this.requestedActions = null;
     }
 
     @Override
-	public void takeGroupAuthority(String annotation, String groupId) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().takeGroupAuthority(constructDocumentActionParameters(annotation), groupId);
-    	resetStateAfterAction(result);
+    public void takeGroupAuthority(String annotation, String groupId) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().takeGroupAuthority(
+                constructDocumentActionParameters(annotation), groupId);
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void releaseGroupAuthority(String annotation, String groupId) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().releaseGroupAuthority(constructDocumentActionParameters(annotation), groupId);
-    	resetStateAfterAction(result);
+    public void releaseGroupAuthority(String annotation, String groupId) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().releaseGroupAuthority(
+                constructDocumentActionParameters(annotation), groupId);
+        resetStateAfterAction(result);
     }
 
     @Override
-	public Set<String> getNodeNames() {
-    	List<RouteNodeInstance> activeNodeInstances = getActiveRouteNodeInstances();
-    	Set<String> nodeNames = new HashSet<String>(activeNodeInstances.size());
-    	for (RouteNodeInstance routeNodeInstance : activeNodeInstances) {
-    		nodeNames.add(routeNodeInstance.getName());
-    	}
-    	return Collections.unmodifiableSet(nodeNames);
+    public Set<String> getNodeNames() {
+        List<RouteNodeInstance> activeNodeInstances = getActiveRouteNodeInstances();
+        Set<String> nodeNames = new HashSet<String>(activeNodeInstances.size());
+        for (RouteNodeInstance routeNodeInstance : activeNodeInstances) {
+            nodeNames.add(routeNodeInstance.getName());
+        }
+        return Collections.unmodifiableSet(nodeNames);
     }
 
     @Override
-	public void returnToPreviousNode(String nodeName, String annotation) {
-    	if (StringUtils.isBlank(nodeName)) {
-    		throw new IllegalArgumentException("nodeName was null or blank");
-    	}
+    public void returnToPreviousNode(String nodeName, String annotation) {
+        if (StringUtils.isBlank(nodeName)) {
+            throw new IllegalArgumentException("nodeName was null or blank");
+        }
         returnToPreviousNode(ReturnPoint.create(nodeName), annotation);
     }
 
     @Override
-	public void returnToPreviousNode(ReturnPoint returnPoint, String annotation) {
-    	if (returnPoint == null) {
-    		throw new IllegalArgumentException("returnPoint was null");
-    	}
-    	DocumentActionResult result = getWorkflowDocumentActionsService().returnToPreviousNode(constructDocumentActionParameters(annotation), returnPoint);
-    	resetStateAfterAction(result);
+    public void returnToPreviousNode(ReturnPoint returnPoint, String annotation) {
+        if (returnPoint == null) {
+            throw new IllegalArgumentException("returnPoint was null");
+        }
+        DocumentActionResult result = getWorkflowDocumentActionsService().returnToPreviousNode(
+                constructDocumentActionParameters(annotation), returnPoint);
+        resetStateAfterAction(result);
     }
 
     @Override
-	public void move(MovePoint movePoint, String annotation) {
-    	if (movePoint == null) {
-    		throw new IllegalArgumentException("movePoint was null");
-    	}
-    	DocumentActionResult result = getWorkflowDocumentActionsService().move(constructDocumentActionParameters(annotation), movePoint);
-    	resetStateAfterAction(result);
-    }
-    
-
-    @Override
-	public List<RouteNodeInstance> getActiveRouteNodeInstances() {
-    	return getWorkflowDocumentService().getActiveRouteNodeInstances(getDocumentId());
-    }
-    
-    @Override
-	public List<RouteNodeInstance> getRouteNodeInstances() {
-    	return getWorkflowDocumentService().getRouteNodeInstances(getDocumentId());
+    public void move(MovePoint movePoint, String annotation) {
+        if (movePoint == null) {
+            throw new IllegalArgumentException("movePoint was null");
+        }
+        DocumentActionResult result = getWorkflowDocumentActionsService().move(
+                constructDocumentActionParameters(annotation), movePoint);
+        resetStateAfterAction(result);
     }
 
     @Override
-	public List<String> getPreviousNodeNames() {
-    	return getWorkflowDocumentService().getPreviousRouteNodeNames(getDocumentId());
-	}
-
-    @Override
-	public DocumentDetail getDocumentDetail() {
-    	return getWorkflowDocumentService().getDocumentDetail(getDocumentId());
-    }
-    
-    @Override
-	public void updateDocumentContent(DocumentContentUpdate documentContentUpdate) {
-    	if (documentContentUpdate == null) {
-    		throw new IllegalArgumentException("documentContentUpdate was null.");
-    	}
-    	getModifiableDocumentContent().setDocumentContentUpdate(documentContentUpdate);
-    }
-    
-    @Override
-	public void placeInExceptionRouting(String annotation) {
-    	DocumentActionResult result = getWorkflowDocumentActionsService().placeInExceptionRouting(constructDocumentActionParameters(annotation));
-    	resetStateAfterAction(result);
+    public List<RouteNodeInstance> getActiveRouteNodeInstances() {
+        return getWorkflowDocumentService().getActiveRouteNodeInstances(getDocumentId());
     }
 
     @Override
-	public void setVariable(String name, String value) {
-    	getModifiableDocument().setVariable(name, value);
+    public List<RouteNodeInstance> getRouteNodeInstances() {
+        return getWorkflowDocumentService().getRouteNodeInstances(getDocumentId());
     }
 
     @Override
-	public String getVariableValue(String name) {
-    	return getModifiableDocument().getVariableValue(name);
+    public List<String> getPreviousNodeNames() {
+        return getWorkflowDocumentService().getPreviousRouteNodeNames(getDocumentId());
     }
 
     @Override
-	public void setReceiveFutureRequests() {
+    public DocumentDetail getDocumentDetail() {
+        return getWorkflowDocumentService().getDocumentDetail(getDocumentId());
+    }
+
+    @Override
+    public void updateDocumentContent(DocumentContentUpdate documentContentUpdate) {
+        if (documentContentUpdate == null) {
+            throw new IllegalArgumentException("documentContentUpdate was null.");
+        }
+        getModifiableDocumentContent().setDocumentContentUpdate(documentContentUpdate);
+    }
+
+    @Override
+    public void placeInExceptionRouting(String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().placeInExceptionRouting(
+                constructDocumentActionParameters(annotation));
+        resetStateAfterAction(result);
+    }
+
+    @Override
+    public void setVariable(String name, String value) {
+        getModifiableDocument().setVariable(name, value);
+    }
+
+    @Override
+    public String getVariableValue(String name) {
+        return getModifiableDocument().getVariableValue(name);
+    }
+
+    @Override
+    public void setReceiveFutureRequests() {
         setVariable(getFutureRequestsKey(principalId), getReceiveFutureRequestsValue());
     }
 
     @Override
-	public void setDoNotReceiveFutureRequests() {
+    public void setDoNotReceiveFutureRequests() {
         this.setVariable(getFutureRequestsKey(principalId), getDoNotReceiveFutureRequestsValue());
     }
 
     @Override
-	public void setClearFutureRequests() {
+    public void setClearFutureRequests() {
         this.setVariable(getFutureRequestsKey(principalId), getClearFutureRequestsValue());
     }
-    
+
     protected String getFutureRequestsKey(String principalId) {
-        return KewApiConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY + "," + principalId + "," + new Date().toString() + ", " + Math.random();
+        return KewApiConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY + "," + principalId + ","
+                + new Date().toString() + ", " + Math.random();
     }
 
     @Override
-	public String getReceiveFutureRequestsValue() {
+    public String getReceiveFutureRequestsValue() {
         return KewApiConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
 
     @Override
-	public String getDoNotReceiveFutureRequestsValue() {
+    public String getDoNotReceiveFutureRequestsValue() {
         return KewApiConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
 
     @Override
-	public String getClearFutureRequestsValue() {
+    public String getClearFutureRequestsValue() {
         return KewApiConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
-   
+
     protected DocumentActionParameters constructDocumentActionParameters(String annotation) {
-    	DocumentActionParameters.Builder builder = DocumentActionParameters.Builder.create(getDocumentId(), getPrincipalId());
-    	builder.setAnnotation(annotation);
-    	builder.setDocumentUpdate(getDocumentUpdateIfDirty());
-    	builder.setDocumentContentUpdate(getDocumentContentUpdateIfDirty());
-    	return builder.build();
+        DocumentActionParameters.Builder builder = DocumentActionParameters.Builder.create(getDocumentId(),
+                getPrincipalId());
+        builder.setAnnotation(annotation);
+        builder.setDocumentUpdate(getDocumentUpdateIfDirty());
+        builder.setDocumentContentUpdate(getDocumentContentUpdateIfDirty());
+        return builder.build();
     }
     
-   protected static class ModifiableDocumentContent implements Serializable {
-	   
-	   private static final long serialVersionUID = -4458431160327214042L;
+    @Override
+    public DateTime getDateLastModified() {
+        return getDocument().getDateLastModified();
+    }
 
-	   private boolean dirty;
-	   private DocumentContent originalDocumentContent;
-	   private DocumentContentUpdate.Builder builder;
-	   
-	   protected ModifiableDocumentContent(DocumentContent documentContent) {
-		   this.dirty = false;
-		   this.originalDocumentContent = documentContent;
-		   this.builder = DocumentContentUpdate.Builder.create(documentContent);
-	   }
-	   	   
-	   protected DocumentContent getDocumentContent() {
-		   if (!dirty) {
-			   return originalDocumentContent;
-		   }
-		   DocumentContent.Builder documentContentBuilder = DocumentContent.Builder.create(originalDocumentContent);
-		   documentContentBuilder.setApplicationContent(builder.getApplicationContent());
-		   documentContentBuilder.setAttributeContent(builder.getApplicationContent());
-		   documentContentBuilder.setSearchableContent(builder.getSearchableContent());
-		   return documentContentBuilder.build();
-	   }
-	   
-	   protected DocumentContentUpdate build() {
-		   return builder.build();
-	   }
-	   
-	   protected void setDocumentContentUpdate(DocumentContentUpdate update) {
-		   this.builder = DocumentContentUpdate.Builder.create(update);
-		   this.dirty = true;
-	   }
-	   
-	   protected void addAttributeDefinition(WorkflowAttributeDefinition definition) {
-		   builder.getAttributeDefinitions().add(definition);
-		   dirty = true;
-	   }
-	   
-	   protected void removeAttributeDefinition(WorkflowAttributeDefinition definition) {
-		   builder.getAttributeDefinitions().remove(definition);
-		   dirty = true;
-	   }
-	   
-	   protected List<WorkflowAttributeDefinition> getAttributeDefinitions() {
-		   return builder.getAttributeDefinitions();
-	   }
+    @Override
+    public DateTime getDateApproved() {
+        return getDocument().getDateApproved();
+    }
 
-	   protected void addSearchableDefinition(WorkflowAttributeDefinition definition) {
-		   builder.getSearchableDefinitions().add(definition);
-		   dirty = true;
-	   }
+    @Override
+    public DateTime getDateFinalized() {
+        return getDocument().getDateFinalized();
+    }
 
-	   protected void removeSearchableDefinition(WorkflowAttributeDefinition definition) {
-		   builder.getSearchableDefinitions().remove(definition);
-		   dirty = true;
-	   }
-	   
-	   protected List<WorkflowAttributeDefinition> getSearchableDefinitions() {
-		   return builder.getAttributeDefinitions();
-	   }
+    @Override
+    public String getInitiatorPrincipalId() {
+        return getDocument().getInitiatorPrincipalId();
+    }
 
-	   protected void setApplicationContent(String applicationContent) {
-		   builder.setApplicationContent(applicationContent);
-		   dirty = true;
-	   }
+    @Override
+    public String getRoutedByPrincipalId() {
+        return getDocument().getRoutedByPrincipalId();
+    }
 
-	   protected void setAttributeContent(String attributeContent) {
-		   builder.setAttributeContent(attributeContent);
-		   dirty = true;
-	   }
+    @Override
+    public String getDocumentTypeId() {
+        return getDocument().getDocumentTypeId();
+    }
 
-	   public void setAttributeDefinitions(List<WorkflowAttributeDefinition> attributeDefinitions) {
-		   builder.setAttributeDefinitions(attributeDefinitions);
-		   dirty = true;
-	   }
+    @Override
+    public String getDocumentHandlerUrl() {
+        return getDocument().getDocumentHandlerUrl();
+    }
 
-	   public void setSearchableContent(String searchableContent) {
-		   builder.setSearchableContent(searchableContent);
-		   dirty = true;
-	   }
+    @Override
+    public String getApplicationDocumentStatus() {
+        return getDocument().getApplicationDocumentStatus();
+    }
 
-	   public void setSearchableDefinitions(List<WorkflowAttributeDefinition> searchableDefinitions) {
-		   builder.setSearchableDefinitions(searchableDefinitions);
-		   dirty = true;
-	   }
-	   
-	   boolean isDirty() {
-		   return dirty;
-	   }
-	   	   
-   }
+    @Override
+    public DateTime getApplicationDocumentStatusDate() {
+        return getDocument().getApplicationDocumentStatusDate();
+    }
 
-	protected static class ModifiableDocument implements Serializable {
+    @Override
+    public Map<String, String> getVariables() {
+        return getDocument().getVariables();
+    }
 
-		private static final long serialVersionUID = -3234793238863410378L;
+    protected static class ModifiableDocumentContent implements Serializable {
 
-		private boolean dirty;
-		private Document originalDocument;
-		private DocumentUpdate.Builder builder;
+        private static final long serialVersionUID = -4458431160327214042L;
 
-		protected ModifiableDocument(Document document) {
-			this.dirty = false;
-			this.originalDocument = document;
-			this.builder = DocumentUpdate.Builder.create(document);
-		}
+        private boolean dirty;
+        private DocumentContent originalDocumentContent;
+        private DocumentContentUpdate.Builder builder;
 
-		protected Document getDocument() {
-			if (!dirty) {
-				return originalDocument;
-			}
-			Document.Builder documentBuilder = Document.Builder.create(originalDocument);
-			documentBuilder.setApplicationDocumentId(builder.getApplicationDocumentId());
-			documentBuilder.setTitle(builder.getTitle());
-			return documentBuilder.build();
-		}
+        protected ModifiableDocumentContent(DocumentContent documentContent) {
+            this.dirty = false;
+            this.originalDocumentContent = documentContent;
+            this.builder = DocumentContentUpdate.Builder.create(documentContent);
+        }
 
-		protected DocumentUpdate build() {
-			return builder.build();
-		}
-		
-		/**
-		 * Immutable value which is accessed frequently, provide direct access to it.
-		 */
-		protected String getDocumentId() {
-			return originalDocument.getDocumentId();
-		}
-		
-		/**
-		 * Immutable value which is accessed frequently, provide direct access to it.
-		 */
-		protected DateTime getDateCreated() {
-			return originalDocument.getDateCreated();
-		}
+        protected DocumentContent getDocumentContent() {
+            if (!dirty) {
+                return originalDocumentContent;
+            }
+            DocumentContent.Builder documentContentBuilder = DocumentContent.Builder.create(originalDocumentContent);
+            documentContentBuilder.setApplicationContent(builder.getApplicationContent());
+            documentContentBuilder.setAttributeContent(builder.getApplicationContent());
+            documentContentBuilder.setSearchableContent(builder.getSearchableContent());
+            return documentContentBuilder.build();
+        }
 
-		protected String getApplicationDocumentId() {
-			return builder.getApplicationDocumentId();
-		}
-		
-		protected void setApplicationDocumentId(String applicationDocumentId) {
-			builder.setApplicationDocumentId(applicationDocumentId);
-			dirty = true;
-		}
+        protected DocumentContentUpdate build() {
+            return builder.build();
+        }
 
-		protected String getTitle() {
-			return builder.getTitle();
-		}
-		
-		protected void setTitle(String title) {
-			builder.setTitle(title);
-			dirty = true;
-		}
-		
-		protected String getApplicationDocumentStatus() {
-			return builder.getApplicationDocumentStatus();
-		}
-		
-		protected void setApplicationDocumentStatus(String applicationDocumentStatus) {
-			builder.setApplicationDocumentStatus(applicationDocumentStatus);
-			dirty = true;
-		}
-		
-		protected void setVariable(String name, String value) {
-			builder.setVariable(name, value);
-			dirty = true;
-		}
-		
-		protected String getVariableValue(String name) {
-			return builder.getVariableValue(name);
-		}
+        protected void setDocumentContentUpdate(DocumentContentUpdate update) {
+            this.builder = DocumentContentUpdate.Builder.create(update);
+            this.dirty = true;
+        }
 
-		boolean isDirty() {
-			return dirty;
-		}
+        protected void addAttributeDefinition(WorkflowAttributeDefinition definition) {
+            builder.getAttributeDefinitions().add(definition);
+            dirty = true;
+        }
 
-	}
-   
+        protected void removeAttributeDefinition(WorkflowAttributeDefinition definition) {
+            builder.getAttributeDefinitions().remove(definition);
+            dirty = true;
+        }
+
+        protected List<WorkflowAttributeDefinition> getAttributeDefinitions() {
+            return builder.getAttributeDefinitions();
+        }
+
+        protected void addSearchableDefinition(WorkflowAttributeDefinition definition) {
+            builder.getSearchableDefinitions().add(definition);
+            dirty = true;
+        }
+
+        protected void removeSearchableDefinition(WorkflowAttributeDefinition definition) {
+            builder.getSearchableDefinitions().remove(definition);
+            dirty = true;
+        }
+
+        protected List<WorkflowAttributeDefinition> getSearchableDefinitions() {
+            return builder.getAttributeDefinitions();
+        }
+
+        protected void setApplicationContent(String applicationContent) {
+            builder.setApplicationContent(applicationContent);
+            dirty = true;
+        }
+
+        protected void setAttributeContent(String attributeContent) {
+            builder.setAttributeContent(attributeContent);
+            dirty = true;
+        }
+
+        public void setAttributeDefinitions(List<WorkflowAttributeDefinition> attributeDefinitions) {
+            builder.setAttributeDefinitions(attributeDefinitions);
+            dirty = true;
+        }
+
+        public void setSearchableContent(String searchableContent) {
+            builder.setSearchableContent(searchableContent);
+            dirty = true;
+        }
+
+        public void setSearchableDefinitions(List<WorkflowAttributeDefinition> searchableDefinitions) {
+            builder.setSearchableDefinitions(searchableDefinitions);
+            dirty = true;
+        }
+
+        boolean isDirty() {
+            return dirty;
+        }
+
+    }
+
+    protected static class ModifiableDocument implements Serializable {
+
+        private static final long serialVersionUID = -3234793238863410378L;
+
+        private boolean dirty;
+        private Document originalDocument;
+        private DocumentUpdate.Builder builder;
+
+        protected ModifiableDocument(Document document) {
+            this.dirty = false;
+            this.originalDocument = document;
+            this.builder = DocumentUpdate.Builder.create(document);
+        }
+
+        protected Document getDocument() {
+            if (!dirty) {
+                return originalDocument;
+            }
+            Document.Builder documentBuilder = Document.Builder.create(originalDocument);
+            documentBuilder.setApplicationDocumentId(builder.getApplicationDocumentId());
+            documentBuilder.setTitle(builder.getTitle());
+            return documentBuilder.build();
+        }
+
+        protected DocumentUpdate build() {
+            return builder.build();
+        }
+
+        /**
+         * Immutable value which is accessed frequently, provide direct access to it.
+         */
+        protected String getDocumentId() {
+            return originalDocument.getDocumentId();
+        }
+
+        /**
+         * Immutable value which is accessed frequently, provide direct access to it.
+         */
+        protected DateTime getDateCreated() {
+            return originalDocument.getDateCreated();
+        }
+
+        protected String getApplicationDocumentId() {
+            return builder.getApplicationDocumentId();
+        }
+
+        protected void setApplicationDocumentId(String applicationDocumentId) {
+            builder.setApplicationDocumentId(applicationDocumentId);
+            dirty = true;
+        }
+
+        protected String getTitle() {
+            return builder.getTitle();
+        }
+
+        protected void setTitle(String title) {
+            builder.setTitle(title);
+            dirty = true;
+        }
+
+        protected String getApplicationDocumentStatus() {
+            return builder.getApplicationDocumentStatus();
+        }
+
+        protected void setApplicationDocumentStatus(String applicationDocumentStatus) {
+            builder.setApplicationDocumentStatus(applicationDocumentStatus);
+            dirty = true;
+        }
+
+        protected void setVariable(String name, String value) {
+            builder.setVariable(name, value);
+            dirty = true;
+        }
+
+        protected String getVariableValue(String name) {
+            return builder.getVariableValue(name);
+        }
+
+        boolean isDirty() {
+            return dirty;
+        }
+
+    }
+
 }

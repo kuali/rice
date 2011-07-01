@@ -65,7 +65,9 @@ import org.kuali.rice.krad.exception.DocumentTypeAuthorizationException;
 import org.kuali.rice.krad.lookup.LookupResultsService;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.rule.event.KualiAddLineEvent;
-import org.kuali.rice.krad.service.*;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LookupService;
+import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
@@ -286,19 +288,19 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 				}
 			}
 			else if (KRADConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
-				boolean allowsEdit = getBusinessObjectAuthorizationService().canMaintain(oldBusinessObject, GlobalVariables.getUserSession().getPerson(), document.getDocumentHeader().getWorkflowDocument().getDocumentType());  
+				boolean allowsEdit = getBusinessObjectAuthorizationService().canMaintain(oldBusinessObject, GlobalVariables.getUserSession().getPerson(), document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());  
 				if (!allowsEdit) {
-					LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentType() + " does not allow edit actions.");
-					throw  new DocumentTypeAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalId(), "edit", document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+					LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName() + " does not allow edit actions.");
+					throw  new DocumentTypeAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalId(), "edit", document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 				}
 				document.getNewMaintainableObject().processAfterEdit( document, request.getParameterMap() );
 			}
 			//3070
 			else if (KRADConstants.MAINTENANCE_DELETE_ACTION.equals(maintenanceAction)) {
-				boolean allowsDelete = getBusinessObjectAuthorizationService().canMaintain(oldBusinessObject, GlobalVariables.getUserSession().getPerson(), document.getDocumentHeader().getWorkflowDocument().getDocumentType());  
+				boolean allowsDelete = getBusinessObjectAuthorizationService().canMaintain(oldBusinessObject, GlobalVariables.getUserSession().getPerson(), document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());  
 				if (!allowsDelete) {
-					LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentType() + " does not allow delete actions.");
-					throw  new DocumentTypeAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalId(), "delete", document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+					LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName() + " does not allow delete actions.");
+					throw  new DocumentTypeAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalId(), "delete", document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 				}	
 				//document.getNewMaintainableObject().processAfterEdit( document, request.getParameterMap() );
 			}
@@ -340,13 +342,13 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 			LOG.debug("maintenanceForm.getAdditionalScriptFiles(): " + maintenanceForm.getAdditionalScriptFiles());
 		}
 		if (maintenanceForm.getAdditionalScriptFiles().isEmpty()) {
-			DocumentEntry docEntry = getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+			DocumentEntry docEntry = getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 			maintenanceForm.getAdditionalScriptFiles().addAll(docEntry.getWebScriptFiles());
 		}
 
 		// Retrieve notes topic display flag from data dictionary and add to document
 		//      
-		DocumentEntry entry = maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+		DocumentEntry entry = maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 		document.setDisplayTopicFieldInNotes(entry.getDisplayTopicFieldInNotes());
 
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -672,7 +674,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
 		PersistableBusinessObject bo = newMaintainable.getBusinessObject();
 		Collection maintCollection = extractCollection(bo, collectionName);
-		Class collectionClass = extractCollectionClass(((MaintenanceDocument) maintenanceForm.getDocument()).getDocumentHeader().getWorkflowDocument().getDocumentType(), collectionName);
+		Class collectionClass = extractCollectionClass(((MaintenanceDocument) maintenanceForm.getDocument()).getDocumentHeader().getWorkflowDocument().getDocumentTypeName(), collectionName);
 
 		// TODO: sort of collection, new instance should be first
 

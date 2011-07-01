@@ -21,12 +21,12 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.spring.form.DocumentFormBase;
 import org.kuali.rice.krad.web.spring.form.UifFormBase;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -126,9 +126,9 @@ public class DocumentPresentationControllerBase extends PresentationControllerBa
      */
     protected boolean canEdit(Document document) {
         boolean canEdit = false;
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved() || workflowDocument.stateIsEnroute()
-                || workflowDocument.stateIsException()) {
+        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        if (workflowDocument.isInitiated() || workflowDocument.isSaved() || workflowDocument.isEnroute()
+                || workflowDocument.isException()) {
             canEdit = true;
         }
 
@@ -148,8 +148,8 @@ public class DocumentPresentationControllerBase extends PresentationControllerBa
      * @return boolean (true if can reload the document)
      */
     protected boolean canReload(Document document) {
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        return (canEdit(document) && !workflowDocument.stateIsInitiated());
+        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        return (canEdit(document) && !workflowDocument.isInitiated());
 
     }
 
@@ -175,8 +175,8 @@ public class DocumentPresentationControllerBase extends PresentationControllerBa
      */
     protected boolean canRoute(Document document) {
         boolean canRoute = false;
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()) {
+        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        if (workflowDocument.isInitiated() || workflowDocument.isSaved()) {
             canRoute = true;
         }
         return canRoute;
@@ -243,7 +243,7 @@ public class DocumentPresentationControllerBase extends PresentationControllerBa
         // otherwise, limit the display of the blanket approve button to only
         // the initiator of the document
         // (prior to routing)
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         if (canRoute(document)
                 && StringUtils.equals(workflowDocument.getInitiatorPrincipalId(), GlobalVariables.getUserSession()
                         .getPrincipalId())) {
@@ -267,8 +267,8 @@ public class DocumentPresentationControllerBase extends PresentationControllerBa
     }
 
     protected boolean canSendAdhocRequests(Document document) {
-        KualiWorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        return !(kualiWorkflowDocument.stateIsInitiated() || kualiWorkflowDocument.stateIsSaved());
+        WorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        return !(kualiWorkflowDocument.isInitiated() || kualiWorkflowDocument.isSaved());
     }
 
     protected boolean canSendNoteFyi(Document document) {
@@ -276,8 +276,8 @@ public class DocumentPresentationControllerBase extends PresentationControllerBa
     }
 
     protected boolean canEditDocumentOverview(Document document) {
-        KualiWorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        return (kualiWorkflowDocument.stateIsInitiated() || kualiWorkflowDocument.stateIsSaved());
+        WorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        return (kualiWorkflowDocument.isInitiated() || kualiWorkflowDocument.isSaved());
     }
 
     protected boolean canFyi(Document document) {

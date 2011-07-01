@@ -15,6 +15,21 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -65,21 +80,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionService;
-
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Validates Documents, Business Objects, and Attributes against the data dictionary. Including min, max lengths, and validating
@@ -193,7 +193,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      */
     @Override
 	public void validateDocument(Document document) {
-        String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+        String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
 
         validate(document, documentEntryName);        
     }
@@ -205,7 +205,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      */
     @Override
 	public void validateDocumentAttribute(Document document, String attributeName, String errorPrefix) {
-        String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+        String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
 
         validate(document, documentEntryName, attributeName, true);        
     }
@@ -226,7 +226,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
     
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
-        String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+        String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
         validate(document, documentEntryName);
         
         if (maxDepth > 0) {

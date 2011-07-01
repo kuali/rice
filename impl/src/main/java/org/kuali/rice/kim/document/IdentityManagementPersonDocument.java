@@ -15,6 +15,26 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
@@ -23,8 +43,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -49,25 +69,6 @@ import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.util.GlobalVariables;
-
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill
@@ -350,7 +351,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @Override
     public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
         super.doRouteStatusChange(statusChangeEvent);
-        if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
+        if (getDocumentHeader().getWorkflowDocument().isProcessed()) {
         	setIfRolesEditable();
             KIMServiceLocatorInternal.getUiDocumentService().saveEntityPerson(this);
         }

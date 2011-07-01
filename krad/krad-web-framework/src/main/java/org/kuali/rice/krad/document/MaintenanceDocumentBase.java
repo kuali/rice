@@ -38,6 +38,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -55,14 +56,18 @@ import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.rule.event.SaveDocumentEvent;
-import org.kuali.rice.krad.service.*;
+import org.kuali.rice.krad.service.DocumentHeaderService;
+import org.kuali.rice.krad.service.DocumentService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MaintenanceUtils;
 import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -427,11 +432,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
         super.doRouteStatusChange(statusChangeEvent);
 
-        KualiWorkflowDocument workflowDocument = getDocumentHeader().getWorkflowDocument();
+        WorkflowDocument workflowDocument = getDocumentHeader().getWorkflowDocument();
         getNewMaintainableObject().doRouteStatusChange(getDocumentHeader());
         // commit the changes to the Maintainable BusinessObject when it goes to Processed (ie, fully approved),
         // and also unlock it
-        if (workflowDocument.stateIsProcessed()) {
+        if (workflowDocument.isProcessed()) {
             String documentNumber = getDocumentHeader().getDocumentNumber();
             newMaintainableObject.setDocumentNumber(documentNumber);
 
@@ -458,7 +463,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
 
         // unlock the document when its canceled or disapproved
-        if (workflowDocument.stateIsCanceled() || workflowDocument.stateIsDisapproved()) {
+        if (workflowDocument.isCanceled() || workflowDocument.isDisapproved()) {
             //Attachment should be deleted from Maintenance Document attachment table
             deleteDocumentAttachment();
 
@@ -848,7 +853,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             // but, in the case where we can't get it in the way above, attempt to get
             // it off the workflow document header
             if (getDocumentHeader() != null && getDocumentHeader().getWorkflowDocument() != null) {
-                docTypeName = getDocumentHeader().getWorkflowDocument().getDocumentType();
+                docTypeName = getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
             }
         }
         if (!StringUtils.isBlank(docTypeName)) {

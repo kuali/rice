@@ -17,11 +17,11 @@ package org.kuali.rice.krad.web.spring.form;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 
 /**
  * Base form for all <code>DocumentView</code> screens
@@ -114,7 +114,7 @@ public class DocumentFormBase extends UifFormBase {
 	public String getDocumentInitiatorNetworkId() {
 		String initiatorNetworkId = "";
 		if (getWorkflowDocument() != null) {
-			String initiatorPrincipalId = getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
+			String initiatorPrincipalId = getWorkflowDocument().getInitiatorPrincipalId();
 			Person initiator = KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
 			if (initiator != null) {
 				initiatorNetworkId = initiator.getPrincipalName();
@@ -132,8 +132,8 @@ public class DocumentFormBase extends UifFormBase {
 	 */
 	public String getDocumentCreateDate() {
 		String createDateStr = "";
-		if (getWorkflowDocument() != null && getWorkflowDocument().getCreateDate() != null) {
-			createDateStr = CoreApiServiceLocator.getDateTimeService().toString(getWorkflowDocument().getCreateDate(),
+		if (getWorkflowDocument() != null && getWorkflowDocument().getDateCreated() != null) {
+			createDateStr = CoreApiServiceLocator.getDateTimeService().toString(getWorkflowDocument().getDateCreated().toDate(),
 					"hh:mm a MM/dd/yyyy");
 		}
 
@@ -146,7 +146,7 @@ public class DocumentFormBase extends UifFormBase {
 	 * 
 	 * @return WorkflowDocument for the forms document
 	 */
-	public KualiWorkflowDocument getWorkflowDocument() {
+	public WorkflowDocument getWorkflowDocument() {
 		return getDocument().getDocumentHeader().getWorkflowDocument();
 	}
 

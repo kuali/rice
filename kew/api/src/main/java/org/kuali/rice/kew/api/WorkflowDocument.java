@@ -31,6 +31,7 @@ import org.kuali.rice.kew.api.action.ValidActions;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentContract;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.RouteNodeInstance;
@@ -45,7 +46,7 @@ import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
  * <p>This class is *not* thread safe.
  *
  */
-public interface WorkflowDocument {
+public interface WorkflowDocument extends DocumentContract {
 
 	String getDocumentId();
 

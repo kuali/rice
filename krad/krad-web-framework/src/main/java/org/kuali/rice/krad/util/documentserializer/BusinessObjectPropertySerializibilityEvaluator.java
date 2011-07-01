@@ -44,7 +44,7 @@ public class BusinessObjectPropertySerializibilityEvaluator extends PropertySeri
 	@Override
     public void initializeEvaluatorForDocument(Document document) {
         DataDictionary dictionary = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary();
-        DocumentEntry docEntry = dictionary.getDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+        DocumentEntry docEntry = dictionary.getDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
         WorkflowProperties workflowProperties = docEntry.getWorkflowProperties();
         List<WorkflowPropertyGroup> groups = workflowProperties.getWorkflowPropertyGroups();
         

@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.core.web.parameter;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.impl.component.ComponentBo;
@@ -30,10 +34,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill
@@ -53,7 +53,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 		boolean result = super.processCustomRouteDocumentBusinessRules( document );
 
 		result &= checkAllowsMaintenanceEdit( document.getDocumentHeader().getWorkflowDocument()
-				.getRouteHeader().getInitiatorPrincipalId(), (ParameterBo)getNewBo() );
+				.getInitiatorPrincipalId(), (ParameterBo)getNewBo() );
 
 		result &= checkComponent((ParameterBo) getNewBo());
 		

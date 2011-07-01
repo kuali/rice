@@ -95,7 +95,7 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 				// determine object class based on the document type
 				Document document = documentService.getByDocumentHeaderId(documentNumber);
 				if (document != null) {
-					String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
+					String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
 					Class<?> objectClassName = maintenanceDocumentDictionaryService.getBusinessObjectClass(docTypeName);
 					if (objectClassName != null) {
 						objectClassFound = true;

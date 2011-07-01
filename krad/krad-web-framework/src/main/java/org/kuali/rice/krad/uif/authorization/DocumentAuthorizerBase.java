@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ProcessDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -34,7 +35,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.spring.form.DocumentFormBase;
 import org.kuali.rice.krad.web.spring.form.UifFormBase;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -221,7 +221,7 @@ public class DocumentAuthorizerBase extends AuthorizerBase {
 	protected final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
 		if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
 		    try {
-                DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+                DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
                 ProcessDTO process = docType.getRoutePath().getPrimaryProcess();
                 if (process != null) {
                     if (process.getInitialRouteNode() == null) {
@@ -270,24 +270,22 @@ public class DocumentAuthorizerBase extends AuthorizerBase {
 
 	protected void addStandardAttributes(Document document,
 			Map<String, String> attributes) {
-		KualiWorkflowDocument wd = document.getDocumentHeader()
+		WorkflowDocument wd = document.getDocumentHeader()
 				.getWorkflowDocument();
 		attributes.put(KimConstants.AttributeConstants.DOCUMENT_NUMBER, document
 				.getDocumentNumber());
-		attributes.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, wd.getDocumentType());
-		if (wd.stateIsInitiated() || wd.stateIsSaved()) {
+		attributes.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, wd.getDocumentTypeName());
+		if (wd.isInitiated() || wd.isSaved()) {
 			attributes.put(KimConstants.AttributeConstants.ROUTE_NODE_NAME,
 					PRE_ROUTING_ROUTE_NAME);
 		} else {
-			attributes.put(KimConstants.AttributeConstants.ROUTE_NODE_NAME, wd
-					.getCurrentRouteNodeNames());
+			attributes.put(KimConstants.AttributeConstants.ROUTE_NODE_NAME, KRADServiceLocatorWeb.getWorkflowDocumentService().getCurrentRouteNodeNames(wd));
 		}
-		attributes.put(KimConstants.AttributeConstants.ROUTE_STATUS_CODE, wd.getRouteHeader()
-				.getDocRouteStatus());
+		attributes.put(KimConstants.AttributeConstants.ROUTE_STATUS_CODE, wd.getStatus().getCode());
 	}
 	
 	protected boolean isDocumentInitiator(Document document, Person user) {
-        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         return workflowDocument.getInitiatorPrincipalId().equalsIgnoreCase(user.getPrincipalId());
     }
 

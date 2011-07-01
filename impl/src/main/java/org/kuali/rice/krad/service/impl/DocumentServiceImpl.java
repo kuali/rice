@@ -16,17 +16,26 @@
 
 package org.kuali.rice.krad.service.impl;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
@@ -62,17 +71,8 @@ import org.kuali.rice.krad.service.NoteService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 
@@ -475,7 +475,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         // initiate new workflow entry, get the workflow doc
-        KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getPerson());
+        WorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getPerson());
         KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
         // create a new document header object
@@ -557,7 +557,7 @@ public class DocumentServiceImpl implements DocumentService {
 	        	GlobalVariables.clear();
 	        }
 
-	        KualiWorkflowDocument workflowDocument = null;
+	        WorkflowDocument workflowDocument = null;
 
 	        if ( LOG.isDebugEnabled() ) {
 	        	LOG.debug("Retrieving doc id: " + documentHeaderId + " from workflow service.");
@@ -565,7 +565,7 @@ public class DocumentServiceImpl implements DocumentService {
 	        workflowDocument = getWorkflowDocumentService().loadWorkflowDocument(documentHeaderId, GlobalVariables.getUserSession().getPerson());
 	        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
-	        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
+	        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentTypeName());
 
 	        // retrieve the Document
 	        Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
@@ -590,7 +590,7 @@ public class DocumentServiceImpl implements DocumentService {
             throw new IllegalArgumentException("invalid (null) documentHeaderId");
         }
 
-        KualiWorkflowDocument workflowDocument = null;
+        WorkflowDocument workflowDocument = null;
 
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("Retrieving doc id: " + documentHeaderId + " from workflow service.");
@@ -599,7 +599,7 @@ public class DocumentServiceImpl implements DocumentService {
         Person person = getPersonService().getPersonByPrincipalName(KRADConstants.SYSTEM_USER);
         workflowDocument = workflowDocumentService.loadWorkflowDocument(documentHeaderId, person);
 
-        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
+        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentTypeName());
 
         // retrieve the Document
         Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
@@ -643,7 +643,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @param workflowDocument
      * @param document
      */
-    private Document postProcessDocument(String documentHeaderId, KualiWorkflowDocument workflowDocument, Document document) {
+    private Document postProcessDocument(String documentHeaderId, WorkflowDocument workflowDocument, Document document) {
         if (document != null) {
             document.getDocumentHeader().setWorkflowDocument(workflowDocument);
             document.processAfterRetrieve();
@@ -688,7 +688,7 @@ public class DocumentServiceImpl implements DocumentService {
 	        // post-process them
 	        List<Document> documents = new ArrayList<Document>();
 	        for (Document document : rawDocuments) {
-	            KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().loadWorkflowDocument(document.getDocumentNumber(), GlobalVariables.getUserSession().getPerson());
+	            WorkflowDocument workflowDocument = getWorkflowDocumentService().loadWorkflowDocument(document.getDocumentNumber(), GlobalVariables.getUserSession().getPerson());
 
 	            document = postProcessDocument(document.getDocumentNumber(), workflowDocument, document);
 	            documents.add(document);
@@ -789,7 +789,7 @@ public class DocumentServiceImpl implements DocumentService {
     private void populateApplicationDocumentId(Document document) {
         String organizationDocumentNumber = document.getDocumentHeader().getOrganizationDocumentNumber();
         if (StringUtils.isNotBlank(organizationDocumentNumber)) {
-            document.getDocumentHeader().getWorkflowDocument().setAppDocId(organizationDocumentNumber);
+            document.getDocumentHeader().getWorkflowDocument().setApplicationDocumentId(organizationDocumentNumber);
         }
     }
 

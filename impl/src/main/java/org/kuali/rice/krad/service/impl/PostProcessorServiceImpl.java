@@ -78,7 +78,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 // OptimisticLockException is thrown. This is not the optimal solution, and will
                 // be a problem anytime where the user can continue to edit the document after a
                 // workflow state change, without reloading the form.
-                if (!document.getDocumentHeader().getWorkflowDocument().stateIsSaved()) {
+                if (!document.getDocumentHeader().getWorkflowDocument().isSaved()) {
                     documentService.updateDocument(document);
                 }
             }
@@ -110,7 +110,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
             }
             document.populateDocumentForRouting();
             document.doRouteLevelChange(levelChangeEvent);
-            document.getDocumentHeader().getWorkflowDocument().saveRoutingData();
+            document.getDocumentHeader().getWorkflowDocument().saveDocumentData();
             if ( LOG.isDebugEnabled() ) {
             	LOG.debug(new StringBuffer("finished handling route level change from ").append(levelChangeEvent.getOldNodeName()).append(" to ").append(levelChangeEvent.getNewNodeName()).append(" for document ").append(levelChangeEvent.getDocumentId()));
             }

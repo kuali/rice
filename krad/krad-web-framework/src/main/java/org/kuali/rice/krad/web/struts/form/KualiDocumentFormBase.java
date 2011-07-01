@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.krad.web.struts.form;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
@@ -24,6 +33,7 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.NoOpStringFormatter;
 import org.kuali.rice.core.web.format.TimestampAMPMFormatter;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
@@ -47,16 +57,7 @@ import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.util.WebUtils;
 import org.kuali.rice.krad.web.derivedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.krad.web.ui.HeaderField;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowDocument;
 import org.springframework.util.AutoPopulatingList;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * TODO we should not be referencing kew constants from this class and wedding ourselves to that workflow application This class is
@@ -173,7 +174,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     public void populate(HttpServletRequest request) {
         super.populate(request);
 
-        KualiWorkflowDocument workflowDocument = null;
+        WorkflowDocument workflowDocument = null;
 
         if (hasDocumentId()) {
             // populate workflowDocument in documentHeader, if needed
@@ -258,7 +259,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	 * 
 	 * @param workflowDocument - the workflow document of the document being displayed (null is allowed)
 	 */
-	public void populateHeaderFields(KualiWorkflowDocument workflowDocument) {
+	public void populateHeaderFields(WorkflowDocument workflowDocument) {
 		getDocInfo().clear();
 		getDocInfo().addAll(getStandardHeaderFields(workflowDocument));
 	}
@@ -271,7 +272,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	 * @param workflowDocument - the workflow document of the document being displayed (null is allowed)
 	 * @return a list of the standard fields displayed by default for all Kuali documents
 	 */
-    protected List<HeaderField> getStandardHeaderFields(KualiWorkflowDocument workflowDocument) {
+    protected List<HeaderField> getStandardHeaderFields(WorkflowDocument workflowDocument) {
     	List<HeaderField> headerFields = new ArrayList<HeaderField>();
     	setNumColumns(2);
     	// check for a document template number as that will dictate column numbering
@@ -284,7 +285,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         //Document Number    	
         HeaderField docNumber = new HeaderField("DataDictionary.DocumentHeader.attributes.documentNumber", workflowDocument != null? getDocument().getDocumentNumber() : null);
         docNumber.setId(KRADConstants.DocumentFormHeaderFieldIds.DOCUMENT_NUMBER);
-        HeaderField docStatus = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null);
+        HeaderField docStatus = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatus().getLabel() : null);
         docStatus.setId(KRADConstants.DocumentFormHeaderFieldIds.DOCUMENT_WORKFLOW_STATUS);
         String initiatorNetworkId = null;
         Person user = null;
@@ -302,8 +303,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         workflowDocument != null? initiatorNetworkId : null, workflowDocument != null? inquiryUrl : null);
         
         String createDateStr = null;
-        if(workflowDocument != null && workflowDocument.getCreateDate() != null) {
-            createDateStr = CoreApiServiceLocator.getDateTimeService().toString(workflowDocument.getCreateDate(), "hh:mm a MM/dd/yyyy");
+        if(workflowDocument != null && workflowDocument.getDateCreated() != null) {
+            createDateStr = CoreApiServiceLocator.getDateTimeService().toString(workflowDocument.getDateCreated().toDate(), "hh:mm a MM/dd/yyyy");
         }
         
         HeaderField docCreateDate = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.createDate", createDateStr);
@@ -553,7 +554,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     /**
      * @return WorkflowDocument for this form's document
      */
-    public KualiWorkflowDocument getWorkflowDocument() {
+    public WorkflowDocument getWorkflowDocument() {
         return getDocument().getDocumentHeader().getWorkflowDocument();
     }
     
@@ -573,14 +574,14 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      */
     public boolean isUserDocumentInitiator() {
         if (getWorkflowDocument() != null) {
-            return getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId().equalsIgnoreCase(
+            return getWorkflowDocument().getInitiatorPrincipalId().equalsIgnoreCase(
             		GlobalVariables.getUserSession().getPrincipalId());
         }
         return false;
     }
 
     public Person getInitiator() {
-    	String initiatorPrincipalId = getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
+    	String initiatorPrincipalId = getWorkflowDocument().getInitiatorPrincipalId();
     	return KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
     }
 
@@ -588,7 +589,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      * @return true if the workflowDocument associated with this form is currently enroute
      */
     public boolean isDocumentEnRoute() {
-        return getWorkflowDocument().stateIsEnroute();
+        return getWorkflowDocument().isEnroute();
     }
 
     /**
@@ -661,7 +662,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      * @return
      */
     public String getInitiatorNetworkId() {
-        return this.getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
+        return this.getWorkflowDocument().getInitiatorPrincipalId();
     }
 
     /**

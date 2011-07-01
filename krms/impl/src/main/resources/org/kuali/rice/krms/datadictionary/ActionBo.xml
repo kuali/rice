@@ -145,7 +145,7 @@
   </bean>
   
   <bean id="ActionBo-InquiryView" parent="InquiryView">
-    <property name="title" value="Rule Inquiry"/>
+    <property name="title" value="Action Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ActionBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">

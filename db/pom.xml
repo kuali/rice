@@ -113,6 +113,11 @@
     </rice.impex.oracle.sql.post.materialization>
   </properties>
   <build>
+    <resources>
+      <resource>
+        <directory>${project.build.directory}/generated-impex</directory>
+      </resource>
+    </resources>
     <pluginManagement>
       <plugins>
         <plugin>

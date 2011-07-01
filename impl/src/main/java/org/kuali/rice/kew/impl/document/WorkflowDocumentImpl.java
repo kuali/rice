@@ -28,6 +28,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionTaken;
@@ -75,8 +76,8 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
 
     private boolean documentDeleted = false;
 
-    private WorkflowDocumentActionsService workflowDocumentActionsService;
-    private WorkflowDocumentService workflowDocumentService;
+    private transient WorkflowDocumentActionsService workflowDocumentActionsService;
+    private transient WorkflowDocumentService workflowDocumentService;
 
     public void init(String principalId, Document document) {
         if (StringUtils.isBlank("principalId")) {
@@ -93,6 +94,9 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     public WorkflowDocumentActionsService getWorkflowDocumentActionsService() {
+        if (workflowDocumentActionsService == null) {
+            workflowDocumentActionsService = KewApiServiceLocator.getWorkflowDocumentActionsService();
+        }
         return workflowDocumentActionsService;
     }
 
@@ -101,6 +105,9 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     public WorkflowDocumentService getWorkflowDocumentService() {
+        if (workflowDocumentService == null) {
+            workflowDocumentService = KewApiServiceLocator.getWorkflowDocumentService();
+        }
         return workflowDocumentService;
     }
 

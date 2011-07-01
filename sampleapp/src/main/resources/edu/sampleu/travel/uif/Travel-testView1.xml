@@ -184,7 +184,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="items">
         <list>
           <ref bean="testGroup4"/>
-          <ref bean="testGroup6"/>
           <ref bean="testGroup5"/>
 <!--           <ref bean="testGroup10"/>
           <ref bean="testGroup11"/>   -->         
@@ -197,11 +196,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
       <property name="propertyName" value="fiscalOfficer.accounts"/>
       <property name="layoutManager.sequencePropertyName" value="number"/>
+      <property name="layoutManager.tableTools.render" value="false"/>
       <property name="items">
         <list>
           <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
-          <bean parent="AttributeField" p:propertyName="name" p:defaultValue="sub-name"/>
-          <bean parent="FieldGroup" p:label="Sub Account">
+          <bean parent="AttributeField" p:propertyName="name"  p:defaultValue="sub-name"/>
+          <bean parent="FieldGroup" p:label="Sub Account" p:progressiveRender="!#empty(#line?.number)" p:progressiveRenderViaAJAX="true">
             <property name="items">
               <list>         
                <bean parent="AttributeField" p:propertyName="subAccount" p:showLabel="false"/>
@@ -210,7 +210,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               </list>
             </property>
           </bean>
-          <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+          <bean parent="AttributeField" p:propertyName="subsidizedPercent" p:conditionalReadOnly="#line?.number ne null and #line?.number ne ''" p:refreshWhenChanged="#line?.number"/>
           <bean parent="AttributeField" p:propertyName="createDate"/>
           <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
         </list>
@@ -227,27 +227,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          </list>
       </property>           
       <property name="summary" value="Group with collection and table layout"/>  
-   </bean>
-   
-   <bean id="testGroup6" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="4">
-      <property name="id" value="testGroup6"/>
-      <property name="title" value="Collection Group - Infinite scrolling"/>  
-      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
-      <property name="propertyName" value="fiscalOfficer.accounts"/>
-      <property name="layoutManager.sequencePropertyName" value="number"/>
-      <property name="addLineLabel" value="New Account"/>
-      <property name="layoutManager.tableTools">
-        <bean parent="TableTools-ScrollInfinite"/>
-      </property>
-      <property name="items">
-        <list>
-          <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
-          <bean parent="AttributeField" p:propertyName="name"/>
-          <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
-          <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
-        </list>
-      </property>      
-      <property name="summary" value="Group with collection and table layout with infinite scrolling"/>  
    </bean>
    
    <bean id="testGroup5" parent="CollectionGroup">
@@ -305,7 +284,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Group with sub-collections and stacked layout"/>  
    </bean> 
    
-   <bean id="testGroup11" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="6">
+<!--    <bean id="testGroup11" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="6">
       <property name="title" value="Sub Collection Table"/>  
       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
       <property name="propertyName" value="fiscalOfficer.accounts"/>
@@ -327,19 +306,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <bean parent="AttributeField" p:propertyName="createDate"/>
           <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
         </list>
-      </property> 
-      <property name="subCollections">
-        <list>
-           <bean parent="testGroup6">
-             <property name="title" value="Sub Collection 1"/>  
-             <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
-             <property name="summary" value="Sub collection table layout"/>  
-           </bean>       
-        </list>
-      </property>                  
+      </property>                   
       <property name="summary" value="Group with sub-collection and table layout"/>  
    </bean>
-
+ -->
    <bean id="testGroup3-cgrid" parent="testGroup3">
    	  <property name="componentModifiers">
          <list>

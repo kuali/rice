@@ -260,7 +260,7 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Show inactive records flag not found in request");
         }
 
-        CollectionGroup collectionGroup = (CollectionGroup) ComponentFactory.getComponentById(collectionGroupId);
+        CollectionGroup collectionGroup = (CollectionGroup) ComponentFactory.getComponentById(uifForm, collectionGroupId);
 
         // update inactive flag on group
         collectionGroup.setShowInactive(showInactive);

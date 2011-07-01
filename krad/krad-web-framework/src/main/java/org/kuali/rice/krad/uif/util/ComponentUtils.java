@@ -16,12 +16,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.DataBinding;
@@ -503,9 +505,15 @@ public class ComponentUtils {
         .replaceAll("\\s(?i:gte)\\s", " >= ")
         .replaceAll("\\s(?i:and)\\s", " && ")
         .replaceAll("\\s(?i:or)\\s", " || ")
-        .replaceAll("\\s+(?i:matches)\\s+'.*'", ".match(/" 
-                + "$0".replaceAll("\\s+(?i:matches)\\s+", "") + "/).length > 0 ");
-        
+        .replaceAll("\\s(?i:not)\\s", " != ")
+        .replaceAll("\\s(?i:null)\\s?", " '' ")
+        .replaceAll("\\s?(?i:#empty)\\((.*?)\\)", "isValueEmpty($1)");
+        if(conditionJs.contains("matches")){
+            conditionJs = conditionJs.replaceAll("\\s+(?i:matches)\\s+'.*'", ".match(/" 
+                    + "$0" + "/) != null ");
+            conditionJs = conditionJs.replaceAll("\\(/\\s+(?i:matches)\\s+'", "(/");
+            conditionJs = conditionJs.replaceAll("'\\s*/\\)", "/)");
+        }
         for(String propertyName: controlNames){
             conditionJs = conditionJs.replace(propertyName, 
                     "coerceValue(\""+ propertyName +"\")");
@@ -534,7 +542,15 @@ public class ComponentUtils {
                    || stack.equalsIgnoreCase("lt")
                    || stack.equalsIgnoreCase("lte")
                    || stack.equalsIgnoreCase("gte")
-                   || stack.equalsIgnoreCase("matches"))){
+                   || stack.equalsIgnoreCase("matches")
+                   || stack.equalsIgnoreCase("null")
+                   || stack.equalsIgnoreCase("false")
+                   || stack.equalsIgnoreCase("true")
+                   || stack.equalsIgnoreCase("and")
+                   || stack.equalsIgnoreCase("or")
+                   || stack.contains("#empty")
+                   || stack.startsWith("'")
+                   || stack.endsWith("'"))){
                
                boolean isNumber = false;
                if((StringUtils.isNumeric(stack.substring(0,1)) 
@@ -548,8 +564,7 @@ public class ComponentUtils {
                    }
                }
                
-               if(!(stack.equalsIgnoreCase("false") || stack.equalsIgnoreCase("true") || isNumber
-                       || stack.startsWith("'") || stack.endsWith("'"))){
+               if(!(isNumber)){
                    if(!controlNames.contains(stack)){
                        controlNames.add(stack);
                    }
@@ -558,4 +573,35 @@ public class ComponentUtils {
        }
     }
 
+    public static String getLinePathValue(Component component){
+        CollectionGroup collectionGroup = (CollectionGroup)(component.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP));
+        String linePath = "";
+        if(collectionGroup != null){
+            Object indexObj = component.getContext().get(UifConstants.ContextVariableNames.INDEX);
+            if(indexObj != null){
+                int index = (Integer)indexObj;
+                boolean addLine = false;
+                Object addLineObj = component.getContext().get(UifConstants.ContextVariableNames.IS_ADD_LINE);
+                
+                if(addLineObj != null){
+                    addLine = (Boolean)addLineObj;
+                }
+                if (addLine) {
+                  linePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
+                }
+                else {
+                  linePath = collectionGroup.getBindingInfo().getBindingPath() + "[" + index + "]";
+                }
+            }
+        }
+        return linePath;
+    }
+    
+    public static String replaceLineAttr(String statement, String replacement){
+        if (statement.contains("#line") && StringUtils.isNotEmpty(replacement)) {
+            statement = statement.replace("#line?", replacement);
+            statement = statement.replace("#line", replacement);
+        }
+        return statement;
+    }
 }

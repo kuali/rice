@@ -123,7 +123,7 @@
             </list>
         </property>
     </bean>
-    <bean id="tabTest" parent="TabGroup" p:progressiveRenderViaAJAX="true" p:progressiveRender="field2 eq 'lizard_pet'">
+    <bean id="tabTest" parent="TabGroup" p:progressiveRenderViaAJAX="true" p:progressiveRender="field1 matches '^[yYnN]$'">
         <property name="title" value="Tab Test"/>
         <property name="items">
             <list>
@@ -566,7 +566,6 @@
         <property name="items">
             <list>
                 <ref bean="testGroup4"/>
-                <ref bean="testGroup6"/>
             </list>
         </property>
     </bean>

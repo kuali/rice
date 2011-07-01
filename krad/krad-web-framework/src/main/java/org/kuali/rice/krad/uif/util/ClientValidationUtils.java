@@ -653,6 +653,7 @@ public class ClientValidationUtils {
 		}
 		else{
 			String and = configService.getPropertyString(AND_MSG_KEY);
+			String or = configService.getPropertyString(OR_MSG_KEY);
 			String all = configService.getPropertyString(ALL_MSG_KEY);
 			String atMost = configService.getPropertyString(ATMOST_MSG_KEY);
 			String genericLabel = configService.getPropertyString(GENERIC_FIELD_MSG_KEY);
@@ -714,7 +715,7 @@ public class ClientValidationUtils {
 						statement = andedString;
 					}
 					else{
-						statement = statement + andedString;
+						statement = statement + or.toUpperCase() + andedString;
 					}
 				}
 			}

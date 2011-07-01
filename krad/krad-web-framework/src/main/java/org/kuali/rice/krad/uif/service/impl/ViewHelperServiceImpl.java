@@ -171,7 +171,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         Component origComponent = form.getView().getViewIndex().getComponentById(origId);
         
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
-        component.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, parent);
+        component.getContext().putAll(origComponent.getContext());
         
         performComponentInitialization(form.getView(), component);
         performComponentApplyModel(form.getView(), component, form);

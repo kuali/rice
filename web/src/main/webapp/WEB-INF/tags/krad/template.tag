@@ -75,7 +75,7 @@ still render, but render in a hidden container --%>
 	<c:forEach items="${component.progressiveDisclosureControlNames}" var="cName">
 		<krad:script
 			value="var condition = function(){return (${component.progressiveDisclosureConditionJs});};
-			setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', condition, ${component.progressiveRenderAndRefresh});" />
+			setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', condition, ${component.progressiveRenderAndRefresh});" />
 	</c:forEach>
 	<krad:script value="hiddenInputValidationToggle('${component.id}_refreshWrapper');" />
 
@@ -86,14 +86,14 @@ still render, but render in a hidden container --%>
 	<c:forEach items="${component.conditionalRefreshControlNames}" var="cName">
 		<krad:script
 			value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
-		setupRefreshCheck('${cName}', '${component.id}', condition);" />
+		setupRefreshCheck(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', condition);" />
 	</c:forEach>
 </c:if>
 
 <%-- Refresh when changed setup --%>
 <c:if test="${!empty component.refreshWhenChanged}">
 	<c:forEach items="${component.refreshWhenChangedControlNames}" var="cName">
-		<krad:script value="setupOnChangeRefresh('${cName}', '${component.id}');" />
+		<krad:script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.baseId}');" />
 	</c:forEach>
 </c:if>
 

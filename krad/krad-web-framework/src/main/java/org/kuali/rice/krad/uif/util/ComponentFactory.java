@@ -13,13 +13,19 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.GroupField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.web.spring.form.UifFormBase;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -83,12 +89,9 @@ public class ComponentFactory {
      * @param id - id for the component to retrieve
      * @return Component new instance initialized from the dictionary
      */
-    public static Component getComponentById(String id) {
-        if (id.contains("_")) {
-            id = StringUtils.substringBefore(id, "_");
-        }
-
-        Component component = getNewComponentInstance(id);
+    public static Component getComponentById(UifFormBase form, String id) {
+        Component origComponent = form.getView().getViewIndex().getComponentById(id);
+        Component component = getNewComponentInstance(origComponent.getBaseId());
 
         return component;
     }
@@ -102,15 +105,50 @@ public class ComponentFactory {
      * @return Component instance that has been run through the lifecycle
      */
     public static Component getComponentByIdWithLifecycle(UifFormBase form, String id) {
-        String origId = id;
+        Component origComponent = form.getView().getViewIndex().getComponentById(id);
+        Component component = getComponentById(form, id);
+        
+        form.getView().getViewHelperService().performComponentLifecycle(form, component, id);
+        
 
-        Component component = getComponentById(id);
-
-        form.getView().getViewHelperService().performComponentLifecycle(form, component, origId);
+        if(component instanceof Field){
+            ((Field) component).setLabelFieldRendered(((Field)origComponent).isLabelFieldRendered());
+        }
+        
+        if(component instanceof AttributeField){
+            ((AttributeField) component).setBindingInfo(((AttributeField)origComponent).getBindingInfo());
+        }
+        
+        if(component instanceof CollectionGroup){
+            ((CollectionGroup) component).setBindingInfo(((CollectionGroup)origComponent).getBindingInfo());
+        }
+        
+        if(component instanceof Group || component instanceof GroupField){
+            List<AttributeField> fields = ComponentUtils.getComponentsOfTypeDeep(component, AttributeField.class);
+            String suffix = StringUtils.replaceOnce(component.getId(), component.getBaseId(), "");
+            for(AttributeField field: fields){
+                AttributeField origField = (AttributeField)form.getView().getViewIndex().getComponentById(StringUtils.replaceOnce(field.getId(), field.getBaseId(), field.getBaseId() + suffix));
+                if(origField != null){
+                    field.setBindingInfo(origField.getBindingInfo());
+                }
+                field.setLabelFieldRendered(origField.isLabelFieldRendered());
+            }
+            
+            List<CollectionGroup> collections = ComponentUtils.getComponentsOfTypeDeep(component, CollectionGroup.class);
+            for(CollectionGroup collection: collections){
+                CollectionGroup origField = (CollectionGroup)form.getView().getViewIndex().getComponentById(StringUtils.replaceOnce(collection.getId(), collection.getBaseId(), collection.getBaseId() + suffix));
+                if(origField != null){
+                    collection.setBindingInfo(origField.getBindingInfo());
+                }
+            }
+        }
+        
         form.getView().getViewIndex().indexComponent(component);
-
+        
         return component;
     }
+    
+
 
     protected static DataDictionaryService getDataDictionaryService() {
         return KRADServiceLocatorWeb.getDataDictionaryService();

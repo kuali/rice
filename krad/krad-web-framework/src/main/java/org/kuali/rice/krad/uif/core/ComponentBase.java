@@ -20,8 +20,10 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.CssConstants;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.field.AttributeField;
@@ -46,6 +48,7 @@ public abstract class ComponentBase implements Component {
     private static final long serialVersionUID = -4449335748129894350L;
 
     private String id;
+    private String baseId;
     private String template;
     private String title;
 
@@ -233,17 +236,44 @@ public abstract class ComponentBase implements Component {
         }
         // replace the #line? collections place holder with the correct binding
         // path
-        // TODO : handle all components not only AttributeField
-        if (StringUtils.isNotEmpty(progressiveRender)) {
-            if (progressiveRender.indexOf("#line?") != -1 && this instanceof AttributeField) {
-                String path = ViewModelUtils.getParentObjectPath((AttributeField) this);
-                progressiveDisclosureConditionJs = progressiveDisclosureConditionJs.replace("#line?", path);
+        CollectionGroup collectionGroup = (CollectionGroup)(this.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP));
+        String linePath = "";
+        if(collectionGroup != null){
+            linePath = ComponentUtils.getLinePathValue(this);
+            //ProgressiveRender conditions
+            if (StringUtils.isNotEmpty(progressiveRender) && StringUtils.isNotEmpty(linePath)) {
+                progressiveDisclosureConditionJs = ComponentUtils.replaceLineAttr(progressiveDisclosureConditionJs, linePath);
                 ListIterator<String> listIterator = progressiveDisclosureControlNames.listIterator();
                 while (listIterator.hasNext()) {
-                    listIterator.set(listIterator.next().replace("#line?", path));
+                    String name = listIterator.next();
+                    name = ComponentUtils.replaceLineAttr(name, linePath);
+                    listIterator.set(name);
+                }
+            }
+            
+            //Refresh conditions
+            if (StringUtils.isNotEmpty(conditionalRefresh) && StringUtils.isNotEmpty(linePath)) {
+                conditionalRefreshConditionJs = ComponentUtils.replaceLineAttr(conditionalRefreshConditionJs, linePath);
+                ListIterator<String> listIterator = conditionalRefreshControlNames.listIterator();
+                while (listIterator.hasNext()) {
+                    String name = listIterator.next();
+                    name = ComponentUtils.replaceLineAttr(name, linePath);
+                    listIterator.set(name);
+                }
+            }
+            
+            if(StringUtils.isNotEmpty(refreshWhenChanged)){
+                ListIterator<String> listIterator = refreshWhenChangedControlNames.listIterator();
+                while (listIterator.hasNext()) {
+                    String name = listIterator.next();
+                    name = ComponentUtils.replaceLineAttr(name, linePath);
+                    listIterator.set(name);
                 }
             }
         }
+
+        
+        
     }
 
     /**
@@ -1467,4 +1497,23 @@ public abstract class ComponentBase implements Component {
     public boolean isSkipInTabOrder() {
         return skipInTabOrder;
     }
+
+    /**
+     * The original generated id.  During the component lifecycle the id may get manipulated
+     * and changed based on the type of component it is.  This id represents the original id
+     * assigned before any additional suffixes were appended.
+     * @return the baseId
+     */
+    public String getBaseId() {
+        return this.baseId;
+    }
+
+    /**
+     * @param baseId the baseId to set
+     */
+    public void setBaseId(String baseId) {
+        this.baseId = baseId;
+    }
+    
+    
 }

@@ -64,11 +64,8 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
 
                 component.setId(beanName);
             }
-
-            // TODO: removed until ids are fixed to not have underscore
-//            if (StringUtils.contains(component.getId(), "_")) {
-//                throw new RuntimeException(("Component id is not allowed to have an underscore"));
-//            }
+     
+            component.setBaseId(component.getId());
 
             // hold definition in component factory
             ComponentFactory.addComponentDefinition(component.getId(), component);

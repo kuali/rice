@@ -116,6 +116,8 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
         try {
             context.registerFunction("isAssignableFrom", ExpressionFunctions.class
                     .getDeclaredMethod("isAssignableFrom", new Class[]{Class.class, Class.class}));
+            context.registerFunction("empty", ExpressionFunctions.class
+                    .getDeclaredMethod("empty", new Class[]{Object.class}));
         } catch (NoSuchMethodException e) {
             LOG.error("Custom function for el expressions not found: " + e.getMessage());
             throw new RuntimeException("Custom function for el expressions not found: " + e.getMessage(), e);

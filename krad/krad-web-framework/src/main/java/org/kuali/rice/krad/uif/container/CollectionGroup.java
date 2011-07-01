@@ -187,6 +187,8 @@ public class CollectionGroup extends Group implements DataBinding {
         performCollectionFiltering(view, model);
 
         getCollectionGroupBuilder().build(view, model, this);
+        
+        pushCollectionGroupToReference();
     }
 
     /**
@@ -194,12 +196,14 @@ public class CollectionGroup extends Group implements DataBinding {
      * instance, and sets name as parameter for an action fields in the group
      */
     protected void pushCollectionGroupToReference() {
+        List<Component> components = this.getNestedComponents();
+        
         ComponentUtils
-                .pushObjectToContext(this.getNestedComponents(), UifConstants.ContextVariableNames.COLLECTION_GROUP,
+                .pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP,
                         this);
 
         List<ActionField> actionFields =
-                ComponentUtils.getComponentsOfTypeDeep(this.getNestedComponents(), ActionField.class);
+                ComponentUtils.getComponentsOfTypeDeep(components, ActionField.class);
         for (ActionField actionField : actionFields) {
             actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
                     this.getBindingInfo().getBindingPath());

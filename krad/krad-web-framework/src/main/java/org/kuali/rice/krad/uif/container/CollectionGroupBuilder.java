@@ -125,7 +125,9 @@ public class CollectionGroupBuilder implements Serializable {
         String addLineBindingPath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         List<ActionField> actions = getAddLineActions(view, model, collectionGroup);
 
-        buildLine(view, model, collectionGroup, addLineBindingPath, actions, addLineBindsToForm, null, -1);
+        Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLineBindingPath);
+        buildLine(view, model, collectionGroup, addLineBindingPath, actions, addLineBindsToForm, addLine, -1);
+        //buildLine(view, model, collectionGroup, addLineBindingPath, actions, addLineBindsToForm, null, -1);
     }
 
 	/**

@@ -727,8 +727,17 @@ function checkDirty(event){
  * @param controlName
  * @param refreshId
  */
-function setupOnChangeRefresh(controlName, refreshId){
-	setupRefreshCheck(controlName, refreshId, function(){return true;});
+function setupOnChangeRefresh(controlName, refreshId, baseId){
+	setupRefreshCheck(controlName, refreshId, baseId, function(){return true;});
+}
+
+function isValueEmpty(value){
+	if(value != undefined && value != null && value != ""){
+		return false;
+	}
+	else{
+		return true;
+	}
 }
 
 /**
@@ -741,13 +750,13 @@ function setupOnChangeRefresh(controlName, refreshId){
  * @param disclosureId
  * @param condition - function which returns true to refresh, false otherwise
  */
-function setupRefreshCheck(controlName, refreshId, condition){
+function setupRefreshCheck(controlName, refreshId, baseId, condition){
 	jq("[name='"+ controlName +"']").change(function() {
 		//visible check because a component must logically be visible to refresh
 		var refreshComp = jq("#" + refreshId + "_refreshWrapper");
 		if(refreshComp.length){
 			if(condition()){
-				retrieveComponent(refreshId);
+				retrieveComponent(refreshId, baseId);
 			}
 		}
 	});
@@ -764,7 +773,7 @@ function setupRefreshCheck(controlName, refreshId, condition){
  * @param disclosureId
  * @param condition - function which returns true to disclose, false otherwise
  */
-function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetrieve){
+function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve){
 	var actualId = retrieveOriginalId(disclosureId);
 	if (!actualId.match("\_c0$")) {
 		jq("[name='"+ controlName +"']").change(function() {
@@ -772,10 +781,10 @@ function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetri
 			if(refreshDisclosure.length){
 				if(condition()){
 					if(refreshDisclosure.hasClass("unrendered") || alwaysRetrieve){
-						retrieveComponent(disclosureId);
+						retrieveComponent(disclosureId, baseId);
 					}
 					else{
-						columnShownCheck(refreshDisclosure, true);
+						//columnShownCheck(refreshDisclosure, true);
 						refreshDisclosure.fadeIn("slow");
 						//re-enable validation on now shown inputs
 						hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
@@ -784,7 +793,7 @@ function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetri
 				}
 				else{
 					refreshDisclosure.hide();
-					columnShownCheck(refreshDisclosure, false);
+					//columnShownCheck(refreshDisclosure, false);
 					//ignore validation on hidden inputs
 					hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
 					jq(".displayWith-" + actualId).hide();
@@ -896,8 +905,7 @@ function hiddenInputValidationToggle(id){
  *
  * @param id - id for the component to retrieve
  */
-function retrieveComponent(id){
-	var actualId = retrieveOriginalId(id);
+function retrieveComponent(id, actualId){
 	var elementToBlock = jq("#" + id + "_refreshWrapper");
 	if(elementToBlock.find("#" + actualId + "_attribute_span").length){
 		elementToBlock = jq("#" + actualId +"_attribute_span");

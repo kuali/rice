@@ -68,6 +68,7 @@
 <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
 <%--   <c:if test="${item.render}"> --%>
    <c:set var="colCount" value="${colCount + 1}"/> 
+   <c:set var="actualColCount" value="${actualColCount + 1}"/> 
      
    <%-- begin table row --%>
    <c:if test="${(colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)}">
@@ -121,13 +122,13 @@
    <c:choose>
      <c:when test="${renderHeaderRow || renderHeaderColumn || (item['class'].simpleName eq 'HeaderField')}">
        <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}"
-          rowspan="${item.rowSpan}" ${style} ${styleClass}>
+          rowspan="${item.rowSpan}" ${style} class="col${actualColCount}">
         <krad:template component="${item}"/>
        </th>
      </c:when>
      <c:otherwise>
        <td ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
-         ${style} ${styleClass} ${evenOddClass}>
+         ${style} class="col${actualColCount}" ${evenOddClass}>
         <krad:template component="${item}"/>
        </td>
      </c:otherwise>
@@ -146,6 +147,7 @@
      
    <%-- end table row --%>  
    <c:if test="${itemVarStatus.last || (colCount % numberOfColumns == 0)}">
+   	 <c:set var="actualColCount" value="0"/> 
      </tr>
      <c:set var="carryOverColCount" value="${carryOverColCount + tmpCarryOverColCount}"/>
      <c:set var="tmpCarryOverColCount" value="0"/>

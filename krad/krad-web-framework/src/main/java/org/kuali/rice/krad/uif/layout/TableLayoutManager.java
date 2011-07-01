@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.layout;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
@@ -273,7 +274,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		// pull out label fields from the container's items
 		int cellPosition = 0;
 		for (Field field : lineFields) {
-		    if (!field.isRender()) {
+		    if (!field.isRender() && StringUtils.isEmpty(field.getProgressiveRender())) {
 		        continue;
 		    }
 		    

@@ -1,5 +1,7 @@
 package org.kuali.rice.krad.uif.util;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Defines functions that can be used in el expressions within
  * the UIF dictionary files
@@ -18,5 +20,15 @@ public class ExpressionFunctions {
      */
     public static boolean isAssignableFrom(Class<?> assignableClass, Class<?> objectClass) {
         return assignableClass.isAssignableFrom(objectClass);
+    }
+    
+    /**
+     * Checks whether the given value is null or blank string
+     *
+     * @param value - property value to check
+     * @return boolean true if value is null or blank, false if not
+     */
+    public static boolean empty(Object value) {
+        return (value == null) || (StringUtils.isBlank(value.toString()));
     }
 }

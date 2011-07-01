@@ -63,6 +63,13 @@ public class UITestController extends UifControllerBase {
 
 		FiscalOfficer fiscalOfficer = new FiscalOfficer();
 		fiscalOfficer.setId(new Long(1));
+		FiscalOfficer fiscalOfficer2 = new FiscalOfficer();
+        fiscalOfficer.setId(new Long(1));
+        FiscalOfficer fiscalOfficer3 = new FiscalOfficer();
+        fiscalOfficer.setId(new Long(1));
+        FiscalOfficer fiscalOfficer4 = new FiscalOfficer();
+        fiscalOfficer.setId(new Long(1));
+        
 
 		List<TravelAccount> officerAccounts = new ArrayList<TravelAccount>();
 
@@ -91,14 +98,14 @@ public class UITestController extends UifControllerBase {
 		travelAccount.setFiscalOfficer(fiscalOfficer);
 		
 		// build sub-collections
-		travelAccount2.setFiscalOfficer(fiscalOfficer);
-		travelAccount3.setFiscalOfficer(fiscalOfficer);
-		travelAccount4.setFiscalOfficer(fiscalOfficer);
+		travelAccount2.setFiscalOfficer(fiscalOfficer2);
+		travelAccount3.setFiscalOfficer(fiscalOfficer3);
+		travelAccount4.setFiscalOfficer(fiscalOfficer4);
 
 		uiTestForm.setTravelAccount1(travelAccount);
-		uiTestForm.setTravelAccount2(travelAccount);
-		uiTestForm.setTravelAccount3(travelAccount);
-		uiTestForm.setTravelAccount4(travelAccount);
+		uiTestForm.setTravelAccount2(travelAccount2);
+		uiTestForm.setTravelAccount3(travelAccount3);
+		uiTestForm.setTravelAccount4(travelAccount4);
 		
 		uiTestForm.setField5("a14");
 		

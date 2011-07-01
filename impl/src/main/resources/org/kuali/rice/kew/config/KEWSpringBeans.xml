@@ -702,6 +702,12 @@
 		<property name="serviceName" value="xmlImpexRegistry" />
 	</bean>
 
+	<!--
+		This bean handles the import and export of KIM roles and permissions.
+		TODO: Should we be referencing KIM classes within this file?
+	-->
+	<bean id="kimImporterAndExporter" class="org.kuali.rice.kim.impl.jaxb.KimImporterAndExporter" />
+
     <bean id="kewImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">
 		<property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
         
@@ -715,6 +721,7 @@
              <ref local="enRuleService" />
              <ref local="enRuleDelegationService" />
              <ref local="enHelpService" />
+             <ref local="kimImporterAndExporter" />
              <!--  ref local="enEDocLiteService" / -->
 		   </list>
 		</property>
@@ -727,6 +734,7 @@
              <ref local="enRuleService" />
              <ref local="enRuleDelegationService" />
              <ref local="enHelpService" />
+             <ref local="kimImporterAndExporter" />
              <!-- ref local="enEDocLiteService" / -->
 		   </list>
 		</property>

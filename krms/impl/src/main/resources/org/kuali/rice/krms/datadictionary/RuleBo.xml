@@ -168,7 +168,7 @@
 			</property>
 		  </bean>
 		  <bean parent="GroupSection">
-			<property name="title" value="Proposition" />
+			<property name="title" value="Rule Propositions" />
 			<property name="items">
 			  <list>
 		  		<bean parent="GroupGridBodyOnly">
@@ -198,6 +198,20 @@
               </list>
 			</property>
 		  </bean>
+			    <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="4">
+				  <property name="title" value="Rule Actions" />
+				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ActionBo" />
+				  <property name="propertyName" value="actions" />
+				  <property name="layoutManager.renderSequenceField" value="false" />
+				  <property name="items">
+				    <list>
+					  <bean parent="AttributeField" p:propertyName="id" />
+					  <bean parent="AttributeField" p:propertyName="name" />
+					  <bean parent="AttributeField" p:propertyName="description" />
+					  <bean parent="AttributeField" p:propertyName="typeId" />
+				    </list>
+				   </property>
+			    </bean>
         </list>
     </property>
   </bean>

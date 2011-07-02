@@ -48,6 +48,7 @@ import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.rule.GenericAttributeContent;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.springframework.web.servlet.ModelAndView;
@@ -234,7 +235,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
     String initiatorId = request.getRemoteUser();
 
 	// now construct the workflow document, which will interact with workflow
-	NotificationWorkflowDocument document;
+	WorkflowDocument document;
 	Map<String, Object> model = new HashMap<String, Object>();
         String view;
 	try {
@@ -271,12 +272,12 @@ public class SendEventNotificationMessageController extends BaseSendNotification
                 attrFields.put(prefix + index, reviewer.getReviewerId());
             }
             GenericAttributeContent gac = new GenericAttributeContent("channelReviewers");
-            document.getDocumentContent().setApplicationContent(notificationAsXml);
-            document.getDocumentContent().setAttributeContent("<attributeContent>" + gac.generateContent(attrFields) + "</attributeContent>");
+            document.setApplicationContent(notificationAsXml);
+            document.setAttributeContent("<attributeContent>" + gac.generateContent(attrFields) + "</attributeContent>");
 
             document.setTitle(notification.getTitle());
 
-	    document.routeDocument("This message was submitted via the event notification message submission form by user "
+	    document.route("This message was submitted via the event notification message submission form by user "
 			    + initiatorId);
 
 	    view = "SendEventNotificationMessage";

@@ -17,25 +17,31 @@
 
 package org.kuali.rice.kew.xml;
 
-import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
-import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.exception.GroupNotFoundException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
+import org.kuali.rice.core.util.xml.XmlException;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
+import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.krad.exception.GroupNotFoundException;
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {
     private List testDoc(String docName, Class expectedException) throws Exception {
@@ -129,72 +135,72 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	testDoc("BlanketApprovePolicy", null);
     	
     	// on BlanketApprovePolicy1 anyone can blanket approve
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy1");
-    	document.saveRoutingData();
-    	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy1");
+    	document.saveDocumentData();
+    	assertTrue(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
 
     	// on BlanketApprovePolicy2 no-one can blanket approve
-    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy2");
-    	document.saveRoutingData();
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy2");
+    	document.saveDocumentData();
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
     	// on BlanketApprovePolicy3 no-one can blanket approve
-    	document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApprovePolicy3");
-    	document.saveRoutingData();
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApprovePolicy3");
+    	document.saveDocumentData();
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
     	// on BlanketApprovePolicy4 TestWorkgroup can blanket approve
-    	/*document = WorkflowDocument.createDocument(new NetworkIdVO("ewestfal"), "BlanketApprovePolicy4");
-    	document.saveRoutingData();
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));*/
+    	/*document = WorkflowDocumentFactory.createDocument(new NetworkIdVO("ewestfal"), "BlanketApprovePolicy4");
+    	document.saveDocumentData();
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));*/
     	
     	// on Blanket ApprovePolicy 5, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy5");
-    	document.saveRoutingData();
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy5");
+    	document.saveDocumentData();
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on Blanket ApprovePolicy 6, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy6");
-    	document.saveRoutingData();
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy6");
+    	document.saveDocumentData();
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on Blanket ApprovePolicy 7, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy7");
-    	document.saveRoutingData();
-    	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy7");
+    	document.saveDocumentData();
+    	assertTrue(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	assertTrue(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on BlanketApprovePolicy_Override_NONE, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_Override_NONE");
-    	document.saveRoutingData();
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_Override_NONE");
+    	document.saveDocumentData();
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on BlanketApprovePolicy_Override_ANY, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_Override_ANY");
-    	document.saveRoutingData();
-    	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_Override_ANY");
+    	document.saveDocumentData();
+    	assertTrue(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	assertTrue(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
 
 //  	 on BlanketApprovePolicy_Override_ANY, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_NoOverride");
-    	document.saveRoutingData();
-    	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_NoOverride");
+    	document.saveDocumentData();
+    	assertFalse(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	assertTrue(isActionCodeValidForDocument(document, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     }
     
     @Test public void testReportingWorkgroupName() throws Exception {
@@ -419,7 +425,10 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     @Test public void testLoadDocWithBlankDocumentStatusPolicyStringValue() throws Exception {
         testDoc("DocumentStatusPolicyMissingStringValue", XmlException.class);
     }
-    
+
+    private boolean isActionCodeValidForDocument(WorkflowDocument document, String actionCode) {
+        return document.isValidAction(ActionType.fromCode(actionCode));
+    }
 
     
 }

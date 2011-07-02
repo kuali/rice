@@ -16,19 +16,18 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.junit.Test;
-
-import org.kuali.rice.kew.dto.ValidActionsDTO;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
+import java.util.Set;
+
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.util.KEWConstants;
 
 
 public class ValidActionsTest extends KEWTestCase {
@@ -44,7 +43,7 @@ public class ValidActionsTest extends KEWTestCase {
     @Test public void testValidActions() throws Exception {
         WorkflowDocument document = null;
         String networkId = null;
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_NAME);
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_NAME);
         String documentId = document.getDocumentId();
 
         networkId = "rkirkend";
@@ -101,8 +100,8 @@ public class ValidActionsTest extends KEWTestCase {
         // check for no super user actions "c", "a"
         // check for routable "O"
         // check for savable "S"
-        document.routeDocument("");
-        assertEquals("Document should be ENROUTE", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
+        document.route("");
+        assertEquals("Document should be ENROUTE", DocumentStatus.ENROUTE, document.getStatus());
 
         networkId = "user1";
         document = this.checkActions(networkId, documentId, 
@@ -123,29 +122,29 @@ public class ValidActionsTest extends KEWTestCase {
         // check for no route "O"
         // check for no save "S"
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         document.approve("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         document.approve("");
 
         // SHOULD NOW BE ONLY ACKNOWLEDGED
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         // test for Processed Status on document
         document.acknowledge("");
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         document.acknowledge("");
     }
 
     private WorkflowDocument checkActions(String networkId,String documentId,String[] validActionsAllowed,String[] invalidActionsNotAllowed) throws Exception {
-        WorkflowDocument document = WorkflowDocument.loadDocument(getPrincipalIdForName(networkId), documentId);
-        ValidActionsDTO validActions = document.getRouteHeader().getValidActions();
-        Set<String> validActionsSet = (validActions.getValidActionCodesAllowed() != null) ? new HashSet<String>(Arrays.asList(validActions.getValidActionCodesAllowed())) : new HashSet<String>();
+        WorkflowDocument document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(networkId), documentId);
+        org.kuali.rice.kew.api.action.ValidActions validActions = document.getValidActions();
+        Set<ActionType> validActionsSet = validActions.getValidActions();
 
         for (int i = 0; i < validActionsAllowed.length; i++) {
             String actionAllowed = validActionsAllowed[i];
-            if (!validActionsSet.contains(actionAllowed)) {
+            if (!validActionsSet.contains(ActionType.fromCode(actionAllowed))) {
                 fail("Action '" + KEWConstants.ACTION_TAKEN_CD.get(actionAllowed) + "' should be allowed for user " + networkId);
             }
         }

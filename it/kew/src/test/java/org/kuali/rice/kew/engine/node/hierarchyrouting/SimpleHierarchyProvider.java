@@ -31,7 +31,6 @@ import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyProvider;
 import org.kuali.rice.kew.rule.NamedRuleSelector;
 import org.kuali.rice.kew.util.Utilities;
 import org.w3c.dom.Element;

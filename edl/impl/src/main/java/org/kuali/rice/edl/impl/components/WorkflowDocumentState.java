@@ -16,6 +16,17 @@
 
 package org.kuali.rice.edl.impl.components;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
@@ -27,24 +38,14 @@ import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.edl.impl.UserAction;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -92,7 +93,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 
 			boolean documentEditable = false;
 			if (document != null) {
-				List validActions = determineValidActions(document);
+				List<String> validActions = determineValidActions(document);
 				
 				documentEditable = isEditable(edlContext, validActions);
 	
@@ -102,14 +103,14 @@ public class WorkflowDocumentState implements EDLModelComponent {
 				EDLXmlUtils.createTextElementOnParent(documentState, "annotatable", String.valueOf(isAnnotatable));
 				EDLXmlUtils.createTextElementOnParent(documentState, "docId", document.getDocumentId());
 				Element workflowDocumentStatus = EDLXmlUtils.getOrCreateChildElement(documentState, "workflowDocumentState", true);
-				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "status", document.getStatusDisplayValue());
+				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "status", document.getStatus().getLabel());
 				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "createDate", RiceConstants.getDefaultDateAndTimeFormat().format(document.getDateCreated()));
-				String[] nodeNames = document.getPreviousNodeNames();
-				if (nodeNames.length > 0) {
+				List<String> nodeNames = document.getPreviousNodeNames();
+				if (nodeNames.size() > 0) {
 				    Element previousNodes = EDLXmlUtils.getOrCreateChildElement(documentState, "previousNodes", true);
 				    // don't include LAST node (where the document is currently...don't want to return to current location)
-				    for (int i = 0; i < nodeNames.length; i++) {
-					EDLXmlUtils.createTextElementOnParent(previousNodes, "node", nodeNames[i]);
+				    for (int i = 0; i < nodeNames.size(); i++) {
+					EDLXmlUtils.createTextElementOnParent(previousNodes, "node", nodeNames.get(i));
 				    }
 				}
 				String[] currentNodeNames = info.getCurrentNodeNames(document.getDocumentId());
@@ -154,14 +155,14 @@ public class WorkflowDocumentState implements EDLModelComponent {
             if (wfdoc.isBlanketApproveCapable()) {
                 flags[buttons.BLANKETAPPROVE.ordinal()] = UserAction.ACTION_BLANKETAPPROVE;
             }
-            if (!wfdoc.stateIsSaved()) {
+            if (!wfdoc.isSaved()) {
                 flags[buttons.APPROVE.ordinal()] = UserAction.ACTION_APPROVE;
                 flags[buttons.DISAPPROVE.ordinal()] = UserAction.ACTION_DISAPPROVE;
             }
             
             // should invoke WorkflowDocument.saveRoutingData(...).
             flags[buttons.SAVE.ordinal()] = UserAction.ACTION_SAVE;
-            if (wfdoc.getPreviousNodeNames().length > 0) {
+            if (wfdoc.getPreviousNodeNames().size() > 0) {
                 flags[buttons.RETURNTOPREVIOUS.ordinal()] = UserAction.ACTION_RETURN_TO_PREVIOUS;
             }
         }

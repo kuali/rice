@@ -17,23 +17,28 @@
 
 package org.kuali.rice.kew.mail;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Collection;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.kew.actionitem.ActionItem;
-
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-
-import java.util.Collection;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests email content generation
@@ -62,21 +67,21 @@ public class EmailMessageTest extends KEWTestCase {
         String nid = getPrincipalNameForId(user.getPrincipalName());
 
         for (String docType: docTypes) {
-            WorkflowDocument document = WorkflowDocument.createDocument(nid, docType);
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(nid, docType);
             document.setTitle("a title");
-            document.routeDocument("");
-            document = WorkflowDocument.createDocument(nid, docType);
+            document.route("");
+            document = WorkflowDocumentFactory.createDocument(nid, docType);
             document.setTitle("a title");
-            document.routeDocument("");
-            document = WorkflowDocument.createDocument(nid, docType);
+            document.route("");
+            document = WorkflowDocumentFactory.createDocument(nid, docType);
             document.setTitle("a title");
-            document.routeDocument("");
-            document = WorkflowDocument.createDocument(nid, docType);
+            document.route("");
+            document = WorkflowDocumentFactory.createDocument(nid, docType);
             document.setTitle("a title");
-            document.routeDocument("");
-            document = WorkflowDocument.createDocument(nid, docType);
+            document.route("");
+            document = WorkflowDocumentFactory.createDocument(nid, docType);
             document.setTitle("a title");
-            document.routeDocument("");
+            document.route("");
         }
 
         return 5 * docTypes.length;

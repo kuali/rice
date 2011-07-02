@@ -24,8 +24,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.RecipientType;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -175,7 +175,7 @@ public class NotificationSuppression {
      * @param a
      * @return List
      */
-	protected List<String> getSuppressNotifyNodeStateKeys(ActionRequestDTO a) {
+	protected List<String> getSuppressNotifyNodeStateKeys(ActionRequest a) {
 		List<String> results = Collections.emptyList(); 
 		if (a != null) {
 			results = new ArrayList<String>(3);

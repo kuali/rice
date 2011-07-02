@@ -105,7 +105,7 @@ public class AppDocStatusTest extends KEWTestCase {
 
         // get a refreshed document and check it out
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
-//        assertTrue("Document should be processed.", document.stateIsProcessed());        
+//        assertTrue("Document should be processed.", document.isProcessed());        
         rh = document.getDocument();
     	appDocStatus = rh.getApplicationDocumentStatus();
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Completed".equalsIgnoreCase(appDocStatus));
@@ -185,7 +185,7 @@ public class AppDocStatusTest extends KEWTestCase {
 
         // get a refreshed document and check it out
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
-//        assertTrue("Document should be processed.", document.stateIsProcessed());        
+//        assertTrue("Document should be processed.", document.isProcessed());        
         rh = document.getDocument();
     	appDocStatus = rh.getApplicationDocumentStatus();
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Some Random Value".equalsIgnoreCase(appDocStatus));

@@ -22,12 +22,12 @@ import org.junit.Test;
 import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
-
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.rule.RuleTestUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
@@ -61,11 +61,11 @@ public class EmailContentServiceTest extends KEWTestCase {
 		String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
 		
 		// this document type has a group responsibility
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "EmailTestWorkgroupDocType");
-		doc.routeDocument("");
+		WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "EmailTestWorkgroupDocType");
+		doc.route("");
 		
 		ActionListFilter actionListFilter = new ActionListFilter();
-		actionListFilter.setDocumentType(doc.getDocumentType());
+		actionListFilter.setDocumentType(doc.getDocumentTypeName());
 		Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(ewestfalPrincipalId, actionListFilter);
 
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
@@ -88,11 +88,11 @@ public class EmailContentServiceTest extends KEWTestCase {
 		String user1PrincipalId = getPrincipalIdForName("user1");
 		
 		// this document type has a group responsibility
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "EmailTestUserDocType");
-		doc.routeDocument("");
+		WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "EmailTestUserDocType");
+		doc.route("");
 		
 		ActionListFilter actionListFilter = new ActionListFilter();
-		actionListFilter.setDocumentType(doc.getDocumentType());
+		actionListFilter.setDocumentType(doc.getDocumentTypeName());
 		Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user1PrincipalId, actionListFilter);
 
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
@@ -114,11 +114,11 @@ public class EmailContentServiceTest extends KEWTestCase {
 		String user1PrincipalId = getPrincipalIdForName("user1");
 		
 		// this document type has a group responsibility
-		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "EmailTestWorkgroupDocType");
-		doc.routeDocument("");
+		WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "EmailTestWorkgroupDocType");
+		doc.route("");
 		
 		ActionListFilter actionListFilter = new ActionListFilter();
-		actionListFilter.setDocumentType(doc.getDocumentType());
+		actionListFilter.setDocumentType(doc.getDocumentTypeName());
 		Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user1PrincipalId, actionListFilter);
 
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();

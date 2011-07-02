@@ -43,7 +43,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * Convenience class for client applications to query workflow.  This class is one of two
- * (Java) client interfaces to the KEW system (the other being {@link WorkflowDocument} class).
+ * (Java) client interfaces to the KEW system.
  *
  * <p>The first time an instance of this class is created, it will read the client configuration to
  * determine how to connect to KEW.  To use this API, simply create a new instance using the

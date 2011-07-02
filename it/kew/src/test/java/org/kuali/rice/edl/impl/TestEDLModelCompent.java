@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.edl.impl;
 
-import org.kuali.rice.edl.impl.EDLContext;
-import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

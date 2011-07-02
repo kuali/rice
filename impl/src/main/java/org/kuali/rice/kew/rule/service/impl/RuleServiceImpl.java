@@ -43,6 +43,8 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.CollectionUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -70,15 +72,14 @@ import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.validation.RuleValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
-import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
@@ -731,16 +732,16 @@ public class RuleServiceImpl implements RuleService {
 
         WorkflowDocument workflowDocument = null;
         if (documentId != null) {
-            workflowDocument = WorkflowDocument.loadDocument(principal.getPrincipalId(), documentId);
+            workflowDocument = WorkflowDocumentFactory.loadDocument(principal.getPrincipalId(), documentId);
         } else {
             List rules = new ArrayList();
             rules.add(delegateRule);
             rules.add(parentRule);
-            workflowDocument = WorkflowDocument.createDocument(principal.getPrincipalId(), getRuleDocmentTypeName(rules));
+            workflowDocument = WorkflowDocumentFactory.createDocument(principal.getPrincipalId(), getRuleDocmentTypeName(rules));
         }
         workflowDocument.setTitle(generateTitle(parentRule, delegateRule));
         delegateRule.setDocumentId(workflowDocument.getDocumentId());
-        workflowDocument.addAttributeDefinition(new RuleRoutingDefinition(parentRule.getDocTypeName()));
+        workflowDocument.addAttributeDefinition(RuleRoutingDefinition.createAttributeDefinition(parentRule.getDocTypeName()));
         getRuleDAO().save(delegateRule);
         if (isRoutingParent) {
             parentRule.setDocumentId(workflowDocument.getDocumentId());
@@ -749,7 +750,7 @@ public class RuleServiceImpl implements RuleService {
         if (blanketApprove) {
             workflowDocument.blanketApprove(annotation);
         } else {
-            workflowDocument.routeDocument(annotation);
+            workflowDocument.route(annotation);
         }
         return workflowDocument.getDocumentId();
     }

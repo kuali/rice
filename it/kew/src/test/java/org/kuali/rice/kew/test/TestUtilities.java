@@ -45,10 +45,11 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -161,15 +162,14 @@ public final class TestUtilities {
      * the given node and only the given node, the document can be at other nodes as well and this assertion
      * will still pass.
      */
-    public static void assertAtNode(String message, WorkflowDocument document, String nodeName) throws WorkflowException {
-		String[] nodeNames = document.getNodeNames();
-		for (int index = 0; index < nodeNames.length; index++) {
-			String docNodeName = nodeNames[index];
-			if (docNodeName.equals(nodeName)) {
+    public static void assertAtNode(String message, WorkflowDocument document, String nodeNameToAssert) {
+		Set<String> nodeNames = document.getNodeNames();
+		for (String nodeName : nodeNames) {
+			if (nodeNameToAssert.equals(nodeName)) {
 				return;
 			}
 		}
-		fail((org.apache.commons.lang.StringUtils.isEmpty(message) ? "" : message + ": ") + "Was [" + StringUtils.join(nodeNames, ", ") + "], Expected " + nodeName);
+		fail((org.apache.commons.lang.StringUtils.isEmpty(message) ? "" : message + ": ") + "Was [" + StringUtils.join(nodeNames, ", ") + "], Expected " + nodeNameToAssert);
 	}
 
     public static void assertAtNode(WorkflowDocument document, String nodeName) throws WorkflowException {
@@ -260,7 +260,7 @@ public final class TestUtilities {
         List<String> failedUsers = new ArrayList<String>();
         IdentityManagementService ims = KimApiServiceLocator.getIdentityManagementService();
         for (String user: users) {
-            WorkflowDocument doc = WorkflowDocument.loadDocument(ims.getPrincipalByPrincipalName(user).getPrincipalId(), docId);
+            WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(ims.getPrincipalByPrincipalName(user).getPrincipalId(), docId);
             boolean appRqsted = doc.isApprovalRequested();
             if (shouldHaveApproval != appRqsted) {
                 failedUsers.add(user);
@@ -280,7 +280,7 @@ public final class TestUtilities {
     }
     
     public static WorkflowDocument switchPrincipalId(String principalId, WorkflowDocument document) throws WorkflowException {
-    	return WorkflowDocument.loadDocument(principalId, document.getDocumentId());
+    	return WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
     }
 
     public static void logActionRequests(String docId) {

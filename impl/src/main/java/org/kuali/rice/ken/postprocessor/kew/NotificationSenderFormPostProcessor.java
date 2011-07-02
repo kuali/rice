@@ -26,6 +26,7 @@ import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.util.Util;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
@@ -106,7 +107,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
         String proxyUserId = Util.getNotificationSystemUser();
 	        
 	    // now construct the workflow document, which will interact with workflow
-	    NotificationWorkflowDocument document;
+	    WorkflowDocument document;
 	    try {	
 		document = NotificationWorkflowDocument.loadNotificationDocument(proxyUserId, arg0.getDocumentId());
 		

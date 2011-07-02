@@ -16,53 +16,52 @@
 package org.kuali.rice.ken.document.kew;
 
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
-
 
 /**
- * This class extends the KEW WorkflowDocument object and becomes our gateway for 
- * get a handle on KEW documents in workflow.
+ * This class extends the KEW WorkflowDocument object and becomes our gateway for get a handle on
+ * KEW documents in workflow.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NotificationWorkflowDocument extends WorkflowDocument {
-	
+public final class NotificationWorkflowDocument {
+
     private static final long serialVersionUID = 6125662798733898964L;
 
     /**
-     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW
-     * for the given user.
+     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable
+     * document in KEW for the given user.
      * @param principalId
      * @throws WorkflowException
      */
-    public static NotificationWorkflowDocument createNotificationDocument(String principalId) throws WorkflowException {
-    	return new NotificationWorkflowDocument(principalId, NotificationConstants.KEW_CONSTANTS.NOTIFICATION_DOC_TYPE, null);
+    public static WorkflowDocument createNotificationDocument(String principalId) {
+        return WorkflowDocumentFactory.createDocument(principalId,
+                NotificationConstants.KEW_CONSTANTS.NOTIFICATION_DOC_TYPE, null);
     }
-    
+
     /**
-     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW
-     * for the given user and document type name.
+     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable
+     * document in KEW for the given user and document type name.
      * @param user
      * @param documentTypeName
      * @throws WorkflowException
      */
-    public static NotificationWorkflowDocument createNotificationDocument(String principalId, String documentTypeName) throws WorkflowException {
-    	return new NotificationWorkflowDocument(principalId, documentTypeName, null);
+    public static WorkflowDocument createNotificationDocument(String principalId, String documentTypeName) {
+        return WorkflowDocumentFactory.createDocument(principalId, documentTypeName, null);
     }
-    
+
     /**
-     * Constructs a NotificationWorkflowDocument instance - this one is used to get a handle on a workflow 
-     * document that was already created in the system.
+     * Constructs a NotificationWorkflowDocument instance - this one is used to get a handle on a
+     * workflow document that was already created in the system.
      * @param user
      * @param documentId
      * @throws WorkflowException
      */
-    public static NotificationWorkflowDocument loadNotificationDocument(String principalId, String documentId) throws WorkflowException {
-    	return new NotificationWorkflowDocument(principalId, null, documentId);
+    public static WorkflowDocument loadNotificationDocument(String principalId, String documentId) {
+        return WorkflowDocumentFactory.loadDocument(principalId, documentId);
     }
-    	
-    private NotificationWorkflowDocument(String principalId, String documentTypeName, String documentId) throws WorkflowException {
-    	super(principalId, documentTypeName, documentId);
-    }
+
+    private NotificationWorkflowDocument() {}
 
 }

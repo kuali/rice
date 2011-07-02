@@ -16,19 +16,21 @@
  */
 package org.kuali.rice.kew.actions;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import mocks.MockEmailNotificationService;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
-
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import static org.junit.Assert.*;
 
 public class DisapproveActionTest extends KEWTestCase {
 
@@ -37,56 +39,56 @@ public class DisapproveActionTest extends KEWTestCase {
     }
 
     @Test public void testDisapprove() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        document.routeDocument("");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        document.route("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");//ewestfal had force action rule
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
 
         //this be the role delegate of jitrue
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("natjohns"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("natjohns"), document.getDocumentId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         // assert that the document is at the same node before and after disapprove
         TestUtilities.assertAtNode(document, NotifySetup.NOTIFY_FINAL_NODE);
         document.disapprove("");
         TestUtilities.assertAtNode(document, NotifySetup.NOTIFY_FINAL_NODE);
         // reload just to double check
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         TestUtilities.assertAtNode(document, NotifySetup.NOTIFY_FINAL_NODE);
 
-        assertTrue("Document should be disapproved", document.stateIsDisapproved());
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        assertTrue("Document should be disapproved", document.isDisapproved());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         assertTrue("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         assertTrue("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
         //jitrue while part of original approval chain did not take approve action and therefore should
         //not get action
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jitrue"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jitrue"), document.getDocumentId());
         assertFalse("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("natjohns"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("natjohns"), document.getDocumentId());
         assertTrue("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
         //shenl part of approval chain but didn't take action
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("shenl"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("shenl"), document.getDocumentId());
         assertFalse("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
         //check that all the emailing went right.
@@ -133,13 +135,13 @@ public class DisapproveActionTest extends KEWTestCase {
     @Ignore("This test will fail until KULRICE-752 is resolved")
     @Test public void testInitiatorRoleDisapprove() throws WorkflowException {
         // test initiator disapproval of their own doc via InitiatorRoleAttribute
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("arh14"), "InitiatorRoleApprovalTest");
-        document.routeDocument("routing document");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("arh14"), "InitiatorRoleApprovalTest");
+        document.route("routing document");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("arh14"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("arh14"), document.getDocumentId());
         document.disapprove("disapproving the document");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("arh14"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("arh14"), document.getDocumentId());
         assertFalse("Initiator should not have an Ack request from disapproval because they were the disapprover user", document.isAcknowledgeRequested());
     }
 
@@ -150,28 +152,28 @@ public class DisapproveActionTest extends KEWTestCase {
     @Ignore("This test will fail until KULRICE-752 is resolved")
     @Test public void testInitiatorDisapprove() throws WorkflowException {
         // test initiator disapproval, via normal request with forceAction=true
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        document.routeDocument("");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        document.route("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.disapprove("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         assertFalse("Initiator should not have an Ack request from disapproval because they were the disapprover user", document.isAcknowledgeRequested());
     }
 
     @Test public void testDisapproveByArbitraryRecipient() throws WorkflowException {
         // test approval by some other person
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveSequentialTest");
-        document.routeDocument("");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveSequentialTest");
+        document.route("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         document.disapprove("disapproving as bmcgough");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertFalse("Acknowledge was incorrectly sent to non-initiator disapprover", document.isAcknowledgeRequested());
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         assertTrue("Acknowledge was not sent to initiator", document.isAcknowledgeRequested());
     }
 

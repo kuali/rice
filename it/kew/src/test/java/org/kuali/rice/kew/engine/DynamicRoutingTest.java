@@ -17,18 +17,25 @@
 package org.kuali.rice.kew.engine;
 
 
-import org.junit.Test;
-
-import org.kuali.rice.kew.engine.node.*;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.engine.node.DynamicNode;
+import org.kuali.rice.kew.engine.node.DynamicResult;
+import org.kuali.rice.kew.engine.node.NodeState;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 public class DynamicRoutingTest extends KEWTestCase {
@@ -45,40 +52,39 @@ public class DynamicRoutingTest extends KEWTestCase {
     }
 
     @Test public void testDynamicParallelRoute() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), SEQ_DOC_TYPE_NAME);
-        document.saveRoutingData();
-        assertTrue("Document should be initiated", document.stateIsInitiated());
-        assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
-        assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), SEQ_DOC_TYPE_NAME);
+        document.saveDocumentData();
+        assertTrue("Document should be initiated", document.isInitiated());
+        assertEquals("Should be no action requests.", 0, document.getRootActionRequests().size());
         Collection nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
         assertEquals("Wrong active node.", INIT, ((RouteNodeInstance) nodeInstances.iterator().next()).getRouteNode().getRouteNodeName());
-        document.routeDocument("");
+        document.route("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
         nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        //        document = WorkflowDocument.loadDocument(new NetworkIdVO("ewestfal"), document.getDocumentId());
-        //        assertTrue("Document should be final.", document.stateIsFinal());
+        //        document = WorkflowDocumentFactory.loadDocument(new NetworkIdVO("ewestfal"), document.getDocumentId());
+        //        assertTrue("Document should be final.", document.isFinal());
 
         verifyRoutingPath(document.getDocumentId());
     }

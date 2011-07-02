@@ -16,28 +16,31 @@
 package org.kuali.rice.kew.actionitem;
 
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupMember;
-import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.test.BaselineTestCase;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class ActionItemServiceTest extends KEWTestCase {
 
@@ -60,9 +63,9 @@ public class ActionItemServiceTest extends KEWTestCase {
      */
     @Test public void testUpdateActionItemsForWorkgroupChange() throws Exception {
 
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
-        document.routeDocument("");
+        document.route("");
 
         Group oldWorkgroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Admin");
         //Group oldWorkgroup = this.getGroupImpl(oldGroup.getId());
@@ -148,12 +151,12 @@ public class ActionItemServiceTest extends KEWTestCase {
 
     @Test public void testUpdateActionItemsForNestedGroupChange() throws Exception {
 
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
 
         Group workgroup1 = KimApiServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Admin");
-        document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",workgroup1.getId(), "", true);
-        document.routeDocument("");
+        document.adHocToGroup(ActionRequestType.APPROVE, "",workgroup1.getId(), "", true);
+        document.route("");
 
         Principal ewestfal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 
@@ -186,12 +189,12 @@ public class ActionItemServiceTest extends KEWTestCase {
          // test nested
          Principal user1 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
 
-         document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionItemDocumentType");
+         document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionItemDocumentType");
          document.setTitle("");
 
          workgroup1 = KimApiServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Nested1");
-         document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",workgroup1.getId(), "", true);
-         document.routeDocument("");
+         document.adHocToGroup(ActionRequestType.APPROVE, "",workgroup1.getId(), "", true);
+         document.route("");
 
          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
          assertEquals("Workgroup should have 6 members.", 6, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
@@ -215,20 +218,19 @@ public class ActionItemServiceTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testWorkgroupActionItemGenerationWhenMultipleWorkgroupRequests() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
-        document.routeDocument("");
+        document.route("");
 
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jitrue"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jitrue"), document.getDocumentId());
 
         Group testGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Test");
         Group adminGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Admin");
 
-        ActionRequestDTO[] ars = document.getActionRequests();
+        List<ActionRequest> ars = document.getRootActionRequests();
         boolean routedWorkflowAdmin = false;
         boolean routedTestWorkgroup = false;
-        for (int i = 0; i < ars.length; i++) {
-            ActionRequestDTO request = ars[i];
+        for (ActionRequest request : ars) {
             if (request.isGroupRequest() && testGroup.getId().equals(request.getGroupId())) {
                 routedTestWorkgroup = true;
             } else if (request.isGroupRequest() && adminGroup.getId().equals(request.getGroupId())) {
@@ -259,9 +261,9 @@ public class ActionItemServiceTest extends KEWTestCase {
      * multiple Action Items but only one of them will show up in their Action List.
      */
     @Test public void testMultipleActionItemGeneration() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
-        document.routeDocument("");
+        document.route("");
 
         // now the document should be at both the AIWG-Admin workgroup and the AIWG-Test
         // ewestfal is a member of both Workgroups so verify that he has two action items
@@ -274,11 +276,11 @@ public class ActionItemServiceTest extends KEWTestCase {
         // now check the action list, there should be only one entry
         actionItems = KEWServiceLocator.getActionListService().getActionList(ewestfalPrincipalId, null);
         assertEquals("Ewestfal should have one action item in his action list.", 1, actionItems.size());
-        document = WorkflowDocument.loadDocument(ewestfalPrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(ewestfalPrincipalId, document.getDocumentId());
         assertTrue("Ewestfal should have an approval requested.", document.isApprovalRequested());
 
         // approve as a member from the first workgroup
-        document = WorkflowDocument.loadDocument(jitruePrincipalId, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(jitruePrincipalId, document.getDocumentId());
         assertTrue("Jitrue should have an approval requested.", document.isApprovalRequested());
         document.approve("");
 
@@ -305,9 +307,9 @@ public class ActionItemServiceTest extends KEWTestCase {
      * The routing is configured in the BAOrphanedRequestDocumentType.
      */
     @Test public void testOrphanedAcknowledgeFromBlanketApprovalFix() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "BAOrphanedRequestDocumentType");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "BAOrphanedRequestDocumentType");
     	document.blanketApprove("");
-    	assertTrue("Document should be processed.", document.stateIsProcessed());
+    	assertTrue("Document should be processed.", document.isProcessed());
 
     	// after the document has blanket approved there should be 2 action items since the blanket approver
     	// is in the final workgroup.  These action items should be the acknowledges generated to both
@@ -328,15 +330,15 @@ public class ActionItemServiceTest extends KEWTestCase {
     	assertEquals("rkirkend should have one action item.", 1, actionItems.size());
 
     	// lets go ahead and take it to final for funsies
-    	document = WorkflowDocument.loadDocument(rkirkendPrincipalId, document.getDocumentId());
+    	document = WorkflowDocumentFactory.loadDocument(rkirkendPrincipalId, document.getDocumentId());
     	assertTrue("Should have ack request.", document.isAcknowledgeRequested());
     	document.acknowledge("");
-    	assertTrue("Should still be PROCESSED.", document.stateIsProcessed());
+    	assertTrue("Should still be PROCESSED.", document.isProcessed());
 
-    	document = WorkflowDocument.loadDocument(user1PrincipalId, document.getDocumentId());
+    	document = WorkflowDocumentFactory.loadDocument(user1PrincipalId, document.getDocumentId());
     	assertTrue("Should have ack request.", document.isAcknowledgeRequested());
     	document.acknowledge("");
-    	assertTrue("Should now be FINAL.", document.stateIsFinal());
+    	assertTrue("Should now be FINAL.", document.isFinal());
     }
 
     /**

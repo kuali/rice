@@ -15,12 +15,13 @@
  */
 package org.kuali.rice.kew.preferences;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
 import org.junit.Test;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.useroptions.dao.ReloadActionListDAO;
-
-import static junit.framework.Assert.*;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 

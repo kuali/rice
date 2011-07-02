@@ -16,13 +16,15 @@
  */
 package org.kuali.rice.kew.engine;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests a new document being spawned from the post processing of an existing document
@@ -39,16 +41,16 @@ public class PostProcessorSpawnedDocumentTest extends KEWTestCase {
     }
 
     @Test public void testSpawnDocument() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("jitrue"), DOCUMENT_TYPE_THAT_SPAWNS);
-    	document.saveRoutingData();
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jitrue"), DOCUMENT_TYPE_THAT_SPAWNS);
+    	document.saveDocumentData();
     	assertNotNull(document.getDocumentId());
-    	assertTrue("Document should be initiatied", document.stateIsInitiated());
-    	document.routeDocument("Route");
+    	assertTrue("Document should be initiatied", document.isInitiated());
+    	document.route("Route");
 
         // should have generated a request to "bmcgough"
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
-        assertTrue("Document should be enroute", document.stateIsEnroute());
-        assertEquals("Document should be enroute.", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        assertTrue("Document should be enroute", document.isEnroute());
+        assertEquals("Document should be enroute.", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getStatus().getCode());
         assertTrue(document.isApprovalRequested());
         document.approve("Test approve by bmcgough");
         
@@ -58,11 +60,11 @@ public class PostProcessorSpawnedDocumentTest extends KEWTestCase {
         String spawnedDocumentId = spawnedDocumentIdLong.toString();
         
     	// get spawned document (should be next document id)
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), spawnedDocumentId);
-        assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), spawnedDocumentId);
+        assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getStatus().getCode());
 
     	// get original document
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), originalDocumentId);
-        assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), originalDocumentId);
+        assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getStatus().getCode());
     }
 }

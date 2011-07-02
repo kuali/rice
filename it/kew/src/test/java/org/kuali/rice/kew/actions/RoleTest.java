@@ -16,20 +16,20 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
-
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 public class RoleTest extends KEWTestCase {
 
@@ -38,33 +38,33 @@ public class RoleTest extends KEWTestCase {
     }
 
     @Test public void testRoleRequestGeneration() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        document.routeDocument("");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        document.route("");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");//ewestfal had force action rule
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
         
         //this be the role delegate of jitrue
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("natjohns"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("natjohns"), document.getDocumentId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         document.approve("");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("xqi"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("xqi"), document.getDocumentId());
         document.acknowledge("");
         
-        assertTrue("Document should be final", document.stateIsFinal());
+        assertTrue("Document should be final", document.isFinal());
 
         List requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
         List rootRequests = KEWServiceLocator.getActionRequestService().getRootRequests(requests);

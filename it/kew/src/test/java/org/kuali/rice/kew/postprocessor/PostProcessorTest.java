@@ -16,25 +16,31 @@
  */
 package org.kuali.rice.kew.postprocessor;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class PostProcessorTest extends KEWTestCase {
@@ -58,16 +64,16 @@ public class PostProcessorTest extends KEWTestCase {
 	 */
 	@Test public void testModifyDocumentInPostProcessor() throws Exception {
         XMLUnit.setIgnoreWhitespace(true);
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "testModifyDocumentInPostProcessor");
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "testModifyDocumentInPostProcessor");
 		document.saveDocument("");
 		assertEquals("application content should be empty initially", "", document.getApplicationContent());
 		assertNull("Doc title should be empty initially", document.getTitle());
 		
 		// now route the document, it should through a 2 nodes, then go PROCESSED then FINAL
-		document.routeDocument("");
+		document.route("");
 		assertEquals("Should have transitioned nodes twice", 2, DocumentModifyingPostProcessor.levelChanges);
 		assertTrue("SHould have called the processed status change", DocumentModifyingPostProcessor.processedChange);
-		assertTrue("Document should be final.", document.stateIsFinal());
+		assertTrue("Document should be final.", document.isFinal());
 		XMLAssert.assertXMLEqual("Application content should have been sucessfully modified.", APPLICATION_CONTENT, document.getApplicationContent());
 				
 		// check that the title was modified successfully
@@ -75,12 +81,12 @@ public class PostProcessorTest extends KEWTestCase {
 		
 		// check that the document we routed from the post processor exists
 		assertNotNull("SHould have routed a document from the post processor.", DocumentModifyingPostProcessor.routedDocumentId);
-		document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), DocumentModifyingPostProcessor.routedDocumentId);
-		assertTrue("document should be enroute", document.stateIsEnroute());
+		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), DocumentModifyingPostProcessor.routedDocumentId);
+		assertTrue("document should be enroute", document.isEnroute());
 		assertEquals("Document should have 1 pending request.", 1, KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId()).size());
 		assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
 		document.approve("");
-		assertTrue("Document should be final.", document.stateIsFinal());
+		assertTrue("Document should be final.", document.isFinal());
 	}
 	/**
      * Tests that modifying a document in the post processor works.  This test will do a few things:
@@ -93,12 +99,12 @@ public class PostProcessorTest extends KEWTestCase {
      */
     
 	@Test public void testEmptyPostProcessor() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "testEmptyPostProcessor");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "testEmptyPostProcessor");
         document.saveDocument("");
         assertEquals("application content should be empty initially", "", document.getApplicationContent());
         assertNull("Doc title should be empty initially", document.getTitle());
         
-        assertTrue("Document should be final.", document.stateIsFinal());
+        assertTrue("Document should be final.", document.isFinal());
                
         DocumentType testEmptyDocType = KEWServiceLocator.getDocumentTypeService().findByName("testEmptyPostProcessor");
         assertTrue("Post Processor should be set to 'none'",  StringUtils.equals("none", testEmptyDocType.getPostProcessorName()));
@@ -130,17 +136,17 @@ public class PostProcessorTest extends KEWTestCase {
 		 * 4) Thread A attempts to update document B and gets an optimistic lock exception 
 		 */
 		
-		WorkflowDocument documentB = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+		WorkflowDocument documentB = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
 		documentB.saveDocument("");
 		documentBId = documentB.getDocumentId();
 		updateDocumentThread = new UpdateDocumentThread(documentBId);
 		
 		// this is the document with the post processor
-		WorkflowDocument documentA = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "testGetDocumentIdsToLock");
-		documentA.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
+		WorkflowDocument documentA = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "testGetDocumentIdsToLock");
+		documentA.adHocToPrincipal(ActionRequestType.APPROVE, "", getPrincipalIdForName("rkirkend"), "", true);
 		
 		try {
-			documentA.routeDocument(""); // this should trigger our post processor and our optimistic lock exception
+			documentA.route(""); // this should trigger our post processor and our optimistic lock exception
 			fail("An exception should have been thrown as the result of an optimistic lock!");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -152,17 +158,17 @@ public class PostProcessorTest extends KEWTestCase {
 		
 		shouldReturnDocumentIdsToLock = true;
 		
-		documentB = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+		documentB = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
 		documentB.saveDocument("");
 		documentBId = documentB.getDocumentId();
 		updateDocumentThread = new UpdateDocumentThread(documentBId);
 		
 		// this is the document with the post processor
-		documentA = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "testGetDocumentIdsToLock");
-		documentA.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
+		documentA = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "testGetDocumentIdsToLock");
+		documentA.adHocToPrincipal(ActionRequestType.APPROVE, "", getPrincipalIdForName("rkirkend"), "", true);
 		
-		documentA.routeDocument(""); // this should trigger our post processor and our optimistic lock exception
-		documentA = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), documentA.getDocumentId());
+		documentA.route(""); // this should trigger our post processor and our optimistic lock exception
+		documentA = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), documentA.getDocumentId());
 		assertTrue("rkirkend should have approve request", documentA.isApprovalRequested());
 		
 	}
@@ -180,16 +186,16 @@ public class PostProcessorTest extends KEWTestCase {
 		
 		public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
 			if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
-				WorkflowDocument document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), statusChangeEvent.getDocumentId());
+				WorkflowDocument document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), statusChangeEvent.getDocumentId());
 				document.setApplicationContent(APPLICATION_CONTENT);
 				document.setTitle(DOC_TITLE);
-				document.saveRoutingData();
+				document.saveDocumentData();
 				// now route another document from the post processor, sending it an adhoc request
-				WorkflowDocument ppDocument = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "testModifyDocumentInPostProcessor");
+				WorkflowDocument ppDocument = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "testModifyDocumentInPostProcessor");
 				routedDocumentId = ppDocument.getDocumentId();
 				// principal id 1 = ewestfal
-				ppDocument.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", "2001", "", true);
-				ppDocument.routeDocument("");
+				ppDocument.adHocToPrincipal(ActionRequestType.APPROVE, "AdHoc", "", "2001", "", true);
+				ppDocument.route("");
 				processedChange = true;
 			}
 			return new ProcessDocReport(true);
@@ -197,9 +203,9 @@ public class PostProcessorTest extends KEWTestCase {
 
 		public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
 			levelChanges++;
-			WorkflowDocument document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), levelChangeEvent.getDocumentId());
+			WorkflowDocument document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), levelChangeEvent.getDocumentId());
 			document.setTitle("Current level change: " + levelChanges);
-			document.saveRoutingData();
+			document.saveDocumentData();
 			return new ProcessDocReport(true);
 		}
 		
@@ -214,7 +220,7 @@ public class PostProcessorTest extends KEWTestCase {
 	    
 		@Override
 		public List<String> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
-			WorkflowDocument document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), lockingEvent.getDocumentId());
+			WorkflowDocument document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), lockingEvent.getDocumentId());
 			if (shouldReturnDocumentIdsToLock) {
 				List<String> docIds = new ArrayList<String>();
 				docIds.add(documentBId);
@@ -225,8 +231,8 @@ public class PostProcessorTest extends KEWTestCase {
 
 		@Override
 		public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
-			WorkflowDocument wfDocument = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), event.getDocumentId());
-			if (wfDocument.stateIsEnroute()) {
+			WorkflowDocument wfDocument = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), event.getDocumentId());
+			if (wfDocument.isEnroute()) {
 				// first, let's load document B in this thread
 				DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentBId);
 				// now let's execute the thread

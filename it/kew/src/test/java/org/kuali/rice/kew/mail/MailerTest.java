@@ -17,6 +17,9 @@
 
 package org.kuali.rice.kew.mail;
 
+import static org.junit.Assert.assertNotNull;
+import junit.framework.Assert;
+
 import org.junit.Test;
 import org.kuali.rice.core.mail.EmailBody;
 import org.kuali.rice.core.mail.EmailFrom;
@@ -26,10 +29,6 @@ import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.subethamail.wiser.Wiser;
-
-import junit.framework.Assert;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests email content generation

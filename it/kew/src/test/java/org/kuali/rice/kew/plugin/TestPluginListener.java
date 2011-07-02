@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.plugin;
 
-import org.kuali.rice.kew.plugin.Plugin;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

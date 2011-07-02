@@ -16,14 +16,16 @@
  */
 package org.kuali.rice.kew.rule;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests that an attribute implementing WorkflowAttributeXmlValidator interface can be validated from the 

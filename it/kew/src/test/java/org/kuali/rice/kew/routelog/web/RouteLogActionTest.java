@@ -15,21 +15,24 @@
  */
 package org.kuali.rice.kew.routelog.web;
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actions.AcknowledgeAction;
-import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actions.AcknowledgeAction;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
  * Unit tests for RouteLogAction -- very incomplete, only tests populateRouteLogFutureRequests
@@ -52,19 +55,19 @@ public class RouteLogActionTest extends KEWTestCase
     @SuppressWarnings("unchecked")
 	@Test public void testPopulateRouteLogFutureRequests_HasNoExistingRequests() throws Exception {
     	
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), getClass().getSimpleName());
-    	document.routeDocument("1 - user1 route");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), getClass().getSimpleName());
+    	document.route("1 - user1 route");
     	verifyFutureRequestState(document);
 
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	document.approve("2 - ewestfal approve");
     	verifyFutureRequestState(document);
 
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
     	document.approve("3 - user2 approve");
     	verifyFutureRequestState(document);
 
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
     	document.acknowledge("4 - user3 acknowledge");
     	verifyFutureRequestState(document);
     }
@@ -83,7 +86,7 @@ public class RouteLogActionTest extends KEWTestCase
 		Collection<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentId(document.getDocumentId());
     	Collection<ActionRequestValue> actionsPending = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
     	
-    	DocumentRouteHeaderValue docRouteHeaderValue = DTOConverter.convertRouteHeaderVO(document.getRouteHeader());
+    	DocumentRouteHeaderValue docRouteHeaderValue = DocumentRouteHeaderValue.from(document.getDocument());
     	RouteLogForm routeLogForm = new RouteLogForm();
     	routeLogAction.populateRouteLogFutureRequests(routeLogForm, docRouteHeaderValue);
         List<ActionRequestValue> futureRootRequests = routeLogForm.getFutureRootRequests();
@@ -126,11 +129,11 @@ public class RouteLogActionTest extends KEWTestCase
 
     	RouteLogForm routeLogForm = new RouteLogForm();
 
-    	WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, "RouteLogActionTestTrivial");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(user1PrincipalId, "RouteLogActionTestTrivial");
     	// for this simple doc type, no future requests
-    	document.routeDocument("");
+    	document.route("");
     	
-    	DocumentRouteHeaderValue docRouteHeaderValue = DTOConverter.convertRouteHeaderVO(document.getRouteHeader());
+    	DocumentRouteHeaderValue docRouteHeaderValue = DocumentRouteHeaderValue.from(document.getDocument());
 
     	try {
     		routeLogAction.populateRouteLogFutureRequests(routeLogForm, docRouteHeaderValue);

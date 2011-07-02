@@ -17,20 +17,23 @@
 package org.kuali.rice.kew.engine;
 
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-
-import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.kew.util.KEWConstants;
 
 public class SubProcessRoutingTest extends KEWTestCase {
     
@@ -44,13 +47,13 @@ public class SubProcessRoutingTest extends KEWTestCase {
     }
 
     @Test public void testSubProcessRoute() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
-    	document.saveRoutingData();
-        assertTrue("Document should be initiated", document.stateIsInitiated());
-        assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
-        assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
-        document.routeDocument("");
-        assertTrue("Document shoule be ENROUTE.", document.stateIsEnroute());
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
+    	document.saveDocumentData();
+        assertTrue("Document should be initiated", document.isInitiated());
+        assertEquals("Should be no action requests.", 0, document.getRootActionRequests().size());
+        TestUtilities.assertAtNode(document, "Initial");
+        document.route("");
+        assertTrue("Document shoule be ENROUTE.", document.isEnroute());
         
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertEquals("Incorrect pending action requests.", 2, actionRequests.size());
@@ -58,7 +61,7 @@ public class SubProcessRoutingTest extends KEWTestCase {
         boolean isApprove = false;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
-            RouteNodeInstance nodeInstance = request.getNodeInstance();
+            org.kuali.rice.kew.engine.node.RouteNodeInstance nodeInstance = request.getNodeInstance();
             assertNotNull("Node instance should be non null.", nodeInstance);
             if (request.getPrincipalId().equals(getPrincipalIdForName("bmcgough"))) {
                 isAck = true;
@@ -82,18 +85,18 @@ public class SubProcessRoutingTest extends KEWTestCase {
         }
         assertTrue(isAck);
         assertTrue(isApprove);
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Should have acknowledge.", document.isAcknowledgeRequested());
         document.acknowledge("");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         document.approve("");
         
         // find the subprocess and assert it is complete, not active, and not initial
         boolean foundSubProcess = false;
-        RouteNodeInstanceDTO[] nodeInstances = document.getRouteNodeInstances();
-        for (int index = 0; index < nodeInstances.length; index++) {
-            RouteNodeInstanceDTO instanceVO = nodeInstances[index];
+        List<RouteNodeInstance> nodeInstances = document.getRouteNodeInstances();
+        for (int index = 0; index < nodeInstances.size(); index++) {
+            RouteNodeInstance instanceVO = nodeInstances.get(index);
             if (instanceVO.getName().equals(SUB_PROCESS_NODE)) {
                 foundSubProcess = true;
                 assertFalse("Sub process should be non-initial.", instanceVO.isInitial());
@@ -103,11 +106,11 @@ public class SubProcessRoutingTest extends KEWTestCase {
         }
         assertTrue("Could not locate sub process node.", foundSubProcess);
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         document.approve("");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-        assertTrue("Document should be final.", document.stateIsFinal());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        assertTrue("Document should be final.", document.isFinal());
     }
     
 }

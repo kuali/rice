@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -250,10 +250,10 @@ public class KewRoutingKualiForm extends KualiForm {
                 DocumentType documentType = document.getDocumentType();
                 boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(workflowDocument.getPrincipalId(), documentType);
                 if (isSuperUser){
-                	if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved() || workflowDocument.stateIsEnroute()) {
+                	if (workflowDocument.isInitiated() || workflowDocument.isSaved() || workflowDocument.isEnroute()) {
                 		appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
                 	}
-                	else if (workflowDocument.stateIsProcessed() || workflowDocument.stateIsApproved() || workflowDocument.stateIsDisapproved()) {
+                	else if (workflowDocument.isProcessed() || workflowDocument.isApproved() || workflowDocument.isDisapproved()) {
                         appSpecificRouteActionRequestCds.clear();
                         appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
                         appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
@@ -269,7 +269,7 @@ public class KewRoutingKualiForm extends KualiForm {
                     appSpecificRouteActionRequestCds.clear();
                     appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
                     appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
-                } else if(workflowDocument.isApprovalRequested() || workflowDocument.isCompletionRequested() || workflowDocument.stateIsInitiated()){
+                } else if(workflowDocument.isApprovalRequested() || workflowDocument.isCompletionRequested() || workflowDocument.isInitiated()){
                     appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
                 }
             }

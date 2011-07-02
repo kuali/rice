@@ -16,9 +16,26 @@
  */
 package org.kuali.rice.kew.rule.xmlrouting;
 
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
@@ -26,23 +43,11 @@ import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.Row;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.util.*;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
@@ -200,22 +205,22 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
      */
     @Test public void testNonMatchingExtensionKey() throws WorkflowException {
         loadXmlFile("TestExtensionValueMatching.xml");
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("arh14"), "TestDocument");
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("arh14"), "TestDocument");
 
-        WorkflowAttributeDefinitionDTO attr = new WorkflowAttributeDefinitionDTO(StandardGenericXMLRuleAttribute.class.getName());
+        WorkflowAttributeDefinition.Builder attr = WorkflowAttributeDefinition.Builder.create(StandardGenericXMLRuleAttribute.class.getName());
         attr.setAttributeName("Attr1");
         // expected to match RuleTemplate with extension value: value='1' with xpath expression /xmlRouting/field[@name=attr1] = wf:ruledata('value')
-        attr.addProperty("attr1", "2");
-        doc.addAttributeDefinition(attr);
+        attr.addPropertyDefinition("attr1", "2");
+        doc.addAttributeDefinition(attr.build());
 
-        doc.routeDocument("");
+        doc.route("");
 
         String id = doc.getDocumentId();
 
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), id);
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), id);
         assertTrue("Request should have been generated to user1", doc.isApprovalRequested());
 
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), id);
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), id);
         assertTrue("Expected approval request to user2", doc.isApprovalRequested());
     }
 

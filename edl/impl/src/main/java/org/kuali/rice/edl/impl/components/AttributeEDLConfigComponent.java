@@ -21,94 +21,91 @@ import java.util.List;
 
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.RequestParser;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.document.PropertyDefinition;
+import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
 import org.w3c.dom.Element;
-
 
 /**
  * Populates workflow rule attributes associated with the current configElement.
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * 
  */
 public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponent {
 
+    public List getMatchingParams(Element originalConfigElement, RequestParser requestParser, EDLContext edlContext) {
+        List matchingParams = super.getMatchingParams(originalConfigElement, requestParser, edlContext);
+        // we don't want to clear the attribute content if they are just opening up the document to view it!
+        if (!edlContext.getUserAction().isLoadAction()) {
+            String attributeName = originalConfigElement.getAttribute("attributeName");
+            String attributePropertyName = originalConfigElement.getAttribute("name");
 
-	public List getMatchingParams(Element originalConfigElement, RequestParser requestParser, EDLContext edlContext) {
-		List matchingParams = super.getMatchingParams(originalConfigElement, requestParser, edlContext);
-		// we don't want to clear the attribute content if they are just opening up the document to view it!
-		if (!edlContext.getUserAction().isLoadAction()) {
-		    String attributeName = originalConfigElement.getAttribute("attributeName");
-		    String attributePropertyName = originalConfigElement.getAttribute("name");
+            WorkflowDocument document = (WorkflowDocument) requestParser
+                    .getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
+            // clear attribute content so that duplicate attribute values are not added during submission of a new EDL form values version
+            document.clearAttributeContent();
 
-		    WorkflowDocument document = (WorkflowDocument)requestParser.getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
-		    // clear attribute content so that duplicate attribute values are not added during submission of a new EDL form values version
-		    document.clearAttributeContent();
+            WorkflowAttributeDefinition.Builder attributeDefBuilder = getWorkflowAttributeDefinitionVO(attributeName, document);
+            
+            for (Iterator iter = matchingParams.iterator(); iter.hasNext();) {
+                MatchingParam param = (MatchingParam) iter.next();
+                PropertyDefinition property = attributeDefBuilder.getPropertyDefinition(attributePropertyName);
+                //if the prop doesn't exist create it and add it to the definition otherwise update the property value
+                if (property == null) {
+                    property = PropertyDefinition.create(attributePropertyName, param.getParamValue());
+                } else {
+                    // modify the current property
+                    attributeDefBuilder.getPropertyDefinitions().remove(property);
+                    property = PropertyDefinition.create(property.getName(), param.getParamValue());
+                }
+                attributeDefBuilder.addPropertyDefinition(property);
 
-		    WorkflowAttributeDefinitionDTO attributeDef = getWorkflowAttributeDefinitionVO(attributeName, document);
-		    for (Iterator iter = matchingParams.iterator(); iter.hasNext();) {
-			MatchingParam param = (MatchingParam) iter.next();
-			PropertyDefinitionDTO property = attributeDef.getProperty(attributePropertyName);
-			//if the prop doesn't exist create it and add it to the definition otherwise update the property value
-			if (property == null) {
-			    property = new PropertyDefinitionDTO(attributePropertyName, param.getParamValue());
-			    attributeDef.addProperty(property);
-			} else {
-			    property.setValue(param.getParamValue());
-			}
-		    }
+            }
+            
+            WorkflowAttributeDefinition attributeDef = attributeDefBuilder.build();
+            document.addAttributeDefinition(attributeDef);
 
-		    try {
-			// validate if they are taking an action on the document (i.e. it's annotatable)
-			if (edlContext.getUserAction().isValidatableAction()) {
-			    WorkflowAttributeValidationErrorDTO[] errors = document.validateAttributeDefinition(attributeDef);
-			    if (errors.length > 0) {
-				getEdlContext().setInError(true);
-			    }
-			    for (int index = 0; index < errors.length; index++) {
-				WorkflowAttributeValidationErrorDTO error = errors[index];
-				MatchingParam param = getMatchingParam(matchingParams, error.getKey());
-				// if it doesn't match a param, then this is a global error
-				if (param == null) {
-				    List globalErrors = (List)getEdlContext().getRequestParser().getAttribute(RequestParser.GLOBAL_ERRORS_KEY);
-				    globalErrors.add(error.getMessage());
-				} else {
-				    param.setError(Boolean.TRUE);
-				    param.setErrorMessage(error.getMessage());
-				}
-			    }
-			}
-		    } catch (WorkflowException e) {
-			throw new WorkflowRuntimeException("Encountered an error when validating form.", e);
-		    }
-		}
-		return matchingParams;
-	}
+            // validate if they are taking an action on the document (i.e. it's annotatable)
+            if (edlContext.getUserAction().isValidatableAction()) {
+                List<WorkflowAttributeValidationError> errors = document.validateAttributeDefinition(attributeDef);
+                if (errors.isEmpty()) {
+                    getEdlContext().setInError(true);
+                }
+                for (WorkflowAttributeValidationError error : errors) {
+                    MatchingParam param = getMatchingParam(matchingParams, error.getKey());
+                    // if it doesn't match a param, then this is a global error
+                    if (param == null) {
+                        List globalErrors = (List) getEdlContext().getRequestParser().getAttribute(
+                                    RequestParser.GLOBAL_ERRORS_KEY);
+                        globalErrors.add(error.getMessage());
+                    } else {
+                        param.setError(Boolean.TRUE);
+                        param.setErrorMessage(error.getMessage());
+                    }
+                }
+            }
+        }
+        return matchingParams;
+    }
 
-	private WorkflowAttributeDefinitionDTO getWorkflowAttributeDefinitionVO(String attributeName, WorkflowDocument document) {
-		for (int i = 0; i < document.getAttributeDefinitions().length; i++) {
-			WorkflowAttributeDefinitionDTO workflowAttributeDef = (WorkflowAttributeDefinitionDTO)document.getAttributeDefinitions()[i];
-			if (workflowAttributeDef.getAttributeName().equals(attributeName)) {
-				return workflowAttributeDef;
-			}
-		}
-		WorkflowAttributeDefinitionDTO workflowAttributeDef = new WorkflowAttributeDefinitionDTO(attributeName);
-		document.addAttributeDefinition(workflowAttributeDef);
-		return workflowAttributeDef;
-	}
+    private WorkflowAttributeDefinition.Builder getWorkflowAttributeDefinitionVO(String attributeName, WorkflowDocument document) {
+        for (WorkflowAttributeDefinition attributeDefinition : document.getAttributeDefinitions()) {
+            if (attributeDefinition.getAttributeName().equals(attributeName)) {
+                return WorkflowAttributeDefinition.Builder.create(attributeDefinition);
+            }
+        }
+        return WorkflowAttributeDefinition.Builder.create(attributeName);
+    }
 
-	private MatchingParam getMatchingParam(List matchingParams, String name) {
-		for (Iterator iterator = matchingParams.iterator(); iterator.hasNext();) {
-			MatchingParam param = (MatchingParam) iterator.next();
-			if (param.getParamName().equals(name)) {
-				return param;
-			}
-		}
-		return null;
-	}
+    private MatchingParam getMatchingParam(List matchingParams, String name) {
+        for (Iterator iterator = matchingParams.iterator(); iterator.hasNext();) {
+            MatchingParam param = (MatchingParam) iterator.next();
+            if (param.getParamName().equals(name)) {
+                return param;
+            }
+        }
+        return null;
+    }
 }

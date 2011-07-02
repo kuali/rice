@@ -15,11 +15,7 @@
  */
 package org.kuali.rice.ken.deliverer;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
-import org.kuali.rice.ken.exception.ErrorList;
 import org.kuali.rice.ken.exception.NotificationAutoRemoveException;
 import org.kuali.rice.ken.exception.NotificationMessageDeliveryException;
 import org.kuali.rice.ken.exception.NotificationMessageDismissalException;

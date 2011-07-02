@@ -38,11 +38,12 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -161,8 +162,8 @@ public class ActionListTest extends KEWTestCase {
      * their secondary list.
      */
     @Test public void testSecondaryActionList() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
-    	document.routeDocument("");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
+    	document.route("");
 
     	// at this point the document should be routed to the following people
     	// 1) approve to bmcgough with primary delegate of rkirkend and secondary delegates of ewestfal and bmcgough (himself)
@@ -238,10 +239,10 @@ public class ActionListTest extends KEWTestCase {
             assertEquals("Should be to a workgroup.", NonSIT.getId(), actionItem.getGroupId());
         }
 
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
-        document.routeDocument("");
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
-        document.routeDocument("");
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
+        document.route("");
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
+        document.route("");
 
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, excludeSecondaryFilter);
         assertEquals("bmcgough should have 0 items in his primary action list.", 0, actionItems.size());
@@ -296,8 +297,8 @@ public class ActionListTest extends KEWTestCase {
      * their secondary list.
      */
     @Test public void testPrimaryDelegationActionList() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
-    	document.routeDocument("");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
+    	document.route("");
 
     	// at this point the document should be routed to the following people
     	// 1) approve to bmcgough with primary delegate of rkirkend and secondary delegates of ewestfal and bmcgough (himself)
@@ -324,10 +325,10 @@ public class ActionListTest extends KEWTestCase {
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, new ActionListFilter());
     	assertEquals("bmcgough should have 1 item in his entire action list.", 1, actionItems.size());
 
-    	document = WorkflowDocument.createDocument(jhopfPrincipalId, "ActionListDocumentType_PrimaryDelegate");
-    	document.routeDocument("");
-    	document = WorkflowDocument.createDocument(jhopfPrincipalId, "ActionListDocumentType_PrimaryDelegate2");
-        document.routeDocument("");
+    	document = WorkflowDocumentFactory.createDocument(jhopfPrincipalId, "ActionListDocumentType_PrimaryDelegate");
+    	document.route("");
+    	document = WorkflowDocumentFactory.createDocument(jhopfPrincipalId, "ActionListDocumentType_PrimaryDelegate2");
+        document.route("");
 
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, showPrimaryFilter);
         // should be 6 total action items but 3 distinct doc ids
@@ -382,12 +383,12 @@ public class ActionListTest extends KEWTestCase {
 
         Person jhopf = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
         Person bmcgough = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
-    	document.routeDocument("");
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
-        document.routeDocument("");
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
-        document.routeDocument("");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
+    	document.route("");
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
+        document.route("");
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
+        document.route("");
 
         Collection<Recipient> recipients = getActionListService().findUserPrimaryDelegations(jhopf.getPrincipalId());
         assertEquals("Wrong size of users who were delegated to via Primary Delegation", 0, recipients.size());

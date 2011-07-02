@@ -409,15 +409,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			}
 			// TODO perhaps the policies could also be factored out?
 			checkDefaultApprovalPolicy(document);
-			LOG.debug("Marking document approved");
-			// TODO factor out this magical post processing
-			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_APPROVED_CD);
-			document.markDocumentApproved();
-			// saveDocument(context);
-			notifyPostProcessor(context, event);
 
 			LOG.debug("Marking document processed");
-			event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_PROCESSED_CD);
+			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_PROCESSED_CD);
 			document.markDocumentProcessed();
 			// saveDocument(context);
 			notifyPostProcessor(context, event);

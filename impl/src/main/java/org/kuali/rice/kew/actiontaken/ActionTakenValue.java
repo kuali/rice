@@ -323,4 +323,5 @@ public class ActionTakenValue implements Serializable {
     	builder.setDelegatorPrincipalId(actionTakenBo.getDelegatorPrincipalId());
     	return builder.build();
     }
+    
 }

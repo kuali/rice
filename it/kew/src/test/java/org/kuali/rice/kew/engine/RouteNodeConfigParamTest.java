@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.kew.engine;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -25,12 +30,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.Utilities;
 import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests the parsing of route node config params 

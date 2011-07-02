@@ -16,13 +16,13 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.SplitNode;
 import org.kuali.rice.kew.engine.node.SplitResult;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class CustomCycleSplit implements SplitNode {

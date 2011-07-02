@@ -17,13 +17,13 @@
 package org.kuali.rice.kew.test;
 
 
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.ojb.DataAccessUtils;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
-
-import static org.junit.Assert.fail;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

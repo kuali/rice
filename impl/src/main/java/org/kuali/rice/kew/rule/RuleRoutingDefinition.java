@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 
 /**
@@ -25,18 +26,17 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RuleRoutingDefinition extends WorkflowAttributeDefinitionDTO {
+public final class RuleRoutingDefinition {
         
 	private static final long serialVersionUID = -5633697385117416044L;
 	private static final String RULE_ROUTING_ATTRIBUTE_CLASS = "org.kuali.rice.kew.rule.RuleRoutingAttribute";
         
-	public RuleRoutingDefinition(String docTypeName) {
-		this();
-		this.addConstructorParameter(docTypeName);
+	public static WorkflowAttributeDefinition createAttributeDefinition(String docTypeName) {
+	    WorkflowAttributeDefinition.Builder builder = WorkflowAttributeDefinition.Builder.create(RULE_ROUTING_ATTRIBUTE_CLASS);
+	    builder.addParameter(docTypeName);
+	    return builder.build();
 	}
 	
-	private RuleRoutingDefinition() {
-		super(RULE_ROUTING_ATTRIBUTE_CLASS);
-	}
+	private RuleRoutingDefinition() {}
 
 }

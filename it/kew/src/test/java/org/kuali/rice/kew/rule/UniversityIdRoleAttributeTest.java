@@ -23,10 +23,11 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 
 import org.junit.Test;
-import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.document.PropertyDefinition;
+import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.xml.sax.InputSource;
 
@@ -50,42 +51,42 @@ public class UniversityIdRoleAttributeTest extends KEWTestCase {
 	// rkirkend     ->     2002
 	// bmcgough     ->     2004
 	
-	WorkflowDocument document = WorkflowDocument.createDocument("2001", "UniversityIdRoleAttributeTest");
+	WorkflowDocument document = WorkflowDocumentFactory.createDocument("2001", "UniversityIdRoleAttributeTest");
 	
-	WorkflowAttributeDefinitionDTO universityIdDef1 = new WorkflowAttributeDefinitionDTO("UniversityIdRoleAttribute");
-	PropertyDefinitionDTO universityIdProp1 = new PropertyDefinitionDTO(UNIVERSITY_ID_PROP, "2002");
-	universityIdDef1.addProperty(universityIdProp1);
+	WorkflowAttributeDefinition.Builder universityIdDef1 = WorkflowAttributeDefinition.Builder.create("UniversityIdRoleAttribute");
+	PropertyDefinition universityIdProp1 = PropertyDefinition.create(UNIVERSITY_ID_PROP, "2002");
+	universityIdDef1.addPropertyDefinition(universityIdProp1);
 	
-	WorkflowAttributeDefinitionDTO universityIdDef2 = new WorkflowAttributeDefinitionDTO("UniversityIdRoleAttribute");
-	PropertyDefinitionDTO universityIdProp2 = new PropertyDefinitionDTO(UNIVERSITY_ID_PROP, "2004");
-	universityIdDef2.addProperty(universityIdProp2);
+	WorkflowAttributeDefinition.Builder universityIdDef2 = WorkflowAttributeDefinition.Builder.create("UniversityIdRoleAttribute");
+	PropertyDefinition universityIdProp2 = PropertyDefinition.create(UNIVERSITY_ID_PROP, "2004");
+	universityIdDef2.addPropertyDefinition(universityIdProp2);
 	
-	document.addAttributeDefinition(universityIdDef1);
-	document.addAttributeDefinition(universityIdDef2);
+	document.addAttributeDefinition(universityIdDef1.build());
+	document.addAttributeDefinition(universityIdDef2.build());
 	
-	document.routeDocument("Routing!");
+	document.route("Routing!");
 	
 	// load the document as rkirkend
 	
-	document = WorkflowDocument.loadDocument("2002", document.getDocumentId());
-	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
+	document = WorkflowDocumentFactory.loadDocument("2002", document.getDocumentId());
+	assertTrue("Document should be ENROUTE", document.isEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	
 	// load the document as bmcgough
-	document = WorkflowDocument.loadDocument("2004", document.getDocumentId());
+	document = WorkflowDocumentFactory.loadDocument("2004", document.getDocumentId());
 	assertTrue("bmcgough should have an approve request.", document.isApprovalRequested());
 	
 	// submit an approve as bmcgough
 	document.approve("i approve");
 	
 	// reload as rkirkend, verify still enroute
-	document = WorkflowDocument.loadDocument("2002", document.getDocumentId());
-	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
+	document = WorkflowDocumentFactory.loadDocument("2002", document.getDocumentId());
+	assertTrue("Document should be ENROUTE", document.isEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	document.approve("i also approve");
 	
 	// now the document should be FINAL
-	assertTrue("Document should be FINAL", document.stateIsFinal());
+	assertTrue("Document should be FINAL", document.isFinal());
 	
     }
     
@@ -93,20 +94,20 @@ public class UniversityIdRoleAttributeTest extends KEWTestCase {
     public void testParameterizedUniversityIdAttribute() throws Exception {
 	loadXmlFile("ParameterizedUniversityIdRoleAttributeTestConfig.xml");
 	
-	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "UniversityIdRoleAttributeTest");
+	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "UniversityIdRoleAttributeTest");
 	
-	WorkflowAttributeDefinitionDTO univIdDef1 = new WorkflowAttributeDefinitionDTO("UniversityIdRoleAttribute");
-	PropertyDefinitionDTO univIdProp1 = new PropertyDefinitionDTO(UNIVERSITY_ID_PROP, "2002");
-	univIdDef1.addProperty(univIdProp1);
+	WorkflowAttributeDefinition.Builder univIdDef1 = WorkflowAttributeDefinition.Builder.create("UniversityIdRoleAttribute");
+	PropertyDefinition univIdProp1 = PropertyDefinition.create(UNIVERSITY_ID_PROP, "2002");
+	univIdDef1.addPropertyDefinition(univIdProp1);
 		
-	document.addAttributeDefinition(univIdDef1);
+	document.addAttributeDefinition(univIdDef1.build());
 	
-	document.routeDocument("Routing!");
+	document.route("Routing!");
 	
 	// load the document as rkirkend
 	
-	document = WorkflowDocument.loadDocument("2002", document.getDocumentId());
-	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
+	document = WorkflowDocumentFactory.loadDocument("2002", document.getDocumentId());
+	assertTrue("Document should be ENROUTE", document.isEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	
 	// now let's verify the XML

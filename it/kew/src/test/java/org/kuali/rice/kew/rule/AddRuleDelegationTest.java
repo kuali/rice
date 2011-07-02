@@ -26,9 +26,10 @@ import java.util.List;
 import mocks.MockDocumentRequeuerImpl;
 
 import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -62,8 +63,8 @@ public class AddRuleDelegationTest extends KEWTestCase {
     	String docType = "RiceDocument.testNewDelegationTriggersRequeue";
     	
     	// route a document of this type
-    	WorkflowDocument wd = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCTYPE);
-    	wd.routeDocument("");
+    	WorkflowDocument wd = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCTYPE);
+    	wd.route("");
     	
     	// clear the current set of requeued document ids
 		MockDocumentRequeuerImpl.clearRequeuedDocumentIds();

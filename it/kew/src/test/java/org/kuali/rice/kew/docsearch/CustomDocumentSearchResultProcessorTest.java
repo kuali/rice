@@ -16,6 +16,13 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
@@ -29,13 +36,6 @@ import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.web.ui.Column;
-
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  *

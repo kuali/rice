@@ -17,20 +17,23 @@
 package org.kuali.rice.kew.actionrequest;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests the DocumentRequeuer route queue processor.
@@ -44,17 +47,17 @@ public class DocumentRequeuerTest extends KEWTestCase {
     }
 
     @Test public void testDocumentRequeueSingleNode() throws Exception {
-       WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
-       document.routeDocument("");
-       document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-       assertTrue(document.stateIsEnroute());
-       ActionRequestDTO[] requests = document.getActionRequests();
-       assertEquals("Should be 2 requests.", 2, requests.length);
+       WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+       document.route("");
+       document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+       assertTrue(document.isEnroute());
+       List<ActionRequest> requests = document.getRootActionRequests();
+       assertEquals("Should be 2 requests.", 2, requests.size());
        // save off request ids
-       Set<Long> requestIds = new HashSet<Long>();
-        for (ActionRequestDTO requestVO : requests)
+       Set<String> requestIds = new HashSet<String>();
+        for (ActionRequest request : requests)
         {
-            requestIds.add(requestVO.getActionRequestId());
+            requestIds.add(request.getId());
         }
 
        DocumentRouteHeaderValue documentH = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
@@ -64,13 +67,12 @@ public class DocumentRequeuerTest extends KEWTestCase {
        // initiate a requeue of the document
 //       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getDocumentId(), DocumentRequeuerImpl.class.getName());
 
-       document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
-       assertTrue(document.stateIsEnroute());
-       requests = document.getActionRequests();
-       assertEquals("Should be 2 requests.", 2, requests.length);
-       for (int index = 0; index < requests.length; index++) {
-           ActionRequestDTO requestVO = requests[index];
-           assertTrue("Request ids should be different.", !requestIds.contains(requestVO.getActionRequestId()));
+       document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+       assertTrue(document.isEnroute());
+       requests = document.getRootActionRequests();
+       assertEquals("Should be 2 requests.", 2, requests.size());
+       for (ActionRequest requestVO : requests) {
+           assertTrue("Request ids should be different.", !requestIds.contains(requestVO.getId()));
        }
        assertTrue(document.isApprovalRequested());
        document.approve("");
@@ -79,13 +81,13 @@ public class DocumentRequeuerTest extends KEWTestCase {
        // have only one pending request to ryan
 //       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getDocumentId(), DocumentRequeuerImpl.class.getName());
        documentRequeuer.requeueDocument(document.getDocumentId());
-       document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-       assertTrue(document.stateIsEnroute());
-       requests = document.getActionRequests();
-       assertEquals("Should be 2 requests.", 2, requests.length);
+       document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+       assertTrue(document.isEnroute());
+       requests = document.getRootActionRequests();
+       assertEquals("Should be 2 requests.", 2, requests.size());
        // there should only be one pending request to rkirkend
        boolean pendingToRkirkend = false;
-        for (ActionRequestDTO requestVO : requests)
+        for (ActionRequest requestVO : requests)
         {
             if (requestVO.getPrincipalId().equals(getPrincipalIdForName("rkirkend")) && requestVO.isActivated())
             {

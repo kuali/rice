@@ -18,7 +18,6 @@
 package org.kuali.rice.edl.impl;
 
 import org.junit.Test;
-import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 /**

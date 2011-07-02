@@ -17,9 +17,6 @@ package org.kuali.rice.kew.docsearch;
 
 import java.util.List;
 
-import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
-
 /**
  * Class to test custom search criteria processor implementation
  * 

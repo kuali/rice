@@ -21,19 +21,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 
@@ -53,18 +52,17 @@ public class ParallelRoutingTest extends KEWTestCase {
     }
 
     @Test public void testParallelRoute() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
-        document.saveRoutingData();
-        assertTrue("Document should be initiated", document.stateIsInitiated());
-        assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
-        assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
+        document.saveDocumentData();
+        assertTrue("Document should be initiated", document.isInitiated());
+        assertEquals("Should be no action requests.", 0, document.getRootActionRequests().size());
         Collection nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
-        document.routeDocument("Routing for parallel");
+        document.route("Routing for parallel");
         
         // should have generated a request to "bmcgough"
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
-        assertTrue("Document should be enroute", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        assertTrue("Document should be enroute", document.isEnroute());
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertEquals("Incorrect pending action requests.", 1, actionRequests.size());
         ActionRequestValue bRequest = (ActionRequestValue)actionRequests.get(0);
@@ -74,8 +72,8 @@ public class ParallelRoutingTest extends KEWTestCase {
         document.approve("Approving test");
         
         // document should split at this point and generate an ack to temay and approves to rkirkend and pmckown
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue("Document should be enroute", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        assertTrue("Document should be enroute", document.isEnroute());
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertEquals("Incorrect pending action requests.", 3, actionRequests.size());
         boolean isToTemay = false;
@@ -110,12 +108,11 @@ public class ParallelRoutingTest extends KEWTestCase {
         assertTrue("No request to rkirkend.", isToRkirkend);
         
         // check that we are at both nodes, one in each branch
-        String[] nodeNames = document.getNodeNames();
-        assertEquals("Wrong number of node names.", 2, nodeNames.length);
+        Set<String> nodeNames = document.getNodeNames();
+        assertEquals("Wrong number of node names.", 2, nodeNames.size() );
         boolean isNode2 = false;
         boolean isNode3 = false;
-        for (int index = 0; index < nodeNames.length; index++) {
-            String name = nodeNames[index];
+        for (String name : nodeNames) {
             if (name.equals(WORKFLOW_DOCUMENT_2_NODE)) {
                 isNode2 = true;
             }
@@ -134,7 +131,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         assertNotNull("Node should be in branch.", instance2.getBranch());
         assertTrue("Branches should be different.", !instance1.getBranch().getBranchId().equals(instance2.getBranch().getBranchId()));
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Should have request.", document.isApprovalRequested());
         document.approve("Git-r-dun");
         
@@ -155,7 +152,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         assertTrue("Not at join", isAtJoin);
         assertTrue("Not at WD3", isAtWD3);
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         assertTrue("Should have request.", document.isApprovalRequested());
         document.approve("Do it.");
         
@@ -170,12 +167,12 @@ public class ParallelRoutingTest extends KEWTestCase {
         }
         assertTrue("Not at WDF", isAtWDF);
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("xqi"), document.getDocumentId());
-        assertTrue("Should still be enroute.", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("xqi"), document.getDocumentId());
+        assertTrue("Should still be enroute.", document.isEnroute());
         assertTrue("Should have request.", document.isApprovalRequested());
         document.approve("I'm the last approver");
         
-        assertTrue("Document should be processed.", document.stateIsProcessed());
+        assertTrue("Document should be processed.", document.isProcessed());
         nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         //commented out because the final RouteNodeInstance is now not active when the doc goes final
 //        assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
@@ -188,10 +185,10 @@ public class ParallelRoutingTest extends KEWTestCase {
 //        }
 //        assertTrue("Not at WDF", isAtWDF);
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         assertTrue("Should have request.", document.isAcknowledgeRequested());
         document.acknowledge("");
-        assertTrue(document.stateIsFinal());
+        assertTrue(document.isFinal());
     }
     
     /**
@@ -200,18 +197,17 @@ public class ParallelRoutingTest extends KEWTestCase {
      */
     @Test public void testEmptyParallelBranches() throws Exception {
         
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), PARALLEL_EMPTY_DOCUMENT_TYPE_NAME);
-        document.saveRoutingData();
-        assertTrue("Document should be initiated", document.stateIsInitiated());
-        assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
-        assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), PARALLEL_EMPTY_DOCUMENT_TYPE_NAME);
+        document.saveDocumentData();
+        assertTrue("Document should be initiated", document.isInitiated());
+        assertEquals("Should be no action requests.", 0, document.getRootActionRequests().size());
         Collection<? extends Object> nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
-        document.routeDocument("");
+        document.route("");
         
         // should have generated a request to "bmcgough"
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
-        assertTrue("Document should be enroute", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        assertTrue("Document should be enroute", document.isEnroute());
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertEquals("Incorrect pending action requests.", 1, actionRequests.size());
         ActionRequestValue bRequest = (ActionRequestValue)actionRequests.get(0);
@@ -222,8 +218,8 @@ public class ParallelRoutingTest extends KEWTestCase {
         
         // now the document should have split, passed through nodes in each branch which didn't generate requests,
         // and then passed the join node and generated requests at WorkflowDocumentFinal
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("xqi"), document.getDocumentId());
-        assertTrue("Document should be enroute", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("xqi"), document.getDocumentId());
+        assertTrue("Document should be enroute", document.isEnroute());
         assertTrue(document.isApprovalRequested());
         
     }
@@ -233,18 +229,18 @@ public class ParallelRoutingTest extends KEWTestCase {
      *//*
     public void testEmptyParallelBranchesSwitched() throws Exception {
         
-        WorkflowDocument document = WorkflowDocument.createDocument(new NetworkIdVO("ewestfal"), PARALLEL_EMPTY_DOCUMENT_TYPE_2_NAME);
-        document.saveRoutingData();
-        assertTrue("Document should be initiated", document.stateIsInitiated());
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(new NetworkIdVO("ewestfal"), PARALLEL_EMPTY_DOCUMENT_TYPE_2_NAME);
+        document.saveDocumentData();
+        assertTrue("Document should be initiated", document.isInitiated());
         assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
         assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
         Collection nodeInstances = SpringServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
-        document.routeDocument("");
+        document.route("");
         
         // should have generated a request to "bmcgough"
-        document = WorkflowDocument.loadDocument(new NetworkIdVO("bmcgough"), document.getDocumentId());
-        assertTrue("Document should be enroute", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(new NetworkIdVO("bmcgough"), document.getDocumentId());
+        assertTrue("Document should be enroute", document.isEnroute());
         List actionRequests = TestUtilities.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertEquals("Incorrect pending action requests.", 1, actionRequests.size());
         ActionRequestValue bRequest = (ActionRequestValue)actionRequests.get(0);
@@ -255,54 +251,54 @@ public class ParallelRoutingTest extends KEWTestCase {
         
         // now the document should have split, passed through nodes in each branch which didn't generate requests,
         // and then passed the join node and generated requests at WorkflowDocumentFinal
-        document = WorkflowDocument.loadDocument(new NetworkIdVO("xqi"), document.getDocumentId());
-        assertTrue("Document should be enroute", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(new NetworkIdVO("xqi"), document.getDocumentId());
+        assertTrue("Document should be enroute", document.isEnroute());
         assertTrue(document.isApprovalRequested());
         
     }*/
     
     @Test public void testAdhocApproversJoinScenario() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "AdHocApproversDocType");
-        document.routeDocument("");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "AdHocApproversDocType");
+        document.route("");
         
         // should send an approve to bmcgough
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Bmcgough should have approve request.", document.isApprovalRequested());
         document.approve("");
         
         // at this point the document should pass the split, and end up at the WorkflowDocument2 node and the AdHocApproversJoin node
         // after bypassing the AdHocJoinPoint
-        Set<? extends String> nodeNames = new HashSet<String>(Arrays.asList(document.getNodeNames()));
+        Set<String> nodeNames = document.getNodeNames();
         assertEquals("There should be two node names.", 2, nodeNames.size());
         assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("WorkflowDocument2"));
         assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("AdHocApproversJoin"));
         
         // pmckown has the request at the adhoc approvers node, if we approve as him then the document should _not_ transition out
         // of it's current nodes
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         assertTrue("Pmckown should have approve request.", document.isApprovalRequested());
         document.approve("");
         
         // the document should still be at the same nodes
-        nodeNames = new HashSet<String>(Arrays.asList(document.getNodeNames()));
+        nodeNames = document.getNodeNames();
         assertEquals("There should be two node names.", 2, nodeNames.size());
         assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("WorkflowDocument2"));
         assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("AdHocApproversJoin"));
     
         // at WorkflowDocument2, rkirkend is the approver, if we approve as him we should end up at the WorkflowDocumentFinal node
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Rkirkend should have approve request.", document.isApprovalRequested());
         document.approve("");
         
         // the document should now be at WorkflowDocumentFinal with a request to xqi
-        nodeNames = new HashSet<String>(Arrays.asList(document.getNodeNames()));
+        nodeNames = document.getNodeNames();
         assertEquals("There should be one node name.", 1, nodeNames.size());
         assertTrue("Should be at WorkflowDocumentFinal node.", nodeNames.contains("WorkflowDocumentFinal"));
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("xqi"), document.getDocumentId());
-        assertTrue("Document should still be enroute.", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("xqi"), document.getDocumentId());
+        assertTrue("Document should still be enroute.", document.isEnroute());
         document.approve("");
-        assertTrue("Document should now be final.", document.stateIsFinal());
+        assertTrue("Document should now be final.", document.isFinal());
         
     }
     

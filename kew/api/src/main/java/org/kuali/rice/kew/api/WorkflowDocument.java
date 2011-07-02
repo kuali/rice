@@ -58,6 +58,8 @@ public interface WorkflowDocument extends DocumentContract {
 
 	void setApplicationContent(String applicationContent);
 
+    public void setAttributeContent(String attributeContent);
+	
 	void clearAttributeContent();
 
 	String getAttributeContent();
@@ -71,6 +73,8 @@ public interface WorkflowDocument extends DocumentContract {
 
 	List<WorkflowAttributeDefinition> getAttributeDefinitions();
 
+	public void setSearchableContent(String searchableContent);
+	
 	void addSearchableDefinition(
 			WorkflowAttributeDefinition searchableDefinition);
 

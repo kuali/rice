@@ -27,6 +27,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.role.service.RoleService;
@@ -38,7 +40,6 @@ import org.kuali.rice.kew.routemodule.TestRouteLevel;
 import org.kuali.rice.kew.routemodule.TestRouteModuleXMLHelper;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -77,9 +78,9 @@ public class RoleServiceTest extends KEWTestCase {
 	}
 
 	private String routeDocument() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
-        document.routeDocument("testing only");
+        document.route("testing only");
         return document.getDocumentId();
 	}
 
@@ -132,7 +133,7 @@ public class RoleServiceTest extends KEWTestCase {
         } catch (Exception e) {}
 
         // now blanket approve a document to make it processed
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.blanketApprove("");
         DocumentRouteHeaderValue baDoc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
@@ -188,7 +189,7 @@ public class RoleServiceTest extends KEWTestCase {
         } catch (Exception e) {}
 
         // now blanket approve a document to make it processed
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.blanketApprove("");
         DocumentRouteHeaderValue baDoc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());

@@ -15,14 +15,7 @@
  */
 package org.kuali.rice.edl.impl;
 
-import org.apache.log4j.Logger;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.xml.XPathTest;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import static org.junit.Assert.assertTrue;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,7 +29,14 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import static org.junit.Assert.assertTrue;
+import org.apache.log4j.Logger;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.xml.XPathTest;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * This class is used to test edoc lite xml xpath operations

@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test hierarchical routing coupled with KRA meta-rule
@@ -45,7 +45,7 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
 
     protected void approve(String user, String docId) throws WorkflowException {
         log.info("Approving as " + user);
-        WorkflowDocument doc = WorkflowDocument.loadDocument(getPrincipalIdForName(user), docId);
+        WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(user), docId);
         doc.approve("approving as " + user);
     }
 
@@ -53,10 +53,10 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
     public void test() throws WorkflowException {
         loadXmlFile("KRAMetaRuleHierarchy.xml");
         
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("quickstart"), "KRAMetaRuleHierarchyTest");
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("quickstart"), "KRAMetaRuleHierarchyTest");
         
-        doc.getDocumentContent().setApplicationContent(HIERARCHY);
-        doc.routeDocument("initial route");
+        doc.setApplicationContent(HIERARCHY);
+        doc.route("initial route");
 
         TestUtilities.logActionRequests(doc.getDocumentId());
         // user 2 is before user3 because of ordering between business rules included by meta-rule
@@ -118,7 +118,7 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
 
         TestUtilities.logActionRequests(doc.getDocumentId());
 
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("quickstart"), doc.getDocumentId());
-        assertTrue(doc.stateIsFinal());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), doc.getDocumentId());
+        assertTrue(doc.isFinal());
     }
 }

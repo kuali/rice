@@ -17,12 +17,12 @@
 
 package org.kuali.rice.kew.xml;
 
-import org.junit.Test;
-import org.kuali.rice.test.BaseRiceTestCase;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.io.StringReader;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -32,10 +32,13 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.IOException;
-import java.io.StringReader;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.test.BaseRiceTestCase;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 
 public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {

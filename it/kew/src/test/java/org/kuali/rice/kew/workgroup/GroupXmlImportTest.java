@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.kew.workgroup;
 
-import org.junit.Test;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.test.BaselineTestCase;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.

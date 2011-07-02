@@ -34,7 +34,8 @@ import org.kuali.rice.ken.service.NotificationRecipientService;
 import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
@@ -61,7 +62,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
         private String docId;
 
         // outgoing
-        private NotificationWorkflowDocument document;
+        private WorkflowDocument document;
         private Notification notification;
         private String renderedContent;
         private boolean valid = true;
@@ -73,10 +74,10 @@ public class AdministerNotificationRequestController extends MultiActionControll
         public void setDocId(String docId) {
             this.docId = docId;
         }
-        public NotificationWorkflowDocument getDocument() {
+        public WorkflowDocument getDocument() {
             return document;
         }
-        public void setDocument(NotificationWorkflowDocument document) {
+        public void setDocument(WorkflowDocument document) {
             this.document = document;
         }
         public Notification getNotification() {
@@ -175,7 +176,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
             standaloneWindow = "false";
         }
 
-        NotificationWorkflowDocument document;
+        WorkflowDocument document;
         Map<String, Object> model = new HashMap<String, Object>();
         // set into model whether we are dealing with a pop up or an inline window
         model.put(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW, standaloneWindow);
@@ -191,18 +192,18 @@ public class AdministerNotificationRequestController extends MultiActionControll
             command.setRenderedContent(Util.transformContent(notification));
 
             LOG.info("notification auto remove date time: " + notification.getAutoRemoveDateTime());
-            if (document.stateIsApproved()) {
+            if (document.isApproved()) {
                 command.setValid(false);
                 command.setMessage("This notification request has been approved.");
-            } else if (document.stateIsDisapproved()) {
+            } else if (document.isDisapproved()) {
                 command.setMessage("This notification request has been disapproved.");
             } else if (notification.getAutoRemoveDateTime() != null && notification.getAutoRemoveDateTime().before(new Date(System.currentTimeMillis()))) {
                 /*if (!document.stateIsCanceled()) {
                 workflowDocumentService.terminateWorkflowDocument(new WorkflowDocument(new NetworkIdVO("notsys"), new Long(command.getDocId())));
                 }*/
                 // the autoremove date time has already passed...this notification request is null and void at this time
-                boolean disapproved = document.stateIsDisapproved();
-                if (!document.stateIsDisapproved()) {
+                boolean disapproved = document.isDisapproved();
+                if (!document.isDisapproved()) {
                     List<NotificationChannelReviewer> reviewers = notification.getChannel().getReviewers();
                     String user = null;
                     for (NotificationChannelReviewer reviewer: reviewers) {
@@ -223,7 +224,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
                     }
                     // if the current user is a reviewer, then disapprove as that user
                     if (user != null) {
-	                    WorkflowDocument.loadDocument(user, command.getDocId()).disapprove("Disapproving notification request.  Auto-remove datetime has already passed.");
+	                    WorkflowDocumentFactory.loadDocument(user, command.getDocId()).disapprove("Disapproving notification request.  Auto-remove datetime has already passed.");
                         disapproved = true;
                     }
                 }
@@ -313,11 +314,11 @@ public class AdministerNotificationRequestController extends MultiActionControll
 
         try {
             // now construct the workflow document, which will interact with workflow
-            NotificationWorkflowDocument document = NotificationWorkflowDocument.loadNotificationDocument(userId, command.getDocId());
+            WorkflowDocument document = NotificationWorkflowDocument.loadNotificationDocument(userId, command.getDocId());
 
             Notification notification = retrieveNotificationForWorkflowDocument(document);
 
-            String initiatorPrincipalId = document.getRouteHeader().getInitiatorPrincipalId();
+            String initiatorPrincipalId = document.getInitiatorPrincipalId();
             Person initiator = KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
             String notificationBlurb =  notification.getContentType().getName() + " notification submitted by " + initiator.getName() + " for channel " + notification.getChannel().getName();
             if ("disapprove".equals(action)) {

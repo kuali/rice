@@ -15,23 +15,30 @@
  */
 package org.kuali.rice.kew.rule.service.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Iterator;
+import java.util.List;
+
+import javax.persistence.PersistenceException;
+
 import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.dao.DataIntegrityViolationException;
-
-import javax.persistence.PersistenceException;
-import java.util.Iterator;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RuleServiceTest extends KEWTestCase {
@@ -42,16 +49,16 @@ public class RuleServiceTest extends KEWTestCase {
 
     @Test public void testClearCacheWithDocumentTypeUpdate() throws Exception {
         //put the rules in the cache by routing documents
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1");
-        document.routeDocument("");
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1child");
-        document.routeDocument("");
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child2");
-        document.routeDocument("");
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child3");
-        document.routeDocument("");
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "NotRelated");
-        document.routeDocument("");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1");
+        document.route("");
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1child");
+        document.route("");
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child2");
+        document.route("");
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child3");
+        document.route("");
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "NotRelated");
+        document.route("");
 
         //verify the cache's contents are correct
         List<RuleBaseValues> rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1");
@@ -205,8 +212,8 @@ public class RuleServiceTest extends KEWTestCase {
         assertNull("Rules should not be cached yet.", rulesCached);
 
         // routing a doc should put the rules into the cache
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1child1child");
-        document.routeDocument("");
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1child1child");
+        document.route("");
 
         rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child1child");
         assertNotNull(rulesCached);

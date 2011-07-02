@@ -179,9 +179,6 @@ public class StatsForm extends KualiForm {
     public void setStats(Stats stats) {
         this.stats = stats;
     }
-    public String getApprovedLabel() {
-        return KEWConstants.ROUTE_HEADER_APPROVED_LABEL;
-    }
 
     public String getCanceledLabel() {
         return KEWConstants.ROUTE_HEADER_CANCEL_LABEL;

@@ -51,6 +51,8 @@ import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -68,12 +70,10 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
@@ -474,13 +474,13 @@ public class DocumentOperationAction extends KewKualiAction {
 			getBranchService().deleteBranchStates(branchStatesToBeDeleted);
 		}
 
-		WorkflowDocument workflowDocument = WorkflowDocument.loadDocument(GlobalVariables.getUserSession().getPrincipalId(), docForm.getDocumentId());
+		WorkflowDocument workflowDocument = WorkflowDocumentFactory.loadDocument(GlobalVariables.getUserSession().getPrincipalId(), docForm.getDocumentId());
 
 		String annotation = docForm.getAnnotation();
 		if (StringUtils.isEmpty(annotation)) {
 			annotation = DEFAULT_LOG_MSG;
 		}
-		workflowDocument.logDocumentAction(annotation);
+		workflowDocument.logAnnotation(annotation);
 
 		ActionMessages messages = new ActionMessages();
 		String forward = null;

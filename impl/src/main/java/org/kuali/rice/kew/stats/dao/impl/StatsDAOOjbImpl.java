@@ -93,9 +93,7 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
 
             String actionType = rs.getString(2);
             String number = new Integer(rs.getInt(1)).toString();
-            if (actionType.equals(KEWConstants.ROUTE_HEADER_APPROVED_CD)) {
-                stats.setApprovedNumber(number);
-            } else if (actionType.equals(KEWConstants.ROUTE_HEADER_CANCEL_CD)) {
+            if (actionType.equals(KEWConstants.ROUTE_HEADER_CANCEL_CD)) {
                 stats.setCanceledNumber(number);
             } else if (actionType.equals(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD)) {
                 stats.setDisapprovedNumber(number);

@@ -22,9 +22,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
-import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.rule.UnqualifiedRoleAttribute;
 import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 

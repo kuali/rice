@@ -17,23 +17,27 @@
 package org.kuali.rice.kew.routeheader;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.sql.Timestamp;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.LockingException;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-
-import java.sql.Timestamp;
-
-import static org.junit.Assert.*;
 
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
@@ -82,13 +86,13 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     }
 
     @Test public void testGetApplicationIdByDocumentId() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType2");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType2");
     	String documentId = document.getDocumentId();
     	String applicationId = routeHeaderService.getApplicationIdByDocumentId(documentId);
     	assertEquals("applicationId should be KEWNEW", "KEWNEW", applicationId);
 
     	// now check TestDocumentType
-    	document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+    	document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
     	documentId = document.getDocumentId();
     	applicationId = routeHeaderService.getApplicationIdByDocumentId(documentId);
     	assertEquals("applicationId should be KEW", "KEW", applicationId);
@@ -100,8 +104,8 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     		return;
     	}
 
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
-    	document.saveRoutingData();
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+    	document.saveDocumentData();
     	final String documentId = document.getDocumentId();
         Locker locker = null;
         synchronized (lock) {

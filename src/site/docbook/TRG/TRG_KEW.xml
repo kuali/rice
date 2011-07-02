@@ -1287,21 +1287,6 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             </sect3>
         </sect2>
         <sect2>
-            <title>Web Service Integration</title>
-            <para>In addition to the thin Java client, KEW exposes a simple Web Service API on the
-                service bus which can be used by non-Java applications for integration.</para>
-            <para>This web service will be available at a location similar to: <link
-                    xlink:href="http://yourlocalip/kr-dev/remoting/%7BKEW%7DsimpleDocumentActionsService"
-                    >http://yourlocalip/kr-dev/remoting/%7BKEW%7DsimpleDocumentActionsService</link></para>
-            <para>And the WSDL at: <link
-                    xlink:href="http://yourlocalip/kr-dev/remoting/%7BKEW%7DsimpleDocumentActionsService?wsdl"
-                    >http://yourlocalip/kr-dev/remoting/%7BKEW%7DsimpleDocumentActionsService?wsdl</link></para>
-            <para>This web service endpoint is generated from
-                ‘org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService’. Please see the
-                JavaDoc for that interface for more information on the various operations
-                available.</para>
-        </sect2>
-        <sect2>
             <title>Picture of an Enterprise Deployment</title>
             <para>As can be seen from the various integration options described, a KEW Enterprise
                 Deployment (and Kuali Rice in general) might very well be a distributed environment

@@ -95,7 +95,7 @@ public final class WorkflowAttributeDefinition {
     public List<PropertyDefinition> getPropertyDefinitions() {
     	return Collections.unmodifiableList(propertyDefinitions);
     }
-    
+        
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
@@ -123,6 +123,19 @@ public final class WorkflowAttributeDefinition {
 			setAttributeName(attributeName);
 			setParameters(new ArrayList<String>());
 			setPropertyDefinitions(new ArrayList<PropertyDefinition>());
+		}
+		
+		private Builder(WorkflowAttributeDefinition definition) {
+		    setAttributeName(definition.getAttributeName());
+		    setParameters(definition.getParameters());
+		    setPropertyDefinitions(definition.getPropertyDefinitions());
+		}
+		
+		public static Builder create(WorkflowAttributeDefinition definition) {
+		    if (definition == null) {
+		        throw new IllegalArgumentException("definition was null");
+		    }
+		    return new Builder(definition);
 		}
 		
 		public static Builder create(String attributeName) {
@@ -182,8 +195,21 @@ public final class WorkflowAttributeDefinition {
 		}   
     
 		public void addPropertyDefinition(String name, String value) {
-			addPropertyDefinition(new PropertyDefinition(name, value));
+			addPropertyDefinition(PropertyDefinition.create(name, value));
 		}
+		
+	    public PropertyDefinition getPropertyDefinition(String name) {
+	        if (StringUtils.isBlank(name)) {
+	            throw new IllegalArgumentException("name was null or blank");
+	        }
+	        for (PropertyDefinition propertyDefinition : propertyDefinitions) {
+	            if (propertyDefinition.equals(name)) {
+	                return propertyDefinition;
+	            }
+	        }
+	        return null;
+	    }
+
 		
     }
     

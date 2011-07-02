@@ -16,15 +16,15 @@
 
 package org.kuali.rice.kew.test;
 
-import org.kuali.rice.core.impl.config.property.BaseConfig;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.springframework.util.ResourceUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import org.kuali.rice.core.impl.config.property.BaseConfig;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.springframework.util.ResourceUtils;
 
 
 /**

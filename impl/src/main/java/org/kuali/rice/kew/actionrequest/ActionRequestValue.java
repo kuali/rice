@@ -55,6 +55,7 @@ import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.action.RecipientType;
+import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -1025,5 +1026,101 @@ public class ActionRequestValue implements Serializable {
 		builder.setChildRequests(childRequests);
 		return builder;
 	}
+	
+    /**
+     * TODO - this javadoc copied from DTOConverter, needs to be updated!
+     * 
+     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestDTO passed in must be the root action request in the
+     * graph, otherwise an IllegalArgumentException is thrown. This is to avoid potentially sticky issues with circular
+     * references in the conversion. NOTE: This method's primary purpose is to convert ActionRequestVOs returned from a
+     * RouteModule. Incidentally, the DTO's returned from the route module will be lacking some information (like the node
+     * instance) so no attempts are made to convert this data since further initialization is handled by a higher level
+     * component (namely ActionRequestService.initializeActionRequestGraph).
+     */
+    public static ActionRequestValue from(ActionRequest actionRequest) {
+        return ActionRequestValue.from(actionRequest, null);
+    }
+    
+    /**
+     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestDTO passed in must be the root action request in the
+     * graph, otherwise an IllegalArgumentException is thrown. This is to avoid potentially sticky issues with circular
+     * references in the conversion. 
+     * @param routeNodeInstanceLoader a service that will provide routeNodeInstanceS based on their IDs.
+     */
+    public static ActionRequestValue from(ActionRequest actionRequest, 
+            RouteNodeInstanceLoader routeNodeInstanceLoader) {
+        return convertActionRequest(actionRequest, null, routeNodeInstanceLoader);
+    }
+
+    private static ActionRequestValue convertActionRequest(ActionRequest actionRequest, ActionRequestValue parentActionRequestBo,
+            RouteNodeInstanceLoader routeNodeInstanceLoader) {
+        if (actionRequest == null) {
+            return null;
+        }
+        ActionRequestValue actionRequestBo = new ActionRequestFactory().createBlankActionRequest();
+        populateActionRequest(actionRequestBo, actionRequest, routeNodeInstanceLoader);
+        if (parentActionRequestBo != null) {
+            actionRequestBo.setParentActionRequest(parentActionRequestBo);
+            actionRequestBo.setParentActionRequestId(parentActionRequestBo.getActionRequestId());
+        }
+        if (actionRequest.getChildRequests() != null) {
+            for (ActionRequest childRequest : actionRequest.getChildRequests()) {
+                actionRequestBo.getChildrenRequests().add(ActionRequestValue.convertActionRequest(childRequest, actionRequestBo, routeNodeInstanceLoader));
+            }
+        }
+        return actionRequestBo;
+    }
+
+    /**
+     * This method converts everything except for the parent and child requests
+     */
+    private static void populateActionRequest(ActionRequestValue actionRequestBo, ActionRequest actionRequest, 
+            RouteNodeInstanceLoader routeNodeInstanceLoader) {
+
+        actionRequestBo.setActionRequested(actionRequest.getActionRequested().getCode());
+        if (!StringUtils.isBlank(actionRequest.getId())) {
+            actionRequestBo.setActionRequestId(Long.valueOf(actionRequest.getId()));
+        }
+        
+        if (actionRequest.getActionTaken() != null) {
+            // actionRequestBo.setActionTaken(ActionTakenValue.from(actionRequest.getActionTaken()));
+            if (!StringUtils.isBlank(actionRequest.getActionTaken().getId())) {
+                actionRequestBo.setActionTakenId(Long.valueOf(actionRequest.getActionTaken().getId()));
+            }
+        }
+        actionRequestBo.setAnnotation(actionRequest.getAnnotation());
+        if (actionRequest.getRequestPolicy() != null) {
+            actionRequestBo.setApprovePolicy(actionRequest.getRequestPolicy().getCode());
+        }
+        actionRequestBo.setCreateDate(new Timestamp(actionRequest.getDateCreated().getMillis()));
+        actionRequestBo.setCurrentIndicator(actionRequest.isCurrent());
+        if (actionRequest.getDelegationType() != null) {
+            actionRequestBo.setDelegationType(actionRequest.getDelegationType().getCode());
+        }
+        //actionRequestBo.setDocVersion(actionRequest.?);
+        actionRequestBo.setForceAction(actionRequest.isForceAction());
+        actionRequestBo.setPriority(actionRequest.getPriority());
+        actionRequestBo.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
+        actionRequestBo.setQualifiedRoleNameLabel(actionRequest.getQualifiedRoleNameLabel());
+        actionRequestBo.setRecipientTypeCd(actionRequest.getRecipientType().getCode());
+        actionRequestBo.setResponsibilityDesc(actionRequest.getResponsibilityDescription());
+        if (!StringUtils.isBlank(actionRequest.getResponsibilityId())) {
+            actionRequestBo.setResponsibilityId(Long.valueOf(actionRequest.getResponsibilityId()));
+        }
+        actionRequestBo.setRoleName(actionRequest.getRoleName());
+        String documentId = actionRequest.getDocumentId();
+        if (documentId != null) {
+            actionRequestBo.setDocumentId(documentId);
+            actionRequestBo.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId));
+        }
+
+        actionRequestBo.setStatus(actionRequest.getStatus().getCode());
+        actionRequestBo.setPrincipalId(actionRequest.getPrincipalId());
+        actionRequestBo.setGroupId(actionRequest.getGroupId());
+        
+        if (routeNodeInstanceLoader != null && !StringUtils.isBlank(actionRequest.getRouteNodeInstanceId())) {
+            actionRequestBo.setNodeInstance(routeNodeInstanceLoader.load(Long.valueOf(actionRequest.getRouteNodeInstanceId())));
+        }
+    }
     
 }

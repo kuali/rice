@@ -16,15 +16,16 @@
  */
 package org.kuali.rice.kew.actions;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.kuali.rice.edl.framework.util.EDLFunctions;
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class RouteLogAuthenticationTest extends KEWTestCase {
 
@@ -40,8 +41,8 @@ public class RouteLogAuthenticationTest extends KEWTestCase {
     @Test public void testUserRouteLogAuthenticated() throws Exception {
     	String user1PrincipalId = getPrincipalIdForName("user1");
 
-    	WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, DOCUMENT_TYPE_NAME);
-    	document.routeDocument("");
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(user1PrincipalId, DOCUMENT_TYPE_NAME);
+    	document.route("");
 
     	// ensure the UserSession is cleared out (could have been set up by other tests)
     	GlobalVariables.setUserSession(null);

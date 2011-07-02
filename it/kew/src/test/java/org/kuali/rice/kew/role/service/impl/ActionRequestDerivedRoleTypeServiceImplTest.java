@@ -15,17 +15,18 @@
  */
 package org.kuali.rice.kew.role.service.impl;
 
-import org.junit.Test;
-import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
-import org.kuali.rice.kim.util.KimConstants;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 
 
 /**
@@ -50,11 +51,11 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 
 
 	@Test public void testHasApplicationRole() throws Exception {
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "ActionRequestDerivedRoleTypeServiceImplTest");
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "ActionRequestDerivedRoleTypeServiceImplTest");
 		
 		// let's send an adhoc request to rkirkend
-		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
-		document.routeDocument("");
+		document.adHocToPrincipal(ActionRequestType.APPROVE, "", getPrincipalIdForName("rkirkend"), "", true);
+		document.route("");
 		
 		KimDerivedRoleTypeServiceBase roleTypeService = new ActionRequestDerivedRoleTypeServiceImpl();
 		
@@ -68,7 +69,7 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 		
 		// switch to bmcgough and send an acknowledge
 		document = TestUtilities.switchByPrincipalName("bmcgough", document);
-		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "", getPrincipalIdForName("bmcgough"), "", true);
+		document.adHocToPrincipal(ActionRequestType.ACKNOWLEDGE, "", getPrincipalIdForName("bmcgough"), "", true);
 		assertTrue("bmcgough should have ack", document.isAcknowledgeRequested());
 		
 		// bmcgough should not have role as an approver
@@ -90,15 +91,15 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 		assertTrue("jhopf should have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("jhopf"), null, null, NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 		
 		// send an fyi to "pmckown"
-		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "", getPrincipalIdForName("pmckown"), "", true);
+		document.adHocToPrincipal(ActionRequestType.FYI, "", getPrincipalIdForName("pmckown"), "", true);
 		document = TestUtilities.switchByPrincipalName("pmckown", document);
 		assertTrue(document.isFYIRequested());
 		assertTrue("pmckown should have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("pmckown"), null, null, FYI_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 				
 		// create a new doc and "save" as ewestfal, this should generate a "complete" request to ewestfal
-		document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "ActionRequestDerivedRoleTypeServiceImplTest");
+		document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "ActionRequestDerivedRoleTypeServiceImplTest");
 		document.saveDocument("");
-		assertTrue(document.stateIsSaved());
+		assertTrue(document.isSaved());
 		assertTrue(document.isCompletionRequested());
 		assertTrue(document.isApprovalRequested());
 		

@@ -16,19 +16,20 @@
  */
 package org.kuali.rice.kew.notification;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import mocks.MockEmailNotificationService;
-import org.junit.Test;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 
 public class NotificationServiceTest extends KEWTestCase {
@@ -41,8 +42,8 @@ public class NotificationServiceTest extends KEWTestCase {
 	 * Tests that when a user is routed to twice at the same time that only email is sent to them.
 	 */
 	@Test public void testNoDuplicateEmails() throws Exception {
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "NotificationTest");
-		document.routeDocument("");
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "NotificationTest");
+		document.route("");
 
 		assertEquals("rkirkend should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 		assertEquals("ewestfal should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
@@ -104,8 +105,8 @@ public class NotificationServiceTest extends KEWTestCase {
 		getPreferencesService().savePreferences(jhopfPrincipalId, prefs);
 
 		// route the document
-		WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, "NotificationTest");
-		document.routeDocument("");
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(user1PrincipalId, "NotificationTest");
+		document.route("");
 
 		// both ewestfal and jitrue should have one email
 		assertEquals("ewestfal should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
@@ -145,9 +146,9 @@ public class NotificationServiceTest extends KEWTestCase {
 		assertEquals("Wrong notification from address.", "fakey@mcfakey.com", documentType.getNotificationFromAddress());
 
 		// Do an app specific route to a document which should send an email to fakey@mcchild.com
-		WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, "NotificationFromAddressChild");
-		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "Initial", "", getPrincipalIdForName("ewestfal"), "", true);
-		document.routeDocument("");
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(user1PrincipalId, "NotificationFromAddressChild");
+		document.adHocToPrincipal(ActionRequestType.APPROVE, "Initial", "", getPrincipalIdForName("ewestfal"), "", true);
+		document.route("");
 
 		// verify that ewestfal was sent an email
 		assertEquals("ewestfal should have an email.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));

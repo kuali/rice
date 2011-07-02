@@ -30,7 +30,6 @@ public class Stats {
 	String numUsers = "0";
 	String numActionItems = "0";
 	String numDocTypes = "0";
-	String approvedNumber = "0";
 	String canceledNumber = "0";
 	String disapprovedNumber = "0";
 	String enrouteNumber = "0";
@@ -40,15 +39,7 @@ public class Stats {
 	String processedNumber = "0";
 	String savedNumber = "0";    
     List numInitiatedDocsByDocType;
-    
-    public String getApprovedNumber() {
-        return approvedNumber;
-    }
- 
-    public void setApprovedNumber(String approvedNumber) {
-        this.approvedNumber = approvedNumber;
-    }
- 
+     
     public String getCanceledNumber() {
         return canceledNumber;
     }

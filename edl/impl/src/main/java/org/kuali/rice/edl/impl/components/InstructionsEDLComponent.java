@@ -20,7 +20,7 @@ import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

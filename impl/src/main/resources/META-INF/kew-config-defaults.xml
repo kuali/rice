@@ -16,7 +16,6 @@
   <param name="message.delivery" override="false">async</param>
   <param name="message.persistence" override="false">true</param>
 
-  <param name="simpleDocumentActionsService.security">true</param>
   <param name="secure.workflowdocument.javaservice.endpoint">true</param>
   <param name="secure.workflowutility.javaservice.endpoint">true</param>
   <param name="secure.workflowutility.soapservice.endpoint">true</param>

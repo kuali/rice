@@ -16,9 +16,7 @@
 package org.kuali.rice.ken.service;
 
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
-import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
 
 
 /**
@@ -37,7 +35,7 @@ public interface NotificationWorkflowDocumentService {
      * @return String - the id of the workflow document
      */
     public String createAndAdHocRouteNotificationWorkflowDocument(NotificationMessageDelivery messageDelivery, String initiatorUserId, 
-	    String recipientUserId, String annotation) throws WorkflowException;
+	    String recipientUserId, String annotation);
     
     /**
      * This method is responsible for canceling a workflow document; which in turn simulates the "checking-off" 
@@ -45,23 +43,21 @@ public interface NotificationWorkflowDocumentService {
      * @param initiatorUserId
      * @param workflowDocument
      * @param annotation
-     * @throws WorkflowException
      */
-    public void clearAllFyisAndAcknowledgeNotificationWorkflowDocument(String initiatorUserId, NotificationWorkflowDocument workflowDocument, String annotation) throws WorkflowException;
+    public void clearAllFyisAndAcknowledgeNotificationWorkflowDocument(String initiatorUserId, WorkflowDocument workflowDocument, String annotation);
 
     /**
      * This method is responsible for unconditionally terminating a workflow document, after which there should be no
      * pending action requests against this document.
      * @param document workflow document to terminate
      */
-    public void terminateWorkflowDocument(WorkflowDocument document) throws WorkflowException;
+    public void terminateWorkflowDocument(WorkflowDocument document);
 
     /**
      * This service method is responsible for retrieving a NotificationWorkflowDocument from KEW.
      * @param initiatorUserId
      * @param workflowDocumentId
      * @return NotificationWorkflowDocument
-     * @throws WorkflowException
      */
-    public NotificationWorkflowDocument getNotificationWorkflowDocumentByDocumentId(String initiatorUserId, String workflowDocumentId) throws WorkflowException;
+    public WorkflowDocument getNotificationWorkflowDocumentByDocumentId(String initiatorUserId, String workflowDocumentId);
 }

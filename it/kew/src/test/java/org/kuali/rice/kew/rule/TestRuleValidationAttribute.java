@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.kew.rule.RuleValidationAttribute;
 import org.kuali.rice.kew.validation.RuleValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 

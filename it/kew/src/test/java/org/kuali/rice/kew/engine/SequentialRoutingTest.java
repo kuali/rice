@@ -22,15 +22,18 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 
 public class SequentialRoutingTest extends KEWTestCase {
@@ -47,49 +50,47 @@ public class SequentialRoutingTest extends KEWTestCase {
     }
         
     @Test public void testSequentialRoute() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
-    	document.saveRoutingData();
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
+    	document.saveDocumentData();
     	assertNotNull(document.getDocumentId());
-    	assertTrue("Document should be initiatied", document.stateIsInitiated());
-    	assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
-    	String[] nodeNames = document.getNodeNames();
-    	assertEquals("Wrong number of node names.", 1, nodeNames.length);
-    	assertEquals("Wrong node name.", ADHOC_NODE, nodeNames[0]);
-    	document.routeDocument("Routing sequentially.");
+    	assertTrue("Document should be initiatied", document.isInitiated());
+    	Set<String> nodeNames = document.getNodeNames();
+    	assertEquals("Wrong number of node names.", 1, nodeNames.size());
+    	assertEquals("Wrong node name.", ADHOC_NODE, nodeNames.iterator().next());
+    	document.route("Routing sequentially.");
         
         // should have generated a request to "bmcgough"
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
-        assertTrue("Document should be enroute", document.stateIsEnroute());
-    	assertEquals("Invalid route level.", new Integer(1), document.getRouteHeader().getDocRouteLevel());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        assertTrue("Document should be enroute", document.isEnroute());
     	nodeNames = document.getNodeNames();
-    	assertEquals("Wrong number of node names.", 1, nodeNames.length);
-    	assertEquals("Wrong node name.", WORKFLOW_DOCUMENT_NODE, nodeNames[0]);
-        ActionRequestDTO[] requests = document.getActionRequests();
-        assertEquals(1, requests.length);
-        ActionRequestDTO request = requests[0];
+    	assertEquals("Wrong number of node names.", 1, nodeNames.size());
+    	assertEquals("Wrong node name.", WORKFLOW_DOCUMENT_NODE, nodeNames.iterator().next());
+        List<ActionRequest> requests = document.getRootActionRequests();
+        assertEquals(1, requests.size());
+        ActionRequest request = requests.get(0);
         assertEquals(getPrincipalIdForName("bmcgough"), request.getPrincipalId());
         assertEquals(KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
-        assertEquals(new Integer(1), request.getRouteLevel());
+        TestUtilities.assertAtNode(document, WORKFLOW_DOCUMENT_NODE);
         assertTrue(document.isApprovalRequested());
         document.approve("Test approve by bmcgough");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
-        assertTrue("Document should be processed.", document.stateIsProcessed());
-        requests = document.getActionRequests();
-        assertEquals(3, requests.length);
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
+        assertTrue("Document should be processed.", document.isProcessed());
+        requests = document.getRootActionRequests();
+        assertEquals(3, requests.size());
         boolean toTemay = false;
         boolean toJhopf = false;
-        for (int i = 0; i < requests.length; i++) {
-            ActionRequestDTO requestVO = requests[i];
+        for (int i = 0; i < requests.size(); i++) {
+            ActionRequest requestVO = requests.get(i);
             if (requestVO.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 toTemay = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                assertEquals(new Integer(2), requestVO.getRouteLevel());
+                TestUtilities.assertAtNode(document, ACKNOWLEDGE_1_NODE);
                 assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
             } else if (requestVO.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 toJhopf = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                assertEquals(new Integer(3), requestVO.getRouteLevel());
+                TestUtilities.assertAtNode(document, ACKNOWLEDGE_2_NODE);
                 assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
             }
         }
@@ -99,13 +100,13 @@ public class SequentialRoutingTest extends KEWTestCase {
         // have temay take her acknowledge
         document.acknowledge("Temay taking acknowledge");
         
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
-        assertTrue("Document should be processed.", document.stateIsProcessed());
-        requests = document.getActionRequests();
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        assertTrue("Document should be processed.", document.isProcessed());
+        requests = document.getRootActionRequests();
         toTemay = false;
         toJhopf = false;
-        for (int i = 0; i < requests.length; i++) {
-            ActionRequestDTO requestVO = requests[i];
+        for (int i = 0; i < requests.size(); i++) {
+            ActionRequest requestVO = requests.get(i);
             if (requestVO.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 toTemay = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
@@ -113,7 +114,7 @@ public class SequentialRoutingTest extends KEWTestCase {
             } else if (requestVO.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 toJhopf = true;
                 assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                assertEquals(new Integer(3), requestVO.getRouteLevel());
+                TestUtilities.assertAtNode(document, ACKNOWLEDGE_2_NODE);
                 assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
             }
         }
@@ -123,8 +124,8 @@ public class SequentialRoutingTest extends KEWTestCase {
         document.acknowledge("Jhopf taking acknowledge");
         
     	// TODO when we are able to, we should also verify the RouteNodeInstances are correct
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-    	assertTrue("Document should be final.", document.stateIsFinal());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	assertTrue("Document should be final.", document.isFinal());
         
         verifyRoutingPath(document.getDocumentId());
     }        

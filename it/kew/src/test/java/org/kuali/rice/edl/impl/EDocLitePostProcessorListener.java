@@ -17,13 +17,13 @@
 
 package org.kuali.rice.edl.impl;
 
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 /**
  * Listens on a socket and reads EDocLitePostProcessor events

@@ -28,7 +28,6 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.identity.PrincipalName;
 
 
 public class RoleToRoleDelegationRole extends AbstractRoleAttribute {

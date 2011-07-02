@@ -16,15 +16,13 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.junit.Test;
-
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXParseException;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
  * Tests the generation of Action Requests from RoleAttributes
@@ -35,10 +33,10 @@ public class RoleAttributeTest extends KEWTestCase {
 
 	@Test public void testWorkgroupRoleAttribute() throws Exception {
 		loadXmlFile("WorkgroupRoleAttributeTestConfig.xml");
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "WorkgroupRoleAttributeDocument");
-		document.routeDocument("");
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "WorkgroupRoleAttributeDocument");
+		document.route("");
 
-		assertTrue("document should be enroute.", document.stateIsEnroute());
+		assertTrue("document should be enroute.", document.isEnroute());
 	}
 
 	/**
@@ -47,10 +45,10 @@ public class RoleAttributeTest extends KEWTestCase {
 	 */
 	@Test public void testBadWorkgroupRoleAttribute() throws Exception {
 		loadXmlFile("BadWorkgroupRoleAttributeTestConfig.xml");
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "BadWorkgroupRoleAttributeDocument");
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "BadWorkgroupRoleAttributeDocument");
 
 		try {
-			document.routeDocument("");
+			document.route("");
 			fail("Should have thrown an error because we had some bad ids.");
 		} catch (Exception e) {}
 	}

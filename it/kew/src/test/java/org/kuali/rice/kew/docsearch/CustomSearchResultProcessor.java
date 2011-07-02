@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
 
 
 /**

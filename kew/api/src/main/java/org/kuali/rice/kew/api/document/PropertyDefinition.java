@@ -31,55 +31,60 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = PropertyDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PropertyDefinition.Constants.TYPE_NAME, propOrder = {
-		PropertyDefinition.Elements.NAME,
-		PropertyDefinition.Elements.VALUE,
-		CoreConstants.CommonElements.FUTURE_ELEMENTS
+        PropertyDefinition.Elements.NAME,
+        PropertyDefinition.Elements.VALUE,
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PropertyDefinition {
 
-	@XmlElement(name = Elements.NAME, required = true)
-	private final String name;
-	
-	@XmlElement(name = Elements.VALUE, required = false)
+    @XmlElement(name = Elements.NAME, required = true)
+    private final String name;
+
+    @XmlElement(name = Elements.VALUE, required = false)
     private final String value;
-	
-	@SuppressWarnings("unused")
+
+    @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
-	@SuppressWarnings("unused")
-	private PropertyDefinition() {
-		this.name = null;
-		this.value = null;
-	}
-        
-    public PropertyDefinition(String name, String value) {
-    	if (StringUtils.isBlank(name)) {
-    		throw new IllegalArgumentException("name is null or blank");
-    	}
+    @SuppressWarnings("unused")
+    private PropertyDefinition() {
+        this.name = null;
+        this.value = null;
+    }
+
+    public static PropertyDefinition create(String name, String value) {
+        return new PropertyDefinition(name, value);
+    }
+
+    private PropertyDefinition(String name, String value) {
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException("name is null or blank");
+        }
         this.name = name;
         this.value = value;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public String getValue() {
         return value;
     }
-    
+
     /**
      * Defines some internal constants used on this class.
      */
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "propertyDefinition";
         final static String TYPE_NAME = "PropertyDefinitionType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] { CoreConstants.CommonElements.FUTURE_ELEMENTS };
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[]{CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**
-     * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
+     * A private class which exposes constants which define the XML element names to use when this
+     * object is marshalled to XML.
      */
     static class Elements {
         final static String NAME = "name";

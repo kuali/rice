@@ -27,8 +27,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.ojb.broker.accesslayer.LookupException;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.dao.StatsDAO;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -66,9 +66,7 @@ public class StatsDaoJpaImpl implements StatsDAO {
         for (Object[] result : resultList) {
             String actionType = result[1].toString();
             String number = result[0].toString();
-            if (actionType.equals(KEWConstants.ROUTE_HEADER_APPROVED_CD)) {
-                stats.setApprovedNumber(number);
-            } else if (actionType.equals(KEWConstants.ROUTE_HEADER_CANCEL_CD)) {
+            if (actionType.equals(KEWConstants.ROUTE_HEADER_CANCEL_CD)) {
                 stats.setCanceledNumber(number);
             } else if (actionType.equals(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD)) {
                 stats.setDisapprovedNumber(number);

@@ -444,9 +444,7 @@ public class ActionListAction extends KualiAction {
     			actionItem.setActionItemIndex(Integer.valueOf(index));
     			actionItem.setRouteHeader(routeHeaderExtension);
     			//set background colors for document statuses
-    			if (KEWConstants.ROUTE_HEADER_APPROVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorApproved()));
-    			} else if (KEWConstants.ROUTE_HEADER_CANCEL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+    			if (KEWConstants.ROUTE_HEADER_CANCEL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
     				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorCanceled()));
     			} else if (KEWConstants.ROUTE_HEADER_DISAPPROVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
     				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDissaproved()));

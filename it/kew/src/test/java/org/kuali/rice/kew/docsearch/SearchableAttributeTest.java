@@ -16,24 +16,11 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import org.junit.Test;
-import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
-import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.service.RuleAttributeService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.krad.util.GlobalVariables;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -41,7 +28,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
+import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.service.RuleAttributeService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 
 /**
@@ -98,11 +102,11 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     @Test public void testSearchableAttributeSearch()throws Exception {
     	String documentTypeName = "SearchDocType";
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
-        workflowDocument.routeDocument("routing this document.");
+        workflowDocument.route("routing this document.");
 
-        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId(userNetworkId), workflowDocument.getDocumentId());
+        workflowDocument = WorkflowDocumentFactory.loadDocument(getPrincipalId(userNetworkId), workflowDocument.getDocumentId());
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
 
         /*
@@ -169,11 +173,11 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         String documentTypeName = "SearchDocType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
-        workflowDocument.routeDocument("routing this document.");
+        workflowDocument.route("routing this document.");
 
-        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId(userNetworkId), workflowDocument.getDocumentId());
+        workflowDocument = WorkflowDocumentFactory.loadDocument(getPrincipalId(userNetworkId), workflowDocument.getDocumentId());
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
         /*assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
         for (Iterator<SearchableAttributeValue> iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
@@ -314,9 +318,9 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         loadXmlFile("testdoc0.xml");
 
         String documentTypeName = "SearchDoc";
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("arh14"), documentTypeName);
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("arh14"), documentTypeName);
         DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
-        doc.routeDocument("routing");
+        doc.route("routing");
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
 
@@ -333,8 +337,8 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
 
         // route a new doc
-        doc = WorkflowDocument.createDocument(getPrincipalIdForName("arh14"), documentTypeName);
-        doc.routeDocument("routing");
+        doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("arh14"), documentTypeName);
+        doc.route("routing");
 
         // with no attribute criteria, both docs should be found
         criteria = new DocSearchCriteriaDTO();
@@ -383,27 +387,27 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 
         // Route some documents containing the searchable attribute values given by the above array.
         for (int i = 0; i < searchableAttributeValuesAsStrings.length; i++) {
-        	WorkflowDocument workflowDocument = WorkflowDocument.createDocument(principalId, documentTypeName);
+        	WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(principalId, documentTypeName);
 
         	// Add the string searchable attribute.
-        	WorkflowAttributeDefinitionDTO wcStringXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeWildcardString");
-        	wcStringXMLDef.addProperty("xmlSearchableAttributeWildcardString", searchableAttributeValuesAsStrings[i][0]);
-        	workflowDocument.addSearchableDefinition(wcStringXMLDef);
+        	WorkflowAttributeDefinition.Builder wcStringXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeWildcardString");
+        	wcStringXMLDef.addPropertyDefinition("xmlSearchableAttributeWildcardString", searchableAttributeValuesAsStrings[i][0]);
+        	workflowDocument.addSearchableDefinition(wcStringXMLDef.build());
         	// Add the long searchable attribute.
-        	WorkflowAttributeDefinitionDTO wcLongXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeWildcardLong");
-        	wcLongXMLDef.addProperty("xmlSearchableAttributeWildcardLong", searchableAttributeValuesAsStrings[i][1]);
-        	workflowDocument.addSearchableDefinition(wcLongXMLDef);
+        	WorkflowAttributeDefinition.Builder wcLongXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeWildcardLong");
+        	wcLongXMLDef.addPropertyDefinition("xmlSearchableAttributeWildcardLong", searchableAttributeValuesAsStrings[i][1]);
+        	workflowDocument.addSearchableDefinition(wcLongXMLDef.build());
         	// Add the float searchable attribute.
-        	WorkflowAttributeDefinitionDTO wcFloatXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeWildcardFloat");
-        	wcFloatXMLDef.addProperty("xmlSearchableAttributeWildcardFloat", searchableAttributeValuesAsStrings[i][2]);
-        	workflowDocument.addSearchableDefinition(wcFloatXMLDef);
+        	WorkflowAttributeDefinition.Builder wcFloatXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeWildcardFloat");
+        	wcFloatXMLDef.addPropertyDefinition("xmlSearchableAttributeWildcardFloat", searchableAttributeValuesAsStrings[i][2]);
+        	workflowDocument.addSearchableDefinition(wcFloatXMLDef.build());
         	// Add the datetime searchable attribute.
-        	WorkflowAttributeDefinitionDTO wcDatetimeXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeWildcardDatetime");
-        	wcDatetimeXMLDef.addProperty("xmlSearchableAttributeWildcardDatetime", searchableAttributeValuesAsStrings[i][3]);
-        	workflowDocument.addSearchableDefinition(wcDatetimeXMLDef);
+        	WorkflowAttributeDefinition.Builder wcDatetimeXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeWildcardDatetime");
+        	wcDatetimeXMLDef.addPropertyDefinition("xmlSearchableAttributeWildcardDatetime", searchableAttributeValuesAsStrings[i][3]);
+        	workflowDocument.addSearchableDefinition(wcDatetimeXMLDef.build());
 
         	workflowDocument.setTitle("Search Def Test Doc " + i);
-        	workflowDocument.routeDocument("routing search def doc " + i);
+        	workflowDocument.route("routing search def doc " + i);
         }
 
         // Ensure that wildcards work on searchable string attributes. Note that this search should be case-insensitive by default.

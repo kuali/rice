@@ -16,12 +16,12 @@
 
 package org.kuali.rice.edl.impl;
 
+import static org.junit.Assert.assertTrue;
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor;
 import org.kuali.rice.kew.test.KEWTestCase;
-
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -47,7 +47,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
         String applicationContent = "<data><edlContent><edl><eventNotificationURL>" + ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.KEW_URL_HOST) + ":" + testServerPort + CONTEXT_NAME + "</eventNotificationURL><testThisData>" + dummyData + "</testThisData></edl></edlContent></data>";
         document.setApplicationContent(applicationContent);
-        document.saveRoutingData();
+        document.saveDocumentData();
 
         JettyServer server = null;
         try {

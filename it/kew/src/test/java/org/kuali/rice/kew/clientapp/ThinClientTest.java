@@ -16,6 +16,15 @@
 
 package org.kuali.rice.kew.clientapp;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -29,17 +38,8 @@ import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.config.ThinClientResourceLoader;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
-
-
-import javax.xml.namespace.QName;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.List;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 
 /**
  * 

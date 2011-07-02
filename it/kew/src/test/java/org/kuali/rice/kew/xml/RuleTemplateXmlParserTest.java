@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.kew.xml;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
@@ -23,12 +34,6 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 
 /**

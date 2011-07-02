@@ -15,17 +15,20 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.rule.TestRuleAttribute;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.rule.TestRuleAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
  * 
@@ -40,8 +43,8 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 		TestRuleAttribute.setRecipientPrincipalIds("TestRole", "QualRole", getRecipients());
 
 		String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
-		WorkflowDocument doc = WorkflowDocument.createDocument(rkirkendPrincipalId, "TestDocumentType");
-		doc.routeDocument("");
+		WorkflowDocument doc = WorkflowDocumentFactory.createDocument(rkirkendPrincipalId, "TestDocumentType");
+		doc.route("");
 
 		List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(doc.getDocumentId());
 		assertFalse(requests.isEmpty());

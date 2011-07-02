@@ -19,12 +19,15 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import org.junit.Test;
-import org.kuali.rice.kew.test.KEWTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
  * 

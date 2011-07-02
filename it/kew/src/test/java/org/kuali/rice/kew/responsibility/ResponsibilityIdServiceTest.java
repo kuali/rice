@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kew.responsibility;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test the Responsibility ID Service

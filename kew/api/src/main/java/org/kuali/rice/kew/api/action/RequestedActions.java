@@ -28,6 +28,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = RequestedActions.Constants.ROOT_ELEMENT_NAME)
@@ -39,9 +40,11 @@ import org.w3c.dom.Element;
 		RequestedActions.Elements.FYI_REQUESTED,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class RequestedActions {
+public final class RequestedActions implements ModelObjectComplete {
     
-	@XmlElement(name = Elements.COMPLETE_REQUESTED, required = true)
+	private static final long serialVersionUID = -6600754341497697330L;
+
+    @XmlElement(name = Elements.COMPLETE_REQUESTED, required = true)
     private final boolean completeRequested;
 	
 	@XmlElement(name = Elements.APPROVE_REQUESTED, required = true)

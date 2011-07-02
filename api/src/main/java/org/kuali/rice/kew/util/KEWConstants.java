@@ -245,7 +245,6 @@ public final class KEWConstants {
     	List<String> successfulList = new ArrayList<String>();
     	successfulList.add(KEWConstants.ROUTE_HEADER_FINAL_CD);
     	successfulList.add(KEWConstants.ROUTE_HEADER_PROCESSED_CD);
-    	successfulList.add(KEWConstants.ROUTE_HEADER_APPROVED_CD);
 
     	// Unsuccessful Statuses
     	List<String> unsuccessfulList = new ArrayList<String>();
@@ -266,7 +265,6 @@ public final class KEWConstants {
          * see values in RouteHeader inner class; this HashMap is the definitive list used for the Document Route Statuses in ActionList preferences
          */
         DOCUMENT_STATUSES = new HashMap<String, String>();
-        DOCUMENT_STATUSES.put(KEWConstants.ROUTE_HEADER_APPROVED_CD, KEWConstants.ROUTE_HEADER_APPROVED_LABEL);
         DOCUMENT_STATUSES.put(KEWConstants.ROUTE_HEADER_CANCEL_CD, KEWConstants.ROUTE_HEADER_CANCEL_LABEL);
         DOCUMENT_STATUSES.put(KEWConstants.ROUTE_HEADER_CANCEL_DISAPPROVE_CD, KEWConstants.ROUTE_HEADER_CANCEL_DISAPPROVE_LABEL);
         DOCUMENT_STATUSES.put(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, KEWConstants.ROUTE_HEADER_DISAPPROVED_LABEL);
@@ -355,9 +353,6 @@ public final class KEWConstants {
     public static final String ROUTE_HEADER_CANCEL_LABEL = "CANCELED";
     /** Document has been canceled and no further action should be taken on it. */
     public static final String ROUTE_HEADER_CANCEL_CD = "X";
-    public static final String ROUTE_HEADER_APPROVED_LABEL = "APPROVED";
-    /** Document has been approved and is awaiting post processing */
-    public static final String ROUTE_HEADER_APPROVED_CD = "A";
     public static final String ROUTE_HEADER_FINAL_LABEL = "FINAL";
     /** Document has finalized and no changes are allowed to take place to it. */
     public static final String ROUTE_HEADER_FINAL_CD = "F";
@@ -793,7 +788,6 @@ public final class KEWConstants {
 
     public static final String HTML_NON_BREAKING_SPACE = "&nbsp;";
 
-    public static final String SIMPLE_DOCUMENT_ACTIONS_SECURITY = "simpleDocumentActionsService.security";
     public static final String DAILY_EMAIL_CRON_EXPRESSION = "dailyEmail.cronExpression";
     public static final String WEEKLY_EMAIL_CRON_EXPRESSION = "weeklyEmail.cronExpression";
     public static final String DAILY_EMAIL_ACTIVE = "dailyEmail.active";

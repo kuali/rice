@@ -20,9 +20,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -36,24 +36,22 @@ public class RoutingToInactiveWorkgroupTest extends KEWTestCase {
     }
     
     @Test public void testRoutingToInactiveWorkgroup() throws Exception {
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "InactiveWorkgroupDocType");
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "InactiveWorkgroupDocType");
         try {
-            doc.routeDocument("");
+            doc.route("");
             fail("document should have thrown routing exception");
         } catch (Exception e) {
             e.printStackTrace();
         }
         TestUtilities.getExceptionThreader().join();//wait for doc to go into exception routing
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
-        assertTrue("Document should be in exception routing because workgroup is inactive", doc.stateIsException());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
+        assertTrue("Document should be in exception routing because workgroup is inactive", doc.isException());
 
         try {
-            doc.routeDocument("routing a document that is in exception routing");
+            doc.route("routing a document that is in exception routing");
             fail("Succeeded in routing document that is in exception routing");
         } catch (InvalidActionTakenException iate) {
             log.info("Expected exception occurred: " + iate);
-        } catch (WorkflowException we) {
-            fail("Attempt at routing document in exception routing succeeded, when it should have been an InvalidActionTakenException");
         }
     }
 }

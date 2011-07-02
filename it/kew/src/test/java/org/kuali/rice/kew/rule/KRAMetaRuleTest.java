@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.junit.Test;
-
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
  * Tests KRA meta-rule functionality KULRICE-1045
@@ -35,81 +35,81 @@ public class KRAMetaRuleTest extends KEWTestCase {
     }
 
     @Test public void testKRAMetaRule() throws WorkflowException {
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("arh14"), "KRAMetaRuleTest");
-        doc.routeDocument("routing");
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("arh14"), "KRAMetaRuleTest");
+        doc.route("routing");
 
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
 
         // user2 defined on bizRule4...the first rule that yields responsibilities
         assertTrue(doc.isApprovalRequested());
         
         doc.approve("approving as user2");
         
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
         
         assertFalse(doc.isApprovalRequested());
         
         // now load it up as user3
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
 
         // user1 defined on bizRule5...the second rule that yields responsibilities
         assertTrue(doc.isApprovalRequested());
         
         doc.approve("approving as user3");
 
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
         assertFalse(doc.isApprovalRequested());
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
         assertFalse(doc.isApprovalRequested());
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
         assertFalse(doc.isApprovalRequested());
      
-        assertTrue(doc.stateIsFinal());
+        assertTrue(doc.isFinal());
     }
     
     @Test public void testKRAMetaRuleMaps() throws WorkflowException {
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("arh14"), "KRAMetaRuleMapsTest");
-        doc.routeDocument("routing");
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("arh14"), "KRAMetaRuleMapsTest");
+        doc.route("routing");
 
         // xqi, shenl, dewey
 
         // test that TestWorkgroup requests get activated first
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("xqi"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("xqi"), doc.getDocumentId());
         assertTrue(doc.isApprovalRequested());
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("shenl"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("shenl"), doc.getDocumentId());
         assertFalse(doc.isApprovalRequested());
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("dewey"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("dewey"), doc.getDocumentId());
         assertFalse(doc.isApprovalRequested());
         
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("xqi"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("xqi"), doc.getDocumentId());
         doc.approve("approving as xqi");
         
         // next is shenl from the mock role
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("xqi"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("xqi"), doc.getDocumentId());
         assertFalse(doc.isApprovalRequested());
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("shenl"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("shenl"), doc.getDocumentId());
         assertTrue(doc.isApprovalRequested());
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), doc.getDocumentId());
         assertTrue(doc.isApprovalRequested());
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("dewey"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("dewey"), doc.getDocumentId());
         assertFalse(doc.isApprovalRequested());
 
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("shenl"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("shenl"), doc.getDocumentId());
         doc.approve("approving as shenl");
         
         // last is dewey from NonSIT workgroup
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("xqi"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("xqi"), doc.getDocumentId());
         assertFalse(doc.isApprovalRequested());
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("shenl"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("shenl"), doc.getDocumentId());
         assertFalse(doc.isApprovalRequested());
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), doc.getDocumentId());
         assertFalse(doc.isApprovalRequested());
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("dewey"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("dewey"), doc.getDocumentId());
         assertTrue(doc.isApprovalRequested());
 
-        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("dewey"), doc.getDocumentId());
+        doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("dewey"), doc.getDocumentId());
         doc.approve("approving as dewey");
      
-        assertTrue(doc.stateIsFinal());
+        assertTrue(doc.isFinal());
     }
 }

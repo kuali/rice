@@ -17,14 +17,14 @@
 
 package org.kuali.rice.kew.docsearch;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.Row;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 public class MockSearchableAttribute implements SearchableAttribute {

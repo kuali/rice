@@ -17,10 +17,11 @@
 package org.kuali.rice.kew.docsearch.xml;
 
 
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 
@@ -28,9 +29,9 @@ public class StandardGenericXMLSearchableAttributePostProcessor extends DefaultP
     
     @Override
 	public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-		WorkflowDocument doc = WorkflowDocument.loadDocument(KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId(), statusChangeEvent.getDocumentId());
+		WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId(), statusChangeEvent.getDocumentId());
 		doc.setTitle("I'm a title - I should increment the lockVersion Number of this document");
-		doc.saveRoutingData();
+		doc.saveDocumentData();
 		return new ProcessDocReport(true);
 	}
 

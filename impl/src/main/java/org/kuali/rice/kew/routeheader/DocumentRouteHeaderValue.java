@@ -47,6 +47,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
@@ -231,15 +232,14 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         stateTransitionMap = new HashMap<String,String>();
         stateTransitionMap.put(KEWConstants.ROUTE_HEADER_INITIATED_CD, KEWConstants.ROUTE_HEADER_SAVED_CD + KEWConstants.ROUTE_HEADER_ENROUTE_CD + KEWConstants.ROUTE_HEADER_CANCEL_CD);
 
-        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_SAVED_CD, KEWConstants.ROUTE_HEADER_SAVED_CD + KEWConstants.ROUTE_HEADER_ENROUTE_CD + KEWConstants.ROUTE_HEADER_CANCEL_CD + KEWConstants.ROUTE_HEADER_APPROVED_CD);
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_SAVED_CD, KEWConstants.ROUTE_HEADER_SAVED_CD + KEWConstants.ROUTE_HEADER_ENROUTE_CD + KEWConstants.ROUTE_HEADER_CANCEL_CD + KEWConstants.ROUTE_HEADER_PROCESSED_CD);
 
         stateTransitionMap.put(KEWConstants.ROUTE_HEADER_ENROUTE_CD, KEWConstants.ROUTE_HEADER_DISAPPROVED_CD +
-                KEWConstants.ROUTE_HEADER_CANCEL_CD + KEWConstants.ROUTE_HEADER_APPROVED_CD + KEWConstants.ROUTE_HEADER_EXCEPTION_CD + KEWConstants.ROUTE_HEADER_SAVED_CD);
+                KEWConstants.ROUTE_HEADER_CANCEL_CD + KEWConstants.ROUTE_HEADER_PROCESSED_CD + KEWConstants.ROUTE_HEADER_EXCEPTION_CD + KEWConstants.ROUTE_HEADER_SAVED_CD);
         stateTransitionMap.put(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, "");
         stateTransitionMap.put(KEWConstants.ROUTE_HEADER_CANCEL_CD, "");
         stateTransitionMap.put(KEWConstants.ROUTE_HEADER_FINAL_CD, "");
-        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_EXCEPTION_CD, KEWConstants.ROUTE_HEADER_EXCEPTION_CD + KEWConstants.ROUTE_HEADER_ENROUTE_CD + KEWConstants.ROUTE_HEADER_CANCEL_CD + KEWConstants.ROUTE_HEADER_APPROVED_CD + KEWConstants.ROUTE_HEADER_DISAPPROVED_CD + KEWConstants.ROUTE_HEADER_SAVED_CD);
-        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_APPROVED_CD, KEWConstants.ROUTE_HEADER_APPROVED_CD + KEWConstants.ROUTE_HEADER_PROCESSED_CD + KEWConstants.ROUTE_HEADER_EXCEPTION_CD);
+        stateTransitionMap.put(KEWConstants.ROUTE_HEADER_EXCEPTION_CD, KEWConstants.ROUTE_HEADER_EXCEPTION_CD + KEWConstants.ROUTE_HEADER_ENROUTE_CD + KEWConstants.ROUTE_HEADER_CANCEL_CD + KEWConstants.ROUTE_HEADER_PROCESSED_CD + KEWConstants.ROUTE_HEADER_DISAPPROVED_CD + KEWConstants.ROUTE_HEADER_SAVED_CD);
         stateTransitionMap.put(KEWConstants.ROUTE_HEADER_PROCESSED_CD, KEWConstants.ROUTE_HEADER_FINAL_CD + KEWConstants.ROUTE_HEADER_PROCESSED_CD);
 
         legalActions = new HashMap<String,String>();
@@ -256,7 +256,6 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         legalActions.put(KEWConstants.ROUTE_HEADER_FINAL_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
         legalActions.put(KEWConstants.ROUTE_HEADER_CANCEL_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
         legalActions.put(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
-        legalActions.put(KEWConstants.ROUTE_HEADER_APPROVED_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
         legalActions.put(KEWConstants.ROUTE_HEADER_PROCESSED_CD, KEWConstants.ACTION_TAKEN_FYI_CD + KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
     }
 
@@ -661,18 +660,10 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         return KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(docRouteStatus);
     }
 
-    /**
-     * @return true if the document is in the approved state
-     */
-    public boolean isApproved() {
-        return KEWConstants.ROUTE_HEADER_APPROVED_CD.equals(docRouteStatus);
-    }
-
     public boolean isRoutable() {
         return KEWConstants.ROUTE_HEADER_ENROUTE_CD.equals(docRouteStatus) ||
         		//KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equals(docRouteStatus) ||
         		KEWConstants.ROUTE_HEADER_SAVED_CD.equals(docRouteStatus) ||
-        		KEWConstants.ROUTE_HEADER_APPROVED_CD.equals(docRouteStatus) ||
         		KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(docRouteStatus);
     }
 
@@ -757,18 +748,6 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     public void markDocumentSaved() throws InvalidActionTakenException {
         LOG.debug(this + " marked saved");
         setRouteStatus(KEWConstants.ROUTE_HEADER_SAVED_CD, !FINAL_STATE);
-    }
-
-    /**
-     * Mark the document as being approved.
-     *
-     * @throws ResourceUnavailableException
-     * @throws InvalidActionTakenException
-     */
-    public void markDocumentApproved() throws InvalidActionTakenException {
-        LOG.debug(this + " marked approved");
-        setApprovedDate(new Timestamp(System.currentTimeMillis()));
-        setRouteStatus(KEWConstants.ROUTE_HEADER_APPROVED_CD, !FINAL_STATE);
     }
 
     /**
@@ -1184,6 +1163,51 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
 		}
 		Document.Builder builder = Document.Builder.create(documentBo);
 		return builder.build();
+	}
+	
+	public static DocumentRouteHeaderValue from(Document document) {
+	    DocumentRouteHeaderValue documentBo = new DocumentRouteHeaderValue();
+        documentBo.setAppDocId(document.getApplicationDocumentId());
+        if (document.getDateApproved() != null) {
+            documentBo.setApprovedDate(new Timestamp(document.getDateApproved().getMillis()));
+        }
+        documentBo.setCreateDate(new Timestamp(document.getDateApproved().getMillis()));
+        if (StringUtils.isEmpty(documentBo.getDocContent())) {
+            documentBo.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
+        }
+        documentBo.setDocRouteStatus(document.getStatus().getCode());
+        documentBo.setDocTitle(document.getTitle());
+        if (document.getDocumentTypeName() != null) {
+            DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(document.getDocumentTypeName());
+            if (documentType == null) {
+                throw new RiceRuntimeException("Could not locate the given document type name: " + document.getDocumentTypeName());
+            }
+            documentBo.setDocumentTypeId(documentType.getDocumentTypeId());
+        }
+        if (document.getDateFinalized() != null) {
+            documentBo.setFinalizedDate(new Timestamp(document.getDateFinalized().getMillis()));
+        }
+        documentBo.setInitiatorWorkflowId(document.getInitiatorPrincipalId());
+        documentBo.setRoutedByUserWorkflowId(document.getRoutedByPrincipalId());
+        documentBo.setDocumentId(document.getDocumentId());
+        if (document.getDateLastModified() != null) {
+            documentBo.setStatusModDate(new Timestamp(document.getDateLastModified().getMillis()));
+        }
+        documentBo.setAppDocStatus(document.getApplicationDocumentStatus());
+        if (document.getApplicationDocumentStatusDate() != null) {
+            documentBo.setAppDocStatusDate(new Timestamp(document.getApplicationDocumentStatusDate().getMillis()));
+        }
+
+        
+        // Convert the variables
+        Map<String, String> variables = document.getVariables();
+        if( variables != null && !variables.isEmpty()){
+            for(String kvp : variables.keySet()){
+                documentBo.setVariable(kvp, variables.get(kvp));
+            }
+        }
+        
+        return documentBo;
 	}
 	
 }

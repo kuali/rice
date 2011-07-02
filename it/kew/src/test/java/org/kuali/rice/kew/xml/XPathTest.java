@@ -16,22 +16,22 @@
  */
 package org.kuali.rice.kew.xml;
 
-import org.junit.Test;
-import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.routeheader.StandardDocumentContent;
-import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.test.BaseRiceTestCase;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.io.StringReader;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.StringReader;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.test.BaseRiceTestCase;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 
 public class XPathTest extends BaseRiceTestCase {

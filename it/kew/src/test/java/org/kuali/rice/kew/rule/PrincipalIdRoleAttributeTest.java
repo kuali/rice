@@ -15,21 +15,22 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
-import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.xml.sax.InputSource;
+import java.io.StringReader;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
-import java.io.StringReader;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.document.PropertyDefinition;
+import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.xml.sax.InputSource;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill
@@ -47,36 +48,36 @@ public class PrincipalIdRoleAttributeTest extends KEWTestCase {
 	public void testPrincipalIdAttribute() throws Exception {
 		loadXmlFile("PrincipalIdRoleAttributeTestConfig.xml");
 
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName(
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName(
 				"ewestfal"), "PrincipalIdRoleAttributeTest");
 
-		WorkflowAttributeDefinitionDTO principalIdDef1 = new WorkflowAttributeDefinitionDTO(
+		WorkflowAttributeDefinition.Builder principalIdDef1 = WorkflowAttributeDefinition.Builder.create(
 				"PrincipalIdRoleAttribute");
-		PropertyDefinitionDTO principalIdProp1 = new PropertyDefinitionDTO(
+		PropertyDefinition principalIdProp1 = PropertyDefinition.create(
 				PRINCIPAL_ID_PROP, KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
-		principalIdDef1.addProperty(principalIdProp1);
+		principalIdDef1.addPropertyDefinition(principalIdProp1);
 
-		WorkflowAttributeDefinitionDTO principalIdDef2 = new WorkflowAttributeDefinitionDTO(
+		WorkflowAttributeDefinition.Builder principalIdDef2 = WorkflowAttributeDefinition.Builder.create(
 				"PrincipalIdRoleAttribute");
-		PropertyDefinitionDTO principalIdProp2 = new PropertyDefinitionDTO(
+		PropertyDefinition principalIdProp2 = PropertyDefinition.create(
 				PRINCIPAL_ID_PROP, KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("bmcgough").getPrincipalId());
-		principalIdDef2.addProperty(principalIdProp2);
+		principalIdDef2.addPropertyDefinition(principalIdProp2);
 
-		document.addAttributeDefinition(principalIdDef1);
-		document.addAttributeDefinition(principalIdDef2);
+		document.addAttributeDefinition(principalIdDef1.build());
+		document.addAttributeDefinition(principalIdDef2.build());
 
-		document.routeDocument("Routing!");
+		document.route("Routing!");
 
 		// load the document as rkirkend
 
-		document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document
+		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document
 				.getDocumentId());
-		assertTrue("Document should be ENROUTE", document.stateIsEnroute());
+		assertTrue("Document should be ENROUTE", document.isEnroute());
 		assertTrue("rkirkend should have an approve request.", document
 				.isApprovalRequested());
 
 		// load the document as bmcgough
-		document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document
+		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document
 				.getDocumentId());
 		assertTrue("bmcgough should have an approve request.", document
 				.isApprovalRequested());
@@ -85,15 +86,15 @@ public class PrincipalIdRoleAttributeTest extends KEWTestCase {
 		document.approve("i approve");
 
 		// reload as rkirkend, verify still enroute
-		document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document
+		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document
 				.getDocumentId());
-		assertTrue("Document should be ENROUTE", document.stateIsEnroute());
+		assertTrue("Document should be ENROUTE", document.isEnroute());
 		assertTrue("rkirkend should have an approve request.", document
 				.isApprovalRequested());
 		document.approve("i also approve");
 
 		// now the document should be FINAL
-		assertTrue("Document should be FINAL", document.stateIsFinal());
+		assertTrue("Document should be FINAL", document.isFinal());
 
 	}
 
@@ -101,24 +102,24 @@ public class PrincipalIdRoleAttributeTest extends KEWTestCase {
 	public void testParameterizedPrincipalIdAttribute() throws Exception {
 		loadXmlFile("ParameterizedPrincipalIdRoleAttributeTestConfig.xml");
 
-		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName(
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName(
 				"ewestfal"), "PrincipalIdRoleAttributeTest");
 
-		WorkflowAttributeDefinitionDTO principalIdDef1 = new WorkflowAttributeDefinitionDTO(
+		WorkflowAttributeDefinition.Builder principalIdDef1 = WorkflowAttributeDefinition.Builder.create(
 				"PrincipalIdRoleAttribute");
-		PropertyDefinitionDTO principalIdProp1 = new PropertyDefinitionDTO(
+		PropertyDefinition principalIdProp1 = PropertyDefinition.create(
 				PRINCIPAL_ID_PROP, KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
-		principalIdDef1.addProperty(principalIdProp1);
+		principalIdDef1.addPropertyDefinition(principalIdProp1);
 
-		document.addAttributeDefinition(principalIdDef1);
+		document.addAttributeDefinition(principalIdDef1.build());
 
-		document.routeDocument("Routing!");
+		document.route("Routing!");
 
 		// load the document as rkirkend
 
-		document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document
+		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document
 				.getDocumentId());
-		assertTrue("Document should be ENROUTE", document.stateIsEnroute());
+		assertTrue("Document should be ENROUTE", document.isEnroute());
 		assertTrue("rkirkend should have an approve request.", document
 				.isApprovalRequested());
 

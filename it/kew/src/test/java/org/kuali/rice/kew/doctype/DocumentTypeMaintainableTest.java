@@ -15,27 +15,28 @@
  */
 package org.kuali.rice.kew.doctype;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.document.DocumentTypeMaintainable;
 import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import java.util.Collection;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * This class is used to test the {@link DocumentTypeMaintainable} 
@@ -119,15 +120,15 @@ public class DocumentTypeMaintainableTest extends KEWTestCase {
         assertEquals("Incorrect number of total document type instances for name " + TemporaryDocumentType.NAME, 2, docTypeService.findPreviousInstances(TemporaryDocumentType.NAME).size());
 
         // create a document and route it so we have at least one action item and one outbox item
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), TemporaryDocumentType.NAME);
-        document.routeDocument("Test Doc");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), TemporaryDocumentType.NAME);
+        document.route("Test Doc");
         String documentHeaderId = document.getDocumentId();
-        assertTrue("Document should be ENROUTE", document.stateIsEnroute());
+        assertTrue("Document should be ENROUTE", document.isEnroute());
         // verify routing worked properly
         // for the first user we should approve and verify that an outbox item has been created
         String userPrincipalName = TemporaryDocumentType.FIRST_NODE_APPROVER_1;
         turnOnOutboxForUser(getPrincipalIdForName(userPrincipalName));
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName(userPrincipalName), documentHeaderId);
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(userPrincipalName), documentHeaderId);
         TestUtilities.assertAtNode("Document should be at the first 'requests' node", document, TemporaryDocumentType.FIRST_NODE_NAME);
         assertTrue("User " + userPrincipalName + " should have approval requested.", document.isApprovalRequested());
         document.approve("Test Approval");
@@ -135,7 +136,7 @@ public class DocumentTypeMaintainableTest extends KEWTestCase {
         TestUtilities.assertNotInActionList(getPrincipalIdForName(userPrincipalName), documentHeaderId);
         // for the second user we should not approve but verify an action item exists in the user's action list
         userPrincipalName = TemporaryDocumentType.FIRST_NODE_APPROVER_2;
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName(userPrincipalName), documentHeaderId);
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(userPrincipalName), documentHeaderId);
         assertTrue("User " + userPrincipalName + " should have approval requested.", document.isApprovalRequested());
         TestUtilities.assertInActionList(getPrincipalIdForName(userPrincipalName), documentHeaderId);
 

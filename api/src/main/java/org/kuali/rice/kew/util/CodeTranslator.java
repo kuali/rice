@@ -87,7 +87,6 @@ public class CodeTranslator {
 
     private static Map<String, String> getRouteStatusLabels() {
     	Map<String, String> newRouteStatusLabels = new HashMap<String, String>();
-        newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_APPROVED_CD, KEWConstants.ROUTE_HEADER_APPROVED_LABEL);
         newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_CANCEL_CD, KEWConstants.ROUTE_HEADER_CANCEL_LABEL);
         newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, KEWConstants.ROUTE_HEADER_DISAPPROVED_LABEL);
         newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_ENROUTE_CD, KEWConstants.ROUTE_HEADER_ENROUTE_LABEL);

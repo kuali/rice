@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.ken.postprocessor.kew;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.Properties;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.core.GlobalNotificationServiceLocator;
@@ -23,6 +28,8 @@ import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
@@ -30,15 +37,8 @@ import org.kuali.rice.kew.dto.DeleteEventDTO;
 import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.rmi.RemoteException;
-import java.util.Properties;
 
 
 /**
@@ -80,12 +80,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
         String actionTakenCode = event.getActionTaken().getActionTaken();
 
         Properties p = new Properties();
-        WorkflowDocument doc;
-        try {
-        	doc = WorkflowDocument.loadDocument(event.getActionTaken().getPrincipalId(), event.getDocumentId());
-        } catch (WorkflowException we) {
-            throw new RuntimeException("Could not create document", we);
-        }
+        WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(event.getActionTaken().getPrincipalId(), event.getDocumentId());
         try {
             p.load(new ByteArrayInputStream(doc.getAttributeContent().getBytes()));
         } catch (IOException ioe) {

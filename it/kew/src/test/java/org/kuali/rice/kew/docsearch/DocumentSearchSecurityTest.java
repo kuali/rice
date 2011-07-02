@@ -15,19 +15,22 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
-
-import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -62,9 +65,9 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String documentTypeName = "SecurityDoc_PermissionOnly";
         String userNetworkId = "arh14";
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("testDocSearch_PermissionSecurity");
-        workflowDocument.routeDocument("routing this document.");
+        workflowDocument.route("routing this document.");
 
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("edna");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -79,9 +82,9 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String documentTypeName = "SecurityDoc_InvalidPermissionOnly";
         String userNetworkId = "arh14";
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("testDocSearch_PermissionSecurity");
-        workflowDocument.routeDocument("routing this document.");
+        workflowDocument.route("routing this document.");
 
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("edna");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -95,9 +98,9 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     @Test public void testFilteringInitiator() throws Exception {    	
         String documentType = "SecurityDoc_InitiatorOnly";
         String initiator = getPrincipalId(STANDARD_USER_NETWORK_ID);
-        WorkflowDocument document = WorkflowDocument.createDocument(initiator, documentType);
-        document.routeDocument("");
-        assertFalse("Document should not be in init status after routing", document.stateIsInitiated());
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(initiator, documentType);
+        document.route("");
+        assertFalse("Document should not be in init status after routing", document.isInitiated());
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocumentId(document.getDocumentId());
@@ -121,9 +124,9 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     @Test public void testFiltering_Workgroup() throws Exception {
         String documentType = "SecurityDoc_WorkgroupOnly";
         String initiator = getPrincipalId(STANDARD_USER_NETWORK_ID);
-        WorkflowDocument document = WorkflowDocument.createDocument(initiator, documentType);
-        document.routeDocument("");
-        assertFalse("Document should not be in init status after routing", document.stateIsInitiated());
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(initiator, documentType);
+        document.route("");
+        assertFalse("Document should not be in init status after routing", document.isInitiated());
 
         // verify that initiator cannot see the document
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -166,12 +169,12 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String searchAttributeFieldName = "employeeId";
         String documentTypeName = "SecurityDoc_SearchAttributeOnly";
         String initiatorNetworkId = STANDARD_USER_NETWORK_ID;
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalId(initiatorNetworkId), documentTypeName);
-        WorkflowAttributeDefinitionDTO definition = new WorkflowAttributeDefinitionDTO(searchAttributeName);
-        definition.addProperty(searchAttributeFieldName, "user3");
-        document.addSearchableDefinition(definition);
-        document.routeDocument("");
-        assertFalse("Document should not be in init status after routing", document.stateIsInitiated());
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalId(initiatorNetworkId), documentTypeName);
+        WorkflowAttributeDefinition.Builder definition = WorkflowAttributeDefinition.Builder.create(searchAttributeName);
+        definition.addPropertyDefinition(searchAttributeFieldName, "user3");
+        document.addSearchableDefinition(definition.build());
+        document.route("");
+        assertFalse("Document should not be in init status after routing", document.isInitiated());
 
         // verify that initiator cannot see the document
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -202,12 +205,12 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
 
         RouteContext.clearCurrentRouteContext();
-        document = WorkflowDocument.loadDocument(getPrincipalId(APPROVER_USER_NETWORK_ID), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalId(APPROVER_USER_NETWORK_ID), document.getDocumentId());
         document.clearSearchableContent();
-        definition = new WorkflowAttributeDefinitionDTO(searchAttributeName);
-        definition.addProperty(searchAttributeFieldName, "user2");
-        document.addSearchableDefinition(definition);
-        document.saveRoutingData();
+        definition = WorkflowAttributeDefinition.Builder.create(searchAttributeName);
+        definition.addPropertyDefinition(searchAttributeFieldName, "user2");
+        document.addSearchableDefinition(definition.build());
+        document.saveDocumentData();
 
         // verify that user2 can see the document
         criteria = new DocSearchCriteriaDTO();

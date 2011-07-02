@@ -194,7 +194,7 @@ public class SuperUserForm extends KewRoutingKualiForm {
     }
 
     public boolean isStateAllowsAction() {
-        if ( routeHeader.isApproved() || routeHeader.isProcessed() || routeHeader.isDisaproved() ) {
+        if ( routeHeader.isProcessed() || routeHeader.isDisaproved() ) {
             return false;
         }
         return true;

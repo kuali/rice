@@ -19,9 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.doctype.SecurityAttribute;
-
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 
@@ -60,8 +60,8 @@ public class CustomSecurityFilterAttribute implements SecurityAttribute {
 
     private Boolean checkAuthorizations(Person currentUser, String docTypeName, String documentId, String initiatorPrincipalId) {
         try {
-            WorkflowDocument doc = WorkflowDocument.loadDocument(currentUser.getPrincipalId(),documentId);
-            String networkId = VIEWERS_BY_STATUS.get(doc.getRouteHeader().getDocRouteStatus());
+            WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(currentUser.getPrincipalId(),documentId);
+            String networkId = VIEWERS_BY_STATUS.get(doc.getStatus().getCode());
             return ( (StringUtils.isNotBlank(networkId)) && (networkId.equals(currentUser.getPrincipalName())) );
         } catch (Exception e) {
             throw new RuntimeException("Unable to process custom security filter attribute", e);

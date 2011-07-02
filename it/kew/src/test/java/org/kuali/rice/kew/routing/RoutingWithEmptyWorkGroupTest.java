@@ -16,14 +16,17 @@
  */
 package org.kuali.rice.kew.routing;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import org.junit.Test;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-import static org.junit.Assert.assertTrue;
 
 public class RoutingWithEmptyWorkGroupTest extends KEWTestCase {
 
@@ -35,28 +38,27 @@ public class RoutingWithEmptyWorkGroupTest extends KEWTestCase {
 
 		String user1PrincipalId = getPrincipalIdForName("user1");
 		String user2PrincipalId = getPrincipalIdForName("user2");
-		String user3PrincipalId = getPrincipalIdForName("user3");
 
-		WorkflowDocument doc = WorkflowDocument.createDocument(user1PrincipalId, "EmptyWorkgroupDocType");
+		WorkflowDocument doc = WorkflowDocumentFactory.createDocument(user1PrincipalId, "EmptyWorkgroupDocType");
 
-		doc = WorkflowDocument.loadDocument("user1", doc.getDocumentId());
+		doc = WorkflowDocumentFactory.loadDocument("user1", doc.getDocumentId());
 
-		doc.routeDocument("");
+		doc.route("");
 
 		// the document should skip node 1 because it is routing to user1, it should
 		// skip node 2 (effectively) because that node is using a group with no members,
 		// and then it should land on node 3 being in user 2's action list
 		
-		doc = WorkflowDocument.loadDocument(user2PrincipalId, doc.getDocumentId());
+		doc = WorkflowDocumentFactory.loadDocument(user2PrincipalId, doc.getDocumentId());
 		
-		assertTrue("Document should be enroute", doc.stateIsEnroute());
+		assertTrue("Document should be enroute", doc.isEnroute());
 		TestUtilities.assertAtNode(doc, "Node3");
 		
 		TestUtilities.assertInActionList(user2PrincipalId, doc.getDocumentId());
 		
 		// verify that an action request was generated at Node 2 to the "EmptyWorkgroup" but was immediately deactivated
-		ActionRequestDTO[] actionRequests = doc.getActionRequests();
-		for (ActionRequestDTO actionRequest : actionRequests) {
+		List<ActionRequest> actionRequests = doc.getRootActionRequests();
+		for (ActionRequest actionRequest : actionRequests) {
 			if ("Node2".equals(actionRequest.getNodeName())) {
 				assertTrue("action request should be for a group", actionRequest.isGroupRequest());
 				assertTrue("action request should be marked as \"done\"", actionRequest.isDone());

@@ -157,6 +157,11 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     public void setApplicationContent(String applicationContent) {
         getModifiableDocumentContent().setApplicationContent(applicationContent);
     }
+    
+    @Override
+    public void setAttributeContent(String attributeContent) {
+        getModifiableDocumentContent().setAttributeContent(attributeContent);
+    }
 
     @Override
     public void clearAttributeContent() {
@@ -188,6 +193,11 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         return getModifiableDocumentContent().getAttributeDefinitions();
     }
 
+    @Override
+    public void setSearchableContent(String searchableContent) {
+        getModifiableDocumentContent().setSearchableContent(searchableContent);
+    }
+    
     @Override
     public void addSearchableDefinition(WorkflowAttributeDefinition searchableDefinition) {
         getModifiableDocumentContent().addSearchableDefinition(searchableDefinition);

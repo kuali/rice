@@ -156,19 +156,6 @@
 	<bean parent="kewLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
-				<property name="service" ref="simpleDocumentActionsService" />
-				<property name="localServiceName" value="simpleDocumentActionsService" />
-				<property name="serviceInterface"
-					value="org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService" />
-				<property name="busSecurity" value="${simpleDocumentActionsService.security}" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
 			<bean parent="kewSoapService">
 				<property name="service">
 					<bean

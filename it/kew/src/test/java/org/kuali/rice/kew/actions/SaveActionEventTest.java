@@ -27,9 +27,10 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -47,18 +48,18 @@ public class SaveActionEventTest extends KEWTestCase {
     }
     
     @Test public void testSaveActionEvent() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
-        document.saveRoutingData();
-        assertTrue("Document should be initiated.", document.stateIsInitiated());
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
+        document.saveDocumentData();
+        assertTrue("Document should be initiated.", document.isInitiated());
         List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
         assertEquals("There should be no action requests.", 0, actionRequests.size());
-        assertTrue("Document should be initiated.", document.stateIsInitiated());
+        assertTrue("Document should be initiated.", document.isInitiated());
         document.saveDocument("");
         
         // document should be SAVED now at the AdHoc node
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-        assertEquals("Document should be at AdHoc node.", ADHOC_NODE, document.getNodeNames()[0]);
-        assertTrue("Document should be SAVED.", document.stateIsSaved());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        assertEquals("Document should be at AdHoc node.", ADHOC_NODE, document.getNodeNames().iterator().next());
+        assertTrue("Document should be SAVED.", document.isSaved());
         // there should now be one COMPLETE request to the initiator
         actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
         assertEquals("There should be one COMPLETE request to the initiator.", 1, actionRequests.size());
@@ -69,32 +70,32 @@ public class SaveActionEventTest extends KEWTestCase {
         assertEquals("Request should be at the AdHoc node.", ADHOC_NODE, savedRequest.getNodeInstance().getName());
         
         // if we try and call route document as rkirkend, it should throw an InvalidActionTakenException
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         try {
-            document.routeDocument("");
+            document.route("");
             fail("RouteDocument should have thrown an exception because we aren't the initiator");
-        } catch (WorkflowException e) {}
+        } catch (InvalidActionTakenException e) {}
         
         
         // now, route document as the initiator
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-        document.routeDocument("Routing Rowdy Roddy Pipper");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document.route("Routing Rowdy Roddy Pipper");
         
         // document should be marked as ENROUTE, move to the WorkflowDocument node, 
         // and approve requests to rkirkend and bmcgough should be generated
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertEquals("Should be 2 pending requests.", 2, actionRequests.size());
         // rkirkend should have request
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue("Document should be in routing.", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        assertTrue("Document should be in routing.", document.isEnroute());
         assertTrue("rkirkend should have approve request.", document.isApprovalRequested());
         // bmcgough should have request
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
-        assertTrue("Document should be in routing.", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
+        assertTrue("Document should be in routing.", document.isEnroute());
         assertTrue("bmcgough should have approve request.", document.isApprovalRequested());
         
         // check node and requests
-        assertEquals("Document should be at WorkflowDocument node.", WORKFLOW_DOCUMENT_NODE, document.getNodeNames()[0]);
+        assertEquals("Document should be at WorkflowDocument node.", WORKFLOW_DOCUMENT_NODE, document.getNodeNames().iterator().next());
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
             assertNotNull(request.getNodeInstance());
@@ -103,31 +104,31 @@ public class SaveActionEventTest extends KEWTestCase {
         
         // now, since saveDocument effectively sets the status to saved and generates a complete request, let make sure that we can
         // take a complete or approve action against the doc to make it transition
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
         document.saveDocument("");
-        assertTrue("Document should be saved.", document.stateIsSaved());
+        assertTrue("Document should be saved.", document.isSaved());
         assertTrue("Should have complete request.", document.isCompletionRequested());
-        assertEquals("Document should be at AdHoc node.", ADHOC_NODE, document.getNodeNames()[0]);
+        assertEquals("Document should be at AdHoc node.", ADHOC_NODE, document.getNodeNames().iterator().next());
         // take the complete action
         document.complete("");
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue("Document should be enroute.", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        assertTrue("Document should be enroute.", document.isEnroute());
         assertTrue("Should have approve request.", document.isApprovalRequested());
-        assertEquals("Document should be at WorkflowDocument node.", WORKFLOW_DOCUMENT_NODE, document.getNodeNames()[0]);
+        assertEquals("Document should be at WorkflowDocument node.", WORKFLOW_DOCUMENT_NODE, document.getNodeNames().iterator().next());
 
         // try above scenario with approve because approve should count for completion
-        document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
+        document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
         document.saveDocument("");
-        assertTrue("Document should be saved.", document.stateIsSaved());
+        assertTrue("Document should be saved.", document.isSaved());
         assertTrue("Should have complete request.", document.isCompletionRequested());
         assertTrue("Should also indicate approval is valid.", document.isApprovalRequested());
-        assertEquals("Document should be at AdHoc node.", ADHOC_NODE, document.getNodeNames()[0]);
+        assertEquals("Document should be at AdHoc node.", ADHOC_NODE, document.getNodeNames().iterator().next());
         // take the approve action
         document.approve("");
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue("Document should be enroute.", document.stateIsEnroute());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        assertTrue("Document should be enroute.", document.isEnroute());
         assertTrue("Should have approve request.", document.isApprovalRequested());
-        assertEquals("Document should be at WorkflowDocument node.", WORKFLOW_DOCUMENT_NODE, document.getNodeNames()[0]);
+        assertEquals("Document should be at WorkflowDocument node.", WORKFLOW_DOCUMENT_NODE, document.getNodeNames().iterator().next());
     }
     
     
@@ -136,20 +137,20 @@ public class SaveActionEventTest extends KEWTestCase {
      * attempts a save of a document with this policy an exception should be thrown
      */
     @Test public void testDefaultInitiatorMustSavePolicy() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
-    	document.saveRoutingData();
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
+    	document.saveDocumentData();
     	
     	// verify that there are no requests that have been generated
     	List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
     	assertEquals("There should be no action requests.", 0, actionRequests.size());
     	
     	// try saving as a user who's not ewestfal
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-    	assertTrue(document.stateIsInitiated());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+    	assertTrue(document.isInitiated());
     	try {
     		document.saveDocument("");
     		fail("A WorkflowException should have been thrown.");
-    	} catch (WorkflowException e) {
+    	} catch (InvalidActionTakenException e) {
     		e.printStackTrace();
     	}
     	
@@ -158,9 +159,9 @@ public class SaveActionEventTest extends KEWTestCase {
     	assertEquals("There should be no action requests.", 0, actionRequests.size());
     	
     	// now save it as the intiator and it should be successful and generate a request
-    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+    	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	document.saveDocument("");
-    	assertTrue(document.stateIsSaved());
+    	assertTrue(document.isSaved());
     	actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
     	assertEquals("There should be one action request.", 1, actionRequests.size());
     }
@@ -170,25 +171,20 @@ public class SaveActionEventTest extends KEWTestCase {
      * attempts a save of a document with this policy an exception should NOT be thrown
      */
     @Test public void testFalseInitiatorMustSavePolicy() throws Exception {
-        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME_NON_INITIATOR);
-        document.saveRoutingData();
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME_NON_INITIATOR);
+        document.saveDocumentData();
         
         // verify that there are no requests that have been generated
         List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
         assertEquals("There should be no action requests.", 0, actionRequests.size());
         
         // try saving as a user who's not ewestfal
-        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue(document.stateIsInitiated());
-        try {
-            document.saveDocument("");
-        } catch (WorkflowException e) {
-            e.printStackTrace();
-            fail("A WorkflowException should not have been thrown.");
-        }
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
+        assertTrue(document.isInitiated());
+        document.saveDocument("");
         
         // ensure that the document was saved and the request was generated
-        assertTrue(document.stateIsSaved());
+        assertTrue(document.isSaved());
         actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
         assertEquals("There should be one action request.", 1, actionRequests.size());
     }

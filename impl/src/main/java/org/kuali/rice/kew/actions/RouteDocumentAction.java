@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.List;
+
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
@@ -26,9 +28,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-
-
-import java.util.List;
 
 
 /**
@@ -122,7 +121,6 @@ public class RouteDocumentAction extends ActionTakenEvent {
                 getRouteHeader().markDocumentEnroute();
                 
                 if (((Process)getRouteHeader().getDocumentType().getProcesses().get(0)).getInitialRouteNode() == null) {
-                    getRouteHeader().markDocumentApproved();
                     getRouteHeader().markDocumentProcessed();
                     getRouteHeader().markDocumentFinalized();
                 }
@@ -136,9 +134,6 @@ public class RouteDocumentAction extends ActionTakenEvent {
                 LOG.warn(ex, ex);
 	            throw new InvalidActionTakenException(ex.getMessage());
             }
-//        } else {
-//            LOG.warn("Document not in state to be routed.");
-//            throw new InvalidActionTakenException("Document is not in a state to be routed");
-//        }
+
     }
 }

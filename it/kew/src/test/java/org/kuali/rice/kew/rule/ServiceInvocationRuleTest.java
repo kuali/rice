@@ -15,19 +15,20 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.junit.Test;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.FakeService;
-import org.kuali.rice.kew.test.FakeServiceImpl.Invocation;
-import org.kuali.rice.kew.test.KEWTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.xml.namespace.QName;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.test.FakeService;
+import org.kuali.rice.kew.test.FakeServiceImpl.Invocation;
+import org.kuali.rice.kew.test.KEWTestCase;
 
 
 /**
@@ -45,11 +46,11 @@ public class ServiceInvocationRuleTest extends KEWTestCase {
         assertNotNull(fakeService);
         
         
-        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("arh14"), "ServiceInvocationRuleTest");
-        doc.routeDocument("routing");
+        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("arh14"), "ServiceInvocationRuleTest");
+        doc.route("routing");
 
         // no requests whatsoever were sent...we're done
-        assertTrue(doc.stateIsFinal());
+        assertTrue(doc.isFinal());
         
         fakeService = (FakeService) GlobalResourceLoader.getService(new QName("fake", "fakeService-remote"));
         

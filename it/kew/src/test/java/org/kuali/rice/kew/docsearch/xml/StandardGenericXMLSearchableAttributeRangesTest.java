@@ -16,9 +16,23 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
@@ -36,25 +50,14 @@ import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.krad.web.ui.Row;
-
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute.
@@ -324,33 +327,33 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         String documentTypeName = "SearchDocTypeRangeSearchDataType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
 
         /*
          *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
          *   this is only for convenience as those should always be valid values to test for.
          */
         // adding string searchable attribute
-        WorkflowAttributeDefinitionDTO stringXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeStringRange");
-        stringXMLDef.addProperty(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
-        workflowDocument.addSearchableDefinition(stringXMLDef);
+        WorkflowAttributeDefinition.Builder stringXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStringRange");
+        stringXMLDef.addPropertyDefinition(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
+        workflowDocument.addSearchableDefinition(stringXMLDef.build());
         // adding long searchable attribute
-        WorkflowAttributeDefinitionDTO longXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeStdLongRange");
-        longXMLDef.addProperty(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
-        workflowDocument.addSearchableDefinition(longXMLDef);
+        WorkflowAttributeDefinition.Builder longXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdLongRange");
+        longXMLDef.addPropertyDefinition(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
+        workflowDocument.addSearchableDefinition(longXMLDef.build());
         // adding float searchable attribute
-        WorkflowAttributeDefinitionDTO floatXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeStdFloatRange");
-        floatXMLDef.addProperty(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString());
-        workflowDocument.addSearchableDefinition(floatXMLDef);
+        WorkflowAttributeDefinition.Builder floatXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdFloatRange");
+        floatXMLDef.addPropertyDefinition(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString());
+        workflowDocument.addSearchableDefinition(floatXMLDef.build());
         // adding string searchable attribute
-        WorkflowAttributeDefinitionDTO dateXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeStdDateTimeRange");
-        dateXMLDef.addProperty(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
-        workflowDocument.addSearchableDefinition(dateXMLDef);
+        WorkflowAttributeDefinition.Builder dateXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdDateTimeRange");
+        dateXMLDef.addPropertyDefinition(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
+        workflowDocument.addSearchableDefinition(dateXMLDef.build());
 
         workflowDocument.setTitle("Routing style");
-        workflowDocument.routeDocument("routing this document.");
+        workflowDocument.route("routing this document.");
 
-        workflowDocument = WorkflowDocument.loadDocument(getPrincipalIdForName(userNetworkId), workflowDocument.getDocumentId());
+        workflowDocument = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(userNetworkId), workflowDocument.getDocumentId());
 
         /*
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
@@ -734,25 +737,25 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
     	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
         String principalName = "rkirkend";
         String principalId = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
-        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(principalId, documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(principalId, documentTypeName);
 
         // adding inclusive-lower-bound searchable attribute
-        WorkflowAttributeDefinitionDTO inclusiveLowerXMLDef = new WorkflowAttributeDefinitionDTO("TextFieldWithInclusiveLower");
-        inclusiveLowerXMLDef.addProperty("textFieldWithInclusiveLower", "newvalue");
-        workflowDocument.addSearchableDefinition(inclusiveLowerXMLDef);
+        WorkflowAttributeDefinition.Builder inclusiveLowerXMLDef = WorkflowAttributeDefinition.Builder.create("TextFieldWithInclusiveLower");
+        inclusiveLowerXMLDef.addPropertyDefinition("textFieldWithInclusiveLower", "newvalue");
+        workflowDocument.addSearchableDefinition(inclusiveLowerXMLDef.build());
         // adding case-sensitive searchable attribute
-        WorkflowAttributeDefinitionDTO caseSensitiveXMLDef = new WorkflowAttributeDefinitionDTO("TextFieldWithCaseSensitivity");
-        caseSensitiveXMLDef.addProperty("textFieldWithCaseSensitivity", "thevalue");
-        workflowDocument.addSearchableDefinition(caseSensitiveXMLDef);
+        WorkflowAttributeDefinition.Builder caseSensitiveXMLDef = WorkflowAttributeDefinition.Builder.create("TextFieldWithCaseSensitivity");
+        caseSensitiveXMLDef.addPropertyDefinition("textFieldWithCaseSensitivity", "thevalue");
+        workflowDocument.addSearchableDefinition(caseSensitiveXMLDef.build());
         // adding searchable attribute with overridden properties
-        WorkflowAttributeDefinitionDTO overridesXMLDef = new WorkflowAttributeDefinitionDTO("TextFieldWithOverrides");
-        overridesXMLDef.addProperty("textFieldWithOverrides", "SomeVal");
-        workflowDocument.addSearchableDefinition(overridesXMLDef);
+        WorkflowAttributeDefinition.Builder overridesXMLDef = WorkflowAttributeDefinition.Builder.create("TextFieldWithOverrides");
+        overridesXMLDef.addPropertyDefinition("textFieldWithOverrides", "SomeVal");
+        workflowDocument.addSearchableDefinition(overridesXMLDef.build());
 
         workflowDocument.setTitle("Range Def Test");
-        workflowDocument.routeDocument("routing range def doc.");
+        workflowDocument.route("routing range def doc.");
 
-        workflowDocument = WorkflowDocument.loadDocument(principalId, workflowDocument.getDocumentId());
+        workflowDocument = WorkflowDocumentFactory.loadDocument(principalId, workflowDocument.getDocumentId());
 
         // Verify that the "TextFieldWithInclusiveLower" attribute behaves as expected (lower-bound-inclusive and (by default) case-insensitive).
         assertSearchBehavesAsExpected(docType, principalId, "textFieldWithInclusiveLower",

@@ -15,21 +15,24 @@
  */
 package org.kuali.rice.kew.clientapp;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 import org.kuali.rice.kew.actions.BlanketApproveTest;
-
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
-
-import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -56,7 +59,7 @@ public class WorkflowInfoTest extends KEWTestCase {
     GlobalVariables.setUserSession(null);
     String ewestfalPrincipalId = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId();
     GlobalVariables.setUserSession(new UserSession("ewestfal"));
-    WorkflowDocument document = WorkflowDocument.createDocument(ewestfalPrincipalId, "TestDocumentType");
+    WorkflowDocument document = WorkflowDocumentFactory.createDocument(ewestfalPrincipalId, "TestDocumentType");
 	String documentId = document.getDocumentId();
 	assertNotNull(documentId);
 
@@ -84,7 +87,7 @@ public class WorkflowInfoTest extends KEWTestCase {
 	} catch (WorkflowException e) {}
 
 	// now create a doc and load it's status
-	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
 	String documentId = document.getDocumentId();
 	assertNotNull(documentId);
 
@@ -106,7 +109,7 @@ public class WorkflowInfoTest extends KEWTestCase {
     public void testBlanketApproverSubmitted() throws WorkflowException {
     	Person blanketApprover = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("ewestfal");
 
-        WorkflowDocument document = WorkflowDocument.createDocument(blanketApprover.getPrincipalId(), "BlanketApproveParallelTest");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(blanketApprover.getPrincipalId(), "BlanketApproveParallelTest");
         document.blanketApprove("");
 
         String routedByPrincipalId = new WorkflowInfo().getDocumentRoutedByPrincipalId(document.getDocumentId());
@@ -115,15 +118,15 @@ public class WorkflowInfoTest extends KEWTestCase {
     
     @Test
     public void testGetAppDocId() throws Exception {
-    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
-    	document.saveRoutingData();
+    	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+    	document.saveDocumentData();
     	
     	String appDocId = new WorkflowInfo().getAppDocId(document.getDocumentId());
     	assertNull("appDocId should be null", appDocId);
     	
     	String appDocIdValue = "1234";
-    	document.setAppDocId(appDocIdValue);
-    	document.saveRoutingData();
+    	document.setApplicationDocumentId(appDocIdValue);
+    	document.saveDocumentData();
     	
     	appDocId = new WorkflowInfo().getAppDocId(document.getDocumentId());
     	assertEquals("Incorrect appDocId", appDocIdValue, appDocId);

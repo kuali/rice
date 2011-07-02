@@ -16,17 +16,21 @@
 
 package org.kuali.rice.kew.mail;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import mocks.MockEmailNotificationService;
 import mocks.MockEmailNotificationServiceImpl;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import static org.junit.Assert.*;
 
 public class EmailReminderLifecycleTest extends KEWTestCase {
 
@@ -62,11 +66,11 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		prefs.setEmailNotification(KEWConstants.DAILY);
 		KEWServiceLocator.getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
 
-		WorkflowDocument document = WorkflowDocument.createDocument(rkirkendPrincipalId, "TestDocumentType");
-		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", ewestfalPrincipalId, "", Boolean.TRUE);
-		document.routeDocument("");
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(rkirkendPrincipalId, "TestDocumentType");
+		document.adHocToPrincipal(ActionRequestType.APPROVE, "", ewestfalPrincipalId, "", Boolean.TRUE);
+		document.route("");
 
-		document = WorkflowDocument.loadDocument(ewestfalPrincipalId, document.getDocumentId());
+		document = WorkflowDocumentFactory.loadDocument(ewestfalPrincipalId, document.getDocumentId());
 		assertTrue(document.isApprovalRequested());
 
 		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
@@ -110,11 +114,11 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		prefs.setEmailNotification(KEWConstants.WEEKLY);
 		KEWServiceLocator.getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
 
-		WorkflowDocument document = WorkflowDocument.createDocument(rkirkendPrincipalId, "TestDocumentType");
-		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", ewestfalPrincipalId, "", Boolean.TRUE);
-		document.routeDocument("");
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(rkirkendPrincipalId, "TestDocumentType");
+		document.adHocToPrincipal(ActionRequestType.APPROVE, "", ewestfalPrincipalId, "", Boolean.TRUE);
+		document.route("");
 
-		document = WorkflowDocument.loadDocument(ewestfalPrincipalId, document.getDocumentId());
+		document = WorkflowDocumentFactory.loadDocument(ewestfalPrincipalId, document.getDocumentId());
 		assertTrue(document.isApprovalRequested());
 
 		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);

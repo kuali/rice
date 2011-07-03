@@ -15,43 +15,22 @@
  */
 package org.kuali.rice.kew.api.doctype;
 
-import java.util.Map;
-
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
-public interface DocumentTypeContract extends Identifiable, Versioned {
-
-    String getId();
+/**
+ * TODO ewestfal don't forget to fill this in. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public interface ProcessContract extends Identifiable, Versioned {
     
     String getName();
     
-    Integer getDocumentTypeVersion();
+    String getDocumentTypeId();
     
-    String getLabel();
+    RouteNodeContract getInitialRouteNode();
     
-    String getDescription();
-    
-	String getParentId();
-	    
-    boolean isActive();
+    boolean isInitial();
 
-    String getDocHandlerUrl();
-
-    String getHelpDefinitionUrl();
-    
-    String getDocSearchHelpUrl();
-    
-    String getPostProcessorName();
-
-    String getApplicationId();
-    
-    boolean isCurrent();
-    
-    String getBlanketApproveGroupId();
-    
-    String getSuperUserGroupId();
-    
-    Map<DocumentTypePolicy, String> getPolicies();
-	
 }

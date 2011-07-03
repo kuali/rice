@@ -304,7 +304,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="AttributeField_DocumentNumber" parent="AttributeField" p:propertyName="documentNumber" 
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
         
-  <bean id="AttributeField_DocumentStatus" parent="AttributeField" p:propertyName="documentHeader.workflowDocument.statusDisplayValue" 
+  <bean id="AttributeField_DocumentStatus" parent="AttributeField" p:propertyName="documentHeader.workflowDocument.status"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="workflowDocumentStatus"/>
         
   <bean id="AttributeField_FormDocumentInitiatorNetworkId" parent="AttributeField_Form" p:propertyName="documentInitiatorNetworkId" 

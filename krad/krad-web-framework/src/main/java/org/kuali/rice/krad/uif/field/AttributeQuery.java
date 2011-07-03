@@ -94,10 +94,11 @@ public class AttributeQuery implements Serializable {
      */
     public void updateReturnFieldMapping(BindingInfo bindingInfo) {
         Map<String, String> adjustedReturnFieldMapping = new HashMap<String, String>();
-        for (String toFieldPath : getReturnFieldMapping().keySet()) {
+        for (String fromFieldPath : getReturnFieldMapping().keySet()) {
+            String toFieldPath = getReturnFieldMapping().get(fromFieldPath);
             String adjustedToFieldPath = bindingInfo.getPropertyAdjustedBindingPath(toFieldPath);
 
-            adjustedReturnFieldMapping.put(adjustedToFieldPath, getReturnFieldMapping().get(toFieldPath));
+            adjustedReturnFieldMapping.put(fromFieldPath, adjustedToFieldPath);
         }
 
         this.returnFieldMapping = adjustedReturnFieldMapping;
@@ -150,12 +151,12 @@ public class AttributeQuery implements Serializable {
     public String getReturnFieldMappingJsString() {
         String returnFieldMappingJs = "{";
 
-        for (String returnField : returnFieldMapping.keySet()) {
+        for (String fromField : returnFieldMapping.keySet()) {
             if (!StringUtils.equals(returnFieldMappingJs, "{")) {
                 returnFieldMappingJs += ",";
             }
 
-            returnFieldMappingJs += "\"" + returnField + "\":\"" + returnFieldMapping.get(returnField) + "\"";
+            returnFieldMappingJs += "\"" + returnFieldMapping.get(fromField) + "\":\"" + fromField + "\"";
         }
 
         returnFieldMappingJs += "}";

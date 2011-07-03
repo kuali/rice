@@ -820,7 +820,11 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                 data: queryData,
                 beforeSend: null,
                 complete: null,
-                error: null,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(jqXHR);
+                    alert(textStatus);
+                    alert(errorThrown);
+                },
                 success: function (data) {
                     // write out return message (or blank)
                     var returnMessageSpan = jq("#" + queryFieldId + "_info_message");
@@ -839,8 +843,15 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                             fieldValue = "";
                         }
 
-                        var returnFieldId = returnField.replace(/\./g, "_");
-                        var infoFieldSpan = jq("#" + queryFieldId + "_info_" + returnFieldId);
+                        // check for regular fields
+                        var infoFieldSpan = jq("#[name='" + returnField + "']");
+                        if (infoFieldSpan.length > 0) {
+                            infoFieldSpan.val(fieldValue);
+                        }
+
+                        // check for info spans
+                        var returnFieldId = returnField.replace(/\./g, "_").replace(/\[/g, "-lbrak-").replace(/\]/g, "-rbrak-").replace(/\'/g, "-quot-");
+                        infoFieldSpan = jq("#" + queryFieldId + "_info_" + returnFieldId);
                         if (infoFieldSpan.length > 0) {
                             infoFieldSpan.html(fieldValue);
                         }

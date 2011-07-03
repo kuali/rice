@@ -433,7 +433,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                         </bean>
                         <bean parent="AttributeField" p:propertyName="name" p:label="Person" p:required="True">
                             <property name="control">
-                                <bean parent="UserControl" p:principalIdPropertyName="id" p:personNamePropertyName="name" />
+                                <bean parent="UserControl" p:principalIdPropertyName="id" p:personNamePropertyName="person.name" />
                             </property>
                         </bean>
                     </list>

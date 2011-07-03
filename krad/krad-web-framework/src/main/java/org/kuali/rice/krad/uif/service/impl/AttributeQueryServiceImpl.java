@@ -143,8 +143,8 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         if (resultObject != null) {
             // build result field data map
             Map<String, String> resultFieldData = new HashMap<String, String>();
-            for (String returnField : fieldQuery.getReturnFieldMapping().keySet()) {
-                String fromField = fieldQuery.getReturnFieldMapping().get(returnField);
+            for (String fromField : fieldQuery.getReturnFieldMapping().keySet()) {
+                String returnField = fieldQuery.getReturnFieldMapping().get(fromField);
 
                 String fieldValueStr = "";
                 Object fieldValue = ObjectPropertyUtils.getPropertyValue(resultObject, fromField);

@@ -85,7 +85,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
 
   <bean id="UserControl" parent="UserControl-parentBean"/>
-  <bean id="UserControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.UserControl" scope="prototype" parent="TextControl" />
+  <bean id="UserControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.UserControl" scope="prototype" parent="TextControl">
+    <property name="size" value="10" />
+  </bean>
 
   <bean id="GroupControl" parent="GroupControl-parentBean"/>
   <bean id="GroupControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.GroupControl" scope="prototype" parent="TextControl" />

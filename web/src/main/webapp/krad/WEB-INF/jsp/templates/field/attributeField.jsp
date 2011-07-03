@@ -87,7 +87,11 @@
   <%-- render span and values for informational properties --%>
   <span id="${field.id}_info_message"></span>
   <c:forEach items="${field.informationalDisplayPropertyNames}" var="infoPropertyPath" varStatus="status">
-     <span id="${field.id}_info_${fn:replace(infoPropertyPath,'.','_')}" class="info-field">
+     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyPath,'.','_')}" />
+     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,'[','-lbrak-')}" />
+     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,']','-rbrak-')}" />
+     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,'\\\'','-quot-')}" />
+     <span id="${field.id}_info_${infoPropertyId}" class="info-field">
         <s:bind path="${infoPropertyPath}">${status.value}</s:bind>
      </span>
   </c:forEach>

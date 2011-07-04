@@ -29,9 +29,14 @@ if(objectName == null) {
     objectName = 'FiscalOfficer'
     inputFilePath = 'F:/groovy/'
     outputFilePath = 'F:/groovy/new/'
-}
+}       
     
-Map<String, String> dDPropertyMapping = ["businessObjectClass":"objectClass", "BusinessObjectEntry":"DataObjectEntry"]
+Map<String, String> dDPropertyMapping = ["businessObjectClass":"objectClass", "BusinessObjectEntry":"DataObjectEntry", 
+"validationPattern":"validCharactersConstraint", "AnyCharacterValidationPattern":"AnyCharacterPatternConstraint",
+"AlphaValidationPattern":"AlphaPatternConstraint", "AlphaNumericValidationPattern":"AlphaNumericPatternConstraint",
+"CharsetValidationPattern":"CharsetPatternConstraint", "NumericValidationPattern":"NumericPatternConstraint", 
+"RegexValidationPattern":"RegexPatternConstraint", "FixedPointValidationPattern":"FixedPointValidationPattern",
+"FloatingPointValidationPattern":"FloatingPointPatternConstraint"]
 List<String> removePropertyList = ["inquiryDefinition","lookupDefinition"]
 
 def beanSchema = 'http://www.springframework.org/schema/p'
@@ -78,7 +83,7 @@ if(dDRoot != null) {
         println("bean id : "+beanNode.@id)
                
         // Changes specific to BusinessObjectEntry and AttributeDefinition
-        if(beanNode.@parent in ["BusinessObjectEntry","AttributeDefinition"]) {                                    
+        if(beanNode.@parent in ["BusinessObjectEntry","AttributeDefinition","AttributeReferenceDummy-genericSystemId"]) {                                    
             def isBusinesObjectEntry = false
             if(beanNode.@parent in ["BusinessObjectEntry"]) {
                 isBusinesObjectEntry = true
@@ -101,7 +106,17 @@ if(dDRoot != null) {
                 if(removePropertyList.contains(propertyNode.@name)) {                        
                     //println("   -->Remove Property name : "+propertyNode.@name)
                     propertyNode.replaceNode({})                        
+                }                                
+                def propertyBeans = propertyNode.bean
+                                
+                //Iterate through each propert beans
+                (0..<propertyBeans.size()).each {
+                    def propertyBeanNode = propertyBeans[it]                    
+                    if(dDPropertyMapping[propertyBeanNode.@parent.toString()] != null) {                        
+                        propertyBeanNode.@parent = dDPropertyMapping[propertyBeanNode.@parent.toString()]
+                    }
                 }
+                
             }
             
             //Additional logic for Control field 

@@ -171,11 +171,11 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
     }
 
     private void assertPolicies(DocumentType oldDocType, DocumentType newDocType) {
-        assertEquals(oldDocType.getPolicies().size(), newDocType.getPolicies().size());
-        for (Iterator iterator = oldDocType.getPolicies().iterator(); iterator.hasNext();) {
+        assertEquals(oldDocType.getDocumentTypePolicies().size(), newDocType.getDocumentTypePolicies().size());
+        for (Iterator iterator = oldDocType.getDocumentTypePolicies().iterator(); iterator.hasNext();) {
             DocumentTypePolicy oldPolicy = (DocumentTypePolicy) iterator.next();
             boolean foundPolicy = false;
-            for (Iterator iterator2 = newDocType.getPolicies().iterator(); iterator2.hasNext();) {
+            for (Iterator iterator2 = newDocType.getDocumentTypePolicies().iterator(); iterator2.hasNext();) {
                 DocumentTypePolicy newPolicy = (DocumentTypePolicy) iterator2.next();
                 if (oldPolicy.getPolicyName().equals(newPolicy.getPolicyName())) {
                     foundPolicy = true;

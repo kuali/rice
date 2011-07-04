@@ -305,7 +305,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	childEdit.setDescription("desc");
     	childEdit.setUnresolvedDocHandlerUrl("url");
     	childEdit.setLabel("lable");
-    	childEdit.setPolicies(new ArrayList());
+    	childEdit.setDocumentTypePolicies(new ArrayList());
     	childEdit.setRoutingVersion("1");
     	childEdit.setDocTypeParentId(child.getDocTypeParentId());
     	childEdit.setPostProcessorName("somename");

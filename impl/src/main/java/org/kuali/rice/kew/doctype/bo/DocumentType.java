@@ -16,6 +16,31 @@
 
 package org.kuali.rice.kew.doctype.bo;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -29,6 +54,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
@@ -63,28 +89,6 @@ import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.ObjectUtils;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that
  * can construct {@link ObjectDefinition} objects correctly to account for application id inheritance.
@@ -101,7 +105,7 @@ import java.util.Set;
                 "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
                 "ORDER BY UPPER(dt.label)")
 })
-public class DocumentType extends PersistableBusinessObjectBase implements Inactivatable, DocumentTypeEBO {
+public class DocumentType extends PersistableBusinessObjectBase implements Inactivatable, DocumentTypeEBO, DocumentTypeContract {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
     private static final long serialVersionUID = 1312830153583125069L;
@@ -402,7 +406,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public boolean isPolicyDefined(DocumentTypePolicyEnum policyToCheck) {
-        Iterator<DocumentTypePolicy> policyIter = getPolicies().iterator();
+        Iterator<DocumentTypePolicy> policyIter = getDocumentTypePolicies().iterator();
         while (policyIter.hasNext()) {
             DocumentTypePolicy policy = policyIter.next();
             if (policyToCheck.getName().equals(policy.getPolicyName())) {
@@ -496,12 +500,23 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         return KEWServiceLocator.getDocumentTypeService().findById(this.docTypeParentId);
     }
 
-    public Collection<DocumentTypePolicy> getPolicies() {
+    public Collection<DocumentTypePolicy> getDocumentTypePolicies() {
         return policies;
     }
 
-    public void setPolicies(Collection<DocumentTypePolicy> policies) {
+    public void setDocumentTypePolicies(Collection<DocumentTypePolicy> policies) {
         this.policies = policies;
+    }
+    
+    @Override
+    public Map<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String> getPolicies() {
+        Map<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String> policies = new HashMap<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String>();
+        if (this.policies != null) {
+            for (DocumentTypePolicy policy : this.policies) {
+                policies.put(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.fromCode(policy.getPolicyName()), policy.getPolicyValue().toString());
+            }
+        }
+        return policies;
     }
 
     public List<ApplicationDocumentStatus> getValidApplicationStatuses() {
@@ -576,6 +591,14 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     public java.lang.Boolean getCurrentInd() {
         return currentInd;
+    }
+    
+    @Override
+    public boolean isCurrent() {
+        if (currentInd == null) {
+            return true;
+        }
+        return currentInd.booleanValue();
     }
 
     public void setCurrentInd(java.lang.Boolean currentInd) {
@@ -866,6 +889,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     public void setDocumentTypeId(String docTypeGrpId) {
         this.documentTypeId = docTypeGrpId;
     }
+    
+    @Override
+    public String getId() {
+        return getDocumentTypeId();
+    }
 
     public Object copy(boolean preserveKeys) {
         throw new UnsupportedOperationException("The copy method is deprecated and unimplemented!");
@@ -881,7 +909,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     private DocumentTypePolicy getPolicyByName(String policyName, Boolean defaultValue) {
 
-        Iterator policyIter = getPolicies().iterator();
+        Iterator policyIter = getDocumentTypePolicies().iterator();
         while (policyIter.hasNext()) {
             DocumentTypePolicy policy = (DocumentTypePolicy) policyIter.next();
             if (policyName.equals(policy.getPolicyName())) {
@@ -907,7 +935,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     private DocumentTypePolicy getPolicyByName(String policyName, String defaultValue) {
 
-        Iterator policyIter = getPolicies().iterator();
+        Iterator policyIter = getDocumentTypePolicies().iterator();
         while (policyIter.hasNext()) {
             DocumentTypePolicy policy = (DocumentTypePolicy) policyIter.next();
             if (policyName.equals(policy.getPolicyName())) {
@@ -1586,4 +1614,35 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     public void setActive(boolean active) {
         this.active = Boolean.valueOf(active);
     }
+    
+    @Override
+    public Integer getDocumentTypeVersion() {
+        return version;
+    }
+
+    @Override
+    public String getParentId() {
+        return docTypeParentId;
+    }
+
+    @Override
+    public String getBlanketApproveGroupId() {
+        return blanketApproveWorkgroupId;
+    }
+
+    @Override
+    public String getSuperUserGroupId() {
+        return workgroupId;
+    }
+    
+    public static org.kuali.rice.kew.api.doctype.DocumentType to(DocumentType documentTypeBo) {
+        if (documentTypeBo == null) {
+            return null;
+        }
+        org.kuali.rice.kew.api.doctype.DocumentType.Builder builder = org.kuali.rice.kew.api.doctype.DocumentType.Builder.create(documentTypeBo);
+        builder.setDocHandlerUrl(documentTypeBo.getUnresolvedDocHandlerUrl());
+        builder.setApplicationId(documentTypeBo.getActualApplicationId());
+        return builder.build();
+    }
+    
 }

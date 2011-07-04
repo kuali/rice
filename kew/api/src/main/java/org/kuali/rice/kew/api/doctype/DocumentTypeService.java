@@ -15,34 +15,58 @@
  */
 package org.kuali.rice.kew.api.doctype;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.KewApiConstants;
 
+/**
+ * TODO ...
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+@WebService(name = "documentTypeSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface DocumentTypeService {
 
-	String getDocumentTypeIdByName(@WebParam(name = "documentTypeName") String documentTypeName);
-	
-	//DocumentType getDocumentType(@WebParam(name = "documentTypeId"), String documentTypeId);
-	
-	boolean isSuperUser(String principalId, String documentTypeId);
-	
-	// TODO add the following methods to this service
-	
-//	public DocumentTypeDTO getDocumentType(
-//			@WebParam(name = "documentTypeId") Long documentTypeId)
-//			throws WorkflowException;
-//
-//	public DocumentTypeDTO getDocumentTypeByName(
-//			@WebParam(name = "documentTypeName") String documentTypeName)
-//			throws WorkflowException;
-//	
-//	public boolean hasRouteNode(
-//			@WebParam(name = "documentTypeName") String documentTypeName,
-//			@WebParam(name = "routeNodeName") String routeNodeName)
-//			throws WorkflowException;
-//
-//	public boolean isCurrentActiveDocumentType(
-//			@WebParam(name = "documentTypeName") String documentTypeName)
-//			throws WorkflowException;
-	
+    @WebMethod(operationName = "getDocumentTypeIdByName")
+    @WebResult(name = "documentTypeId")
+    @XmlElement(name = "documentTypeId", required = false)
+    String getDocumentTypeIdByName(@WebParam(name = "documentTypeName") String documentTypeName)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "getDocumentTypeById")
+    @WebResult(name = "documentType")
+    @XmlElement(name = "documentType", required = false)
+    DocumentType getDocumentTypeById(@WebParam(name = "documentTypeId") String documentTypeId)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "getDocumentTypeByName")
+    @WebResult(name = "documentType")
+    @XmlElement(name = "documentType", required = false)
+    DocumentType getDocumentTypeByName(@WebParam(name = "documentTypeName") String documentTypeName)
+            throws RiceIllegalArgumentException;
+    
+    @WebMethod(operationName = "isSuperUser")
+    @WebResult(name = "isSuperUser")
+    @XmlElement(name = "isSuperUser", required = true)
+    boolean isSuperUser(
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "documentTypeId") String documentTypeId)
+            throws RiceIllegalArgumentException;
+
+    //	public boolean hasRouteNode(
+    //			@WebParam(name = "documentTypeName") String documentTypeName,
+    //			@WebParam(name = "routeNodeName") String routeNodeName)
+    //			throws WorkflowException;
+    //
+    //	public boolean isCurrentActiveDocumentType(
+    //			@WebParam(name = "documentTypeName") String documentTypeName)
+    //			throws WorkflowException;
+
 }

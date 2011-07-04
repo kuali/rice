@@ -312,7 +312,7 @@ public class DocumentTypeXmlParser {
         else if (policiesList.getLength() > 0) {
             // if there is exactly one <policies> tag then parse it and use the values
             NodeList policyNodes = (NodeList) getXPath().evaluate("./" + POLICY, policiesList.item(0), XPathConstants.NODESET);
-            documentType.setPolicies(getDocumentTypePolicies(policyNodes, documentType));
+            documentType.setDocumentTypePolicies(getDocumentTypePolicies(policyNodes, documentType));
         }
 
         NodeList attributeList = (NodeList) getXPath().evaluate("./attributes", documentTypeNode, XPathConstants.NODESET);

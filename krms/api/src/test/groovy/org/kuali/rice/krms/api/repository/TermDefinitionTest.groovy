@@ -3,14 +3,11 @@ package org.kuali.rice.krms.api.repository
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
-
 import org.junit.Assert
-import org.junit.Ignore
 import org.junit.Test
 import org.kuali.rice.krms.api.repository.term.TermDefinition
 import org.kuali.rice.krms.api.repository.term.TermParameterDefinition
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition
-
 
 /**
  * This class tests out the buiding of a KrmsTypeAttribute object.
@@ -61,7 +58,7 @@ class TermDefinitionTest {
 		
 		// create(String id, TermSpecificationDefinition termSpecificationDefinition, 
 		//		Set<TermParameterDefinition> termParameters) {
-		TermDefinition termDef = TermDefinition.Builder.create(ID+"DEF", spec, Collections.singleton(param)).build();
+		TermDefinition termDef = TermDefinition.Builder.create(ID+"DEF", spec, Collections.singletonList(param)).build();
 		
 		JAXBContext jc = JAXBContext.newInstance(TermDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()

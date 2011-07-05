@@ -477,7 +477,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         // Term
         TermDefinition termDefinition2 =
-            TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(outputTermSpec), Collections.singleton(termParamBuilder2)).build();
+            TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(outputTermSpec), Collections.singletonList(termParamBuilder2)).build();
         termDefinition2 = termBoService.createTermDefinition(termDefinition2);
 
 		// KrmsType for TermResolver

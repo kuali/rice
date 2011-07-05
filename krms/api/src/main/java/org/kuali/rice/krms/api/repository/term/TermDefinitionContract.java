@@ -18,7 +18,7 @@ package org.kuali.rice.krms.api.repository.term;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Contract for {@link TermDefinition} and related objects.  
@@ -36,6 +36,6 @@ public interface TermDefinitionContract extends Identifiable, Versioned {
 	/**
 	 * @return any 
 	 */
-	Set<? extends TermParameterDefinitionContract> getParameters();
+	List<? extends TermParameterDefinitionContract> getParameters();
 	
 }

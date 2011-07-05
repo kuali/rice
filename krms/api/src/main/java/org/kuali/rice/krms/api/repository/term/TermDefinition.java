@@ -17,7 +17,7 @@ package org.kuali.rice.krms.api.repository.term;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -62,7 +62,7 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 	private final TermSpecificationDefinition specification;
 	@XmlElementWrapper(name = Elements.PARAMETERS, required=false)
 	@XmlElement(name = "parameter", required=false)
-	private final Set<TermParameterDefinition> parameters;
+	private final List<TermParameterDefinition> parameters;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 	
@@ -83,7 +83,7 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 	private TermDefinition(Builder builder) {
 		id = builder.getId();
 		specification = builder.getSpecification().build();
-		parameters = BuilderUtils.convertFromBuilderSet(builder.getParameters());
+		parameters = BuilderUtils.convertFromBuilderList(builder.getParameters());
 		versionNumber = builder.getVersionNumber();
 	}
 	
@@ -99,11 +99,11 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 		
 		private String id;
 		private TermSpecificationDefinition.Builder specification;
-		private Set<TermParameterDefinition.Builder> parameters;
+		private List<TermParameterDefinition.Builder> parameters;
         private Long versionNumber;
 		
 		private Builder(String id, TermSpecificationDefinition.Builder termSpecificationDefinition, 
-				Set<TermParameterDefinition.Builder> termParameters) {
+				List<TermParameterDefinition.Builder> termParameters) {
 			setId(id);
 			setSpecification(termSpecificationDefinition);
 			setParameters(termParameters);
@@ -117,7 +117,7 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 		 * @param termParameters may be null.
 		 */
 		public static Builder create(String id, TermSpecificationDefinition.Builder termSpecification, 
-				Set<TermParameterDefinition.Builder> termParameters) {
+				List<TermParameterDefinition.Builder> termParameters) {
 			return new Builder(id, termSpecification, termParameters);
 		}
 		
@@ -130,7 +130,7 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 			if (term == null) throw new IllegalAddException("term may not be null");
 			
 			// Convert TermParameterDefinitionContract to TermParameterDefinition:
-			Set<TermParameterDefinition.Builder> outParams = 
+			List<TermParameterDefinition.Builder> outParams =
 				BuilderUtils.transform(term.getParameters(), TermParameterDefinition.Builder.toBuilder);
 
 			Builder builder = create(term.getId(), 
@@ -170,7 +170,7 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 		/**
 		 * @param parameters the termParameters to set.  May be null, or empty.
 		 */
-		public void setParameters(Set<TermParameterDefinition.Builder> parameters) {
+		public void setParameters(List<TermParameterDefinition.Builder> parameters) {
 			this.parameters = parameters;
 		}
 
@@ -205,7 +205,7 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 		 * @return the termParameters
 		 */
 		@Override
-		public Set<TermParameterDefinition.Builder> getParameters() {
+		public List<TermParameterDefinition.Builder> getParameters() {
 			return parameters;
 		}
 		
@@ -247,7 +247,7 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 	 * @return the parameters.  May be empty, but will never be null.
 	 */
 	@Override
-	public Set<TermParameterDefinition> getParameters() {
+	public List<TermParameterDefinition> getParameters() {
 		return this.parameters;
 	}
 	

@@ -60,6 +60,10 @@
                 <value>classpath:org/kuali/rice/krms/datadictionary/RuleAttributeBo.xml</value>
                 <value>classpath:org/kuali/rice/krms/datadictionary/RuleMaintenance.xml</value>
                 <value>classpath:org/kuali/rice/krms/datadictionary/KrmsAttributeDefinitionBo.xml</value>
+                <value>classpath:org/kuali/rice/krms/datadictionary/TermBo.xml</value>
+                <value>classpath:org/kuali/rice/krms/datadictionary/TermParameterBo.xml</value>
+                <value>classpath:org/kuali/rice/krms/datadictionary/TermSpecificationBo.xml</value>
+                <value>classpath:org/kuali/rice/krms/datadictionary/CategoryBo.xml</value>
                 <value>classpath:org/kuali/rice/krms/datadictionary/PropositionBo.xml</value>
                 <value>classpath:org/kuali/rice/krms/datadictionary/PropositionParameterBo.xml</value>
                 <value>classpath:org/kuali/rice/krms/uif/AgendaEditorView.xml</value>

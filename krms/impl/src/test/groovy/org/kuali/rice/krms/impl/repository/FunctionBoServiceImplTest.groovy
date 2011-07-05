@@ -33,6 +33,7 @@ import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinition
 import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinitionContract
 
 import groovy.mock.interceptor.MockFor
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract
 
 class FunctionBoServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -381,18 +382,24 @@ class FunctionBoServiceImplTest {
 			def String name = "category001"
 			def String namespace = "namespace001"
 			def Long versionNumber = new Long(1);
-		})
+    		List<? extends TermSpecificationDefinitionContract> getTermSpecifications() {return new ArrayList<TermSpecificationDefinitionContract>()}
+            List<? extends FunctionDefinitionContract> getFunctions() {return new ArrayList<FunctionDefinitionContract>()}
+        })
 		CategoryDefinition.Builder fcBuilder2 = CategoryDefinition.Builder.create(new CategoryDefinitionContract() {
 			def String id = "category002"
 			def String name = "category002"
 			def String namespace = "namespace002"
 			def Long versionNumber = new Long(1);
+            List<? extends TermSpecificationDefinitionContract> getTermSpecifications() {return new ArrayList<TermSpecificationDefinitionContract>()}
+            List<? extends FunctionDefinitionContract> getFunctions() {return new ArrayList<FunctionDefinitionContract>()}
 		})
 		CategoryDefinition.Builder fcBuilder3 = CategoryDefinition.Builder.create(new CategoryDefinitionContract() {
 			def String id = "category003"
 			def String name = "category003"
 			def String namespace = "namespace003"
 			def Long versionNumber = new Long(1);
+            List<? extends TermSpecificationDefinitionContract> getTermSpecifications() {return new ArrayList<TermSpecificationDefinitionContract>()}
+            List<? extends FunctionDefinitionContract> getFunctions() {return new ArrayList<FunctionDefinitionContract>()}
 		})
 		for ( fcb in [fcBuilder1, fcBuilder2, fcBuilder3]){
 			functionCategories.add (fcb)

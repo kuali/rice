@@ -12,7 +12,7 @@ public class TermBo extends PersistableBusinessObjectBase implements TermDefinit
 	def String specificationId
 
 	def TermSpecificationBo specification
-	def Set<TermParameterBo> parameters
+	def List<TermParameterBo> parameters
 
 	/**
 	* Converts a mutable bo to it's immutable counterpart
@@ -43,13 +43,13 @@ public class TermBo extends PersistableBusinessObjectBase implements TermDefinit
 	   bo.versionNumber = im.versionNumber
 	   return bo
    }
- 
+
    public TermSpecificationBo getSpecification(){
 	   return specification
    }
-   
-   public Set<TermParameterBo> getParameters(){
+
+   public List<TermParameterBo> getParameters(){
 	   return parameters
    }
-   
+
 } 

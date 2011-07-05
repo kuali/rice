@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -143,7 +142,7 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 		TermSpecificationDefinition termSpecificationDefinition = termDefinition.getSpecification();
 		if (termSpecificationDefinition == null) { throw new RepositoryDataException("term with id " + termDefinition.getId() + " has a null specification"); } 
 		
-		Set<TermParameterDefinition> params = termDefinition.getParameters();
+		List<TermParameterDefinition> params = termDefinition.getParameters();
 		Map<String,String> paramsMap = new TreeMap<String,String>();
 		if (!CollectionUtils.isEmpty(params)) for (TermParameterDefinition param : params) {
 			if (StringUtils.isBlank(param.getName())) { 

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="TermBo" parent="TermBo-parentBean"/>
+  <bean id="TermBo-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.TermBo"/>
+    <property name="titleAttribute" value="id"/>
+    <property name="attributes">
+      <list>
+        <ref bean="TermBo-id"/>
+        <ref bean="TermBo-specificationId"/>
+      </list>
+    </property>
+    <property name="objectLabel" value="Term"/>
+  </bean>
+
+  <!-- Attribute Definitions -->
+
+
+  <bean id="TermBo-id" parent="TermBo-id-parentBean"/>
+  <bean id="TermBo-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Term Id"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
+    <property name="name" value="id"/>
+    <property name="label" value="Term Id"/>
+  </bean>
+
+  <bean id="TermBo-specificationId" parent="TermBo-specificationId-parentBean"/>
+  <bean id="TermBo-specificationId-parentBean" abstract="true" parent="TermSpecificationBo-id">
+    <property name="name" value="specificationId"/>
+  </bean>
+
+  <!-- Inquiry View -->
+
+
+  <bean id="TermBo-InquiryView" parent="TermBo-InquiryView-parentBean"/>
+  <bean id="TermBo-InquiryView-parentBean" abstract="true" parent="InquiryView">
+    <property name="title" value="Term Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermBo"/>
+    <property name="singlePageView" value="true"/>
+    <property name="items">
+      <list>
+        <bean parent="GroupSection">
+          <property name="header.headerText" value="Term" />
+          <property name="items">
+          <list>
+            <ref bean="TermBo-InquiryView-term"/>
+            <ref bean="TermBo-InquiryView-parameters"/>
+          </list>
+          </property>
+        </bean>
+        <ref bean="TermBo-InquiryView-termSpecification"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TermBo-InquiryView-term" parent="TermBo-InquiryView-term-parentBean"/>
+  <bean id="TermBo-InquiryView-term-parentBean" abstract="true" parent="GroupGridBodyOnly">
+    <property name="layoutManager.numberOfColumns" value="2"/>
+    <property name="items">
+      <list>
+        <bean parent="AttributeField" p:propertyName="id"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TermBo-InquiryView-parameters" parent="TermBo-InquiryView-parameters-parentBean"/>
+  <bean id="TermBo-InquiryView-parameters-parentBean" abstract="true" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3">
+     <property name="title" value="Term Parameters"/>
+     <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.TermParameterBo"/>
+     <property name="propertyName" value="parameters"/>
+     <property name="layoutManager.renderSequenceField" value="false"/>
+     <property name="items">
+       <list>
+         <bean parent="AttributeField" p:propertyName="id"/>
+         <bean parent="AttributeField" p:propertyName="name"/>
+         <bean parent="AttributeField" p:propertyName="value"/>
+        </list>
+     </property>
+  </bean>
+
+  <bean id="TermBo-InquiryView-termSpecification" parent="TermBo-InquiryView-termSpecification-parentBean"/>
+  <bean id="TermBo-InquiryView-termSpecification-parentBean" abstract="true" parent="GroupSectionGridLayout">
+    <property name="layoutManager.numberOfColumns" value="2"/>
+    <property name="items">
+      <list>
+        <bean parent="AttributeField" p:propertyName="specification.id"/>
+        <bean parent="AttributeField" p:propertyName="specification.name"/>
+        <bean parent="AttributeField" p:propertyName="specification.contextId"/>
+        <bean parent="AttributeField" p:propertyName="specification.type"/>
+      </list>
+    </property>
+    <property name="title" value="Term Specification"/>
+  </bean>
+
+  <!-- Lookup View -->
+
+
+  <bean id="TermBo-LookupView" parent="TermBo-LookupView-parentBean" />
+  <bean id="TermBo-LookupView-parentBean" abstract="true" parent="LookupView">
+    <property name="title" value="Term Lookup"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermBo"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="id"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="specificationId"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="AttributeField" p:propertyName="id"/>
+        <bean parent="AttributeField" p:propertyName="specification.id"/>
+      </list>
+    </property>
+  </bean>
+</beans>

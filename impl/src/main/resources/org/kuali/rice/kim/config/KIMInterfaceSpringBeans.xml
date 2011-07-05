@@ -227,15 +227,7 @@
         p:kualiModuleService-ref="kualiModuleService" />
 
 
-  <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl"
-    p:entityPrincipalCacheMaxSize="${kim.cache.entity.max.size}"
-    p:entityPrincipalCacheMaxAgeSeconds="${kim.cache.entity.max.age.seconds}"
-    p:groupCacheMaxSize="${kim.cache.group.max.size}"
-    p:groupCacheMaxAgeSeconds="${kim.cache.group.max.age.seconds}"
-    p:permissionCacheMaxSize="${kim.cache.permission.max.size}"
-    p:permissionCacheMaxAgeSeconds="${kim.cache.permission.max.age.seconds}"
-    p:responsibilityCacheMaxSize="${kim.cache.responsibility.max.size}"
-    p:responsibilityCacheMaxAgeSeconds="${kim.cache.responsibility.max.age.seconds}" />
+  <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl" />
 
   <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
     p:roleCacheMaxSize="${kim.cache.role.max.size}"

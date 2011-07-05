@@ -23,6 +23,7 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+//TODO: consider using google collections
 public class MaxSizeMap<K,V> extends LinkedHashMap<K,V> {
 
         private int maxSize;

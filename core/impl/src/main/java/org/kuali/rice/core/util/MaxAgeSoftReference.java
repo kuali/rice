@@ -22,6 +22,7 @@ import java.lang.ref.SoftReference;
  * value stored in the SoftReference. If no expiration time is passed in
  * the value will never be cached.  
  */
+//TODO: consider using google collections
 public class MaxAgeSoftReference<T> extends SoftReference<T> {
         
         private long expires;

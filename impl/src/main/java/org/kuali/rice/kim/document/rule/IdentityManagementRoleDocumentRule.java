@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kim.api.identity.services.IdentityService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;

@@ -207,7 +207,7 @@
 
   <bean id="SampleBOMaintenanceDocument" parent="SampleBOMaintenanceDocument-parentBean"/>
 
-  <bean id="SampleBOMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry" p:businessObjectClass="org.kuali.rice.kim.test.service.PersonServiceImplTest$SampleBO" p:maintainableClass="org.kuali.rice.krad.maintenance.KualiMaintainableImpl" p:documentTypeName="SampleBOMaintenanceDocument" p:businessRulesClass="org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase" p:documentAuthorizerClass="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase">
+  <bean id="SampleBOMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry" p:businessObjectClass="org.kuali.rice.kim.test.service.PersonServiceImplTest$SampleBO" p:maintainableClass="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" p:documentTypeName="SampleBOMaintenanceDocument" p:businessRulesClass="org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase" p:documentAuthorizerClass="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase">
 
     <property name="lockingKeys">
       <list>

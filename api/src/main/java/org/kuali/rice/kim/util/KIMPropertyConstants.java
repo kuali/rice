@@ -26,9 +26,20 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 public final class KIMPropertyConstants {
 
 	public static final class Entity {
-		public static final String ENTITY_ID = "id";
+		public static final String ID = "id";
+        public static final String ENTITY_ID = "entityId";
+        public static final String ACTIVE = KRADPropertyConstants.ACTIVE;
+        public static final String ENTITY_TYPE_CODE = "entityTypeCode";
 		
 		private Entity() {
+			throw new UnsupportedOperationException("do not call");
+		}
+	}
+
+    public static final class Type {
+		public static final String CODE = "code";
+
+		private Type() {
 			throw new UnsupportedOperationException("do not call");
 		}
 	}
@@ -95,8 +106,8 @@ public final class KIMPropertyConstants {
 	}
 	
 	public static final class Role {
-		public static final String ROLE_ID = "roleId";
-		public static final String ROLE_NAME = "roleName";
+		public static final String ROLE_ID = "id";
+		public static final String ROLE_NAME = "name";
 	    public static final String KIM_TYPE_ID = KimType.KIM_TYPE_ID;
 		public static final String ACTIVE = KRADPropertyConstants.ACTIVE;
 		
@@ -118,7 +129,7 @@ public final class KIMPropertyConstants {
 	
 	public static final class RoleMember {
 		public static final String ROLE_MEMBER_ID = "roleMemberId";
-		public static final String ROLE_ID = Role.ROLE_ID;
+		public static final String ROLE_ID = "roleId";
 		public static final String MEMBER_ID = "memberId";
 		public static final String MEMBER_TYPE_CODE = "memberTypeCode";
 		public static final String ACTIVE_FROM_DATE = KimMember.ACTIVE_FROM_DATE;
@@ -146,7 +157,7 @@ public final class KIMPropertyConstants {
 		public static final String DELEGATION_MEMBER_ID = "delegationMemberId";
 		public static final String DELEGATION_ID = Delegation.DELEGATION_ID;
 		public static final String MEMBER_ID = "memberId";
-		public static final String MEMBER_TYPE_CODE = "memberTypeCode";
+		public static final String MEMBER_TYPE_CODE = "typeCode";
 		public static final String ACTIVE_FROM_DATE = KimMember.ACTIVE_FROM_DATE;
 		public static final String ACTIVE_TO_DATE = KimMember.ACTIVE_TO_DATE;
 		

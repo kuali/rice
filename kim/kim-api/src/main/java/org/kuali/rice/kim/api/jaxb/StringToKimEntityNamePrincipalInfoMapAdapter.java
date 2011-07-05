@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Do jax-ws mapping of Map<String, String> for KIM service method parameters, etc.
@@ -28,7 +27,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<StringEntNmPrncpInfoMapEntry[], Map<String, KimEntityNamePrincipalNameInfo>> {
+public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<StringEntNmPrncpInfoMapEntry[], Map<String, EntityNamePrincipalName>> {
 
 	/**
 	 * This overridden method ...
@@ -36,11 +35,11 @@ public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<Str
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
 	 */
 	@Override
-	public StringEntNmPrncpInfoMapEntry[] marshal(Map<String, KimEntityNamePrincipalNameInfo> map) throws Exception {
+	public StringEntNmPrncpInfoMapEntry[] marshal(Map<String, EntityNamePrincipalName> map) throws Exception {
 		if(null == map) return null;
 		StringEntNmPrncpInfoMapEntry[] entryArray = new StringEntNmPrncpInfoMapEntry[map.size()];
 		int i = 0;
-		for (Map.Entry<String, KimEntityNamePrincipalNameInfo> e : map.entrySet()) {
+		for (Map.Entry<String, EntityNamePrincipalName> e : map.entrySet()) {
 			entryArray[i] = new StringEntNmPrncpInfoMapEntry(e.getKey(), e.getValue());
 			i++;
 		}
@@ -53,9 +52,9 @@ public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<Str
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
 	 */
 	@Override
-	public Map<String, KimEntityNamePrincipalNameInfo> unmarshal(StringEntNmPrncpInfoMapEntry[] entryArray) throws Exception {
+	public Map<String, EntityNamePrincipalName> unmarshal(StringEntNmPrncpInfoMapEntry[] entryArray) throws Exception {
 		if (null == entryArray) return null;
-		Map<String, KimEntityNamePrincipalNameInfo> resultMap = new HashMap<String, KimEntityNamePrincipalNameInfo>(entryArray.length);
+		Map<String, EntityNamePrincipalName> resultMap = new HashMap<String, EntityNamePrincipalName>(entryArray.length);
 		for (int i = 0; i < entryArray.length; i++) {
 			StringEntNmPrncpInfoMapEntry entry = entryArray[i];
 			resultMap.put(entry.key, entry.value);

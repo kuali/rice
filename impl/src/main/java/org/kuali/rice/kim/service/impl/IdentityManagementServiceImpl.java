@@ -17,19 +17,24 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
+import org.kuali.rice.kim.api.identity.entity.EntityContract;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.entity.Entity;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
+import org.kuali.rice.kim.api.identity.entity.EntityQueryResults;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.services.IdentityService;
-import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
@@ -38,6 +43,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.service.PermissionService;
 
+import javax.jws.WebParam;
 import java.util.List;
 import java.util.Map;
 
@@ -280,27 +286,25 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 
     @Override
     public EntityDefault getEntityDefaultInfo(String entityId) {
-    		return getIdentityService().getEntityDefaultInfo(entityId);
+    		return getIdentityService().getEntityDefault(entityId);
     }
 
     @Override
     public EntityDefault getEntityDefaultInfoByPrincipalId(
     		String principalId) {
-	    	return getIdentityService().getEntityDefaultInfoByPrincipalId(principalId);
+	    	return getIdentityService().getEntityDefaultByPrincipalId(principalId);
     }
 
     @Override
     public EntityDefault getEntityDefaultInfoByPrincipalName(
     		String principalName) {
-	    	return getIdentityService().getEntityDefaultInfoByPrincipalName(principalName);
+	    	return getIdentityService().getEntityDefaultByPrincipalName(principalName);
     }
 
     @Override
-    public List<EntityDefault> lookupEntityDefaultInfo(
-    		Map<String, String> searchCriteria, boolean unbounded) {
-    	return getIdentityService().lookupEntityDefaultInfo(searchCriteria, unbounded);
+    public EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria queryByCriteria) {
+        return getIdentityService().findEntityDefaults(queryByCriteria);
     }
-
 
     @Override
 	public Entity getEntity(String entityId) {
@@ -308,24 +312,18 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	}
 
     @Override
-	public Entity getEntityByPrincipalId(String principalId) {
-	    	return getIdentityService().getEntityInfoByPrincipalId(principalId);
-	}
+    public Entity getEntityByPrincipalId(@WebParam(name = "principalId") String principalId) {
+        return getIdentityService().getEntityByPrincipalId(principalId);
+    }
 
     @Override
-	public Entity getEntityByPrincipalName(String principalName) {
-	    	return getIdentityService().getEntityInfoByPrincipalName( principalName );
-	}
+    public Entity getEntityByPrincipalName(@WebParam(name = "principalName") String principalName) {
+        return getIdentityService().getEntityByPrincipalName(principalName);
+    }
 
     @Override
-	public List<Entity> lookupEntityInfo(
-			Map<String, String> searchCriteria, boolean unbounded) {
-		return getIdentityService().lookupEntityInfo(searchCriteria, unbounded);
-	}
-
-    @Override
-    public int getMatchingEntityCount(Map<String,String> searchCriteria) {
-    	return getIdentityService().getMatchingEntityCount( searchCriteria );
+    public EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria queryByCriteria) {
+        return getIdentityService().findEntities(queryByCriteria);
     }
 
     @Override
@@ -357,7 +355,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	}
     @Override
 	public Type getEntityNameType( String code ) {
-			return getIdentityService().getEntityNameType(code);
+			return getIdentityService().getNameType(code);
 	}
     @Override
 	public Type getEntityType( String code ) {

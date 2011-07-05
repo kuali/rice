@@ -45,7 +45,7 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
 	protected void loadKimObject(HttpServletRequest request,
 			IdentityManagementDocumentFormBase form) {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
+        String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID);
     	roleDocumentForm.setRoleId(roleId);
         Role role = KimApiServiceLocator.getRoleService().getRole(roleId);
         if (role != null) {

@@ -59,6 +59,10 @@ public class EntityPhoneBo extends PersistableBusinessObjectBase implements Enti
 	@Column(name="DFLT_IND")
 	boolean defaultValue;
 
+
+    public String getPhoneTypeCode(){
+        return this.phoneTypeCode
+    }
  /*
    * Converts a mutable EntityPhoneBo to an immutable EntityPhone representation.
    * @param bo

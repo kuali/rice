@@ -15,20 +15,36 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.address.EntityAddress;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
+import org.kuali.rice.kim.api.identity.email.EntityEmail;
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
+import org.kuali.rice.kim.api.identity.entity.EntityQueryResults;
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics;
+import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
+import org.kuali.rice.kim.api.identity.phone.EntityPhone;
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.identity.services.IdentityArchiveService;
-import org.kuali.rice.kim.api.identity.services.IdentityService;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
+import org.kuali.rice.kim.api.identity.residency.EntityResidency;
+import org.kuali.rice.kim.api.identity.type.EntityTypeData;
+import org.kuali.rice.kim.api.identity.visa.EntityVisa;
+import org.kuali.rice.kim.api.services.IdentityArchiveService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.List;
 import java.util.Map;
@@ -58,71 +74,201 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getAddressType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getAddressType(java.lang.String)
 	 */
 	public Type getAddressType(String code) {
 		return getInnerIdentityService().getAddressType(code);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getAffiliationType(java.lang.String)
+    @Override
+    public Type createAddressType(Type type) {
+        return getInnerIdentityService().createAddressType(type);
+    }
+
+    @Override
+    public Type updateAddressType(Type type) {
+        return getInnerIdentityService().updateAddressType(type);
+    }
+
+    @Override
+    public Type inactivateAddressType(String typeCode) {
+        return getInnerIdentityService().inactivateAddressType(typeCode);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getAffiliationType(java.lang.String)
 	 */
 	public EntityAffiliationType getAffiliationType(String code) {
 		return getInnerIdentityService().getAffiliationType(code);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getCitizenshipStatus(java.lang.String)
+    @Override
+    public EntityAffiliationType createAffilationType(EntityAffiliationType type) {
+        return getInnerIdentityService().createAffilationType(type);
+    }
+
+    @Override
+    public EntityAffiliationType updateAffilationType(EntityAffiliationType type) {
+        return getInnerIdentityService().updateAffilationType(type);
+    }
+
+    @Override
+    public EntityAffiliationType inactivateAffilationType(String typeCode) {
+        return getInnerIdentityService().inactivateAffilationType(typeCode);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getCitizenshipStatus(java.lang.String)
 	 */
 	public Type getCitizenshipStatus(String code) {
 		return Type.Builder.create(getInnerIdentityService().getCitizenshipStatus(code)).build();
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getDefaultNamesForEntityIds(java.util.List)
+    @Override
+    public Type createCitizenshipStatus(Type status) {
+        return getInnerIdentityService().createCitizenshipStatus(status);
+    }
+
+    @Override
+    public Type updateCitizenshipStatus(Type status) {
+        return getInnerIdentityService(). updateCitizenshipStatus(status);
+    }
+
+    @Override
+    public Type inactivateCitizenshipStatus(String statusCode) {
+        return getInnerIdentityService().inactivateCitizenshipStatus(statusCode);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getDefaultNamesForEntityIds(java.util.List)
 	 */
 	public Map<String, EntityName> getDefaultNamesForEntityIds(
 			List<String> entityIds) {
 		return getInnerIdentityService().getDefaultNamesForEntityIds(entityIds);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
+    @Override
+    public EntityName addNameToEntity(EntityName name) {
+        return getInnerIdentityService().addNameToEntity(name);
+    }
+
+    @Override
+    public EntityName updateName(EntityName name) {
+        return getInnerIdentityService().updateName(name);
+    }
+
+    @Override
+    public EntityName inactivateName(String entityId, String nameTypeCode) {
+        return getInnerIdentityService().inactivateName(entityId, nameTypeCode);
+    }
+
+    @Override
+    public EntityEmployment addEmploymentToEntity(EntityEmployment employment) {
+        return getInnerIdentityService().addEmploymentToEntity(employment);
+    }
+
+    @Override
+    public EntityEmployment updateEmployment(EntityEmployment employment) {
+        return getInnerIdentityService().updateEmployment(employment);
+    }
+
+    @Override
+    public EntityEmployment inactivateEmployment(String entityId, String employmentTypeCode, String employmentStatusCode, String affiliationId) {
+        return getInnerIdentityService().inactivateEmployment(entityId, employmentTypeCode, employmentStatusCode, affiliationId);
+    }
+
+    @Override
+    public EntityBioDemographics addBioDemographicsToEntity(EntityBioDemographics bioDemographics) {
+        return getInnerIdentityService().addBioDemographicsToEntity(bioDemographics);
+    }
+
+    @Override
+    public EntityBioDemographics updateBioDemographics(EntityBioDemographics bioDemographics) {
+        return getInnerIdentityService().updateBioDemographics(bioDemographics);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
 	 */
-	public Map<String, KimEntityNamePrincipalNameInfo> getDefaultNamesForPrincipalIds(
+	public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(
 			List<String> principalIds) {
 		return getInnerIdentityService().getDefaultNamesForPrincipalIds(principalIds);
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEmailType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEmailType(java.lang.String)
 	 */
 	public Type getEmailType(String code) {
-		return Type.Builder.create(getInnerIdentityService().getEmailType(code)).build();
+		return getInnerIdentityService().getEmailType(code);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEmploymentStatus(java.lang.String)
+    @Override
+    public Type createEmailType(Type type) {
+        return getInnerIdentityService().createEmailType(type);
+    }
+
+    @Override
+    public Type updateEmailType(Type type) {
+        return getInnerIdentityService().updateEmailType(type);
+    }
+
+    @Override
+    public Type inactivateEmailType(String typeCode) {
+        return getInnerIdentityService().inactivateEmailType(typeCode);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEmploymentStatus(java.lang.String)
 	 */
 	public Type getEmploymentStatus(String code) {
 		return getInnerIdentityService().getEmploymentStatus(code);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEmploymentType(java.lang.String)
+    @Override
+    public Type createEmploymentStatus(Type type) {
+        return getInnerIdentityService().createEmploymentStatus(type);
+    }
+
+    @Override
+    public Type updateEmploymentStatus(Type type) {
+        return getInnerIdentityService().updateEmploymentStatus(type);
+    }
+
+    @Override
+    public Type inactivateEmploymentStatus(String statusCode) {
+        return getInnerIdentityService().inactivateEmploymentStatus(statusCode);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEmploymentType(java.lang.String)
 	 */
 	public Type getEmploymentType(String code) {
 		return getInnerIdentityService().getEmploymentType(code);
 	}
 
-	/**
+    @Override
+    public Type createEmploymentType(Type type) {
+        return getInnerIdentityService().createEmploymentType(type);
+    }
+
+    @Override
+    public Type updateEmploymentType(Type type) {
+        return getInnerIdentityService().updateEmploymentType(type);
+    }
+
+    @Override
+    public Type inactivateEmploymentType(String typeCode) {
+        return getInnerIdentityService().inactivateEmploymentType(typeCode);
+    }
+
+    /**
 	 * This method first tries the inner IdentityService impl, and resorts to
 	 * the IdentityArchiveService if need be.
 	 * 
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEntityDefaultInfo(java.lang.String)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityDefault(java.lang.String)
 	 */
-	public EntityDefault getEntityDefaultInfo(String entityId) {
-		EntityDefault entity = getInnerIdentityService().getEntityDefaultInfo(entityId);
+	public EntityDefault getEntityDefault(String entityId) {
+		EntityDefault entity = getInnerIdentityService().getEntityDefault(entityId);
     	if ( entity == null ) {
     		entity = getIdentityArchiveService().getEntityDefaultInfoFromArchive( entityId );
     	} else {
@@ -135,11 +281,10 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	 * This method first tries the inner IdentityService impl, and resorts to
 	 * the IdentityArchiveService if need be.
 	 * 
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEntityDefaultInfoByPrincipalId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityDefaultByPrincipalId(java.lang.String)
 	 */
-	public EntityDefault getEntityDefaultInfoByPrincipalId(
-			String principalId) {
-		EntityDefault entity = getInnerIdentityService().getEntityDefaultInfoByPrincipalId(principalId);
+	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
+		EntityDefault entity = getInnerIdentityService().getEntityDefaultByPrincipalId(principalId);
     	if ( entity == null ) {
     		entity = getIdentityArchiveService().getEntityDefaultInfoFromArchiveByPrincipalId( principalId );
     	} else {
@@ -152,11 +297,10 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	 * This method first tries the inner IdentityService impl, and resorts to
 	 * the IdentityArchiveService if need be.
 	 * 
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEntityDefaultInfoByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityDefaultByPrincipalName(java.lang.String)
 	 */
-	public EntityDefault getEntityDefaultInfoByPrincipalName(
-			String principalName) {
-		EntityDefault entity = getInnerIdentityService().getEntityDefaultInfoByPrincipalName(principalName);
+	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
+		EntityDefault entity = getInnerIdentityService().getEntityDefaultByPrincipalName(principalName);
     	if ( entity == null ) {
     		entity = getIdentityArchiveService().getEntityDefaultInfoFromArchiveByPrincipalName( principalName );
     	} else {
@@ -165,86 +309,220 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
     	return entity;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEntity(java.lang.String)
+    @Override
+    public EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria queryByCriteria) {
+        return getInnerIdentityService().findEntityDefaults(queryByCriteria);
+    }
+
+    @Override
+    public EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria queryByCriteria) {
+        return getInnerIdentityService().findEntities(queryByCriteria);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntity(java.lang.String)
 	 */
 	public Entity getEntity(String entityId) {
 		return getInnerIdentityService().getEntity(entityId);
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEntityInfoByPrincipalId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityByPrincipalId(java.lang.String)
 	 */
-	public Entity getEntityInfoByPrincipalId(String principalId) {
-		return getInnerIdentityService().getEntityInfoByPrincipalId(principalId);
+	public Entity getEntityByPrincipalId(String principalId) {
+		return getInnerIdentityService().getEntityByPrincipalId(principalId);
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEntityInfoByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityByPrincipalName(java.lang.String)
 	 */
-	public Entity getEntityInfoByPrincipalName(String principalName) {
-		return getInnerIdentityService().getEntityInfoByPrincipalName(principalName);
+	public Entity getEntityByPrincipalName(String principalName) {
+		return getInnerIdentityService().getEntityByPrincipalName(principalName);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEntityNameType(java.lang.String)
+
+    @Override
+    public Entity createEntity(Entity entity) {
+        return getInnerIdentityService().createEntity(entity);
+    }
+
+    @Override
+    public Entity updateEntity(Entity entity) {
+        return getInnerIdentityService().updateEntity(entity);
+    }
+
+    @Override
+    public Entity inactivateEntity(String entityId) {
+        return getInnerIdentityService().inactivateEntity(entityId);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getNameType(java.lang.String)
 	 */
-	public Type getEntityNameType(String code) {
-		return Type.Builder.create(getInnerIdentityService().getEntityNameType(code)).build();
+	public Type getNameType(String code) {
+		return getInnerIdentityService().getNameType(code);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEntityPrivacyPreferences(java.lang.String)
+    @Override
+    public Type createNameType(Type type) {
+        return getInnerIdentityService().createNameType(type);
+    }
+
+    @Override
+    public Type updateNameType(Type type) {
+        return getInnerIdentityService().updateNameType(type);
+    }
+
+    @Override
+    public Type inactivateNameType(String typeCode) {
+        return getInnerIdentityService().inactivateNameType(typeCode);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityPrivacyPreferences(java.lang.String)
 	 */
 	public EntityPrivacyPreferences getEntityPrivacyPreferences(
 			String entityId) {
 		return getInnerIdentityService().getEntityPrivacyPreferences(entityId);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getEntityType(java.lang.String)
+    @Override
+    public EntityPrivacyPreferences addPrivacyPreferencesToEntity(EntityPrivacyPreferences privacyPreferences) {
+        return getInnerIdentityService().addPrivacyPreferencesToEntity(privacyPreferences);
+    }
+
+    @Override
+    public EntityPrivacyPreferences updatePrivacyPreferences(EntityPrivacyPreferences privacyPreferences) {
+        return getInnerIdentityService().updatePrivacyPreferences(privacyPreferences);
+    }
+
+    @Override
+    public EntityCitizenship addCitizenshipToEntity(EntityCitizenship citizenship) {
+        return getInnerIdentityService().addCitizenshipToEntity(citizenship);
+    }
+
+    @Override
+    public EntityCitizenship updateCitizenship(EntityCitizenship citizenship) {
+        return getInnerIdentityService().updateCitizenship(citizenship);
+    }
+
+    @Override
+    public EntityCitizenship inactivateCitizenship(String entityId, String citizenshipTypeCode) {
+        return getInnerIdentityService().inactivateCitizenship(entityId, citizenshipTypeCode);
+    }
+
+    @Override
+    public EntityEthnicity addEthnicityToEntity(EntityEthnicity ethnicity) {
+        return getInnerIdentityService().addEthnicityToEntity(ethnicity);
+    }
+
+    @Override
+    public EntityEthnicity updateEthnicity(EntityEthnicity ethnicity) {
+        return getInnerIdentityService().updateEthnicity(ethnicity);
+    }
+
+    @Override
+    public EntityResidency addResidencyToEntity(EntityResidency residency) {
+        return getInnerIdentityService().addResidencyToEntity(residency);
+    }
+
+    @Override
+    public EntityResidency updateResidency(EntityResidency residency) {
+        return getInnerIdentityService().updateResidency(residency);
+    }
+
+    @Override
+    public EntityVisa addVisaToEntity(EntityVisa visa) {
+        return getInnerIdentityService().addVisaToEntity(visa);
+    }
+
+    @Override
+    public EntityVisa updateVisa(EntityVisa visa) {
+        return getInnerIdentityService().updateVisa(visa);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityType(java.lang.String)
 	 */
 	public Type getEntityType(String code) {
-		return Type.Builder.create(getInnerIdentityService().getEntityType(code)).build();
+		return getInnerIdentityService().getEntityType(code);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getExternalIdentifierType(java.lang.String)
+    @Override
+    public Type createEntityType(Type type) {
+        return getInnerIdentityService().createEntityType(type);
+    }
+
+    @Override
+    public Type updateEntityType(Type type) {
+        return getInnerIdentityService().updateEntityType(type);
+    }
+
+    @Override
+    public Type inactivateEntityType(String typeCode) {
+        return getInnerIdentityService().inactivateEntityType(typeCode);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getExternalIdentifierType(java.lang.String)
 	 */
 	public EntityExternalIdentifierType getExternalIdentifierType(String code) {
 		return getInnerIdentityService().getExternalIdentifierType(code);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getMatchingEntityCount(java.util.Map)
-	 */
-	public int getMatchingEntityCount(Map<String, String> searchCriteria) {
-		return getInnerIdentityService().getMatchingEntityCount(searchCriteria);
-	}
+    @Override
+    public EntityExternalIdentifierType createExternalIdentifierType(EntityExternalIdentifierType type) {
+        return getInnerIdentityService().createExternalIdentifierType(type);
+    }
+
+    @Override
+    public EntityExternalIdentifierType updateExternalIdentifierType(EntityExternalIdentifierType type) {
+        return getInnerIdentityService().updateExternalIdentifierType(type);
+    }
+
+    @Override
+    public EntityExternalIdentifierType inactivateExternalIdentifierType(String typeCode) {
+        return getInnerIdentityService().inactivateExternalIdentifierType(typeCode);
+    }
 
 	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getPhoneType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getPhoneType(java.lang.String)
 	 */
 	public Type getPhoneType(String code) {
-		return Type.Builder.create(getInnerIdentityService().getPhoneType(code)).build();
+		return getInnerIdentityService().getPhoneType(code);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getPrincipal(java.lang.String)
+    @Override
+    public Type createPhoneType(Type type) {
+        return getInnerIdentityService().createPhoneType(type);
+    }
+
+    @Override
+    public Type updatePhoneType(Type type) {
+        return getInnerIdentityService().updatePhoneType(type);
+    }
+
+    @Override
+    public Type inactivatePhoneType(String typeCode) {
+        return getInnerIdentityService().inactivatePhoneType(typeCode);
+    }
+
+    /**
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipal(java.lang.String)
 	 */
 	public Principal getPrincipal(String principalId) {
 		return getInnerIdentityService().getPrincipal(principalId);
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getPrincipalByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipalByPrincipalName(java.lang.String)
 	 */
 	public Principal getPrincipalByPrincipalName(String principalName) {
 		return getInnerIdentityService().getPrincipalByPrincipalName(principalName);
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
 	 */
 	public Principal getPrincipalByPrincipalNameAndPassword(
 			String principalName, String password) {
@@ -252,22 +530,111 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 				principalName, password);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#lookupEntityDefaultInfo(java.util.Map, boolean)
-	 */
-	public List<EntityDefault> lookupEntityDefaultInfo(
-			Map<String, String> searchCriteria, boolean unbounded) {
-		return getInnerIdentityService().lookupEntityDefaultInfo(searchCriteria,
-				unbounded);
-	}
+    @Override
+    public Principal addPrincipalToEntity(Principal principal) {
+        return getInnerIdentityService().addPrincipalToEntity(principal);
+    }
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.services.IdentityService#lookupEntityInfo(java.util.Map, boolean)
-	 */
-	public List<Entity> lookupEntityInfo(
-			Map<String, String> searchCriteria, boolean unbounded) {
-		return getInnerIdentityService().lookupEntityInfo(searchCriteria, unbounded);
-	}
+    @Override
+    public Principal updatePrincipal(Principal principal) {
+        return getInnerIdentityService().updatePrincipal(principal);
+    }
+
+    @Override
+    public Principal inactivatePrincipal(String principalId) {
+        return getInnerIdentityService().inactivatePrincipal(principalId);
+    }
+
+    @Override
+    public Principal inactivatePrincipalByName(String principalName) {
+        return getInnerIdentityService().inactivatePrincipalByName(principalName);
+    }
+
+    @Override
+    public EntityTypeData addEntityTypeDataToEntity(EntityTypeData entityTypeData) {
+        return getInnerIdentityService().addEntityTypeDataToEntity(entityTypeData);
+    }
+
+    @Override
+    public EntityTypeData updateEntityTypeData(EntityTypeData entityTypeData) {
+        return getInnerIdentityService().updateEntityTypeData(entityTypeData);
+    }
+
+    @Override
+    public EntityTypeData inactivateEntityTypeData(String entityId, String entityTypeCode) {
+        return getInnerIdentityService().inactivateEntityTypeData(entityId, entityTypeCode);
+    }
+
+    @Override
+    public EntityAddress addAddressToEntity(EntityAddress address) {
+        return getInnerIdentityService().addAddressToEntity(address);
+    }
+
+    @Override
+    public EntityAddress updateAddress(EntityAddress address) {
+        return getInnerIdentityService().updateAddress(address);
+    }
+
+    @Override
+    public EntityAddress inactivateAddress(String addressId) {
+        return getInnerIdentityService().inactivateAddress(addressId);
+    }
+
+    @Override
+    public EntityEmail addEmailToEntity(EntityEmail email) {
+        return getInnerIdentityService().addEmailToEntity(email);
+    }
+
+    @Override
+    public EntityEmail updateEmail(EntityEmail email) {
+        return getInnerIdentityService().updateEmail(email);
+    }
+
+    @Override
+    public EntityEmail inactivateEmail(String emailId) {
+        return getInnerIdentityService().inactivateEmail(emailId);
+    }
+
+    @Override
+    public EntityPhone addPhoneToEntity(EntityPhone phone) {
+        return getInnerIdentityService().addPhoneToEntity(phone);
+    }
+
+    @Override
+    public EntityPhone updatePhone(EntityPhone phone) {
+        return getInnerIdentityService().updatePhone(phone);
+    }
+
+    @Override
+    public EntityPhone inactivatePhone(String phoneId) {
+        return getInnerIdentityService().inactivatePhone(phoneId);
+    }
+
+    @Override
+    public EntityExternalIdentifier addExternalIdentifierToEntity(EntityExternalIdentifier externalId) {
+        return getInnerIdentityService().addExternalIdentifierToEntity(externalId);
+    }
+
+    @Override
+    public EntityExternalIdentifier updateExternalIdentifier(EntityExternalIdentifier externalId) {
+        return getInnerIdentityService().updateExternalIdentifier(externalId);
+    }
+
+    @Override
+    public EntityAffiliation addAffiliationToEntity(EntityAffiliation affiliation) {
+        return getInnerIdentityService().addAffiliationToEntity(affiliation);
+    }
+
+    @Override
+    public EntityAffiliation updateAffiliation(EntityAffiliation affiliation) {
+        return getInnerIdentityService().updateAffiliation(affiliation);
+    }
+
+    @Override
+    public EntityAffiliation inactivateAffiliation(String entityId, String affiliationTypeCode) {
+        return getInnerIdentityService().inactivateAffiliation(entityId, affiliationTypeCode);
+    }
+
 
 	private IdentityService getInnerIdentityService() {
 		return innerIdentityService;

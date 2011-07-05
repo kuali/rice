@@ -15,16 +15,19 @@
  */
 package org.kuali.rice.kim.api.services;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.entity.Entity;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
+import org.kuali.rice.kim.api.identity.entity.EntityQueryResults;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
@@ -76,14 +79,7 @@ public interface IdentityManagementService {
 	EntityDefault getEntityDefaultInfoByPrincipalId(@WebParam(name = "principalId") String principalId);
 	EntityDefault getEntityDefaultInfoByPrincipalName(@WebParam(name = "principalName") String principalName);
 
-	List<EntityDefault> lookupEntityDefaultInfo(
-            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-            @WebParam(name = "searchCriteria") Map<String, String> searchCriteria,
-            @WebParam(name = "unbounded") boolean unbounded
-    );
-
-	int getMatchingEntityCount(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-                               @WebParam(name = "searchCriteria") Map<String, String> searchCriteria);
+	EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria queryByCriteria);
 
 	//KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
 
@@ -91,11 +87,7 @@ public interface IdentityManagementService {
 	Entity getEntityByPrincipalId(@WebParam(name = "principalId") String principalId);
 	Entity getEntityByPrincipalName(@WebParam(name = "principalName") String principalName);
 
-	List<Entity> lookupEntityInfo(
-            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-            @WebParam(name = "searchCriteria") Map<String, String> searchCriteria,
-            @WebParam(name = "unbounded") boolean unbounded
-    );
+	EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria queryByCriteria);
 
 	Type getAddressType(@WebParam(name = "code") String code);
 	EntityAffiliationType getAffiliationType(@WebParam(name = "code") String code);

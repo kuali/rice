@@ -33,7 +33,6 @@ import org.w3c.dom.Element;
 public final class EntityExternalIdentifier
     implements ModelObjectComplete, EntityExternalIdentifierContract
 {
-
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
     @XmlElement(name = Elements.EXTERNAL_IDENTIFIER_TYPE_CODE, required = false)

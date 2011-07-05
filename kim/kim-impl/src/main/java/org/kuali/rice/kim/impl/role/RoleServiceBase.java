@@ -1195,7 +1195,7 @@ public class RoleServiceBase {
         }
         AttributeSet criteria = new AttributeSet();
         criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
-        criteria.put(KimConstants.UniqueKeyConstants.ROLE_NAME, roleName);
+        criteria.put(KimConstants.UniqueKeyConstants.NAME, roleName);
         criteria.put(KRADPropertyConstants.ACTIVE, "Y");
         // while this is not actually the primary key - there will be at most one row with these criteria
         RoleBo result = getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);

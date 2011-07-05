@@ -87,12 +87,6 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 
-
-    void setDetails(Attributes details) {
-        //TODO:  does this need to be set back to the List<PermissionAttributeBo> attributes field?
-        attributeDetails = details
-    }
-
     public String getDetailObjectsValues() {
         StringBuffer detailObjectsToDisplay = new StringBuffer();
         Iterator<PermissionAttributeBo> permIter = attributeDetails.iterator();

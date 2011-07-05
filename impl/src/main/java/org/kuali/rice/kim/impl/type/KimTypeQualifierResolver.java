@@ -244,7 +244,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 		// pull the group to get its attributes for adding to the qualifier 
         qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
         qualifier.put(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, kimTypeId);
-        qualifier.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
+        qualifier.put("roleId", roleId);
 		// check for the custom document type for the group
 		String customDocTypeName = typeService.getWorkflowDocumentTypeName();
 		if ( StringUtils.isNotBlank(customDocTypeName)) {

@@ -110,7 +110,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         if (roleDocumentForm.getRoleId() == null) {
-            String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
+            String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID);
             roleDocumentForm.setRoleId(roleId);
         }
 

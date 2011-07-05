@@ -21,7 +21,10 @@ import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.kim.impl.permission.PermissionAttributeBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
 import org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl;
 
 import java.util.ArrayList;
@@ -113,8 +116,12 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
             String [] splitAttr = attr.split("=", 2);
             permissionDetails.put(splitAttr[0], splitAttr[1]);
         }
-        
-        perm.setDetails(Attributes.fromMap(permissionDetails));
+
+        List<PermissionAttributeBo> attrBos = KimAttributeDataBo
+                .createFrom(PermissionAttributeBo.class, perm.getAttributes(),
+                        perm.getTemplate().getKimTypeId());
+
+        perm.setAttributeDetails(attrBos);
         return perm;
     }
 

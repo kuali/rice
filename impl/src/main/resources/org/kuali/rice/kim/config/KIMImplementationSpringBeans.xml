@@ -126,7 +126,9 @@
         Identity Service
   -->
 
-  <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl" />
+  <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl"
+          p:businessObjectService-ref="businessObjectService"
+          p:criteriaLookupService-ref="criteriaLookupService" />
 
   <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl"
   	p:businessObjectService-ref="businessObjectService"

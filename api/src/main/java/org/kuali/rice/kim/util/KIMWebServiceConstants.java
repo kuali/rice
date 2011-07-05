@@ -80,7 +80,7 @@ public class KIMWebServiceConstants {
 
 	public static final class IdentityService {
 		public static final String WEB_SERVICE_NAME = "kimIdentityServiceSOAP";
-		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.identity.services.IdentityService";
+		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.services.IdentityService";
 		public static final String WEB_SERVICE_PORT = "IdentityServicePort";
 		
 		private IdentityService() {

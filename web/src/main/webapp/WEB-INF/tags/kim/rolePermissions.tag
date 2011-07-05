@@ -27,12 +27,12 @@
 	                <div align="center">
 	                	<br/>
 						<b>Add Permission ID:</b>
-						<kul:htmlControlAttribute property="permission.permissionId" attributeEntry="${permissionAttributes.permissionId}"/>
-	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.PermissionImpl" fieldConversions=
-	                	"template.name:permission.kimPermission.template.name,permissionId:permission.permissionId,name:permission.kimPermission.name,namespaceCode:permission.kimPermission.namespaceCode" anchor="${tabKey}" />
-						<html:hidden property="permission.kimPermission.name" />
-						<html:hidden property="permission.kimPermission.namespaceCode" />
-						${KualiForm.permission.kimPermission.namespaceCode}&nbsp;&nbsp;${KualiForm.permission.kimPermission.name}&nbsp;
+						<kul:htmlControlAttribute property="permission.permission.id" attributeEntry="${permissionAttributes.id}"/>
+	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.permission.PermissionBo" fieldConversions=
+	                	"template.name:permission..permission.template.name,permissionId:permission.permission.id,name:permission.permission.name,namespaceCode:permission.permission.namespaceCode" anchor="${tabKey}" />
+						<html:hidden property="permission..permission.name" />
+						<html:hidden property="permission.permission.namespaceCode" />
+						${KualiForm.permission.permission.namespaceCode}&nbsp;&nbsp;${KualiForm.permission.permission.name}&nbsp;
 	                	<br/>
 	                	<br/>
 		            </div>
@@ -66,7 +66,7 @@
 					<c:out value="${status.index+1}" />
 				</th>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.namespaceCode"  attributeEntry="${permissionAttributes.namespaceCode}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permission.namespaceCode"  attributeEntry="${permissionAttributes.namespaceCode}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
@@ -74,11 +74,11 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.nameToDisplay"  attributeEntry="${permissionAttributes.name}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permission.name"  attributeEntry="${permissionAttributes.name}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.detailObjectsToDisplay"  attributeEntry="${permissionAttributes.detailObjectsToDisplay}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permission.attributes"  attributeEntry="${permissionAttributes.attributes}" readOnly="true"  />
 					</div>
 				</td>
 				<c:choose>

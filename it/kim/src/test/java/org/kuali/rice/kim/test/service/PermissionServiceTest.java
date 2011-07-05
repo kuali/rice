@@ -77,7 +77,7 @@ public class PermissionServiceTest extends KIMTestCase {
 	@Test
 	public void testGetPermissionAssignees() {
 		
-		List<PermissionAssigneeInfo> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In", null, null);
+		List<PermissionAssigneeInfo> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In Kuali Portal", null, null);
 		assertNotNull(assignees);
 		assertEquals(1, assignees.size());
 		PermissionAssigneeInfo permInfo = assignees.get(0);

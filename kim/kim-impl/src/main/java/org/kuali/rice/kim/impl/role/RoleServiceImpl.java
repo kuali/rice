@@ -405,7 +405,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     @Override
     public List<RoleResponsibility> getRoleResponsibilities(@WebParam(name = "roleId") String roleId) {
         Map<String, String> criteria = new HashMap<String, String>(1);
-        criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
+        criteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId);
         List<RoleResponsibilityBo> roleResponsibilityBos = (List<RoleResponsibilityBo>)
                 getBusinessObjectService().findMatching(RoleResponsibilityBo.class, criteria);
         List<RoleResponsibility> roleResponsibilities = new ArrayList<RoleResponsibility>();

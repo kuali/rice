@@ -1,19 +1,17 @@
 package org.kuali.rice.kim.impl.identity.personal
 
-import javax.persistence.Table
+import java.text.SimpleDateFormat
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
-import javax.persistence.Column
+import javax.persistence.Table
 import javax.persistence.Transient
+import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kim.api.util.KualiDateTimeMask
-import org.kuali.rice.kim.api.KimConstants
-import org.joda.time.DateTime
-import java.text.SimpleDateFormat
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name = "KRIM_ENTITY_BIO_T")

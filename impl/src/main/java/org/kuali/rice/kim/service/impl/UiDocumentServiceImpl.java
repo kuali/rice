@@ -40,7 +40,7 @@ import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.identity.services.IdentityService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.identity.type.EntityTypeData;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.Role;
@@ -167,7 +167,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @see org.kuali.rice.kim.service.UiDocumentService#saveEntityPerson(IdentityManagementPersonDocument)
 	 */
 	public void saveEntityPerson(
-			IdentityManagementPersonDocument identityManagementPersonDocument) {
+	    IdentityManagementPersonDocument identityManagementPersonDocument) {
 		EntityBo kimEntity = new EntityBo();
 		EntityBo origEntity = getEntityBo(identityManagementPersonDocument.getEntityId());
 		boolean creatingNew = true;
@@ -1561,8 +1561,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	@SuppressWarnings("unchecked")
 	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, Role role){
 		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put(KIMPropertyConstants.Role.ROLE_ID, role.getId());
+		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, role.getId());
 		RoleBo roleBo = getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
+
+        Map<String, String> subClassCriteria = new HashMap<String, String>();
+		criteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, role.getId());
 
 		identityManagementRoleDocument.setRoleId(roleBo.getId());
 		identityManagementRoleDocument.setKimType(KimTypeBo.to(roleBo.getKimRoleType()));
@@ -1574,8 +1577,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		identityManagementRoleDocument.setRoleNamespace(roleBo.getNamespaceCode());
 		identityManagementRoleDocument.setEditing(true);
 
-		identityManagementRoleDocument.setPermissions(loadPermissions((List<RolePermissionBo>)getBusinessObjectService().findMatching(RolePermissionBo.class, criteria)));
-		identityManagementRoleDocument.setResponsibilities(loadResponsibilities((List<RoleResponsibilityBo>)getBusinessObjectService().findMatching(RoleResponsibilityBo.class, criteria)));
+		identityManagementRoleDocument.setPermissions(loadPermissions((List<RolePermissionBo>)getBusinessObjectService().findMatching(RolePermissionBo.class, subClassCriteria)));
+		identityManagementRoleDocument.setResponsibilities(loadResponsibilities((List<RoleResponsibilityBo>)getBusinessObjectService().findMatching(RoleResponsibilityBo.class, subClassCriteria)));
 		loadResponsibilityRoleRspActions(identityManagementRoleDocument);
 		identityManagementRoleDocument.setMembers(loadRoleMembers(identityManagementRoleDocument, roleBo.getMembers()));
 		loadMemberRoleRspActions(identityManagementRoleDocument);
@@ -2010,7 +2013,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		RoleBo roleBo = new RoleBo();
 		Map<String, String> criteria = new HashMap<String, String>();
 		String roleId = identityManagementRoleDocument.getRoleId();
-		criteria.put(KIMPropertyConstants.Role.ROLE_ID, roleId);
+		criteria.put(KimConstants.PrimaryKeyConstants.ID, roleId);
 		RoleBo origRole = getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
 
 		List<RolePermissionBo> origRolePermissions = new ArrayList<RolePermissionBo>();
@@ -2751,7 +2754,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	KimDocumentRoleMember documentRoleMember = new KimDocumentRoleMember();
     	documentRoleMember.setRoleId(roleId);
     	Map<String, String> criteria = new HashMap<String, String>();
-    	criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
+    	criteria.put("roleId", roleId);
     	criteria.put("mbr_id", memberId);
 
     	List<RoleMemberBo> matchingRoleMembers = (List<RoleMemberBo>)getBusinessObjectService().findMatching(RoleMemberBo.class, criteria);

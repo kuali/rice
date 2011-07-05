@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.entity.EntityQueryResults;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
@@ -132,14 +133,14 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
     	Map<String, String> searchCriteria;
     	List<Principal> principals = new ArrayList<Principal>();
         if(StringUtils.isNotEmpty(assignedToPrincipalName)){
-        	searchCriteria = new HashMap<String, String>();
-        	searchCriteria.put("principals.principalName", WILDCARD+assignedToPrincipalName+WILDCARD);
-        	List<Entity> kimEntityInfoList = KimApiServiceLocator.getIdentityManagementService().lookupEntityInfo(searchCriteria, true);
-        	if(kimEntityInfoList == null || kimEntityInfoList.isEmpty()) {
+            QueryByCriteria.Builder query = QueryByCriteria.Builder.create();
+            query.setPredicates(like("principals.principalName", WILDCARD+assignedToPrincipalName+WILDCARD));
+        	EntityQueryResults qr = KimApiServiceLocator.getIdentityManagementService().findEntities(query.build());
+        	if(qr.getResults() == null || qr.getResults().isEmpty()) {
         		return null;
         	}
         	else {
-        		for (Entity kimEntityInfo : kimEntityInfoList) {
+        		for (Entity kimEntityInfo : qr.getResults()) {
         			if(kimEntityInfo.getPrincipals() != null){
         				principals.addAll(kimEntityInfo.getPrincipals());
         			}

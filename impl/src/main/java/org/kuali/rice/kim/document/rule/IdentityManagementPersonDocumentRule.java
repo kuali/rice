@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.services.IdentityService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;

@@ -7,7 +7,6 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.role.RoleUpdateService;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.PermissionUpdateService;

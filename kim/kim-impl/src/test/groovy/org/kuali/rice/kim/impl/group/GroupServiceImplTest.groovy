@@ -430,7 +430,7 @@ class GroupServiceImplTest {
             }
         }
         List<String> actualIds = groupService.getMemberPrincipalIds("1")
-        Assert.assertEquals("Should be " + expectedIds.size() + "Ids returned", expectedIds.size(), actualIds.size())
+        Assert.assertEquals("Should be " + expectedIds.size() + " ids returned", expectedIds.size(), actualIds.size())
         for (String id : actualIds) {
             Assert.assertTrue(id + "should be in List", expectedIds.contains(id) )
         }

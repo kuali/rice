@@ -371,11 +371,11 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                 } else {
                     List<String> roleIds = getRoleIdsForPrincipalName(entry.getValue());
                     if (roleIds != null && !roleIds.isEmpty()) {
-                        criteria.addIn(KIMPropertyConstants.Role.ROLE_ID, roleIds);
+                        criteria.addIn(KimConstants.PrimaryKeyConstants.ID, roleIds);
                     } else {
                         // TODO : if no role id found that means principalname not matched, need to do something to force to return empty list
                         roleIds.add("NOTFOUND");
-                        criteria.addIn(KIMPropertyConstants.Role.ROLE_ID, roleIds);
+                        criteria.addIn(KimConstants.PrimaryKeyConstants.ID, roleIds);
                     }
                 }
             }
@@ -407,9 +407,9 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
 
     private List<String> getPrincipalIdsForPrincipalName(String principalName) {
-        Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put("principals.principalName", principalName);
-         List<EntityDefault> entities = KimApiServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
+        QueryByCriteria.Builder qb = QueryByCriteria.Builder.create();
+        qb.setPredicates(equal("principals.principalName", principalName));
+        List<EntityDefault> entities = KimApiServiceLocator.getIdentityService().findEntityDefaults(qb.build()).getResults();
 
         List<String> principalIds = new ArrayList<String>();
         for (EntityDefault entity : entities) {
@@ -426,9 +426,9 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         String principalName = value.replace('*', '%');
         List<String> roleIds = new ArrayList<String>();
         Criteria memberSubCrit = new Criteria();
-        Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put("principals.principalName", principalName);
-        List<EntityDefault> entities = KimApiServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
+        QueryByCriteria.Builder qb = QueryByCriteria.Builder.create();
+        qb.setPredicates(equal("principals.principalName", principalName));
+        List<EntityDefault> entities = KimApiServiceLocator.getIdentityService().findEntityDefaults(qb.build()).getResults();
         if (entities == null
                 || entities.size() == 0) {
             return roleIds;
@@ -693,7 +693,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         }
         if (hasCoreRoleMemberCriteria(fieldValues)) {
             String roleMemberId = fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID);
-            String roleId = fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID);
+            String roleId = fieldValues.get(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID);
             String memberId = fieldValues.get(KimConstants.PrimaryKeyConstants.MEMBER_ID);
             String memberTypeCode = fieldValues.get(KIMPropertyConstants.KimMember.MEMBER_TYPE_CODE);
             String activeFromDate = fieldValues.get(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE);
@@ -703,7 +703,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                 addEqualToCriteria(queryCriteria, KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
             }
             if (StringUtils.isNotEmpty(roleId)) {
-                addEqualToCriteria(queryCriteria, KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
+                addEqualToCriteria(queryCriteria, KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId);
             }
             if (StringUtils.isNotEmpty(memberId)) {
                 addEqualToCriteria(queryCriteria, KimConstants.PrimaryKeyConstants.MEMBER_ID, memberId);
@@ -749,7 +749,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
     private boolean hasCoreRoleMemberCriteria(Map<String, String> fieldValues) {
         return StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID)) ||
-                StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID)) ||
+                StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID)) ||
                 StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.MEMBER_ID)) ||
                 StringUtils.isNotEmpty(fieldValues.get(KIMPropertyConstants.KimMember.MEMBER_TYPE_CODE)) ||
                 StringUtils.isNotEmpty(fieldValues.get(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE)) ||
@@ -765,7 +765,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     private List<RoleBo> getRoleMembersRoles(String memberNamespaceCode, String memberName) {
         Criteria queryCriteria = new Criteria();
         addEqualToCriteria(queryCriteria, KimConstants.UniqueKeyConstants.NAMESPACE_CODE, memberNamespaceCode);
-        addEqualToCriteria(queryCriteria, KimConstants.UniqueKeyConstants.ROLE_NAME, memberName);
+        addEqualToCriteria(queryCriteria, KimConstants.UniqueKeyConstants.NAME, memberName);
         Query q = QueryFactory.newQuery(RoleBo.class, queryCriteria);
         return (List<RoleBo>) getPersistenceBrokerTemplate().getCollectionByQuery(q);
     }

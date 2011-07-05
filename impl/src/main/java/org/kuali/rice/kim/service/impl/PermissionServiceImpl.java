@@ -444,7 +444,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	List<PermissionBo> permissions = (List<PermissionBo>)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
     	if ( permissions == null ) {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
-	    	pk.put( KimConstants.PrimaryKeyConstants.PERMISSION_ID, permissionId );
+	    	pk.put( KimConstants.PrimaryKeyConstants.ID, permissionId );
 	    	permissions = Collections.singletonList(getBusinessObjectService().findByPrimaryKey( PermissionBo.class, pk ) );
 	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
     	}

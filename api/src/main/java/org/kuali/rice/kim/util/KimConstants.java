@@ -216,7 +216,8 @@ public final class KimConstants {
 	public final static class PrimaryKeyConstants {
 		public static final String ENTITY_ID = "entityId";
 		public static final String PRINCIPAL_ID = "principalId";
-		public static final String ROLE_ID = "roleId";
+		public static final String ROLE_ID = "id";
+        public static final String SUB_ROLE_ID = "roleId";
 		public static final String GROUP_ID = "id";
 		public static final String KIM_TYPE_ID = "id";
 		public static final String RESPONSIBILITY_ID = "id";
@@ -230,6 +231,7 @@ public final class KimConstants {
 		public static final String KIM_PERMISSION_REQUIRED_ATTR_ID = "kimPermissionRequiredAttributeId";
 		public static final String KIM_ATTRIBUTE_ID = "kimAttributeId";
 		public static final String KIM_TYPE_CODE ="code";
+        public static final String ID = "id";
 		
 		private PrimaryKeyConstants() {
 			throw new UnsupportedOperationException("do not call");
@@ -245,6 +247,7 @@ public final class KimConstants {
 		public static final String RESPONSIBILITY_NAME = "name";
 		public static final String PERMISSION_TEMPLATE_NAME = "name";
 		public static final String RESPONSIBILITY_TEMPLATE_NAME = "name";
+        public static final String NAME = "name";
 		
 		private UniqueKeyConstants() {
 			throw new UnsupportedOperationException("do not call");

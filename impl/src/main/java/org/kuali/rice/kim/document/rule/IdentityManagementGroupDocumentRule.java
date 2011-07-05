@@ -18,7 +18,7 @@ package org.kuali.rice.kim.document.rule;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.identity.services.IdentityService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeService;

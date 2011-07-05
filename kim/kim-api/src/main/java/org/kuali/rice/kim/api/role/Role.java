@@ -259,9 +259,6 @@ public final class Role implements RoleContract, ModelObjectComplete {
         }
 
         public void setDescription(String description) {
-            if (StringUtils.isBlank(description)) {
-                throw new IllegalArgumentException("description cannot be blank or null");
-            }
             this.description = description;
         }
 

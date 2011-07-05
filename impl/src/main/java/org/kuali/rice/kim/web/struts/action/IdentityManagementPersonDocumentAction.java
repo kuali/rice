@@ -582,13 +582,13 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         String conversionPatttern = "{0}" + KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR + "{0}";
         StringBuilder fieldConversion = new StringBuilder();
         fieldConversion.append(MessageFormat.format(conversionPatttern, 
-       		KimConstants.PrimaryKeyConstants.ROLE_ID)).append(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
+       		KimConstants.PrimaryKeyConstants.SUB_ROLE_ID)).append(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
         fieldConversion.append(MessageFormat.format(conversionPatttern, 
            		KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID)).append(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
 
         props.put(KRADConstants.CONVERSION_FIELDS_PARAMETER, fieldConversion);
 
-        props.put(KimConstants.PrimaryKeyConstants.ROLE_ID, impdForm.getNewDelegationMember().getRoleBo().getId());
+        props.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, impdForm.getNewDelegationMember().getRoleBo().getId());
 
         props.put(KRADConstants.RETURN_LOCATION_PARAMETER, this.getReturnLocation(request, mapping));
         props.put(KRADConstants.BACK_LOCATION, this.getReturnLocation(request, mapping));

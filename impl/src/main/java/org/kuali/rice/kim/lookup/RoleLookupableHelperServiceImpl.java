@@ -89,7 +89,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOC_HANDLER_METHOD);
         parameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
         parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
-        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleBo.getId());
+        parameters.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleBo.getId());
         if (StringUtils.isNotBlank(getReturnLocation())) {
         	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 		}
@@ -270,7 +270,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 
 	}
 	
-	private static final String ROLE_ID_URL_KEY = "&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=";
+	private static final String ROLE_ID_URL_KEY = "&"+KimConstants.PrimaryKeyConstants.SUB_ROLE_ID+"=";
 	/**
 	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
 	 */
@@ -298,7 +298,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
     	}
 		if (StringUtils.isNotBlank(href) && href.contains(ROLE_ID_URL_KEY)) {
-			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=");
+			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.SUB_ROLE_ID+"=");
 		    int idx2 = href.indexOf("&", idx1+1);
 		    if (idx2 < 0) {
 		    	idx2 = href.length();

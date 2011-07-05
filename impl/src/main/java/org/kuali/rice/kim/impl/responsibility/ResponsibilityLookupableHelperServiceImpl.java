@@ -190,7 +190,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		AttributeSet criteria = new AttributeSet();
 		if ( responsibility.getAssignedToRoles().isEmpty() ) {
 			for(RoleResponsibilityBo roleResponsibility: responsibility.getRoleResponsibilities()){
-				criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleResponsibility.getRoleId());
+				criteria.put(KimConstants.PrimaryKeyConstants.ID, roleResponsibility.getRoleId());
 				responsibility.getAssignedToRoles().add(getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria));
 			}
 		}

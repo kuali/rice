@@ -41,9 +41,9 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -978,16 +978,16 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         List<String> initiatorPrincipalIds = new ArrayList<String>();
         initiatorPrincipalIds.addAll(initiatorPrincipalIdSet);
         if(initiatorPrincipalIds != null && !initiatorPrincipalIds.isEmpty()){ // don't call the service if the search returned nothing.
-	        Map<String, KimEntityNamePrincipalNameInfo> entityNames = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
+	        Map<String, EntityNamePrincipalName> entityNames = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
 	        for (DocSearchDTO docSearchRow : docList) {
-	        	KimEntityNamePrincipalNameInfo name = entityNames.get(docSearchRow.getInitiatorWorkflowId());
+	        	EntityNamePrincipalName name = entityNames.get(docSearchRow.getInitiatorWorkflowId());
 	        	if (name != null) {
-	        		docSearchRow.setInitiatorFirstName(name.getDefaultEntityName().getFirstName());
-	        		docSearchRow.setInitiatorLastName(name.getDefaultEntityName().getLastName());
-	        		docSearchRow.setInitiatorName(name.getDefaultEntityName().getFormattedName());
+	        		docSearchRow.setInitiatorFirstName(name.getDefaultName().getFirstName());
+	        		docSearchRow.setInitiatorLastName(name.getDefaultName().getLastName());
+	        		docSearchRow.setInitiatorName(name.getDefaultName().getFormattedName());
 	        		docSearchRow.setInitiatorNetworkId(name.getPrincipalName());
-					if (StringUtils.isNotBlank(name.getDefaultEntityName().getFormattedName())) {
-						docSearchRow.setInitiatorTransposedName(name.getDefaultEntityName().getFormattedName());
+					if (StringUtils.isNotBlank(name.getDefaultName().getFormattedName())) {
+						docSearchRow.setInitiatorTransposedName(name.getDefaultName().getFormattedName());
 					} else if (StringUtils.isNotBlank(name.getPrincipalName())) {
 						docSearchRow.setInitiatorTransposedName(name.getPrincipalName());
 					} else {

@@ -19,8 +19,11 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
@@ -50,6 +53,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -98,7 +103,7 @@ public class PersonServiceImpl implements PersonService {
 		baseLookupCriteria.put( ENTITY_TYPE_PROPERTY_PREFIX + KRADPropertyConstants.ACTIVE, "Y" );
 		
 		// create the field mappings between the Person object and the KimEntity object
-		criteriaConversion.put( KIMPropertyConstants.Person.ENTITY_ID, KIMPropertyConstants.Entity.ENTITY_ID );
+		criteriaConversion.put( KIMPropertyConstants.Person.ENTITY_ID, KIMPropertyConstants.Entity.ID);
 		criteriaConversion.put( KIMPropertyConstants.Person.ACTIVE, PRINCIPAL_PROPERTY_PREFIX + KRADPropertyConstants.ACTIVE );
 		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_ID, PRINCIPAL_PROPERTY_PREFIX + KIMPropertyConstants.Person.PRINCIPAL_ID );
 		criteriaConversion.put( KIMPropertyConstants.Person.PRINCIPAL_NAME, PRINCIPAL_PROPERTY_PREFIX + KIMPropertyConstants.Person.PRINCIPAL_NAME );
@@ -371,22 +376,36 @@ public class PersonServiceImpl implements PersonService {
 	@SuppressWarnings("unchecked")
 	protected List<Person> findPeopleInternal(Map<String,String> criteria, boolean unbounded ) {
 		// convert the criteria to a form that can be used by the ORM layer
+
+        //TODO convert this to the new criteria predicates
 		Map<String,String> entityCriteria = convertPersonPropertiesToEntityProperties( criteria );
+
+        QueryByCriteria.Builder queryBuilder = QueryByCriteria.Builder.create();
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        for (String key : entityCriteria.keySet()) {
+            // hack for OR'd criteria
+            if (entityCriteria.get(key).contains("|")) {
+                String[] values = entityCriteria.get(key).split("\\|");
+                predicates.add(in(key, values));
+            } else {
+                predicates.add(equal(key, entityCriteria.get(key)));
+            }
+        }
+        if (!predicates.isEmpty()) {
+            queryBuilder.setPredicates(and(predicates.toArray(new Predicate[] {})));
+        }
 
 		List<Person> people = new ArrayList<Person>(); 
 
-		List<EntityDefault> entities = getIdentityManagementService().lookupEntityDefaultInfo( entityCriteria, unbounded );
+		EntityDefaultQueryResults qr = getIdentityManagementService().findEntityDefaults( queryBuilder.build() );
 
-		for ( EntityDefault e : entities ) {
+		for ( EntityDefault e : qr.getResults() ) {
 			// get to get all principals for the identity as well
 			for ( Principal p : e.getPrincipals() ) {
 				people.add( convertEntityToPerson( e, p ) );
 			}
 		}
-		
-		if ( entities instanceof CollectionIncomplete ) {
-			return new CollectionIncomplete( people, ((CollectionIncomplete)entities).getActualSizeIfTruncated() );
-		}
+
 		return people;
 	}
 
@@ -405,8 +424,10 @@ public class PersonServiceImpl implements PersonService {
 		// add base lookups for all person lookups
 		HashMap<String,String> newCriteria = new HashMap<String,String>();
 		newCriteria.putAll( baseLookupCriteria );
+
 		newCriteria.put( "entityTypes.entityTypeCode", personEntityTypeLookupCriteria );
-		if ( criteria != null ) {
+
+        if ( criteria != null ) {
 			for ( String key : criteria.keySet() ) {
 						
 				//check active radio button
@@ -504,9 +525,6 @@ public class PersonServiceImpl implements PersonService {
 			}
 			if ( affiliationDefaultOnlyCriteria ) {
 				newCriteria.put( ENTITY_AFFILIATION_PROPERTY_PREFIX + "defaultValue", "Y" );
-			}
-			if ( externalIdentifierCriteria ) {
-				newCriteria.put( ENTITY_EXT_ID_PROPERTY_PREFIX + "active", "Y" );
 			}
 		}
 		

@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 
 /**
  * This is a description of what this class does - jim7 don't forget to fill this in. 
@@ -34,7 +34,7 @@ public class StringEntNmPrncpInfoMapEntry {
 	String key;
 	
 	@XmlElement(required=true) // maxoccurs == minoccurs == 1
-	KimEntityNamePrincipalNameInfo value;
+    EntityNamePrincipalName value;
 	
 	/**
 	 *
@@ -47,7 +47,7 @@ public class StringEntNmPrncpInfoMapEntry {
 	 * @param name
 	 * @param value
 	 */
-	public StringEntNmPrncpInfoMapEntry(String key, KimEntityNamePrincipalNameInfo value) {
+	public StringEntNmPrncpInfoMapEntry(String key, EntityNamePrincipalName value) {
 	    super();
 	    
 	    this.key = key;

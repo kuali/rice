@@ -4,15 +4,31 @@
     <output url="file://$MODULE_DIR$/../../../kim/kim-framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../kim/kim-framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../kim/kim-framework">
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: avalon-framework:avalon-framework:4.1.5" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: avalon-framework:avalon-framework:4.1.5" level="project" />
     <orderEntry type="module" module-name="rice-krad-app-framework" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-core-api" />
@@ -39,7 +55,7 @@
     <orderEntry type="module" module-name="rice-kew-api" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
-    <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.5.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
@@ -77,10 +93,8 @@
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-servlet:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-template:2.2.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.jtidy:jtidyservlet:r8-m1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.jtidy:jtidy:r938" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
   </component>
 </module>

@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.services.IdentityArchiveService;
+import org.kuali.rice.kim.api.services.IdentityArchiveService;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;

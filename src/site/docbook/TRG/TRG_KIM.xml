@@ -258,7 +258,7 @@
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold"
-                            >org.kuali.rice.kim.service.RoleManagementService</emphasis>
+                            >org.kuali.rice.kim.api.role.RoleManagementService</emphasis>
                     </para>
                 </listitem>
                 <listitem>

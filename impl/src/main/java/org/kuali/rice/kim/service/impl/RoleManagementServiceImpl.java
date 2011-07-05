@@ -37,7 +37,7 @@ import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.RoleManagementService;
+import org.kuali.rice.kim.api.role.RoleManagementService;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.sql.Date;

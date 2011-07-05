@@ -36,7 +36,7 @@ public interface RoleManagementService extends RoleService, RoleUpdateService {
 	 * Flush all of the delegation-related caches.
 	 */
 	void flushDelegationCaches();
-	
+
 	/**
 	 * Flush all of the delegation-member-related caches.
 	 */

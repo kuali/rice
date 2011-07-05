@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -105,20 +106,20 @@ public class PostDataLoadEncryptionServlet extends HttpServlet {
         catch (Exception e) {
             throw new IllegalArgumentException("PostDataLoadEncrypter requires the full, absolute path to a properties file where the keys are the names of the BusinessObject classes that should be processed and the values are the list of attributes on each that require encryption", e);
         }
-        for (Object businessObjectClassName : attributesToEncryptProperties.keySet()) {
+        for (Map.Entry<Object, Object> entry : attributesToEncryptProperties.entrySet()) {
             Class<? extends PersistableBusinessObject> businessObjectClass;
             try {
-                businessObjectClass = (Class<? extends PersistableBusinessObject>) Class.forName((String) businessObjectClassName);
+                businessObjectClass = (Class<? extends PersistableBusinessObject>) Class.forName((String) entry.getKey());
             }
             catch (Exception e) {
-                throw new IllegalArgumentException(new StringBuffer("Unable to load Class ").append(businessObjectClassName).append(" specified by name in attributesToEncryptProperties file ").append(attributesToEncryptProperties).toString(), e);
+                throw new IllegalArgumentException(new StringBuffer("Unable to load Class ").append((String) entry.getKey()).append(" specified by name in attributesToEncryptProperties file ").append(attributesToEncryptProperties).toString(), e);
             }
             final Set<String> attributeNames;
             try {
-                attributeNames = new HashSet<String>(Arrays.asList(StringUtils.split((String) attributesToEncryptProperties.get(businessObjectClassName), ",")));
+                attributeNames = new HashSet<String>(Arrays.asList(StringUtils.split((String) entry.getValue(), ",")));
             }
             catch (Exception e) {
-                throw new IllegalArgumentException(new StringBuffer("Unable to load attributeNames Set from comma-delimited list of attribute names specified as value for property with Class name ").append(businessObjectClassName).append(" key in attributesToEncryptProperties file ").append(attributesToEncryptProperties).toString(), e);
+                throw new IllegalArgumentException(new StringBuffer("Unable to load attributeNames Set from comma-delimited list of attribute names specified as value for property with Class name ").append(entry.getKey()).append(" key in attributesToEncryptProperties file ").append(attributesToEncryptProperties).toString(), e);
             }
             postDataLoadEncryptionService.checkArguments(businessObjectClass, attributeNames, checkOjbEncryptConfig);
             postDataLoadEncryptionService.createBackupTable(businessObjectClass);
@@ -130,11 +131,11 @@ public class PostDataLoadEncryptionServlet extends HttpServlet {
                     postDataLoadEncryptionService.encrypt((PersistableBusinessObject) businessObject, attributeNames);
                 }
                 postDataLoadEncryptionService.restoreClassDescriptor(businessObjectClass, attributeNames);
-                LOG.info(new StringBuffer("Encrypted ").append(attributesToEncryptProperties.get(businessObjectClassName)).append(" attributes of Class ").append(businessObjectClassName));
+                LOG.info(new StringBuffer("Encrypted ").append(entry.getValue()).append(" attributes of Class ").append(entry.getKey()));
             }
             catch (Exception e) {
                 postDataLoadEncryptionService.restoreTableFromBackup(businessObjectClass);
-                LOG.error(new StringBuffer("Caught exception, while encrypting ").append(attributesToEncryptProperties.get(businessObjectClassName)).append(" attributes of Class ").append(businessObjectClassName).append(" and restored table from backup"), e);
+                LOG.error(new StringBuffer("Caught exception, while encrypting ").append(entry.getValue()).append(" attributes of Class ").append(entry.getKey()).append(" and restored table from backup"), e);
             }
             postDataLoadEncryptionService.dropBackupTable(businessObjectClass);
         }

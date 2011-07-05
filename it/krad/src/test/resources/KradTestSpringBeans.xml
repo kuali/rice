@@ -105,10 +105,7 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-
-
 	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
-	
 		<bean id="ksbConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
@@ -151,7 +148,7 @@
 		
 	<bean id="lookupResultsDDBoLookupableHelperService" class="org.kuali.rice.krad.lookup.LookupResultsDDBoLookupableHelperServiceImpl" />
 
-	<bean id="lookupResultsDDBoLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl">
+	<bean id="lookupResultsDDBoLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl">
 		<property name="lookupableHelperService">
 			<ref bean="lookupResultsDDBoLookupableHelperService" />
 		</property>

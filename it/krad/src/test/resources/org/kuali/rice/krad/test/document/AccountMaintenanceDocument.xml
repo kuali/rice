@@ -19,7 +19,7 @@
 
   <bean id="AccountMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="org.kuali.rice.krad.test.document.bo.Account"/>
-    <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
         <ref bean="AccountMaintenanceDocument-EditAccount"/>

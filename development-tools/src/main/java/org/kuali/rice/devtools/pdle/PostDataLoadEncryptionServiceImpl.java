@@ -25,7 +25,7 @@ import org.kuali.rice.krad.exception.ClassNotPersistableException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.impl.PersistenceServiceImplBase;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Set;
 
 public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBase implements PostDataLoadEncryptionService {
@@ -33,11 +33,13 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
     private EncryptionService encryptionService;
     private PostDataLoadEncryptionDao postDataLoadEncryptionDao;
 
-    public void checkArguments(Class businessObjectClass, Set<String> attributeNames) {
+    @Override
+    public void checkArguments(Class<? extends PersistableBusinessObject> businessObjectClass, Set<String> attributeNames) {
     	checkArguments(businessObjectClass, attributeNames, true);
     }
-    
-    public void checkArguments(Class businessObjectClass, Set<String> attributeNames, boolean checkOjbEncryptConfig) {
+
+    @Override
+    public void checkArguments(Class<? extends PersistableBusinessObject> businessObjectClass, Set<String> attributeNames, boolean checkOjbEncryptConfig) {
 	if ((businessObjectClass == null) || (attributeNames == null)) {
 	    throw new IllegalArgumentException(
 		    "PostDataLoadEncryptionServiceImpl.encrypt does not allow a null business object Class or attributeNames Set");
@@ -72,11 +74,13 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
 	}
     }
 
-    public void createBackupTable(Class businessObjectClass) {
+    @Override
+    public void createBackupTable(Class<? extends PersistableBusinessObject> businessObjectClass) {
 	postDataLoadEncryptionDao.createBackupTable(getClassDescriptor(businessObjectClass).getFullTableName());
     }
 
-    public void prepClassDescriptor(Class businessObjectClass, Set<String> attributeNames) {
+    @Override
+    public void prepClassDescriptor(Class<? extends PersistableBusinessObject> businessObjectClass, Set<String> attributeNames) {
 	ClassDescriptor classDescriptor = getClassDescriptor(businessObjectClass);
 	for (String attributeName : attributeNames) {
 	    classDescriptor.getFieldDescriptorByName(attributeName).setFieldConversionClassName(
@@ -84,10 +88,12 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
 	}
     }
 
-    public void truncateTable(Class businessObjectClass) {
+    @Override
+    public void truncateTable(Class<? extends PersistableBusinessObject> businessObjectClass) {
 	postDataLoadEncryptionDao.truncateTable(getClassDescriptor(businessObjectClass).getFullTableName());
     }
 
+    @Override
     public void encrypt(PersistableBusinessObject businessObject, Set<String> attributeNames) {
 	for (String attributeName : attributeNames) {
 	    try {
@@ -102,22 +108,26 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
 	businessObjectService.save(businessObject);
     }
 
-    public void restoreClassDescriptor(Class businessObjectClass, Set<String> attributeNames) {
+    @Override
+    public void restoreClassDescriptor(Class<? extends PersistableBusinessObject> businessObjectClass, Set<String> attributeNames) {
 	ClassDescriptor classDescriptor = getClassDescriptor(businessObjectClass);
 	for (String attributeName : attributeNames) {
 	    classDescriptor.getFieldDescriptorByName(attributeName).setFieldConversionClassName(
 		    OjbKualiEncryptDecryptFieldConversion.class.getName());
 	}
-	businessObjectService.countMatching(businessObjectClass, new HashMap());
+	businessObjectService.countMatching(businessObjectClass, Collections.<String, Object>emptyMap());
     }
 
-    public void restoreTableFromBackup(Class businessObjectClass) {
+    @Override
+    public void restoreTableFromBackup(Class<? extends PersistableBusinessObject> businessObjectClass) {
 	postDataLoadEncryptionDao.restoreTableFromBackup(getClassDescriptor(businessObjectClass).getFullTableName());
     }
 
-    public void dropBackupTable(Class businessObjectClass) {
+    @Override
+    public void dropBackupTable(Class<? extends PersistableBusinessObject> businessObjectClass) {
 	postDataLoadEncryptionDao.dropBackupTable(getClassDescriptor(businessObjectClass).getFullTableName());
     }
+
 
     public void setPostDataLoadEncryptionDao(PostDataLoadEncryptionDao postDataLoadEncryptionDao) {
 	this.postDataLoadEncryptionDao = postDataLoadEncryptionDao;

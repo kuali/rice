@@ -20,11 +20,11 @@ package org.kuali.rice.devtools.pdle;
  * This interface defines the DB access methods required by the PostDataLoadEncryptionService
  */
 public interface PostDataLoadEncryptionDao {
-    public void createBackupTable(String tableName);
+    void createBackupTable(String tableName);
 
-    public void truncateTable(String tableName);
+    void truncateTable(String tableName);
 
-    public void restoreTableFromBackup(String tableName);
+    void restoreTableFromBackup(String tableName);
 
-    public void dropBackupTable(String tableName);
+    void dropBackupTable(String tableName);
 }

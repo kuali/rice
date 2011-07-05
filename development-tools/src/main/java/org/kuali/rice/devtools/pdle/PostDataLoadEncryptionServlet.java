@@ -90,10 +90,10 @@ public class PostDataLoadEncryptionServlet extends HttpServlet {
 		boolean checkOjbEncryptConfig = true;
 		String checkOjbEncryptConfigValue = request.getParameter(CHECK_OJB_ENCRYPT_CONFIG);
 		if (!StringUtils.isBlank(checkOjbEncryptConfigValue)) {
-			checkOjbEncryptConfig = Boolean.valueOf(checkOjbEncryptConfigValue);
+			checkOjbEncryptConfig = Boolean.valueOf(checkOjbEncryptConfigValue).booleanValue();
 		}
 		execute(attributesToEncryptPropertyFileName, checkOjbEncryptConfig);
-		response.getOutputStream().write(new String("<html><body><p>Successfully encrypted attributes as defined in: " + attributesToEncryptPropertyFileName + "</p></body></html>").getBytes());
+		response.getOutputStream().write(("<html><body><p>Successfully encrypted attributes as defined in: " + attributesToEncryptPropertyFileName + "</p></body></html>").getBytes());
 	}
 
 	public void execute(String attributesToEncryptPropertyFileName, boolean checkOjbEncryptConfig) {
@@ -106,16 +106,16 @@ public class PostDataLoadEncryptionServlet extends HttpServlet {
             throw new IllegalArgumentException("PostDataLoadEncrypter requires the full, absolute path to a properties file where the keys are the names of the BusinessObject classes that should be processed and the values are the list of attributes on each that require encryption", e);
         }
         for (Object businessObjectClassName : attributesToEncryptProperties.keySet()) {
-            Class businessObjectClass;
+            Class<? extends PersistableBusinessObject> businessObjectClass;
             try {
-                businessObjectClass = Class.forName((String) businessObjectClassName);
+                businessObjectClass = (Class<? extends PersistableBusinessObject>) Class.forName((String) businessObjectClassName);
             }
             catch (Exception e) {
                 throw new IllegalArgumentException(new StringBuffer("Unable to load Class ").append(businessObjectClassName).append(" specified by name in attributesToEncryptProperties file ").append(attributesToEncryptProperties).toString(), e);
             }
-            Set<String> attributeNames = null;
+            final Set<String> attributeNames;
             try {
-                attributeNames = new HashSet(Arrays.asList(StringUtils.split((String) attributesToEncryptProperties.get(businessObjectClassName), ",")));
+                attributeNames = new HashSet<String>(Arrays.asList(StringUtils.split((String) attributesToEncryptProperties.get(businessObjectClassName), ",")));
             }
             catch (Exception e) {
                 throw new IllegalArgumentException(new StringBuffer("Unable to load attributeNames Set from comma-delimited list of attribute names specified as value for property with Class name ").append(businessObjectClassName).append(" key in attributesToEncryptProperties file ").append(attributesToEncryptProperties).toString(), e);
@@ -125,7 +125,7 @@ public class PostDataLoadEncryptionServlet extends HttpServlet {
             BusinessObjectService businessObjectService = KRADServiceLocator.getBusinessObjectService();
             try {
                 postDataLoadEncryptionService.prepClassDescriptor(businessObjectClass, attributeNames);
-                Collection objectsToEncrypt = businessObjectService.findAll(businessObjectClass);
+                Collection<? extends PersistableBusinessObject> objectsToEncrypt = businessObjectService.findAll(businessObjectClass);
                 for (Object businessObject : objectsToEncrypt) {
                     postDataLoadEncryptionService.encrypt((PersistableBusinessObject) businessObject, attributeNames);
                 }

@@ -21,23 +21,23 @@ import java.util.Set;
 
 public interface PostDataLoadEncryptionService {
 
-    public static final String POST_DATA_LOAD_ENCRYPTION_SERVICE = "postDataLoadEncryptionService";
+    static final String POST_DATA_LOAD_ENCRYPTION_SERVICE = "postDataLoadEncryptionService";
 	
-	public void checkArguments(Class businessObjectClass, Set<String> attributeNames);
+	void checkArguments(Class<? extends PersistableBusinessObject> businessObjectClass, Set<String> attributeNames);
 	
-    public void checkArguments(Class businessObjectClass, Set<String> attributeNames, boolean checkOjbEncryptConfig);
+    void checkArguments(Class<? extends PersistableBusinessObject> businessObjectClass, Set<String> attributeNames, boolean checkOjbEncryptConfig);
 
-    public void createBackupTable(Class businessObjectClass);
+    void createBackupTable(Class<? extends PersistableBusinessObject> businessObjectClass);
 
-    public void prepClassDescriptor(Class businessObjectClass, Set<String> attributeNames);
+    void prepClassDescriptor(Class<? extends PersistableBusinessObject> businessObjectClass, Set<String> attributeNames);
 
-    public void truncateTable(Class businessObjectClass);
+    void truncateTable(Class<? extends PersistableBusinessObject> businessObjectClass);
 
-    public void encrypt(PersistableBusinessObject businessObject, Set<String> attributeNames);
+    void encrypt(PersistableBusinessObject businessObject, Set<String> attributeNames);
 
-    public void restoreClassDescriptor(Class businessObjectClass, Set<String> attributeNames);
+    void restoreClassDescriptor(Class<? extends PersistableBusinessObject> businessObjectClass, Set<String> attributeNames);
 
-    public void restoreTableFromBackup(Class businessObjectClass);
+    void restoreTableFromBackup(Class<? extends PersistableBusinessObject> businessObjectClass);
 
-    public void dropBackupTable(Class businessObjectClass);
+    void dropBackupTable(Class<? extends PersistableBusinessObject> businessObjectClass);
 }

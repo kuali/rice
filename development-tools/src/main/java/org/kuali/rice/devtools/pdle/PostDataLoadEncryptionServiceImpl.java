@@ -44,7 +44,7 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
 	    throw new IllegalArgumentException(
 		    "PostDataLoadEncryptionServiceImpl.encrypt does not allow a null business object Class or attributeNames Set");
 	}
-	ClassDescriptor classDescriptor = null;
+	final ClassDescriptor classDescriptor;
 	try {
 	    classDescriptor = getClassDescriptor(businessObjectClass);
 	} catch (ClassNotPersistableException e) {

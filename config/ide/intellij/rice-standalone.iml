@@ -6,11 +6,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../standalone/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/../../../standalone/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../standalone/src/main/groovy" />
-          <root url="file://$MODULE_DIR$/../../../standalone/src/main/resources" />
-        </sourceRoots>
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
@@ -22,8 +17,8 @@
     <output-test url="file://$MODULE_DIR$/../../../standalone/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../standalone">
       <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../standalone/target" />
     </content>

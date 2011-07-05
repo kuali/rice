@@ -24,10 +24,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/resources/META-INF" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -10,8 +10,8 @@
     <output-test url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web">
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/target" />

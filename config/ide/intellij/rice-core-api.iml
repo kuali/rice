@@ -11,12 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/surefire-reports" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

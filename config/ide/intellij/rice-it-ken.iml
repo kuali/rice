@@ -25,10 +25,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/src/test/resources/META-INF" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

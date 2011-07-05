@@ -9,17 +9,12 @@
     <output url="file://$MODULE_DIR$/../../../core/impl/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../core/impl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../core/impl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/target/generated-sources/annotations" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/impl/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../core/impl/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/impl/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/impl/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/impl/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/impl/target/surefire-reports" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

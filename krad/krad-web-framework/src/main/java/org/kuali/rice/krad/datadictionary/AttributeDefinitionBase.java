@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.validation.capability.ExistenceConstrainable;
 

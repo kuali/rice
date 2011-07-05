@@ -359,8 +359,8 @@
 							class="infocell">
 							<c:choose>
 								<c:when test="${!empty result.groupId}">
-                                    <kul:inquiry boClassName="org.kuali.rice.kim.impl.group.GroupBo" keyValues="id=${result.group.groupId}" render="true">
-                                        <c:out value="${result.group.groupName}" />
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.impl.group.GroupBo" keyValues="id=${result.group.id}" render="true">
+                                        <c:out value="${result.group.name}" />
                                     </kul:inquiry>
 								</c:when>
 								<c:otherwise>

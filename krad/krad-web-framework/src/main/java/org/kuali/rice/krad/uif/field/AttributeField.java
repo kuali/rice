@@ -32,6 +32,7 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.container.FormView;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
@@ -217,7 +218,9 @@ public class AttributeField extends FieldBase implements DataBinding {
             }
         }
         
-        ClientValidationUtils.processAndApplyConstraints(this, view);            
+        if(view instanceof FormView && ((FormView) view).isValidateClientSide()){
+            ClientValidationUtils.processAndApplyConstraints(this, view);
+        }
     }
     
     /**

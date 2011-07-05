@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.widget.DatePicker;
+
+import java.util.List;
 
 /**
  * Represents a HTML Text control, generally rendered as a input field of type

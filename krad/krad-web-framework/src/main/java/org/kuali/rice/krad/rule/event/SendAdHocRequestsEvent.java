@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.rule.event;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rule.BusinessRule;
 import org.kuali.rice.krad.rule.SendAdHocRequestsRule;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiRuleService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 

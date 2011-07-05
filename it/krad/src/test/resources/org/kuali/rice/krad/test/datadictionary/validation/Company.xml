@@ -22,7 +22,7 @@
 
 	 <bean id="Company" parent="Company-parentBean"/>
 	 <bean id="Company-parentBean" abstract="true" parent="DataObjectEntry">
-		<property name="objectClass" value="org.kuali.rice.krad.datadictionary.validation.Company"/>
+		<property name="dataObjectClass" value="org.kuali.rice.krad.datadictionary.validation.Company"/>
 		<property name="titleAttribute" value="id"/>
 		<property name="objectLabel" value="Course"/>
 		<property name="primaryKeys">

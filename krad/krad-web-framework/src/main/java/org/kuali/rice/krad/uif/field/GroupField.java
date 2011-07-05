@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
+
+import java.util.List;
 
 /**
  * Field that contains a nested <code>Group</code>. Can be used to group

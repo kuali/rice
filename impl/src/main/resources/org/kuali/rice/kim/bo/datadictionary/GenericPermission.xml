@@ -18,7 +18,7 @@
   <bean id="GenericPermission" parent="GenericPermission-parentBean"/>
 
   <bean id="GenericPermission-parentBean" abstract="true" parent="BusinessObjectEntry" 
-        p:businessObjectClass="org.kuali.rice.kim.bo.impl.GenericPermission" 
+        p:businessObjectClass="org.kuali.rice.kim.bo.impl.GenericPermission"
         p:titleAttribute="permissionId" 
         p:objectLabel="Permission">
     <property name="attributes">

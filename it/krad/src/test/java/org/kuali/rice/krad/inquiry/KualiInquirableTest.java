@@ -17,7 +17,8 @@ package org.kuali.rice.krad.inquiry;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.test.KRADTestCase;
 
@@ -44,7 +45,7 @@ public class KualiInquirableTest extends KRADTestCase {
      * Tests the inquiry url output for a given bo and property name.
      */
     @Test public final void testBuildInquiryUrl() {
-    	String inquiryUrl = ((AnchorHtmlData)new KualiInquirableImpl().getInquiryUrl(am, "amId", true)).getHref();
+    	String inquiryUrl = ((HtmlData.AnchorHtmlData)new KualiInquirableImpl().getInquiryUrl(am, "amId", true)).getHref();
         assertTrue("An inquiry URL to AccountManager should be built", StringUtils.contains(inquiryUrl, "amId=1"));
         assertTrue("An inquiry URL to AccountManager should be built", StringUtils.contains(inquiryUrl, "businessObjectClassName=" + AccountManager.class.getName()));
     }

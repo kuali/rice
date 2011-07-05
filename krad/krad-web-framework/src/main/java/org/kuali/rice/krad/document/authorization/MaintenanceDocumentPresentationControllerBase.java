@@ -15,62 +15,41 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Base class for all MaintenanceDocumentPresentationControllers.
  */
-public class MaintenanceDocumentPresentationControllerBase extends
-		DocumentPresentationControllerBase implements
-        MaintenanceDocumentPresentationController {
-//	private static final Logger LOG = Logger
-//			.getLogger(MaintenanceDocumentPresentationControllerBase.class);
+public class MaintenanceDocumentPresentationControllerBase extends DocumentPresentationControllerBase
+       implements MaintenanceDocumentPresentationController {
 
-	protected static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    public boolean canCreate(Class boClass) {
+        return KRADServiceLocatorWeb.getDocumentDictionaryService().getAllowsNewOrCopy(
+                KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentTypeName(boClass));
+    }
 
-	public boolean canCreate(Class boClass) {
-		return getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(
-				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
-						boClass));
-	}
+    public Set<String> getConditionallyHiddenPropertyNames(BusinessObject businessObject) {
+        return new HashSet<String>();
+    }
 
-	public Set<String> getConditionallyHiddenPropertyNames(
-			BusinessObject businessObject) {
-		return new HashSet<String>();
-	}
+    public Set<String> getConditionallyHiddenSectionIds(BusinessObject businessObject) {
+        return new HashSet<String>();
+    }
 
-	public Set<String> getConditionallyHiddenSectionIds(
-			BusinessObject businessObject) {
-		return new HashSet<String>();
-	}
+    public Set<String> getConditionallyReadOnlyPropertyNames(MaintenanceDocument document) {
+        return new HashSet<String>();
+    }
 
-	public Set<String> getConditionallyReadOnlyPropertyNames(
-			MaintenanceDocument document) {
-		return new HashSet<String>();
-	}
+    public Set<String> getConditionallyReadOnlySectionIds(MaintenanceDocument document) {
+        return new HashSet<String>();
+    }
 
-	public Set<String> getConditionallyReadOnlySectionIds(
-			MaintenanceDocument document) {
-		return new HashSet<String>();
-	}
-	
-	public Set<String> getConditionallyRequiredPropertyNames(
-			MaintenanceDocument document) {
-		return new HashSet<String>();
-	}	
-
-	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-		if (maintenanceDocumentDictionaryService == null) {
-			maintenanceDocumentDictionaryService = KRADServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
-
-		}
-		return maintenanceDocumentDictionaryService;
-	}
-
+    public Set<String> getConditionallyRequiredPropertyNames(MaintenanceDocument document) {
+        return new HashSet<String>();
+    }
 }

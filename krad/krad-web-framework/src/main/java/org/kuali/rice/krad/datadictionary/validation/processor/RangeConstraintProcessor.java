@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
@@ -30,6 +27,9 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * This class enforces range constraints - that is, constraints that keep a number or a date within a specific range. An attribute 

@@ -10,12 +10,12 @@
  */
 package org.kuali.rice.krad.uif.core;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.io.Serializable;
 
 /**
  * Provides binding configuration for an DataBinding component (attribute or

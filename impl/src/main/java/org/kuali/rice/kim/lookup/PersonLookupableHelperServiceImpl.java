@@ -28,13 +28,12 @@ import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.Row;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -71,7 +70,7 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
 			}
 	        href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION, parameters);
 	
-	        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
+	        HtmlData.AnchorHtmlData anchorHtmlData = new HtmlData.AnchorHtmlData(href,
 	        		KRADConstants.DOC_HANDLER_METHOD, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
 	
 	    	anchorHtmlDataList.add(anchorHtmlData);
@@ -87,7 +86,7 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
         parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
         parameters.put(KimConstants.PrimaryKeyConstants.PRINCIPAL_ID, ((Person)bo).getPrincipalId());
         String href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION, parameters);
-	    ((AnchorHtmlData)inqUrl).setHref(href);
+	    ((HtmlData.AnchorHtmlData)inqUrl).setHref(href);
 	    return inqUrl;
 	}
 	

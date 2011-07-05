@@ -99,7 +99,7 @@
 
   <bean id="Account-extension.accountTypeCode-parentBean" abstract="true" parent="AccountType-accountTypeCode">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.krad.test.document.bo.AccountType" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:includeBlankRow="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.krad.test.document.bo.AccountType" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:includeBlankRow="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
     </property>
     <property name="name" value="extension.accountTypeCode"/>
   </bean>

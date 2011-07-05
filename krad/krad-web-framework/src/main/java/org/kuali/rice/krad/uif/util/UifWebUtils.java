@@ -10,9 +10,6 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
@@ -25,20 +22,21 @@ import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.history.History;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.spring.controller.UifControllerBase;
-import org.kuali.rice.krad.web.spring.form.DocumentFormBase;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.web.controller.UifControllerBase;
+import org.kuali.rice.krad.web.form.DocumentFormBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
- * Provides helper methods that will be used during the request
- * lifecycle
+ * Provides helper methods that will be used during the request lifecycle
  *
  * <p>
- * Created to avoid duplication of the methods used by
- * the UifHandlerExceptionResolver
+ * Created to avoid duplication of the methods used by the UifHandlerExceptionResolver
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifWebUtils {
@@ -46,14 +44,14 @@ public class UifWebUtils {
     private static final Logger LOG = Logger.getLogger(UifWebUtils.class);
 
     /**
-     * Gets the form from the request.
+     * Gets the form from the request
+     *
      * <p>
      * Looks for the form on the session by using the form key. If the form is not
      * on the session it will attempt to get it from the database.
      * </p>
-     * 
-     * @param request
-     *            the http request
+     *
+     * @param request the http request
      * @return the form from request
      */
     public static UifFormBase getFormFromRequest(HttpServletRequest request) {
@@ -64,10 +62,10 @@ public class UifWebUtils {
             form = (UifFormBase) request.getSession().getAttribute(formKeyParam);
             // retreive from db if form not in session
             if (form == null) {
-                UserSession userSession = (UserSession) request.getSession()
-                        .getAttribute(KRADConstants.USER_SESSION_KEY);
-                form = KRADServiceLocatorWeb.getSessionDocumentService().getUifDocumentForm(docId, formKeyParam,
-                        userSession, request.getRemoteAddr());
+                UserSession userSession =
+                        (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
+                form = KRADServiceLocatorWeb.getSessionDocumentService()
+                        .getDocumentForm(docId, formKeyParam, userSession, request.getRemoteAddr());
             }
         }
         return form;
@@ -76,14 +74,11 @@ public class UifWebUtils {
     /**
      * Configures the <code>ModelAndView</code> instance containing the form
      * data and pointing to the UIF generic spring view
-     * 
-     * @param form
-     *            - Form instance containing the model data
-     * @param viewId
-     *            - Id of the View to return
-     * @param pageId
-     *            - Id of the page within the view that should be rendered, can
-     *            be left blank in which the current or default page is rendered
+     *
+     * @param form - Form instance containing the model data
+     * @param viewId - Id of the View to return
+     * @param pageId - Id of the page within the view that should be rendered, can
+     * be left blank in which the current or default page is rendered
      * @return ModelAndView object with the contained form
      */
     public static ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {
@@ -100,7 +95,7 @@ public class UifWebUtils {
 
         return modelAndView;
     }
-    
+
     public static ModelAndView getComponentModelAndView(Component component, Object model) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject(UifConstants.DEFAULT_MODEL_NAME, model);
@@ -119,50 +114,55 @@ public class UifWebUtils {
         if (handler instanceof UifControllerBase && (modelAndView != null)) {
             UifControllerBase controller = (UifControllerBase) handler;
             UifFormBase form = null;
+
             //Check to see if this is a full view request
-            if(modelAndView.getViewName().equals(UifConstants.SPRING_VIEW_ID)){
+            if (modelAndView.getViewName().equals(UifConstants.SPRING_VIEW_ID)) {
                 Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
                 if (model instanceof UifFormBase) {
                     form = (UifFormBase) model;
-                    
-                    
+
                     View view = form.getView();
-                    
+
                     //Determining the property name to use as part of the breadcrumb/title
                     view.determineViewLabelPropertyName();
-                    
+
                     //Main history/breadcrumb tracking support
                     History history = form.getFormHistory();
-                    if(history == null || request.getMethod().equals("GET")){
+                    if (history == null || request.getMethod().equals("GET")) {
                         history = new History();
                         history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
                         history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());
                         history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
-                        
+
                         //Passed settings ALWAYS override the defaults
-                        if(StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HOME))){
-                            history.setAppendHomewardPath(Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HOME)));
+                        if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HOME))) {
+                            history.setAppendHomewardPath(
+                                    Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HOME)));
                         }
-                        if(StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY))){
-                            history.setAppendPassedHistory(Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY)));
+                        if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY))) {
+                            history.setAppendPassedHistory(
+                                    Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY)));
                         }
+
                         history.setCurrent(form, request);
                         history.buildHistoryFromParameterString(request.getParameter(UifConstants.UrlParams.HISTORY));
                         form.setFormHistory(history);
                     }
-                    
+
                     form.setPreviousView(null);
-    
+
                     //Store form to session and persist document form to db as well
                     request.getSession().setAttribute(form.getFormKey(), model);
-                    if (form instanceof DocumentFormBase){
-                        UserSession userSession = (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
-                        getSessionDocumentService().setDocumentForm((DocumentFormBase)form, userSession, request.getRemoteAddr());
+                    if (form instanceof DocumentFormBase) {
+                        UserSession userSession =
+                                (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
+                        getSessionDocumentService()
+                                .setDocumentForm((DocumentFormBase) form, userSession, request.getRemoteAddr());
                     }
-    
+
                     // perform authorization of controller method
                     checkMethodToCallAuthorization(request, controller, form);
-    
+
                     // prepare view contained in form
                     prepareViewForRendering(form);
                 }
@@ -175,13 +175,10 @@ public class UifWebUtils {
      * to the module that owns the functionality. This is done post handle to be
      * able to access the form and whatever processing was done TODO: should
      * this be throwing some exception?
-     * 
-     * @param request
-     *            - current HTTP request containing method to call parameter
-     * @param controller
-     *            - controller that was invoked
-     * @param form
-     *            - form instance containing the data
+     *
+     * @param request - current HTTP request containing method to call parameter
+     * @param controller - controller that was invoked
+     * @param form - form instance containing the data
      */
     public static void checkMethodToCallAuthorization(HttpServletRequest request, UifControllerBase controller,
             UifFormBase form) {
@@ -191,8 +188,8 @@ public class UifWebUtils {
 
         if (!controller.getMethodToCallsToNotCheckAuthorization().contains(methodToCall)) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("'" + methodToCall + "' not in set of excempt methods: "
-                        + controller.getMethodToCallsToNotCheckAuthorization());
+                LOG.debug("'" + methodToCall + "' not in set of excempt methods: " +
+                        controller.getMethodToCallsToNotCheckAuthorization());
             }
 
             controller.checkAuthorization(form, methodToCall);
@@ -216,9 +213,8 @@ public class UifWebUtils {
      * (apply model and finalize). Finally the page is set on the view to
      * reflect the page that was requested
      * </p>
-     * 
-     * @param form
-     *            - form instance containing the data and view instance
+     *
+     * @param form - form instance containing the data and view instance
      */
     public static void prepareViewForRendering(UifFormBase form) {
         // if we don't have the view instance or a different view was
@@ -264,5 +260,4 @@ public class UifWebUtils {
     protected static ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
     }
-
 }

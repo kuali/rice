@@ -25,9 +25,8 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.Row;
-
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * This is a base class used for document search unit test classes to consolidate some helper methods
@@ -102,7 +101,7 @@ public class DocumentSearchTestBase extends KEWTestCase {
         }
         for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
             for (Row row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-                for (org.kuali.rice.krad.web.ui.Field field : row.getFields()) {
+                for (Field field : row.getFields()) {
                     if (field instanceof Field) {
                         if (field.getPropertyName().equals(formKey)) {
                             return (Field)field;

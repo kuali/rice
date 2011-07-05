@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyValue;
@@ -31,8 +28,8 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstra
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.lookup.valuefinder.ValueFinder;
+import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.View;
@@ -50,6 +47,9 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Field that encapsulates data input/output captured by an attribute within the
@@ -103,7 +103,6 @@ public class AttributeField extends FieldBase implements DataBinding {
     // messages
     private String summary;
     private String constraint;
-
     private String description;
 
     private AttributeSecurity attributeSecurity;
@@ -281,7 +280,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     	if (getAttributeSecurity() != null){
     		//TODO: Check authorization
-    		// if (attributeSecurity.isMask() && !boAuthzService.canFullyUnmaskField(user,businessObjectClass, field.getPropertyName(), null)) {
+    		// if (attributeSecurity.isMask() && !boAuthzService.canFullyUnmaskField(user,dataObjectClass, field.getPropertyName(), null)) {
     		Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
 			alternateDisplayValue = getSecuredFieldValue(attributeSecurity, fieldValue);
 			setReadOnly(true);

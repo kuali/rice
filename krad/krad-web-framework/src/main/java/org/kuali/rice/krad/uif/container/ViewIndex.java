@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.core.BindingInfo;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Holds field indexes of a <code>View</code> instance for retrieval
@@ -119,6 +119,26 @@ public class ViewIndex implements Serializable {
      */
     public AttributeField getAttributeFieldByPath(String attributePath) {
         return attributeFieldIndex.get(attributePath);
+    }
+
+    /**
+     * Retrieves a <code>AttributeField</code> instance that has the given property name
+     * specified (note this is not the full binding path and first match is returned)
+     *
+     * @param propertyName - property name for field to retrieve
+     * @return AttributeField instance found or null if not found
+     */
+    public AttributeField getAttributeFieldByPropertyName(String propertyName) {
+        AttributeField attributeField = null;
+
+        for (AttributeField field : attributeFieldIndex.values()) {
+            if (StringUtils.equals(propertyName, field.getPropertyName())) {
+                attributeField = field;
+                break;
+            }
+        }
+
+        return attributeField;
     }
 
     /**

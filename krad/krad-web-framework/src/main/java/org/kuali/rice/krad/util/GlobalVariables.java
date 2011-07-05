@@ -15,23 +15,21 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.kuali.rice.krad.UserSession;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
-
 /**
- * This class will hold all of our thread local variables and accessors for those
+ * Holds all of our thread local variables and accessors for those
  *
- *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GlobalVariables {
 
     private static ThreadLocal<UserSession> userSessions = new ThreadLocal<UserSession>();
     private static ThreadLocal<String> hideSessionFromTestsMessage = new ThreadLocal<String>();
-    private static ThreadLocal<KualiForm> kualiForms = new ThreadLocal<KualiForm>();
-    
+
     private static ThreadLocal<MessageMap> messageMaps = new ThreadLocal<MessageMap>()  {
 		@Override
 		protected MessageMap initialValue() {
@@ -39,13 +37,6 @@ public class GlobalVariables {
 		}
 	};
 
-    private static ThreadLocal<MessageList> messageLists = new ThreadLocal<MessageList>() {
-		@Override
-		protected MessageList initialValue() {
-			return new MessageList();
-		}
-	};
-	
     private static ThreadLocal<HashMap<String, AuditCluster>> auditErrorMaps = new ThreadLocal<HashMap<String, AuditCluster>>() {
     	@Override
     	protected HashMap<String, AuditCluster> initialValue() {
@@ -115,22 +106,6 @@ public class GlobalVariables {
     }
 
     /**
-     * @return ArrayList containing messages.
-     */
-    public static MessageList getMessageList() {
-        return messageLists.get();
-    }
-
-    /**
-     * Sets a new message list
-     *
-     * @param messageList
-     */
-    public static void setMessageList(MessageList messageList) {
-        messageLists.set(messageList);
-    }
-
-    /**
      * @return ArrayList containing audit error messages.
      */
     public static Map<String, AuditCluster> getAuditErrorMap() {
@@ -146,22 +121,6 @@ public class GlobalVariables {
         auditErrorMaps.set(errorMap);
     }
 
-    /**
-     * @return KualiForm that has been assigned to this thread of execution.
-     */
-    public static KualiForm getKualiForm() {
-        return kualiForms.get();
-    }
-
-    /**
-     * sets the kualiForm object into the global variable for this thread
-     *
-     * @param kualiForm
-     */
-    public static void setKualiForm(KualiForm kualiForm) {
-    	kualiForms.set(kualiForm);
-    }
-
     public static Object getRequestCache( String cacheName ) {
     	return requestCaches.get().get(cacheName);
     }
@@ -170,15 +129,12 @@ public class GlobalVariables {
     	requestCaches.get().put(cacheName, cacheObject);
     }
 
-
     /**
      * Clears out GlobalVariable objects with the exception of the UserSession
      */
     public static void clear() {
         messageMaps.set(new MessageMap());
         auditErrorMaps.set(new HashMap<String, AuditCluster>());
-        messageLists.set(new MessageList());
         requestCaches.set(new HashMap<String,Object>() );
-        kualiForms.set(null);
     }
 }

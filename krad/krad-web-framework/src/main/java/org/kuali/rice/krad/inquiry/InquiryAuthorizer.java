@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.inquiry;
 
-import org.kuali.rice.krad.authorization.InquiryOrMaintenanceDocumentAuthorizer;
+import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentAuthorizer;
 
 public interface InquiryAuthorizer extends InquiryOrMaintenanceDocumentAuthorizer {
 }

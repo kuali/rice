@@ -39,7 +39,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.LookupConstraint
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -240,11 +240,11 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	 * hidden hidden boolean String
 	 * 
 	 * radio radio boolean String valuesFinder valuesFinder class name
-	 * businessObjectClass String keyAttribute String labelAttribute String
+	 * dataObjectClass String keyAttribute String labelAttribute String
 	 * includeKeyInLabel boolean String
 	 * 
 	 * select select boolean String valuesFinder valuesFinder class name
-	 * businessObjectClass String keyAttribute String labelAttribute String
+	 * dataObjectClass String keyAttribute String labelAttribute String
 	 * includeBlankRow boolean String includeKeyInLabel boolean String
 	 * 
 	 * apcSelect apcSelect boolean String paramNamespace String

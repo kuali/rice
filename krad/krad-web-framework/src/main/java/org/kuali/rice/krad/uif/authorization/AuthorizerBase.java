@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
@@ -32,7 +27,12 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -45,7 +45,7 @@ public class AuthorizerBase implements Authorizer {
     private static DataDictionaryService dataDictionaryService;
 
     /**
-     * @see org.kuali.rice.krad.uif.authorization.Authorizer#getActionFlags(org.kuali.rice.krad.web.spring.form.UifFormBase,
+     * @see org.kuali.rice.krad.uif.authorization.Authorizer#getActionFlags(org.kuali.rice.krad.web.form.UifFormBase,
      *      org.kuali.rice.kim.bo.Person, java.util.Set)
      */
     public Set<String> getActionFlags(UifFormBase model, Person user, Set<String> documentActions) {
@@ -53,7 +53,7 @@ public class AuthorizerBase implements Authorizer {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.authorization.Authorizer#getEditModes(org.kuali.rice.krad.web.spring.form.UifFormBase,
+     * @see org.kuali.rice.krad.uif.authorization.Authorizer#getEditModes(org.kuali.rice.krad.web.form.UifFormBase,
      *      org.kuali.rice.kim.bo.Person, java.util.Set)
      */
     public Set<String> getEditModes(UifFormBase model, Person user, Set<String> editModes) {

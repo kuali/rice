@@ -22,7 +22,7 @@
 
   <bean id="TravelAccountInfo" parent="TravelAccountInfo-parentBean"/>
   <bean id="TravelAccountInfo-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
+    <property name="dataObjectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
     <property name="titleAttribute" value="number"/>
     <property name="attributes">
       <list>

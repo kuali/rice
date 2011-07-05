@@ -52,8 +52,9 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -810,7 +811,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
 	public static DictionaryValidationService getDictionaryValidationService() {
 		if (dictionaryValidationService == null) {
-			dictionaryValidationService = KRADServiceLocatorWeb.getDictionaryValidationService();
+			dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
 		}
 		return dictionaryValidationService;
 	}

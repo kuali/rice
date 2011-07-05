@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.rule.event;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rule.BusinessRule;
 import org.kuali.rice.krad.rule.SaveDocumentRule;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiRuleService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents the save event that is part of an eDoc in Kuali. This could be triggered when a user presses the save

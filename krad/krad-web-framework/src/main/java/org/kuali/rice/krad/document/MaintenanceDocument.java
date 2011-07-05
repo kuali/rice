@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.krad.document;
 
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.maintenance.Maintainable;
-
 
 /**
  * Common interface for all maintenance documents.
@@ -57,9 +55,9 @@ public interface MaintenanceDocument extends Document {
     public void setOldMaintainableObject(Maintainable oldMaintainableObject);
 
     /**
-     * Returns a reference to the PersistableBusinessObject that this MaintenanceDocument is maintaining.
+     * Returns a reference to the data object that this MaintenanceDocument is maintaining
      */
-    public PersistableBusinessObject getDocumentBusinessObject();
+    public Object getDocumentDataObject();
     
     /**
      * Builds the xml document string from the contents of the old and new maintainbles.
@@ -74,7 +72,7 @@ public interface MaintenanceDocument extends Document {
     /**
      * @return boolean - indicates whether this is an edit or new maintenace document by the existence of an old maintainable
      */
-    public boolean isOldBusinessObjectInDocument();
+    public boolean isOldDataObjectInDocument();
 
     /**
      * 

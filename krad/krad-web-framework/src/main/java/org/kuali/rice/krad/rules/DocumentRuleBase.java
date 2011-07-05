@@ -22,9 +22,9 @@ import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
@@ -50,8 +50,8 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
-import org.kuali.rice.krad.util.WebUtils;
 import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
 
 
@@ -385,7 +385,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
             else {
                 Class docOrBoClass = null;
                 if (document instanceof MaintenanceDocument) {
-                    docOrBoClass = ((MaintenanceDocument) document).getNewMaintainableObject().getBoClass();
+                    docOrBoClass = ((MaintenanceDocument) document).getNewMaintainableObject().getDataObjectClass();
                 }
                 else {
                     docOrBoClass = document.getClass();
@@ -506,7 +506,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     		return dataValid;
     	}
     	
-    	boolean patternFound = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
+    	boolean patternFound = KRADUtils.containsSensitiveDataPatternMatch(fieldValue);
 		boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                 KRADConstants.KRAD_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);

@@ -16,39 +16,37 @@
 
 package org.kuali.rice.krad.datadictionary;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.krad.document.authorization.DocumentPresentationController;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.rule.BusinessRule;
-import org.kuali.rice.krad.rule.PromptBeforeValidation;
-import org.kuali.rice.krad.web.derivedvaluesetter.DerivedValuesSetter;
-import org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * A single Document entry in the DataDictionary, which contains information relating to the display, validation, and general
+ * A single Document entry in the DataDictionary, which contains information relating to the display, validation, and
+ * general
  * maintenance of a Document (transactional or maintenance) and its attributes.
  * <p/>
- * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
+ * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 abstract public class DocumentEntry extends DataDictionaryEntryBase {
-
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentEntry.class);
+
+    protected String documentTypeName;
 
     protected Class<? extends Document> documentClass;
     protected Class<? extends Document> baseDocumentClass;
     protected Class<? extends BusinessRule> businessRulesClass;
-    protected Class<? extends PromptBeforeValidation> promptBeforeValidationClass;
-    protected Class<? extends DerivedValuesSetter> derivedValuesSetterClass;
-    protected String documentTypeName;
 
     protected boolean allowsNoteAttachments = true;
     protected boolean allowsNoteFYI = false;
@@ -58,21 +56,16 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected boolean useWorkflowPessimisticLocking = false;
     protected boolean encryptDocumentDataInPersistentSessionStorage = false;
 
-    protected List<String> webScriptFiles = new ArrayList<String>(3);
-
-    protected Class<? extends DocumentAuthorizer> documentAuthorizerClass;
-    protected List<HeaderNavigation> headerNavigationList = new ArrayList<HeaderNavigation>();
-
     protected boolean allowsCopy = false;
     protected WorkflowProperties workflowProperties;
     protected WorkflowAttributes workflowAttributes;
 
     protected List<ReferenceDefinition> defaultExistenceChecks = new ArrayList<ReferenceDefinition>();
-    protected Map<String, ReferenceDefinition> defaultExistenceCheckMap = new LinkedHashMap<String, ReferenceDefinition>();
+    protected Map<String, ReferenceDefinition> defaultExistenceCheckMap =
+            new LinkedHashMap<String, ReferenceDefinition>();
 
-    protected boolean sessionDocument = false;
+    protected Class<? extends DocumentAuthorizer> documentAuthorizerClass;
     protected Class<? extends DocumentPresentationController> documentPresentationControllerClass;
-
 
     /**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getJstlKey()
@@ -123,43 +116,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * The documentAuthorizerClass element is the full class name of the
-     * java class which will determine what features are available to the
-     * user based on the user role and document state.
-     */
-    public void setDocumentAuthorizerClass(Class<? extends DocumentAuthorizer> documentAuthorizerClass) {
-        this.documentAuthorizerClass = documentAuthorizerClass;
-    }
-
-    /**
-     * Returns the document authorizer class for the document.  Only framework code should be calling this method.
-     * Client devs should use {@link DocumentTypeService#getDocumentAuthorizer(Document)} or
-     * {@link DocumentTypeService#getDocumentAuthorizer(String)}
-     *
-     * @return a document authorizer class
-     */
-    public Class<? extends DocumentAuthorizer> getDocumentAuthorizerClass() {
-        return documentAuthorizerClass;
-    }
-
-    /**
-     * @return Returns the preRulesCheckClass.
-     */
-    public Class<? extends PromptBeforeValidation> getPromptBeforeValidationClass() {
-        return promptBeforeValidationClass;
-    }
-
-    /**
-     * The promptBeforeValidationClass element is the full class name of the java
-     * class which determines whether the user should be asked any questions prior to running validation.
-     *
-     * @see KualiDocumentActionBase#promptBeforeValidation(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, String)
-     */
-    public void setPromptBeforeValidationClass(Class<? extends PromptBeforeValidation> preRulesCheckClass) {
-        this.promptBeforeValidationClass = preRulesCheckClass;
-    }
-
-    /**
      * The documentTypeName element is the name of the document
      * as defined in the workflow system.
      * Example: "AddressTypeMaintenanceDocument"
@@ -189,7 +145,8 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         }
 
         if (workflowProperties != null && workflowAttributes != null) {
-            throw new DataDictionaryException(documentTypeName + ": workflowProperties and workflowAttributes cannot both be defined for a document");
+            throw new DataDictionaryException(documentTypeName +
+                    ": workflowProperties and workflowAttributes cannot both be defined for a document");
         }
     }
 
@@ -307,23 +264,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return allowsCopy;
     }
 
-    public List<HeaderNavigation> getHeaderNavigationList() {
-        return headerNavigationList;
-    }
-
-    public List<String> getWebScriptFiles() {
-        return webScriptFiles;
-    }
-
-    /**
-     * The webScriptFile element defines the name of javascript files
-     * that are necessary for processing the document.  The specified
-     * javascript files will be included in the generated html.
-     */
-    public void setWebScriptFiles(List<String> webScriptFiles) {
-        this.webScriptFiles = webScriptFiles;
-    }
-
     /**
      * @return the allowsNoteAttachments
      */
@@ -376,36 +316,29 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * The headerNavigation element defines a set of additional
-     * tabs which will appear on the document.
-     */
-    public void setHeaderNavigationList(List<HeaderNavigation> headerNavigationList) {
-        this.headerNavigationList = headerNavigationList;
-    }
-
-    /**
-     * @return List of all defaultExistenceCheck ReferenceDefinitions associated with this MaintenanceDocument, in the order in
+     * @return List of all defaultExistenceCheck ReferenceDefinitions associated with this MaintenanceDocument, in the
+     *         order in
      *         which they were added
      */
     public List<ReferenceDefinition> getDefaultExistenceChecks() {
         return defaultExistenceChecks;
     }
 
-
     /*
-            The defaultExistenceChecks element contains a list of
-            reference object names which are required to exist when maintaining a BO.
-            Optionally, the reference objects can be required to be active.
+           The defaultExistenceChecks element contains a list of
+           reference object names which are required to exist when maintaining a BO.
+           Optionally, the reference objects can be required to be active.
 
-            JSTL: defaultExistenceChecks is a Map of Reference elements,
-            whose entries are keyed by attributeName
-     */
+           JSTL: defaultExistenceChecks is a Map of Reference elements,
+           whose entries are keyed by attributeName
+    */
     public void setDefaultExistenceChecks(List<ReferenceDefinition> defaultExistenceChecks) {
         this.defaultExistenceChecks = defaultExistenceChecks;
     }
 
     /**
-     * @return List of all defaultExistenceCheck reference fieldNames associated with this MaintenanceDocument, in the order in
+     * @return List of all defaultExistenceCheck reference fieldNames associated with this MaintenanceDocument, in the
+     *         order in
      *         which they were added
      */
     public List<String> getDefaultExistenceCheckFieldNames() {
@@ -415,18 +348,41 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return fieldNames;
     }
 
-
-    public boolean isSessionDocument() {
-        return this.sessionDocument;
+    public boolean isEncryptDocumentDataInPersistentSessionStorage() {
+        return this.encryptDocumentDataInPersistentSessionStorage;
     }
 
-    public void setSessionDocument(boolean sessionDocument) {
-        this.sessionDocument = sessionDocument;
+    public void setEncryptDocumentDataInPersistentSessionStorage(
+            boolean encryptDocumentDataInPersistentSessionStorage) {
+        this.encryptDocumentDataInPersistentSessionStorage = encryptDocumentDataInPersistentSessionStorage;
     }
 
     /**
-     * Returns the document presentation controller class for the document.  Only framework code should be calling this method.
-     * Client devs should use {@link DocumentTypeService#getDocumentPresentationController(Document)} or
+     * The documentAuthorizerClass element is the full class name of the
+     * java class which will determine what features are available to the
+     * user based on the user role and document state.
+     */
+    public void setDocumentAuthorizerClass(Class<? extends DocumentAuthorizer> documentAuthorizerClass) {
+        this.documentAuthorizerClass = documentAuthorizerClass;
+    }
+
+    /**
+     * Returns the document authorizer class for the document.  Only framework code should be calling this method.
+     * Client devs should use {@link DocumentTypeService#getDocumentAuthorizer(org.kuali.rice.krad.document.Document)}
+     * or
+     * {@link DocumentTypeService#getDocumentAuthorizer(String)}
+     *
+     * @return a document authorizer class
+     */
+    public Class<? extends DocumentAuthorizer> getDocumentAuthorizerClass() {
+        return documentAuthorizerClass;
+    }
+
+    /**
+     * Returns the document presentation controller class for the document.  Only framework code should be calling this
+     * method.
+     * Client devs should use {@link DocumentTypeService#getDocumentPresentationController(org.kuali.rice.krad.document.Document)}
+     * or
      * {@link DocumentTypeService#getDocumentPresentationController(String)}
      *
      * @return the documentPresentationControllerClass
@@ -436,36 +392,11 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * @param documentPresentationControllerClass
-     *         the documentPresentationControllerClass to set
+     * @param documentPresentationControllerClass the documentPresentationControllerClass to set
      */
     public void setDocumentPresentationControllerClass(
             Class<? extends DocumentPresentationController> documentPresentationControllerClass) {
         this.documentPresentationControllerClass = documentPresentationControllerClass;
-    }
-
-    /**
-     * @return the derivedValuesSetter
-     */
-    public Class<? extends DerivedValuesSetter> getDerivedValuesSetterClass() {
-        return this.derivedValuesSetterClass;
-    }
-
-    /**
-     * @param derivedValuesSetter the derivedValuesSetter to set
-     */
-    public void setDerivedValuesSetterClass(
-            Class<? extends DerivedValuesSetter> derivedValuesSetter) {
-        this.derivedValuesSetterClass = derivedValuesSetter;
-    }
-
-    public boolean isEncryptDocumentDataInPersistentSessionStorage() {
-        return this.encryptDocumentDataInPersistentSessionStorage;
-    }
-
-    public void setEncryptDocumentDataInPersistentSessionStorage(
-            boolean encryptDocumentDataInPersistentSessionStorage) {
-        this.encryptDocumentDataInPersistentSessionStorage = encryptDocumentDataInPersistentSessionStorage;
     }
 
     /**
@@ -483,9 +414,11 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
                     throw new IllegalArgumentException("invalid (null) defaultExistenceCheck");
                 }
 
-                String keyName = reference.isCollectionReference() ? (reference.getCollection() + "." + reference.getAttributeName()) : reference.getAttributeName();
+                String keyName = reference.isCollectionReference() ?
+                        (reference.getCollection() + "." + reference.getAttributeName()) : reference.getAttributeName();
                 if (defaultExistenceCheckMap.containsKey(keyName)) {
-                    throw new DuplicateEntryException("duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
+                    throw new DuplicateEntryException(
+                            "duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
                 }
                 reference.setBusinessObjectClass(getEntryClass());
                 defaultExistenceCheckMap.put(keyName, reference);

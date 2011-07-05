@@ -20,9 +20,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.Row;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -103,7 +103,7 @@ public class DocumentLookupCriteriaBuilder  {
 				for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
 					for (Row row : searchableAttribute.getSearchingRows(
 							DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-						for (org.kuali.rice.krad.web.ui.Field field : row.getFields()) {
+						for (Field field : row.getFields()) {
 							if (field instanceof Field) {
                                 SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
 								SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);

@@ -30,7 +30,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.krad.authorization.BusinessObjectAuthorizerBase;
+import org.kuali.rice.krad.bo.authorization.BusinessObjectAuthorizerBase;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;

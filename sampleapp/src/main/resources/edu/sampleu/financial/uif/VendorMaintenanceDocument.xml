@@ -20,9 +20,8 @@
 -->
 
    <bean id="VendorMaintenanceDocument" parent="VendorMaintenanceDocument-parentBean" />
-   <bean id="VendorMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-      <property name="businessObjectClass" value="edu.sampleu.financial.bo.VendorDetail" />
-      <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.KualiMaintainableImpl"/>
+   <bean id="VendorMaintenanceDocument-parentBean" abstract="true" parent="uifMaintenanceDocumentEntry">
+      <property name="dataObjectClass" value="edu.sampleu.financial.bo.VendorDetail" />
       <property name="lockingKeys">
          <list>
             <value>vendorHeaderGeneratedIdentifier</value>

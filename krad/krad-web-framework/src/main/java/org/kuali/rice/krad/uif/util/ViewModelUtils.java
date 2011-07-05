@@ -10,13 +10,13 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import java.util.Collection;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.BindingInfo;
 import org.kuali.rice.krad.uif.field.AttributeField;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Provides methods for getting property values, types, and paths within the

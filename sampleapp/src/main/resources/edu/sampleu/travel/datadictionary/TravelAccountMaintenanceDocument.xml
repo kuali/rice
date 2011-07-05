@@ -17,9 +17,9 @@
 
   <bean id="TravelAccountMaintenanceDocument" parent="TravelAccountMaintenanceDocument-parentBean"/>
 
-  <bean id="TravelAccountMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
-    <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.KualiMaintainableImpl"/>
+  <bean id="TravelAccountMaintenanceDocument-parentBean" abstract="true" parent="uifMaintenanceDocumentEntry">
+    <property name="dataObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+    <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
     <property name="defaultExistenceChecks">
       <list>
         <bean parent="ReferenceDefinition" p:attributeName="extension.accountType" p:attributeToHighlightOnFail="extension.accountTypeCode"/>

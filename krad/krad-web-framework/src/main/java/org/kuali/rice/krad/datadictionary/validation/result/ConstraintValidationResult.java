@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.result;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This is a composite class for all the different members that need to be returned when a {@link ConstraintProcessor}

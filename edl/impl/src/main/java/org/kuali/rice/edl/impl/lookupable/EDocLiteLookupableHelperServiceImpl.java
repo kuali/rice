@@ -19,12 +19,11 @@ package org.kuali.rice.edl.impl.lookupable;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.edl.impl.UserAction;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.struts.form.LookupForm;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +37,7 @@ import java.util.Properties;
  *
  */
 
-public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl{ //KualiLookupableHelperServiceImpl {
+public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl { //KualiLookupableHelperServiceImpl {
 
     private static final long serialVersionUID = 3157354920258155881L;
 
@@ -62,7 +61,7 @@ public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperS
         		ConfigContext.getCurrentContextConfig().getKEWBaseURL()+"/EDocLite", 
         		parameters);
         
-        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, null, "Create Document");
+        HtmlData.AnchorHtmlData anchorHtmlData = new HtmlData.AnchorHtmlData(href, null, "Create Document");
         return anchorHtmlData;
     }
 

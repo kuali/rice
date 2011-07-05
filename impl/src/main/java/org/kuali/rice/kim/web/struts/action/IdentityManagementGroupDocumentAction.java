@@ -40,11 +40,11 @@ import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
+import org.kuali.rice.kns.web.struts.action.KualiTableRenderAction;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.web.struts.action.KualiTableRenderAction;
-import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
-import org.kuali.rice.krad.web.struts.form.KualiTableRenderFormMetadata;
 
 /**
  * 

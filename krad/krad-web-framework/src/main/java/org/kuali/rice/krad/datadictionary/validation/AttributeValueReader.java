@@ -15,10 +15,10 @@
 
 package org.kuali.rice.krad.datadictionary.validation;
 
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
+
+import java.util.List;
 
 /**
  * An interface to define classes that encapsulate access to both dictionary metadata and object field values, for example, by reflection

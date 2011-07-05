@@ -19,10 +19,10 @@ package org.kuali.rice.krad.service.impl;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.util.ImmutableProperties;
+import org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResources;
+import org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.properties.PropertyHolder;
-import org.kuali.rice.krad.web.struts.action.KualiPropertyMessageResources;
-import org.kuali.rice.krad.web.struts.action.KualiPropertyMessageResourcesFactory;
 
 import java.util.Properties;
 

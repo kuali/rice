@@ -162,14 +162,14 @@ public class BusinessObjectAttributeEntry extends PersistableBusinessObjectBase 
     }
 
     /**
-     * @return Returns the businessObjectClass.
+     * @return Returns the dataObjectClass.
      */
     public String getDictionaryBusinessObjectName() {
         return dictionaryBusinessObjectName;
     }
 
     /**
-     * @param businessObjectClass The businessObjectClass to set.
+     * @param businessObjectClass The dataObjectClass to set.
      */
     public void setDictionaryBusinessObjectName(String businessObjectClass) {
         this.dictionaryBusinessObjectName = businessObjectClass;

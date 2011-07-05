@@ -14,8 +14,8 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.search.SearchOperator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.dao.LookupDao;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 
 import java.util.Collection;
@@ -80,7 +80,7 @@ public class LookupServiceImpl implements LookupService {
     }
 
     public boolean allPrimaryKeyValuesPresentAndNotWildcard(Class<?> boClass, Map<String, String> formProps) {
-        List<String> pkFields = KRADServiceLocatorWeb.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(
+        List<String> pkFields = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(
                 boClass);
         Iterator<String> pkIter = pkFields.iterator();
         boolean returnVal = true;

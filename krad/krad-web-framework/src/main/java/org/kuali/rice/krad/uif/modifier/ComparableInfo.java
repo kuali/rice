@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
-import java.io.Serializable;
-
 import org.kuali.rice.krad.uif.core.Ordered;
+
+import java.io.Serializable;
 
 
 /**

@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kew.actionrequest.bo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A values finder for returning KEW Action Request codes.

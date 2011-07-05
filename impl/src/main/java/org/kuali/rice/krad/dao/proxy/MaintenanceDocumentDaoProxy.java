@@ -38,8 +38,8 @@ public class MaintenanceDocumentDaoProxy implements MaintenanceDocumentDao {
 		return getDao(MaintenanceLock.class).getLockingDocumentNumber(lockingRepresentation, documentNumber);
 	}
 
-//	public Collection getPendingDocumentsForClass(Class businessObjectClass) {
-//		return getDao(MaintenanceLock.class).getPendingDocumentsForClass(businessObjectClass);
+//	public Collection getPendingDocumentsForClass(Class dataObjectClass) {
+//		return getDao(MaintenanceLock.class).getPendingDocumentsForClass(dataObjectClass);
 //	}
 
 	public void deleteLocks(String documentNumber) {

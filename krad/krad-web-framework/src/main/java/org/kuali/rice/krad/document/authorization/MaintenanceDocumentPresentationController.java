@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import java.util.Set;
-
-import org.kuali.rice.krad.authorization.InquiryOrMaintenanceDocumentPresentationController;
+import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentPresentationController;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 
+import java.util.Set;
+
 public interface MaintenanceDocumentPresentationController extends
-        DocumentPresentationController,
-		InquiryOrMaintenanceDocumentPresentationController {
+        DocumentPresentationController, InquiryOrMaintenanceDocumentPresentationController {
 	public boolean canCreate(Class boClass);
 
 	public Set<String> getConditionallyReadOnlyPropertyNames(

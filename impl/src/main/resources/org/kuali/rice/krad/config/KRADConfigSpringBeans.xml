@@ -72,6 +72,7 @@
 	<bean id="kradConfigurer" class="org.kuali.rice.krad.config.KRADConfigurer">
 		<property name="moduleName" value="KR" />
 		<property name="hasWebInterface" value="true" />
+        <property name="includeKnsSpringBeans" value="true" />
 		<property name="validRunModes">
 			<list>
 				<value>LOCAL</value>

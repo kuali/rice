@@ -79,7 +79,7 @@
     <property name="label" value="Yes No with Blank Indicator"/>
     <property name="shortLabel" value="Indicator"/>
     <property name="maxLength" value="1"/>
-    <property name="optionsFinderClass" value="org.kuali.rice.krad.lookup.keyvalues.IndicatorYNNullValuesFinder"/>
+    <property name="optionsFinderClass" value="org.kuali.rice.krad.keyvalues.IndicatorYNNullValuesFinder"/>
     <property name="controlField">
       <bean parent="SelectControl"/>
     </property>     
@@ -93,7 +93,7 @@
     <property name="label" value="Yes No without Blank Indicator"/>
     <property name="shortLabel" value="Indicator"/>
     <property name="maxLength" value="1"/>
-    <property name="optionsFinderClass" value="org.kuali.rice.krad.lookup.keyvalues.IndicatorYNOnlyValuesFinder"/>
+    <property name="optionsFinderClass" value="org.kuali.rice.krad.keyvalues.IndicatorYNOnlyValuesFinder"/>
     <property name="controlField">
       <bean parent="SelectControl"/>
     </property> 

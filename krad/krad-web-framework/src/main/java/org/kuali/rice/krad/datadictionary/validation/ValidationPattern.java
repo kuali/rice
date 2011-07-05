@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary.validation;
 
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
+
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 
 /**
  * Abstraction of the regular expressions used to validate attribute values.
@@ -87,6 +87,7 @@ import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
                     exact regex patterns.
                     e.g. validationPatternRegex.date for regex used in date validation.
  */
+@Deprecated
 abstract public class ValidationPattern implements Serializable {
 // TODO: UNIT TEST: compile all patterns to test
 

@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.bo;
 
-import javax.persistence.Table;
 import javax.persistence.Entity;
 import javax.persistence.IdClass;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 

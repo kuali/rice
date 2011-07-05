@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import java.util.Set;
-
 import org.kuali.rice.krad.document.Document;
+
+import java.util.Set;
 
 /**
  * The DocumentPresentationController class is used for non-user related lock down 

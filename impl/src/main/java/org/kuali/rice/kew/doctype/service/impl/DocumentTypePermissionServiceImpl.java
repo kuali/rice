@@ -353,7 +353,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			String namespaceCode;
 			if (MaintenanceDocument.class.isAssignableFrom(documentClass)) {
 				MaintenanceDocumentEntry maintenanceDocumentEntry = (MaintenanceDocumentEntry) documentEntry;
-				namespaceCode = KRADUtils.getNamespaceCode(maintenanceDocumentEntry.getBusinessObjectClass());
+				namespaceCode = KRADUtils.getNamespaceCode(maintenanceDocumentEntry.getDataObjectClass());
 			}
 			else {
 				namespaceCode = KRADUtils.getNamespaceCode(documentClass);

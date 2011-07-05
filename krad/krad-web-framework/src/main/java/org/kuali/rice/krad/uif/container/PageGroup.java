@@ -10,9 +10,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.text.MessageFormat;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -22,6 +19,9 @@ import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
 import org.springframework.util.AutoPopulatingList;
+
+import java.text.MessageFormat;
+import java.util.List;
 
 /**
  * This is a description of what this class does - Administrator don't forget to

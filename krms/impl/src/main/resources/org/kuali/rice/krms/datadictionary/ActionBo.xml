@@ -22,7 +22,7 @@
 
   <bean id="ActionBo" parent="ActionBo-parentBean"/>
   <bean id="ActionBo-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.ActionBo"/>
+    <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.ActionBo"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">
       <list>

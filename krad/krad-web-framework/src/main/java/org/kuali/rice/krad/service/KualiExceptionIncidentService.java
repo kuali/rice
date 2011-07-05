@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.service;
 
-import java.util.Map;
-
 import org.kuali.rice.krad.exception.KualiExceptionIncident;
+
+import java.util.Map;
 
 /**
  * This is used for sending report of an incident

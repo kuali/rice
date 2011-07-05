@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import org.kuali.rice.kns.lookup.KualiLookupableImpl;
+import org.kuali.rice.kns.lookup.LookupableHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.bo.Account;

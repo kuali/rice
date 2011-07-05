@@ -18,8 +18,8 @@
   <bean id="NamespaceMaintenanceDocument" parent="NamespaceMaintenanceDocument-parentBean"/>
 
   <bean id="NamespaceMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.core.impl.namespace.NamespaceBo"/>
-    <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.KualiMaintainableImpl"/>
+    <property name="dataObjectClass" value="org.kuali.rice.core.impl.namespace.NamespaceBo"/>
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
         <ref bean="NamespaceMaintenanceDocument-EditNamespace"/>
@@ -35,7 +35,7 @@
     
     
     <property name="documentTypeName" value="NamespaceMaintenanceDocument"/>
-    <property name="businessRulesClass" value="org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase"/>
+    <property name="businessRulesClass" value="org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     
     <property name="workflowProperties">

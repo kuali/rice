@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import java.util.Set;
-
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.document.Document;
+
+import java.util.Set;
 
 
 /**

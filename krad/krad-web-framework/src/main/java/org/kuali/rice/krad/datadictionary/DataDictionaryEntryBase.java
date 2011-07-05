@@ -15,17 +15,17 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Contains common properties and methods for data dictionary entries.

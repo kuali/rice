@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.capability;
 
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
+
+import java.util.List;
 
 /**
  * Validation capability to constrain an object to has some specified acceptable number of prerequisite constraints nested

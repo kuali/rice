@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.service;
 
-import java.util.List;
-
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+
+import java.util.List;
 
 /**
  * This service provides various operations related to {@link Note} objects.

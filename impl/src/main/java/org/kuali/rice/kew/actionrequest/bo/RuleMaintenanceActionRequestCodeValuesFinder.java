@@ -15,19 +15,20 @@
  */
 package org.kuali.rice.kew.actionrequest.bo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.kns.util.KNSGlobalVariables;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
-import org.kuali.rice.krad.web.struts.form.KualiMaintenanceForm;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A values finder for returning KEW Action Request codes related to Kuali maintenance forms.
@@ -38,13 +39,13 @@ import org.kuali.rice.krad.web.struts.form.KualiMaintenanceForm;
 public class RuleMaintenanceActionRequestCodeValuesFinder extends ActionRequestCodeValuesFinder {
 
 	/**
-	 * @see org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder#getKeyValues()
+	 * @see org.kuali.rice.krad.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
 	@Override
 	public List<KeyValue> getKeyValues() {
 		final List<KeyValue> actionRequestCodes = new ArrayList<KeyValue>();
 		// Acquire the Kuali form, and return the super class' result if the form is not a Kuali maintenance form.
-		final KualiForm kForm = GlobalVariables.getKualiForm();
+		final KualiForm kForm = KNSGlobalVariables.getKualiForm();
 		if (!(kForm instanceof KualiMaintenanceForm)) {
 			return super.getKeyValues();
 		}

@@ -69,14 +69,14 @@
 		class="org.kuali.rice.krad.uif.container.InquiryView" parent="KNSFormView">
 		<property name="viewName" value="default" />
 		<property name="viewHelperServiceClassName"
-			value="org.kuali.rice.krad.inquiry.KualiInquirableImpl" />
+			value="org.kuali.rice.krad.inquiry.InquirableImpl" />
 		<property name="presentationControllerClass"
 			value="org.kuali.rice.krad.uif.authorization.InquiryPresentationControllerBase" />
 		<property name="authorizerClass"
 			value="org.kuali.rice.krad.uif.authorization.InquiryAuthorizerBase" />
 		<property name="formClass"
-			value="org.kuali.rice.krad.web.spring.form.InquiryForm" />
-		<property name="defaultBindingObjectPath" value="bo" />
+			value="org.kuali.rice.krad.web.form.InquiryForm" />
+		<property name="defaultBindingObjectPath" value="dataObject" />
 		<property name="conditionalReadOnly" value="true" />
 		<property name="singlePageView" value="true" />
 		<property name="page">
@@ -92,9 +92,9 @@
 		class="org.kuali.rice.krad.uif.container.LookupView" parent="KNSFormView">
 		<property name="viewName" value="default" />
 		<property name="viewHelperServiceClassName"
-			value="org.kuali.rice.krad.uif.service.impl.LookupViewHelperServiceImpl" />
+			value="org.kuali.rice.krad.lookup.LookupableImpl" />
 		<property name="formClass"
-			value="org.kuali.rice.krad.web.spring.form.LookupForm" />
+			value="org.kuali.rice.krad.web.form.LookupForm" />
 		<property name="readOnly" value="false" />
 		<property name="singlePageView" value="true" />
 		<property name="page">
@@ -152,7 +152,7 @@
 	<bean id="DocumentView-parentBean" abstract="true"
 		class="org.kuali.rice.krad.uif.container.DocumentView" parent="KNSFormView">
 		<property name="formClass"
-			value="org.kuali.rice.krad.web.spring.form.DocumentFormBase" />
+			value="org.kuali.rice.krad.web.form.DocumentFormBase" />
 		<property name="defaultBindingObjectPath" value="document" />
 		<property name="presentationControllerClass"
 			value="org.kuali.rice.krad.uif.authorization.DocumentPresentationControllerBase" />
@@ -188,13 +188,13 @@
 		class="org.kuali.rice.krad.uif.container.MaintenanceView" parent="DocumentView">
 		<property name="viewName" value="default" />
 		<property name="viewHelperServiceClassName"
-			value="org.kuali.rice.krad.maintenance.KualiMaintainableImpl" />
+			value="org.kuali.rice.krad.maintenance.MaintainableImpl" />
 		<property name="presentationControllerClass"
 			value="org.kuali.rice.krad.uif.authorization.MaintenanceDocumentPresentationControllerBase" />
 		<property name="authorizerClass"
 			value="org.kuali.rice.krad.uif.authorization.MaintenanceDocumentAuthorizerBase" />
 		<property name="formClass"
-			value="org.kuali.rice.krad.web.spring.form.MaintenanceForm" />
+			value="org.kuali.rice.krad.web.form.MaintenanceForm" />
 		<property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject" />
 		<property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject" />
 	</bean>
@@ -218,7 +218,7 @@
 			</list>
 		</property>
 		<property name="formClass"
-			value="org.kuali.rice.krad.web.spring.form.IncidentReportForm" />
+			value="org.kuali.rice.krad.web.form.IncidentReportForm" />
 		<property name="viewName" value="default" />
 		<property name="footer">
 			<bean parent="Footer" />

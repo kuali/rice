@@ -17,6 +17,7 @@ package org.kuali.rice.krad.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.*;

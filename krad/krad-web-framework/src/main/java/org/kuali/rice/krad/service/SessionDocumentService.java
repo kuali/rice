@@ -19,90 +19,67 @@ import java.sql.Timestamp;
 
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.web.spring.form.DocumentFormBase;
-import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
-
-
+import org.kuali.rice.krad.web.form.DocumentFormBase;
 
 /**
- * Defines the methods common to all AttachmentService implementations
+ * Service API for persisting <code>Document</code> form content and
+ * retrieving back
  *
+ * <p>
+ * Used as an extension to session support. If a session times out, the doucment contents
+ * can be retrieved from the persistence storage and work resumed
+ * </p>
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public interface SessionDocumentService {
 
-	/**
-     * Returns KualiDocumentFormBase object. It will check userSession first, if it failed then check database
+    /**
+     * Retrieves a document from the user session for the given document id
+     */
+    public WorkflowDocument getDocumentFromSession(UserSession userSession, String docId);
+
+    /**
+     * This method places a document into the user session.
+     */
+    public void addDocumentToUserSession(UserSession userSession, WorkflowDocument document);
+	
+     /**
+     * Delete DocumentFormBase from session and database.
      *
      * @param documentNumber
      * @param docFormKey
      * @param userSession
-     * @return KualiDocumentFormBase
      * @throws
      */
-	public KualiDocumentFormBase getDocumentForm( String documentNumber, String docFormKey, UserSession userSession, String ipAddress);
-	
-	/**
-	 * This method retrieve's a document from the user session from the given docId. 
-	 */
-	public WorkflowDocument getDocumentFromSession(UserSession userSession, String docId);
-	
-	/**
-	 * This method places a document into the user session. 
-	 */
-	public void addDocumentToUserSession(UserSession userSession, WorkflowDocument document);
-	
+    public void purgeDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress);
+    
 	/**
      * Delete KualiDocumentFormBase from session and database.
      *
      * @param documentNumber
-     * @param docFormKey
-     * @param userSession
      * @throws
      */
-	public void purgeDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress); 
-	
-	/**
-     * Store KualiDocumentFormBase into session and database.
+    public void purgeAllSessionDocuments(Timestamp expirationDate);
+
+    /**
+     * This method stores a UifFormBase into session and database
      *
-     * @param KualiDocumentFormBase
+     * @param form
      * @param userSession
-     * @throws
+     * @param ipAddress
      */
-	public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession, String ipAddress);
-	
-	
-	//public void purgeAllSessionDocumentsFromMemory(); 
-	
-	/**
-     * Delete KualiDocumentFormBases from database.
+    public void setDocumentForm(DocumentFormBase form, UserSession userSession, String ipAddress);
+
+    /**
+     * Returns DocumentFormBase object from the db
      *
      * @param documentNumber
-     * @throws
+     * @param docFormKey
+     * @param userSession
+     * @param ipAddress
+     * @return
      */
-	public void purgeAllSessionDocuments(Timestamp expirationDate); 
-
-	/**
-	 * 
-	 * This method stores a UifFormBase into session and database
-	 * 
-	 * @param form
-	 * @param userSession
-	 * @param ipAddress
-	 */
-	public void setDocumentForm(DocumentFormBase form, UserSession userSession, String ipAddress);
-
-	/**
-	 * 
-     * Returns DocumentFormBase object from the db
-	 * 
-	 * @param documentNumber
-	 * @param docFormKey
-	 * @param userSession
-	 * @param ipAddress
-	 * @return
-	 */
-	public DocumentFormBase getUifDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress);
-
+    public DocumentFormBase getDocumentForm(String documentNumber, String docFormKey, UserSession userSession,
+            String ipAddress);
 }

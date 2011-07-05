@@ -22,7 +22,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.web.struts.action.KualiAction;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 

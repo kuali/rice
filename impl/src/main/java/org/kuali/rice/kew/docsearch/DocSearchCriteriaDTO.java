@@ -21,10 +21,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.BusinessObjectBase;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.Row;
 
 import java.util.ArrayList;
 import java.util.HashSet;

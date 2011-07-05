@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
+import org.kuali.rice.kns.datadictionary.validation.fieldlevel.ZipcodeValidationPattern;
 import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertFalse;

@@ -19,25 +19,25 @@
 <struts-config>
   
     <form-beans >
-	    <form-bean name="QuestionPromptForm" type="org.kuali.rice.krad.web.struts.form.QuestionPromptForm" />
-	    <form-bean name="LookupForm" type="org.kuali.rice.krad.web.struts.form.LookupForm" />
-		<form-bean name="MultipleValueLookupForm" type="org.kuali.rice.krad.web.struts.form.MultipleValueLookupForm" />
-	    <form-bean name="InquiryForm" type="org.kuali.rice.krad.web.struts.form.InquiryForm" />
-	    <form-bean name="KualiMaintenanceForm" type="org.kuali.rice.krad.web.struts.form.KualiMaintenanceForm" />
-	    <form-bean name="KualiHelpForm" type="org.kuali.rice.krad.web.struts.form.KualiHelpForm" />
-        <form-bean name="MultipleValueLookupForm" type="org.kuali.rice.krad.web.struts.form.MultipleValueLookupForm" />
-        <form-bean name="KualiForm" type="org.kuali.rice.krad.web.struts.form.KualiForm" />
-        <form-bean name="KualiExceptionIncidentForm" type="org.kuali.rice.krad.web.struts.form.KualiExceptionIncidentForm" />
-        <form-bean name="AuthorizationExceptionForm" type="org.kuali.rice.krad.web.struts.form.AuthorizationExceptionForm" />
-        <form-bean name="DisplayInactivationBlockersForm" type="org.kuali.rice.krad.web.struts.form.DisplayInactivationBlockersForm" />
+	    <form-bean name="QuestionPromptForm" type="org.kuali.rice.kns.web.struts.form.QuestionPromptForm" />
+	    <form-bean name="LookupForm" type="org.kuali.rice.kns.web.struts.form.LookupForm" />
+		<form-bean name="MultipleValueLookupForm" type="org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm" />
+	    <form-bean name="InquiryForm" type="org.kuali.rice.kns.web.struts.form.InquiryForm" />
+	    <form-bean name="KualiMaintenanceForm" type="org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm" />
+	    <form-bean name="KualiHelpForm" type="org.kuali.rice.kns.web.struts.form.KualiHelpForm" />
+        <form-bean name="MultipleValueLookupForm" type="org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm" />
+        <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
+        <form-bean name="KualiExceptionIncidentForm" type="org.kuali.rice.kns.web.struts.form.KualiExceptionIncidentForm" />
+        <form-bean name="AuthorizationExceptionForm" type="org.kuali.rice.kns.web.struts.form.AuthorizationExceptionForm" />
+        <form-bean name="DisplayInactivationBlockersForm" type="org.kuali.rice.kns.web.struts.form.DisplayInactivationBlockersForm" />
     </form-beans>
 
 	<global-exceptions>
 		<exception type="java.lang.Throwable"
-			handler="org.kuali.rice.krad.web.struts.pojo.StrutsExceptionIncidentHandler"
+			handler="org.kuali.rice.kns.web.struts.form.pojo.StrutsExceptionIncidentHandler"
 			key="meaningless" />
 		<exception type="org.kuali.rice.krad.exception.AuthorizationException"
-            handler="org.kuali.rice.krad.web.struts.pojo.AuthorizationExceptionHandler"
+            handler="org.kuali.rice.kns.web.struts.form.pojo.AuthorizationExceptionHandler"
             key="meaningless" />
 	</global-exceptions>
     
@@ -57,56 +57,56 @@
     </global-forwards>
 
     <action-mappings>
-        <action path="/portal" name="KualiForm" type="org.kuali.rice.krad.web.struts.action.KualiSimpleAction">
+        <action path="/portal" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/index.jsp" />
         </action>
-        <action path="/index" name="KualiForm" type="org.kuali.rice.krad.web.struts.action.KualiSimpleAction">
+        <action path="/index" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/index.jsp" />
         </action>
         <action path="/kualiExceptionIncidentReport"
                 name="KualiExceptionIncidentForm"
                 attribute="KualiForm"
-                type="org.kuali.rice.krad.web.struts.action.KualiExceptionHandlerAction">
+                type="org.kuali.rice.kns.web.struts.action.KualiExceptionHandlerAction">
             <forward name="basic" path="/WEB-INF/jsp/KualiExceptionIncident.jsp" />
         </action>
         <action path="/authorizationExceptionReport"
                 name="AuthorizationExceptionForm"
                 attribute="KualiForm"
-                type="org.kuali.rice.krad.web.struts.action.AuthorizationExceptionAction">
+                type="org.kuali.rice.kns.web.struts.action.AuthorizationExceptionAction">
             <forward name="basic" path="/WEB-INF/jsp/AuthorizationException.jsp" />
         </action>
-   	    <action path="/lookup" name="LookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.krad.web.struts.action.KualiLookupAction">
+   	    <action path="/lookup" name="LookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.kns.web.struts.action.KualiLookupAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiLookup.jsp" />
 	    </action>	     
-	    <action path="/multipleValueLookup" name="MultipleValueLookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.krad.web.struts.action.KualiMultipleValueLookupAction">
+	    <action path="/multipleValueLookup" name="MultipleValueLookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.kns.web.struts.action.KualiMultipleValueLookupAction">
             <set-property property="cancellable" value="true" />
             <forward name="basic" path="/WEB-INF/jsp/KualiMultipleValueLookup.jsp" />
         </action>
-	    <action path="/inquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.krad.web.struts.action.KualiInquiryAction">
+	    <action path="/inquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.kns.web.struts.action.KualiInquiryAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiInquiry.jsp" />
 	    </action>
-	    <action path="/maintenance" name="KualiMaintenanceForm" attribute="KualiForm" scope="request" parameter="methodToCall" validate="false" input="/WEB-INF/jsp/KualiMaintenanceDocument.jsp" type="org.kuali.rice.krad.web.struts.action.KualiMaintenanceDocumentAction">
+	    <action path="/maintenance" name="KualiMaintenanceForm" attribute="KualiForm" scope="request" parameter="methodToCall" validate="false" input="/WEB-INF/jsp/KualiMaintenanceDocument.jsp" type="org.kuali.rice.kns.web.struts.action.KualiMaintenanceDocumentAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiMaintenanceDocument.jsp" />
 	    </action>    
-	    <action path="/help" name="KualiHelpForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.krad.web.struts.action.KualiHelpAction">
+	    <action path="/help" name="KualiHelpForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.kns.web.struts.action.KualiHelpAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiHelp.jsp" />
 	    </action>
-        <action path="/questionPrompt" name="QuestionPromptForm" scope="request" parameter="methodToCall" type="org.kuali.rice.krad.web.struts.action.QuestionPromptAction">
+        <action path="/questionPrompt" name="QuestionPromptForm" scope="request" parameter="methodToCall" type="org.kuali.rice.kns.web.struts.action.QuestionPromptAction">
             <forward name="basic" path="/WEB-INF/jsp/KualiQuestion.jsp" />
         </action>
-	    <action path="/directInquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.krad.web.struts.action.KualiInquiryAction">
+	    <action path="/directInquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.kns.web.struts.action.KualiInquiryAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiDirectInquiry.jsp" />
 	    </action>
-	    <action path="/inactivationBlockers" name="DisplayInactivationBlockersForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.krad.web.struts.action.DisplayInactivationBlockersAction">
+	    <action path="/inactivationBlockers" name="DisplayInactivationBlockersForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.kns.web.struts.action.DisplayInactivationBlockersAction">
 	        <forward name="basic" path="/WEB-INF/jsp/DisplayInactivationBlockers.jsp" />
 	    </action>
-        <action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase">
+        <action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase">
             <forward name="basic" path="/WEB-INF/jsp/TextArea.jsp" />
         </action>
     </action-mappings>
 
-    <controller processorClass="org.kuali.rice.krad.web.struts.action.KualiRequestProcessor" />
-    <message-resources factory="org.kuali.rice.krad.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="" />
-    <plug-in className="org.kuali.rice.krad.web.struts.pojo.PojoPlugin" />
+    <controller processorClass="org.kuali.rice.kns.web.struts.action.KualiRequestProcessor" />
+    <message-resources factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="" />
+    <plug-in className="org.kuali.rice.kns.web.struts.form.pojo.PojoPlugin" />
 </struts-config>
 

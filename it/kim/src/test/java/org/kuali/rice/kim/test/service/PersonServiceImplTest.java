@@ -26,8 +26,9 @@ import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.test.bo.BOContainingPerson;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.lookup.Lookupable;
+import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
@@ -240,7 +241,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		bo.setPrincipalId( "p2" );
 		bos.save( bo );
 
-		Lookupable l = KRADServiceLocatorInternal.getKualiLookupable();
+		Lookupable l = KNSServiceLocator.getKualiLookupable();
 		l.setBusinessObjectClass( BOContainingPerson.class );
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put( "person.principalName", "principal1" );

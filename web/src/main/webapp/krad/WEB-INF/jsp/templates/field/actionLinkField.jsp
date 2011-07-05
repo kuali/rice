@@ -35,7 +35,6 @@
 </c:if>
 
 <a id="${field.id}" ${href} onclick="return false"${name} ${style} ${styleClass} ${tabindex} >
-	<c:if
-		test="${(field.actionImageField != null) && field.actionImageField.render}">
+	<c:if test="${(field.actionImageField != null) && field.actionImageField.render}">
 		<krad:template component="${field.actionImageField}" />
 	</c:if> ${field.actionLabel} </a>

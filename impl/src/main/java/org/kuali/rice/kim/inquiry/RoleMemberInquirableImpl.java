@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.impl.role.RoleBo;
-import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**

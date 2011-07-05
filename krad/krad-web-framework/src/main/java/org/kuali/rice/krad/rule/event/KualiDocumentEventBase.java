@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.rule.event;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract superclass for document-related events.
@@ -42,11 +42,6 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
      * @param errorPathPrefix
      */
     protected KualiDocumentEventBase(String description, String errorPathPrefix) {
-
-        if (!(this instanceof PromptBeforeValidationEvent)) {
-            throw new Error("THIS CONSTRUCTOR SHOULD ONLY BE USED AT THE UI LAYER");
-        }
-
         this.description = description;
         this.errorPathPrefix = errorPathPrefix;
     }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -31,7 +31,7 @@ public class AuthorMaintenanceDocumentRule extends MaintenanceDocumentRuleBase {
 		// TODO Auto-generated method stub
 		System.out.println("****Inside Global*****");
 		// cast the document to a Author Document
-		Author author = (Author)document.getDocumentBusinessObject();
+		Author author = (Author)document.getDocumentDataObject();
 		System.out.println("Inside Global Aothor Got is : " + author);
 		System.out.println("****Inside Global*****");
 		// get the list of book order entries off of the book order document

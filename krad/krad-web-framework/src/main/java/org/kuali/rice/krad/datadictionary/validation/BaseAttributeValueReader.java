@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary.validation;
 
-import java.util.List;
-
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.util.DataTypeUtil;
+
+import java.util.List;
 
 /**
  * A class that implements the required accessors and legacy processing for an attribute value reader. This provides a convenient base class

@@ -25,8 +25,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
+import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -36,8 +36,7 @@ import org.kuali.rice.krad.util.KRADConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DocumentTypeLookupableHelperServiceImpl extends
-		KualiLookupableHelperServiceImpl
+public class DocumentTypeLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl
 {
 
     private static final long serialVersionUID = -5162632536083995637L;

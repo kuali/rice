@@ -25,11 +25,11 @@ import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
-import org.kuali.rice.krad.web.ui.ExtraButton;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

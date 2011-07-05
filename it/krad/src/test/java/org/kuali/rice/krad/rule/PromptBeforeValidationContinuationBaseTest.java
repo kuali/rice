@@ -16,11 +16,11 @@
 package org.kuali.rice.krad.rule;
 
 import org.junit.Test;
+import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
+import org.kuali.rice.kns.rules.PromptBeforeValidationBase;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.rule.event.PromptBeforeValidationEvent;
-import org.kuali.rice.krad.rules.PromptBeforeValidationBase;
-import org.kuali.rice.krad.rules.PromptBeforeValidationBase.ContextSession;
+import org.kuali.rice.kns.rules.PromptBeforeValidationBase.ContextSession;
 import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;

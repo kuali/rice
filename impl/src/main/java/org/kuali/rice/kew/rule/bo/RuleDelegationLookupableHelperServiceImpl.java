@@ -49,21 +49,21 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Column;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.ResultRow;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.web.comparator.CellComparatorHelper;
-import org.kuali.rice.krad.web.struts.form.LookupForm;
-import org.kuali.rice.krad.web.ui.Column;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.ResultRow;
-import org.kuali.rice.krad.web.ui.Row;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.

@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Container;
@@ -30,6 +22,14 @@ import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.PropertyReplacer;
 import org.kuali.rice.krad.uif.core.ReferenceCopy;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Base class for all layout managers

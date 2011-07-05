@@ -80,7 +80,7 @@
 	
 	<bean id="edlLookupHelperService" class="org.kuali.rice.edl.impl.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype" />
 
-	<bean id="edlLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" scope="prototype">
+	<bean id="edlLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
 		<property name="lookupableHelperService">
 			<ref bean="edlLookupHelperService" />
 		</property>

@@ -117,7 +117,7 @@
 
   <bean id="AccountRequest-accountTypeCode-parentBean" abstract="true" parent="AccountType-accountTypeCode">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.krad.test.document.bo.AccountType" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.krad.test.document.bo.AccountType" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
     </property>
   </bean>
 </beans>

@@ -1,9 +1,9 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.kuali.rice.krad.datadictionary.validation.DataType;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import org.kuali.rice.krad.datadictionary.validation.DataType;
 
 
 /**

@@ -24,8 +24,8 @@ import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.regex.Matcher;
@@ -37,8 +37,7 @@ import java.util.regex.Pattern;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class GenericPermissionMaintenanceDocumentRule extends
-		MaintenanceDocumentRuleBase {
+public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumentRuleBase {
 	protected static final String DETAIL_VALUES_PROPERTY = "detailValues";
 	protected static final String ERROR_MESSAGE_PREFIX = "error.document.kim.genericpermission.";
 	protected static final String ERROR_MISSING_TEMPLATE = ERROR_MESSAGE_PREFIX + "missingtemplate";

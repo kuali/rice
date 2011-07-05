@@ -10,10 +10,6 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObjectRelationship;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -23,7 +19,11 @@ import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
-import org.kuali.rice.krad.util.WebUtils;
+import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Widget for navigating to a lookup from a field (called a quickfinder)
@@ -47,7 +47,7 @@ public class QuickFinder extends WidgetBase {
     private String readOnlySearchFields;
 
     private Boolean hideReturnLink;
-    private Boolean supressActions;
+    private Boolean suppressActions;
     private Boolean autoSearch;
     private Boolean lookupCriteriaEnabled;
     private Boolean supplementalActionsEnabled;
@@ -105,18 +105,18 @@ public class QuickFinder extends WidgetBase {
 
         if (!fieldConversions.isEmpty()) {
             quickfinderActionField.addActionParameter(UifParameters.CONVERSION_FIELDS,
-                    WebUtils.buildMapParameterString(fieldConversions));
+                    KRADUtils.buildMapParameterString(fieldConversions));
         }
 
         if (!lookupParameters.isEmpty()) {
             quickfinderActionField.addActionParameter(UifParameters.LOOKUP_PARAMETERS,
-                    WebUtils.buildMapParameterString(lookupParameters));
+                    KRADUtils.buildMapParameterString(lookupParameters));
         }
 
         addActionParameterIfNotNull(UifParameters.VIEW_NAME, viewName);
         addActionParameterIfNotNull(UifParameters.READ_ONLY_FIELDS, readOnlySearchFields);
         addActionParameterIfNotNull(UifParameters.HIDE_RETURN_LINK, hideReturnLink);
-        addActionParameterIfNotNull(UifParameters.SUPRESS_ACTIONS, supressActions);
+        addActionParameterIfNotNull(UifParameters.SUPRESS_ACTIONS, suppressActions);
         addActionParameterIfNotNull(UifParameters.REFERENCES_TO_REFRESH, referencesToRefresh);
         addActionParameterIfNotNull(UifParameters.AUTO_SEARCH, autoSearch);
         addActionParameterIfNotNull(UifParameters.LOOKUP_CRITERIA_ENABLED, lookupCriteriaEnabled);
@@ -126,7 +126,7 @@ public class QuickFinder extends WidgetBase {
         addActionParameterIfNotNull(UifParameters.SHOW_MAINTENANCE_LINKS, showMaintenanceLinks);
 
         // TODO:
-        // org.kuali.rice.krad.util.FieldUtils.populateQuickfinderDefaultsForLookup(Class,
+        // org.kuali.rice.kns.util.FieldUtils.populateQuickfinderDefaultsForLookup(Class,
         // String, Field)
     }
 
@@ -160,7 +160,7 @@ public class QuickFinder extends WidgetBase {
             String toField = entry.getKey();
 
             // TODO: displayedFieldnames in
-            // org.kuali.rice.krad.lookup.LookupUtils.generateFieldConversions(BusinessObject,
+            // org.kuali.rice.kns.lookup.LookupUtils.generateFieldConversions(BusinessObject,
             // String, BusinessObjectRelationship, String, List, String)
 
             if (StringUtils.isNotBlank(parentObjectPath)) {
@@ -280,12 +280,12 @@ public class QuickFinder extends WidgetBase {
         this.hideReturnLink = hideReturnLink;
     }
 
-    public Boolean getSupressActions() {
-        return this.supressActions;
+    public Boolean getSuppressActions() {
+        return suppressActions;
     }
 
-    public void setSupressActions(Boolean supressActions) {
-        this.supressActions = supressActions;
+    public void setSuppressActions(Boolean suppressActions) {
+        this.suppressActions = suppressActions;
     }
 
     public Boolean getAutoSearch() {

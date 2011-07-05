@@ -18,7 +18,7 @@ package org.kuali.rice.core.web.namespace;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KeyValuesService;
 

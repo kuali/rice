@@ -30,14 +30,14 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocument;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.Row;
 import org.kuali.test.KRADTestCase;
 
 import java.util.Arrays;
@@ -300,7 +300,7 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
 		}
 		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
 			for (Row row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-				for (org.kuali.rice.krad.web.ui.Field field : row.getFields()) {
+				for (Field field : row.getFields()) {
 					if (field instanceof Field) {
 						if (field.getPropertyName().equals(formKey)) {
 							return (Field)field;

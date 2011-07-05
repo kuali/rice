@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
-import java.io.Serializable;
-import java.util.Set;
-
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.Ordered;
+
+import java.io.Serializable;
+import java.util.Set;
 
 /**
  * Provides modification functionality for a <code>Component</code>

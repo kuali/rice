@@ -25,8 +25,6 @@ public class TransactionalDocumentEntry extends DocumentEntry {
     public TransactionalDocumentEntry() {}
 
     /**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.krad.datadictionary.DocumentEntry#completeValidation()
 	 */
 	@Override

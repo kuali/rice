@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.document;
 
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
@@ -33,8 +30,10 @@ import org.kuali.rice.krad.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
-import org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase;
 import org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**

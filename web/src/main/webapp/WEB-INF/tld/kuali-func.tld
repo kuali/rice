@@ -25,7 +25,7 @@
     <function>
         <description>Removes any duplicating spacing (internal or on the ends) from a String, meant to be exposed as a tag library function.</description>
         <name>scrubWhitespace</name>
-        <function-class>org.kuali.rice.krad.util.FieldUtils</function-class>
+        <function-class>org.kuali.rice.kns.util.FieldUtils</function-class>
         <function-signature>java.lang.String scrubWhitespace(java.lang.String)</function-signature>
         <example>&lt;c:out value="${kfunc:scrubWhitespace(stringWithTonsAndTonsOfWhitespaceInItLikeAllTheStringsBuiltInJSP)}"></example>
     </function>
@@ -33,107 +33,107 @@
     <function>
         <description>Returns the TabState for the given tab key in the action form.</description>
         <name>getTabState</name>
-        <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
-        <function-signature>org.kuali.rice.krad.util.TabState getTabState(org.kuali.rice.krad.web.struts.form.KualiForm, java.lang.String)</function-signature>
+        <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+        <function-signature>org.kuali.rice.kns.util.TabState getTabState(org.kuali.rice.kns.web.struts.form.KualiForm, java.lang.String)</function-signature>
         <example>&lt;c:set var="tabState" value="${kfunc:getTabState(KualiForm, tabTitle)}"></example>
     </function>
     
     <function>
         <description>Generates a key from a string that can be used for the tab state key.</description>
         <name>generateTabKey</name>
-        <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
+        <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
         <function-signature>java.lang.String generateTabKey(java.lang.String)</function-signature>
         <example>&lt;c:set var="tabKey" value="${kfunc:generateTabKey(tabTitle)}"></example>
     </function>
     <function>
         <description>Increment tabindex and add a new TabState to the HashMap.</description>
         <name>incrementTabIndex</name>
-        <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
-        <function-signature>void incrementTabIndex(org.kuali.rice.krad.web.struts.form.KualiForm, java.lang.String)</function-signature>
+        <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+        <function-signature>void incrementTabIndex(org.kuali.rice.kns.web.struts.form.KualiForm, java.lang.String)</function-signature>
         <example>${kfunc:incrementTabIndex(kualiForm)}</example>
     </function>
     <function>
     	<description>Registers that a property was editable on the page.</description>
     	<name>registerEditableProperty</name>
-	    <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
-	    <function-signature>void registerEditableProperty(org.kuali.rice.krad.web.struts.pojo.PojoFormBase, java.lang.String)</function-signature>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>void registerEditableProperty(org.kuali.rice.kns.web.struts.form.pojo.PojoFormBase, java.lang.String)</function-signature>
 	    <example>${kfunc:registerEditableProperty(KualiForm, editablePropertyName)}</example>
 	</function>
 	
 	<function>
     	<description>Check Fully Unmask Permission.</description>
     	<name>canFullyUnmaskField</name>
-	    <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
-	    <function-signature>boolean canFullyUnmaskField(java.lang.String, java.lang.String, org.kuali.rice.krad.web.struts.form.KualiForm)</function-signature>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>boolean canFullyUnmaskField(java.lang.String, java.lang.String, org.kuali.rice.kns.web.struts.form.KualiForm)</function-signature>
 	    <example>${kfunc:canFullyUnmaskField(businessObjectClassName, fieldName, kualiForm)}</example>
 	</function>
 	<function>
     	<description>Check Partially Unmask Permission.</description>
     	<name>canPartiallyUnmaskField</name>
-	    <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
-	    <function-signature>boolean canPartiallyUnmaskField(java.lang.String, java.lang.String, org.kuali.rice.krad.web.struts.form.KualiForm)</function-signature>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>boolean canPartiallyUnmaskField(java.lang.String, java.lang.String, org.kuali.rice.kns.web.struts.form.KualiForm)</function-signature>
 	    <example>${kfunc:canPartiallyUnmaskField(businessObjectClassName, fieldName, kualiForm)}</example>
 	</function>
 	<function>
     	<description>Get Fully Masked Value</description>
     	<name>getFullyMaskedValue</name>
-	    <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
 	    <function-signature>java.lang.String getFullyMaskedValue(java.lang.String, java.lang.String, java.lang.Object, java.lang.String)</function-signature>
 	    <example>${kfunc:getFullyMaskedValue(className, fieldName, kualiForm, propertyName)}</example>
 	</function>
 	<function>
     	<description>Get Partially Masked Value</description>
     	<name>getPartiallyMaskedValue</name>
-	    <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
 	    <function-signature>java.lang.String getPartiallyMaskedValue(java.lang.String, java.lang.String,, java.lang.Object, java.lang.String)</function-signature>
 	    <example>${kfunc:getPartiallyMaskedValue(className, fieldName, kualiForm, propertyName)}</example>
 	</function>
     <function>
     	<description>Check to see if field is configured to be hidden on inquiry screens.</description>
     	<name>isInquiryHiddenField</name>
-	    <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
 	    <function-signature>boolean isInquiryHiddenField(java.lang.String, java.lang.String, java.lang.Object, java.lang.String)</function-signature>
 	    <example>${kfunc:isInquiryHiddenField(className, businessObjectClassName, fieldName, kualiForm)}</example>
 	</function>
 	<function>
     	<description>Check to see if kim object type should be hidden on inquiry screens.</description>
     	<name>isHiddenKimObjectType</name>
-	    <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
 	    <function-signature>boolean isHiddenKimObjectType(java.lang.String, java.lang.String)</function-signature>
 	    <example>${kfunc:isHiddenKimObjectType(typeCode, configParameter)}</example>
 	</function>
 	<function>
     	<description>Check Add Note Permission</description>
     	<name>canAddNoteAttachment</name>
-	    <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
 	    <function-signature>boolean canAddNoteAttachment(org.kuali.rice.krad.document.Document)</function-signature>
 	    <example>${kfunc:canAddNoteAttachement(document)}</example>
 	</function>
 	<function>
     	<description>Check View Note Permission</description>
     	<name>canViewNoteAttachment</name>
-	    <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
 	    <function-signature>boolean canViewNoteAttachment(org.kuali.rice.krad.document.Document, java.lang.String)</function-signature>
 	    <example>${kfunc:canAddNoteAttachement(document, attachmentTypeCode)}</example>
 	</function>
 	<function>
     	<description>Check Delete Note Permission</description>
     	<name>canDeleteNoteAttachment</name>
-	    <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
 	    <function-signature>boolean canDeleteNoteAttachment(org.kuali.rice.krad.document.Document, java.lang.String, java.lang.String)</function-signature>
 	    <example>${kfunc:canDeleteNoteAttachement(document, attachmentTypeCode, authorUniversalIdentifier)}</example>
 	</function>
     <function>
         <description>get a named image url for a button, looking first for a property application.custom.image.url.(given image name).  If that is not found, a default image URL is generated</description>
         <name>getButtonImageUrl</name>
-        <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
+        <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
         <function-signature>java.lang.String getButtonImageUrl(java.lang.String)</function-signature>
         <example>${kfunc:getButtonImageUrl((imageName)}</example>
     </function>
     <function>
         <description>check config properties to determine if environment is production</description>
         <name>isProductionEnvironment</name>
-        <function-class>org.kuali.rice.krad.util.WebUtils</function-class>
+        <function-class>org.kuali.rice.krad.util.KRADUtils</function-class>
         <function-signature>boolean isProductionEnvironment()</function-signature>
         <example>${kfunc:isProductionEnvironment()}</example>
     </function>

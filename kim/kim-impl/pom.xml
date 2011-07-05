@@ -29,6 +29,11 @@
             <artifactId>rice-krad-web-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
+         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>rice-kns</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>rice-core-framework</artifactId>

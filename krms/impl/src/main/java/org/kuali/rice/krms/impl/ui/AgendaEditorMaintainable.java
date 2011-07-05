@@ -20,8 +20,8 @@ import java.util.Map;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -34,7 +34,7 @@ import org.kuali.rice.krms.impl.repository.ContextBo;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class AgendaEditorMaintainable extends KualiMaintainableImpl {
+public class AgendaEditorMaintainable extends MaintainableImpl {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -49,10 +49,10 @@ public class AgendaEditorMaintainable extends KualiMaintainableImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setupMaintenanceObject(MaintenanceDocument document,
-			String maintenanceAction, Map<String, String[]> requestParameters) {
+	public void processAfterNew(MaintenanceDocument document,
+			Map<String, String[]> requestParameters) {
 
-		super.setupMaintenanceObject(document, maintenanceAction, requestParameters);
+		super.processAfterNew(document, requestParameters);
 		
 //		if (KRADConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
 //			String[] agendaIds = requestParameters.get("agendaId");
@@ -83,9 +83,9 @@ public class AgendaEditorMaintainable extends KualiMaintainableImpl {
 	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#saveBusinessObject()
 	 */
 	@Override
-	public void saveBusinessObject() {
+	public void saveDataObject() {
 	    // TODO here's where we can handle persisting our agenda and context
-	    super.saveBusinessObject();
+	    super.saveDataObject();
 	}
 	
 //	/**
@@ -102,15 +102,5 @@ public class AgendaEditorMaintainable extends KualiMaintainableImpl {
 //		editor.getContext().setName("new");
 //	}
 
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.krad.bo.BusinessObject)
-	 */
-	@Override
-	public void prepareBusinessObject(BusinessObject businessObject) {
-		super.prepareBusinessObject(businessObject);
-	}
-	
+
 }

@@ -367,7 +367,7 @@
 
     <bean id="docTypeLookupHelperService" class="org.kuali.rice.kew.doctype.DocumentTypeLookupableHelperServiceImpl" scope="prototype"/>
 
-    <bean id="docTypeLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" scope="prototype">
+    <bean id="docTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
       <property name="lookupableHelperService">
         <ref local="docTypeLookupHelperService" />
       </property>
@@ -375,7 +375,7 @@
 
     <bean id="docRouteHeaderValueLookupHelperService" class="org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperServiceImpl" scope="prototype"/>
 
-    <bean id="docRouteHeaderValueLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" scope="prototype">
+    <bean id="docRouteHeaderValueLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
       <property name="lookupableHelperService">
         <ref local="docRouteHeaderValueLookupHelperService" />
       </property>
@@ -383,7 +383,7 @@
 
     <bean id="docSearchCriteriaDTOLookupHelperService" class="org.kuali.rice.kew.bo.lookup.DocSearchCriteriaDTOLookupableHelperServiceImpl" scope="prototype"/>
 
-    <bean id="docSearchCriteriaDTOLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" scope="prototype">
+    <bean id="docSearchCriteriaDTOLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
       <property name="lookupableHelperService">
         <ref local="docSearchCriteriaDTOLookupHelperService" />
       </property>

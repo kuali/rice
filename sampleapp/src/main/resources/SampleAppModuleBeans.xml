@@ -117,7 +117,8 @@
         <property name="packagePrefixes">
             <list>
                 <value>edu.sampleu.travel</value>
-                 <value>edu.sampleu.bookstore</value>
+                <value>edu.sampleu.bookstore</value>
+                <value>edu.sampleu.financial</value>
             </list>
         </property>
     </bean>

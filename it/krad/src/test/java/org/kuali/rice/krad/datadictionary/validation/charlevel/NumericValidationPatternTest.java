@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validation.charlevel;
 
 import org.junit.Test;
+import org.kuali.rice.kns.datadictionary.validation.charlevel.NumericValidationPattern;
 import org.kuali.rice.krad.datadictionary.validation.ValidationTestUtils;
 import org.kuali.rice.test.BaseRiceTestCase;
 

@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.mo.common.Attributes;
@@ -33,8 +29,12 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.spring.form.DocumentFormBase;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.web.form.DocumentFormBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

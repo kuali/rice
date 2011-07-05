@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ page import="org.kuali.rice.krad.web.struts.action.KualiAction,org.kuali.rice.krad.util.KRADConstants"%>
+<%@ page import="org.kuali.rice.kns.web.struts.action.KualiAction,org.kuali.rice.krad.util.KRADConstants"%>
 <%@ include file="tldHeader.jsp"%>
 <html:html>
 

@@ -18,7 +18,7 @@
   <bean id="RoutingRuleMaintenanceDocument" parent="RoutingRuleMaintenanceDocument-parentBean"/>
 
   <bean id="RoutingRuleMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
+    <property name="dataObjectClass" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
     <property name="maintainableClass" value="org.kuali.rice.kew.document.RoutingRuleMaintainable"/>
     <property name="maintainableSections">
       <list>

@@ -10,11 +10,6 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.container.View;
@@ -23,6 +18,11 @@ import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.util.UrlFactory;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * Widget for rendering an Direct Inquiry link icon next to a input field

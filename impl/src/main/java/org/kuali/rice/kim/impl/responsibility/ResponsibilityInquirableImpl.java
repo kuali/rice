@@ -26,10 +26,8 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.inquiry.RoleMemberInquirableImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.krad.lookup.HtmlData.MultipleAnchorHtmlData;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -98,7 +96,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 	protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
     	List<ResponsibilityAttributeBo> responsibilityAttributeData =
     		(List<ResponsibilityAttributeBo>)ObjectUtils.getPropertyValue(businessObject, attributeName);
-    	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
+    	List<HtmlData.AnchorHtmlData> htmlData = new ArrayList<HtmlData.AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ATTRIBUTE_DATA_ID);
     	for(ResponsibilityAttributeBo responsibilityAttributeDataImpl: responsibilityAttributeData){
@@ -106,31 +104,31 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     			getKimAttributeLabelFromDD(responsibilityAttributeDataImpl.getKimAttribute().getAttributeName())+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
     			responsibilityAttributeDataImpl.getAttributeValue()));
     	}
-    	return new MultipleAnchorHtmlData(htmlData);
+    	return new HtmlData.MultipleAnchorHtmlData(htmlData);
     }
 
     @SuppressWarnings("unchecked")
 	protected HtmlData getAssignedRoleInquiryUrl(BusinessObject businessObject){
     	UberResponsibilityBo responsibility = (UberResponsibilityBo)businessObject;
     	List<RoleBo> assignedToRoles = responsibility.getAssignedToRoles();
-    	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
+    	List<HtmlData.AnchorHtmlData> htmlData = new ArrayList<HtmlData.AnchorHtmlData>();
 		if(assignedToRoles!=null && !assignedToRoles.isEmpty()){
 			List<String> primaryKeys = Collections.singletonList(ROLE_ID);
 			RoleService roleService = KimApiServiceLocator.getRoleService();
 			for(RoleBo roleImpl: assignedToRoles){
 				Role role = roleService.getRole(roleImpl.getId());
-				AnchorHtmlData inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleBo.class, role, primaryKeys,
+				HtmlData.AnchorHtmlData inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleBo.class, role, primaryKeys,
         				role.getNamespaceCode()+" "+
         				role.getName());
 				inquiryHtmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
         		htmlData.add(inquiryHtmlData);
         	}
 		}
-    	return new MultipleAnchorHtmlData(htmlData);
+    	return new HtmlData.MultipleAnchorHtmlData(htmlData);
     }
 
     @Override
-	public Object getDataObject(Map fieldValues){
+	public Object retrieveDataObject(Map fieldValues){
     	return getBusinessObject(fieldValues);
     }
 

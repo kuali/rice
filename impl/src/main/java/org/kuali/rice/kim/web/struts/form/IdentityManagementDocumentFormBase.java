@@ -19,10 +19,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.util.PagingBannerUtils;
+import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
+import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.PagingBannerUtils;
-import org.kuali.rice.krad.web.struts.form.KualiTableRenderFormMetadata;
-import org.kuali.rice.krad.web.struts.form.KualiTransactionalDocumentFormBase;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -59,7 +59,8 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 
         if (KRADConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD.equals(getMethodToCall())) {
             final String paramPrefix = KRADConstants.DISPATCH_REQUEST_PARAMETER + "." + KRADConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD + ".";
-            memberTableMetadata.setSwitchToPageNumber(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
+            memberTableMetadata.setSwitchToPageNumber(
+                    PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
             if (memberTableMetadata.getSwitchToPageNumber() == -1) {
                 throw new RuntimeException("Couldn't find page number");
             }

@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import java.beans.PropertyDescriptor;
-import java.util.Map;
-
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
+
+import java.beans.PropertyDescriptor;
+import java.util.Map;
 
 /**
  * Utility methods to get/set property values and working with objects

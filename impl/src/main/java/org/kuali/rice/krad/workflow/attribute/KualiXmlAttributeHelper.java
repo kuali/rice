@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.w3c.dom.Element;

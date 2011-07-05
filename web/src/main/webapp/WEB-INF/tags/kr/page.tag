@@ -23,7 +23,7 @@
 <%@ attribute name="htmlFormAction" required="false" description="The URL that the HTML form rendered on this page will be posted to." %>
 <%@ attribute name="renderMultipart" required="false" description="Boolean value of whether the HTML form rendred on this page will be encoded to accept multipart - ie, uploaded attachment - input." %>
 <%@ attribute name="showTabButtons" required="false" description="Whether to show the show/hide all tabs buttons." %>
-<%@ attribute name="extraTopButtons" required="false" type="java.util.List" description="A List of org.kuali.rice.krad.web.ui.ExtraButton objects to display at the top of the page." %>
+<%@ attribute name="extraTopButtons" required="false" type="java.util.List" description="A List of org.kuali.rice.kns.web.ui.ExtraButton objects to display at the top of the page." %>
 <%@ attribute name="headerDispatch" required="false" description="Overrides the header navigation tab buttons to go directly to the action given here." %>
 <%@ attribute name="lookup" required="false"
 	description="indicates whether the lookup page specific page should be shown"%>
@@ -117,7 +117,7 @@
 <c:choose>
 	<c:when test="${lookup}" >
 		<body onload="placeFocus();
-        <c:if test='<%= jspContext.findAttribute("KualiForm") == org.kuali.rice.krad.web.struts.form.LookupForm.class %>'>
+        <c:if test='<%= jspContext.findAttribute("KualiForm") == org.kuali.rice.kns.web.struts.form.LookupForm.class %>'>
 			<c:out value ="${KualiForm.lookupable.extraOnLoad}" />
 		</c:if>
 		">
@@ -196,7 +196,7 @@
 		value="${DataDictionary.DocumentHeader.attributes}" />
 <c:if test="${showDocumentInfo}">
 	<c:set var="KualiForm" value="${KualiForm}" />
-	<jsp:useBean id="KualiForm" type="org.kuali.rice.krad.web.struts.form.KualiForm" />
+	<jsp:useBean id="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
 
     <c:set var="numberOfHeaderRows" value="<%=new Integer((int) java.lang.Math.ceil((double) KualiForm.getDocInfo().size()/KualiForm.getNumColumns()))%>" />
     <c:set var="headerFieldCount" value="<%=new Integer(KualiForm.getDocInfo().size())%>" />

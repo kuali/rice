@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.attribute;
 
-import org.kuali.rice.krad.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Field;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -37,7 +37,7 @@ public final class XMLAttributeUtils {
 	
 	public static void establishFieldLookup(Field field, Node lookupNode) {
 		NamedNodeMap quickfinderAttributes = lookupNode.getAttributes();
-		String businessObjectClass = quickfinderAttributes.getNamedItem("businessObjectClass").getNodeValue();
+		String businessObjectClass = quickfinderAttributes.getNamedItem("dataObjectClass").getNodeValue();
 		field.setQuickFinderClassNameImpl(businessObjectClass);
 		for (int lcIndex = 0; lcIndex < lookupNode.getChildNodes().getLength(); lcIndex++) {
 			Map<String, String> fieldConversionsMap = new HashMap<String, String>();

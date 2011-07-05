@@ -64,8 +64,8 @@
       </list>
     </property>
   </bean>
-  <bean id="AuthorMaintenanceDocument" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="edu.sampleu.bookstore.bo.Author"/>
+  <bean id="AuthorMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
+    <property name="dataObjectClass" value="edu.sampleu.bookstore.bo.Author"/>
     <property name="maintainableClass" value="edu.sampleu.bookstore.maintenance.AuthorMaintainable"/>
     <property name="businessRulesClass" value="edu.sampleu.bookstore.rule.AuthorMaintenanceDocumentRule"/>
     <property name="documentTypeName" value="AuthorMaintenanceDocument"/>

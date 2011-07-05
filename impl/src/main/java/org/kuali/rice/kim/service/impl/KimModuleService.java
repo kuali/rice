@@ -86,7 +86,7 @@ public class KimModuleService extends ModuleServiceBase {
                 Group group = getGroupService().getGroup((String)fieldValues.get(KimConstants.PrimaryKeyConstants.GROUP_ID));
 				return (T) GroupEbo.from(group);
 			}
-//		} else if(KimType.class.isAssignableFrom(businessObjectClass)){
+//		} else if(KimType.class.isAssignableFrom(dataObjectClass)){
 //			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID)) {
 //				return (T) getTypeInfoService().getKimType((String)fieldValues.get(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
 //			}

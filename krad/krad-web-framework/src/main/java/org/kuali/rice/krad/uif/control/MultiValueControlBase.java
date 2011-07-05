@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import java.util.List;
-
 import org.kuali.rice.core.util.KeyValue;
+
+import java.util.List;
 
 /**
  * Base class for controls that accept/display multiple values

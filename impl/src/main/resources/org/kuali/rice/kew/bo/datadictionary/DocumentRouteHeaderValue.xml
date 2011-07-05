@@ -3,7 +3,7 @@
   <bean id="DocumentRouteHeaderValue" parent="DocumentRouteHeaderValue-parentBean" />
 
   <bean id="DocumentRouteHeaderValue-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" />
+    <property name="dataObjectClass" value="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" />
 <!-- <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter" />
 -->
 

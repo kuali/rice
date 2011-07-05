@@ -125,14 +125,14 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase implement
     
            
     /**
-	 * @return the objectClass
+	 * @return the dataObjectClass
 	 */
 	public String getDataObjectClass() {
 		return this.dataObjectClass;
 	}
 
 	/**
-	 * @param objectClass the objectClass to set
+	 * @param objectClass the dataObjectClass to set
 	 */
 	public void setDataObjectClass(String dataObjectClass) {
 		this.dataObjectClass = dataObjectClass;

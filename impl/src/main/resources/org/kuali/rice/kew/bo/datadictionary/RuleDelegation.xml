@@ -18,7 +18,7 @@
   <bean id="RuleDelegation" parent="RuleDelegation-parentBean"/>
 
   <bean id="RuleDelegation-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RuleDelegation"/>
+    <property name="dataObjectClass" value="org.kuali.rice.kew.rule.RuleDelegation"/>
     <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter"/>
 
     <property name="inquiryDefinition">
@@ -260,7 +260,7 @@
     </property>
     <property name="name" value="delegationType"/>
     <property name="label" value="Delegation Type"/>
-    <property name="formatterClass" value="org.kuali.rice.krad.web.format.DelegationTypeFormatter"/>
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.DelegationTypeFormatter"/>
   </bean>
 
   <bean id="RuleDelegation-documentTypeName" parent="RuleDelegation-documentTypeName-parentBean"/>

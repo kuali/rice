@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.util.List;
+import org.kuali.rice.kns.web.ui.Row;
 
-import org.kuali.rice.krad.web.ui.Row;
+import java.util.List;
 
 
 /**

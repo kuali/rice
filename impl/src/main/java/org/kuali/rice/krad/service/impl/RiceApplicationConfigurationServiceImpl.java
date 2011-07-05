@@ -31,7 +31,7 @@ import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.krad.document.TransactionalDocument;
-import org.kuali.rice.krad.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;

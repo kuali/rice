@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.result;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 

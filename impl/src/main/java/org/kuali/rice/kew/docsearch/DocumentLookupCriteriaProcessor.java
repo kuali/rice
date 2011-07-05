@@ -18,7 +18,7 @@ package org.kuali.rice.kew.docsearch;
 import java.util.List;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.krad.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * This is a description of what this class does - chris don't forget to fill this in. 

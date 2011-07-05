@@ -16,17 +16,16 @@
 
 package org.kuali.rice.core.web.listener;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Finds and executes listeners in the config file.

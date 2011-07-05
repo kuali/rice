@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.inquiry;
 
-import org.kuali.rice.krad.authorization.InquiryOrMaintenanceDocumentPresentationController;
+import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentPresentationController;
 
 public interface InquiryPresentationController extends InquiryOrMaintenanceDocumentPresentationController {
 }

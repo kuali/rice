@@ -10,14 +10,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -38,7 +30,14 @@ import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.widget.BreadCrumbs;
 import org.kuali.rice.krad.uif.widget.GrowlsWidget;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.web.spring.UifControllerHandlerInterceptor;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -192,7 +191,7 @@ public class View extends ContainerBase {
      * @see View#setViewLabelFieldPropertyName(String)
      * @see View#setViewLabelFieldBindingInfo(BindingInfo)
      * @see ViewModelUtils#getPropertyType
-     * @see UifControllerHandlerInterceptor#postHandle
+     * @see org.kuali.rice.krad.web.controller.UifControllerHandlerInterceptor#postHandle
      */
     public void determineViewLabelPropertyName() {
         // We have binding info but a custom viewLabelFieldPropertyName is set
@@ -380,7 +379,7 @@ public class View extends ContainerBase {
      * should extend UifFormBase
      *
      * @return Class<?> class for the view's form
-     * @see org.kuali.rice.krad.web.spring.form.UifFormBase
+     * @see org.kuali.rice.krad.web.form.UifFormBase
      */
     public Class<?> getFormClass() {
         return this.formClass;

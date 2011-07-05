@@ -22,7 +22,7 @@
 
   <bean id="AgendaBo" parent="AgendaBo-parentBean"/>
   <bean id="AgendaBo-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
+    <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">
       <list>

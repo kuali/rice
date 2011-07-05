@@ -158,7 +158,7 @@
 
   <bean id="TravelAccount-extension.accountTypeCode-parentBean" abstract="true" parent="TravelAccountType-accountTypeCode">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:includeBlankRow="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:includeBlankRow="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
     </property>
     <property name="controlField">
       <bean parent="TextControl" p:size="2"/>

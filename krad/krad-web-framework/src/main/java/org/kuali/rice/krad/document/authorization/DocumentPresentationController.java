@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import java.util.Set;
-
 import org.kuali.rice.krad.document.Document;
+
+import java.util.Set;
 
 public interface DocumentPresentationController {
 	public Set<String> getDocumentActions(Document document);

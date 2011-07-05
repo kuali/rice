@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import java.util.Collection;
-
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
@@ -25,6 +23,8 @@ import org.kuali.rice.krad.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
+
+import java.util.Collection;
 
 /**
  * 

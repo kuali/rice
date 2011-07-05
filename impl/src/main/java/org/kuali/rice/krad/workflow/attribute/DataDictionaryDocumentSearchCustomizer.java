@@ -33,8 +33,8 @@ import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.util.MessageMap;
-import org.kuali.rice.krad.web.ui.Row;
 
 public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribute, DocumentSearchGenerator, DocumentSearchResultProcessor {
     // SEARCH GENERATOR IMPLEMENTATION

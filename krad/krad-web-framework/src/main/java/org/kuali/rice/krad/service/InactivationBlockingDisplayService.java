@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.service;
 
-import java.util.List;
-
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
+
+import java.util.List;
 
 /**
  * A service that helps to print out records that block the inactivation of another BO

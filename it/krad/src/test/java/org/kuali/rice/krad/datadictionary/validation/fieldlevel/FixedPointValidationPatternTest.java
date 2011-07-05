@@ -17,6 +17,7 @@ package org.kuali.rice.krad.datadictionary.validation.fieldlevel;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.kns.datadictionary.validation.fieldlevel.FixedPointValidationPattern;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.test.BaseRiceTestCase;
 

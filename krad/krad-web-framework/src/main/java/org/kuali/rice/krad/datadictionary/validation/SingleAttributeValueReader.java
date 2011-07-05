@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary.validation;
 
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.DataTypeConstraint;
+
+import java.util.List;
 
 
 /**

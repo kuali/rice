@@ -22,10 +22,10 @@ package org.kuali.rice.krad.uif.control;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CheckboxControl extends ControlBase {
-	private static final long serialVersionUID = -4314410027656532020L;
+    private static final long serialVersionUID = -1397028958569144230L;
 
-	public CheckboxControl() {
-
+    public CheckboxControl() {
+       super();
 	}
 
 }

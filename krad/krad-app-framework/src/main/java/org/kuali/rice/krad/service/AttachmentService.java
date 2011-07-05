@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.service;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Defines the methods common to all AttachmentService implementations

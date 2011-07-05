@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
@@ -36,7 +29,13 @@ import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class for utility methods that pertain to UIF Lookup processing
@@ -179,7 +178,7 @@ public class LookupInquiryUtils {
 
 		if (parameterValue != null
 				&& lookupObjectClass != null
-				&& KRADServiceLocatorWeb.getBusinessObjectAuthorizationService()
+				&& KRADServiceLocatorWeb.getDataObjectAuthorizationService()
 						.attributeValueNeedsToBeEncryptedOnFormsAndLinks(lookupObjectClass, propertyName)) {
 			try {
 				parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue)

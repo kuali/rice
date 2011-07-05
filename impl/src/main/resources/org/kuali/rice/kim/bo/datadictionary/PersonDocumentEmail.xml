@@ -34,7 +34,7 @@
    <bean id="DocEmail-emailTypeCode" parent="DocEmail-emailTypeCode-parentBean"/>
   <bean id="DocEmail-emailTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="emailTypeCode" p:forceUppercase="true" p:label="Type" p:shortLabel="Type" p:maxLength="10" p:required="false">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
     </property>
   </bean>
       

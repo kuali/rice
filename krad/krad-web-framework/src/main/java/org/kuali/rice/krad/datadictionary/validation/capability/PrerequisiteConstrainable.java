@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.capability;
 
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
+
+import java.util.List;
 
 /**
  * Validation capability to constrain a value by requiring that some other attribute value be non-empty. 

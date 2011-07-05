@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang.StringUtils;
+
+import java.util.regex.Pattern;
 
 /**
  * Pattern for matching any character in the given list (String)

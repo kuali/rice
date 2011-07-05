@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.inquiry.Inquirable;
-import org.kuali.rice.krad.lookup.valuefinder.ValueFinder;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -45,7 +45,7 @@ import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.MethodInvoker;
 
 import java.lang.reflect.Field;
@@ -172,7 +172,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
         component.getContext().putAll(origComponent.getContext());
-        
+
         performComponentInitialization(form.getView(), component);
         performComponentApplyModel(form.getView(), component, form);
         performComponentFinalize(form.getView(), component, form, parent);
@@ -846,7 +846,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValues(org.kuali.rice.krad.uif.container.View,
-     *      org.kuali.rice.krad.web.spring.form.UifFormBase)
+     *      org.kuali.rice.krad.web.form.UifFormBase)
      */
     public void applyDefaultValues(View view, UifFormBase model) {
         // retrieve all attribute fields for the view and apply their configured

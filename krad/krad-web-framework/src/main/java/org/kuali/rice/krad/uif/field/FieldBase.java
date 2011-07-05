@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.ComponentBase;
+
+import java.util.List;
 
 /**
  * Base class for <code>Field</code> implementations

@@ -19,24 +19,25 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.BusinessObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
-import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.lookup.LookupUtils;
-import org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
+import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.krad.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountExtension;
 import org.kuali.rice.krad.test.document.bo.AccountType;
-import org.kuali.rice.krad.util.FieldUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.test.KRADTestCase;
 
 import java.util.ArrayList;
@@ -122,14 +123,14 @@ public class ExtensionAttributeTest extends KRADTestCase {
 	@Test
 	public void testBOMetaDataService() throws Exception {
 		Account ta = new Account();
-	BusinessObjectRelationship br = KRADServiceLocatorWeb.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+	BusinessObjectRelationship br = KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
 		ta, "extension.accountType");
 		assertEquals( "mismatch on parent class", Account.class, br.getParentClass() );
 		assertEquals( "mismatch on related class", AccountType.class, br.getRelatedClass() );
 		System.out.println( br.getParentToChildReferences() );
 	assertEquals("parent/child key not correct - should be extension.accountTypeCode/accountTypeCode",
 		"accountTypeCode", br.getParentToChildReferences().get("extension.accountTypeCode"));
-		br = KRADServiceLocatorWeb.getBusinessObjectMetaDataService().getBusinessObjectRelationship( ta, "extension" );
+		br = KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship( ta, "extension" );
 		assertNull( "extension is not lookupable, should have returned null", br );
 	}
 

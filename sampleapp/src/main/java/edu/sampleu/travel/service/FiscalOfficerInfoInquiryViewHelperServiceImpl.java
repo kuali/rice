@@ -18,9 +18,9 @@ package edu.sampleu.travel.service;
 import java.util.Map;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
 
 import edu.sampleu.travel.dto.FiscalOfficerInfo;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -28,7 +28,7 @@ import edu.sampleu.travel.dto.FiscalOfficerInfo;
 public class FiscalOfficerInfoInquiryViewHelperServiceImpl extends KualiInquirableImpl {
     
     @Override
-    public FiscalOfficerInfo getDataObject(Map fieldValues) {
+    public FiscalOfficerInfo retrieveDataObject(Map fieldValues) {
         FiscalOfficerService service = GlobalResourceLoader.getService("fiscalOfficerService");
         
         return service.retrieveFiscalOfficer(new Long((String)fieldValues.get("id")));

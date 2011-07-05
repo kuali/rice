@@ -29,20 +29,20 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kns.datadictionary.FieldDefinition;
+import org.kuali.rice.kns.datadictionary.InquiryDefinition;
+import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
+import org.kuali.rice.kns.datadictionary.LookupDefinition;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.krad.datadictionary.FieldDefinition;
-import org.kuali.rice.krad.datadictionary.InquiryDefinition;
-import org.kuali.rice.krad.datadictionary.InquirySectionDefinition;
-import org.kuali.rice.krad.datadictionary.LookupDefinition;
-import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.exception.IntrospectionException;
 import org.kuali.rice.krad.inquiry.InquiryAuthorizer;
 import org.kuali.rice.krad.inquiry.InquiryAuthorizerBase;
 import org.kuali.rice.krad.inquiry.InquiryPresentationController;
 import org.kuali.rice.krad.inquiry.InquiryPresentationControllerBase;
-import org.kuali.rice.krad.lookup.valuefinder.ValueFinder;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.service.*;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -51,6 +51,7 @@ import org.kuali.rice.krad.util.ObjectUtils;
  * This is the default, Kuali delivered implementation which leverages the
  * DataDictionaryService.
  */
+@Deprecated
 public class BusinessObjectDictionaryServiceImpl implements
 		BusinessObjectDictionaryService {
 	private static Logger LOG = Logger
@@ -61,9 +62,9 @@ public class BusinessObjectDictionaryServiceImpl implements
 
 	public <T extends BusinessObject> InquiryAuthorizer getInquiryAuthorizer(
 			Class<T> businessObjectClass) {
-		Class inquiryAuthorizerClass = getDataDictionaryService()
+		Class inquiryAuthorizerClass = ((BusinessObjectEntry) getDataDictionaryService()
 				.getDataDictionary().getBusinessObjectEntry(
-						businessObjectClass.getName()).getInquiryDefinition()
+						businessObjectClass.getName())).getInquiryDefinition()
 				.getAuthorizerClass();
 		if (inquiryAuthorizerClass == null) {
 			inquiryAuthorizerClass = InquiryAuthorizerBase.class;
@@ -79,9 +80,9 @@ public class BusinessObjectDictionaryServiceImpl implements
 
 	public <T extends BusinessObject> InquiryPresentationController getInquiryPresentationController(
 			Class<T> businessObjectClass) {
-		Class inquiryPresentationControllerClass = getDataDictionaryService()
+		Class inquiryPresentationControllerClass = ((BusinessObjectEntry) getDataDictionaryService()
 				.getDataDictionary().getBusinessObjectEntry(
-						businessObjectClass.getName()).getInquiryDefinition()
+						businessObjectClass.getName())).getInquiryDefinition()
 				.getPresentationControllerClass();
 		if (inquiryPresentationControllerClass == null) {
 			inquiryPresentationControllerClass = InquiryPresentationControllerBase.class;
@@ -610,7 +611,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
     /**
      * @param businessObjectClass
-	 * @return BusinessObjectEntry for the given businessObjectClass, or null if
+	 * @return BusinessObjectEntry for the given dataObjectClass, or null if
 	 *         there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
@@ -618,7 +619,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     private BusinessObjectEntry getBusinessObjectEntry(Class businessObjectClass) {
         validateBusinessObjectClass(businessObjectClass);
 
-		BusinessObjectEntry entry = getDataDictionaryService()
+		BusinessObjectEntry entry = (BusinessObjectEntry) getDataDictionaryService()
 				.getDataDictionary().getBusinessObjectEntry(
 						businessObjectClass.getName());
         return entry;
@@ -626,7 +627,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
     /**
      * @param businessObjectClass
-	 * @return MaintenanceDocumentEntry for the given businessObjectClass, or
+	 * @return MaintenanceDocumentEntry for the given dataObjectClass, or
 	 *         null if there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
@@ -635,7 +636,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 			Class businessObjectClass) {
         validateBusinessObjectClass(businessObjectClass);
 
-		MaintenanceDocumentEntry entry = getDataDictionaryService()
+		MaintenanceDocumentEntry entry = (MaintenanceDocumentEntry) getDataDictionaryService()
 				.getDataDictionary()
 				.getMaintenanceDocumentEntryForBusinessObjectClass(
 						businessObjectClass);
@@ -644,7 +645,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
     /**
      * @param businessObjectClass
-	 * @return LookupDefinition for the given businessObjectClass, or null if
+	 * @return LookupDefinition for the given dataObjectClass, or null if
 	 *         there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
@@ -665,7 +666,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     /**
      * @param businessObjectClass
      * @param attributeName
-	 * @return FieldDefinition for the given businessObjectClass and lookup
+	 * @return FieldDefinition for the given dataObjectClass and lookup
 	 *         field name, or null if there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
@@ -690,7 +691,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     /**
      * @param businessObjectClass
      * @param attributeName
-	 * @return FieldDefinition for the given businessObjectClass and lookup
+	 * @return FieldDefinition for the given dataObjectClass and lookup
 	 *         result field name, or null if there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
@@ -714,7 +715,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
     /**
      * @param businessObjectClass
-	 * @return InquiryDefinition for the given businessObjectClass, or null if
+	 * @return InquiryDefinition for the given dataObjectClass, or null if
 	 *         there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
@@ -750,7 +751,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     /**
      * @param businessObjectClass
      * @param attributeName
-	 * @return FieldDefinition for the given businessObjectClass and field name,
+	 * @return FieldDefinition for the given dataObjectClass and field name,
 	 *         or null if there is none
 	 * @throws IllegalArgumentException
 	 *             if the given Class is null or is not a BusinessObject class
@@ -779,7 +780,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     private void validateBusinessObjectClass(Class businessObjectClass) {
         if (businessObjectClass == null) {
 			throw new IllegalArgumentException(
-					"invalid (null) businessObjectClass");
+					"invalid (null) dataObjectClass");
         }
         if (!BusinessObject.class.isAssignableFrom(businessObjectClass)) {
 			throw new IllegalArgumentException("class '"
@@ -969,17 +970,6 @@ public class BusinessObjectDictionaryServiceImpl implements
         this.persistenceStructureService = persistenceStructureService;
     }
 
-    public Boolean areNotesSupported(Class businessObjectClass) {
-        Boolean hasNotesSupport = Boolean.FALSE;
-
-        BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
-        if (entry != null) {
-            hasNotesSupport = entry.isBoNotesEnabled();
-        }
-
-        return hasNotesSupport;
-    }
-
 	/**
 	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#isLookupFieldTreatWildcardsAndOperatorsAsLiteral(java.lang.Class, java.lang.String)
 	 */
@@ -1100,17 +1090,6 @@ public class BusinessObjectDictionaryServiceImpl implements
 		return disableSearchButtons;
 	}
 
-	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getGroupByAttributesForEffectiveDating(java.lang.Class)
-	 */
-	public List<String> getGroupByAttributesForEffectiveDating(Class businessObjectClass) {
-		List<String> groupByList = null;
 
-		if (getBusinessObjectEntry(businessObjectClass) != null) {
-			groupByList = getBusinessObjectEntry(businessObjectClass).getGroupByAttributesForEffectiveDating();
-		}
-
-		return groupByList;
-	}
 	
 }

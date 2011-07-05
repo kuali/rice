@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -27,7 +27,7 @@ import org.kuali.rice.krad.web.spring.form.UifFormBase;
 public class PresentationControllerBase implements PresentationController {
 
     /**
-     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getActionFlags(org.kuali.rice.krad.web.spring.form.UifFormBase)
+     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getActionFlags(org.kuali.rice.krad.web.form.UifFormBase)
      */
     public Set<String> getActionFlags(UifFormBase model) {
         Set<String> actions = new HashSet<String>();
@@ -38,42 +38,42 @@ public class PresentationControllerBase implements PresentationController {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getEditModes(org.kuali.rice.krad.web.spring.form.UifFormBase)
+     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getEditModes(org.kuali.rice.krad.web.form.UifFormBase)
      */
     public Set<String> getEditModes(UifFormBase model) {
         return new HashSet<String>();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getConditionallyHiddenPropertyNames(org.kuali.rice.krad.web.spring.form.UifFormBase)
+     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getConditionallyHiddenPropertyNames(org.kuali.rice.krad.web.form.UifFormBase)
      */
     public Set<String> getConditionallyHiddenPropertyNames(UifFormBase model) {
         return new HashSet<String>();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getConditionallyHiddenGroupIds(org.kuali.rice.krad.web.spring.form.UifFormBase)
+     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getConditionallyHiddenGroupIds(org.kuali.rice.krad.web.form.UifFormBase)
      */
     public Set<String> getConditionallyHiddenGroupIds(UifFormBase model) {
         return new HashSet<String>();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getConditionallyReadOnlyPropertyNames(org.kuali.rice.krad.web.spring.form.UifFormBase)
+     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getConditionallyReadOnlyPropertyNames(org.kuali.rice.krad.web.form.UifFormBase)
      */
     public Set<String> getConditionallyReadOnlyPropertyNames(UifFormBase model) {
         return new HashSet<String>();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getConditionallyReadOnlyGroupIds(org.kuali.rice.krad.web.spring.form.UifFormBase)
+     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getConditionallyReadOnlyGroupIds(org.kuali.rice.krad.web.form.UifFormBase)
      */
     public Set<String> getConditionallyReadOnlyGroupIds(UifFormBase model) {
         return new HashSet<String>();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getConditionallyRequiredPropertyNames(org.kuali.rice.krad.web.spring.form.UifFormBase)
+     * @see org.kuali.rice.krad.uif.authorization.PresentationController#getConditionallyRequiredPropertyNames(org.kuali.rice.krad.web.form.UifFormBase)
      */
     public Set<String> getConditionallyRequiredPropertyNames(UifFormBase model) {
         return new HashSet<String>();

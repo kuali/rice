@@ -32,7 +32,7 @@ import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.dao.LookupDao;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.lookup.LookupUtils;
-import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
+import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -58,7 +58,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoOjb.class);
     private DateTimeService dateTimeService;
     private PersistenceStructureService persistenceStructureService;
-    private BusinessObjectDictionaryService businessObjectDictionaryService;
+    private DataDictionaryService dataDictionaryService;
 
     public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
         BusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
@@ -106,7 +106,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     public Criteria getCollectionCriteriaFromMapUsingPrimaryKeysOnly(Class businessObjectClass, Map formProps) {
         BusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
         Criteria criteria = new Criteria();
-        List pkFields = KRADServiceLocatorWeb.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+        List pkFields = KRADServiceLocatorWeb.getDataObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
         Iterator pkIter = pkFields.iterator();
         while (pkIter.hasNext()) {
             String pkFieldName = (String) pkIter.next();
@@ -150,10 +150,12 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     	Collection searchResults = new ArrayList();
     	Long matchingResultsCount = null;
     	try {
-    		Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(businessObjectClass);
+    		Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils
+                    .getSearchResultsLimit(businessObjectClass);
     		if (!unbounded && (searchResultsLimit != null)) {
     			matchingResultsCount = new Long(getPersistenceBrokerTemplate().getCount(QueryFactory.newQuery(businessObjectClass, criteria)));
-    			LookupUtils.applySearchResultsLimit(businessObjectClass, criteria, getDbPlatform());
+    			org.kuali.rice.kns.lookup.LookupUtils
+                        .applySearchResultsLimit(businessObjectClass, criteria, getDbPlatform());
     		}
     		if ((matchingResultsCount == null) || (matchingResultsCount.intValue() <= searchResultsLimit.intValue())) {
     			matchingResultsCount = new Long(0);
@@ -399,7 +401,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
 		
 		maxBeginDateCriteria.addLessOrEqualThan(KRADPropertyConstants.ACTIVE_FROM_DATE, activeTimestamp);
 
-		List<String> groupByFieldList = businessObjectDictionaryService.getGroupByAttributesForEffectiveDating(example
+		List<String> groupByFieldList = dataDictionaryService.getGroupByAttributesForEffectiveDating(example
 				.getClass());
 		if (groupByFieldList == null) {
 			return;
@@ -607,12 +609,11 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
 		this.dateTimeService = dateTimeService;
 	}
 
-	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
-		this.businessObjectDictionaryService = businessObjectDictionaryService;
-	}
-	
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
     }
 
+    public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+        this.dataDictionaryService = dataDictionaryService;
+    }
 }

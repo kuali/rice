@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.RequestProcessor;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.WebUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 /**
  * A RequestProcessor implementation for Struts which handles determining whether or not access
@@ -40,7 +40,7 @@ public class KSBStrutsRequestProcessor extends RequestProcessor {
 	@Override
 	protected boolean processPreprocess(HttpServletRequest request,
 			HttpServletResponse response) {
-		final UserSession session = WebUtils.getUserSessionFromRequest(request);
+		final UserSession session = KRADUtils.getUserSessionFromRequest(request);
 
         if (session == null) {
             throw new IllegalStateException("the user session has not been established");

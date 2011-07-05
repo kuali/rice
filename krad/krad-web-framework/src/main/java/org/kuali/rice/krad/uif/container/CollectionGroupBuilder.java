@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -36,9 +30,15 @@ import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.util.WebUtils;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Builds out the <code>Field</code> instances for a collection group with a
@@ -127,7 +127,6 @@ public class CollectionGroupBuilder implements Serializable {
 
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLineBindingPath);
         buildLine(view, model, collectionGroup, addLineBindingPath, actions, addLineBindsToForm, addLine, -1);
-        //buildLine(view, model, collectionGroup, addLineBindingPath, actions, addLineBindsToForm, null, -1);
     }
 
 	/**
@@ -443,8 +442,8 @@ public class CollectionGroupBuilder implements Serializable {
             }
             
             // set binding path for add line
-            String newCollectionLineKey = WebUtils.translateToMapSafeKey(collectionGroup.getBindingInfo()
-                    .getBindingPath());
+            String newCollectionLineKey = KRADUtils
+                    .translateToMapSafeKey(collectionGroup.getBindingInfo().getBindingPath());
             String addLineBindingPath = UifPropertyPaths.NEW_COLLECTION_LINES + "['" + newCollectionLineKey + "']";
             collectionGroup.getAddLineBindingInfo().setBindingPath(addLineBindingPath);
 

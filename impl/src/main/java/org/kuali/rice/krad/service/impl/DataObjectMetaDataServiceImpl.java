@@ -18,7 +18,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
@@ -132,7 +134,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectMetaDataService#getDataObjectRelationship(java.lang.Object,
+     * @see org.kuali.rice.kns.service.BusinessObjectMetaDataService#getDataObjectRelationship(java.lang.Object,
      *      java.lang.Class, java.lang.String, java.lang.String, boolean,
      *      boolean, boolean)
      */
@@ -336,8 +338,6 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         return businessObjectRelationship;
     }
 
-    
-    
     /**
      * @see org.kuali.rice.krad.service.DataObjectMetaDataService#getTitleAttribute(java.lang.Class)
      */
@@ -351,6 +351,23 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         }
 
         return titleAttribute;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DataObjectMetaDataService#areNotesSupported(java.lang.Class)
+     */
+    @Override
+    public boolean areNotesSupported(Class dataObjectClass) {
+        boolean hasNotesSupport = false;
+
+        if (BusinessObject.class.isAssignableFrom(dataObjectClass)) {
+            BusinessObjectEntry entry = getBusinessObjectEntry(dataObjectClass);
+            if (entry != null) {
+                hasNotesSupport = entry.isBoNotesEnabled();
+            }
+        }
+
+        return hasNotesSupport;
     }
     
     /**
@@ -369,6 +386,33 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
                 .getDataObjectEntry(dataObjectClass.getName());
         
         return entry;
+    }
+
+    /**
+     * @param businessObjectClass - class of business object to return entry for
+     * @return BusinessObjectEntry for the given dataObjectClass, or null if
+     *         there is none
+     */
+    protected BusinessObjectEntry getBusinessObjectEntry(Class businessObjectClass) {
+        validateBusinessObjectClass(businessObjectClass);
+
+        BusinessObjectEntry entry =
+                getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
+        return entry;
+    }
+
+    /**
+     * @param businessObjectClass
+     * @throws IllegalArgumentException if the given Class is null or is not a BusinessObject class
+     */
+    protected void validateBusinessObjectClass(Class businessObjectClass) {
+        if (businessObjectClass == null) {
+            throw new IllegalArgumentException("invalid (null) dataObjectClass");
+        }
+        if (!BusinessObject.class.isAssignableFrom(businessObjectClass)) {
+            throw new IllegalArgumentException(
+                    "class '" + businessObjectClass.getName() + "' is not a descendant of BusinessObject");
+        }
     }
 
     /**

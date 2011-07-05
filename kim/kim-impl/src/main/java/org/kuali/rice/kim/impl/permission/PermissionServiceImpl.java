@@ -37,9 +37,10 @@ import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.krad.lookup.Lookupable;
+import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -471,12 +472,11 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		this.permissionDao = permissionDao;
 	}
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
 	public List<Permission> lookupPermissions(Map<String, String> searchCriteria, boolean unbounded ){
 		Collection baseResults = null;
-		Lookupable permissionLookupable = KRADServiceLocatorWeb.getLookupable(
-				businessObjectDictionaryService.getLookupableID(PermissionBo.class)
-        );
+		Lookupable permissionLookupable = KNSServiceLocator.getLookupable(
+                KRADServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(PermissionBo.class));
 		permissionLookupable.setBusinessObjectClass(PermissionBo.class);
 		if ( unbounded ) {
 		    baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );

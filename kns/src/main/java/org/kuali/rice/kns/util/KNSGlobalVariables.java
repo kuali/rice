@@ -1,0 +1,79 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kns.util;
+
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.krad.util.AuditCluster;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.MessageMap;
+
+import java.util.HashMap;
+
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+@Deprecated
+public class KNSGlobalVariables extends GlobalVariables {
+
+    private static ThreadLocal<KualiForm> kualiForms = new ThreadLocal<KualiForm>();
+
+    private static ThreadLocal<MessageList> messageLists = new ThreadLocal<MessageList>() {
+        @Override
+        protected MessageList initialValue() {
+            return new MessageList();
+        }
+    };
+
+    /**
+     * @return ArrayList containing messages.
+     */
+    public static MessageList getMessageList() {
+        return messageLists.get();
+    }
+
+    /**
+     * Sets a new message list
+     *
+     * @param messageList
+     */
+    public static void setMessageList(MessageList messageList) {
+        messageLists.set(messageList);
+    }
+
+    /**
+     * @return KualiForm that has been assigned to this thread of execution.
+     */
+    @Deprecated
+    public static KualiForm getKualiForm() {
+        return kualiForms.get();
+    }
+
+    /**
+     * sets the kualiForm object into the global variable for this thread
+     *
+     * @param kualiForm
+     */
+    @Deprecated
+    public static void setKualiForm(KualiForm kualiForm) {
+        kualiForms.set(kualiForm);
+    }
+
+    public static void clear() {
+        GlobalVariables.clear();
+        messageLists.set(new MessageList());
+        kualiForms.set(null);
+    }
+}

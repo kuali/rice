@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.lookup;
 
-import java.util.Collection;
-
 import org.kuali.rice.krad.bo.BusinessObject;
+
+import java.util.Collection;
 
 /**
  * Classes that implement this interface will refresh 

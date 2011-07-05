@@ -19,11 +19,11 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.impl.component.ComponentBo;
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 

@@ -19,18 +19,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.krad.uif.service.impl.LookupViewHelperServiceImpl;
+import org.kuali.rice.krad.lookup.LookupableImpl;
+import org.kuali.rice.krad.web.form.LookupForm;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FiscalOfficerInfoLookupViewHelperServiceImpl extends LookupViewHelperServiceImpl {
+public class FiscalOfficerInfoLookupViewHelperServiceImpl extends LookupableImpl {
 
     @Override
-    protected List<?> getSearchResultsWithBounding(Map<String, String> fieldValues, boolean unbounded) {
+    protected List<?> getSearchResults(LookupForm form, Map<String, String> searchCriteria, boolean unbounded) {
         FiscalOfficerService service = GlobalResourceLoader.getService("fiscalOfficerService");
-        return service.lookupFiscalOfficer(fieldValues);
+        return service.lookupFiscalOfficer(searchCriteria);
     }
 
 }

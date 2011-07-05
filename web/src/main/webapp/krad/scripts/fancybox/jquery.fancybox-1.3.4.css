@@ -228,14 +228,14 @@
 	bottom: -20px;
 	left: 0;
 	width: 100%;
-	background-image: url('fancybox-x.png');
+	background-image: url('../images/fancybox-x.png');
 	background-position: 0px -20px;
 }
 
 #fancybox-bg-sw {
 	bottom: -20px;
 	left: -20px;
-	background-image: url('fancybox.png');
+	background-image: url('../images/fancybox.png');
 	background-position: -40px -142px;
 }
 

@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.List;
-import java.util.Set;
-
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.ErrorsField;
 import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.widget.Help;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * Type of component that contains a collection of other components. All

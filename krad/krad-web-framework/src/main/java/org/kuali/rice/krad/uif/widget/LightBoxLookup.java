@@ -10,6 +10,10 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import java.util.HashMap;
+
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Used for rendering a lightbox in the UI to display the result of a submit in
  * a light box. This is used for the quickfinder lookup.

@@ -101,7 +101,7 @@
 		<property name="serviceName" value="businessObjectService" />
 	</bean>
 
-	<bean id="lookupableHelperService" class="org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl">
+	<bean id="lookupableHelperService" class="org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl">
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService" />
 		</property>
@@ -131,7 +131,7 @@
 		</property>
 	</bean>
 	
-	<bean id="kualiLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" scope="prototype">
+	<bean id="kualiLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
 		<property name="lookupableHelperService">
 			<ref bean="lookupableHelperService" />
 		</property>
@@ -158,7 +158,7 @@
         </property>
     </bean>
 
-    <bean id="roleMemberImplLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+    <bean id="roleMemberImplLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.RoleMemberImplLookupableHelperServiceImpl"
                 parent="lookupableHelperService">
@@ -187,14 +187,14 @@
         </property>
     </bean>
 
-	<bean id="kimTypeLookupableHelperServiceImpl" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+	<bean id="kimTypeLookupableHelperServiceImpl" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl" parent="lookupableHelperService">
             </bean>
         </property>
     </bean>
 
-	<bean id="kimDocumentRoleMemberLookupable" class="org.kuali.rice.krad.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+	<bean id="kimDocumentRoleMemberLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.KimDocumentRoleMemberLookupableHelperServiceImpl" parent="lookupableHelperService">
             </bean>

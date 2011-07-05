@@ -33,7 +33,7 @@ import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.util.WebUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 /**
  * This class establishes and initializes the KEW Preferences after a user logs in.
@@ -62,7 +62,7 @@ public class UserPreferencesFilter implements Filter {
 	}
 	
 	private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-		final UserSession session = WebUtils.getUserSessionFromRequest(request);
+		final UserSession session = KRADUtils.getUserSessionFromRequest(request);
 		
 		if (session == null) {
 			throw new IllegalStateException("A user session has not been established");

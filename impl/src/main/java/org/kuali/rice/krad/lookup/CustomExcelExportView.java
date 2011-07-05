@@ -22,6 +22,7 @@ import javax.servlet.jsp.JspException;
 
 import org.displaytag.export.ExcelView;
 import org.displaytag.model.TableModel;
+import org.kuali.rice.kns.lookup.ExportViewHelper;
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**

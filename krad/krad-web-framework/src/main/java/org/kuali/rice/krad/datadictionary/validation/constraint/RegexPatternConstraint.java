@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.validation.ValidationPattern.ValidationPatternException;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.validation.ValidationPattern.ValidationPatternException;
 
 /**
  * This class is used to set a regex pattern of characters to match. This string should not

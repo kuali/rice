@@ -63,11 +63,11 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
+import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.web.struts.action.KualiAction;
-import org.kuali.rice.krad.web.ui.ExtraButton;
 
 
 /**

@@ -28,6 +28,8 @@ import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
+import org.kuali.rice.kns.lookup.LookupResultsService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.test.KRADTestCase;
@@ -57,7 +59,7 @@ public class LookupResultsServiceTest extends KRADTestCase {
 		final ParameterBo parameter = (ParameterBo) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(ParameterBo.class, parameterPK);
 		final Person person = KimApiServiceLocator.getPersonService().getPerson(LookupResultsServiceTest.MOCK_PERSON);
 		final LookupResultsDDBo ddBo = new LookupResultsDDBo("horse");
-		final LookupResultsService lookupResultsService = KRADServiceLocatorWeb.getLookupResultsService();
+		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
 		
 		org.junit.Assert.assertEquals("Parameter's lookup id should be its object id", parameter.getObjectId(), lookupResultsService.getLookupId(parameter));
 		org.junit.Assert.assertNull("Person's lookup id should be null", lookupResultsService.getLookupId(person));
@@ -75,7 +77,7 @@ public class LookupResultsServiceTest extends KRADTestCase {
 		parameterPK.put("componentCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
 		parameterPK.put("name", MOCK_PARAMETER_NAME);
 		final ParameterBo parameter = (ParameterBo) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(ParameterBo.class, parameterPK);
-		final LookupResultsService lookupResultsService = KRADServiceLocatorWeb.getLookupResultsService();
+		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
 		
 		Set<String> parameterIds = new HashSet<String>();
 		parameterIds.add(lookupResultsService.getLookupId(parameter));
@@ -99,7 +101,7 @@ public class LookupResultsServiceTest extends KRADTestCase {
 	 */
 	@Test public void testDataDictionaryBusinessObjectSearch() throws Exception {
 		final LookupResultsDDBo ddBo = new LookupResultsDDBo("gorilla");
-		final LookupResultsService lookupResultsService = KRADServiceLocatorWeb.getLookupResultsService();
+		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
 		
 		Set<String> ddBoIds = new HashSet<String>();
 		ddBoIds.add(lookupResultsService.getLookupId(ddBo));
@@ -122,7 +124,7 @@ public class LookupResultsServiceTest extends KRADTestCase {
 	 */
 	@Test public void testBadSearch() {
 		boolean threwException = false;
-		final LookupResultsService lookupResultsService = KRADServiceLocatorWeb.getLookupResultsService();
+		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
 		try {
 			lookupResultsService.retrieveSelectedResultBOs("test data2", PersonImpl.class, LookupResultsServiceTest.MOCK_PERSON);
 		} catch (RuntimeException re) {

@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.rule.event;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rule.ApproveDocumentRule;
 import org.kuali.rice.krad.rule.BusinessRule;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents the approve event that is part of an eDoc in Kuali. This could be triggered when a user presses the approve

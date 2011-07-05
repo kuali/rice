@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.web.spring.controller.UifControllerBase;
+import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.springframework.stereotype.Controller;

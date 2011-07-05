@@ -16,11 +16,11 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.BusinessObjectRelationship;
 import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
-import org.kuali.rice.krad.service.BusinessObjectMetaDataService;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.InactivationBlockingDetectionService;
 import org.kuali.rice.krad.util.ObjectUtils;

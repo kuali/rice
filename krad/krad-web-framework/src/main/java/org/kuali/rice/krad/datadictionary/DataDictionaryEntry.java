@@ -32,7 +32,7 @@ import java.util.List;
     by referring to the "DataDictionary" global constant.  This Map contains
     the following kinds of entries keyed as indicated:
         * Business Object Entries -
-            Key = businessObjectClass name
+            Key = dataObjectClass name
             Value = Map created by BusinessObjectEntryMapper
         * Maintenance Document entries -
             Key = DocumentType name

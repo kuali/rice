@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint.resolver;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.LengthConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * An object that returns the constrainable definition itself as a list for a definition implementing the capability {@link Constrainable}.

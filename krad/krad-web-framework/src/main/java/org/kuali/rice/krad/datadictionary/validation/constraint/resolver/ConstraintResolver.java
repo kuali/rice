@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint.resolver;
 
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
+
+import java.util.List;
 
 /**
  * An interface that provides a lookup of constraints for a specific constrainable attribute definition. Implemented by constraint

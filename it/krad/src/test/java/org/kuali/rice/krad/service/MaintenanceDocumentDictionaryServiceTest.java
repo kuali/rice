@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.service;
 
 import org.junit.Test;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertTrue;
@@ -33,7 +34,7 @@ public class MaintenanceDocumentDictionaryServiceTest extends KRADTestCase {
         // test the boClass null argument
         exceptionThrown = false;
         try {
-            KRADServiceLocatorWeb.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((Class) null, "accountNumber");
+            KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((Class) null, "accountNumber");
         }
         catch (IllegalArgumentException e) {
             exceptionThrown = true;
@@ -46,7 +47,7 @@ public class MaintenanceDocumentDictionaryServiceTest extends KRADTestCase {
         // test the docTypeName null argument
         exceptionThrown = false;
         try {
-            KRADServiceLocatorWeb.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((String) null, "accountNumber");
+            KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((String) null, "accountNumber");
         }
         catch (IllegalArgumentException e) {
             exceptionThrown = true;
@@ -59,7 +60,7 @@ public class MaintenanceDocumentDictionaryServiceTest extends KRADTestCase {
         // test the fieldName null argument
         exceptionThrown = false;
         try {
-            KRADServiceLocatorWeb.getMaintenanceDocumentDictionaryService().getFieldDefaultValue("docTypeName", null);
+            KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue("docTypeName", null);
         }
         catch (IllegalArgumentException e) {
             exceptionThrown = true;

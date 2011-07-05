@@ -20,11 +20,10 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.krad.web.ui.Section;
 
 import java.util.List;
 import java.util.Map;
@@ -40,8 +39,8 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 	public static final String DOCUMENT_ID = "documentId";
 
 	@Override
-	public Object getDataObject(Map fieldValues){
-		RuleBaseValues rule = (RuleBaseValues)super.getDataObject(fieldValues);
+	public Object retrieveDataObject(Map fieldValues){
+		RuleBaseValues rule = (RuleBaseValues)super.retrieveDataObject(fieldValues);
 		WebRuleUtils.populateRuleMaintenanceFields(rule);
 		return rule;
     }
@@ -79,7 +78,7 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
     	
 		if(DOCUMENT_ID.equals(attributeName)) {
 
-			AnchorHtmlData link = new AnchorHtmlData();
+			HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
 			RuleBaseValues rule = (RuleBaseValues)businessObject;
 
 			String documentId = rule.getDocumentId();

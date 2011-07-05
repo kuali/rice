@@ -64,9 +64,9 @@ public class MaintenanceDocumentDaoOjb extends PlatformAwareDaoBaseOjb implement
 //    /**
 //     * Returns all pending maintenance documents locked by the given business object class.
 //     */
-//    public Collection getPendingDocumentsForClass(Class businessObjectClass) {
+//    public Collection getPendingDocumentsForClass(Class dataObjectClass) {
 //        Criteria criteria = new Criteria();
-//        criteria.addLike("lockingRepresentation", "%" + businessObjectClass.getName() + "%");
+//        criteria.addLike("lockingRepresentation", "%" + dataObjectClass.getName() + "%");
 //
 //        Collection maintenanceLocks = getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(MaintenanceLock.class, criteria));
 //
@@ -79,7 +79,7 @@ public class MaintenanceDocumentDaoOjb extends PlatformAwareDaoBaseOjb implement
 //            }
 //            criteria.addIn("documentNumber", documentNumbers);
 //
-//            MaintenanceDocumentEntry entry = KRADServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getMaintenanceDocumentEntryForBusinessObjectClass(businessObjectClass);
+//            MaintenanceDocumentEntry entry = KRADServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getMaintenanceDocumentEntryForBusinessObjectClass(dataObjectClass);
 //            return getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(entry.getStandardDocumentBaseClass(), criteria));
 //        } else {
 //            return maintenanceLocks;

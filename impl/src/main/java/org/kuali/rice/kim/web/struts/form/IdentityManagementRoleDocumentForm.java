@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.krad.util.TableRenderUtil;
+import org.kuali.rice.kns.util.TableRenderUtil;
 
 import java.util.List;
 
@@ -266,7 +266,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	public int getPageNumberOfRoleMemberId(String roleMemberId){
 		if(StringUtils.isEmpty(roleMemberId)) {return 1;}
 		int index = getIndexOfRoleMemberFromMemberRows(roleMemberId);
-		return TableRenderUtil.computeTotalNumberOfPages(index+1, getRecordsPerPage())-1;
+		return TableRenderUtil.computeTotalNumberOfPages(index + 1, getRecordsPerPage())-1;
 	}
 	
 	/**

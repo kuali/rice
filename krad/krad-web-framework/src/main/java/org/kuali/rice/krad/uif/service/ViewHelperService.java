@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.uif.service;
 
-import java.util.Map;
-
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.widget.Inquiry;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.Map;
 
 /**
  * Provides methods for implementing the various phases of a <code>View</code>

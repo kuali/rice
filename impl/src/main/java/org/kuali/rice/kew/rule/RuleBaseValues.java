@@ -34,9 +34,9 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 /*import org.kuali.rice.kim.api.group.Group;*/
 import org.kuali.rice.kim.bo.impl.PersonImpl;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.Row;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.*;

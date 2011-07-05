@@ -31,13 +31,14 @@ import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.BusinessObjectRelationship;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.krad.lookup.LookupUtils;
-import org.kuali.rice.krad.service.BusinessObjectMetaDataService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -300,7 +301,7 @@ public class PersonServiceImpl implements PersonService {
 		criteria.remove("lookupRoleName");
 		criteria.remove("lookupRoleNamespaceCode");
 		if ( StringUtils.isNotBlank(namespaceCode) && StringUtils.isNotBlank(roleName) ) {
-			Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(PersonImpl.class);
+			Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit(PersonImpl.class);
 			int searchResultsLimitInt = Integer.MAX_VALUE;
 			if (searchResultsLimit != null) {
 				searchResultsLimitInt = searchResultsLimit.intValue();
@@ -853,14 +854,14 @@ public class PersonServiceImpl implements PersonService {
 	
 	protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
 		if ( businessObjectMetaDataService == null ) {
-			businessObjectMetaDataService = KRADServiceLocatorWeb.getBusinessObjectMetaDataService();
+			businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
 		}
 		return businessObjectMetaDataService;
 	}
 
 	protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if ( maintenanceDocumentDictionaryService == null ) {
-			maintenanceDocumentDictionaryService = KRADServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

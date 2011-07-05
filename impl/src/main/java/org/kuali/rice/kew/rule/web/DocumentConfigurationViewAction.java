@@ -48,10 +48,12 @@ import org.kuali.rice.kim.service.PermissionService;
 
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentHelperService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -493,7 +495,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 
 	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if(maintenanceDocumentDictionaryService == null){
-			maintenanceDocumentDictionaryService = KRADServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

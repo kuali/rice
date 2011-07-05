@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.util.documentserializer;
 
-import java.util.StringTokenizer;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.StringTokenizer;
 
 /**
  * This is a implementation of a trie/prefix tree of that contains metadata about property serializability

@@ -32,12 +32,13 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.document.MaintenanceDocumentBase;
-import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.kns.util.KNSGlobalVariables;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.document.MaintenanceDocumentBase;
+import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
-import org.kuali.rice.krad.web.struts.form.KualiMaintenanceForm;
 
 /**
  * This class tests the code that handles the default values for the rule templates.
@@ -69,7 +70,7 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 		maintDoc.setNewMaintainableObject(newMaint);
 		maintDoc.getDocumentHeader().setDocumentDescription("This is a rule template test");
 		kmForm.setDocument(maintDoc);
-		GlobalVariables.setKualiForm(kmForm);
+		KNSGlobalVariables.setKualiForm(kmForm);
 	}
 	
 	/**
@@ -123,7 +124,7 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 	 */
 	@Test public void testCorrectKeyValuesReturnedBasedOnKualiFormInstance() throws Exception {
 		// First, check that the proper values are returned when the Kuali form is *not* a KualiMaintenanceForm.
-		GlobalVariables.setKualiForm(new KualiForm());
+		KNSGlobalVariables.setKualiForm(new KualiForm());
 		assertRuleTemplateHasExpectedKeyValues(
 				createExpectedKeysSet(true, true, true, true),
 				createSetOfKeyValueKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
@@ -196,7 +197,7 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 	private void assertRuleTemplateHasExpectedDefaultActions(String[] expectedDefActions) throws Exception {
 		// Acquire the Maintainable and the responsibility constants.
 		final RoutingRuleMaintainable rrMaint = (RoutingRuleMaintainable) ((MaintenanceDocument) ((KualiMaintenanceForm)
-				GlobalVariables.getKualiForm()).getDocument()).getNewMaintainableObject();
+				KNSGlobalVariables.getKualiForm()).getDocument()).getNewMaintainableObject();
 		final String[] respSectionConsts = { KEWPropertyConstants.PERSON_RESP_SECTION, KEWPropertyConstants.GROUP_RESP_SECTION,
 				KEWPropertyConstants.ROLE_RESP_SECTION };
 		// Check each responsibility's default action.

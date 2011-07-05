@@ -32,9 +32,9 @@ import org.kuali.rice.krad.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.krad.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
+import org.kuali.rice.krad.service.DocumentDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiRuleService;
-import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.krad.service.TransactionalDocumentDictionaryService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
@@ -47,8 +47,7 @@ import org.kuali.rice.krad.util.MessageMap;
 public class KualiRuleServiceImpl implements KualiRuleService {
     private static final Logger LOG = Logger.getLogger(KualiRuleServiceImpl.class);
 
-    private TransactionalDocumentDictionaryService transactionalDocumentDictionaryService;
-    private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    private DocumentDictionaryService documentDictionaryService;
     private DictionaryValidationService dictionaryValidationService;
     private DataDictionaryService dataDictionaryService;
 
@@ -156,12 +155,12 @@ public class KualiRuleServiceImpl implements KualiRuleService {
         if (document instanceof TransactionalDocument) {
             TransactionalDocument transactionalDocument = (TransactionalDocument) document;
 
-            businessRulesClass = transactionalDocumentDictionaryService.getBusinessRulesClass(transactionalDocument);
+            businessRulesClass = getDocumentDictionaryService().getBusinessRulesClass(transactionalDocument);
         }
         else if (document instanceof MaintenanceDocument) {
             MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
 
-            businessRulesClass = maintenanceDocumentDictionaryService.getBusinessRulesClass(maintenanceDocument);
+            businessRulesClass = getDocumentDictionaryService().getBusinessRulesClass(maintenanceDocument);
         }
         else {
             LOG.error("unable to get businessRulesClass for unknown document type '" + document.getClass().getName() + "'");
@@ -212,60 +211,29 @@ public class KualiRuleServiceImpl implements KualiRuleService {
         }
     }
 
-    /* Spring service injection */
-
-    /**
-     * @param maintenanceDocumentDictionaryService
-     */
-    public void setMaintenanceDocumentDictionaryService(MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService) {
-        this.maintenanceDocumentDictionaryService = maintenanceDocumentDictionaryService;
+    public DocumentDictionaryService getDocumentDictionaryService() {
+        if (documentDictionaryService == null) {
+            this.documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
+        }
+        return documentDictionaryService;
     }
 
-    /**
-     * @return MaintenanceDocumentDictionaryService
-     */
-    public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-        return maintenanceDocumentDictionaryService;
+    public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
+        this.documentDictionaryService = documentDictionaryService;
     }
 
-    /**
-     * @param transactionalDocumentDictionaryService
-     */
-    public void setTransactionalDocumentDictionaryService(TransactionalDocumentDictionaryService transactionalDocumentDictionaryService) {
-        this.transactionalDocumentDictionaryService = transactionalDocumentDictionaryService;
-    }
-
-    /**
-     * @return TransactionalDocumentDictionaryService
-     */
-    public TransactionalDocumentDictionaryService getTransactionalDocumentDictionaryService() {
-        return transactionalDocumentDictionaryService;
-    }
-
-    /**
-     * @return DictionaryValidationService
-     */
     public DictionaryValidationService getDictionaryValidationService() {
         return dictionaryValidationService;
     }
 
-    /**
-     * @param dictionaryValidationService
-     */
     public void setDictionaryValidationService(DictionaryValidationService dictionaryValidationService) {
         this.dictionaryValidationService = dictionaryValidationService;
     }
 
-    /**
-     * @return DataDictionaryService
-     */
     public DataDictionaryService getDataDictionaryService() {
         return dataDictionaryService;
     }
 
-    /**
-     * @param dataDictionaryService
-     */
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
     }

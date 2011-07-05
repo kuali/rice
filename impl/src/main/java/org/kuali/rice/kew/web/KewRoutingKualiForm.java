@@ -28,7 +28,7 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.

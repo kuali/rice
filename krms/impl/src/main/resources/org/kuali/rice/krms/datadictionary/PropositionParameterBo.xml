@@ -22,7 +22,7 @@
 
   <bean id="PropositionParameterBo" parent="PropositionParameterBo-parentBean"/>
   <bean id="PropositionParameterBo-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo"/>
+    <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">
       <list>

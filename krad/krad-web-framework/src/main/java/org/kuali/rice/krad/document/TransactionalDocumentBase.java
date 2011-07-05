@@ -20,10 +20,12 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import javax.persistence.MappedSuperclass;
 
 /**
- * This is the base class implementation for all transaction processing eDocs. 
+ * Controller that handles requests coming from a <code>TransactionalDocumentView</code>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
-public abstract class TransactionalDocumentBase extends DocumentBase implements TransactionalDocument,  SessionDocument {
+public abstract class TransactionalDocumentBase extends DocumentBase implements TransactionalDocument, SessionDocument {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TransactionalDocumentBase.class);
 
     /**
@@ -35,22 +37,20 @@ public abstract class TransactionalDocumentBase extends DocumentBase implements 
 
     /**
      * @see org.kuali.rice.krad.document.TransactionalDocument#getAllowsCopy()
-     * Checks if copy is set to true in data dictionary and the document instance implements
-     * Copyable.
+     *      Checks if copy is set to true in data dictionary and the document instance implements
+     *      Copyable.
      */
     public boolean getAllowsCopy() {
-        return KRADServiceLocatorWeb.getTransactionalDocumentDictionaryService().getAllowsCopy(this).booleanValue() && this instanceof Copyable;
+        return KRADServiceLocatorWeb.getDocumentDictionaryService().getAllowsCopy(this).booleanValue() &&
+                this instanceof Copyable;
     }
 
     /**
-     * 
      * This method to check whether the document class implements SessionDocument
-     * 
+     *
      * @return
      */
     public boolean isSessionDocument() {
         return SessionDocument.class.isAssignableFrom(this.getClass());
     }
-
-    
 }

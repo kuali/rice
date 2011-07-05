@@ -17,202 +17,105 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-	<bean id="FloatingPointValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.fieldlevel.FloatingPointValidationPattern"
-		abstract="true" />
+
 	<bean id="WorkflowProperties" class="org.kuali.rice.krad.datadictionary.WorkflowProperties"
 		abstract="true" />
+
 	<bean id="ReferenceDefinition" class="org.kuali.rice.krad.datadictionary.ReferenceDefinition"
 		abstract="true" />
+
 	<bean id="HelpDefinition" class="org.kuali.rice.krad.datadictionary.HelpDefinition"
 		abstract="true" />
-	<bean id="ZipcodeValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.fieldlevel.ZipcodeValidationPattern"
-		abstract="true" />
-	<bean id="EmailAddressValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.fieldlevel.EmailAddressValidationPattern"
-		abstract="true" />
-	<bean id="InquiryCollectionDefinition"
-		class="org.kuali.rice.krad.datadictionary.InquiryCollectionDefinition"
-		abstract="true" />
-	<bean id="MaskFormatter" class="org.kuali.rice.krad.datadictionary.mask.MaskFormatter"
-		abstract="true" />
-	<bean id="LookupHiddenControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.LookupHiddenControlDefinition"
-		abstract="true" />
-	<bean id="CheckboxControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.CheckboxControlDefinition"
-		abstract="true" />
-	<bean id="TextControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.TextControlDefinition"
-		abstract="true" />
-	<bean id="FileControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.FileControlDefinition"
-		abstract="true" />
-	<bean id="RadioControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.RadioControlDefinition"
-		abstract="true" />
-	<bean id="PhoneNumberValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.fieldlevel.PhoneNumberValidationPattern"
-		abstract="true" />
-	<bean id="TransactionalDocumentEntry"
+
+	<bean id="uifTransactionalDocumentEntry"
 		class="org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry"
 		abstract="true" />
+
 	<bean id="SupportAttributeDefinition"
 		class="org.kuali.rice.krad.datadictionary.SupportAttributeDefinition"
 		abstract="true" />
-	<bean id="JavaClassValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.fieldlevel.JavaClassValidationPattern"
-		abstract="true" />
-	<bean id="NumericValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.charlevel.NumericValidationPattern"
-		abstract="true" />
+
 	<bean id="WorkflowProperty" class="org.kuali.rice.krad.datadictionary.WorkflowProperty"
 		abstract="true" />
-	<bean id="InquirySectionDefinition"
-		class="org.kuali.rice.krad.datadictionary.InquirySectionDefinition"
-		abstract="true" />
-	<bean id="HeaderNavigation" class="org.kuali.rice.krad.datadictionary.HeaderNavigation"
-		abstract="true" />
+
 	<bean id="AttributeDefinition" class="org.kuali.rice.krad.datadictionary.AttributeDefinition"
 		abstract="true" />
+
 	<bean id="ComplexAttributeDefinition" class="org.kuali.rice.krad.datadictionary.ComplexAttributeDefinition"
-		abstract="true" />		
-	<bean id="HiddenControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.HiddenControlDefinition"
 		abstract="true" />
-	<bean id="MonthValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.fieldlevel.MonthValidationPattern"
-		abstract="true" />
+
 	<bean id="WorkflowPropertyGroup" class="org.kuali.rice.krad.datadictionary.WorkflowPropertyGroup"
 		abstract="true" />
+
 	<bean id="PrimitiveAttributeDefinition"
 		class="org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition"
 		abstract="true" />
-	<bean id="LookupReadonlyControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.LookupReadonlyControlDefinition"
-		abstract="true" />
+
 	<bean id="MaskFormatterSubString"
 		class="org.kuali.rice.krad.datadictionary.mask.MaskFormatterSubString"
 		abstract="true" />
-	<bean id="CharsetValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.charlevel.CharsetValidationPattern"
-		abstract="true" />
+
 	<bean id="SortDefinition" class="org.kuali.rice.krad.datadictionary.SortDefinition"
 		abstract="true" />
+
 	<bean id="RelationshipDefinition"
 		class="org.kuali.rice.krad.datadictionary.RelationshipDefinition"
 		abstract="true" />
-	<bean id="DateValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.fieldlevel.DateValidationPattern"
+
+	<bean id="uifBusinessObjectEntry" class="org.kuali.rice.krad.datadictionary.BusinessObjectEntry"
 		abstract="true" />
-	<bean id="FieldDefinition" class="org.kuali.rice.krad.datadictionary.FieldDefinition"
-		abstract="true" />
-	<bean id="MaintainableCollectionDefinition"
-		class="org.kuali.rice.krad.datadictionary.MaintainableCollectionDefinition"
-		abstract="true" />
-	<bean id="AnyCharacterValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.charlevel.AnyCharacterValidationPattern"
-		abstract="true" />
-	<bean id="UTF8AnyCharacterValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.charlevel.UTF8AnyCharacterValidationPattern"
-		abstract="true" />
-	<bean id="InquirySubSectionHeaderDefinition"
-		class="org.kuali.rice.krad.datadictionary.InquirySubSectionHeaderDefinition"
-		abstract="true" />
-	<bean id="BusinessObjectEntry" class="org.kuali.rice.krad.datadictionary.BusinessObjectEntry"
-		abstract="true" />
+
 	<bean id="DataObjectEntry" class="org.kuali.rice.krad.datadictionary.DataObjectEntry"
-		abstract="true" />		
+		abstract="true" />
+
 	<bean id="Mask" class="org.kuali.rice.krad.datadictionary.mask.Mask"
 		abstract="true" />
-	<bean id="CurrencyControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.CurrencyControlDefinition"
-		abstract="true" />
-	<bean id="YearValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.fieldlevel.YearValidationPattern"
-		abstract="true" />
+
 	<bean id="MaskFormatterLiteral"
 		class="org.kuali.rice.krad.datadictionary.mask.MaskFormatterLiteral"
 		abstract="true" />
-	<bean id="TimestampValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.fieldlevel.TimestampValidationPattern"
-		abstract="true" />
-	<bean id="FixedPointValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.fieldlevel.FixedPointValidationPattern"
-		abstract="true" />
-	<bean id="InquiryDefinition" class="org.kuali.rice.krad.datadictionary.InquiryDefinition"
-		abstract="true" />
-	<bean id="TextareaControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.TextareaControlDefinition"
-		abstract="true" />
-	<bean id="KualiUserControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.KualiUserControlDefinition"
-		abstract="true" />
-	<bean id="AlphaNumericValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.charlevel.AlphaNumericValidationPattern"
-		abstract="true" />
-	<bean id="MaintainableFieldDefinition"
-		class="org.kuali.rice.krad.datadictionary.MaintainableFieldDefinition"
-		abstract="true" />
-	<bean id="AlphaValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.charlevel.AlphaValidationPattern"
-		abstract="true" />
+
 	<bean id="CollectionDefinition" class="org.kuali.rice.krad.datadictionary.CollectionDefinition"
 		abstract="true" />
-	<bean id="LookupDefinition" class="org.kuali.rice.krad.datadictionary.LookupDefinition"
-		abstract="true" />
-	<bean id="WorkflowWorkgroupControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.WorkflowWorkgroupControlDefinition"
-		abstract="true" />
-	<bean id="MaintainableSubSectionHeaderDefinition"
-		class="org.kuali.rice.krad.datadictionary.MaintainableSubSectionHeaderDefinition"
-		abstract="true" />
-	<bean id="MaintenanceDocumentEntry"
+
+	<bean id="uifMaintenanceDocumentEntry"
 		class="org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry"
-		abstract="true" />
-	<bean id="SelectControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.SelectControlDefinition"
-		abstract="true" />
-	<bean id="MultiselectControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.MultiselectControlDefinition"
-		abstract="true" />
-	<bean id="MaintainableSectionDefinition"
-		class="org.kuali.rice.krad.datadictionary.MaintainableSectionDefinition"
-		abstract="true" />
-	<bean id="RegexValidationPattern"
-		class="org.kuali.rice.krad.datadictionary.validation.charlevel.RegexValidationPattern"
-		abstract="true" />
+		abstract="true">
+        <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
+        <property name="dataObjectClass" value="org.kuali.rice.krad.document.MaintenanceDocumentBase"/>
+    </bean>
+
 	<bean id="InactivationBlockingDefinition"
 		class="org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition"
 		abstract="true" />
+
 	<bean id="ExternalizableAttributeDefinitionProxy"
 		class="org.kuali.rice.krad.datadictionary.ExternalizableAttributeDefinitionProxy"
 		abstract="true" />
 
-	<bean id="ButtonControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.ButtonControlDefinition"
-		abstract="true" />
-	<bean id="LinkControlDefinition"
-		class="org.kuali.rice.krad.datadictionary.control.LinkControlDefinition"
-		abstract="true" />
 	<bean id="AttributeSecurity" class="org.kuali.rice.krad.datadictionary.AttributeSecurity"
 		abstract="true" />
 
 	<bean id="WorkflowAttributes" class="org.kuali.rice.krad.datadictionary.WorkflowAttributes"
 		abstract="true" />
+
 	<bean id="SearchingAttribute" class="org.kuali.rice.krad.datadictionary.SearchingAttribute"
 		abstract="true" />
+
 	<bean id="RoutingAttribute" class="org.kuali.rice.krad.datadictionary.RoutingAttribute"
 		abstract="true" />
+
 	<bean id="SearchingTypeDefinition"
 		class="org.kuali.rice.krad.datadictionary.SearchingTypeDefinition"
 		abstract="true" />
+
 	<bean id="RoutingTypeDefinition" class="org.kuali.rice.krad.datadictionary.RoutingTypeDefinition"
 		abstract="true" />
+
 	<bean id="DocumentValuePathGroup"
 		class="org.kuali.rice.krad.datadictionary.DocumentValuePathGroup"
 		abstract="true" />
+
 	<bean id="DocumentCollectionPath"
 		class="org.kuali.rice.krad.datadictionary.DocumentCollectionPath"
 		abstract="true" />

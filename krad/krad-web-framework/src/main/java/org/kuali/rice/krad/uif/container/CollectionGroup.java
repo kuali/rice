@@ -10,9 +10,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -27,6 +24,9 @@ import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the

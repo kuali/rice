@@ -21,10 +21,9 @@ import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -69,7 +68,7 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add(GROUP_ID);
 		    String href = (getInquiryUrlForPrimaryKeys(GroupBo.class, businessObject, primaryKeys, null)).getHref();
-		    AnchorHtmlData htmlData = new AnchorHtmlData();
+		    HtmlData.AnchorHtmlData htmlData = new HtmlData.AnchorHtmlData();
 		    htmlData.setHref(getCustomGroupInquiryHref(href));
 			return htmlData;
 		} else if(NAMESPACE_CODE.equals(attributeName)){

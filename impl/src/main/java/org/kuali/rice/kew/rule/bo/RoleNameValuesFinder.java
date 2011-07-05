@@ -24,11 +24,12 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kns.util.KNSGlobalVariables;
+import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.web.struts.form.KualiMaintenanceForm;
 
 /**
  * A values finder for generating a list of Role names that can be selected for a given RuleTemplate.
@@ -44,8 +45,8 @@ public class RoleNameValuesFinder extends KeyValuesBase {
 	@Override
 	public List<KeyValue> getKeyValues() {
 		List<KeyValue> roleNames = new ArrayList<KeyValue>();
-		if (GlobalVariables.getKualiForm() != null && GlobalVariables.getKualiForm() instanceof KualiMaintenanceForm) {
-			KualiMaintenanceForm form = (KualiMaintenanceForm)GlobalVariables.getKualiForm();
+		if (KNSGlobalVariables.getKualiForm() != null && KNSGlobalVariables.getKualiForm() instanceof KualiMaintenanceForm) {
+			KualiMaintenanceForm form = (KualiMaintenanceForm)KNSGlobalVariables.getKualiForm();
 			MaintenanceDocument document = (MaintenanceDocument)form.getDocument();
 			PersistableBusinessObject businessObject = document.getNewMaintainableObject().getBusinessObject();
 			RuleBaseValues rule = null;

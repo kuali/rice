@@ -23,6 +23,8 @@ import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 
 import java.util.Map;
 
+import java.util.Map;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

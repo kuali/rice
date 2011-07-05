@@ -20,10 +20,9 @@ import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -71,7 +70,7 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 			primaryKeys.add(ROLE_ID);
 		    //((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementRoleDocument.do?methodToCall=inquiry&command=initiate&docTypeName=IdentityManagementRoleDocument"+href.substring(idx1, idx2));
 		    String href = (getInquiryUrlForPrimaryKeys(RoleBo.class, businessObject, primaryKeys, null)).getHref();
-		    AnchorHtmlData htmlData = new AnchorHtmlData();
+		    HtmlData.AnchorHtmlData htmlData = new HtmlData.AnchorHtmlData();
 		    htmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(href));
 			return htmlData;
 		} else if(NAMESPACE_CODE.equals(attributeName)){

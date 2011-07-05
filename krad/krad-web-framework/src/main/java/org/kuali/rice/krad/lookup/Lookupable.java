@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
+ * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,252 +15,90 @@
  */
 package org.kuali.rice.krad.lookup;
 
-import java.io.Serializable;
+import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.LookupView;
+import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.web.form.LookupForm;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.web.struts.form.LookupForm;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.ResultRow;
-
 /**
- * This class defines an interface for lookupables.
+ * Provides contract for implementing a lookup within the lookup framework
  *
- * They should act as facades for LookupableHelperServices and also expose bean handlers
- * (getCreateNewUrl, getHtmlMenuBar, getTitle, getRows, getExtraButton{Source,Params})
- *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface Lookupable extends Serializable {
+public interface Lookupable extends ViewHelperService, java.io.Serializable {
 
     /**
-     * Initializes the lookup with a businss object class
+     * Invoked to carry out the lookup search based on the given map of key/value search
+     * values
      *
-     * It is required that implementations of this method will initialize the
-     * search area used by the UI to provide the search form.  In particular,
-     * it will ensure that getRows() will return valid results
+     * @param form - lookup form instance containing the lookup data
+     * @param searchCriteria - map of criteria currently set
+     * @param bounded - indicates whether the results should be limited (if necessary) to the max search
+     * result limit configured
+     * @return the list of result objects, possibly bounded
+     */
+    public Collection<?> performSearch(LookupForm form, Map<String, String> searchCriteria, boolean bounded);
+
+    /**
+     * Invoked when the clear action is requested to result the search fields to
+     * their initial default values
      *
-     * @param boClass
+     * @param form - lookup form instance containing the lookup data
+     * @param searchCriteria - map of criteria currently set
+     * @return map of criteria with field values reset to defaults
      */
-    public void setBusinessObjectClass(Class businessObjectClass);
+    public Map<String, String> performClear(LookupForm form, Map<String, String> searchCriteria);
 
     /**
+     * Invoked to perform validation on the search criteria before the search is performed
      *
-     * @return Returns the businessObjectClass this lookupable is representing
+     * @param form - lookup form instance containing the lookup data
+     * @param searchCriteria - map of criteria where key is search property name and value is
+     * search value (which can include wildcards)
+     * @param boolean true if validation was successful, false if there were errors and the search
+     * should not be performed
+     */
+    public boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria);
+
+    /**
+     * Sets the class for the data object the lookup will be provided on
      *
+     * @param dataObjectClass - data object class for lookup
      */
-    public Class getBusinessObjectClass();
+    public void setDataObjectClass(Class<?> dataObjectClass);
 
     /**
-     * Initializes the lookup with the given Map of parameters.
+     * Returns the class for the data object the lookup is configured with
      *
-     * @param parameters
+     * @return Class<?> data object class
      */
-    public void setParameters(Map parameters);
+    public Class<?> getDataObjectClass();
 
     /**
-     * @return Returns the parameters passed to this lookup
-     */
-    public Map getParameters();
-
-    /**
-     * @return the html to be displayed as a menu bar
-     */
-    public String getHtmlMenuBar();
-
-    /**
-     * @return the html to be displayed as a supplemental menu bar
-     */
-    public String getSupplementalMenuBar();
-
-    /**
-     * @return List of Row objects used to render the search area
-     */
-    public List getRows();
-
-    /**
-     * @return String displayed as title for the lookup
-     */
-    public String getTitle();
-
-    /**
-     * @return String url for the location to return to after the lookup
-     */
-    public String getReturnLocation();
-
-    /**
-     * @return List of Column objects used to render the result table
-     */
-    public List getColumns();
-
-    /**
-     * Validates the values filled in as search criteria, also checks for required field values.
+     * Sets the field conversion map on the lookupable
      *
-     * @param fieldValues - Map of property/value pairs
-     */
-    public void validateSearchParameters(Map fieldValues);
-
-    /**
+     * <p>
+     * The field conversions map specifies the mappings for return fields. When the
+     * user selects a row to return, for each configured field conversion the corresponding value
+     * from the result row will be sent back as the value for the field on the calling field.
+     * </p>
      *
-     * This method performs the lookup and returns a collection of lookup items
-     * @param lookupForm
-     * @param resultTable
-     * @param bounded
-     * @return results of lookup
+     * @param fieldConversions - map of field conversions where key is name of the property on result
+     * data object to get value for, and map value is the name of the field to send the value back as (name
+     * of the field on the calling view)
      */
-    public Collection performLookup(LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded);
+    public void setFieldConversions(Map<String, String> fieldConversions);
 
     /**
-     * Performs a search and returns result list.
+     * Sets List of fields on the lookupable that should be made read only in the search
+     * criteria group
      *
-     * @param fieldValues - Map of property/value pairs
-     * @return List of business objects found by the search
-     * @throws Exception
-     */
-    public List<BusinessObject> getSearchResults(Map<String, String> fieldValues);
-
-    /**
-     * Similar to getSearchResults, but the number of returned rows is not bounded
-     *
-     * @param fieldValues
-     * @return
-     */
-    public List<BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues);
-
-    /**
-     * @return String providing source for optional extra button
-     */
-    public String getExtraButtonSource();
-
-    /**
-     * @return String providing return parameters for optional extra button
-     */
-    public String getExtraButtonParams();
-
-    /**
-     * Determines if there should be more search fields rendered based on already entered search criteria.
-     *
-     * @param fieldValues - Map of property/value pairs
-     * @return boolean
-     */
-    public boolean checkForAdditionalFields(Map fieldValues);
-
-    /**
-     * Builds the return value url.
-     *
-     * @param businessObject - Instance of a business object containing the return values
-     * @param fieldConversions - Map of conversions mapping bo names to caller field names.
-     * @param lookupImpl - Current lookup impl name
-     * @return String url called when selecting a row from the result set
-     */
-    public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, BusinessObjectRestrictions businessObjectRestrictions);
-
-    /**
-     * Builds the Url for a maintenance new document for the lookup business object class
-     * @param businessObject
-     * @return String rendered on Lookup screen for maintenance new document
-     */
-    public String getCreateNewUrl();
-
-    /**
-     * Sets the requested fields conversions in the lookupable
-     *
-     * @param fieldConversions
-     */
-    public void setFieldConversions(Map fieldConversions);
-
-    /**
-     * Sets the requested read only fields list in the lookupable
-     *
-     * @param readOnlyFieldsList
+     * @param readOnlyFieldsList - list of read only fields
      */
     public void setReadOnlyFieldsList(List<String> readOnlyFieldsList);
-
-    /**
-     * Sets the helper service for instance
-     * @param helper the helper service
-     */
-    public void setLookupableHelperService(LookupableHelperService helper);
-
-    /**
-     * Returns the LookupableHelperService designated to help this lookup
-     * @return
-     */
-    public LookupableHelperService getLookupableHelperService();
-
-    /**
-     * Returns whether this search was performed using the values of the primary keys only
-     *
-     * @return
-     */
-    public boolean isSearchUsingOnlyPrimaryKeyValues();
-
-    /**
-     * Returns a comma delimited list of primary key field labels, as defined in the DD
-     *
-     * @return
-     */
-    public String getPrimaryKeyFieldLabels();
-
-    /**
-     * This method returns a list of the default columns used to sort the result set.  For multiple value lookups,
-     * this method does not change when different columns are sorted.
-     *
-     * @return
-     */
-    public List getDefaultSortColumns();
-
-    /**
-     *
-     * This method allows for customization of the lookup clear
-     *
-     */
-    public void performClear(LookupForm lookupForm);
-
-    /**
-     *
-     * This method checks whether the header non maint actions should be shown
-     *
-     */
-    public boolean shouldDisplayHeaderNonMaintActions();
-
-    /**
-     *
-     * This method checks whether the criteria should be shown
-     *
-     */
-    public boolean shouldDisplayLookupCriteria();
-
-    /**
-     *
-     * This method is called from a custom action button or script
-     *
-     */
-    public boolean performCustomAction(boolean ignoreErrors);
-
-    /**
-     *
-     * get extra field
-     *
-     * @return
-     */
-    public Field getExtraField();
-
-    /**
-     * method returns the extraOnLoad variable. The 
-	 * varible is currently accessed in page.tag and is called in the onLoad.
-	 * it allows us to inject javascript onload.
-	 */
-    public String getExtraOnLoad();
-    
-    public void setExtraOnLoad(String extraOnLoad);
-    public void applyFieldAuthorizationsFromNestedLookups(Field field);
-    
-    /**
-     * Performs conditional logic (based on current search values or other parameters) to
-     * override field hidden, read-only, and required attributes previously set.
-     */
-    public void applyConditionalLogicForFieldDisplay();
 }

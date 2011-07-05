@@ -399,7 +399,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     public void testPessimisticLockingWithCustomMaintainableLockDescriptors() throws Exception {
     	MaintenanceDocument maintDoc = (MaintenanceDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument("AccountType2MaintenanceDocument");
     	assertTrue("The AccountType2MaintenanceDocument should be using pessimistic locking", KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary(
-			).getDocumentEntry(maintDoc.getNewMaintainableObject().getBoClass().getSimpleName() + "MaintenanceDocument").getUsePessimisticLocking());
+			).getDocumentEntry(maintDoc.getNewMaintainableObject().getDataObjectClass().getSimpleName() + "MaintenanceDocument").getUsePessimisticLocking());
     	assertTrue("The AccountType2MaintenanceDocument should be using custom lock descriptors", maintDoc.useCustomLockDescriptors());
     	assertTrue("The AccountType2MaintenanceDocument's new maintainable uses the wrong class",
     			maintDoc.getNewMaintainableObject() instanceof AccountType2MaintainableImpl);

@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.uif.core;
 
+import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.modifier.ComponentModifier;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.modifier.ComponentModifier;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
 
 /**
  * All classes of the UIF that are used as a rendering element implement the

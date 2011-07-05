@@ -3,8 +3,8 @@ package edu.sampleu.bookstore.maintenance;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import edu.sampleu.bookstore.bo.Account;
 import edu.sampleu.bookstore.bo.Author;
@@ -57,7 +57,7 @@ public class BookMaintainable extends KualiMaintainableImpl {
 			Map<String, String[]> parameters) {
 		super.processAfterCopy(document, parameters);
 		Book book = ((Book) document.getNewMaintainableObject()
-				.getBusinessObject());
+				.getDataObject());
 		book.setIsbn(null);
 	}
 

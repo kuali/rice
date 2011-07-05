@@ -59,13 +59,13 @@ public class SessionDocumentTest extends KRADTestCase {
 		
 		byte[] dummyByte = "dummy".getBytes();
 		dummySessionDocument.setSerializedDocumentForm(dummyByte);
-		assertEquals("Testing SerializedDocumentForm in SessionDocument","dummy", new String(dummySessionDocument.getSerializedDocumentForm()));
+		assertEquals("Testing SerializedDocumentForm in SessionDocumentService","dummy", new String(dummySessionDocument.getSerializedDocumentForm()));
 	}
 	
 	@Test
 	public void testSessionId(){
 		dummySessionDocument.setSessionId("dummySeesionID");
-		assertEquals("Testing SessionId in SessionDocument","dummySeesionID",dummySessionDocument.getSessionId());
+		assertEquals("Testing SessionId in SessionDocumentService","dummySeesionID",dummySessionDocument.getSessionId());
 	}
 	
 
@@ -75,31 +75,31 @@ public class SessionDocumentTest extends KRADTestCase {
 		Date now = calendar.getTime();
 		Timestamp currentTimestamp = new Timestamp(now.getTime());
 		dummySessionDocument.setLastUpdatedDate(currentTimestamp);
-		assertEquals("Testing LastUpdatedDate in SessionDocument",currentTimestamp,dummySessionDocument.getLastUpdatedDate());
+		assertEquals("Testing LastUpdatedDate in SessionDocumentService",currentTimestamp,dummySessionDocument.getLastUpdatedDate());
 	}
 	
 	@Test
 	public void testDocumentNumber(){
 		dummySessionDocument.setDocumentNumber("dummyDocumentNumber");
-		assertEquals("Testing DocumentNumber in SessionDocument","dummyDocumentNumber",dummySessionDocument.getDocumentNumber());
+		assertEquals("Testing DocumentNumber in SessionDocumentService","dummyDocumentNumber",dummySessionDocument.getDocumentNumber());
 	}
 	
 
 	@Test
 	public void testPrincipalId(){
 		dummySessionDocument.setPrincipalId("dummyPrincipalId");
-		assertEquals("Testing PrincipalId in SessionDocument","dummyPrincipalId",dummySessionDocument.getPrincipalId());
+		assertEquals("Testing PrincipalId in SessionDocumentService","dummyPrincipalId",dummySessionDocument.getPrincipalId());
 	}
 	
 	@Test
 	public void testIpAddress(){
 		dummySessionDocument.setIpAddress("dummyIpAddress");
-		assertEquals("Testing IpAddress in SessionDocument","dummyIpAddress",dummySessionDocument.getIpAddress());
+		assertEquals("Testing IpAddress in SessionDocumentService","dummyIpAddress",dummySessionDocument.getIpAddress());
 	}
 	
 	@Test
 	public void testEncrypted(){
 		dummySessionDocument.setEncrypted(true);
-		assertEquals("Testing Encrypted in SessionDocument",true,dummySessionDocument.isEncrypted());
+		assertEquals("Testing Encrypted in SessionDocumentService",true,dummySessionDocument.isEncrypted());
 	}
 }

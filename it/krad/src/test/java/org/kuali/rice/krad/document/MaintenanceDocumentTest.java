@@ -48,10 +48,10 @@ public class MaintenanceDocumentTest extends KRADTestCase {
         am.setAmId(new Long(1));
         am.setUserName("userName");
 
-        document.getOldMaintainableObject().setBusinessObject(null);
-        document.getOldMaintainableObject().setBoClass(am.getClass());
-        document.getNewMaintainableObject().setBusinessObject(am);
-        document.getNewMaintainableObject().setBoClass(am.getClass());
+        document.getOldMaintainableObject().setDataObject(null);
+        document.getOldMaintainableObject().setDataObjectClass(am.getClass());
+        document.getNewMaintainableObject().setDataObject(am);
+        document.getNewMaintainableObject().setDataObjectClass(am.getClass());
 
     }
 
@@ -61,10 +61,10 @@ public class MaintenanceDocumentTest extends KRADTestCase {
     	fo.setAmId(new Long(1));
     	fo.setUserName("userName");
 
-        document.getOldMaintainableObject().setBusinessObject(fo);
-        document.getOldMaintainableObject().setBoClass(fo.getClass());
-        document.getNewMaintainableObject().setBusinessObject(fo);
-        document.getNewMaintainableObject().setBoClass(fo.getClass());
+        document.getOldMaintainableObject().setDataObject(fo);
+        document.getOldMaintainableObject().setDataObjectClass(fo.getClass());
+        document.getNewMaintainableObject().setDataObject(fo);
+        document.getNewMaintainableObject().setDataObjectClass(fo.getClass());
 
     }
 
@@ -75,7 +75,7 @@ public class MaintenanceDocumentTest extends KRADTestCase {
 
         assertEquals("Document should indicate New.", true, document.isNew());
         assertEquals("Document should not indicate Edit.", false, document.isEdit());
-        assertEquals("Old BO should not be present.", false, document.isOldBusinessObjectInDocument());
+        assertEquals("Old BO should not be present.", false, document.isOldDataObjectInDocument());
     }
 
     @Test public void test_EditDoc() {
@@ -85,7 +85,7 @@ public class MaintenanceDocumentTest extends KRADTestCase {
 
         assertEquals("Document should not indicate New.", false, document.isNew());
         assertEquals("Document should indicate Edit.", true, document.isEdit());
-        assertEquals("Old BO should be present.", true, document.isOldBusinessObjectInDocument());
+        assertEquals("Old BO should be present.", true, document.isOldDataObjectInDocument());
 
     }
 
@@ -96,7 +96,7 @@ public class MaintenanceDocumentTest extends KRADTestCase {
 
         assertEquals("Document should indicate New.", true, document.isNew());
         assertEquals("Document should not indicate Edit.", false, document.isEdit());
-        assertEquals("Old BO should be present.", true, document.isOldBusinessObjectInDocument());
+        assertEquals("Old BO should be present.", true, document.isOldDataObjectInDocument());
 
     }
 

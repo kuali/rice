@@ -42,23 +42,25 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.lookup.LookupableHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Column;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.ResultRow;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.krad.lookup.LookupableHelperService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.web.comparator.CellComparatorHelper;
-import org.kuali.rice.krad.web.struts.form.LookupForm;
-import org.kuali.rice.krad.web.ui.Column;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.ResultRow;
-import org.kuali.rice.krad.web.ui.Row;
 
 import java.sql.Date;
 import java.util.*;
@@ -627,7 +629,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         			BusinessObject ruleDelegation = (BusinessObject) delegationList.get(0);
     				// Retrieve the rule delegation lookupable helper service and the primary key names, if they have not been obtained yet.
         	        if (ruleDelegationLookupableHelperService == null) {
-        				ruleDelegationLookupableHelperService = KRADServiceLocatorWeb.getLookupable(
+        				ruleDelegationLookupableHelperService = KNSServiceLocator.getLookupable(
                                 KRADServiceLocatorWeb.getBusinessObjectDictionaryService()
                                         .getLookupableID(ruleDelegation.getClass())).getLookupableHelperService();
         				if (ruleDelegationLookupableHelperService.getBusinessObjectClass() == null) {

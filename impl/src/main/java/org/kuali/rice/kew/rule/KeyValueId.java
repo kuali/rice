@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.krad.web.ui.Field;
 import org.kuali.rice.kew.rule.web.WebRuleBaseValues;
 
 

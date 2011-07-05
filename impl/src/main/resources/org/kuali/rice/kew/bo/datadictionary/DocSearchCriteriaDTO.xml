@@ -3,7 +3,7 @@
   <bean id="DocSearchCriteriaDTO" parent="DocSearchCriteriaDTO-parentBean"/>
 
   <bean id="DocSearchCriteriaDTO-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO"/>
+    <property name="dataObjectClass" value="org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO"/>
 <!-- <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter" />
 -->
 

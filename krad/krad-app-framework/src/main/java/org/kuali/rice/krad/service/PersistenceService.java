@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.service;
 
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+
 import java.util.List;
 import java.util.Map;
-
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 
 public interface PersistenceService {
 //    public void initialize();

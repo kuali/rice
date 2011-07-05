@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary.exporter;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.exception.DuplicateKeyException;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
@@ -27,6 +27,7 @@ import org.kuali.rice.krad.exception.DuplicateKeyException;
  * 
  * 
  */
+@Deprecated
 public class StringMap extends LinkedHashMap {
     private static final long serialVersionUID = 7364206011639131063L;
 

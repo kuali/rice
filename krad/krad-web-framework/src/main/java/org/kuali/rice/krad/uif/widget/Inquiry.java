@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import java.security.GeneralSecurityException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
@@ -37,6 +30,13 @@ import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.util.UrlFactory;
+
+import java.security.GeneralSecurityException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * Widget for rendering an Inquiry link on a field's value
@@ -173,7 +173,7 @@ public class Inquiry extends WidgetBase {
             // a value from being shown to user, because we don't want the
             // browser history to store the restricted
             // attribute's value in the URL
-            if (KRADServiceLocatorWeb.getBusinessObjectAuthorizationService()
+            if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
                     .attributeValueNeedsToBeEncryptedOnFormsAndLinks(inquiryObjectClass, inquiryParameter.getValue())) {
                 try {
                     parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue);

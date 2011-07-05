@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * For a given <code>Component</code> instance converts all component properties

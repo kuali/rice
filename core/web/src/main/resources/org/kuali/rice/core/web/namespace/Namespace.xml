@@ -18,7 +18,7 @@
   <bean id="Namespace" parent="Namespace-parentBean"/>
 
   <bean id="Namespace-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.core.impl.namespace.NamespaceBo"/>
+    <property name="dataObjectClass" value="org.kuali.rice.core.impl.namespace.NamespaceBo"/>
     <property name="inquiryDefinition">
       <ref bean="Namespace-inquiryDefinition"/>
     </property>

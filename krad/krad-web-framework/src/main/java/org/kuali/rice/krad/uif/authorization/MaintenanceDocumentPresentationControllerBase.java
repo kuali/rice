@@ -18,18 +18,16 @@ package org.kuali.rice.krad.uif.authorization;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaintenanceDocumentPresentationControllerBase extends DocumentPresentationControllerBase {
 
-    protected static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
-
     public boolean canCreate(Class<?> dataObjectClass) {
-        return getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(
-                getMaintenanceDocumentDictionaryService().getDocumentTypeName(dataObjectClass)).booleanValue();
+        return KRADServiceLocatorWeb.getDocumentDictionaryService().getAllowsNewOrCopy(
+                KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentTypeName(dataObjectClass))
+                .booleanValue();
     }
 
     @Override
@@ -45,12 +43,4 @@ public class MaintenanceDocumentPresentationControllerBase extends DocumentPrese
 
         return (!workflowDocument.isEnroute() && super.canBlanketApprove(document));
     }
-
-    protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-        if (maintenanceDocumentDictionaryService == null) {
-            maintenanceDocumentDictionaryService = KRADServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
-        }
-        return maintenanceDocumentDictionaryService;
-    }
-
 }

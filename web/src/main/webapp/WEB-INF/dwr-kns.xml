@@ -17,7 +17,7 @@
 
 <dwr>
   <init>
-    <creator id="knsCreator" class="org.kuali.rice.krad.web.servlet.dwr.GlobalResourceDelegatingSpringCreator"/>
+    <creator id="knsCreator" class="org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator"/>
   </init>
   <allow>
       <convert converter="bean" match="org.kuali.rice.kim.bo.impl.PersonImpl">

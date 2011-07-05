@@ -16,8 +16,7 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.web.derivedvaluesetter.DerivedValuesSetter;
+import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
 /**
  * View type for KRAD documents
@@ -38,8 +37,6 @@ public class DocumentView extends FormView {
 	private boolean allowsNoteFYI = false;
 	private boolean displayTopicFieldInNotes = false;
 
-	// TODO: figure out what this is used for
-	protected Class<? extends DerivedValuesSetter> derivedValuesSetterClass;
 	private Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass;
 
 	public DocumentView() {
@@ -84,14 +81,6 @@ public class DocumentView extends FormView {
 
 	public void setAttachmentTypesValuesFinderClass(Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass) {
 		this.attachmentTypesValuesFinderClass = attachmentTypesValuesFinderClass;
-	}
-
-	public Class<? extends DerivedValuesSetter> getDerivedValuesSetterClass() {
-		return this.derivedValuesSetterClass;
-	}
-
-	public void setDerivedValuesSetterClass(Class<? extends DerivedValuesSetter> derivedValuesSetterClass) {
-		this.derivedValuesSetterClass = derivedValuesSetterClass;
 	}
 
 }

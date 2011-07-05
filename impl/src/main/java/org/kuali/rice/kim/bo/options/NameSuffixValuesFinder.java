@@ -20,7 +20,7 @@ import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 import java.util.ArrayList;
 import java.util.Collection;

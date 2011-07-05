@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.bo.types.dto;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Specialization of HashMap to facilitate web services and simplify API definitions.

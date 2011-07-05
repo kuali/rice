@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint.provider;
 
-import java.util.HashMap;
-
 import org.kuali.rice.krad.datadictionary.ComplexAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ExistenceConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.ConstraintResolver;
 import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.DefinitionConstraintResolver;
+
+import java.util.HashMap;
 
 /**
  * An object that looks up constraints for attribute definitions by constraint type. This can either by instantiated by dependency

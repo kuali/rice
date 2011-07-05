@@ -45,6 +45,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
 
     /**
      * @see org.kuali.rice.krad.service.DocumentHelperService#getDocumentAuthorizer(java.lang.String)
+     * // TODO: in krad documents could have multiple views and multiple authorizer classes
      */
     public DocumentAuthorizer getDocumentAuthorizer(String documentType) {
         DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
@@ -104,6 +105,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
 
     /**
      * @see org.kuali.rice.krad.service.DocumentHelperService#getDocumentPresentationController(java.lang.String)
+     * // TODO: in krad documents could have multiple views and multiple presentation controller
      */
     public DocumentPresentationController getDocumentPresentationController(String documentType) {
         DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();

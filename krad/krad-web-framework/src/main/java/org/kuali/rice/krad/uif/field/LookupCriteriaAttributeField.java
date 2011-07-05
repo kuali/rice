@@ -76,7 +76,7 @@ public class LookupCriteriaAttributeField extends AttributeField {
 		if (StringUtils.isEmpty(getDefaultValue())) {
 			// if the attrib name is "active", and BO is Inactivatable, then set the default value to Y
 			// TODO delyea: this used to take into account if the class was Inactivateable:
-			// Inactivateable.class.isAssignableFrom(businessObjectClass)
+			// Inactivateable.class.isAssignableFrom(dataObjectClass)
 			// TODO delyea: check to see if the propertyName needs to be checked for instances where getPropertyName() returns "bo.active"
 			if ((StringUtils.equals(getPropertyName(), KRADPropertyConstants.ACTIVE)) && (RadioGroupControl.class.isAssignableFrom(getControl().getClass()))) {
 				setDefaultValue(KRADConstants.YES_INDICATOR_VALUE);

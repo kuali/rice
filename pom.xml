@@ -806,6 +806,7 @@
     <module>kim</module>
     <module>shareddata</module>
     <module>krad</module>
+    <module>kns</module>
     <module>kew</module>
     <module>ksb</module>
     <module>edl</module>

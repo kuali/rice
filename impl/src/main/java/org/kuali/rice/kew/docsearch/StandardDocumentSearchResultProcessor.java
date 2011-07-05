@@ -27,10 +27,10 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
+import org.kuali.rice.kns.web.ui.Column;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.ui.Column;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.Row;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,7 +94,7 @@ public class StandardDocumentSearchResultProcessor implements
 		for (Column column : columns) {
 			if (column instanceof Column) {
 				Column dsColumn = (Column) column;
-				for (org.kuali.rice.krad.web.ui.Field field : getFields(criteria)) {
+				for (Field field : getFields(criteria)) {
 					if (field instanceof Field) {
 						Field dsField = (Field) field;
 						dsColumn.setFormatter((Formatter)dsField.getFormatter());

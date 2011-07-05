@@ -19,8 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
-import org.kuali.rice.krad.web.ui.Row;
-
+import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * SearchableAttribute must implement this interface

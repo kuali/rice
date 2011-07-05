@@ -1,8 +1,7 @@
 package org.kuali.rice.krad.datadictionary.validation;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlEnum;
+import java.util.Date;
 
 /**
  * A simple data type enum inherited from the Kuali Student project, that can be used to define a specific data type for a dictionary object 

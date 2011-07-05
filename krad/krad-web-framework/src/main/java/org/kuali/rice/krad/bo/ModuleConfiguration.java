@@ -15,21 +15,20 @@
  */
 package org.kuali.rice.krad.bo;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-
-import org.kuali.rice.krad.datadictionary.spring.DataDictionaryLocationConfigurer;
+import org.kuali.rice.krad.datadictionary.DataDictionaryLocationConfigurer;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import javax.persistence.EntityManager;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in.

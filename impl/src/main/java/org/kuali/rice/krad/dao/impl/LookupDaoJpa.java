@@ -34,6 +34,7 @@ import org.kuali.rice.krad.dao.LookupDao;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
+import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceStructureService;
@@ -64,7 +65,7 @@ public class LookupDaoJpa implements LookupDao {
 
 	private DateTimeService dateTimeService;
 	private PersistenceStructureService persistenceStructureService;
-	private BusinessObjectDictionaryService businessObjectDictionaryService;
+	private DataDictionaryService dataDictionaryService;
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -508,7 +509,7 @@ public class LookupDaoJpa implements LookupDao {
 	protected void addInactivateableFromToCurrentCriteria(Object example, String currentSearchValue, Criteria criteria, Map searchValues) {
 		Timestamp activeTimestamp = LookupUtils.getActiveDateTimestampForCriteria(searchValues);
 		
-		List<String> groupByFieldList = businessObjectDictionaryService.getGroupByAttributesForEffectiveDating(example
+		List<String> groupByFieldList = dataDictionaryService.getGroupByAttributesForEffectiveDating(example
 				.getClass());
 		if (groupByFieldList == null) {
 			return;
@@ -698,8 +699,8 @@ public class LookupDaoJpa implements LookupDao {
 		this.persistenceStructureService = persistenceStructureService;
 	}
 
-	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
-		this.businessObjectDictionaryService = businessObjectDictionaryService;
-	}
+	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+        this.dataDictionaryService = dataDictionaryService;
+    }
 	
 }

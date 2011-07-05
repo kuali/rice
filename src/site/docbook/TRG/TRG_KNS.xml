@@ -1313,7 +1313,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
     &lt;/property>
     &lt;property name="required" value="true"/>
     &lt;property name="control">
-        &lt;bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.CampusTypeValuesFinder" p:includeKeyInLabel="false"/>
+        &lt;bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kns.keyvalues.CampusTypeValuesFinder" p:includeKeyInLabel="false"/>
     &lt;/property>
     &lt;property name="summary" value="Campus Type Code"/>
     &lt;property name="name" value="campusTypeCode"/>

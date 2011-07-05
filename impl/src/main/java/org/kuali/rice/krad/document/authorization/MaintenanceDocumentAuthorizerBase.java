@@ -25,8 +25,8 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -35,12 +35,12 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 	// private static final org.apache.log4j.Logger LOG =
 	// org.apache.log4j.Logger.getLogger(MaintenanceDocumentAuthorizerBase.class);
 
-	transient protected static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	transient protected static DocumentDictionaryService documentDictionaryService;
 
 	public final boolean canCreate(Class boClass, Person user) {
 		AttributeSet permissionDetails = new AttributeSet();
 		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
-				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
+				getDocumentDictionaryService().getMaintenanceDocumentTypeName(
 						boClass));
 		permissionDetails.put(KRADConstants.MAINTENANCE_ACTN,
 				KRADConstants.MAINTENANCE_NEW_ACTION);
@@ -58,7 +58,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 	public final boolean canMaintain(Object dataObject, Person user) {
 		Map<String, String> permissionDetails = new HashMap<String, String>(2);
 		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
-				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
+				getDocumentDictionaryService().getMaintenanceDocumentTypeName(
 						dataObject.getClass()));
 		permissionDetails.put(KRADConstants.MAINTENANCE_ACTN,
 				KRADConstants.MAINTENANCE_EDIT_ACTION);
@@ -100,7 +100,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 			MaintenanceDocument maintDoc = (MaintenanceDocument)dataObject;
 			if ( maintDoc.getNewMaintainableObject() != null ) {			
 				attributes.putAll(
-                        KRADUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
+                        KRADUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getDataObjectClass()));
 			}
 		}
 	}
@@ -113,18 +113,17 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 			MaintenanceDocument maintDoc = (MaintenanceDocument)dataObject;
 			if ( maintDoc.getNewMaintainableObject() != null ) {			
 				attributes.putAll(
-                        KRADUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
+                        KRADUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getDataObjectClass()));
 				attributes.put(KRADConstants.MAINTENANCE_ACTN,maintDoc.getNewMaintainableObject().getMaintenanceAction());
 			}
 		}
 	}
 
-	protected final MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-		if (maintenanceDocumentDictionaryService == null) {
-			maintenanceDocumentDictionaryService = KRADServiceLocatorWeb
-					.getMaintenanceDocumentDictionaryService();
-		}
-		return maintenanceDocumentDictionaryService;
-	}
+    protected static DocumentDictionaryService getDocumentDictionaryService() {
+        if (documentDictionaryService == null) {
+            documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
+        }
+        return documentDictionaryService;
+    }
 
 }

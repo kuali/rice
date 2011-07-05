@@ -18,7 +18,7 @@
   <bean id="PersonRuleResponsibility" parent="PersonRuleResponsibility-parentBean"/>
 
   <bean id="PersonRuleResponsibility-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility"/>
+    <property name="dataObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility"/>
     <property name="objectLabel" value="Person Rule Responsibility"/>
     <property name="attributes">
       <list>

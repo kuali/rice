@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint.provider;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.ConstraintResolver;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A class that implements a simple in memory storage map of constraint resolvers. This provides a convenient base class

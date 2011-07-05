@@ -27,8 +27,8 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
-import org.kuali.rice.krad.web.ui.Row;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.ui.Row;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

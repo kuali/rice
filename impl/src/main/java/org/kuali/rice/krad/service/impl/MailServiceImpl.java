@@ -19,7 +19,7 @@ import javax.mail.MessagingException;
 
 import org.kuali.rice.core.mail.MailMessage;
 import org.kuali.rice.core.mail.Mailer;
-import org.kuali.rice.krad.mail.InvalidAddressException;
+import org.kuali.rice.krad.exception.InvalidAddressException;
 import org.kuali.rice.krad.service.MailService;
 
 public class MailServiceImpl implements MailService {

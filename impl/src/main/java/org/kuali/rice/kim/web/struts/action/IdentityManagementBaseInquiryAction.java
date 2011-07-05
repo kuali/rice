@@ -25,8 +25,8 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
-import org.kuali.rice.krad.web.struts.action.KualiAction;
-import org.kuali.rice.krad.web.struts.form.KualiTableRenderFormMetadata;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
+import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

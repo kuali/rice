@@ -48,14 +48,14 @@
   <bean id="DocEmploymentInfo-employmentTypeCode" parent="DocEmploymentInfo-employmentTypeCode-parentBean"/>
   <bean id="DocEmploymentInfo-employmentTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="employmentTypeCode" p:forceUppercase="true" p:label="Employee Type" p:shortLabel="Employee Type" p:maxLength="40" p:required="true">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeBlankRow="true" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeBlankRow="true" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
     </property>
   </bean>
  
   <bean id="DocEmploymentInfo-employmentStatusCode" parent="DocEmploymentInfo-employmentStatusCode-parentBean"/>
   <bean id="DocEmploymentInfo-employmentStatusCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="employmentStatusCode" p:forceUppercase="true" p:label="Employee Status" p:shortLabel="Employee Status" p:maxLength="40" p:required="true">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeBlankRow="true" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeBlankRow="true" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
     </property>
   </bean>
  

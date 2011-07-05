@@ -18,8 +18,6 @@ package org.kuali.rice.kim.dao;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.rice.kim.api.permission.Permission;
-import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 
 /**

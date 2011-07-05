@@ -20,8 +20,9 @@ import java.util.Map;
 
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentService;
-import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -42,7 +43,7 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
  */
 public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 	private DocumentService documentService;
-	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    private DocumentDictionaryService documentDictionaryService;
 
 	/**
 	 * @see org.kuali.rice.krad.uif.service.ViewTypeService#getViewTypeName()
@@ -96,7 +97,7 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 				Document document = documentService.getByDocumentHeaderId(documentNumber);
 				if (document != null) {
 					String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
-					Class<?> objectClassName = maintenanceDocumentDictionaryService.getBusinessObjectClass(docTypeName);
+					Class<?> objectClassName = getDocumentDictionaryService().getMaintenanceDataObjectClass(docTypeName);
 					if (objectClassName != null) {
 						objectClassFound = true;
 						parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, objectClassName.getName());
@@ -118,6 +119,9 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 	}
 
 	protected DocumentService getDocumentService() {
+        if (documentService == null) {
+            this.documentService = KRADServiceLocatorWeb.getDocumentService();
+        }
 		return this.documentService;
 	}
 
@@ -125,13 +129,14 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 		this.documentService = documentService;
 	}
 
-	protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-		return this.maintenanceDocumentDictionaryService;
-	}
+    public DocumentDictionaryService getDocumentDictionaryService() {
+        if (documentDictionaryService == null) {
+            this.documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
+        }
+        return documentDictionaryService;
+    }
 
-	public void setMaintenanceDocumentDictionaryService(
-			MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService) {
-		this.maintenanceDocumentDictionaryService = maintenanceDocumentDictionaryService;
-	}
-
+    public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
+        this.documentDictionaryService = documentDictionaryService;
+    }
 }

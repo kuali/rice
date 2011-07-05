@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.krad.bo;
 
-import java.io.IOException;
-import java.io.InputStream;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,10 +26,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

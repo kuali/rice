@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   <bean id="BookOrderDocument" parent="BookOrder-parentBean"/>
   <bean id="BookOrder-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="edu.sampleu.bookstore.bo.BookOrder"/>
+    <property name="dataObjectClass" value="edu.sampleu.bookstore.bo.BookOrder"/>
     <property name="objectLabel" value="BookOrder"/>
     <property name="attributes">
       <list>
@@ -40,7 +40,7 @@
       <bean parent="NumericValidationPattern"/>
     </property>
 <!--     <property name="control">-->
-<!--      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.Book" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="title"/>-->
+<!--      <bean parent="SelectControlDefinition" p:dataObjectClass="edu.sampleu.bookstore.bo.Book" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="title"/>-->
 <!--    </property>-->
 <!--     <property name="controlField">-->
 <!--      <bean parent="TextControl" p:size="10"/>-->

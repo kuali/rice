@@ -20,7 +20,9 @@ import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
+import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.InactivateableFromToService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
@@ -40,8 +42,8 @@ import java.util.Map;
 public class InactivateableFromToServiceImpl implements InactivateableFromToService {
 
 	protected DateTimeService dateTimeService;
-	protected BusinessObjectDictionaryService businessObjectDictionaryService;
 	protected LookupService lookupService;
+    protected DataDictionaryService dataDictionaryService;
 
 	/**
 	 * Uses lookup service which will convert the active criteria to active begin/to field criteria
@@ -137,8 +139,8 @@ public class InactivateableFromToServiceImpl implements InactivateableFromToServ
 
 		List<InactivatableFromTo> currentList = new ArrayList<InactivatableFromTo>();
 
-		List<String> groupByList = businessObjectDictionaryService.getGroupByAttributesForEffectiveDating(activeList
-				.get(0).getClass());
+		List<String> groupByList = getDataDictionaryService().getGroupByAttributesForEffectiveDating(
+                activeList.get(0).getClass());
 		if (groupByList != null) {
 			List<String> sortByList = new ArrayList<String>(groupByList);
 			sortByList.add(KRADPropertyConstants.ACTIVE_FROM_DATE);
@@ -201,12 +203,18 @@ public class InactivateableFromToServiceImpl implements InactivateableFromToServ
 		this.dateTimeService = dateTimeService;
 	}
 
-	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
-		this.businessObjectDictionaryService = businessObjectDictionaryService;
-	}
-
 	public void setLookupService(LookupService lookupService) {
 		this.lookupService = lookupService;
 	}
 
+    protected DataDictionaryService getDataDictionaryService() {
+        if (dataDictionaryService == null) {
+            this.dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+        }
+        return dataDictionaryService;
+    }
+
+    public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+        this.dataDictionaryService = dataDictionaryService;
+    }
 }

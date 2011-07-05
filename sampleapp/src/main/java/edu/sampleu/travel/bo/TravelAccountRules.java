@@ -15,7 +15,7 @@
  */
 package edu.sampleu.travel.bo;
 
-import org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 
 public class TravelAccountRules extends MaintenanceDocumentRuleBase {
 

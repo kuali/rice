@@ -26,9 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 
 /**

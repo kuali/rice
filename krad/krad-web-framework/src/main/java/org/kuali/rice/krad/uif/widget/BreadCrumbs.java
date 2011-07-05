@@ -10,9 +10,9 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import java.util.List;
-
 import org.kuali.rice.krad.uif.history.HistoryEntry;
+
+import java.util.List;
 
 /**
  * The breadcrumb widget contains various settings for setting up

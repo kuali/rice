@@ -20,9 +20,9 @@ import java.util.Map;
 
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
-import org.kuali.rice.krad.web.ui.Section;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -33,8 +33,8 @@ import org.kuali.rice.krad.web.ui.Section;
 public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 
 	@Override
-	public Object getDataObject(Map fieldValues){
-		RuleDelegation rule = (RuleDelegation)super.getDataObject(fieldValues);
+	public Object retrieveDataObject(Map fieldValues){
+		RuleDelegation rule = (RuleDelegation)super.retrieveDataObject(fieldValues);
 		WebRuleUtils.populateRuleMaintenanceFields(rule.getDelegationRuleBaseValues());
 		return rule;
     }

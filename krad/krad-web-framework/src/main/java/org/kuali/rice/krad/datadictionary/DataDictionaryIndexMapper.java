@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.uif.container.View;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.uif.container.View;
 
 /**
  * A DataDictionaryMapper that simply consults the statically initialized
@@ -219,10 +218,10 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	 */
 	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(DataDictionaryIndex index, Class<?> businessObjectClass) {
 		if (businessObjectClass == null) {
-			throw new IllegalArgumentException("invalid (null) businessObjectClass");
+			throw new IllegalArgumentException("invalid (null) dataObjectClass");
 		}
 		if ( LOG.isDebugEnabled() ) {
-		    LOG.debug("calling getDocumentEntry by businessObjectClass '" + businessObjectClass + "'");
+		    LOG.debug("calling getDocumentEntry by dataObjectClass '" + businessObjectClass + "'");
 		}
 
 		return (MaintenanceDocumentEntry) index.getDocumentEntriesByBusinessObjectClass().get(businessObjectClass);
@@ -244,7 +243,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewByTypeIndex(org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex,
+	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewByTypeIndex(UifDictionaryIndex,
 	 *      java.lang.String, java.util.Map)
 	 */
 	public View getViewByTypeIndex(UifDictionaryIndex index, String viewTypeName, Map<String, String> indexKey) {
@@ -259,7 +258,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewsForType(org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex,
+	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewsForType(UifDictionaryIndex,
 	 *      java.lang.String)
 	 */
 	public List<View> getViewsForType(UifDictionaryIndex index, String viewTypeName) {

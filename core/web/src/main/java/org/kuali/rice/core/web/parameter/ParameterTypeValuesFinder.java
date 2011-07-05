@@ -18,7 +18,7 @@ package org.kuali.rice.core.web.parameter;
 import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KeyValuesService;
 

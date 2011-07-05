@@ -32,6 +32,8 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kns.datadictionary.exporter.DataDictionaryMap;
+import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
@@ -39,18 +41,16 @@ import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.CollectionDefinition;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
-import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
-import org.kuali.rice.krad.datadictionary.exporter.DataDictionaryMap;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.rule.PromptBeforeValidation;
+import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
@@ -58,21 +58,20 @@ import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
 
 /**
- * This class is the service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and
- * returning a DataDictionary. This is the default, Kuali delivered implementation.
+ * Service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and
+ * returning a DataDictionary. This is the default, Kuali delivered implementation
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataDictionaryServiceImpl implements DataDictionaryService {
-    private static final Logger LOG = Logger.getLogger( DataDictionaryServiceImpl.class );
-    
-    
+    private static final Logger LOG = Logger.getLogger(DataDictionaryServiceImpl.class);
+
     private DataDictionary dataDictionary;
-    private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap(this);
 
     private ConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
-    private KualiWorkflowInfo workflowInfoService; 
+    private KualiWorkflowInfo workflowInfoService;
 
-    
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#setBaselinePackages(java.lang.String)
      */
@@ -86,7 +85,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public DataDictionaryServiceImpl() {
         this.dataDictionary = new DataDictionary();
     }
-    
+
     public DataDictionaryServiceImpl(DataDictionary dataDictionary) {
         this.dataDictionary = dataDictionary;
     }
@@ -97,9 +96,9 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public DataDictionary getDataDictionary() {
         return dataDictionary;
     }
-    
+
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeControlDefinition(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeControlDefinition(java.lang.String)
      */
     public ControlDefinition getAttributeControlDefinition(String entryName, String attributeName) {
         ControlDefinition controlDefinition = null;
@@ -113,7 +112,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeSize(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeSize(java.lang.String)
      */
     public Integer getAttributeSize(String entryName, String attributeName) {
         Integer size = null;
@@ -130,21 +129,21 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeMinLength(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeMinLength(java.lang.String)
      */
     public Integer getAttributeMinLength(String entryName, String attributeName) {
         Integer minLength = null;
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-        	minLength = attributeDefinition.getMinLength();
+            minLength = attributeDefinition.getMinLength();
         }
 
         return minLength;
     }
-    
+
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeMaxLength(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeMaxLength(java.lang.String)
      */
     public Integer getAttributeMaxLength(String entryName, String attributeName) {
         Integer maxLength = null;
@@ -174,7 +173,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeValidatingExpression(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeValidatingExpression(java.lang.String)
      */
     public Pattern getAttributeValidatingExpression(String entryName, String attributeName) {
         Pattern regex = null;
@@ -193,16 +192,16 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeLabel(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeLabel(java.lang.String)
      */
     public String getAttributeLabel(String entryName, String attributeName) {
         String label = "";
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-        	// KULRICE-4445 prevent NullPointerException by ensuring a label is set
-     	 	label = attributeDefinition.getLabel();
-        	if (!StringUtils.isEmpty(attributeDefinition.getDisplayLabelAttribute())) {
+            // KULRICE-4445 prevent NullPointerException by ensuring a label is set
+            label = attributeDefinition.getLabel();
+            if (!StringUtils.isEmpty(attributeDefinition.getDisplayLabelAttribute())) {
                 attributeDefinition = getAttributeDefinition(entryName, attributeDefinition.getDisplayLabelAttribute());
                 if (attributeDefinition != null) {
                     label = attributeDefinition.getLabel();
@@ -214,7 +213,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeShortLabel(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeShortLabel(java.lang.String)
      */
     public String getAttributeShortLabel(String entryName, String attributeName) {
         String shortLabel = "";
@@ -235,7 +234,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeErrorLabel(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeErrorLabel(java.lang.String)
      */
     public String getAttributeErrorLabel(String entryName, String attributeName) {
         String longAttributeLabel = this.getAttributeLabel(entryName, attributeName);
@@ -244,7 +243,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeFormatter(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeFormatter(java.lang.String)
      */
     public Class<? extends Formatter> getAttributeFormatter(String entryName, String attributeName) {
         Class formatterClass = null;
@@ -260,20 +259,23 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeForceUppercase(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeForceUppercase(java.lang.String)
      */
-    public Boolean getAttributeForceUppercase(String entryName, String attributeName) throws UnknownBusinessClassAttributeException {
+    public Boolean getAttributeForceUppercase(String entryName,
+            String attributeName) throws UnknownBusinessClassAttributeException {
         Boolean forceUppercase = null;
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition == null) {
-            throw new UnknownBusinessClassAttributeException("Could not find a matching data dictionary business class attribute entry for " + entryName + "." + attributeName);
+            throw new UnknownBusinessClassAttributeException(
+                    "Could not find a matching data dictionary business class attribute entry for " + entryName + "." +
+                            attributeName);
         }
         forceUppercase = attributeDefinition.getForceUppercase();
 
         return forceUppercase;
     }
-    
+
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeDisplayMask(java.lang.String, java.lang.String)
      */
@@ -288,9 +290,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return attributeSecurity;
     }
 
-
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeSummary(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeSummary(java.lang.String)
      */
     public String getAttributeSummary(String entryName, String attributeName) {
         String summary = null;
@@ -304,7 +305,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeDescription(java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeDescription(java.lang.String)
      */
     public String getAttributeDescription(String entryName, String attributeName) {
         String description = null;
@@ -318,7 +319,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#isAttributeRequired(java.lang.Class, java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#isAttributeRequired(java.lang.Class, java.lang.String)
      */
     public Boolean isAttributeRequired(String entryName, String attributeName) {
         Boolean required = null;
@@ -332,7 +333,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#isAttributeDefined(java.lang.Class, java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#isAttributeDefined(java.lang.Class, java.lang.String)
      */
     public Boolean isAttributeDefined(String entryName, String attributeName) {
         boolean isDefined = false;
@@ -346,7 +347,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getAttributeValuesScopeId(java.lang.Class,
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeValuesScopeId(java.lang.Class,
      *      java.lang.String)
      */
     public Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(String entryName, String attributeName) {
@@ -362,7 +363,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getCollectionLabel(java.lang.Class, java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getCollectionLabel(java.lang.Class, java.lang.String)
      */
     public String getCollectionLabel(String entryName, String collectionName) {
         String label = "";
@@ -376,7 +377,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getCollectionShortLabel(java.lang.Class, java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getCollectionShortLabel(java.lang.Class, java.lang.String)
      */
     public String getCollectionShortLabel(String entryName, String collectionName) {
         String shortLabel = "";
@@ -390,17 +391,17 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getCollectionElementLabel(java.lang.Class,
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getCollectionElementLabel(java.lang.Class,
      *      java.lang.String)
      */
-    public String getCollectionElementLabel(String entryName, String collectionName, Class businessObjectClass) {
+    public String getCollectionElementLabel(String entryName, String collectionName, Class dataObjectClass) {
         String elementLabel = "";
 
         CollectionDefinition collectionDefinition = getCollectionDefinition(entryName, collectionName);
         if (collectionDefinition != null) {
             elementLabel = collectionDefinition.getElementLabel();
             if (StringUtils.isEmpty(elementLabel)) {
-                BusinessObjectEntry boe = getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
+                BusinessObjectEntry boe = getDataDictionary().getBusinessObjectEntry(dataObjectClass.getName());
                 if (boe != null) {
                     elementLabel = boe.getObjectLabel();
                 }
@@ -411,7 +412,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getCollectionSummary(java.lang.Class, java.lang.String)
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getCollectionSummary(java.lang.Class, java.lang.String)
      */
     public String getCollectionSummary(String entryName, String collectionName) {
         String summary = null;
@@ -425,7 +426,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getCollectionDescription(java.lang.Class,
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getCollectionDescription(java.lang.Class,
      *      java.lang.String)
      */
     public String getCollectionDescription(String entryName, String collectionName) {
@@ -494,7 +495,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public List<String> getRelationshipEntriesForSourceAttribute(String entryName, String sourceAttributeName) {
         List<String> relationships = new ArrayList<String>();
 
-        DataDictionaryEntryBase entry = (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
+        DataDictionaryEntryBase entry =
+                (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
 
         for (RelationshipDefinition def : entry.getRelationships()) {
             for (PrimitiveAttributeDefinition pddef : def.getPrimitiveAttributes()) {
@@ -510,7 +512,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public List<String> getRelationshipEntriesForTargetAttribute(String entryName, String targetAttributeName) {
         List<String> relationships = new ArrayList<String>();
 
-        DataDictionaryEntryBase entry = (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
+        DataDictionaryEntryBase entry =
+                (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
 
         for (RelationshipDefinition def : entry.getRelationships()) {
             for (PrimitiveAttributeDefinition pddef : def.getPrimitiveAttributes()) {
@@ -526,9 +529,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * @param objectClass
      * @param attributeName
-     * @return AttributeDefinition for the given objectClass and attribute name, or null if there is none
-     * @throws IllegalArgumentException
-     *             if the given Class is null or is not a BusinessObject class
+     * @return AttributeDefinition for the given dataObjectClass and attribute name, or null if there is none
+     * @throws IllegalArgumentException if the given Class is null or is not a BusinessObject class
      */
     public AttributeDefinition getAttributeDefinition(String entryName, String attributeName) {
         if (StringUtils.isBlank(attributeName)) {
@@ -536,15 +538,15 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         }
         AttributeDefinition attributeDefinition = null;
 
-        DataDictionaryEntryBase entry = (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
+        DataDictionaryEntryBase entry =
+                (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
         if (entry != null) {
             attributeDefinition = entry.getAttributeDefinition(attributeName);
         }
 
         return attributeDefinition;
     }
-	
-    
+
     /**
      * @param entryName
      * @param collectionName
@@ -556,7 +558,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         }
         CollectionDefinition collectionDefinition = null;
 
-        DataDictionaryEntryBase entry = (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
+        DataDictionaryEntryBase entry =
+                (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
         if (entry != null) {
             collectionDefinition = entry.getCollectionDefinition(collectionName);
         }
@@ -576,7 +579,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         RelationshipDefinition relationshipDefinition = null;
 
-        DataDictionaryEntryBase entry = (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
+        DataDictionaryEntryBase entry =
+                (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
         if (entry != null) {
             relationshipDefinition = entry.getRelationshipDefinition(relationshipName);
         }
@@ -590,7 +594,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public Map<String, String> getRelationshipAttributeMap(String entryName, String relationshipName) {
         Map<String, String> attributeMap = new HashMap<String, String>();
         RelationshipDefinition relationshipDefinition = getRelationshipDefinition(entryName, relationshipName);
-        for (Iterator iter = relationshipDefinition.getPrimitiveAttributes().iterator(); iter.hasNext();) {
+        for (Iterator iter = relationshipDefinition.getPrimitiveAttributes().iterator(); iter.hasNext(); ) {
             PrimitiveAttributeDefinition attribute = (PrimitiveAttributeDefinition) iter.next();
             attributeMap.put(attribute.getTargetName(), attribute.getSourceName());
         }
@@ -602,7 +606,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     public List<String> getRelationshipNames(String entryName) {
-        DataDictionaryEntryBase entry = (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
+        DataDictionaryEntryBase entry =
+                (DataDictionaryEntryBase) getDataDictionary().getDictionaryObjectEntry(entryName);
 
         List<String> relationshipNames = new ArrayList<String>();
         for (RelationshipDefinition def : entry.getRelationships()) {
@@ -614,157 +619,156 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeControlDefinition(java.lang.String, java.lang.String)
      */
-    public ControlDefinition getAttributeControlDefinition(Class businessObjectClass, String attributeName) {
-        return getAttributeControlDefinition(businessObjectClass.getName(), attributeName);
+    public ControlDefinition getAttributeControlDefinition(Class dataObjectClass, String attributeName) {
+        return getAttributeControlDefinition(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeDescription(java.lang.String, java.lang.String)
      */
-    public String getAttributeDescription(Class businessObjectClass, String attributeName) {
-        return getAttributeDescription(businessObjectClass.getName(), attributeName);
+    public String getAttributeDescription(Class dataObjectClass, String attributeName) {
+        return getAttributeDescription(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeForceUppercase(java.lang.String, java.lang.String)
      */
-    public Boolean getAttributeForceUppercase(Class businessObjectClass, String attributeName) {
-        return getAttributeForceUppercase(businessObjectClass.getName(), attributeName);
+    public Boolean getAttributeForceUppercase(Class dataObjectClass, String attributeName) {
+        return getAttributeForceUppercase(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeFormatter(java.lang.String, java.lang.String)
      */
-    public Class<? extends Formatter> getAttributeFormatter(Class businessObjectClass, String attributeName) {
-        return getAttributeFormatter(businessObjectClass.getName(), attributeName);
+    public Class<? extends Formatter> getAttributeFormatter(Class dataObjectClass, String attributeName) {
+        return getAttributeFormatter(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeLabel(java.lang.String, java.lang.String)
      */
-    public String getAttributeLabel(Class businessObjectClass, String attributeName) {
-        return getAttributeLabel(businessObjectClass.getName(), attributeName);
+    public String getAttributeLabel(Class dataObjectClass, String attributeName) {
+        return getAttributeLabel(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeMaxLength(java.lang.String, java.lang.String)
      */
-    public Integer getAttributeMaxLength(Class businessObjectClass, String attributeName) {
-        return getAttributeMaxLength(businessObjectClass.getName(), attributeName);
+    public Integer getAttributeMaxLength(Class dataObjectClass, String attributeName) {
+        return getAttributeMaxLength(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeShortLabel(java.lang.String, java.lang.String)
      */
-    public String getAttributeShortLabel(Class businessObjectClass, String attributeName) {
-        return getAttributeShortLabel(businessObjectClass.getName(), attributeName);
+    public String getAttributeShortLabel(Class dataObjectClass, String attributeName) {
+        return getAttributeShortLabel(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeErrorLabel(java.lang.String, java.lang.String)
      */
-    public String getAttributeErrorLabel(Class businessObjectClass, String attributeName) {
-        return getAttributeErrorLabel(businessObjectClass.getName(), attributeName);
+    public String getAttributeErrorLabel(Class dataObjectClass, String attributeName) {
+        return getAttributeErrorLabel(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeSize(java.lang.String, java.lang.String)
      */
-    public Integer getAttributeSize(Class businessObjectClass, String attributeName) {
-        return getAttributeSize(businessObjectClass.getName(), attributeName);
+    public Integer getAttributeSize(Class dataObjectClass, String attributeName) {
+        return getAttributeSize(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeSummary(java.lang.String, java.lang.String)
      */
-    public String getAttributeSummary(Class businessObjectClass, String attributeName) {
-        return getAttributeSummary(businessObjectClass.getName(), attributeName);
+    public String getAttributeSummary(Class dataObjectClass, String attributeName) {
+        return getAttributeSummary(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeValidatingExpression(java.lang.String, java.lang.String)
      */
-    public Pattern getAttributeValidatingExpression(Class businessObjectClass, String attributeName) {
-        return getAttributeValidatingExpression(businessObjectClass.getName(), attributeName);
+    public Pattern getAttributeValidatingExpression(Class dataObjectClass, String attributeName) {
+        return getAttributeValidatingExpression(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeValuesFinderClass(java.lang.String, java.lang.String)
      */
-    public Class getAttributeValuesFinderClass(Class businessObjectClass, String attributeName) {
-        return getAttributeValuesFinderClass(businessObjectClass.getName(), attributeName);
+    public Class getAttributeValuesFinderClass(Class dataObjectClass, String attributeName) {
+        return getAttributeValuesFinderClass(dataObjectClass.getName(), attributeName);
     }
 
     /**
-	 * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeValidatingErrorMessageKey(java.lang.String, java.lang.String)
-	 */
-	public String getAttributeValidatingErrorMessageKey(String entryName, String attributeName) {
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeValidatingErrorMessageKey(java.lang.String, java.lang.String)
+     */
+    public String getAttributeValidatingErrorMessageKey(String entryName, String attributeName) {
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-        	if (attributeDefinition.hasValidationPattern()) {
-        		ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
-        		return validationPattern.getValidationErrorMessageKey();
-        	}
+            if (attributeDefinition.hasValidationPattern()) {
+                ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
+                return validationPattern.getValidationErrorMessageKey();
+            }
         }
         return null;
-	}
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeValidatingErrorMessageParameters(java.lang.String, java.lang.String)
-	 */
-	public String[] getAttributeValidatingErrorMessageParameters(String entryName, String attributeName) {
-		AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
+    /**
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAttributeValidatingErrorMessageParameters(java.lang.String, java.lang.String)
+     */
+    public String[] getAttributeValidatingErrorMessageParameters(String entryName, String attributeName) {
+        AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-        	if (attributeDefinition.hasValidationPattern()) {
-        		ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
-        		String attributeLabel = getAttributeErrorLabel(entryName, attributeName);
-        		return validationPattern.getValidationErrorMessageParameters(attributeLabel);
-        	}
+            if (attributeDefinition.hasValidationPattern()) {
+                ValidationPattern validationPattern = attributeDefinition.getValidationPattern();
+                String attributeLabel = getAttributeErrorLabel(entryName, attributeName);
+                return validationPattern.getValidationErrorMessageParameters(attributeLabel);
+            }
         }
         return null;
-	}
+    }
 
-	/**
+    /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getCollectionDescription(java.lang.String, java.lang.String)
      */
-    public String getCollectionDescription(Class businessObjectClass, String collectionName) {
-        return getCollectionDescription(businessObjectClass.getName(), collectionName);
+    public String getCollectionDescription(Class dataObjectClass, String collectionName) {
+        return getCollectionDescription(dataObjectClass.getName(), collectionName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getCollectionLabel(java.lang.String, java.lang.String)
      */
-    public String getCollectionLabel(Class businessObjectClass, String collectionName) {
-        return getCollectionLabel(businessObjectClass.getName(), collectionName);
+    public String getCollectionLabel(Class dataObjectClass, String collectionName) {
+        return getCollectionLabel(dataObjectClass.getName(), collectionName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getCollectionShortLabel(java.lang.String, java.lang.String)
      */
-    public String getCollectionShortLabel(Class businessObjectClass, String collectionName) {
-        return getCollectionShortLabel(businessObjectClass.getName(), collectionName);
+    public String getCollectionShortLabel(Class dataObjectClass, String collectionName) {
+        return getCollectionShortLabel(dataObjectClass.getName(), collectionName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getCollectionSummary(java.lang.String, java.lang.String)
      */
-    public String getCollectionSummary(Class businessObjectClass, String collectionName) {
-        return getCollectionSummary(businessObjectClass.getName(), collectionName);
+    public String getCollectionSummary(Class dataObjectClass, String collectionName) {
+        return getCollectionSummary(dataObjectClass.getName(), collectionName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#isAttributeDefined(java.lang.String, java.lang.String)
      */
-    public Boolean isAttributeDefined(Class businessObjectClass, String attributeName) {
-        return isAttributeDefined(businessObjectClass.getName(), attributeName);
+    public Boolean isAttributeDefined(Class dataObjectClass, String attributeName) {
+        return isAttributeDefined(dataObjectClass.getName(), attributeName);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#isAttributeRequired(java.lang.String, java.lang.String)
      */
-    public Boolean isAttributeRequired(Class businessObjectClass, String attributeName) {
-        return isAttributeRequired(businessObjectClass.getName(), attributeName);
-
+    public Boolean isAttributeRequired(Class dataObjectClass, String attributeName) {
+        return isAttributeRequired(dataObjectClass.getName(), attributeName);
     }
 
     /**
@@ -821,7 +825,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public String getValidDocumentTypeNameByClass(Class documentClass) {
         String documentTypeName = getDocumentTypeNameByClass(documentClass);
         if (StringUtils.isBlank(documentTypeName)) {
-            throw new UnknownDocumentTypeException("unable to get documentTypeName for unknown documentClass '" + documentClass.getName() + "'");
+            throw new UnknownDocumentTypeException(
+                    "unable to get documentTypeName for unknown documentClass '" + documentClass.getName() + "'");
         }
         return documentTypeName;
     }
@@ -846,23 +851,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public Class<? extends Document> getValidDocumentClassByTypeName(String documentTypeName) {
         Class clazz = getDocumentClassByTypeName(documentTypeName);
         if (clazz == null) {
-            throw new UnknownDocumentTypeException("unable to get class for unknown documentTypeName '" + documentTypeName + "'");
+            throw new UnknownDocumentTypeException(
+                    "unable to get class for unknown documentTypeName '" + documentTypeName + "'");
         }
         return clazz;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.DataDictionaryService#getPromptBeforeValidationClass(java.lang.String)
-     */
-    public Class<? extends PromptBeforeValidation> getPromptBeforeValidationClass(String docTypeName) {
-        Class preRulesCheckClass = null;
-
-        DocumentEntry documentEntry = getDataDictionary().getDocumentEntry(docTypeName);
-        if (documentEntry != null) {
-            preRulesCheckClass = documentEntry.getPromptBeforeValidationClass();
-        }
-
-        return preRulesCheckClass;
     }
 
     /**
@@ -889,9 +881,41 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
             addDataDictionaryLocation(location);
         }
     }
-    
-    public Map getDataDictionaryMap() {
-        return dataDictionaryMap;
+
+    /**
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getGroupByAttributesForEffectiveDating(java.lang.Class)
+     */
+    public List<String> getGroupByAttributesForEffectiveDating(Class dataObjectClass) {
+        List<String> groupByList = null;
+
+        DataObjectEntry objectEntry = getDataDictionary().getDataObjectEntry(dataObjectClass.getName());
+        if (objectEntry != null) {
+            groupByList = objectEntry.getGroupByAttributesForEffectiveDating();
+        }
+
+        return groupByList;
+    }
+
+    /**
+     * Returns all of the inactivation blocks registered for a particular business object
+     *
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getAllInactivationBlockingDefinitions(java.lang.Class)
+     */
+    public Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(
+            Class inactivationBlockedBusinessObjectClass) {
+        Set<InactivationBlockingMetadata> blockingClasses =
+                dataDictionary.getAllInactivationBlockingMetadatas(inactivationBlockedBusinessObjectClass);
+        if (blockingClasses == null) {
+            return Collections.emptySet();
+        }
+        return blockingClasses;
+    }
+
+    public KualiWorkflowInfo getWorkflowInfoService() {
+        if (workflowInfoService == null) {
+            workflowInfoService = KRADServiceLocatorWeb.getWorkflowInfoService();
+        }
+        return workflowInfoService;
     }
 
     public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {
@@ -909,26 +933,4 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public void setKualiModuleService(KualiModuleService kualiModuleService) {
         this.kualiModuleService = kualiModuleService;
     }
-
-    /**
-     * Returns all of the inactivation blocks registered for a particular business object
-     * 
-     * @see org.kuali.rice.krad.service.DataDictionaryService#getAllInactivationBlockingDefinitions(java.lang.Class)
-     */
-    public Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(Class inactivationBlockedBusinessObjectClass) {
-        Set<InactivationBlockingMetadata> blockingClasses = dataDictionary.getAllInactivationBlockingMetadatas(inactivationBlockedBusinessObjectClass);
-        if (blockingClasses == null) {
-            return Collections.emptySet();
-        }
-        return blockingClasses;
-    }
-
-	public KualiWorkflowInfo getWorkflowInfoService() {
-		if ( workflowInfoService == null ) {
-			workflowInfoService = KRADServiceLocatorWeb.getWorkflowInfoService();
-		}
-		return workflowInfoService;
-	}
-
-
 }

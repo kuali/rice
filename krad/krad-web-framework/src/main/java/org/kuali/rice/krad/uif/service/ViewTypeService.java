@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.uif.service;
 
-import java.util.Map;
-
 import org.kuali.rice.krad.uif.container.View;
+
+import java.util.Map;
 
 /**
  * Provides methods handing <code>View</code> instance of certain types

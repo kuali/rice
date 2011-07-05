@@ -1,10 +1,9 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A when constraint is a child of a case constraint. It provides a specific additional constraint that should be processed when 

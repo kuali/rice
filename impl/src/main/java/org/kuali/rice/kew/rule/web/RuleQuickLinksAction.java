@@ -41,9 +41,11 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentHelperService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -377,7 +379,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 
 	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if(maintenanceDocumentDictionaryService == null){
-			maintenanceDocumentDictionaryService = KRADServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

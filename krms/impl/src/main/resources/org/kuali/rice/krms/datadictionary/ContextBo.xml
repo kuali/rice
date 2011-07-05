@@ -22,7 +22,7 @@
 
   <bean id="ContextBo" parent="ContextBo-parentBean"/>
   <bean id="ContextBo-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
+    <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">
       <list>

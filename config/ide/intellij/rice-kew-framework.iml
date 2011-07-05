@@ -4,11 +4,11 @@
     <output url="file://$MODULE_DIR$/../../../kew/framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../kew/framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../kew/framework">
+      <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kew/framework/target/classes" />

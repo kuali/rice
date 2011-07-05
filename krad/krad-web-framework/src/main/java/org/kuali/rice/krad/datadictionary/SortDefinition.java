@@ -16,12 +16,12 @@
 
 package org.kuali.rice.krad.datadictionary;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 
 /**
                 The defaultSort element specifies the sequence in which the

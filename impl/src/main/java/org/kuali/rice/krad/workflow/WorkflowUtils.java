@@ -28,13 +28,13 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowFunctionResolver;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.util.FieldUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.Row;
 import org.w3c.dom.Document;
 
 
@@ -117,7 +117,7 @@ public final class WorkflowUtils {
      *
      * @param field The kuali field that we need to derive a help url for. @ return Returns the help url for the field.
      */
-    public static String getHelpUrl(org.kuali.rice.krad.web.ui.Field field) {
+    public static String getHelpUrl(Field field) {
         Properties params = new Properties();
         params.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, "getAttributeHelpText");
         params.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
@@ -152,7 +152,7 @@ public final class WorkflowUtils {
      *        everything links up correctly.
      * @return A populated and ready-to-use workflow lookupable.Row.
      */
-    public static org.kuali.rice.krad.web.ui.Row buildTextRow(Class propertyClass, String boPropertyName, String workflowPropertyKey) {
+    public static Row buildTextRow(Class propertyClass, String boPropertyName, String workflowPropertyKey) {
         if (propertyClass == null) {
             throw new IllegalArgumentException("Method parameter 'propertyClass' was passed a NULL value.");
         }
@@ -163,7 +163,7 @@ public final class WorkflowUtils {
             throw new IllegalArgumentException("Method parameter 'workflowPropertyKey' was passed a NULL or blank value.");
         }
         List<Field> fields = new ArrayList<Field>();
-        org.kuali.rice.krad.web.ui.Field field;
+        Field field;
         field = FieldUtils.getPropertyField(propertyClass, boPropertyName, false);
         fields.add(field);
         return new Row(fields);
@@ -180,7 +180,7 @@ public final class WorkflowUtils {
      *        everything links up correctly.
      * @return A populated and ready-to-use workflow lookupable.Row, which includes both the property field and the lookup icon.
      */
-    public static org.kuali.rice.krad.web.ui.Row buildTextRowWithLookup(Class propertyClass, String boPropertyName, String workflowPropertyKey) {
+    public static Row buildTextRowWithLookup(Class propertyClass, String boPropertyName, String workflowPropertyKey) {
         return buildTextRowWithLookup(propertyClass, boPropertyName, workflowPropertyKey, null);
     }
 
@@ -197,7 +197,7 @@ public final class WorkflowUtils {
      *        and the value is the workflow property key
      * @return A populated and ready-to-use workflow lookupable.Row, which includes both the property field and the lookup icon.
      */
-    public static org.kuali.rice.krad.web.ui.Row buildTextRowWithLookup(Class propertyClass, String boPropertyName, String workflowPropertyKey, Map fieldConversionsByBoPropertyName) {
+    public static Row buildTextRowWithLookup(Class propertyClass, String boPropertyName, String workflowPropertyKey, Map fieldConversionsByBoPropertyName) {
         if (propertyClass == null) {
             throw new IllegalArgumentException("Method parameter 'propertyClass' was passed a NULL value.");
         }
@@ -207,7 +207,7 @@ public final class WorkflowUtils {
         if (StringUtils.isBlank(workflowPropertyKey)) {
             throw new IllegalArgumentException("Method parameter 'workflowPropertyKey' was passed a NULL or blank value.");
         }
-        org.kuali.rice.krad.web.ui.Field field;
+        Field field;
         field = FieldUtils.getPropertyField(propertyClass, boPropertyName, false);
 
         List<Field> fields = new ArrayList<Field>();
@@ -227,7 +227,7 @@ public final class WorkflowUtils {
      * @param optionMap The map of value, text pairs that will be used to constuct the dropdown list.
      * @return A populated and ready-to-use workflow lookupable.Row.
      */
-    public static org.kuali.rice.krad.web.ui.Row buildDropdownRow(Class propertyClass, String boPropertyName, String workflowPropertyKey, Map<String, String> optionMap, boolean addBlankRow) {
+    public static Row buildDropdownRow(Class propertyClass, String boPropertyName, String workflowPropertyKey, Map<String, String> optionMap, boolean addBlankRow) {
         if (propertyClass == null) {
             throw new IllegalArgumentException("Method parameter 'propertyClass' was passed a NULL value.");
         }
@@ -241,7 +241,7 @@ public final class WorkflowUtils {
             throw new IllegalArgumentException("Method parameter 'optionMap' was passed a NULL value.");
         }
         List<Field> fields = new ArrayList<Field>();
-        org.kuali.rice.krad.web.ui.Field field;
+        Field field;
         field = FieldUtils.getPropertyField(propertyClass, boPropertyName, false);
         fields.add(field);
         return new Row(fields);

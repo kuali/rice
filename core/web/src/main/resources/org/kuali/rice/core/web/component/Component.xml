@@ -18,7 +18,7 @@
   <bean id="Component" parent="Component-parentBean"/>
 
   <bean id="Component-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.core.impl.component.ComponentBo"/>
+    <property name="dataObjectClass" value="org.kuali.rice.core.impl.component.ComponentBo"/>
     <property name="inquiryDefinition">
       <ref bean="Component-inquiryDefinition"/>
     </property>

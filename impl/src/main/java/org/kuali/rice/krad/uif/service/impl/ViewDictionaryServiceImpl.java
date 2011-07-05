@@ -25,12 +25,12 @@ import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 
 /**
  * Implementation of <code>ViewDictionaryService</code>
- * 
+ *
  * <p>
  * Pulls view entries from the data dictionary to implement the various query
  * methods
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewDictionaryServiceImpl implements ViewDictionaryService {
@@ -49,9 +49,8 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
             InquiryView inquiryView = (InquiryView) view;
 
             if (StringUtils.equals(inquiryView.getDataObjectClassName().getName(), dataObjectClass.getName())) {
-                if (StringUtils.equals(inquiryView.getViewName(), viewName)
-                        || (StringUtils.isBlank(viewName) && StringUtils.equals(inquiryView.getViewName(),
-                                UifConstants.DEFAULT_VIEW_NAME))) {
+                if (StringUtils.equals(inquiryView.getViewName(), viewName) || (StringUtils.isBlank(viewName) &&
+                        StringUtils.equals(inquiryView.getViewName(), UifConstants.DEFAULT_VIEW_NAME))) {
                     inquirable = (Inquirable) inquiryView.getViewHelperService();
                     break;
                 }
@@ -116,6 +115,36 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
         }
 
         return maintainable;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.impl.ViewDictionaryService#getResultSetLimitForLookup(java.lang.Class)
+     */
+    @Override
+    public Integer getResultSetLimitForLookup(Class<?> dataObjectClass) {
+        LookupView lookupView = null;
+
+        List<View> lookupViews = getDataDictionary().getViewsForType(UifConstants.ViewType.LOOKUP);
+        for (View view : lookupViews) {
+            LookupView lView = (LookupView) view;
+
+            if (StringUtils.equals(lView.getDataObjectClassName().getName(), dataObjectClass.getName())) {
+                // if we already found a lookup view, only override if this is the default
+                if (lookupView != null) {
+                    if (StringUtils.equals(lView.getViewName(), UifConstants.DEFAULT_VIEW_NAME)) {
+                        lookupView = lView;
+                    }
+                } else {
+                    lookupView = lView;
+                }
+            }
+        }
+
+        if (lookupView != null) {
+            return lookupView.getResultSetLimit();
+        }
+
+        return null;
     }
 
     protected DataDictionary getDataDictionary() {

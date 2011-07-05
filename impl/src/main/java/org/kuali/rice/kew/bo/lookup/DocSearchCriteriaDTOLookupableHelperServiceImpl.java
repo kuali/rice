@@ -52,26 +52,25 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Column;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.ResultRow;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.krad.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.util.FieldUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.comparator.CellComparatorHelper;
-import org.kuali.rice.krad.web.struts.form.LookupForm;
-import org.kuali.rice.krad.web.ui.Column;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.ResultRow;
-import org.kuali.rice.krad.web.ui.Row;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -91,8 +90,7 @@ import java.util.regex.Pattern;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends
-KualiLookupableHelperServiceImpl {
+public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
 	private static final long serialVersionUID = -5162419674659967408L;
 	DateTimeService dateTimeService;
@@ -358,7 +356,7 @@ KualiLookupableHelperServiceImpl {
                 if (StringUtils.isNotBlank(propValue)) {
 //                    col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
 //ADDED (3 lines)
-                	AnchorHtmlData anchor = new AnchorHtmlData(KRADConstants.EMPTY_STRING, KRADConstants.EMPTY_STRING);
+                	HtmlData.AnchorHtmlData anchor = new HtmlData.AnchorHtmlData(KRADConstants.EMPTY_STRING, KRADConstants.EMPTY_STRING);
                 	//TODO: change to grab URL from config variable
                 	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("documentId", keyValue.getKey())) {
                 	    String target = StringUtils.substringBetween(keyValue.getValue(), "target=\"", "\"");
@@ -449,7 +447,7 @@ KualiLookupableHelperServiceImpl {
 		//FIXME: ctk - make sure and check that it's ok to do this here.  I may move this out to the doc search processor
 		if(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID.equals(propertyName)) {
 
-			AnchorHtmlData link = new AnchorHtmlData();
+			HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
 			DocumentRouteHeaderValue doc = (DocumentRouteHeaderValue)bo;
 			//if !superuser
 			String documentId = doc.getDocumentId();
@@ -543,13 +541,13 @@ KualiLookupableHelperServiceImpl {
 		//call get rows
 		List<Row> rows = processor.getRows(docType,lookupRows, detailed, superSearch);
 
-		BusinessObjectEntry boe = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
+		BusinessObjectEntry boe = (BusinessObjectEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
         int numCols = boe.getLookupDefinition().getNumOfColumns();
         if(numCols == 0) {
 			numCols = KRADConstants.DEFAULT_NUM_OF_COLUMNS;
 		}
 
-		super.getRows().addAll(FieldUtils.wrapFields(this.getFields(rows),numCols ));
+		super.getRows().addAll(FieldUtils.wrapFields(this.getFields(rows), numCols));
 
 	}
 

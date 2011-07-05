@@ -10,10 +10,10 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import java.util.List;
-
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.core.Component;
+
+import java.util.List;
 
 /**
  * Contains a label for another <code>Field</code> instance

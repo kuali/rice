@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.impls;
 
-import org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 
 public class RiceTestMaintenanceDocumentRule extends MaintenanceDocumentRuleBase {
 

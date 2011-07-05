@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.krad.service;
 
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContextAware;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**

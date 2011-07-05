@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
+import org.kuali.rice.krad.web.form.UifFormBase;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

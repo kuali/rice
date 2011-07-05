@@ -26,7 +26,7 @@ import org.kuali.rice.krad.document.MaintenanceLock;
  */
 public interface MaintenanceDocumentDao {
 
-//    public Collection getPendingDocumentsForClass(Class businessObjectClass);
+//    public Collection getPendingDocumentsForClass(Class dataObjectClass);
 
     /**
      * 

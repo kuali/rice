@@ -19,12 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.MapUtils;
+import org.kuali.rice.krad.lookup.LookupableImpl;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.uif.service.impl.LookupViewHelperServiceImpl;
-import org.kuali.rice.krad.web.spring.controller.MaintenanceDocumentController;
-import org.kuali.rice.krad.web.spring.form.MaintenanceForm;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
+import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
@@ -71,11 +71,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         // handle return from agenda lookup
         // TODO: this condition is sloppy 
-        if (LookupViewHelperServiceImpl.class.getName().equals(refreshCaller) && 
+        if (LookupableImpl.class.getName().equals(refreshCaller) &&
                 conversionFields != null &&
                 // TODO: this is sloppy
                 conversionFields.contains("agenda.id")) {
-            AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentBusinessObject());
+            AgendaEditor editorDocument =
+                    ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
             agendaId = editorDocument.getAgenda().getId();
             AgendaBo agenda = getBoService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
             editorDocument.setAgenda(agenda);
@@ -98,7 +99,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String agendaItemSelected = request.getParameter("agenda_item_selected");
         
         MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentBusinessObject());
+        AgendaEditor editorDocument =
+                ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
         AgendaBo agenda = editorDocument.getAgenda();
         
         AgendaItemBo firstItem = null;

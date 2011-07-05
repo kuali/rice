@@ -19,7 +19,7 @@ import java.util.Map;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import edu.sampleu.travel.dto.FiscalOfficerInfo;
@@ -27,13 +27,13 @@ import edu.sampleu.travel.dto.FiscalOfficerInfo;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FiscalOfficerInfoMaintainableImpl extends KualiMaintainableImpl {
+public class FiscalOfficerInfoMaintainableImpl extends MaintainableImpl {
     
     private transient FiscalOfficerService fiscalOfficerService;
 
     
     @Override
-    public void saveBusinessObject() {
+    public void saveDataObject() {
         if(getMaintenanceAction().equals(KRADConstants.MAINTENANCE_NEW_ACTION) ||
                 getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)) {
             getFiscalOfficerService().createFiscalOfficer((FiscalOfficerInfo)getDataObject());

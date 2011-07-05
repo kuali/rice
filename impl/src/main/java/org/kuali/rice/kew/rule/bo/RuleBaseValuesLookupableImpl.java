@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.rule.bo;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.krad.lookup.KualiLookupableImpl;
+import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 
 /**
  * An implementation of KualiLookupableImpl for RuleBaseValues

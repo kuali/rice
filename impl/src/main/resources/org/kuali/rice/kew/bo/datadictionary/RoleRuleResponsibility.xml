@@ -3,7 +3,7 @@
   <bean id="RoleRuleResponsibility" parent="RoleRuleResponsibility-parentBean"/>
 
   <bean id="RoleRuleResponsibility-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility"/>
+    <property name="dataObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility"/>
     <property name="objectLabel" value="Role Rule Responsibility"/>
     <property name="attributes">
       <list>

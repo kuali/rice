@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.ComponentBase;
@@ -28,6 +25,9 @@ import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.widget.Help;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base <code>Container</code> implementation which container implementations

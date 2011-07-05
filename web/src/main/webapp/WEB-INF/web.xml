@@ -142,7 +142,7 @@
 
 	<servlet>
 		<servlet-name>action</servlet-name>
-		<servlet-class>org.kuali.rice.krad.web.struts.action.KualiActionServlet</servlet-class>
+		<servlet-class>org.kuali.rice.kns.web.struts.action.KualiActionServlet</servlet-class>
         <init-param>
           <param-name>config</param-name>
           <param-value>/WEB-INF/struts-config.xml</param-value>

@@ -29,23 +29,22 @@ import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
-import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
-import org.kuali.rice.krad.lookup.HtmlData;
-import org.kuali.rice.krad.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
-import org.kuali.rice.krad.web.struts.form.LookupForm;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.Row;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -96,7 +95,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		}
         String href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
         
-        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
+        HtmlData.AnchorHtmlData anchorHtmlData = new HtmlData.AnchorHtmlData(href,
         		KRADConstants.DOC_HANDLER_METHOD, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
         return anchorHtmlData;
     }
@@ -110,7 +109,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     	KualiForm myForm = (KualiForm) GlobalVariables.getUserSession().retrieveObject(getDocFormKey());
     	if (myForm == null || !(myForm instanceof IdentityManagementRoleDocumentForm)){
     		if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(KimTypeBo.to(roleBo.getKimRoleType()))){
-    			((AnchorHtmlData)anchorHtmlData).setHref("");
+    			((HtmlData.AnchorHtmlData)anchorHtmlData).setHref("");
     		}
     	}
     	return anchorHtmlData;
@@ -277,7 +276,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 	 */
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
-		AnchorHtmlData inquiryHtmlData = (AnchorHtmlData)super.getInquiryUrl(bo, propertyName);
+		HtmlData.AnchorHtmlData inquiryHtmlData = (HtmlData.AnchorHtmlData)super.getInquiryUrl(bo, propertyName);
 		if(inquiryHtmlData!=null && StringUtils.isNotBlank(inquiryHtmlData.getHref()) && inquiryHtmlData.getHref().contains(ROLE_ID_URL_KEY)) {
 			inquiryHtmlData.setHref(getCustomRoleInquiryHref(getBackLocation(), inquiryHtmlData.getHref()));
 		}

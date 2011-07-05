@@ -41,7 +41,7 @@
    <bean id="DocExternalId-externalIdentifierTypeCode" parent="DocExternalId-externalIdentifierTypeCode-parentBean"/>
   <bean id="DocExternalId-externalIdentifierTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="externalIdentifierTypeCode" p:forceUppercase="true" p:label="Type" p:shortLabel="Type" p:maxLength="40" p:required="false">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.email.EntityEmailBo" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.entity.email.EntityEmailBo" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
     </property>
   </bean>
       

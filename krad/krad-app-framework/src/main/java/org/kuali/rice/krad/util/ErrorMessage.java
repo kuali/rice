@@ -16,11 +16,11 @@
 package org.kuali.rice.krad.util;
 
 
-import java.io.Serializable;
-import java.util.Arrays;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+
+import java.io.Serializable;
+import java.util.Arrays;
 
 
 /**

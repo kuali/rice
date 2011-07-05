@@ -17,6 +17,7 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.dao.DocumentDao;
 import org.kuali.rice.krad.lookup.Lookupable;
@@ -57,10 +58,6 @@ public class KRADServiceLocatorInternal {
 
     public static NamespaceService getNamespaceService() {
 	return (NamespaceService) getService(NAMESPACE_SERVICE);
-    }
-
-    public static Lookupable getKualiLookupable() {
-	return (Lookupable) getService(KRADServiceLocatorWeb.KUALI_LOOKUPABLE);
     }
 
     public static final String OJB_COLLECTION_HELPER = "ojbCollectionHelper";

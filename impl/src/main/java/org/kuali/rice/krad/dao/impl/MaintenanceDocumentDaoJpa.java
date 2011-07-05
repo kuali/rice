@@ -68,9 +68,9 @@ public class MaintenanceDocumentDaoJpa implements MaintenanceDocumentDao {
 //	/**
 //	 * Returns all pending maintenance documents locked by the given business object class.
 //	 */
-//	public Collection getPendingDocumentsForClass(Class businessObjectClass) {
+//	public Collection getPendingDocumentsForClass(Class dataObjectClass) {
 //		Criteria criteria = new Criteria(MaintenanceLock.class.getName());
-//		criteria.like("lockingRepresentation", "%" + businessObjectClass.getName() + "%");
+//		criteria.like("lockingRepresentation", "%" + dataObjectClass.getName() + "%");
 //
 //		Collection maintenanceLocks = new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 //		if (!maintenanceLocks.isEmpty()) {

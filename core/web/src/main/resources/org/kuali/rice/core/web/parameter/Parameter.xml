@@ -23,7 +23,7 @@
 	<bean id="Parameter" parent="Parameter-parentBean"/>
 
 	<bean id="Parameter-parentBean" abstract="true" parent="BusinessObjectEntry">
-		<property name="businessObjectClass" value="org.kuali.rice.core.impl.parameter.ParameterBo"/>
+		<property name="dataObjectClass" value="org.kuali.rice.core.impl.parameter.ParameterBo"/>
 		<property name="inquiryDefinition">
 			<ref bean="Parameter-inquiryDefinition"/>
 		</property>

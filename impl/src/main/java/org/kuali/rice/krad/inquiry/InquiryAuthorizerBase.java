@@ -15,10 +15,11 @@
  */
 package org.kuali.rice.krad.inquiry;
 
+import org.kuali.rice.krad.bo.authorization.BusinessObjectAuthorizerBase;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kuali.rice.krad.authorization.BusinessObjectAuthorizerBase;
 
 public class InquiryAuthorizerBase extends BusinessObjectAuthorizerBase implements
 		InquiryAuthorizer {

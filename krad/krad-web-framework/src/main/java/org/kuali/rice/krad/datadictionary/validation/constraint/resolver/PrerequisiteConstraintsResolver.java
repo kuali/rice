@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint.resolver;
 
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.validation.capability.PrerequisiteConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
+
+import java.util.List;
 
 /**
  * An object that returns the list of prerequisite constraints for a definition implementing the capability {@link PrerequisiteConstrainable}. 

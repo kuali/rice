@@ -15,14 +15,17 @@
  */
 package org.kuali.rice.krad.service;
 
-import java.util.List;
-
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.document.MaintenanceLock;
 import org.kuali.rice.krad.maintenance.Maintainable;
 
+import java.util.List;
+import java.util.Map;
+
 /**
- * Provides methods for working with <code>MaintenanceDocument</code>(s).
+ * Provides methods for working with <code>MaintenanceDocument</code>(s)
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MaintenanceDocumentService {
 
@@ -46,7 +49,25 @@ public interface MaintenanceDocumentService {
 	public MaintenanceDocument setupNewMaintenanceDocument(
 			String objectClassName, String docTypeName, String maintenanceAction);
 
-	/**
+    /**
+     * Called to setup the object being maintained
+     *
+     * <p>
+     * For edit and copy actions, the old record is retrieved and prepared for
+     * editing (in the case of a copy some fields are cleared). In addition some
+     * authorization checks are performed and hooks for custom
+     * <code>Maintainble</code> implementations are invoked.
+     * </p>
+     *
+     * @param document - document instance for the maintenance object
+     * @param maintenanceAction - the requested maintenance action (new, new with existing,
+     * copy, edit)
+     * @param requestParameters - Map of parameters from the request
+     */
+    public void setupMaintenanceObject(MaintenanceDocument document, String maintenanceAction,
+            Map<String, String[]> requestParameters);
+
+    /**
 	 * Attempts to find any other active documents that are pending on the same
 	 * maintenance record.
 	 * 

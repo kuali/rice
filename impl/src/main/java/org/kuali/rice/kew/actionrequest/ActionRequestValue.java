@@ -70,8 +70,6 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-
-
 /**
  * Bean mapped to DB. Represents ActionRequest to a workgroup, user or role.  Contains
  * references to children/parent if a member of a graph

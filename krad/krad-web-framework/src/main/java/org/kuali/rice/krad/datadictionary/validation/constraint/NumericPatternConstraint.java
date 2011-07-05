@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-
-import org.apache.commons.lang.StringUtils;
 
 
 /**

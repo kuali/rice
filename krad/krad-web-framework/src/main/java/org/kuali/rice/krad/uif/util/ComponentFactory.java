@@ -22,7 +22,7 @@ import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.GroupField;
 import org.kuali.rice.krad.uif.field.MessageField;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.HashMap;
 import java.util.List;

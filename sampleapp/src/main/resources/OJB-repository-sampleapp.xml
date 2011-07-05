@@ -50,7 +50,7 @@
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
 		<collection-descriptor name="travelAccounts" 
-		element-class-ref="edu.sampleu.travel.bo.TravelAccount" 
+		element-class-ref="edu.sampleu.travel.bo.TravelAccount"
 		auto-retrieve="true" auto-update="false"
 			auto-delete="false" indirection-table="TRAV_DOC_2_ACCOUNTS">
 			<fk-pointing-to-this-class column="FDOC_NBR" />
@@ -108,7 +108,7 @@
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 
 		<collection-descriptor name="accounts" 
-		element-class-ref="edu.sampleu.travel.bo.TravelAccount" 
+		element-class-ref="edu.sampleu.travel.bo.TravelAccount"
 		auto-retrieve="true" 
 		auto-update="true" 
 		auto-delete="false" >
@@ -131,7 +131,7 @@
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
         
          <collection-descriptor name="books"
-              element-class-ref="edu.sampleu.bookstore.bo.Book" 
+              element-class-ref="edu.sampleu.bookstore.bo.Book"
               collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
               proxy="true"
               auto-retrieve="true"
@@ -176,7 +176,7 @@
             <foreignkey field-ref="authorId" />
         </reference-descriptor>
         <collection-descriptor name="addresses"
-              element-class-ref="edu.sampleu.bookstore.bo.Address" 
+              element-class-ref="edu.sampleu.bookstore.bo.Address"
               collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
               proxy="true"
               auto-retrieve="true"

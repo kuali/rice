@@ -3,7 +3,7 @@ package edu.sampleu.bookstore.maintenance;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import edu.sampleu.bookstore.bo.Account;
 import edu.sampleu.bookstore.bo.Address;

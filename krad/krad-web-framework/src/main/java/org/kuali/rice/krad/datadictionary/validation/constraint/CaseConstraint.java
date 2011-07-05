@@ -1,10 +1,9 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
 
 /**
  * A case constraint is a constraint that is imposed only when a certain condition is met, for example, if the country attribute value is "USA",

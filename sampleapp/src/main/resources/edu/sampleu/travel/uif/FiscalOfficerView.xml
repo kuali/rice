@@ -39,14 +39,14 @@
       </list>
     </property>
     <property name="formClass"
-      value="org.kuali.rice.krad.web.struts.form.InquiryForm" />
+      value="org.kuali.rice.kns.web.struts.form.InquiryForm" />
   </bean>
 
   <bean id="FiscalOfficer-InquiryView-Section1" parent="GroupSectionGridLayout">
     <property name="id" value="FiscalOfficer-InquiryView-Section1" />
     <property name="title" value="Fiscal Officer" />
     <property name="summary" value="A Fiscal Officer." />
-    <property name="fieldBindByNamePrefix" value="bo" />
+    <property name="fieldBindByNamePrefix" value="dataObject" />
     <property name="items">
       <list>
         <bean parent="AttributeField" p:propertyName="id" />

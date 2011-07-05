@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.krad.datadictionary.validation;
 
-import java.util.regex.Pattern;
-
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.regex.Pattern;
 
 /**
  * Abstraction of the regular expressions used to validate attribute values.
  * 
  * 
  */
+@Deprecated
 abstract public class CharacterLevelValidationPattern extends ValidationPattern {
     protected Pattern regexPattern;
 

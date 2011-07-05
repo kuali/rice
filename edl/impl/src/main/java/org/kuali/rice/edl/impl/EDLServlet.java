@@ -28,8 +28,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.IncidentReportUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -114,7 +114,7 @@ public class EDLServlet extends HttpServlet {
 	}
 
 	private void outputError(HttpServletRequest request, HttpServletResponse response, Exception exception, String documentId) throws ServletException, IOException {
-			IncidentReportUtils.populateRequestForIncidentReport(exception, ""+documentId, "eDoc Lite", request);
+			IncidentReportUtils.populateRequestForIncidentReport(exception, "" + documentId, "eDoc Lite", request);
 	        RequestDispatcher rd = getServletContext().getRequestDispatcher(request.getServletPath() + "/../../kr/kualiExceptionIncidentReport.do");
 	        rd.forward(request, response);
 	}

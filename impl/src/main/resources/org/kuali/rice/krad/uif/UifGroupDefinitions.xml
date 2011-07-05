@@ -428,7 +428,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 							    <bean parent="SelectControl" />
 							</property>
                             <property name="optionsFinder">
-                                <bean class="org.kuali.rice.krad.lookup.keyvalues.AdHocActionRequestCodesValuesFinder"/>
+                                <bean class="org.kuali.rice.krad.keyvalues.AdHocActionRequestCodesValuesFinder"/>
                             </property>
                         </bean>
                         <bean parent="AttributeField" p:propertyName="name" p:label="Person" p:required="True">
@@ -453,7 +453,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 							    <bean parent="SelectControl" />
 							</property>
                             <property name="optionsFinder">
-                                <bean class="org.kuali.rice.krad.lookup.keyvalues.AdHocActionRequestCodesValuesFinder"/>
+                                <bean class="org.kuali.rice.krad.keyvalues.AdHocActionRequestCodesValuesFinder"/>
                             </property>
                         </bean>
                         <bean parent="AttributeField" p:propertyName="recipientNamespaceCode" p:label="Namespace Code" />

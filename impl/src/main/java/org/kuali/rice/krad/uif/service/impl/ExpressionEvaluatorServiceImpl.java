@@ -114,6 +114,7 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
      */
     protected void addCustomFunctions(StandardEvaluationContext context) {
         try {
+            // TODO: possibly reflect ExpressionFunctions and add automatically
             context.registerFunction("isAssignableFrom", ExpressionFunctions.class
                     .getDeclaredMethod("isAssignableFrom", new Class[]{Class.class, Class.class}));
             context.registerFunction("empty", ExpressionFunctions.class

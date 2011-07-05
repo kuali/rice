@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Special <code>Group</code> that renders a navigation section

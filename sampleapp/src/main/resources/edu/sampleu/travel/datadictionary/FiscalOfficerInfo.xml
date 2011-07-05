@@ -22,7 +22,7 @@
 
   <bean id="FiscalOfficerInfo" parent="FiscalOfficerInfo-parentBean"/>
   <bean id="FiscalOfficerInfo-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
+    <property name="dataObjectClass" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">
       <list>
@@ -237,7 +237,7 @@
   </bean>
   
   <bean id="FiscalOfficerInfoMaintenanceDocument" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
+    <property name="dataObjectClass" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
     <property name="maintainableClass" value="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"/>
     <property name="documentTypeName" value="FiscalOfficerInfoMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>

@@ -29,7 +29,7 @@ public class BookTypeQualifierResolver extends QualifierResolverBase {
         List<AttributeSet> qualifiers = new ArrayList<AttributeSet>();
         MaintenanceDocument doc = (MaintenanceDocument) getDocument(context);
 		Maintainable maint = doc.getNewMaintainableObject();
-		Book book = (Book) maint.getBusinessObject();
+		Book book = (Book) maint.getDataObject();
 		if (StringUtils.isNotEmpty(book.getTypeCode())) {
 			qualifiers.add(new AttributeSet(BookstoreKimAttributes.BOOK_TYPE_CODE,book.getTypeCode()));
 			decorateWithCommonQualifiers(qualifiers, context, null);

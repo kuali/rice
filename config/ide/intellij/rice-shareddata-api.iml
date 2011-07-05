@@ -4,11 +4,11 @@
     <output url="file://$MODULE_DIR$/../../../shareddata/api/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../shareddata/api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../shareddata/api">
+      <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/wsdl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/wsdl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/groovy-stubs" />

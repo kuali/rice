@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.krad.bo;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-
 import java.sql.Timestamp;
 
 /*
@@ -45,7 +44,6 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 	@Lob
 	@Column(name="SERIALZD_DOC_FRM")
 	protected byte[] serializedDocumentForm;
-	//private KualiDocumentFormBase serializedDocumentForm;
 	@Type(type="yes_no")
 	@Column(name="CONTENT_ENCRYPTED_IND")
 	protected boolean encrypted = false;

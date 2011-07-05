@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 /**
  * Encapsulates a set of statically generated (typically during startup)
@@ -102,13 +102,13 @@ public class DataDictionaryIndex implements Runnable {
             	indexedEntry = businessObjectEntries.get(entry.getJstlKey());
             }
         	if ( (indexedEntry != null) 
-                    && !(indexedEntry.getObjectClass().equals(entry.getObjectClass()))) {
-                throw new DataDictionaryException(new StringBuffer("Two object classes may not share the same jstl key: this=").append(entry.getObjectClass()).append(" / existing=").append(indexedEntry.getObjectClass()).toString());
+                    && !(indexedEntry.getDataObjectClass().equals(entry.getDataObjectClass()))) {
+                throw new DataDictionaryException(new StringBuffer("Two object classes may not share the same jstl key: this=").append(entry.getDataObjectClass()).append(" / existing=").append(indexedEntry.getDataObjectClass()).toString());
             }
 
         	// put all BO and DO entries in the objectEntries map
-        	objectEntries.put(entry.getObjectClass().getName(), entry);
-            objectEntries.put(entry.getObjectClass().getSimpleName(), entry);
+        	objectEntries.put(entry.getDataObjectClass().getName(), entry);
+            objectEntries.put(entry.getDataObjectClass().getSimpleName(), entry);
             
             // keep a separate map of BO entries for now
         	if (entry instanceof BusinessObjectEntry){
@@ -163,9 +163,9 @@ public class DataDictionaryIndex implements Runnable {
             if (entry instanceof MaintenanceDocumentEntry) {
                 MaintenanceDocumentEntry mde = (MaintenanceDocumentEntry) entry;
 
-                documentEntriesByBusinessObjectClass.put(mde.getBusinessObjectClass(), entry);
+                documentEntriesByBusinessObjectClass.put(mde.getDataObjectClass(), entry);
                 documentEntriesByMaintainableClass.put(mde.getMaintainableClass(), entry);
-                documentEntries.put(mde.getBusinessObjectClass().getSimpleName() + "MaintenanceDocument", entry);
+                documentEntries.put(mde.getDataObjectClass().getSimpleName() + "MaintenanceDocument", entry);
             }
         }
     }

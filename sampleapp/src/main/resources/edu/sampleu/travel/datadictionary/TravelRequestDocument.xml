@@ -119,7 +119,7 @@
 
   <bean id="TravelRequest-accountType-parentBean" abstract="true" parent="TravelAccountType-accountTypeCode">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
     </property>
     <property name="name" value="accountType"/>
     <property name="required" value="false"/>

@@ -18,7 +18,7 @@
   <bean id="RuleAttribute" parent="RuleAttribute-parentBean"/>
 
   <bean id="RuleAttribute-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.rule.bo.RuleAttribute"/>
+    <property name="dataObjectClass" value="org.kuali.rice.kew.rule.bo.RuleAttribute"/>
     <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter"/>
     <property name="inquiryDefinition">
       <ref bean="RuleAttribute-inquiryDefinition"/>

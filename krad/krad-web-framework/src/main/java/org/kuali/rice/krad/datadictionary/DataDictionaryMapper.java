@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.uif.container.View;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex;
-import org.kuali.rice.krad.uif.container.View;
 
 /**
  * Maps one Document type to other document Type.

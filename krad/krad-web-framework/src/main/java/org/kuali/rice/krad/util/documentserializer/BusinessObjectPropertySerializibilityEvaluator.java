@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.util.documentserializer;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
@@ -25,6 +23,8 @@ import org.kuali.rice.krad.datadictionary.WorkflowProperty;
 import org.kuali.rice.krad.datadictionary.WorkflowPropertyGroup;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+
+import java.util.List;
 
 /**
  * This implementation of {@link PropertySerializabilityEvaluator} uses the &lt;workflowProperties&gt; defined within the data dictionary

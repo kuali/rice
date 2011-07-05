@@ -29,16 +29,16 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
+import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
+import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.DocumentHeader;
-import org.kuali.rice.krad.datadictionary.MaintainableItemDefinition;
-import org.kuali.rice.krad.datadictionary.MaintainableSectionDefinition;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.web.ui.Field;
-import org.kuali.rice.krad.web.ui.Row;
-import org.kuali.rice.krad.web.ui.Section;
 
 /**
  * This class is the maintainable implementation for the Workflow {@link DocumentType} 

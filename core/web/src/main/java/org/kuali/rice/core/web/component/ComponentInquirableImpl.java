@@ -17,9 +17,9 @@ package org.kuali.rice.core.web.component;
 
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.impl.component.ComponentBo;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
-import org.kuali.rice.krad.inquiry.KualiInquirableImpl;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.util.List;
@@ -38,8 +38,8 @@ public class ComponentInquirableImpl extends KualiInquirableImpl {
 	private static final String PARAMETER_NAMESPACE_CODE = "namespaceCode";
 	
 	@Override
-	public Object getDataObject(Map fieldValues){
-		BusinessObject result = (BusinessObject)super.getDataObject(fieldValues);
+	public Object retrieveDataObject(Map fieldValues){
+		BusinessObject result = (BusinessObject)super.retrieveDataObject(fieldValues);
 
 		if (result == null) {
 

@@ -24,8 +24,10 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.krad.authorization.BusinessObjectRestrictions;
-import org.kuali.rice.krad.authorization.FieldRestriction;
+import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.document.authorization.FieldRestriction;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
@@ -144,7 +146,7 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 	
 	protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
 		if (businessObjectAuthorizationService == null) {
-			businessObjectAuthorizationService = KRADServiceLocatorWeb.getBusinessObjectAuthorizationService();
+			businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
 		}
 		return businessObjectAuthorizationService;
 	}

@@ -16,6 +16,8 @@
 
 package org.kuali.rice.krad.bo;
 
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,7 +26,6 @@ import javax.persistence.Transient;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.WorkflowDocument;
-
 
 /**
  * Interface for {@link DocumentHeaderBase} 

@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import java.util.Collection;
-
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
+
+import java.util.Collection;
 
 /**
  * This is a marker interface for 'collection constraint processors', that is - a constraint processor that tests collections

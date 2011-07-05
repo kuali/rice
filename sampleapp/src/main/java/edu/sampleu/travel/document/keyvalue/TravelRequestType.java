@@ -20,11 +20,12 @@ import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.kns.util.KNSGlobalVariables;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 public class TravelRequestType extends KeyValuesBase {
 
@@ -38,7 +39,7 @@ public class TravelRequestType extends KeyValuesBase {
         // This should populate Type 3 only if we can get the form from GlobalVariables
         // and if we can get the document from the form and the document is not null;
         // this should be true when this ValuesFinder is used within the context of the webapp.
-        KualiForm form = GlobalVariables.getKualiForm();
+        KualiForm form = KNSGlobalVariables.getKualiForm();
     	if ((form != null) && (form instanceof KualiDocumentFormBase)) {
     	    Document doc =((KualiDocumentFormBase)form).getDocument();
     	    if (doc != null) {

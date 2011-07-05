@@ -40,7 +40,7 @@
     <property name="name" value="bookTypeCode"/>
     <property name="required" value="false"/>
      <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.BookType" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="typeCode" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.BookType" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="typeCode" p:labelAttribute="name"/>
     </property>
      <property name="controlField">
       <bean parent="TextControl" p:size="10"/>

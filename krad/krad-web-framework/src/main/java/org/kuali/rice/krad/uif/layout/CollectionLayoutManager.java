@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.List;
-
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.GroupField;
+
+import java.util.List;
 
 /**
  * Layout manager implementations that work with a collection (such as a table

@@ -1,10 +1,9 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
 
 /**
  * This class is a direct copy of one that was in Kuali Student. Look up constraints are currently not implemented. 

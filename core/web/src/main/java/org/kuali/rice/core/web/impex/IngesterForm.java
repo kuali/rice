@@ -17,7 +17,7 @@
 package org.kuali.rice.core.web.impex;
 
 import org.apache.struts.upload.FormFile;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 import java.util.Collection;
 import java.util.HashMap;

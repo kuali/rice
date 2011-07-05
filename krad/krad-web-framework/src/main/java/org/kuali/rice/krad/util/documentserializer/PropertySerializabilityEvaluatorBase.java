@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.util.documentserializer;
 
-import java.util.Collection;
-
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityMetadata.PropertySerializability;
+
+import java.util.Collection;
 
 /**
  * This abstract implementation provides a default implementation of {@link #determinePropertyType(Object)}, which should suffice for most

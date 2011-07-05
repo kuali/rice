@@ -22,7 +22,7 @@ import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -35,7 +35,7 @@ public class PermissionTemplateValuesFinder extends KeyValuesBase {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder#getKeyValues()
+	 * @see org.kuali.rice.krad.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
 	@Override
 	public List<KeyValue> getKeyValues() {

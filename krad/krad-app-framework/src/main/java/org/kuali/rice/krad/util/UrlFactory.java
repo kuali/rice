@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.util;
 
-import java.util.Properties;
-
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import java.util.Properties;
 
 /**
  * This class Provides utility methods for re/building URLs.

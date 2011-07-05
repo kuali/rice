@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.service;
 
-import java.util.List;
-
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
@@ -24,6 +22,8 @@ import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.rule.event.SaveEvent;
+
+import java.util.List;
 
 /**
  * Defines various operations that support the Document framework.

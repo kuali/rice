@@ -10,6 +10,14 @@
  */
 package org.kuali.rice.krad.uif.history;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.util.ViewModelUtils;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -17,15 +25,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.util.ViewModelUtils;
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
 
 /**
  * History class used to keep track of views visited so they can be displayed in the ui

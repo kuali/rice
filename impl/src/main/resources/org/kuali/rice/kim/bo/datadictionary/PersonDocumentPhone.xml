@@ -69,7 +69,7 @@
    <bean id="DocPhone-phoneTypeCode" parent="DocPhone-phoneTypeCode-parentBean"/>
   <bean id="DocPhone-phoneTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="phoneTypeCode" p:forceUppercase="true" p:label="Phone Type" p:shortLabel="Phone Type" p:maxLength="40" p:required="false">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
     </property>
   </bean>
     

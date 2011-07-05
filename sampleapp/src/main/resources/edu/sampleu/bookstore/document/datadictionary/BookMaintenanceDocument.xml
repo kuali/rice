@@ -63,8 +63,8 @@
       </list>
     </property>
   </bean>
-  <bean id="BookMaintenanceDocument" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="edu.sampleu.bookstore.bo.Book"/>
+  <bean id="BookMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
+    <property name="dataObjectClass" value="edu.sampleu.bookstore.bo.Book"/>
     <property name="maintainableClass" value="edu.sampleu.bookstore.maintenance.BookMaintainable"/>
     <property name="documentTypeName" value="BookMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>

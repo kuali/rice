@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
+import org.kuali.rice.krad.bo.InactivatableFromToImpl;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-
-import org.kuali.rice.krad.bo.InactivatableFromToImpl;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

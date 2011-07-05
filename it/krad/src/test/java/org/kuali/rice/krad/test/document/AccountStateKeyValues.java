@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.krad.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 /**
  * This is a test values finder for use with the AccountWithDDAttributesDocument. 
@@ -32,7 +32,7 @@ public class AccountStateKeyValues extends KeyValuesBase {
 	/**
 	 * Constructs a hard-coded list of valid key-label pairs.
 	 * 
-	 * @see org.kuali.rice.krad.lookup.keyvalues.KeyValuesFinder#getKeyValues()
+	 * @see org.kuali.rice.krad.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
 	public List getKeyValues() {
 		List<KeyValue> keyValues = new ArrayList<KeyValue>();

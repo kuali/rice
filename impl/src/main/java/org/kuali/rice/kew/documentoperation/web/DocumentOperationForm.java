@@ -29,8 +29,7 @@ import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
-
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
  * struts form bean for {@link DocumentOperationAction}.

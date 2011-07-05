@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.routelog.web;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.struts.form.KualiForm;
 
 import java.util.ArrayList;
 import java.util.List;

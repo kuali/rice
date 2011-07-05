@@ -33,7 +33,7 @@ import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.util.WebUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 /**
  * A login filter which forwards to a login page that allows for the desired
@@ -59,7 +59,7 @@ public class DummyLoginFilter implements Filter {
 	}
     
 	private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        final UserSession session = WebUtils.getUserSessionFromRequest(request);
+        final UserSession session = KRADUtils.getUserSessionFromRequest(request);
         
         if (session == null) {
         	IdentityManagementService auth = KimApiServiceLocator.getIdentityManagementService();

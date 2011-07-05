@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.krad.document.Document;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Base class for all TransactionalDocumentPresentationControllers.
@@ -30,7 +30,7 @@ public class TransactionalDocumentPresentationControllerBase extends DocumentPre
     
     /**
      * 
-     * @see org.kuali.rice.krad.document.authorization.DocumentPresentationController#getEditMode(org.kuali.rice.krad.document.Document)
+     * @see DocumentPresentationController#getEditMode(org.kuali.rice.krad.document.Document)
      */
     public Set<String> getEditModes(Document document){
     	Set<String> editModes = new HashSet();

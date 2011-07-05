@@ -16,8 +16,8 @@
 package org.kuali.rice.maintainable;
 
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
-import org.kuali.rice.krad.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 /**
@@ -69,6 +69,6 @@ public class AccountType2MaintainableImpl extends KualiMaintainableImpl {
     	else if (!EDIT_CODE_ONLY.equals(fieldsToEdit) && !EDIT_NAME_ONLY.equals(fieldsToEdit)) {
     		throw new PessimisticLockingException("The value of the user session's '" + ACCT_TYPE_2_MAINT_FIELDS_TO_EDIT + "' property is invalid");
     	}
-    	return documentNumber + "-" + fieldsToEdit;
+    	return getDocumentNumber() + "-" + fieldsToEdit;
 	}
 }

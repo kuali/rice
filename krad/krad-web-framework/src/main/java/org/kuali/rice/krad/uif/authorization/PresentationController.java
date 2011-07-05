@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
-import java.util.Set;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
-import org.kuali.rice.krad.web.spring.form.UifFormBase;
+import java.util.Set;
 
 /**
  * Configured for a <code>View</code> instance to provide conditional logic

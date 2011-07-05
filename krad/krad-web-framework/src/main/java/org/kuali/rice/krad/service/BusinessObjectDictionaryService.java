@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.krad.service;
 
-import java.util.List;
-
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.FieldDefinition;
 import org.kuali.rice.krad.inquiry.InquiryAuthorizer;
 import org.kuali.rice.krad.inquiry.InquiryPresentationController;
-import org.kuali.rice.krad.lookup.valuefinder.ValueFinder;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
+
+import java.util.List;
 
 
 /**
  * This interface defines the API for the interacting with the data dictionary.
  */
+@Deprecated
 public interface BusinessObjectDictionaryService {
 	public <T extends BusinessObject> InquiryPresentationController getInquiryPresentationController(Class<T> businessObjectClass);
 	
@@ -269,9 +269,6 @@ public interface BusinessObjectDictionaryService {
      */
     public void performForceUppercase(BusinessObject bo);
 
-
-    public Boolean areNotesSupported(Class businessObjectClass);
-
     /**
      * returns whether on a lookup, field/attribute values with wildcards and operators should treat them as literal characters
      * 
@@ -334,12 +331,5 @@ public interface BusinessObjectDictionaryService {
 	 */
 	public boolean disableSearchButtonsInLookup(Class businessObjectClass);
 	
-	/**
-	 * Returns the list of attributes that should be used for grouping when determing the current
-	 * status of a business object that implements InactivateableFromTo
-	 * 
-	 * @param businessObjectClass - business object class to get configured list for
-	 * @return List of string attribute names that gives the group by list
-	 */
-	public List<String> getGroupByAttributesForEffectiveDating(Class businessObjectClass);
+
 }

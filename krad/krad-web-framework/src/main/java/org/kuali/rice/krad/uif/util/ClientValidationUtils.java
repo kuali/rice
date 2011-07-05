@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint;
@@ -34,6 +29,11 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.field.AttributeField;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 
 /**
  * This class contains all the methods necessary for generating the js required to perform validation client side.

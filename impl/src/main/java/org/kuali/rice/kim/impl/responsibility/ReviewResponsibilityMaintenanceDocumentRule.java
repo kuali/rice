@@ -20,8 +20,8 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
@@ -33,12 +33,14 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class ReviewResponsibilityMaintenanceDocumentRule extends
-		MaintenanceDocumentRuleBase {
+public class ReviewResponsibilityMaintenanceDocumentRule extends MaintenanceDocumentRuleBase {
 
 	protected static final String ERROR_MESSAGE_PREFIX = "error.document.kim.reviewresponsibility.";
 	protected static final String ERROR_DUPLICATE_RESPONSIBILITY = ERROR_MESSAGE_PREFIX + "duplicateresponsibility";
 
+	/**
+	 * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.krad.document.MaintenanceDocument)
+	 */
 	@Override
 	protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
 		boolean rulesPassed = true;

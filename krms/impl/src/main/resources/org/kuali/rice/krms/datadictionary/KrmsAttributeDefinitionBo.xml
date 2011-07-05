@@ -22,7 +22,7 @@
 
   <bean id="KrmsAttributeDefinitionBo" parent="KrmsAttributeDefinitionBo-parentBean"/>
   <bean id="KrmsAttributeDefinitionBo-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo"/>
+    <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">
       <list>

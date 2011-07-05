@@ -18,7 +18,7 @@
   <bean id="RuleBaseValues" parent="RuleBaseValues-parentBean"/>
 
   <bean id="RuleBaseValues-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
+    <property name="dataObjectClass" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
     <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter"/>
     <property name="inquiryDefinition">
       <ref bean="RuleBaseValues-inquiryDefinition"/>
@@ -279,7 +279,7 @@
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
     <property name="control">
-      <bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.IndicatorPersonSearchTypeValuesFinder" p:includeKeyInLabel="true"/>
+      <bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.IndicatorPersonSearchTypeValuesFinder" p:includeKeyInLabel="true"/>
     </property>
     <property name="name" value="personReviewerType"/>
     <property name="label" value="Person Reviewer Type"/>
@@ -294,7 +294,7 @@
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
     <property name="control">
-      <bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.lookup.keyvalues.DelegateRuleValuesFinder" p:includeKeyInLabel="true"/>
+      <bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder" p:includeKeyInLabel="true"/>
     </property>
     <property name="name" value="delegateRule"/>
     <property name="label" value="Delegate Rule"/>

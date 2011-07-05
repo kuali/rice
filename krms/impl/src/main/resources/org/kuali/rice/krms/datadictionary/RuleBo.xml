@@ -22,7 +22,7 @@
 
   <bean id="RuleBo" parent="RuleBo-parentBean"/>
   <bean id="RuleBo-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
+    <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">
       <list>

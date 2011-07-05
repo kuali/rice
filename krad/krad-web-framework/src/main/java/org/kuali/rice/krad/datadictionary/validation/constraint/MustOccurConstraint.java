@@ -1,10 +1,9 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
 
 /**
  * Must occur constraints are constraints that indicate some range of acceptable valid results. So a must occur constraint

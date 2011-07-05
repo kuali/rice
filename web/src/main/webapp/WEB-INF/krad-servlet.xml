@@ -26,11 +26,11 @@
     </property>
   </bean>
 
-  <bean id="uifControllerHandlerInterceptor" class="org.kuali.rice.krad.web.spring.UifControllerHandlerInterceptor" />
+  <bean id="uifControllerHandlerInterceptor" class="org.kuali.rice.krad.web.controller.UifControllerHandlerInterceptor" />
   
-  <bean id="exceptionResolver" class="org.kuali.rice.krad.web.spring.UifHandlerExceptionResolver"/>
+  <bean id="exceptionResolver" class="org.kuali.rice.krad.web.bind.UifHandlerExceptionResolver"/>
   
-  <bean class="org.kuali.rice.krad.web.spring.UifAnnotationMethodHandleAdapter">
+  <bean class="org.kuali.rice.krad.web.controller.UifAnnotationMethodHandleAdapter">
     <property name="webBindingInitializer">
       <ref bean="kradConfigurableWebBindingInitializer"/>
     </property>
@@ -46,7 +46,7 @@
     </property>
   </bean>
 
-  <bean id="kradConfigurableWebBindingInitializer" class="org.kuali.rice.krad.web.spring.UifConfigurableWebBindingInitializer"/>
+  <bean id="kradConfigurableWebBindingInitializer" class="org.kuali.rice.krad.web.bind.UifConfigurableWebBindingInitializer"/>
 
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     <property name="maxUploadSize" value="500000"/>

@@ -15,15 +15,15 @@
 
 package org.kuali.rice.krad.datadictionary.validation;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.util.Collection;
-import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * Inherited from Kuali Student and adapted extensively, this class provides static utility methods for validation processing. 

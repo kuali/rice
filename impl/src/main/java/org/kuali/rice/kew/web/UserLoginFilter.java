@@ -34,7 +34,7 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthenticationException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.WebUtils;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -146,7 +146,7 @@ public class UserLoginFilter implements Filter {
 			kualiSessionId = UUID.randomUUID().toString();
 			response.addCookie(new Cookie(KRADConstants.KUALI_SESSION_ID, kualiSessionId));
 		}
-		WebUtils.getUserSessionFromRequest(request).setKualiSessionId(kualiSessionId);
+		KRADUtils.getUserSessionFromRequest(request).setKualiSessionId(kualiSessionId);
 	}
 	
 	/** gets the kuali session id from an array of cookies.  If a session id does not exist returns null. */
@@ -168,14 +168,14 @@ public class UserLoginFilter implements Filter {
 		if ( StringUtils.isNotBlank(backdoor) ) {
 			if ( !getKualiConfigurationService().isProductionEnvironment() ) {
 				if ( getParameterService().getParameterValueAsBoolean(KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
-					WebUtils.getUserSessionFromRequest(request).setBackdoorUser(backdoor);
+					KRADUtils.getUserSessionFromRequest(request).setBackdoorUser(backdoor);
 				}
 			}
 		}
 	}
 	
 	private void addToMDC(HttpServletRequest request) {
-		MDC.put(MDC_USER, WebUtils.getUserSessionFromRequest(request).getPrincipalId());
+		MDC.put(MDC_USER, KRADUtils.getUserSessionFromRequest(request).getPrincipalId());
 	}
 	
 	private void removeFromMDC() {

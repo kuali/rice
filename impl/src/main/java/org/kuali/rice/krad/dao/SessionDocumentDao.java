@@ -18,7 +18,7 @@ package org.kuali.rice.krad.dao;
 import java.sql.Timestamp;
 
 /**
- * This is the data access interface for SessionDocument objects.
+ * This is the data access interface for SessionDocumentService objects.
  * 
  */
 public interface SessionDocumentDao {

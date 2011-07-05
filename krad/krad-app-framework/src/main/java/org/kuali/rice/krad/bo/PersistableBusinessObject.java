@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.bo;
 
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-
-import org.kuali.rice.core.api.mo.common.GloballyUnique;
-import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * Declares a common interface for all {@link BusinessObject} classes which can have their

@@ -23,6 +23,8 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DocumentCollectionPath;
@@ -32,8 +34,6 @@ import org.kuali.rice.krad.datadictionary.RoutingTypeDefinition;
 import org.kuali.rice.krad.datadictionary.SearchingTypeDefinition;
 import org.kuali.rice.krad.datadictionary.WorkflowAttributes;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.service.BusinessObjectMetaDataService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.DataTypeUtil;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -523,7 +523,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
 
     protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
         if ( businessObjectMetaDataService == null ) {
-            businessObjectMetaDataService = KRADServiceLocatorWeb.getBusinessObjectMetaDataService();
+            businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
         }
         return businessObjectMetaDataService;
     }

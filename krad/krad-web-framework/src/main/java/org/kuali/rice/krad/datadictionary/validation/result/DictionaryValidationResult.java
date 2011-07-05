@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.result;
 
+import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 
 /**
  * 

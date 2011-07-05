@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.exception;
 
-import java.util.Collections;
-import java.util.Map;
-
 import org.kuali.rice.core.api.exception.KualiException;
 import org.kuali.rice.core.util.RiceKeyConstants;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * This class represents an exception that is thrown when a given user is not authorized to take the given action on the given

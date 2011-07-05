@@ -32,9 +32,9 @@
       </list>
     </property>
   </bean>
-  <bean id="BookTypeMaintenanceDocument" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="edu.sampleu.bookstore.bo.BookType"/>
-    <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.KualiMaintainableImpl"/>
+  <bean id="BookTypeMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
+    <property name="dataObjectClass" value="edu.sampleu.bookstore.bo.BookType"/>
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
     <property name="documentTypeName" value="BookTypeMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="lockingKeys">

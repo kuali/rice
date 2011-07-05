@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.widget.Tabs;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A group that presents its child Groups as tabs.  Items in this group's item list must be Groups

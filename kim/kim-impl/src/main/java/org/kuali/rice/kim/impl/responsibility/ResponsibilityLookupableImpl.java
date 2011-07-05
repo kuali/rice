@@ -19,7 +19,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.krad.lookup.KualiLookupableImpl;
+import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 

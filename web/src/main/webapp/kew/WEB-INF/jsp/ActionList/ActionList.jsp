@@ -326,7 +326,7 @@
 								</c:when>
 								<c:when test="${result.delegatorGroup != null}">
                                     <kul:inquiry boClassName="org.kuali.rice.kim.impl.group.GroupBo" keyValues="id=${result.delegatorGroup.id}" render="true">
-                                        <c:out value="${result.delegatorGroup.groupName}" />
+                                        <c:out value="${result.delegatorGroup.name}" />
                                     </kul:inquiry>
 								</c:when>
 								<c:otherwise>

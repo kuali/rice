@@ -18,31 +18,22 @@ package org.kuali.rice.kim.api.services;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
 import org.kuali.rice.kim.api.identity.entity.EntityQueryResults;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
-import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This is the front end for the KIM module.  Clients of KIM should access this service from
@@ -59,129 +50,127 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@WebService(name = KIMWebServiceConstants.IdentityManagementService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
-@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface IdentityManagementService {
 
 	// *******************************
 	// IdentityService
 	// *******************************
 
-	Principal getPrincipal(@WebParam(name = "principalId") String principalId);
-	Principal getPrincipalByPrincipalName(@WebParam(name = "principalName") String principalName);
+	Principal getPrincipal( String principalId);
+	Principal getPrincipalByPrincipalName( String principalName);
 
 	Principal getPrincipalByPrincipalNameAndPassword(
-            @WebParam(name = "principalName") String principalName,
-            @WebParam(name = "password") String password
+             String principalName,
+             String password
     );
 
-	EntityDefault getEntityDefaultInfo(@WebParam(name = "entityId") String entityId);
-	EntityDefault getEntityDefaultInfoByPrincipalId(@WebParam(name = "principalId") String principalId);
-	EntityDefault getEntityDefaultInfoByPrincipalName(@WebParam(name = "principalName") String principalName);
+	EntityDefault getEntityDefaultInfo( String entityId);
+	EntityDefault getEntityDefaultInfoByPrincipalId( String principalId);
+	EntityDefault getEntityDefaultInfoByPrincipalName( String principalName);
 
-	EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+    EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria queryByCriteria);
 
 	//KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
 
-	Entity getEntity(@WebParam(name = "entityId") String entityId);
-	Entity getEntityByPrincipalId(@WebParam(name = "principalId") String principalId);
-	Entity getEntityByPrincipalName(@WebParam(name = "principalName") String principalName);
+	Entity getEntity( String entityId);
+	Entity getEntityByPrincipalId( String principalId);
+	Entity getEntityByPrincipalName( String principalName);
 
 	EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria queryByCriteria);
 
-	Type getAddressType(@WebParam(name = "code") String code);
-	EntityAffiliationType getAffiliationType(@WebParam(name = "code") String code);
-	Type getCitizenshipStatus(@WebParam(name = "code") String code);
-	Type getEmailType(@WebParam(name = "code") String code);
-	Type getEmploymentStatus(@WebParam(name = "code") String code);
-	Type getEmploymentType(@WebParam(name = "code") String code);
-	Type getEntityNameType(@WebParam(name = "code") String code);
-	Type getEntityType(@WebParam(name = "code") String code);
-	EntityExternalIdentifierType getExternalIdentifierType(@WebParam(name = "code") String code);
-	Type getPhoneType(@WebParam(name = "code") String code);
+	Type getAddressType( String code);
+	EntityAffiliationType getAffiliationType( String code);
+	Type getCitizenshipStatus( String code);
+	Type getEmailType( String code);
+	Type getEmploymentStatus( String code);
+	Type getEmploymentType( String code);
+	Type getEntityNameType( String code);
+	Type getEntityType( String code);
+	EntityExternalIdentifierType getExternalIdentifierType( String code);
+	Type getPhoneType( String code);
 
 	// *******************************
 	// GroupService
 	// *******************************
 
-	Group getGroup(@WebParam(name = "groupId") String groupId);
+	Group getGroup( String groupId);
 
     Group getGroupByName(
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "groupName") String groupName
+             String namespaceCode,
+             String groupName
     );
 
-    List<String> getParentGroupIds(@WebParam(name = "groupId") String groupId);
-    List<String> getDirectParentGroupIds(@WebParam(name = "groupId") String groupId);
+    List<String> getParentGroupIds( String groupId);
+    List<String> getDirectParentGroupIds( String groupId);
 
-    @WebMethod(operationName="getGroupIdsForPrincipal")
-    List<String> getGroupIdsForPrincipal(@WebParam(name = "principalId") String principalId);
+    
+    List<String> getGroupIdsForPrincipal( String principalId);
 
-    @WebMethod(operationName="getGroupIdsForPrincipalByNamespace")
+    
     List<String> getGroupIdsForPrincipal(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode
+             String principalId,
+             String namespaceCode
     );
 
-    @WebMethod(operationName="getGroupsForPrincipal")
-    List<? extends Group> getGroupsForPrincipal(@WebParam(name = "principalId") String principalId);
+    
+    List<? extends Group> getGroupsForPrincipal( String principalId);
 
-    @WebMethod(operationName="getGroupsForPrincipalByNamespace")
+    
     List<? extends Group> getGroupsForPrincipal(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode
+             String principalId,
+             String namespaceCode
     );
 
-    List<String> getMemberGroupIds(@WebParam(name = "groupId") String groupId);
-    List<String> getDirectMemberGroupIds(@WebParam(name = "groupId") String groupId);
+    List<String> getMemberGroupIds( String groupId);
+    List<String> getDirectMemberGroupIds( String groupId);
 
-    @WebMethod(operationName="isMemberOfGroup")
+    
 	boolean isMemberOfGroup(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "groupId") String groupId
+             String principalId,
+             String groupId
     );
 
-    @WebMethod(operationName="isMemberOfGroupByNamespace")
+    
 	boolean isMemberOfGroup(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "groupName") String groupName
+             String principalId,
+             String namespaceCode,
+             String groupName
     );
 
 	boolean isGroupMemberOfGroup(
-            @WebParam(name = "potentialMemberGroupId") String potentialMemberGroupId,
-            @WebParam(name = "potentialParentId") String potentialParentId
+             String potentialMemberGroupId,
+             String potentialParentId
     );
 
-	List<String> getGroupMemberPrincipalIds(@WebParam(name = "groupId") String groupId);
-	List<String> getDirectGroupMemberPrincipalIds(@WebParam(name = "groupId") String groupId);
+	List<String> getGroupMemberPrincipalIds( String groupId);
+	List<String> getDirectGroupMemberPrincipalIds( String groupId);
 
     boolean addGroupToGroup(
-            @WebParam(name = "childId") String childId,
-            @WebParam(name = "parentId") String parentId
+             String childId,
+             String parentId
     );
 
     boolean removeGroupFromGroup(
-            @WebParam(name = "childId") String childId,
-            @WebParam(name = "parentId") String parentId
+             String childId,
+             String parentId
     );
 
     boolean addPrincipalToGroup(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "groupId") String groupId
+             String principalId,
+             String groupId
     );
 
     boolean removePrincipalFromGroup(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "groupId") String groupId
+             String principalId,
+             String groupId
     );
 
-    Group createGroup(@WebParam(name = "group") Group group);
-    void removeAllMembers(@WebParam(name = "groupId") String groupId);
+    Group createGroup( Group group);
+    void removeAllMembers( String groupId);
 
     Group updateGroup(
-            @WebParam(name = "groupId") String groupId,
-            @WebParam(name = "group") Group group
+             String groupId,
+             Group group
     );
 
 	// *******************************
@@ -199,66 +188,66 @@ public interface IdentityManagementService {
     // --------------------
 
     boolean hasPermission(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionName") String permissionName,
-            @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails
+             String principalId,
+             String namespaceCode,
+             String permissionName,
+              AttributeSet permissionDetails
     );
 
     boolean isAuthorized(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionName") String permissionName,
-            @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification
+             String principalId,
+             String namespaceCode,
+             String permissionName,
+              AttributeSet permissionDetails,
+              AttributeSet qualification
     );
 
     boolean hasPermissionByTemplateName(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
-            @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails
+             String principalId,
+             String namespaceCode,
+             String permissionTemplateName,
+              AttributeSet permissionDetails
     );
 
     boolean isAuthorizedByTemplateName(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
-            @WebParam(name = "permissionDetails") Attributes permissionDetails,
-            @WebParam(name = "qualification") Attributes qualification
+             String principalId,
+             String namespaceCode,
+             String permissionTemplateName,
+             Attributes permissionDetails,
+             Attributes qualification
     );
 
     /**
      * Returns the matching permission objects for a principal.
      */
     List<Permission> getAuthorizedPermissions(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionName") String permissionName,
-            @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification
+             String principalId,
+             String namespaceCode,
+             String permissionName,
+              AttributeSet permissionDetails,
+              AttributeSet qualification
     );
 
     List<Permission> getAuthorizedPermissionsByTemplateName(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
-            @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification
+             String principalId,
+             String namespaceCode,
+             String permissionTemplateName,
+              AttributeSet permissionDetails,
+              AttributeSet qualification
     );
 
     List<PermissionAssigneeInfo> getPermissionAssignees(
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionName") String permissionName,
-            @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails,
-            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification
+             String namespaceCode,
+             String permissionName,
+              AttributeSet permissionDetails,
+              AttributeSet qualification
     );
 
     List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
-            @WebParam(name = "permissionDetails") Attributes permissionDetails,
-            @WebParam(name = "qualification") Attributes qualification
+             String namespaceCode,
+             String permissionTemplateName,
+             Attributes permissionDetails,
+             Attributes qualification
     );
 
     // ----------------------
@@ -268,60 +257,60 @@ public interface IdentityManagementService {
     /**
      * Get the responsibility object with the given ID.
      */
-    Responsibility getResponsibility(@WebParam(name = "responsibilityId") String responsibilityId);
+    Responsibility getResponsibility( String responsibilityId);
 
  	/**
  	 * Return the responsibility object for the given unique combination of namespace,
  	 * component and responsibility name.
  	 */
     Responsibility getResponsibilityByName(
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "responsibilityName") String responsibilityName
+             String namespaceCode,
+             String responsibilityName
     );
 
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.
      */
     boolean hasResponsibility(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "responsibilityName") String responsibilityName,
-            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification,
-            @WebParam(name = "responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails
+             String principalId,
+             String namespaceCode,
+             String responsibilityName,
+              AttributeSet qualification,
+              AttributeSet responsibilityDetails
     );
 
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.
      */
     boolean hasResponsibilityByTemplateName(
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "responsibilityTemplateName") String responsibilityTemplateName,
-            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification,
-            @WebParam(name = "responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails
+             String principalId,
+             String namespaceCode,
+             String responsibilityTemplateName,
+              AttributeSet qualification,
+              AttributeSet responsibilityDetails
     );
 
     List<ResponsibilityAction> getResponsibilityActions(
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "responsibilityName") String responsibilityName,
-            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification,
-            @WebParam(name = "responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails
+             String namespaceCode,
+             String responsibilityName,
+              AttributeSet qualification,
+              AttributeSet responsibilityDetails
     );
 
     List<ResponsibilityAction> getResponsibilityActionsByTemplateName(
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "responsibilityTemplateName") String responsibilityTemplateName,
-            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification,
-            @WebParam(name = "responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails
+             String namespaceCode,
+             String responsibilityTemplateName,
+              AttributeSet qualification,
+              AttributeSet responsibilityDetails
     );
 
     /**
      * Returns true if there are any assigned permissions with the given template.
      */
     boolean isPermissionDefinedForTemplateName(
-            @WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
-            @WebParam(name = "permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails
+             String namespaceCode,
+             String permissionTemplateName,
+              AttributeSet permissionDetails
     );
 
 

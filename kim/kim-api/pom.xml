@@ -108,20 +108,6 @@
                     </execution>
 
                     <execution>
-                        <id>identityManagementService-wsdl</id>
-                        <phase>${rice.java2ws.phase}</phase>
-                        <configuration>
-                            <className>org.kuali.rice.kim.api.services.IdentityManagementService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/IdentityManagementService.wsdl
-                            </outputFile>
-                            <serviceName>IdentityManagementService</serviceName>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-
-                    <execution>
                         <id>kimTypeInfoService-wsdl</id>
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>

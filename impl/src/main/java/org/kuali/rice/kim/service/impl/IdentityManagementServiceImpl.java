@@ -23,29 +23,26 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
-import org.kuali.rice.kim.api.identity.entity.EntityContract;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
 import org.kuali.rice.kim.api.identity.entity.EntityQueryResults;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-import org.kuali.rice.kim.api.services.IdentityService;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.service.PermissionService;
 
 import javax.jws.WebParam;
 import java.util.List;
-import java.util.Map;
 
 public class IdentityManagementServiceImpl implements IdentityManagementService {
 	private static final Logger LOG = Logger.getLogger( IdentityManagementServiceImpl.class );

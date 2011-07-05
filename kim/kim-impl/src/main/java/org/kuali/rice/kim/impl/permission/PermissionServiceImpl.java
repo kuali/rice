@@ -27,20 +27,19 @@ import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.permission.PermissionTypeService;
-import org.kuali.rice.kim.api.role.RoleManagementService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -668,7 +667,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      *
      * @param roleService The roleService to set.
      */
-	public void setRoleService(RoleManagementService roleService) {
+	public void setRoleService(RoleService roleService) {
 		this.roleService = roleService;
 	}
 	

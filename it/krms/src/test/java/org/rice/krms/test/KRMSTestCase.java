@@ -85,7 +85,7 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 //		@Override
 //		public void stop() throws Exception {
 //			KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
-//			KimApiServiceLocator.getRoleManagementService().flushRoleCaches();
+//			KimApiServiceLocator.getRoleService().flushRoleCaches();
 //			super.stop();
 //		}
 //

@@ -78,7 +78,7 @@ public class PersonServiceImpl implements PersonService {
 	protected static final String EXTENSION = "extension";
 	
 	private IdentityManagementService identityManagementService;
-	private RoleService roleManagementService;
+	private RoleService roleService;
 	private BusinessObjectMetaDataService businessObjectMetaDataService;
 	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
@@ -857,10 +857,10 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	protected RoleService getRoleService() {
-		if ( roleManagementService == null ) {
-			roleManagementService = KimApiServiceLocator.getRoleService();
+		if ( roleService == null ) {
+			roleService = KimApiServiceLocator.getRoleService();
 		}
-		return roleManagementService;
+		return roleService;
 	}
 
 

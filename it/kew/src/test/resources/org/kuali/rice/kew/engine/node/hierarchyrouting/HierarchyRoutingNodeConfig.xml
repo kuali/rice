@@ -77,7 +77,7 @@
                 String recipient = recipState.getValue()
 
                 if (typeState.getValue().equalsIgnoreCase("user")) {
-                    KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient);
+                    KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(recipient);
                     if (principal == null) {
                         throw new RuntimeException("Could not locate principal for given network id: " + recipient);
                     }

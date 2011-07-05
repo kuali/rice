@@ -606,7 +606,7 @@ public class ActionRequestFactory {
     }
 
 	/**
-	 * @return the roleManagementService
+	 * @return the roleService
 	 */
     protected static RoleService getRoleService() {
 		if ( roleService == null ) {

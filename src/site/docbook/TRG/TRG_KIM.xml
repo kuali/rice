@@ -72,7 +72,7 @@
                 that can be initiated as a permission detail.</para>
             <para>The <emphasis role="bold">isAuthorized</emphasis> and <emphasis role="bold"
                     >isAuthorizedByTemplateName</emphasis> operations on the <emphasis role="bold"
-                    >IdentityManagementService</emphasis> are used to execute authorization checks
+                    >PermissionService</emphasis> are used to execute authorization checks
                 for a principal against a permission. Permissions are always assigned to roles
                 (never directly to a principal or group). A particular principal will be authorized
                 for a given permission if the principal is assigned to a role that has been granted
@@ -153,42 +153,6 @@
                         </thead>
                         <tbody>
                             <row>
-                                <entry>kim.cache.entity.max.age.seconds</entry>
-                                <entry>The maximum number of seconds an entity cached by KIM's
-                                    IdentityManagementService will be retained in memory.</entry>
-                                <entry>30</entry>
-                            </row>
-                            <row>
-                                <entry>kim.cache.entity.max.size</entry>
-                                <entry>The maximum size of the KIM IdentityServiceManagementService
-                                    entity cache.</entry>
-                                <entry>200</entry>
-                            </row>
-                            <row>
-                                <entry>kim.cache.group.max.age.seconds</entry>
-                                <entry>The maximum number of seconds a group cached by KIM's
-                                    IdentityManagementService will be retained in memory.</entry>
-                                <entry>3600</entry>
-                            </row>
-                            <row>
-                                <entry>kim.cache.group.max.size</entry>
-                                <entry>The maximum size of the KIM IdentityServiceManagementService
-                                    group cache.</entry>
-                                <entry>200</entry>
-                            </row>
-                            <row>
-                                <entry>kim.cache.permission.max.age.seconds</entry>
-                                <entry>The maximum number of seconds a permission cached by KIM's
-                                    IdentityManagementService will be retained in memory.</entry>
-                                <entry>30</entry>
-                            </row>
-                            <row>
-                                <entry>kim.cache.permission.max.size</entry>
-                                <entry>The maximum size of the KIM IdentityServiceManagementService
-                                    permission cache.</entry>
-                                <entry>200</entry>
-                            </row>
-                            <row>
                                 <entry>kim.cache.person.max.age.seconds</entry>
                                 <entry>The maximum number of seconds an entity cached by KIM's
                                     PersonService will be retained in memory.</entry>
@@ -200,32 +164,7 @@
                                     cache.</entry>
                                 <entry>3000</entry>
                             </row>
-                            <row>
-                                <entry>kim.cache.responsibility.max.age.seconds</entry>
-                                <entry>The maximum number of seconds a responsibility cached by
-                                    KIM's IdentityManagementService will be retained in
-                                    memory.</entry>
-                                <entry>30</entry>
-                            </row>
-                            <row>
-                                <entry>kim.cache.responsibility.max.size</entry>
-                                <entry>The maximum size of the KIM IdentityServiceManagementService
-                                    responsibility cache. </entry>
-                                <entry>200</entry>
-                            </row>
-                            <row>
-                                <entry>kim.cache.role.max.age.seconds</entry>
-                                <entry>The maximum number of seconds a role cached by KIM's
-                                    RoleManagementService will be retained in memory.</entry>
-                                <entry>30</entry>
-                            </row>
-                            <row>
-                                <entry>kim.cache.role.max.size</entry>
-                                <entry>The maximum size of the KIM RoleManagementService role
-                                    cache.</entry>
-                                <entry>200</entry>
-                            </row>
-                            <row>
+                          <row>
                                 <entry>kim.mode</entry>
                                 <entry>The mode that KIM will run in; choices are "local",
                                     "embedded", or "remote".</entry>
@@ -253,11 +192,6 @@
         <para>KIM provides 3 main service APIs with which client applications should interact. These are:<itemizedlist>
                 <listitem>
                     <para><emphasis role="bold"
-                            >org.kuali.rice.kim.service.IdentityManagementService</emphasis>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para><emphasis role="bold"
                             >org.kuali.rice.kim.api.role.RoleManagementService</emphasis>
                     </para>
                 </listitem>
@@ -276,11 +210,11 @@
         <sect2>
             <title>Using the Services</title>
             <para>All KIM clients should retrieve service instances using the KIM service locator
-                class <emphasis role="bold">KIMServiceLocator</emphasis>. This class contains static
+                class <emphasis role="bold">KimApiServiceLocator</emphasis>. This class contains static
                 methods to retrieve the appropriate Spring bean for the service. An example of
-                retrieving the <emphasis role="bold">IdentityManagementService</emphasis> service
+                retrieving the <emphasis role="bold">IdentityService</emphasis> service
                 is:</para>
-            <programlisting>IdentityManagementService idmSvc = KIMServiceLocator.getIdentityManagementService();</programlisting>
+            <programlisting>IdentityService idmSvc = KimApiServiceLocator.getIdentityService();</programlisting>
             <para>You would use a similar mechanism for retrieving references to the other KIM
                 services.</para>
         </sect2>

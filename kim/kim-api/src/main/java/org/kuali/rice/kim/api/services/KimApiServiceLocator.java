@@ -11,7 +11,6 @@ import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kim.api.role.RoleManagementService;
 
 public class KimApiServiceLocator {
     private static final Logger LOG = Logger.getLogger(KimApiServiceLocator.class);

@@ -540,7 +540,7 @@ public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, Str
     }
 
     if (!StringUtils.isBlank(principalName)) {
-        KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        KimPrincipalInfo principal = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
         if (principal == null) {
             errors.add(new WorkflowServiceErrorImpl("unable to retrieve user for principalName '" + principalName + "'", "accountattribute.principalName.invalid"));
         }

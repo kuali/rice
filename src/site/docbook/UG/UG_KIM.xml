@@ -46,9 +46,6 @@
                                 <para>IdentityCacheService </para>
                             </listitem>
                             <listitem>
-                                <para>IdentityManagementService </para>
-                            </listitem>
-                            <listitem>
                                 <para>IdentityService </para>
                             </listitem>
                             <listitem>
@@ -62,9 +59,6 @@
                             </listitem>
                             <listitem>
                                 <para>ResponsibilityService </para>
-                            </listitem>
-                            <listitem>
-                                <para>RoleManagementService </para>
                             </listitem>
                             <listitem>
                                 <para>RoleService </para>

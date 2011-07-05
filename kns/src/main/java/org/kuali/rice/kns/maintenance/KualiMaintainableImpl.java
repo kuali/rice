@@ -250,7 +250,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 				.getConditionallyRequiredPropertyNames(document);
 
 		List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService()
-				.getMaintainableSections(docTypeName);
+				.getMaintainableSections(getDocumentTypeName());
 		try {
 			// iterate through section definitions and create Section UI object
 			for (Iterator iter = sectionDefinitions.iterator(); iter.hasNext();) {

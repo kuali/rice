@@ -17,6 +17,7 @@
 	<bean id="View" abstract="true" parent="View-parentBean" />
 	<bean id="View-parentBean" abstract="true"
 		class="org.kuali.rice.krad.uif.container.View" scope="prototype">
+        <property name="viewName" value="default" />
 		<property name="viewHelperServiceClassName"
 			value="org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl" />
 		<property name="styleClasses" value="workarea" />
@@ -67,7 +68,6 @@
 	<bean id="InquiryView" abstract="true" parent="InquiryView-parentBean" />
 	<bean id="InquiryView-parentBean" abstract="true"
 		class="org.kuali.rice.krad.uif.container.InquiryView" parent="KNSFormView">
-		<property name="viewName" value="default" />
 		<property name="viewHelperServiceClassName"
 			value="org.kuali.rice.krad.inquiry.InquirableImpl" />
 		<property name="presentationControllerClass"
@@ -90,12 +90,10 @@
 	<bean id="LookupView" abstract="true" parent="LookupView-parentBean" />
 	<bean id="LookupView-parentBean" abstract="true"
 		class="org.kuali.rice.krad.uif.container.LookupView" parent="KNSFormView">
-		<property name="viewName" value="default" />
 		<property name="viewHelperServiceClassName"
 			value="org.kuali.rice.krad.lookup.LookupableImpl" />
 		<property name="formClass"
 			value="org.kuali.rice.krad.web.form.LookupForm" />
-		<property name="readOnly" value="false" />
 		<property name="singlePageView" value="true" />
 		<property name="page">
 			<bean parent="PageLookup" />
@@ -122,14 +120,12 @@
 			<bean parent="GeneratedField">
 				<property name="label" value="Actions" />
 				<property name="renderingMethodToCall" value="getActionUrlsFromField" />
-				<property name="styleClasses" value="field_attribute" />
 			</bean>
 		</property>
 		<property name="resultsReturnField">
 			<bean parent="GeneratedField">
 				<property name="label" value="Return Value" />
 				<property name="renderingMethodToCall" value="getReturnUrlForResults" />
-				<property name="styleClasses" value="field_attribute" />
 			</bean>
 		</property>
 		<property name="resultsGroup">
@@ -227,7 +223,7 @@
 			value="Please use the Incident Report form below to report the problems" />
 	</bean>
 
-	<bean id="IncidentDetailGroup" parent="GroupGridLayout">
+	<bean id="IncidentDetailGroup" parent="GroupGridLayout" p:accordion.render="false">
 		<property name="header.headerText" value="Incident Feedback" />
 		<property name="header.styleClasses" value="grouping-header-expandable" />
 		<property name="layoutManager.numberOfColumns" value="2" />
@@ -271,7 +267,7 @@
 	</bean>
 
 	<bean id="IncidentStackGroup" parent="GroupSection"
-		p:layoutManager.styleClasses="layout_center" p:conditionalRender="devMode">
+		p:layoutManager.styleClasses="layout_center" p:conditionalRender="devMode" p:accordion.render="false">
 		<property name="header.headerText" value="Stacktrace (only in dev mode)" />
 		<property name="items">
 			<list>
@@ -286,7 +282,6 @@
 			</list>
 		</property>
 	</bean>
-
 
 	<!-- Base Pages -->
 
@@ -323,14 +318,6 @@
 
 	<bean id="PageLookup" parent="PageLookup-parentBean" />
 	<bean id="PageLookup-parentBean" abstract="true" parent="Page">
-		<property name="renderFooter" value="false" />
-		<property name="header">
-			<ref bean="HeaderPage_Lookup" />
-		</property>
-	</bean>
-
-	<bean id="PageIncidentReport" parent="PageIncidentReport-parentBean" />
-	<bean id="PageIncidentReport-parentBean" abstract="true" parent="Page">
 		<property name="renderFooter" value="false" />
 		<property name="header">
 			<ref bean="HeaderPage_Lookup" />

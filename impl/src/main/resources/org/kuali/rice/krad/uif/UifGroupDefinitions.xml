@@ -267,7 +267,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
            <bean parent="ActionLinkField_CreateNew"/>
          </list>
       </property>
-      <property name="layoutManager.orientation" value="HORIZONTAL"/> 
   </bean>
   
   <bean id="Group_ExpandCloseActions" parent="GroupBodyOnly">

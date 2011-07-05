@@ -77,6 +77,7 @@
                 <value>classpath:edu/sampleu/travel/uif/TravelAccountMaintenance.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/Travel-testView1.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/Travel-testView2.xml</value>
+                <value>classpath:edu/sampleu/travel/uif/LayoutTestView.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/FiscalOfficerView.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/FiscalOfficerLookup.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/TravelAlternateViews.xml</value>

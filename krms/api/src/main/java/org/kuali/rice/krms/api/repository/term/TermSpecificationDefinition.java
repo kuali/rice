@@ -40,7 +40,6 @@ import org.kuali.rice.krms.api.repository.BuilderUtils;
 import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
 import org.kuali.rice.krms.api.repository.category.CategoryDefinition;
 import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
-import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Builder;
 
 /**
  * Immutable DTO for TermSpecifications.  Construction must be done via the {@link Builder} inner class.
@@ -106,12 +105,19 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		name = b.getName();
 		type = b.getType();
 		versionNumber = b.getVersionNumber();
-        this.categories = new ArrayList<CategoryDefinition>();
-        for (CategoryDefinition.Builder category : b.getCategories()) {
-            this.categories.add(category.build());
-        }
+        this.categories = constructCategories(b.getCategories());
 	}
-	
+
+    private static List<CategoryDefinition> constructCategories(List<CategoryDefinition.Builder> categoryBuilders) {
+    	List<CategoryDefinition> categories = new ArrayList<CategoryDefinition>();
+    	if (categoryBuilders != null) {
+    		for (CategoryDefinition.Builder categoryBuilder : categoryBuilders) {
+    			categories.add(categoryBuilder.build());
+    		}
+    	}
+    	return categories;
+    }
+
 	/**
 	 * Builder for the {@link TermSpecificationDefinition} immutable DTO.  Instantiate using static factory method(s).
 	 * 
@@ -235,7 +241,7 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
         }
 
         /**
-         * @param categories the categories to set.  May not be null but can be an empty list.
+         * @param categories the categories to set.  May not be null but can be an empty set.
          */
         public void setCategories(List<CategoryDefinition.Builder> categories) {
             if (categories == null) {
@@ -395,8 +401,8 @@ public final class TermSpecificationDefinition implements TermSpecificationDefin
 		public static final String CONTEXT_ID = "contextId";
 		public static final String NAME = "name";
 		public static final String TYPE = "type";
-        final static String CATEGORIES = "categories";
-        final static String CATEGORY = "category";
+        public final static String CATEGORIES = "categories";
+        public final static String CATEGORY = "category";
 	}
 	
 

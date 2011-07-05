@@ -7,8 +7,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -123,15 +121,15 @@ public class CategoryDefinition implements CategoryDefinitionContract, ModelObje
         /**
          * Creates a builder by populating it with data from the given {@link CategoryDefinition}.
          *
-         * @param contract the contract from which to populate this builder
+         * @param category the category from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(CategoryDefinitionContract contract) {
-            if (contract == null) {
+        public static Builder create(CategoryDefinitionContract category) {
+            if (category == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-            Builder builder =  new Builder(contract.getId(), contract.getName(), contract.getNamespace());
-            builder.setVersionNumber(contract.getVersionNumber());
+            Builder builder =  new Builder(category.getId(), category.getName(), category.getNamespace());
+            builder.setVersionNumber(category.getVersionNumber());
             return builder;
         }
 
@@ -184,22 +182,22 @@ public class CategoryDefinition implements CategoryDefinitionContract, ModelObje
 
         @Override
         public String getId() {
-            return id;
+            return this.id;
         }
 
         @Override
         public String getName() {
-            return name;
+            return this.name;
         }
 
         @Override
         public String getNamespace() {
-            return namespace;
+            return this.namespace;
         }
 
         @Override
         public Long getVersionNumber() {
-            return versionNumber;
+            return this.versionNumber;
         }
 
         /**

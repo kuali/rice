@@ -10,9 +10,6 @@ class CategoryBo extends PersistableBusinessObjectBase implements CategoryDefini
     def String name
     def String namespace
 
-    def Set<TermSpecificationBo> termSpecifications
-    def Set<FunctionBo> functions
-
 	/**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object

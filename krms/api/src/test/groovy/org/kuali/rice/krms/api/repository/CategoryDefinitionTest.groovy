@@ -5,6 +5,8 @@ import org.kuali.rice.krms.api.test.JAXBAssert
 import org.junit.Test
 import org.junit.Assert
 import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract
+import org.kuali.rice.krms.api.repository.function.FunctionDefinitionContract
 
 
 class CategoryDefinitionTest {

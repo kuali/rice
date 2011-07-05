@@ -491,7 +491,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KimApiServiceLocator.getRoleManagementService();
+			roleService = KimApiServiceLocator.getRoleService();
 		}
 
 		return roleService;

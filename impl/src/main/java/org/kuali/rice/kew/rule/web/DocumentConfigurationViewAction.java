@@ -35,6 +35,7 @@ import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 
@@ -79,7 +80,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	private static final Logger LOG = Logger.getLogger(DocumentConfigurationViewAction.class);
 	
 	private PermissionService permissionService;
-	private RoleManagementService roleService;
+	private RoleService roleService;
 	private ResponsibilityService responsibilityService;
 	private DocumentTypeService documentTypeService;
 	private DataDictionaryService dataDictionaryService;
@@ -442,9 +443,9 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	/**
 	 * @return the roleService
 	 */
-	public RoleManagementService getRoleService() {
+	public RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KimApiServiceLocator.getRoleManagementService();
+			roleService = KimApiServiceLocator.getRoleService();
 		}
 		return roleService;
 	}

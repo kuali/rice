@@ -44,7 +44,7 @@ import org.kuali.rice.kim.api.identity.services.IdentityService;
 import org.kuali.rice.kim.api.identity.type.EntityTypeData;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.Role;
-import org.kuali.rice.kim.api.role.RoleManagementService;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
@@ -152,7 +152,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	private static final String SHOW_BLANK_QUALIFIERS = "kim.show.blank.qualifiers";
 	
 	private RoleService roleService;
-	private RoleManagementService roleManagementService;
 	private BusinessObjectService businessObjectService;
 	private IdentityService identityService;
 	private IdentityManagementService identityManagementService;
@@ -260,7 +259,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		if ( inactivatingPrincipal ) {
 			//when a person is inactivated, inactivate their group, role, and delegation memberships
-			KimApiServiceLocator.getRoleManagementService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
+			KimApiServiceLocator.getRoleService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
 		}
 	}
 
@@ -1542,13 +1541,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return roleService;
 	}
 
-	protected RoleManagementService getRoleManagementService() {
-	   	if(roleManagementService == null){
-	   		roleManagementService = KimApiServiceLocator.getRoleManagementService();
-    	}
-		return roleManagementService;
-	}
-
 	public void setRoleService(RoleService roleService) {
 		this.roleService = roleService;
 	}
@@ -1826,7 +1818,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
             }
 
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	memberId = getRoleManagementService().getRoleIdByName(memberNamespaceCode, memberName);
+        	memberId = getRoleService().getRoleIdByName(memberNamespaceCode, memberName);
         }
         return memberId;
     }
@@ -2069,7 +2061,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(!roleBo.isActive()){
 			// when a role is inactivated, inactivate the memberships of principals, groups, and roles in
 			// that role, delegations, and delegation members, and that roles memberships in other roles
-			KimApiServiceLocator.getRoleManagementService().roleInactivated(identityManagementRoleDocument.getRoleId());
+			KimApiServiceLocator.getRoleService().roleInactivated(identityManagementRoleDocument.getRoleId());
 		}
 	}
 

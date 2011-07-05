@@ -16,14 +16,6 @@
 
 package org.kuali.rice.kew.actionrequest;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -48,15 +40,23 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.role.Role;
-import org.kuali.rice.kim.api.role.RoleManagementService;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -68,7 +68,7 @@ public class ActionRequestFactory {
 
 	private static final Logger LOG = Logger.getLogger(ActionRequestFactory.class);
 
-	private static RoleManagementService roleManagementService;
+	private static RoleService roleService;
 	private static IdentityHelperService identityHelperService;
 	private static IdentityManagementService identityManagementService;
 	private static ActionRequestService actionRequestService;
@@ -386,7 +386,7 @@ public class ActionRequestFactory {
     		}
         	// KFSMI-2381 - pull information from KIM to populate annotation
     		annotation.setLength( 0 );
-    		Role role = getRoleManagementService().getRole(responsibility.getRoleId());
+    		Role role = getRoleService().getRole(responsibility.getRoleId());
     		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getName() ).append( ' ' );
     		Attributes qualifier = responsibility.getQualifier();
     		if ( qualifier != null ) {
@@ -608,11 +608,11 @@ public class ActionRequestFactory {
 	/**
 	 * @return the roleManagementService
 	 */
-    protected static RoleManagementService getRoleManagementService() {
-		if ( roleManagementService == null ) {
-			roleManagementService = KimApiServiceLocator.getRoleManagementService();
+    protected static RoleService getRoleService() {
+		if ( roleService == null ) {
+			roleService = KimApiServiceLocator.getRoleService();
 		}
-		return roleManagementService;
+		return roleService;
 	}
 
 	/**

@@ -19,12 +19,10 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.MaxAgeSoftReference;
-import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleManagementService;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
@@ -32,203 +30,63 @@ import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.role.RoleUpdateService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.api.type.KimTypeService;
-import org.kuali.rice.kim.framework.type.KimRoleTypeService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.api.role.RoleManagementService;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RoleManagementServiceImpl implements RoleManagementService, InitializingBean {
+public class RoleManagementServiceImpl implements RoleManagementService {
     private static final Logger LOG = Logger.getLogger(RoleManagementServiceImpl.class);
 
     private RoleService roleService;
-    private KimTypeInfoService typeInfoService;
     private RoleUpdateService roleUpdateService;
 
-    // Max age defined in seconds
-    protected int roleCacheMaxSize = 200;
-    protected int roleCacheMaxAgeSeconds = 30;
-
-    protected Map<String, MaxAgeSoftReference<Role>> roleByIdCache;
-    protected Map<String, MaxAgeSoftReference<Role>> roleByNameCache;
-    protected Map<String, MaxAgeSoftReference<List<RoleMembership>>> roleMembersWithDelegationCache;
-    protected Map<String, MaxAgeSoftReference<List<Attributes>>> roleQualifiersForPrincipalCache;
-    protected Map<String, MaxAgeSoftReference<Boolean>> principalHasRoleCache;
-    protected Map<String, MaxAgeSoftReference<Collection<String>>> memberPrincipalIdsCache;
-
-    protected Map<String, Boolean> shouldCacheRoleCache;
-
-    public void afterPropertiesSet() throws Exception {
-        roleByIdCache = Collections.synchronizedMap(new MaxSizeMap<String, MaxAgeSoftReference<Role>>(roleCacheMaxSize));
-        roleByNameCache = Collections.synchronizedMap(new MaxSizeMap<String, MaxAgeSoftReference<Role>>(roleCacheMaxSize));
-        roleMembersWithDelegationCache = Collections.synchronizedMap(new MaxSizeMap<String, MaxAgeSoftReference<List<RoleMembership>>>(roleCacheMaxSize));
-        roleQualifiersForPrincipalCache = Collections.synchronizedMap(new MaxSizeMap<String, MaxAgeSoftReference<List<Attributes>>>(roleCacheMaxSize));
-        principalHasRoleCache = Collections.synchronizedMap(new MaxSizeMap<String, MaxAgeSoftReference<Boolean>>(roleCacheMaxSize));
-        memberPrincipalIdsCache = Collections.synchronizedMap(new MaxSizeMap<String, MaxAgeSoftReference<Collection<String>>>(roleCacheMaxSize));
-        shouldCacheRoleCache = Collections.synchronizedMap(new HashMap<String, Boolean>());
-    }
-
+    @Override
     public void flushRoleCaches() {
         flushInternalRoleCache();
         flushInternalRoleMemberCache();
         flushInternalDelegationCache();
         flushInternalDelegationMemberCache();
-        roleByIdCache.clear();
-        roleByNameCache.clear();
-        roleMembersWithDelegationCache.clear();
-        roleQualifiersForPrincipalCache.clear();
-        principalHasRoleCache.clear();
-        memberPrincipalIdsCache.clear();
-        shouldCacheRoleCache.clear();
     }
 
+    @Override
     public void flushRoleMemberCaches() {
         flushInternalRoleMemberCache();
-        roleMembersWithDelegationCache.clear();
-        memberPrincipalIdsCache.clear();
     }
 
+    @Override
     public void flushDelegationCaches() {
         flushInternalDelegationCache();
         flushInternalDelegationMemberCache();
-        roleMembersWithDelegationCache.clear();
     }
 
+    @Override
     public void flushDelegationMemberCaches() {
         flushInternalDelegationMemberCache();
-        roleMembersWithDelegationCache.clear();
     }
 
-    // Caching helper methods
+    @Override
+    public void removeCacheEntries(String roleId, String principalId) {
 
-    protected Role getRoleByIdCache(String roleId) {
-        MaxAgeSoftReference<Role> roleRef = roleByIdCache.get(roleId);
-        if (roleRef != null) {
-            return roleRef.get();
-        }
-        return null;
-    }
-
-    protected Role getRoleByNameCache(String key) {
-        MaxAgeSoftReference<Role> roleRef = roleByNameCache.get(key);
-        if (roleRef != null) {
-            return roleRef.get();
-        }
-        return null;
-    }
-
-    protected List<RoleMembership> getRoleMembersWithDelegationCache(String key) {
-        MaxAgeSoftReference<List<RoleMembership>> roleMembersRef = roleMembersWithDelegationCache.get(key);
-        if (roleMembersRef != null) {
-            return roleMembersRef.get();
-        }
-        return null;
-    }
-
-    protected List<Attributes> getRoleQualifiersForPrincipalCache(String key) {
-        MaxAgeSoftReference<List<Attributes>> qualifiersRef = roleQualifiersForPrincipalCache.get(key);
-        if (qualifiersRef != null) {
-            return qualifiersRef.get();
-        }
-        return null;
-    }
-
-    protected Boolean getPrincipalHasRoleCacheCache(String key) {
-        MaxAgeSoftReference<Boolean> hasRoleRef = principalHasRoleCache.get(key);
-        if (hasRoleRef != null) {
-            return hasRoleRef.get();
-        }
-        return null;
-    }
-
-    protected void addRoleToCaches(Role role) {
-        if (role != null) {
-            roleByNameCache.put(role.getNamespaceCode() + "-" + role.getName(), new MaxAgeSoftReference<Role>(roleCacheMaxAgeSeconds, role));
-            roleByIdCache.put(role.getId(), new MaxAgeSoftReference<Role>(roleCacheMaxAgeSeconds, role));
-        }
-    }
-
-    protected void addRoleMembersWithDelegationToCache(String key, List<RoleMembership> members) {
-        if (members != null) {
-            roleMembersWithDelegationCache.put(key, new MaxAgeSoftReference<List<RoleMembership>>(roleCacheMaxAgeSeconds, members));
-        }
-    }
-
-    protected void addRoleQualifiersForPrincipalToCache(String key, List<Attributes> qualifiers) {
-        if (qualifiers != null) {
-            roleQualifiersForPrincipalCache.put(key, new MaxAgeSoftReference<List<Attributes>>(roleCacheMaxAgeSeconds, qualifiers));
-        }
-    }
-
-    protected void addPrincipalHasRoleToCache(String key, boolean hasRole) {
-        principalHasRoleCache.put(key, new MaxAgeSoftReference<Boolean>(roleCacheMaxAgeSeconds, hasRole));
-    }
-
-    // Cached methods
-
-    protected Collection<String> getRoleMemberPrincipalIdsCache(String key) {
-        MaxAgeSoftReference<Collection<String>> memberPrincipalIdsRef = memberPrincipalIdsCache.get(key);
-        if (memberPrincipalIdsRef != null) {
-            return memberPrincipalIdsRef.get();
-        }
-        return null;
-    }
-
-    protected void addRoleMemberPrincipalIdsToCache(String key, Collection<String> principalIds) {
-        memberPrincipalIdsCache.put(key, new MaxAgeSoftReference<Collection<String>>(roleCacheMaxAgeSeconds, principalIds));
     }
 
     @Override
     public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, Attributes qualification) {
-        StringBuffer cacheKey = new StringBuffer();
-        cacheKey.append(namespaceCode).append('/').append(roleName);
-        addAttributesToKey(cacheKey, qualification);
-        String key = cacheKey.toString();
-        Collection<String> principalIds = getRoleMemberPrincipalIdsCache(key);
-        if (principalIds != null) {
-            return principalIds;
-        }
-        principalIds = getRoleService().getRoleMemberPrincipalIds(namespaceCode, roleName, qualification);
-        addRoleMemberPrincipalIdsToCache(key, principalIds);
-        return principalIds;
+        return getRoleService().getRoleMemberPrincipalIds(namespaceCode, roleName, qualification);
     }
 
     @Override
     public Role getRole(String roleId) {
-        Role role = getRoleByIdCache(roleId);
-        if (role != null) {
-            return role;
-        }
-        role = getRoleService().getRole(roleId);
-        addRoleToCaches(role);
-        return role;
+        return getRoleService().getRole(roleId);
     }
 
     @Override
     public Role getRoleByName(String namespaceCode, String roleName) {
-        Role role = getRoleByNameCache(namespaceCode + "-" + roleName);
-        if (role != null) {
-            return role;
-        }
-        role = getRoleService().getRoleByName(namespaceCode, roleName);
-        addRoleToCaches(role);
-        return role;
+        return getRoleService().getRoleByName(namespaceCode, roleName);
     }
 
     @Override
@@ -245,236 +103,37 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
         return getRoleService().getRoles(roleIds);
     }
 
-    protected void addIdsToKey(StringBuffer key, List<String> idList) {
-        if (idList == null || idList.isEmpty()) {
-            key.append("[null]");
-        } else {
-            for (String id : idList) {
-                key.append('|').append(id).append('|');
-            }
-        }
-    }
-
-    protected void addAttributesToKey(StringBuffer key, Attributes attributes) {
-        if (attributes == null || attributes.isEmpty()) {
-            key.append("[null]");
-        } else {
-            for (Map.Entry<String, String> entry : attributes.entrySet()) {
-                key.append(entry.getKey()).append('=').append(entry.getValue()).append('|');
-            }
-        }
-    }
-
     @Override
     public List<RoleMembership> getRoleMembers(List<String> roleIds, Attributes qualification) {
-        List<String>[] filteredRoles = filterRoleIdsByCachingAbility(roleIds);
-        List<String> cacheRoles = filteredRoles[0];
-        List<String> noCacheRoles = filteredRoles[1];
-
-        List<RoleMembership> members = null;
-        String key = null;
-
-        if (!cacheRoles.isEmpty()) {
-            StringBuffer cacheKey = new StringBuffer();
-            addIdsToKey(cacheKey, cacheRoles);
-            cacheKey.append('/');
-            addAttributesToKey(cacheKey, qualification);
-            key = cacheKey.toString();
-            members = getRoleMembersWithDelegationCache(key);
-        }
-        if (members != null) {
-            if (!noCacheRoles.isEmpty()) {
-                members.addAll(getRoleService().getRoleMembers(noCacheRoles, qualification));
-            }
-            return members;
-        }
-
-        if (!cacheRoles.isEmpty()) {
-            members = getRoleService().getRoleMembers(cacheRoles, qualification);
-            addRoleMembersWithDelegationToCache(key, members);
-        } else {
-            members = new ArrayList<RoleMembership>();
-        }
-        if (!noCacheRoles.isEmpty()) {
-            members.addAll(getRoleService().getRoleMembers(noCacheRoles, qualification));
-        }
-        return members;
+        return getRoleService().getRoleMembers(roleIds, qualification);
     }
 
     @Override
     public List<Attributes> getRoleQualifiersForPrincipal(String principalId, List<String> roleIds, Attributes qualification) {
-        StringBuffer cacheKey = new StringBuffer(principalId);
-        cacheKey.append('/');
-        addIdsToKey(cacheKey, roleIds);
-        cacheKey.append('/');
-        addAttributesToKey(cacheKey, qualification);
-        String key = cacheKey.toString();
-        List<Attributes> qualifiers = getRoleQualifiersForPrincipalCache(key);
-        if (qualifiers != null) {
-            return qualifiers;
-        }
-        qualifiers = getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
-        addRoleQualifiersForPrincipalToCache(key, qualifiers);
-        return qualifiers;
+        return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
     }
 
     @Override
     public List<Attributes> getRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, Attributes qualification) {
-        StringBuffer cacheKey = new StringBuffer(principalId);
-        cacheKey.append('/');
-        cacheKey.append(namespaceCode).append('-').append(roleName);
-        cacheKey.append('/');
-        addAttributesToKey(cacheKey, qualification);
-        String key = cacheKey.toString();
-        List<Attributes> qualifiers = getRoleQualifiersForPrincipalCache(key);
-        if (qualifiers != null) {
-            return qualifiers;
-        }
-        qualifiers = getRoleService().getRoleQualifiersForPrincipal(principalId, namespaceCode, roleName, qualification);
-        addRoleQualifiersForPrincipalToCache(key, qualifiers);
-        return qualifiers;
+        return getRoleService().getRoleQualifiersForPrincipal(principalId, namespaceCode, roleName, qualification);
     }
 
+    @Override
     public boolean isRoleActive(String roleId) {
         Role role = getRole(roleId);
         return role != null && role.isActive();
     }
 
+    @Override
     public boolean principalHasRole(String principalId, List<String> roleIds, Attributes qualification) {
         if (LOG.isDebugEnabled()) {
             logPrincipalHasRoleCheck(principalId, roleIds, qualification);
         }
-        List<String>[] filteredRoles = filterRoleIdsByCachingAbility(roleIds);
-        List<String> cacheRoles = filteredRoles[0];
-        List<String> noCacheRoles = filteredRoles[1];
-
-        Boolean hasRole = null;
-        String key = null;
-        if (!cacheRoles.isEmpty()) {
-            StringBuffer cacheKey = new StringBuffer();
-            cacheKey.append(principalId);
-            cacheKey.append('/');
-            addIdsToKey(cacheKey, cacheRoles);
-            cacheKey.append('/');
-            addAttributesToKey(cacheKey, qualification);
-            key = cacheKey.toString();
-            hasRole = getPrincipalHasRoleCacheCache(key);
-        }
-        if (hasRole == null || !hasRole.booleanValue()) {
-            if (!cacheRoles.isEmpty()) {
-                hasRole = getRoleService().principalHasRole(principalId, cacheRoles, qualification);
-                addPrincipalHasRoleToCache(key, hasRole);
-            }
-            if ((hasRole == null || !hasRole.booleanValue()) && !noCacheRoles.isEmpty()) {
-                hasRole = getRoleService().principalHasRole(principalId, noCacheRoles, qualification);
-            }
+        boolean hasRole =  getRoleService().principalHasRole(principalId, roleIds, qualification);
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Result: " + hasRole);
             }
-        } else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Result Found in cache using key: " + key + "\nResult: " + hasRole);
-            }
-        }
         return hasRole;
-    }
-
-    /**
-     * Determines if the role with the given id will be cached
-     *
-     * @param roleId the role id of the role to determine caching on
-     * @return true if the role should be cached, false otherwise
-     */
-    protected boolean shouldCacheRole(String roleId) {
-        Boolean shouldCacheRoleAnswer = shouldCacheRoleCache.get(roleId);
-        if (shouldCacheRoleAnswer == null) {
-
-            final KimRoleTypeService roleType = getRoleTypeService(roleId);
-            final Role role = this.getRole(roleId);
-            if (roleType != null && role != null) {
-                try {
-                    shouldCacheRoleAnswer = new Boolean(roleType.shouldCacheRoleMembershipResults(role.getNamespaceCode(), role.getName()));
-                    shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);
-                } catch (Exception e) {//was: RiceRemoteServiceConnectionException
-                    LOG.warn("Unable to connect to remote service for roleType " + role.getNamespaceCode() + "-" + role.getName());
-                    LOG.warn(e.getMessage());
-                    return Boolean.FALSE;
-                }
-            } else {
-                shouldCacheRoleAnswer = Boolean.TRUE; // no type?  that means we get to do the default - cache
-                shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);
-            }
-        }
-        return shouldCacheRoleAnswer.booleanValue();
-    }
-
-    /**
-     * Splits the given List of role ids into two Lists, one with roles to cache, and one with roles
-     * not to cache
-     *
-     * @param roleIds the List of role ids to split
-     * @return an array of two Lists of role ids - the first, roles which can be cached and the second, roles which should not be cached
-     */
-    @SuppressWarnings("unchecked")
-    protected List<String>[] filterRoleIdsByCachingAbility(List<String> roleIds) {
-        List<String> cacheRoles = new ArrayList<String>();
-        List<String> noCacheRoles = new ArrayList<String>();
-        Set<String> alreadyFilteredRoles = new HashSet<String>();
-
-        for (String roleId : roleIds) {
-            if (!alreadyFilteredRoles.contains(roleId)) {
-                alreadyFilteredRoles.add(roleId);
-                if (shouldCacheRole(roleId)) {
-                    cacheRoles.add(roleId);
-                } else {
-                    noCacheRoles.add(roleId);
-                }
-            }
-        }
-        return (List<String>[]) new List[]{cacheRoles, noCacheRoles};
-    }
-
-    /**
-     * Retrieves the role type service associated with the given role ID
-     *
-     * @param roleId the role ID to get the role type service for
-     * @return the Role Type Service
-     */
-    protected KimRoleTypeService getRoleTypeService(String roleId) {
-        KimRoleTypeService service = null;
-
-        final Role role = getRoleService().getRole(roleId);
-        if (role != null) {
-            final KimType roleType = getTypeInfoService().getKimType(role.getKimTypeId());
-            if (roleType != null) {
-                service = getRoleTypeService(roleType);
-            }
-        }
-        return service;
-    }
-
-    /**
-     * Retrieves a role type from the given type info
-     *
-     * @param typeInfo
-     * @return
-     */
-    protected KimRoleTypeService getRoleTypeService(KimType typeInfo) {
-        String serviceName = typeInfo.getServiceName();
-        if (serviceName != null) {
-            try {
-                KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
-                if (service != null && service instanceof KimRoleTypeService) {
-                    return (KimRoleTypeService) service;
-                } else {
-                    return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
-                }
-            } catch (Exception ex) {
-                LOG.error("Unable to find role type service with name: " + serviceName, ex);
-                return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
-            }
-        }
-        return null;
     }
 
     @Override
@@ -483,75 +142,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
             String roleName, Attributes qualification) {
         return getRoleService().getPrincipalIdSubListWithRole(principalIds,
                 roleNamespaceCode, roleName, qualification);
-    }
-
-
-    // Helper methods
-
-    public void removeCacheEntries(String roleId, String principalId) {
-        if (principalId != null) {
-            String keyPrefix = principalId + "-";
-            synchronized (principalHasRoleCache) {
-                Iterator<String> cacheIterator = principalHasRoleCache.keySet().iterator();
-                while (cacheIterator.hasNext()) {
-                    String cacheKey = cacheIterator.next();
-                    if (cacheKey.startsWith(keyPrefix)) {
-                        cacheIterator.remove();
-                    }
-                }
-            }
-            synchronized (roleQualifiersForPrincipalCache) {
-                Iterator<String> cacheIterator = roleQualifiersForPrincipalCache.keySet().iterator();
-                while (cacheIterator.hasNext()) {
-                    String cacheKey = cacheIterator.next();
-                    if (cacheKey.startsWith(keyPrefix)) {
-                        cacheIterator.remove();
-                    }
-                }
-            }
-        }
-        if (roleId != null) {
-            roleByIdCache.remove(roleId);
-            roleByNameCache.clear();
-            String keySubstring = "|" + roleId + "|";
-            synchronized (principalHasRoleCache) {
-                Iterator<String> cacheIterator = principalHasRoleCache.keySet().iterator();
-                while (cacheIterator.hasNext()) {
-                    String cacheKey = cacheIterator.next();
-                    if (cacheKey.contains(keySubstring)) {
-                        cacheIterator.remove();
-                    }
-                }
-            }
-            synchronized (roleQualifiersForPrincipalCache) {
-                Iterator<String> cacheIterator = roleQualifiersForPrincipalCache.keySet().iterator();
-                while (cacheIterator.hasNext()) {
-                    String cacheKey = cacheIterator.next();
-                    if (cacheKey.contains(keySubstring)) {
-                        cacheIterator.remove();
-                    }
-                }
-            }
-            synchronized (roleMembersWithDelegationCache) {
-                Iterator<String> cacheIterator = roleMembersWithDelegationCache.keySet().iterator();
-                while (cacheIterator.hasNext()) {
-                    String cacheKey = cacheIterator.next();
-                    if (cacheKey.contains(keySubstring)) {
-                        cacheIterator.remove();
-                    }
-                }
-            }
-            synchronized (memberPrincipalIdsCache) {
-                Iterator<String> cacheIterator = memberPrincipalIdsCache.keySet().iterator();
-                while (cacheIterator.hasNext()) {
-                    String cacheKey = cacheIterator.next();
-                    if (cacheKey.contains(keySubstring)) {
-                        cacheIterator.remove();
-                    }
-                }
-            }
-            shouldCacheRoleCache.remove(roleId);
-        }
     }
 
     @Override
@@ -617,12 +207,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
             }
         }
         sb.append("   Principal : ").append(principalId);
-        if (principalId != null) {
-            Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
-            if (principal != null) {
-                sb.append(" (").append(principal.getPrincipalName()).append(')');
-            }
-        }
         sb.append('\n');
         sb.append("     Details :\n");
         if (roleQualifiers != null) {
@@ -729,24 +313,29 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
         return getRoleService().getRoleMemberResponsibilityActions(roleMemberId);
     }
 
+    @Override
     public DelegateType getDelegateTypeInfo(String roleId, String delegationTypeCode) {
         return getRoleService().getDelegateTypeInfo(roleId, delegationTypeCode);
     }
 
+    @Override
     public DelegateType getDelegateTypeInfoById(String delegationId) {
         return getRoleService().getDelegateTypeInfoById(delegationId);
     }
 
+    @Override
     public void saveRoleRspActions(String roleResponsibilityActionId, String roleId, String roleResponsibilityId, String roleMemberId,
                                    String actionTypeCode, String actionPolicyCode, Integer priorityNumber, Boolean forceAction) {
         getRoleUpdateService().saveRoleRspActions(roleResponsibilityActionId, roleId, roleResponsibilityId, roleMemberId, actionTypeCode, actionPolicyCode, priorityNumber, forceAction);
         removeCacheEntries(roleId, null);
     }
 
+    @Override
     public List<RoleResponsibility> getRoleResponsibilities(String roleId) {
         return getRoleService().getRoleResponsibilities(roleId);
     }
 
+    @Override
     public void applicationRoleMembershipChanged(String roleId) {
         removeCacheEntries(roleId, null);
         getRoleService().applicationRoleMembershipChanged(roleId);
@@ -761,13 +350,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
         return roleService;
     }
 
-    public KimTypeInfoService getTypeInfoService() {
-        if (typeInfoService == null) {
-            typeInfoService = KimApiServiceLocator.getKimTypeInfoService();
-        }
-        return typeInfoService;
-    }
-
     public RoleUpdateService getRoleUpdateService() {
         try {
             if (roleUpdateService == null) {
@@ -780,14 +362,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
             throw new UnsupportedOperationException("unable to obtain a RoleUpdateService, unable to update role data", ex);
         }
         return roleUpdateService;
-    }
-
-    public void setRoleCacheMaxSize(int roleCacheMaxSize) {
-        this.roleCacheMaxSize = roleCacheMaxSize;
-    }
-
-    public void setRoleCacheMaxAgeSeconds(int roleCacheMaxAge) {
-        this.roleCacheMaxAgeSeconds = roleCacheMaxAge;
     }
 
     /**

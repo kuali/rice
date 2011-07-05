@@ -765,7 +765,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 				
 					// first let's clear all of the members out of our role
 				
-					Role role = KimApiServiceLocator.getRoleManagementService().getRoleByName(NAMESPACE, ROLE_NAME);
+					Role role = KimApiServiceLocator.getRoleService().getRoleByName(NAMESPACE, ROLE_NAME);
 					Map<String, String> criteria = new HashMap<String, String>();
 					criteria.put("roleId", role.getId());
 					List<RoleMemberBo> roleMembers = (List<RoleMemberBo>) KRADServiceLocator

@@ -186,7 +186,7 @@ public class KimModuleService extends ModuleServiceBase {
 
 	protected RoleService getKimRoleService() {
 		if ( kimRoleService == null ) {
-			kimRoleService = KimApiServiceLocator.getRoleManagementService();
+			kimRoleService = KimApiServiceLocator.getRoleService();
 		}
 		return kimRoleService;
 	}

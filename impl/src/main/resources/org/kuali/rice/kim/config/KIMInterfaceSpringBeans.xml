@@ -229,9 +229,7 @@
 
   <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl" />
 
-  <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
-    p:roleCacheMaxSize="${kim.cache.role.max.size}"
-    p:roleCacheMaxAgeSeconds="${kim.cache.role.max.age.seconds}" />
+  <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl" />
 
   <bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
     p:personCacheMaxSize="${kim.cache.person.max.size}"

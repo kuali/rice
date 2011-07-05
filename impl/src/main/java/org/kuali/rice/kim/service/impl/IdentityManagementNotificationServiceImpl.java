@@ -65,27 +65,27 @@ public class IdentityManagementNotificationServiceImpl implements
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#roleUpdated()
      */
     public void roleUpdated() {
-        KimApiServiceLocator.getRoleManagementService().flushRoleCaches();
+        //KimApiServiceLocator.getRoleService().flushRoleCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#roleMemberUpdated()
      */
     public void roleMemberUpdated() {
-    	KimApiServiceLocator.getRoleManagementService().flushRoleMemberCaches();
+    	//KimApiServiceLocator.getRoleService().flushRoleMemberCaches();
     }
     
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#delegationUpdated()
      */
     public void delegationUpdated() {
-    	KimApiServiceLocator.getRoleManagementService().flushDelegationCaches();
+    	//KimApiServiceLocator.getRoleService().flushDelegationCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#delegationMemberUpdated()
      */
     public void delegationMemberUpdated() {
-    	KimApiServiceLocator.getRoleManagementService().flushDelegationMemberCaches();
+    	//KimApiServiceLocator.getRoleService().flushDelegationMemberCaches();
     }
 }

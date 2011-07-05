@@ -153,7 +153,7 @@ public abstract class KEWTestCase extends BaselineTestCase {
 		public void stop() throws Exception {
 			KsbApiServiceLocator.getCacheAdministrator().flushAll();
 			KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
-			KimApiServiceLocator.getRoleManagementService().flushRoleCaches();
+			//KimApiServiceLocator.getRoleService().flushRoleCaches();
 			super.stop();
 		}
 

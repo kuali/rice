@@ -24,7 +24,7 @@ import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
-import org.kuali.rice.kim.api.role.RoleManagementService;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
@@ -73,7 +73,7 @@ public class PersonServiceImpl implements PersonService {
 	protected static final String EXTENSION = "extension";
 	
 	private IdentityManagementService identityManagementService;
-	private RoleManagementService roleManagementService;
+	private RoleService roleManagementService;
 	private BusinessObjectMetaDataService businessObjectMetaDataService;
 	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
@@ -312,7 +312,7 @@ public class PersonServiceImpl implements PersonService {
 					LOG.debug( "Only active criteria specified, running role search first" );
 				}
 				// in this case, run the role lookup first and pass those results to the person lookup
-				Collection<String> principalIds = getRoleManagementService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
+				Collection<String> principalIds = getRoleService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
 				StringBuffer sb = new StringBuffer(principalIds.size()*15);
 				Iterator<String> pi = principalIds.iterator();
 				while ( pi.hasNext() ) {
@@ -332,7 +332,7 @@ public class PersonServiceImpl implements PersonService {
 				// build a principal list
 				List<String> principalIds = peopleToPrincipalIds( people );
 				// get sublist of principals that have the given roles
-				principalIds = getRoleManagementService().getPrincipalIdSubListWithRole(principalIds, namespaceCode, roleName, null);
+				principalIds = getRoleService().getPrincipalIdSubListWithRole(principalIds, namespaceCode, roleName, null);
 				// re-convert into people objects, wrapping in CollectionIncomplete if needed
 				if ( !unbounded && principalIds.size() > searchResultsLimitInt ) {
 					int actualResultSize = principalIds.size();
@@ -348,7 +348,7 @@ public class PersonServiceImpl implements PersonService {
 					LOG.debug( "No Person criteria specified - only using role service." );
 				}
 				// run the role criteria to get the principals with the role
-				Collection<String> principalIds = getRoleManagementService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
+				Collection<String> principalIds = getRoleService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
 				if ( !unbounded && principalIds.size() > searchResultsLimitInt ) {
 					int actualResultSize = principalIds.size();
 					// trim the list down before converting to people
@@ -838,9 +838,9 @@ public class PersonServiceImpl implements PersonService {
 		return identityManagementService;
 	}
 
-	protected RoleManagementService getRoleManagementService() {
+	protected RoleService getRoleService() {
 		if ( roleManagementService == null ) {
-			roleManagementService = KimApiServiceLocator.getRoleManagementService();
+			roleManagementService = KimApiServiceLocator.getRoleService();
 		}
 		return roleManagementService;
 	}

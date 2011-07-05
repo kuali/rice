@@ -117,7 +117,7 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
 
     protected static RoleService getRoleService() {
         if (roleService == null) {
-            roleService = KimApiServiceLocator.getRoleManagementService();
+            roleService = KimApiServiceLocator.getRoleService();
         }
         return roleService;
     }
@@ -136,7 +136,7 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
                 roleMemberId: immutable.roleMemberId,
                 roleId: immutable.roleId,
                 qualifier: immutable.qualifier,
-                roleRspActions: immutable.roleRspActions,
+                roleRspActions: immutable.roleRspActions.collect { RoleResponsibilityActionBo.from(it) },
                 memberId: immutable.memberId,
                 memberTypeCode: immutable.memberTypeCode,
                 activeFromDate: immutable.activeFromDate,

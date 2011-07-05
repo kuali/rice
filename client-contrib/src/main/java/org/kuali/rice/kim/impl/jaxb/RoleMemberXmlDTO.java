@@ -406,7 +406,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
         public OutsideOfRole(RoleMemberContract roleMember, boolean populateMemberId) {
             super(roleMember, populateMemberId);
             this.roleId = roleMember.getRoleId();
-            RoleContract tempRole = KimApiServiceLocator.getRoleManagementService().getRole(roleId);
+            RoleContract tempRole = KimApiServiceLocator.getRoleService().getRole(roleId);
             if (tempRole == null) {
                 throw new IllegalArgumentException("Cannot find role with ID \"" + roleId + "\"");
             }

@@ -165,6 +165,10 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         }
     }
 
+    protected String getUserDir() {
+        return System.getProperty("user.dir");
+    }
+
     /**
      * Returns the basedir for the module under which the tests are currently executing.
      */

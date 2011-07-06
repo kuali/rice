@@ -18,32 +18,9 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../development-tools/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: avalon-framework:avalon-framework:4.1.5" level="project" />
-    <orderEntry type="library" name="Maven: opensymphony:oscache:2.4.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-api:2.3.5" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-bindings-soap:2.3.5" level="project" />
-    <orderEntry type="library" name="Maven: commons-io:commons-io:2.0.1" level="project" />
-    <orderEntry type="library" name="Maven: bsf:bsf:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: avalon-framework:avalon-framework:4.1.5" level="project" />
-    <orderEntry type="library" name="Maven: opensymphony:oscache:2.4.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-api:2.3.5" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-bindings-soap:2.3.5" level="project" />
-    <orderEntry type="library" name="Maven: commons-io:commons-io:2.0.1" level="project" />
-    <orderEntry type="library" name="Maven: bsf:bsf:2.4.0" level="project" />
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />

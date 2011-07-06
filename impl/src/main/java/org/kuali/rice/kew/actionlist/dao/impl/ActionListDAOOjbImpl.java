@@ -16,19 +16,6 @@
  */
 package org.kuali.rice.kew.actionlist.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
@@ -47,6 +34,19 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * OJB implementation of the {@link ActionListDAO}.
@@ -222,7 +222,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorWorkflowId", principalId);
-                List<String> delegatorGroupIds = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+                List<String> delegatorGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
                 if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
                 	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
                 }
@@ -242,7 +242,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorWorkflowId", principalId);
-                List<String> delegatorGroupIds = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+                List<String> delegatorGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
                 if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
                 	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
                 }

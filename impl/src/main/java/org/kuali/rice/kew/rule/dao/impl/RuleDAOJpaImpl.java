@@ -255,7 +255,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
             {
             	throw new RiceRuntimeException("Failed to locate user for the given principal id: " + principalId);
             }
-            kimGroupIds = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+            kimGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
         }
         addResponsibilityCriteria(crit, kimGroupIds, principalId, searchUser, searchUserInWorkgroups);
         //if (responsibilityCrit != null) {

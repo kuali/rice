@@ -138,7 +138,7 @@ public class ActionListFilterAction extends KualiAction {
 
     private List<? extends KeyValue> getUserWorkgroupsDropDownList(String principalId) {
     	List<String> userWorkgroups =
-            KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+            KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
         List<KeyValue> sortedUserWorkgroups = new ArrayList<KeyValue>();
     	KeyValue keyValue = null;
     	keyValue = new ConcreteKeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);

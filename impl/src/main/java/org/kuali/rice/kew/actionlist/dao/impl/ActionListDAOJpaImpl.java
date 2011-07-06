@@ -16,19 +16,6 @@
  */
 package org.kuali.rice.kew.actionlist.dao.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
@@ -45,6 +32,18 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtensio
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * OJB implementation of the {@link ActionListDAO}.
@@ -313,7 +312,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 userCrit.eq("delegatorWorkflowId", principalId);
                 
                 List<String> userGroupIds = new ArrayList<String>();
-                for(String id: KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
+                for(String id: KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId)){
                 	userGroupIds.add(id);
                 }
                 if (!userGroupIds.isEmpty()) {
@@ -336,7 +335,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
                 userCrit.eq("delegatorWorkflowId", principalId);
                 List<String> userGroupIds = new ArrayList<String>();
-                for(String id: KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
+                for(String id: KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId)){
                 	userGroupIds.add(id);
                 }
                 if (!userGroupIds.isEmpty()) {

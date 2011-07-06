@@ -523,7 +523,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode) {
         List matchedArs = new ArrayList();
-        List<String> arGroups = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+        List<String> arGroups = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
         return filterActionRequestsByCode((List<ActionRequestValue>)actionRequests, principalId, arGroups, requestCode);
     }
     

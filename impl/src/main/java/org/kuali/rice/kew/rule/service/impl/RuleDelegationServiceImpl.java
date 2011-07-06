@@ -16,13 +16,6 @@
 
 package org.kuali.rice.kew.rule.service.impl;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
@@ -39,11 +32,18 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleDelegationXmlExporter;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -127,7 +127,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
         Collection<String> workgroupIds = new ArrayList<String>();
         if (principalId != null) {
             if ( (workgroupMember == null) || (workgroupMember.booleanValue()) ) {
-                workgroupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+                workgroupIds = getGroupService().getGroupIdsForPrincipal(principalId);
             } else {
                 // user was passed but workgroups should not be parsed... do nothing
             }
@@ -166,12 +166,12 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
 		return true;
 	}
 
-	private IdentityManagementService getIdentityManagementService() {
-        return (IdentityManagementService) KimApiServiceLocator.getIdentityManagementService();
+	private GroupService getGroupService() {
+        return KimApiServiceLocator.getGroupService();
     }
 
     private RuleTemplateService getRuleTemplateService() {
-        return (RuleTemplateService)KEWServiceLocator.getRuleTemplateService();
+        return KEWServiceLocator.getRuleTemplateService();
     }
     
 

@@ -18,9 +18,10 @@ package org.kuali.rice.kew.impl.doctype;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
+import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 /**
@@ -36,7 +37,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     private DocumentTypeDAO documentTypeDao;
 
     @Override
-    public String getDocumentTypeIdByName(String documentTypeName) {
+    public String getIdByName(String documentTypeName) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new RiceIllegalArgumentException("documentTypeName was null or blank");
         }
@@ -44,12 +45,20 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     @Override
-    public org.kuali.rice.kew.api.doctype.DocumentType getDocumentTypeById(String documentTypeId) {
+    public String getNameById(String documentTypeId) {
         if (StringUtils.isBlank(documentTypeId)) {
             throw new RiceIllegalArgumentException("documentTypeId was null or blank");
         }
-        DocumentType documentTypeBo = documentTypeDao.findById(documentTypeId);
-        return DocumentType.to(documentTypeBo);
+        return documentTypeDao.findDocumentTypeNameById(documentTypeId);
+    }
+
+    @Override
+    public DocumentType getDocumentTypeById(String documentTypeId) {
+        if (StringUtils.isBlank(documentTypeId)) {
+            throw new RiceIllegalArgumentException("documentTypeId was null or blank");
+        }
+        org.kuali.rice.kew.doctype.bo.DocumentType documentTypeBo = documentTypeDao.findById(documentTypeId);
+        return org.kuali.rice.kew.doctype.bo.DocumentType.to(documentTypeBo);
     }
 
     @Override
@@ -57,12 +66,12 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new RiceIllegalArgumentException("documentTypeName was null or blank");
         }
-        DocumentType documentTypeBo = documentTypeDao.findByName(documentTypeName);
-        return DocumentType.to(documentTypeBo);
+        org.kuali.rice.kew.doctype.bo.DocumentType documentTypeBo = documentTypeDao.findByName(documentTypeName);
+        return org.kuali.rice.kew.doctype.bo.DocumentType.to(documentTypeBo);
     }
 
     @Override
-    public boolean isSuperUser(String principalId, String documentTypeId) {
+    public boolean isSuperUserForDocumentTypeId(String principalId, String documentTypeId) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Determining super user status [principalId=" + principalId + ", documentTypeId="
                     + documentTypeId + "]");
@@ -73,7 +82,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         if (StringUtils.isBlank(documentTypeId)) {
             throw new RiceIllegalArgumentException("documentTypeId was null or blank");
         }
-        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(documentTypeId);
+        org.kuali.rice.kew.doctype.bo.DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(documentTypeId);
         boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(principalId,
                 documentType);
         if (LOG.isDebugEnabled()) {
@@ -81,6 +90,100 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         }
         return isSuperUser;
 
+    }
+
+    @Override
+    public boolean isSuperUserForDocumentTypeName(String principalId, String documentTypeName) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Determining super user status [principalId=" + principalId + ", documentTypeName="
+                    + documentTypeName + "]");
+        }
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId was null or blank");
+        }
+        if (StringUtils.isBlank(documentTypeName)) {
+            throw new RiceIllegalArgumentException("documentTypeId was null or blank");
+        }
+        org.kuali.rice.kew.doctype.bo.DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(principalId,
+                documentType);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Super user status is " + isSuperUser + ".");
+        }
+        return isSuperUser;
+
+    }
+
+    @Override
+    public boolean hasRouteNodeForDocumentTypeName(String routeNodeName, String documentTypeName)
+            throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(routeNodeName)) {
+            throw new RiceIllegalArgumentException("routeNodeName was null or blank");
+        }
+        if (StringUtils.isBlank(documentTypeName)) {
+            throw new RiceIllegalArgumentException("documentTypeName was null or blank");
+        }
+
+        DocumentType documentType = getDocumentTypeByName(documentTypeName);
+        if (documentType == null) {
+            throw new RiceIllegalArgumentException("Failed to locate a document type for the given name: " + documentTypeName);
+        }
+        RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(documentType.getId(), routeNodeName);
+
+        if (routeNode == null) {
+            if (documentType.getParentId() == null) {
+                return false;
+            } else {
+                return hasRouteNodeForDocumentTypeId(routeNodeName, documentType.getParentId());
+            }
+        } else {
+            return true;
+        }
+    }
+    
+    @Override
+    public boolean hasRouteNodeForDocumentTypeId(String routeNodeName, String documentTypeId)
+            throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(routeNodeName)) {
+            throw new RiceIllegalArgumentException("routeNodeName was null or blank");
+        }
+        if (StringUtils.isBlank(documentTypeId)) {
+            throw new RiceIllegalArgumentException("documentTypeId was null or blank");
+        }
+
+        DocumentType documentType = getDocumentTypeById(documentTypeId);
+        if (documentType == null) {
+            throw new RiceIllegalArgumentException("Failed to locate a document type for the given id: " + documentTypeId);
+        }
+        RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(documentType.getId(), routeNodeName);
+
+        if (routeNode == null) {
+            if (documentType.getParentId() == null) {
+                return false;
+            } else {
+                return hasRouteNodeForDocumentTypeId(routeNodeName, documentType.getParentId());
+            }
+        } else {
+            return true;
+        }
+    }
+    
+    @Override
+    public boolean isActiveById(String documentTypeId) {
+        if (StringUtils.isBlank(documentTypeId)) {
+            throw new RiceIllegalArgumentException("documentTypeId was null or blank");
+        }
+        org.kuali.rice.kew.doctype.bo.DocumentType docType = KEWServiceLocator.getDocumentTypeService().findById(documentTypeId);
+        return docType != null && docType.isActive();
+    }
+
+    @Override
+    public boolean isActiveByName(String documentTypeName) {
+        if (StringUtils.isBlank(documentTypeName)) {
+            throw new RiceIllegalArgumentException("documentTypeName was null or blank");
+        }
+        org.kuali.rice.kew.doctype.bo.DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        return docType != null && docType.isActive();
     }
 
     public void setDocumentTypeDao(DocumentTypeDAO documentTypeDao) {

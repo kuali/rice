@@ -242,7 +242,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
                     + initiatorPrincipalId + "]");
         }
 
-        String documentTypeId = documentTypeService.getDocumentTypeIdByName(documentTypeName);
+        String documentTypeId = documentTypeService.getIdByName(documentTypeName);
         if (documentTypeId == null) {
             throw new RiceIllegalArgumentException("Failed to locate a document type with the given name: "
                     + documentTypeName);

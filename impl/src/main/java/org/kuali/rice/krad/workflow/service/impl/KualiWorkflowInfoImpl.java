@@ -162,12 +162,4 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     	return getWorkflowUtility().performDocumentSearch(principalId, criteriaVO);
     }
     
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.workflow.service.KualiWorkflowInfo#isCurrentActiveDocumentType(java.lang.String)
-     */
-    public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException {
-    	return getWorkflowUtility().isCurrentActiveDocumentType( documentTypeName );
-    }
 }

@@ -557,13 +557,5 @@ public class WorkflowInfo implements java.io.Serializable {
     public String getDocumentRoutedByPrincipalId( String documentId ) throws WorkflowException {
     	return getWorkflowUtility().getDocumentRoutedByPrincipalId(documentId);
     }
-    
-    public boolean hasRouteNode(String documentTypeName, String routeNodeName) throws WorkflowException {
-    	return getWorkflowUtility().hasRouteNode(documentTypeName, routeNodeName);
-    }
-    
-    public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException {
-    	return getWorkflowUtility().isCurrentActiveDocumentType(documentTypeName);
-    }
-    
+        
 }

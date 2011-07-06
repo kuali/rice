@@ -369,15 +369,6 @@ public interface WorkflowUtility {
 	public String getDoNotReceiveFutureRequestsValue();
 
 	public String getClearFutureRequestsValue();
-
-	public boolean hasRouteNode(
-			@WebParam(name = "documentTypeName") String documentTypeName,
-			@WebParam(name = "routeNodeName") String routeNodeName)
-			throws WorkflowException;
-
-	public boolean isCurrentActiveDocumentType(
-			@WebParam(name = "documentTypeName") String documentTypeName)
-			throws WorkflowException;
 			
     // new for 1.0.kc
     public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(

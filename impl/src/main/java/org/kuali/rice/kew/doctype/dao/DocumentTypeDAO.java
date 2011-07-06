@@ -59,4 +59,6 @@ public interface DocumentTypeDAO {
     public String findDocumentTypeIdByDocumentId(String documentId);
     
     public String findDocumentTypeIdByName(String documentTypeName);
+    
+    public String findDocumentTypeNameById(String documentTypeId);
 }

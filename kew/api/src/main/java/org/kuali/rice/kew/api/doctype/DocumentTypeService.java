@@ -30,14 +30,20 @@ import org.kuali.rice.kew.api.KewApiConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = "documentTypeSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@WebService(name = "documentTypeServiceSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface DocumentTypeService {
 
-    @WebMethod(operationName = "getDocumentTypeIdByName")
+    @WebMethod(operationName = "getIdByName")
     @WebResult(name = "documentTypeId")
     @XmlElement(name = "documentTypeId", required = false)
-    String getDocumentTypeIdByName(@WebParam(name = "documentTypeName") String documentTypeName)
+    String getIdByName(@WebParam(name = "documentTypeName") String documentTypeName)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "getNameById")
+    @WebResult(name = "documentTypeName")
+    @XmlElement(name = "documentTypeName", required = false)
+    String getNameById(@WebParam(name = "documentTypeId") String documentTypeId)
             throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getDocumentTypeById")
@@ -51,22 +57,49 @@ public interface DocumentTypeService {
     @XmlElement(name = "documentType", required = false)
     DocumentType getDocumentTypeByName(@WebParam(name = "documentTypeName") String documentTypeName)
             throws RiceIllegalArgumentException;
-    
-    @WebMethod(operationName = "isSuperUser")
+
+    @WebMethod(operationName = "isSuperUserForDocumentTypeId")
     @WebResult(name = "isSuperUser")
     @XmlElement(name = "isSuperUser", required = true)
-    boolean isSuperUser(
+    boolean isSuperUserForDocumentTypeId(
             @WebParam(name = "principalId") String principalId,
             @WebParam(name = "documentTypeId") String documentTypeId)
             throws RiceIllegalArgumentException;
 
-    //	public boolean hasRouteNode(
-    //			@WebParam(name = "documentTypeName") String documentTypeName,
-    //			@WebParam(name = "routeNodeName") String routeNodeName)
-    //			throws WorkflowException;
-    //
-    //	public boolean isCurrentActiveDocumentType(
-    //			@WebParam(name = "documentTypeName") String documentTypeName)
-    //			throws WorkflowException;
+    @WebMethod(operationName = "isSuperUserForDocumentTypeName")
+    @WebResult(name = "isSuperUser")
+    @XmlElement(name = "isSuperUser", required = true)
+    boolean isSuperUserForDocumentTypeName(
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "documentTypeName") String documentTypeName)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "hasRouteNodeForDocumentTypeName")
+    @WebResult(name = "hasRouteNode")
+    @XmlElement(name = "hasRouteNode", required = true)
+    boolean hasRouteNodeForDocumentTypeName(
+            @WebParam(name = "routeNodeName") String routeNodeName,
+            @WebParam(name = "documentTypeName") String documentTypeName)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "hasRouteNodeForDocumentTypeId")
+    @WebResult(name = "hasRouteNode")
+    @XmlElement(name = "hasRouteNode", required = true)
+    boolean hasRouteNodeForDocumentTypeId(
+            @WebParam(name = "routeNodeName") String routeNodeName,
+            @WebParam(name = "documentTypeId") String documentTypeId)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "isActiveById")
+    @WebResult(name = "isActive")
+    @XmlElement(name = "isActive", required = true)
+    boolean isActiveById(@WebParam(name = "documentTypeId") String documentTypeId)
+            throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "isActiveByName")
+    @WebResult(name = "isActive")
+    @XmlElement(name = "isActive", required = true)
+    boolean isActiveByName(@WebParam(name = "documentTypeName") String documentTypeName)
+            throws RiceIllegalArgumentException;
 
 }

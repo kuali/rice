@@ -275,5 +275,23 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     	}
     	return null;
     }
+    
+    public String findDocumentTypeNameById(String documentTypeId) {
+        Criteria crit = new Criteria();
+        crit.addEqualTo("documentTypeId", documentTypeId);
+        ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentType.class, crit);
+        query.setAttributes(new String[] { "name" });
+
+        ReportQueryRsIterator iter = (ReportQueryRsIterator)getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+        try {
+            while (iter.hasNext()) {
+                Object[] row = (Object[]) iter.next();
+                return (String)row[0];
+            }
+        } finally {
+            iter.releaseDbResources();
+        }
+        return null;
+    }
 
 }

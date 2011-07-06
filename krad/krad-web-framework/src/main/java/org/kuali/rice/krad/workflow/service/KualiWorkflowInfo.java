@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.workflow.service;
 
+import java.rmi.RemoteException;
+import java.util.List;
+
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
@@ -23,9 +26,6 @@ import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-
-import java.rmi.RemoteException;
-import java.util.List;
 
 
 /**
@@ -85,8 +85,6 @@ public interface KualiWorkflowInfo {
      * Use of this method passes the value 'false' in for the <code>ignoreCurrentlyActiveRequests</code> parameter of {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)}
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) throws WorkflowException;
-
-    public boolean isCurrentActiveDocumentType( String documentTypeName ) throws WorkflowException;
     
     /**
      * This method returns a list of Universal User Ids that have approval or completion requested of them for the document represented by the documentId parameter

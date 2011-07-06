@@ -21,6 +21,8 @@ import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
@@ -69,6 +71,9 @@ public class NotificationAuthorizationServiceImpl implements NotificationAuthori
 	    if (user == null) {
 	        return false;
 	    }
-	    return KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, groupNameId);
+
+        final GroupService groupService = KimApiServiceLocator.getGroupService();
+        Group group = groupService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, groupNameId);
+		return group == null ? false : groupService.isMemberOfGroup(user.getPrincipalId(), group.getId());
     }
 }

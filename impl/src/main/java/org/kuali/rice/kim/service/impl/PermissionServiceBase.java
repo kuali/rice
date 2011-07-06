@@ -15,12 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.kuali.rice.core.util.MaxAgeSoftReference;
+import com.google.common.collect.MapMaker;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
@@ -30,6 +25,11 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -49,10 +49,10 @@ public class PermissionServiceBase {
 	private SequenceAccessorService sequenceAccessorService;
 	private RiceCacheAdministrator cacheAdministrator;
 	
-	private Map<List<PermissionBo>, MaxAgeSoftReference<List<String>>> permissionToRoleCache = Collections.synchronizedMap(new HashMap<List<PermissionBo>, MaxAgeSoftReference<List<String>>>());
+	private ConcurrentMap<List<PermissionBo>, List<String>> permissionToRoleCache = new MapMaker().expireAfterAccess(CACHE_MAX_AGE_SECONDS, TimeUnit.SECONDS).softValues().makeMap();//Collections.synchronizedMap(new HashMap<List<PermissionBo>, MaxAgeSoftReference<List<String>>>());
 
     // Not ThreadLocal or time limited- should not change during the life of the system
-	private Map<String,KimPermissionTypeService> permissionTypeServiceByNameCache = Collections.synchronizedMap( new HashMap<String, KimPermissionTypeService>() );
+	private ConcurrentMap<String,KimPermissionTypeService> permissionTypeServiceByNameCache = new MapMaker().makeMap();
 	
 
 	private static final long CACHE_MAX_AGE_SECONDS = 60L;
@@ -76,16 +76,11 @@ public class PermissionServiceBase {
 	}
 	
 	protected void addRolesForPermissionsToCache( List<PermissionBo> key, List<String> roleIds ) {
-    	permissionToRoleCache.put( key, new MaxAgeSoftReference<List<String>>( CACHE_MAX_AGE_SECONDS, roleIds ) );
+    	permissionToRoleCache.put(key, roleIds);
     }
 	
 	protected List<String> getRolesForPermissionsFromCache( List<PermissionBo> key ) {
-    	List<String> roleIds = null; 
-    	MaxAgeSoftReference<List<String>> cacheRef = permissionToRoleCache.get( key );
-    	if ( cacheRef != null ) {
-    		roleIds = cacheRef.get();
-    	}
-    	return roleIds;
+    	return permissionToRoleCache.get( key );
     }
 	
 	protected String getPermissionImplByTemplateNameCacheKey( String namespaceCode, String permissionTemplateName ) {

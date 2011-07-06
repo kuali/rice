@@ -15,11 +15,8 @@
  */
 package org.kuali.rice.krad.app.persistence.jpa;
 
-import org.reflections.Reflections;
+//import org.reflections.Reflections;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +41,7 @@ public abstract class PackagePersistableBusinessObjectClassExposer implements
 		Set<String> exposedClassNames = new HashSet<String>();
 		
 		for (String packageNameToExpose: getPackageNamesToExpose()) {
-			Reflections reflections = new Reflections(packageNameToExpose);
+			/*Reflections reflections = new Reflections(packageNameToExpose);
 			final Set<Class<?>> entities = reflections.getTypesAnnotatedWith(Entity.class);
 			for (Class<?> entityClass : entities) {
 				exposedClassNames.add(entityClass.getName());
@@ -59,7 +56,7 @@ public abstract class PackagePersistableBusinessObjectClassExposer implements
 			for (Class<?> embeddableClass : embeddables) {
 				// may this loop never be entered
 				exposedClassNames.add(embeddableClass.getName());
-			}
+			}*/
 		}
 		return exposedClassNames;
 	}

@@ -1,14 +1,15 @@
 package org.kuali.rice.core.cxf.interceptors;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A CXF Interceptor that binds itself to the USER_LOGICAL phase to be used on inbound
@@ -44,6 +45,9 @@ public class ImmutableCollectionsInInterceptor extends AbstractPhaseInterceptor<
             else if (o instanceof Collection) {
                 Collection unmodifiable = Collections.unmodifiableCollection((Collection) o);
                 contents.set(i,unmodifiable);
+            } else if (o instanceof Map) {
+                Map unmodifiable = Collections.unmodifiableMap((Map) o);
+                contents.set(i, unmodifiable);
             }
         }
     }

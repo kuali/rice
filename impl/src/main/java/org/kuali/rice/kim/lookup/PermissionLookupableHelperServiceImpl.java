@@ -15,17 +15,11 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
+import com.google.common.collect.MapMaker;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
@@ -41,6 +35,14 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -219,23 +221,24 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	/* Since most queries will only be on the template namespace and name, cache the results for 30 seconds
 	 * so that queries against the details, which are done in memory, do not require repeated database trips.
 	 */
-    private static final HashMap<Map<String,String>,MaxAgeSoftReference<List<PermissionBo>>> permResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<PermissionBo>>>();
-	private static final long PERM_CACHE_EXPIRE_SECONDS = 30L;
+    private static final long PERM_CACHE_EXPIRE_SECONDS = 30L;
+    private static final ConcurrentMap<Map<String,String>,List<PermissionBo>> permResultCache = new MapMaker().expireAfterAccess(PERM_CACHE_EXPIRE_SECONDS, TimeUnit.SECONDS).softValues().makeMap();
+
 	
 	private List<PermissionBo> getPermissionsWithPermissionSearchCriteria(
 			Map<String, String> permissionSearchCriteria, boolean unbounded){
 		String detailCriteriaStr = permissionSearchCriteria.remove( DETAIL_CRITERIA );
 		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
 
-		MaxAgeSoftReference<List<PermissionBo>> cachedResult = permResultCache.get(permissionSearchCriteria);
+		List<PermissionBo> cachedResult = permResultCache.get(permissionSearchCriteria);
 		List<PermissionBo> permissions;
-		if ( cachedResult == null || cachedResult.get() == null ) {
+		if ( cachedResult == null ) {
 			permissions = searchPermissions(permissionSearchCriteria, unbounded);
 			synchronized (permResultCache) {
-				permResultCache.put(permissionSearchCriteria, new MaxAgeSoftReference<List<PermissionBo>>( PERM_CACHE_EXPIRE_SECONDS, permissions ) );
+				permResultCache.put(permissionSearchCriteria, permissions);
 			} 
 		} else {
-			permissions = cachedResult.get();
+			permissions = cachedResult;
 		}
 		List<PermissionBo> filteredPermissions = new CollectionIncomplete<PermissionBo>(
 				new ArrayList<PermissionBo>(), getActualSizeIfTruncated(permissions));

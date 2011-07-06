@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import com.google.common.collect.MapMaker;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
@@ -43,8 +43,8 @@ import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.springframework.beans.factory.InitializingBean;
 
-import java.lang.ref.SoftReference;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,6 +53,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
@@ -62,7 +64,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PersonServiceImpl implements PersonService {
+public class PersonServiceImpl implements PersonService, InitializingBean {
 
 	private static Logger LOG = Logger.getLogger( PersonServiceImpl.class );
 	protected static final String ENTITY_EXT_ID_PROPERTY_PREFIX = "externalIdentifiers.";
@@ -86,7 +88,7 @@ public class PersonServiceImpl implements PersonService {
 	protected int personCacheMaxSize = 3000;
 	protected int personCacheMaxAgeSeconds = 3600;
 
-	protected Map<String,MaxAgeSoftReference<Person>> personCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<Person>>( personCacheMaxSize ) );
+	protected ConcurrentMap<String,Person> personCache;
 	// PERSON/ENTITY RELATED METHODS
 
 	protected List<String> personEntityTypeCodes = new ArrayList<String>( 4 );
@@ -158,7 +160,7 @@ public class PersonServiceImpl implements PersonService {
 		Principal principal = getIdentityService().getPrincipal( principalId );
 		// get the identity
 		if ( principal != null ) {
-			entity = getIdentityService().getEntityDefault( principal.getEntityId() );
+			entity = getIdentityService().getEntityDefault(principal.getEntityId());
 		}
 		// convert the principal and identity to a Person
 		// skip if the person was created from the DB cache
@@ -193,35 +195,23 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	protected Person getPersonImplFromPrincipalNameCache( String principalName ) {
-		SoftReference<Person> personRef = personCache.get( "principalName="+principalName );
-		if ( personRef != null ) {
-			return personRef.get();
-		}
-		return null;
+		return personCache.get( "principalName="+principalName );
 	}
 
 	protected Person getPersonImplFromPrincipalIdCache( String principalId ) {
-		SoftReference<Person> personRef = personCache.get( "principalId="+principalId );
-		if ( personRef != null ) {
-			return personRef.get();
-		}
-		return null;
+		return personCache.get( "principalId="+principalId );
 	}
 	
 	protected Person getPersonImplFromEmployeeIdCache( String principalId ) {
-		SoftReference<Person> personRef = personCache.get( "employeeId="+principalId );
-		if ( personRef != null ) {
-			return personRef.get();
-		}
-		return null;
+		return personCache.get( "employeeId="+principalId );
 	}
 	
 	protected void addPersonToCache( Person person ) {
 		if ( person != null ) {
 			synchronized (personCache) {
-				personCache.put( "principalName="+person.getPrincipalName(), new MaxAgeSoftReference<Person>( personCacheMaxAgeSeconds, person ) );
-				personCache.put( "principalId="+person.getPrincipalId(), new MaxAgeSoftReference<Person>( personCacheMaxAgeSeconds, person ) );
-				personCache.put( "employeeId="+person.getEmployeeId(), new MaxAgeSoftReference<Person>( personCacheMaxAgeSeconds, person ) );
+				personCache.put( "principalName="+person.getPrincipalName(), person );
+				personCache.put( "principalId="+person.getPrincipalId(), person );
+				personCache.put( "employeeId="+person.getEmployeeId(), person );
 			}
 		}
 	}
@@ -249,7 +239,7 @@ public class PersonServiceImpl implements PersonService {
 		Principal principal = getIdentityService().getPrincipalByPrincipalName( principalName );
 		// get the identity
 		if ( principal != null ) {
-			entity = getIdentityService().getEntityDefault( principal.getEntityId() );
+			entity = getIdentityService().getEntityDefault(principal.getEntityId());
 		}
 		// convert the principal and identity to a Person
 		if ( entity != null ) {
@@ -889,5 +879,9 @@ public class PersonServiceImpl implements PersonService {
 	public void setPersonCacheMaxAgeSeconds(int personCacheMaxAgeSeconds) {
 		this.personCacheMaxAgeSeconds = personCacheMaxAgeSeconds;
 	}
-	
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        personCache = new MapMaker().expireAfterAccess(personCacheMaxAgeSeconds, TimeUnit.SECONDS).maximumSize(personCacheMaxSize).softValues().makeMap();
+    }
 }

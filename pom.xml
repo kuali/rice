@@ -92,6 +92,7 @@
     <dwr.version>3.0.M1</dwr.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
     <groovy.version>1.8.0</groovy.version>
+    <guava.version>r09</guava.version>
     <hibernate.version>3.6.5.Final</hibernate.version>
     <mail.version>1.4.4</mail.version>
     <jackson.version>1.8.2</jackson.version>
@@ -118,7 +119,6 @@
         <quartz.version>2.0.1</quartz.version>
     -->
     <quartz.version>1.8.4</quartz.version>
-    <reflections.version>0.9.5-RC2</reflections.version>
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.6.1</slf4j.version>
@@ -290,6 +290,8 @@
                       <exclude>opensymphony:quartz</exclude>
                       <exclude>javassist</exclude>
                       <exclude>org.jasig.cas</exclude>
+                      <exclude>com.google.code.google-collections</exclude>
+                      <exclude>com.google.collections</exclude>
 
                       <!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
                       <exclude>commons-logging</exclude>
@@ -876,15 +878,9 @@
       </dependency>
 
       <dependency>
-        <groupId>org.kuali.commons</groupId>
-        <artifactId>commons-beanutils</artifactId>
-        <version>${commons-beanutils.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>commons-logging</artifactId>
-            <groupId>commons-logging</groupId>
-          </exclusion>
-        </exclusions>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
       </dependency>
 
       <dependency>
@@ -1101,34 +1097,6 @@
       </dependency>
 
       <dependency>
-        <groupId>org.kuali.db.ojb</groupId>
-        <artifactId>db-ojb</artifactId>
-        <version>${db-ojb.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>commons-logging</artifactId>
-            <groupId>commons-logging</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>commons-beanutils</artifactId>
-            <groupId>commons-beanutils</groupId>
-          </exclusion>
-          <exclusion>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>xalan</groupId>
-            <artifactId>xalan</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
         <!-- groupid will change to org.opensymphony.oscache if they ever release another version -->
         <groupId>opensymphony</groupId>
         <artifactId>oscache</artifactId>
@@ -1158,10 +1126,6 @@
             <artifactId>commons-logging</artifactId>
             <groupId>commons-logging</groupId>
           </exclusion>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-activation_1.1_spec</artifactId>
-          </exclusion>
         </exclusions>
       </dependency>
 
@@ -1169,16 +1133,6 @@
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-common-utilities</artifactId>
         <version>${cxf.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-stax-api_1.0_spec</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>
@@ -1186,18 +1140,9 @@
         <artifactId>cxf-rt-frontend-jaxrs</artifactId>
         <version>${cxf.version}</version>
         <exclusions>
-                    <!-- avoids conflict with javamail -->
           <exclusion>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javamail_1.4_spec</artifactId>
-          </exclusion>
-          <exclusion>
-            <artifactId>geronimo-stax-api_1.0_spec</artifactId>
-            <groupId>org.apache.geronimo.specs</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>geronimo-annotation_1.0_spec</artifactId>
-            <groupId>org.apache.geronimo.specs</groupId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1231,10 +1176,6 @@
             <artifactId>geronimo-javamail_1.4_spec</artifactId>
           </exclusion>
           <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-activation_1.1_spec</artifactId>
-          </exclusion>
-          <exclusion>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-xjc</artifactId>
           </exclusion>
@@ -1245,16 +1186,6 @@
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-rt-bindings-soap</artifactId>
         <version>${cxf.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javax.xml.soap</groupId>
-            <artifactId>saaj-api</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>
@@ -1262,34 +1193,9 @@
         <artifactId>cxf-rt-frontend-jaxws</artifactId>
         <version>${cxf.version}</version>
         <exclusions>
-                    <!-- avoids conflict with javamail -->
           <exclusion>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javamail_1.4_spec</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-activation_1.1_spec</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jaxws_2.1_spec</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-annotation_1.0_spec</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javax.xml.soap</groupId>
-            <artifactId>saaj-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.sun.xml.messaging.saaj</groupId>
-            <artifactId>saaj-impl</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1320,20 +1226,8 @@
         <version>${cxf.version}</version>
         <exclusions>
           <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-stax-api_1.0_spec</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-annotation_1.0_spec</artifactId>
-          </exclusion>
-          <exclusion>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javax.xml.soap</groupId>
-            <artifactId>saaj-api</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.bouncycastle</groupId>
@@ -1546,10 +1440,6 @@
         <version>${hibernate.version}</version>
         <exclusions>
           <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
-          <exclusion>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
           </exclusion>
@@ -1608,6 +1498,46 @@
       </dependency>
 
       <dependency>
+        <groupId>org.kuali.commons</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>${commons-beanutils.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.kuali.db.ojb</groupId>
+        <artifactId>db-ojb</artifactId>
+        <version>${db-ojb.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>commons-beanutils</artifactId>
+            <groupId>commons-beanutils</groupId>
+          </exclusion>
+          <exclusion>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
         <groupId>org.quartz-scheduler</groupId>
         <artifactId>quartz</artifactId>
         <version>${quartz.version}</version>
@@ -1615,34 +1545,6 @@
           <exclusion>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.reflections</groupId>
-        <artifactId>reflections</artifactId>
-        <version>${reflections.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javassist</groupId>
-            <artifactId>javassist</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1737,12 +1639,6 @@
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-core</artifactId>
         <version>${spring.version}</version>
-                <exclusions>
-        	<exclusion>
-        		<groupId>org.springframework</groupId>
-            	<artifactId>spring-expression</artifactId>
-        	</exclusion>
-        </exclusions>
       </dependency>
       
       <dependency>

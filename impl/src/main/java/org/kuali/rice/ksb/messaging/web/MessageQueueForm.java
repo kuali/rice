@@ -16,17 +16,18 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
+import org.apache.commons.beanutils.ConversionException;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.Converter;
+import org.apache.struts.action.ActionForm;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
+import org.kuali.rice.ksb.util.CodeTranslator;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.struts.action.ActionForm;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.SqlTimestampConverter;
-import org.kuali.rice.ksb.messaging.PersistedMessageBO;
-import org.kuali.rice.ksb.util.CodeTranslator;
 
 
 /**
@@ -339,5 +340,80 @@ public class MessageQueueForm extends ActionForm {
         this.messagePersistence = messagePersistence;
     }
 
+    /**
+     * Converts an incoming object to a timestamp.
+     *
+     * Adapted from org.apache.commons.beanutils.converters.SqlTimestampConverter
+     */
+    public static class SqlTimestampConverter implements Converter {
 
+        /**
+         * Create a {@link org.apache.commons.beanutils.Converter} that will throw a {@link org.apache.commons.beanutils.ConversionException}
+         * if a conversion error occurs.
+         */
+        public SqlTimestampConverter() {
+            this.defaultValue = null;
+            this.useDefault = true;
+        }
+
+        /**
+         * Create a {@link org.apache.commons.beanutils.Converter} that will return the specified default value
+         * if a conversion error occurs.
+         *
+         * @param defaultValue The default value to be returned
+         */
+        public SqlTimestampConverter(Object defaultValue) {
+            this.defaultValue = defaultValue;
+            this.useDefault = true;
+        }
+
+        // ----------------------------------------------------- Instance Variables
+
+        /**
+         * The default value specified to our Constructor, if any.
+         */
+        private Object defaultValue = null;
+
+        /**
+         * Should we return the default value on conversion errors?
+         */
+        private boolean useDefault = true;
+
+        // --------------------------------------------------------- Public Methods
+
+        /**
+         * Convert the specified input object into an output object of the
+         * specified type.
+         *
+         * @param type Data type to which this value should be converted
+         * @param value The input value to be converted
+         *
+         * @exception org.apache.commons.beanutils.ConversionException if conversion cannot be performed
+         *  successfully
+         */
+        public Object convert(Class type, Object value) {
+            if (value == null) {
+                if (useDefault) {
+                    return (defaultValue);
+                } else {
+                    throw new ConversionException("No value specified");
+                }
+            }
+
+            if (value instanceof Timestamp) {
+                return (value);
+            }
+
+            try {
+                return (Timestamp.valueOf(value.toString()));
+            } catch (Exception e) {
+                if (useDefault) {
+                    return (defaultValue);
+                } else {
+                    throw new ConversionException(e);
+                }
+            }
+        }
+
+    }
 }

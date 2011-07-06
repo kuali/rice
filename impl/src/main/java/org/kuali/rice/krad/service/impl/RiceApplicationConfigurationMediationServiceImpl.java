@@ -12,12 +12,12 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import com.google.common.collect.MapMaker;
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.search.SearchOperator;
-import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.RiceApplicationConfigurationMediationService;
@@ -27,10 +27,11 @@ import org.kuali.rice.ksb.api.bus.Endpoint;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 //@Transactional
 public class RiceApplicationConfigurationMediationServiceImpl implements RiceApplicationConfigurationMediationService {
@@ -42,9 +43,10 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     protected int nonDatabaseComponentsCacheMaxSize = 50;
     protected int nonDatabaseComponentsCacheMaxAgeSeconds = 3600;
 
-    protected final HashMap<String,MaxAgeSoftReference<String>> configurationParameterCache = new HashMap<String,MaxAgeSoftReference<String>>( configurationParameterCacheMaxSize );
-    protected final HashMap<String,MaxAgeSoftReference<List<Component>>> nonDatabaseComponentsCache = new HashMap<String,MaxAgeSoftReference<List<Component>>>( nonDatabaseComponentsCacheMaxSize );
-    protected final HashMap<String,MaxAgeSoftReference<RiceApplicationConfigurationService>> responsibleServiceByPackageClass = new HashMap<String,MaxAgeSoftReference<RiceApplicationConfigurationService>>( configurationParameterCacheMaxSize );
+    //TODO: use the concurrentMap properties rather than synchronized blocks
+    protected final ConcurrentMap<String, String> configurationParameterCache = new MapMaker().maximumSize(configurationParameterCacheMaxSize).expireAfterAccess(configurationParameterCacheMaxAgeSeconds, TimeUnit.SECONDS).softValues().makeMap();
+    protected final ConcurrentMap<String,List<Component>> nonDatabaseComponentsCache = new MapMaker().maximumSize(nonDatabaseComponentsCacheMaxSize).expireAfterAccess(nonDatabaseComponentsCacheMaxAgeSeconds, TimeUnit.SECONDS).softValues().makeMap();
+    protected final ConcurrentMap<String,RiceApplicationConfigurationService> responsibleServiceByPackageClass = new MapMaker().maximumSize(configurationParameterCacheMaxSize).expireAfterAccess(configurationParameterCacheMaxAgeSeconds, TimeUnit.SECONDS).softValues().makeMap();
     
     public String getConfigurationParameter( String namespaceCode, String parameterName ){
     	
@@ -71,7 +73,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 			}
 			if (parameterValue != null){
 				synchronized (configurationParameterCache) {
-				    configurationParameterCache.put( parameterKey, new MaxAgeSoftReference<String>( configurationParameterCacheMaxAgeSeconds, parameterValue ) );
+				    configurationParameterCache.put( parameterKey, parameterValue);
 				}
 			}
 		}
@@ -80,19 +82,11 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     
 
     protected String getParameterValueFromConfigurationParameterCache(String parameterKey) {
-        MaxAgeSoftReference<String> parameterValue = configurationParameterCache.get( parameterKey );
-        if ( parameterValue != null ) {
-            return parameterValue.get();
-        }
-        return null;
+        return configurationParameterCache.get( parameterKey );
     }
     
     protected List<Component> getComponentListFromNonDatabaseComponentsCache(String nonDatabaseServiceNameKey) {
-        MaxAgeSoftReference<List<Component>> nonDatabaseComponent = nonDatabaseComponentsCache.get( nonDatabaseServiceNameKey );
-        if ( nonDatabaseComponent != null ) {
-            return nonDatabaseComponent.get();
-        }
-        return null;
+        return nonDatabaseComponentsCache.get( nonDatabaseServiceNameKey );
     }
 
     public List<Component> getNonDatabaseComponents() {
@@ -119,7 +113,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
         			if (rac != null) {
         				nonDatabaseComponents.addAll(rac.getNonDatabaseComponents());
         				synchronized (nonDatabaseComponentsCache) {
-            	            nonDatabaseComponentsCache.put(serviceName.toString(), new MaxAgeSoftReference<List<Component>>( nonDatabaseComponentsCacheMaxAgeSeconds, rac.getNonDatabaseComponents() ));
+            	            nonDatabaseComponentsCache.put(serviceName.toString(), rac.getNonDatabaseComponents() );
     					}
         			}
     			} catch (Exception e) {
@@ -197,16 +191,15 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug( "Checking for app config service responsible for: " + packageOrClassName );
     	}
-    	RiceApplicationConfigurationService racService = null;
-    	MaxAgeSoftReference<RiceApplicationConfigurationService> ref = responsibleServiceByPackageClass.get(packageOrClassName);
-    	if ( ref != null ) {
-    		racService = ref.get();
-    		if ( racService != null ) {
-            	if ( LOG.isDebugEnabled() ) {
-            		LOG.debug( "Service found in cache: " + racService.getClass().getName() );
-            	}    		    			
-    		}
-    	}
+    	RiceApplicationConfigurationService racService = responsibleServiceByPackageClass.get(packageOrClassName);
+
+
+        if ( racService != null ) {
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug( "Service found in cache: " + racService.getClass().getName() );
+            }
+        }
+
     	if ( racService == null ) {
         	Set<QName> serviceNames = findApplicationConfigurationServices();
 			for ( QName serviceName : serviceNames ) {
@@ -218,7 +211,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 				        	if ( LOG.isDebugEnabled() ) {
 				        		LOG.debug( "Found responsible class on bus with name: " + serviceName );
 				        	}    		
-							responsibleServiceByPackageClass.put(packageOrClassName, new MaxAgeSoftReference<RiceApplicationConfigurationService>( configurationParameterCacheMaxAgeSeconds, racService) );
+							responsibleServiceByPackageClass.put(packageOrClassName, racService );
 							break;
 						} else {
 							racService = null; // null it out in case this is the last iteration

@@ -1,3 +1,4 @@
+
 <!--
  Copyright 2008-2009 The Kuali Foundation
  
@@ -108,6 +109,22 @@
                 <value>classpath:edu/sampleu/financial/uif/PaymentTermLookup.xml</value>
                 <value>classpath:edu/sampleu/financial/uif/VendorDetailLookup.xml</value>
                 <value>classpath:edu/sampleu/financial/uif/VendorMaintenanceDocument.xml</value>
+                
+                <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
+                <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
+                
+                <!-- KEW -->
+                  <value>classpath:edu/sampleu/kew/uif/RuleAttributeInquiry.xml</value>
+                  <value>classpath:edu/sampleu/kew/uif/RuleAttributeLookup.xml</value>
+                  <value>classpath:edu/sampleu/kew/uif/RuleTemplateInquiry.xml</value>
+                  <value>classpath:edu/sampleu/kew/uif/RuleTemplateLookup.xml</value>
+                  <value>classpath:edu/sampleu/kew/uif/StyleLookup.xml</value>
+                  <value>classpath:edu/sampleu/kew/uif/StyleInquiry.xml</value>
+                  <value>classpath:edu/sampleu/kew/uif/DocumentTypeMaintenanceDocument.xml</value>
+                  <value>classpath:edu/sampleu/kew/uif/DocumentTypeLookup.xml</value>
+                  <value>classpath:edu/sampleu/kew/uif/DocumentTypeInquiry.xml</value>
+                  <value>classpath:edu/sampleu/kew/uif/IngesterView.xml</value>
+                  <value>classpath:edu/sampleu/kew/uif/StatsView.xml</value>
             </list>
         </property>
         <property name="databaseRepositoryFilePaths">
@@ -120,6 +137,7 @@
                 <value>edu.sampleu.travel</value>
                 <value>edu.sampleu.bookstore</value>
                 <value>edu.sampleu.financial</value>
+                <value>edu.sampleu.kew.krad</value>
             </list>
         </property>
     </bean>

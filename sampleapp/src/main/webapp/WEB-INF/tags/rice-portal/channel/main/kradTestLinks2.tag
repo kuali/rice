@@ -63,5 +63,14 @@
    <li><portal:portalLink displayTitle="true" title="Vendor Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.financial.bo.VendorDetail&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
    <li><portal:portalLink displayTitle="true" title="Vendor Maintenance" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.financial.bo.VendorDetail&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
   </ul>
+  <strong>KEW Screens</strong>
+   <ul class="chan">
+     <li><portal:portalLink displayTitle="true" title="Rule Attribute" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kew.rule.bo.RuleAttribute&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+     <li><portal:portalLink displayTitle="true" title="Rule Template" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kew.rule.bo.RuleTemplate&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+     <li><portal:portalLink displayTitle="true" title="XML Stylesheets" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.core.impl.style.StyleBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>     
+     <li><portal:portalLink displayTitle="true" title="XML Ingester" url="${ConfigProperties.application.url}/spring/ingester?viewId=KEW-IngesterView&methodToCall=start" /></li>
+     <li><portal:portalLink displayTitle="true" title="Statistics" url="${ConfigProperties.application.url}/spring/stats?viewId=KEW-StatView&methodToCall=start" /></li>
+     <li><portal:portalLink displayTitle="true" title="Document Type Maintenance" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+   </ul>
 </div>
 <channel:portalChannelBottom />

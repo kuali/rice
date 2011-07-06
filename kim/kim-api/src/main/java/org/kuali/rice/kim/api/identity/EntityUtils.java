@@ -7,6 +7,11 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import java.util.Collection;
 
 public class EntityUtils {
+
+    private EntityUtils() {
+        throw new UnsupportedOperationException("do not call.");
+    }
+
     public static <T extends Defaultable & Inactivatable> T getDefaultItem( Collection<T> collection ) {
 		// find the default entry
         if (CollectionUtils.isEmpty(collection)) {
@@ -19,7 +24,7 @@ public class EntityUtils {
 		}
 		// if no default, return the first
 		for ( T item : collection ) {
-		    return (T)item;
+		    return item;
 		}
 		// if neither, return null
 		return null;

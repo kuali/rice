@@ -41,7 +41,6 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.service.PermissionService;
 
-import javax.jws.WebParam;
 import java.util.List;
 
 public class IdentityManagementServiceImpl implements IdentityManagementService {
@@ -278,7 +277,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 
     @Override
     public Principal getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
-    	return getIdentityService().getPrincipalByPrincipalNameAndPassword( principalName, password );
+    	return getIdentityService().getPrincipalByPrincipalNameAndPassword(principalName, password);
     }
 
     @Override
@@ -299,7 +298,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     }
 
     @Override
-    public EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria queryByCriteria) {
+    public EntityDefaultQueryResults findEntityDefaults(QueryByCriteria queryByCriteria) {
         return getIdentityService().findEntityDefaults(queryByCriteria);
     }
 
@@ -309,17 +308,17 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	}
 
     @Override
-    public Entity getEntityByPrincipalId(@WebParam(name = "principalId") String principalId) {
+    public Entity getEntityByPrincipalId(String principalId) {
         return getIdentityService().getEntityByPrincipalId(principalId);
     }
 
     @Override
-    public Entity getEntityByPrincipalName(@WebParam(name = "principalName") String principalName) {
+    public Entity getEntityByPrincipalName(String principalName) {
         return getIdentityService().getEntityByPrincipalName(principalName);
     }
 
     @Override
-    public EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria queryByCriteria) {
+    public EntityQueryResults findEntities(QueryByCriteria queryByCriteria) {
         return getIdentityService().findEntities(queryByCriteria);
     }
 

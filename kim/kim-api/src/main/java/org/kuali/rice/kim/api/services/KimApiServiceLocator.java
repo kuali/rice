@@ -16,7 +16,6 @@ public class KimApiServiceLocator {
     private static final Logger LOG = Logger.getLogger(KimApiServiceLocator.class);
 
     public static final String KIM_GROUP_SERVICE = "kimGroupService";
-    public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
     public static final String KIM_IDENTITY_SERVICE = "kimIdentityService";
     public static final String KIM_PERMISSION_SERVICE = "kimPermissionService";
     public static final String KIM_RESPONSIBILITY_SERVICE = "kimResponsibilityService";
@@ -42,13 +41,6 @@ public class KimApiServiceLocator {
             LOG.debug("Fetching service " + KIM_PERSON_SERVICE);
         }
         return getService(KIM_PERSON_SERVICE);
-    }
-
-    public static IdentityManagementService getIdentityManagementService() {
-    	if ( LOG.isDebugEnabled() ) {
-			LOG.debug("Fetching service " + KIM_IDENTITY_MANAGEMENT_SERVICE);
-		}
-    	return getService(KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
 
     public static RoleService getRoleService() {

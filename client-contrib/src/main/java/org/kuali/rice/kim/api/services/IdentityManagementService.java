@@ -32,7 +32,6 @@ import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 
-import javax.jws.WebParam;
 import java.util.List;
 
 /**
@@ -68,7 +67,7 @@ public interface IdentityManagementService {
 	EntityDefault getEntityDefaultInfoByPrincipalId( String principalId);
 	EntityDefault getEntityDefaultInfoByPrincipalName( String principalName);
 
-    EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+    EntityDefaultQueryResults findEntityDefaults(QueryByCriteria queryByCriteria);
 
 	//KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
 
@@ -76,7 +75,7 @@ public interface IdentityManagementService {
 	Entity getEntityByPrincipalId( String principalId);
 	Entity getEntityByPrincipalName( String principalName);
 
-	EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+	EntityQueryResults findEntities(QueryByCriteria queryByCriteria);
 
 	Type getAddressType( String code);
 	EntityAffiliationType getAffiliationType( String code);

@@ -16,22 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.util.ConcreteKeyValue;
@@ -59,6 +43,21 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -611,7 +610,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     							if (session == null) {
     								throw new WorkflowRuntimeException("UserSession is null!  Attempted to render the searchable attribute outside of an established session.");
     							}
-    							visible = KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(session.getPerson().getPrincipalId(), groupNamespace, groupName);
+    							visible = KimApiServiceLocator.getGroupService().isMemberOfGroup(session.getPerson().getPrincipalId(), groupNamespace, groupName);
     						}
                         }
 					}

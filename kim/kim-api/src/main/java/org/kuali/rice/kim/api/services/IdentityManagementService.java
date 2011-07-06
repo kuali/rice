@@ -173,16 +173,6 @@ public interface IdentityManagementService {
              Group group
     );
 
-	// *******************************
-	// AuthenticationService
-	// *******************************
-    //@WebMethod(exclude=true)
-	//String getAuthenticatedPrincipalName( @WebParam(name="request") HttpServletRequest request);
-
-	// *******************************
-	// AuthorizationService
-	// *******************************
-
     // --------------------
     // Authorization Checks
     // --------------------

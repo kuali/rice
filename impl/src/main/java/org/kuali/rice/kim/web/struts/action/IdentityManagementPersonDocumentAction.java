@@ -110,7 +110,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         personDocumentForm.setCanModifyEntity(getUiDocumentService().canModifyEntity(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
         EntityDefault origEntity = null;
         if(personDocumentForm.getPersonDocument()!=null) {
-			origEntity = getIdentityManagementService().getEntityDefaultInfo(personDocumentForm.getPersonDocument().getEntityId());
+			origEntity = getIdentityService().getEntityDefault(personDocumentForm.getPersonDocument().getEntityId());
 		}
         boolean isCreatingNew = (personDocumentForm.getPersonDocument()==null || origEntity==null)?true:false;
         personDocumentForm.setCanOverrideEntityPrivacyPreferences(isCreatingNew || getUiDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));

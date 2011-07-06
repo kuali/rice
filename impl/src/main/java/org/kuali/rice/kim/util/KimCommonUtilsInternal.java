@@ -20,9 +20,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
+import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -39,7 +40,8 @@ import java.util.List;
 public final class KimCommonUtilsInternal {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimCommonUtilsInternal.class);
 
-    private static IdentityManagementService identityManagementService;
+    private static IdentityService identityService;
+    private static PermissionService permissionService;
 
 	private KimCommonUtilsInternal() {
 		throw new UnsupportedOperationException("do not call");
@@ -85,7 +87,7 @@ public final class KimCommonUtilsInternal {
 	}
 
 	protected static boolean canOverrideEntityPrivacyPreferences( String principalId ){
-		return getIdentityManagementService().isAuthorized(
+		return getPermissionService().isAuthorized(
 				GlobalVariables.getUserSession().getPrincipalId(),
 				KimConstants.NAMESPACE_CODE,
 				KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
@@ -95,7 +97,7 @@ public final class KimCommonUtilsInternal {
 
 	public static boolean isSuppressName(String entityId) {
 	    EntityPrivacyPreferences privacy = null;
-        EntityDefault entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
+        EntityDefault entityInfo = getIdentityService().getEntityDefault(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
         } else {
@@ -116,7 +118,7 @@ public final class KimCommonUtilsInternal {
 
     public static boolean isSuppressEmail(String entityId) {
         EntityPrivacyPreferences privacy = null;
-        EntityDefault entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
+        EntityDefault entityInfo = getIdentityService().getEntityDefault(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
         } else {
@@ -136,7 +138,7 @@ public final class KimCommonUtilsInternal {
 
     public static boolean isSuppressAddress(String entityId) {
         EntityPrivacyPreferences privacy = null;
-        EntityDefault entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
+        EntityDefault entityInfo = getIdentityService().getEntityDefault(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
         } else {
@@ -156,7 +158,7 @@ public final class KimCommonUtilsInternal {
 
     public static boolean isSuppressPhone(String entityId) {
         EntityPrivacyPreferences privacy = null;
-        EntityDefault entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
+        EntityDefault entityInfo = getIdentityService().getEntityDefault(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
         } else { 
@@ -176,7 +178,7 @@ public final class KimCommonUtilsInternal {
 
     public static boolean isSuppressPersonal(String entityId) {
         EntityPrivacyPreferences privacy = null;
-        EntityDefault entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
+        EntityDefault entityInfo = getIdentityService().getEntityDefault(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
         } else { 
@@ -194,11 +196,18 @@ public final class KimCommonUtilsInternal {
                 && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
     }
 
-	private static IdentityManagementService getIdentityManagementService() {
-		if ( identityManagementService == null ) {
-			identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+	private static IdentityService getIdentityService() {
+		if ( identityService == null ) {
+			identityService = KimApiServiceLocator.getIdentityService();
 		}
-		return identityManagementService;
+		return identityService;
+	}
+
+    private static PermissionService getPermissionService() {
+		if ( permissionService == null ) {
+			permissionService = KimApiServiceLocator.getPermissionService();
+		}
+		return permissionService;
 	}
 
     private static KimTypeAttribute getAttributeInfo(List<KimTypeAttribute> attributeInfoList, String attributeName) {

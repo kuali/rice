@@ -28,7 +28,6 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -95,17 +94,17 @@ public class GroupXmlParser {
             }
         }
         for (Group group : groups) {
-            IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
-
+            GroupService groupService = KimApiServiceLocator.getGroupService();
+            GroupUpdateService groupUpdateService = KimApiServiceLocator.getGroupUpdateService();
             // check if group already exists
-            Group foundGroup = identityManagementService.getGroupByName(group.getNamespaceCode(), group.getName());
+            Group foundGroup = groupService.getGroupByName(group.getNamespaceCode(), group.getName());
 
             if (foundGroup == null) {
                 if ( LOG.isInfoEnabled() ) {
                 	LOG.info("Group named '" + group.getName() + "' not found, creating new group named '" + group.getName() + "'");
                 }
                 try {
-                    Group newGroup =  identityManagementService.createGroup(group);
+                    Group newGroup =  groupUpdateService.createGroup(group);
 
                     String key = newGroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + newGroup.getName().trim();
                     addGroupMembers(newGroup, key);
@@ -124,10 +123,10 @@ public class GroupXmlParser {
 
                     //builder.setVersionNumber(foundGroup.getVersionNumber());
                     group = builder.build();
-                    identityManagementService.updateGroup(foundGroup.getId(), group);
+                    groupUpdateService.updateGroup(foundGroup.getId(), group);
 
                     //delete existing group members and replace with new
-                    identityManagementService.removeAllMembers(foundGroup.getId());
+                    groupUpdateService.removeAllMembers(foundGroup.getId());
 
                     String key = group.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + group.getName().trim();
                     addGroupMembers(group, key);

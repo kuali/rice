@@ -15,18 +15,6 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.util.ConcreteKeyValue;
@@ -37,14 +25,25 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DocumentTypeSecurity implements Serializable {
@@ -140,7 +139,7 @@ public class DocumentTypeSecurity implements Serializable {
         	value = Utilities.substituteConfigParameters(value);
             String namespaceCode = Utilities.parseGroupNamespaceCode(value);
             String groupName = Utilities.parseGroupName(value);
-        	Group groupObject = KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+        	Group groupObject = KimApiServiceLocator.getGroupService().getGroupByName(namespaceCode, groupName);
         	if (groupObject == null) {
         		throw new WorkflowException("Could not find group: " + value);
         	}
@@ -158,7 +157,7 @@ public class DocumentTypeSecurity implements Serializable {
             if (!org.apache.commons.lang.StringUtils.isEmpty(groupName)) {
               groupName = Utilities.substituteConfigParameters(groupName).trim();
               String namespaceCode = Utilities.substituteConfigParameters(((Element) groupNode).getAttribute(XmlConstants.NAMESPACE)).trim();
-              Group groupObject = KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+              Group groupObject = KimApiServiceLocator.getGroupService().getGroupByName(namespaceCode, groupName);
               
               
               if (groupObject != null) {

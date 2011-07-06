@@ -63,7 +63,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         document.setTitle("");
         document.route("");
 
-        Group oldWorkgroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Admin");
+        Group oldWorkgroup = KimApiServiceLocator.getGroupService().getGroupByName("KR-WKFLW", "AIWG-Admin");
         //Group oldWorkgroup = this.getGroupImpl(oldGroup.getId());
 
 
@@ -150,7 +150,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
 
-        Group workgroup1 = KimApiServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Admin");
+        Group workgroup1 = KimApiServiceLocator.getGroupService().getGroupByName("KR-WKFLW", "AIWG-Admin");
         document.adHocToGroup(ActionRequestType.APPROVE, "",workgroup1.getId(), "", true);
         document.route("");
 
@@ -188,7 +188,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionItemDocumentType");
          document.setTitle("");
 
-         workgroup1 = KimApiServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Nested1");
+         workgroup1 = KimApiServiceLocator.getGroupService().getGroupByName("KR-WKFLW", "AIWG-Nested1");
          document.adHocToGroup(ActionRequestType.APPROVE, "",workgroup1.getId(), "", true);
          document.route("");
 
@@ -196,7 +196,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          assertEquals("Workgroup should have 6 members.", 6, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
 
          //get the subgroup so we can remove the member.
-         Group workgroupSub = KimApiServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Nested2");
+         Group workgroupSub = KimApiServiceLocator.getGroupService().getGroupByName("KR-WKFLW", "AIWG-Nested2");
          KimApiServiceLocator.getIdentityManagementService().removePrincipalFromGroup(user1.getPrincipalId(), workgroupSub.getId());
 
          assertEquals("Workgroup should have 5 members.", 5, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
@@ -220,8 +220,8 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jitrue"), document.getDocumentId());
 
-        Group testGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Test");
-        Group adminGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Admin");
+        Group testGroup = KimApiServiceLocator.getGroupService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Test");
+        Group adminGroup = KimApiServiceLocator.getGroupService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Admin");
 
         List<ActionRequest> ars = document.getRootActionRequests();
         boolean routedWorkflowAdmin = false;

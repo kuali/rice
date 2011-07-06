@@ -195,7 +195,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 if (NotificationConstants.RECIPIENT_TYPES.GROUP.equalsIgnoreCase(node.getLocalName())) {
                     //recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.GROUP);
                     recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
-                    recipient.setRecipientId(KimApiServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(node.getTextContent()), Utilities.parseGroupName(node.getTextContent())).getId());
+                    recipient.setRecipientId(KimApiServiceLocator.getGroupService().getGroupByName(Utilities.parseGroupNamespaceCode(node.getTextContent()), Utilities.parseGroupName(node.getTextContent())).getId());
                 } else if (NotificationConstants.RECIPIENT_TYPES.USER.equalsIgnoreCase(node.getLocalName())){
                     //recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.USER);
                     recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);

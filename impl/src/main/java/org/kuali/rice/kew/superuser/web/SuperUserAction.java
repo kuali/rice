@@ -39,8 +39,8 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.AppSpecificRouteRecipient;
 import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.ValidationException;
@@ -456,7 +456,7 @@ public class SuperUserAction extends KewKualiAction {
                 }
             } else if (KEWConstants.WORKGROUP.equals(recipient.getType())) {
                 //if (getIdentityManagementService().getGroup(recipient.getId()) == null) {
-                if (getIdentityManagementService().getGroupByName(recipient.getNamespaceCode(), recipient.getId()) == null) {
+                if (getGroupService().getGroupByName(recipient.getNamespaceCode(), recipient.getId()) == null) {
                     GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient2.id",
                             "appspecificroute.workgroup.invalid");
                 }
@@ -480,8 +480,8 @@ public class SuperUserAction extends KewKualiAction {
         return nodeInstances[0].getName();
     }
 
-    private IdentityManagementService getIdentityManagementService() {
-        return KimApiServiceLocator.getIdentityManagementService();
+    private GroupService getGroupService() {
+        return KimApiServiceLocator.getGroupService();
     }
 
     public static UserSession getUserSession(HttpServletRequest request) {

@@ -16,65 +16,6 @@
  */
 package org.kuali.rice.kew.xml;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTIVE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.APPLICATION_ID;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.APP_DOC_STATUSES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.BLANKET_APPROVE_GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.BLANKET_APPROVE_POLICY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.BLANKET_APPROVE_WORKGROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.CUSTOM_EMAIL_STYLESHEET;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DATA_ELEMENT;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DEFAULT_EXCEPTION_GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DEFAULT_EXCEPTION_WORKGROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOCUMENT_TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOCUMENT_TYPES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOCUMENT_TYPE_OVERWRITE_MODE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOC_HANDLER;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOC_SEARCH_HELP_URL;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EXCEPTION_GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EXCEPTION_WORKGROUP;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EXCEPTION_WORKGROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_DEFINITION_URL;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.INITIAL_NODE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.LABEL;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NOTIFICATION_FROM_ADDRESS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PARENT;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.POLICIES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.POLICY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.POST_PROCESSOR_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PROCESS_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.REPORTING_GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.REPORTING_WORKGROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROUTE_NODES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROUTE_PATH;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROUTE_PATHS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROUTING_VERSION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SECURITY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SERVICE_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.STATUS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPER_USER_GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPER_USER_WORKGROUP_NAME;
-
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.util.xml.XmlException;
@@ -106,11 +47,11 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.krad.exception.GroupNotFoundException;
-import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -118,6 +59,25 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 
 
 /**
@@ -682,7 +642,7 @@ public class DocumentTypeXmlParser {
             	exceptionWgName = Utilities.parseGroupName(exceptionWg);
             	exceptionWgNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
         	}
-            Group exceptionGroup = getIdentityManagementService().getGroupByName(exceptionWgNamespace, exceptionWgName);
+            Group exceptionGroup = getGroupService().getGroupByName(exceptionWgNamespace, exceptionWgName);
             if(exceptionGroup == null) {
                	throw new WorkflowRuntimeException("Exception workgroup name " + exceptionWgName + " does not exist");
             }
@@ -908,7 +868,7 @@ public class DocumentTypeXmlParser {
     }
 
     private Group retrieveValidKimGroupUsingProcessedGroupNameAndNamespace(String groupName, String groupNamespace) throws GroupNotFoundException {
-        Group workgroup = getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+        Group workgroup = getGroupService().getGroupByName(groupNamespace, groupName);
         if (workgroup == null) {
             throw new GroupNotFoundException("Valid Workgroup could not be found... Namespace: " + groupNamespace + "  Name: " + groupName);
         }
@@ -1259,7 +1219,7 @@ public class DocumentTypeXmlParser {
             }
         }
         if (!org.apache.commons.lang.StringUtils.isEmpty(exceptionWorkgroupName)) {
-            exceptionWorkgroup = getIdentityManagementService().getGroupByName(exceptionWorkgroupNamespace, exceptionWorkgroupName);
+            exceptionWorkgroup = getGroupService().getGroupByName(exceptionWorkgroupNamespace, exceptionWorkgroupName);
             if (exceptionWorkgroup == null) {
                 throw new GroupNotFoundException("Could not locate exception workgroup with namespace '" + exceptionWorkgroupNamespace + "' and name '" + exceptionWorkgroupName + "'");
             }
@@ -1470,8 +1430,8 @@ public class DocumentTypeXmlParser {
         public LinkedList splitNodeStack = new LinkedList();
     }
 
-    protected IdentityManagementService getIdentityManagementService() {
-        return KimApiServiceLocator.getIdentityManagementService();
+    protected GroupService getGroupService() {
+        return KimApiServiceLocator.getGroupService();
     }
 
     /**

@@ -270,7 +270,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
         if (!actionRequest.isPrimaryDelegator()) {
             if (actionRequest.isGroupRequest()) {
-                List<String> principalIds =  KimApiServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId());
+                List<String> principalIds =  KimApiServiceLocator.getGroupService().getMemberPrincipalIds(actionRequest.getGroupId());
                 actionItems.addAll(createActionItemsForPrincipals(actionRequest, principalIds));
             } else if (actionRequest.isUserRequest()) {
                 ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
@@ -667,7 +667,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 				principalIds.add(actionRequest.getPrincipalId());
 			} else if(actionRequest.isGroupRequest()){
 				principalIds.addAll(
-						KimApiServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId()));
+						KimApiServiceLocator.getGroupService().getMemberPrincipalIds(actionRequest.getGroupId()));
 			}
 		}
     	return principalIds;

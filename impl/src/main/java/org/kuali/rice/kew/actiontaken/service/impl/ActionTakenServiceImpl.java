@@ -26,8 +26,8 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.sql.Timestamp;
@@ -60,11 +60,11 @@ public class ActionTakenServiceImpl implements ActionTakenService {
 
     public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken)
     {
-        IdentityManagementService ims = KimApiServiceLocator.getIdentityManagementService();
+        GroupService ims = KimApiServiceLocator.getGroupService();
         ActionTakenValue foundActionTaken = null;
         List<String> principalIds = new ArrayList<String>();
         if (actionRequest.isGroupRequest()) {
-            principalIds.addAll( ims.getGroupMemberPrincipalIds(actionRequest.getGroup().getId()));
+            principalIds.addAll( ims.getMemberPrincipalIds(actionRequest.getGroup().getId()));
         } else if (actionRequest.isUserRequest()) {
             principalIds.add(actionRequest.getPrincipalId());
         }

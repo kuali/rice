@@ -224,7 +224,7 @@ public class ActionListTest extends KEWTestCase {
     	assertNull("Should not be to a workgroup.", actionItem.getGroupId());
 
     	// all members of NonSIT should have a single primary Approve Request
-        List<String> memberPrincipalIds = KimApiServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getId());
+        List<String> memberPrincipalIds = KimApiServiceLocator.getGroupService().getMemberPrincipalIds(NonSIT.getId());
         for (String memberPrincipalId : memberPrincipalIds)
         {
             //will want to convert to Kim Principal

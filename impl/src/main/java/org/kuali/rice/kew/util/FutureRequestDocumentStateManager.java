@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.kew.util;
 
-import java.util.Date;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -71,9 +71,9 @@ public class FutureRequestDocumentStateManager {
 
     public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, Group kimGroup)
     {
-        IdentityManagementService ims = KimApiServiceLocator.getIdentityManagementService();
+        GroupService ims = KimApiServiceLocator.getGroupService();
         List<String> principalIds =
-            ims.getGroupMemberPrincipalIds(kimGroup.getId());
+            ims.getMemberPrincipalIds(kimGroup.getId());
 
         for (String id : principalIds)
 		{

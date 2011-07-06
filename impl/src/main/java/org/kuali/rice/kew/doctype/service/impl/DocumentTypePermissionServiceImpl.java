@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.doctype.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
@@ -24,7 +23,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -84,7 +83,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 				result = initiatorAuthorized && documentType.isBlanketApprover(principalId);
 			} else {		
 				AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
-				result = getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.BLANKET_APPROVE_PERMISSION, Attributes.fromMap(permissionDetails), Attributes.empty());
+				result = getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.BLANKET_APPROVE_PERMISSION, permissionDetails, new AttributeSet());
 			}
 			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
 		}
@@ -106,7 +105,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		if ( result == null ) {
 			AttributeSet permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
 			if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
-				result = getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, Attributes.fromMap(permissionDetails), Attributes.empty());
+				result = getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, new AttributeSet());
 			} else {
 				result = Boolean.TRUE;
 			}
@@ -131,10 +130,10 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			result = Boolean.TRUE;
 			AttributeSet permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
 			if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
-				List<String> principalIds = getIdentityManagementService().getGroupMemberPrincipalIds(groupId);
+				List<String> principalIds = getGroupService().getMemberPrincipalIds(groupId);
 				// if any member of the group is not allowed to receive the request, then the group may not receive it
 				for (String principalId : principalIds) {
-					if (!getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, Attributes.fromMap(permissionDetails), Attributes.empty())) {
+					if (!getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, new AttributeSet())) {
 						result = Boolean.FALSE;
 						break;
 					}
@@ -161,7 +160,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 				result = documentType.isSuperUser(principalId);
 			} else {			
 				AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
-				result = getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.ADMINISTER_ROUTING_PERMISSION, Attributes.fromMap(permissionDetails), Attributes.empty());
+				result = getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.ADMINISTER_ROUTING_PERMISSION, permissionDetails, new AttributeSet());
 			}
 			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
 		}
@@ -189,7 +188,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
                     AttributeSet roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KEWConstants.ROUTE_NODE_NAME_DETAIL));
                     if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails)) {
 						foundAtLeastOnePermission = true;
-					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifiers))) {
+					if (getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails, roleQualifiers)) {
 							return true;
 						}
 					}
@@ -213,7 +212,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		
 		AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
 		if (useKimPermission(KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails)) {
-			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, Attributes.fromMap(permissionDetails), Attributes.empty());
+			return getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, new AttributeSet());
     }
 		return true;
 	}
@@ -238,7 +237,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 				LOG.debug("Role qualifiers values: " + roleQualifiers.formattedDump(10));
 			}
 			if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails)) {
-				return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.ROUTE_PERMISSION, Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifiers));
+				return getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.ROUTE_PERMISSION, permissionDetails, roleQualifiers);
 			}
 		}
 
@@ -271,8 +270,8 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		}
 
 		if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.ADD_MESSAGE_TO_ROUTE_LOG, permissionDetails)) {
-			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE,
-					KEWConstants.ADD_MESSAGE_TO_ROUTE_LOG, Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifiers));
+			return getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE,
+					KEWConstants.ADD_MESSAGE_TO_ROUTE_LOG, permissionDetails, roleQualifiers);
 		}
 
 		return false;
@@ -294,7 +293,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
                 AttributeSet roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KEWConstants.ROUTE_NODE_NAME_DETAIL));
                 if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails)) {
 					foundAtLeastOnePermission = true;
-					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.SAVE_PERMISSION, Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifiers))) {
+					if (getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails, roleQualifiers)) {
 						return true;
 					}
 				}
@@ -402,7 +401,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 	protected boolean useKimPermission(String namespace, String permissionTemplateName, AttributeSet permissionDetails) {
 		Boolean b =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
 		if (b == null || b) {
-			return getIdentityManagementService().isPermissionDefinedForTemplateName(namespace, permissionTemplateName, permissionDetails);
+			return getPermissionService().isPermissionDefinedForTemplateName(namespace, permissionTemplateName, permissionDetails);
 		}
 		return false;
 	}
@@ -459,8 +458,8 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		}
 	}
 	
-	protected IdentityManagementService getIdentityManagementService() {
-		return KimApiServiceLocator.getIdentityManagementService();
+	protected GroupService getGroupService() {
+		return KimApiServiceLocator.getGroupService();
 	}
 	
 	protected PermissionService getPermissionService() {

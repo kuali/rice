@@ -16,22 +16,6 @@
 
 package org.kuali.rice.kew.service.impl;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.jws.WebService;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -97,6 +81,21 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import javax.jws.WebService;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings({"unchecked"})
 @WebService(endpointInterface = KEWWebServiceConstants.WorkflowUtility.INTERFACE_CLASS,
@@ -702,7 +701,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             }
             if (request.isUserRequest() && request.getPrincipalId().equals(principalId)) {
                 KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
-            } else if (request.isGroupRequest() && KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, request.getGroup().getId())) {
+            } else if (request.isGroupRequest() && KimApiServiceLocator.getGroupService().isMemberOfGroup(principalId, request.getGroup().getId())) {
                 KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
             }
         }

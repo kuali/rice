@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.List;
-
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
@@ -26,6 +24,8 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.util.List;
 
 
 
@@ -89,7 +89,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
     }
 
     private String performReleaseWorkgroupAuthority(boolean forValidationOnly) {
-        if (!KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId)){
+        if (!KimApiServiceLocator.getGroupService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId)){
             return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }
 

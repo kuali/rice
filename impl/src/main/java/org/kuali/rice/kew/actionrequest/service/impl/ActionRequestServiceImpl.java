@@ -991,7 +991,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         // than we need get all the requests with workgroup ids and see if our user is in that group
         List<String> groupIds = getActionRequestDAO().getRequestGroupIds(documentId);
         for (String groupId : groupIds) {
-            if (KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId)) {
+            if (KimApiServiceLocator.getGroupService().isMemberOfGroup(principalId, groupId)) {
                 return true;
             }
         }

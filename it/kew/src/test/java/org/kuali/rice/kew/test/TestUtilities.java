@@ -240,7 +240,7 @@ public final class TestUtilities {
 				foundRequest = true;
 				break;
 			} else if (actionRequest.isGroupRequest() && 
-			        KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequest.getGroup().getId())) {
+			        KimApiServiceLocator.getGroupService().isMemberOfGroup(principalId, actionRequest.getGroup().getId())) {
 				foundRequest = true;
 				break;
 			}

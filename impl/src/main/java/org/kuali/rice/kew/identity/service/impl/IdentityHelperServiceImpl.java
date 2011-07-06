@@ -124,7 +124,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 
 
 	public Group getGroup(String groupId) {
-		Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(groupId);
+		Group group = KimApiServiceLocator.getGroupService().getGroup(groupId);
 		if (group == null) {
 			throw new RiceIllegalArgumentException("Could not locate a group with the given groupId of " + groupId);
 		}

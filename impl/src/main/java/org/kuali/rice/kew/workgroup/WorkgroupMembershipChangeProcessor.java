@@ -109,7 +109,7 @@ public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
      */
     private void updateActionListForUserAddedToGroup(String principalId, String groupId) {
 		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-		List<String> allGroupsToCheck = KimApiServiceLocator.getIdentityManagementService().getParentGroupIds(groupId);
+		List<String> allGroupsToCheck = KimApiServiceLocator.getGroupService().getParentGroupIds(groupId);
         allGroupsToCheck.add(0, groupId);
         for (String groupToCheckId : allGroupsToCheck) {
             actionRequests.addAll(getActionRequestService().findActivatedByGroup(groupToCheckId));
@@ -123,7 +123,7 @@ public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
     }
     
     private void updateActionListForUserRemovedFromGroup(String principalId, String groupId) {
-		List<String> allGroupsToCheck = KimApiServiceLocator.getIdentityManagementService().getParentGroupIds(groupId);
+		List<String> allGroupsToCheck = KimApiServiceLocator.getGroupService().getParentGroupIds(groupId);
         allGroupsToCheck.add(0, groupId);
         Collection<ActionItem> actionItems = getActionListService().findByPrincipalId(principalId);
 		for (Iterator<ActionItem> itemIt = actionItems.iterator(); itemIt.hasNext();) {

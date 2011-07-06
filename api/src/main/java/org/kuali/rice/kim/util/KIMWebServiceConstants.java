@@ -48,16 +48,6 @@ public class KIMWebServiceConstants {
 		}
 	}
 
-	public static final class RoleService {
-		public static final String WEB_SERVICE_NAME = "kimRoleServiceSOAP";
-		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.RoleService";
-		public static final String WEB_SERVICE_PORT = "RoleServicePort";
-		
-		private RoleService() {
-			throw new UnsupportedOperationException("do not call");
-		}
-	}
-
 	public static final class RoleUpdateService {
 		public static final String WEB_SERVICE_NAME = "kimRoleUpdateServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.RoleUpdateService";
@@ -84,16 +74,6 @@ public class KIMWebServiceConstants {
 		public static final String WEB_SERVICE_PORT = "IdentityServicePort";
 		
 		private IdentityService() {
-			throw new UnsupportedOperationException("do not call");
-		}
-	}
-
-	public static final class IdentityManagementService {
-		public static final String WEB_SERVICE_NAME = "kimIdentityManagementServiceSOAP";
-		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.services.IdentityManagementService";
-		public static final String WEB_SERVICE_PORT = "IdentityManagementServicePort";
-		
-		private IdentityManagementService() {
 			throw new UnsupportedOperationException("do not call");
 		}
 	}

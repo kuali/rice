@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.StringReader;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -31,6 +24,12 @@ import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.xml.sax.InputSource;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import java.io.StringReader;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill
@@ -54,13 +53,13 @@ public class PrincipalIdRoleAttributeTest extends KEWTestCase {
 		WorkflowAttributeDefinition.Builder principalIdDef1 = WorkflowAttributeDefinition.Builder.create(
 				"PrincipalIdRoleAttribute");
 		PropertyDefinition principalIdProp1 = PropertyDefinition.create(
-				PRINCIPAL_ID_PROP, KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
+				PRINCIPAL_ID_PROP, KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
 		principalIdDef1.addPropertyDefinition(principalIdProp1);
 
 		WorkflowAttributeDefinition.Builder principalIdDef2 = WorkflowAttributeDefinition.Builder.create(
 				"PrincipalIdRoleAttribute");
 		PropertyDefinition principalIdProp2 = PropertyDefinition.create(
-				PRINCIPAL_ID_PROP, KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("bmcgough").getPrincipalId());
+				PRINCIPAL_ID_PROP, KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("bmcgough").getPrincipalId());
 		principalIdDef2.addPropertyDefinition(principalIdProp2);
 
 		document.addAttributeDefinition(principalIdDef1.build());
@@ -108,7 +107,7 @@ public class PrincipalIdRoleAttributeTest extends KEWTestCase {
 		WorkflowAttributeDefinition.Builder principalIdDef1 = WorkflowAttributeDefinition.Builder.create(
 				"PrincipalIdRoleAttribute");
 		PropertyDefinition principalIdProp1 = PropertyDefinition.create(
-				PRINCIPAL_ID_PROP, KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
+				PRINCIPAL_ID_PROP, KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
 		principalIdDef1.addPropertyDefinition(principalIdProp1);
 
 		document.addAttributeDefinition(principalIdDef1.build());

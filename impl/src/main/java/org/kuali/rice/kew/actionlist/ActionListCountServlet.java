@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.kew.actionlist;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.Person;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 
@@ -64,7 +63,7 @@ public class ActionListCountServlet extends HttpServlet {
 			} else if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType)) {
 				principalId = id;
 		    } else if ("authenticationId".equalsIgnoreCase(idType) || "a".equalsIgnoreCase(idType)) {
-		    	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(id);
+		    	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(id);
 		    	if (principal != null) {
 		    		principalId = principal.getPrincipalId();
 		    	}

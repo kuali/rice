@@ -16,22 +16,6 @@
  */
 package org.kuali.rice.kew.documentoperation.web;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -76,6 +60,21 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 
 /**
@@ -650,7 +649,7 @@ public class DocumentOperationAction extends KewKualiAction {
 			if (lookupInvocationModule.equals("ActionTaken")) {
 				ActionTakenValue actionTaken = docForm.getRouteHeader().getDocActionTaken(lookupIndex);
 				if ("workflowId".equals(lookupField)) {
-					Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
 					if (principal != null) {
 						actionTaken.setPrincipalId(principal.getPrincipalId());
 					} else {
@@ -659,7 +658,7 @@ public class DocumentOperationAction extends KewKualiAction {
 					}
 				}
 				if ("delegatorWorkflowId".equals(lookupField)) {
-					Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
 					if (principal != null) {
 						actionTaken.setDelegatorPrincipalId(principal.getPrincipalId());
 					} else {
@@ -679,7 +678,7 @@ public class DocumentOperationAction extends KewKualiAction {
 			if (lookupInvocationModule.equals("ActionItem")) {
 				ActionItem actionItem = docForm.getRouteHeader().getDocActionItem(lookupIndex);
 				if ("workflowId".equals(lookupField)) {
-					Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
 					if (principal != null) {
 						actionItem.setPrincipalId(principal.getPrincipalId());
 					} else {
@@ -699,7 +698,7 @@ public class DocumentOperationAction extends KewKualiAction {
 					actionItem.setRoleName(request.getParameter("roleName"));
 				}
 				if ("delegatorWorkflowId".equals(lookupField)) {
-					Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+					Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
 					if (principal != null) {
 						actionItem.setDelegatorWorkflowId(principal.getPrincipalId());
 					} else {

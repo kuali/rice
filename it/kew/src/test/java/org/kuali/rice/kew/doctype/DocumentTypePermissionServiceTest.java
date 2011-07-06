@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
@@ -26,6 +23,9 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -46,7 +46,7 @@ public class DocumentTypePermissionServiceTest extends KEWTestCase {
 	@Test
 	public void canBlanketApprove() throws Exception {
 		DocumentType testDocType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");
-		Principal ewestfalPrincipal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+		Principal ewestfalPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
 		assertNotNull(testDocType);
 		assertTrue("ewestfal should be a blanket approver", service.canBlanketApprove(ewestfalPrincipal.getPrincipalId(), testDocType, KEWConstants.ROUTE_HEADER_INITIATED_CD, ewestfalPrincipal.getPrincipalId()));
 		
@@ -56,7 +56,7 @@ public class DocumentTypePermissionServiceTest extends KEWTestCase {
 	@Test
 	public void testCanInitiate() throws Exception {
 		DocumentType testDocType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");
-		Principal ewestfalPrincipal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+		Principal ewestfalPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
 		assertNotNull(testDocType);
 		assertTrue("ewestfal should be allowed to initiate", service.canInitiate(ewestfalPrincipal.getPrincipalId(), testDocType));
     }

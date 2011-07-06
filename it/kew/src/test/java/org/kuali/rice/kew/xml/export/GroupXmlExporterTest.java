@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
+
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -42,8 +43,9 @@ public class GroupXmlExporterTest extends XmlExporterTestCase {
      */
     @Override
     protected void assertExport() throws Exception {
-        IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
-        List<? extends Group> oldGroups = identityManagementService.getGroupsForPrincipal(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId());
+        IdentityService identityService = KimApiServiceLocator.getIdentityService();
+        GroupService groupService = KimApiServiceLocator.getGroupService();
+        List<? extends Group> oldGroups = groupService.getGroupsForPrincipal(identityService.getPrincipalByPrincipalName("ewestfal").getPrincipalId());
 
         KewExportDataSet dataSet = new KewExportDataSet();
         dataSet.getGroups().addAll(oldGroups);

@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import java.util.List;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ken.service.NotificationRecipientService;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
+
+import java.util.List;
 
 /**
  * NotificationRecipientService implementation
@@ -101,7 +101,7 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      */
     public boolean isGroupRecipientValid(String groupRecipientId)
     {
-        return (KimApiServiceLocator.getIdentityManagementService().getGroup( groupRecipientId ) != null);
+        return (KimApiServiceLocator.getGroupService().getGroup( groupRecipientId ) != null);
     }
 
     /**
@@ -111,7 +111,7 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      */
     public boolean isUserRecipientValid(String principalName)
     {
-        return (KimApiServiceLocator.getIdentityManagementService()
+        return (KimApiServiceLocator.getIdentityService()
                 .getPrincipalByPrincipalName(principalName) != null);
     }
 

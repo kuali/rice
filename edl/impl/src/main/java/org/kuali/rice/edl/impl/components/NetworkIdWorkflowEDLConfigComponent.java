@@ -20,7 +20,6 @@ import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -60,7 +59,7 @@ public class NetworkIdWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfig
 			return null;			
 		} else {
 			//not blank validate as normal whether required or not
-			Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(param.getParamValue());
+			Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(param.getParamValue());
 			if (principal == null) {
 				return ("The value " + param.getParamValue() + " is an invalid principal name");
 			}

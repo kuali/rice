@@ -16,17 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -44,6 +33,14 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentSearchTest extends KEWTestCase {
@@ -450,6 +447,6 @@ public class DocumentSearchTest extends KEWTestCase {
     }
     
     private String getPrincipalId(String principalName) {
-    	return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
+    	return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName).getPrincipalId();
     }
 }

@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -32,6 +24,11 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This test exercises various Action Request graph scenarios and tests them for correctness.
@@ -346,11 +343,11 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 
 
 	private String getPrincipalIdFromPrincipalName(String principalName) {
-	    return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
+	    return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName).getPrincipalId();
 	}
 
     private String getGroupIdFromGroupName(String namespace, String groupName) {
-        return KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName).getId();
+        return KimApiServiceLocator.getGroupService().getGroupByName(namespace, groupName).getId();
     }
 
     private String getRoleIdFromRoleName(String namespaceCode, String roleName) {

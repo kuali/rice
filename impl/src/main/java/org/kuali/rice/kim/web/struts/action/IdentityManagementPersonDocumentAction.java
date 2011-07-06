@@ -24,9 +24,9 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -97,7 +97,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         String principalId = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID);
         String principalName = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_NAME);
         if ( StringUtils.isBlank(principalId) && StringUtils.isNotBlank(principalName) ) {
-        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
         	if ( principal != null ) {
         		principalId = principal.getPrincipalId();
         	}

@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.kew.actionitem;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -41,6 +30,13 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.test.BaselineTestCase;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class ActionItemServiceTest extends KEWTestCase {
 
@@ -74,11 +70,11 @@ public class ActionItemServiceTest extends KEWTestCase {
         GroupService groupService = KimApiServiceLocator.getGroupService();
         assertEquals("Workgroup should have 6 members.", 6, groupService.getMembersOfGroup(oldWorkgroup.getId()).size());
 
-        Principal user1 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
-        Principal user2 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
+        Principal user1 = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
+        Principal user2 = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("user2");
 
-        Principal rkirkend = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend");
-        Principal shenl = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("shenl");
+        Principal rkirkend = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("rkirkend");
+        Principal shenl = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("shenl");
 
         List<GroupMember> usersToRemove = new ArrayList<GroupMember>();
         //remove 'rkirkend' and 'shenl' from the workgroup
@@ -158,7 +154,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         document.adHocToGroup(ActionRequestType.APPROVE, "",workgroup1.getId(), "", true);
         document.route("");
 
-        Principal ewestfal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+        Principal ewestfal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
 
         assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
         assertEquals("Workgroup should have 6 members.", 6, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
@@ -174,7 +170,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
          // test the save group
          Group workgroup1Impl = this.getGroup(workgroup1.getId());
-         Principal dewey = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("dewey");
+         Principal dewey = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("dewey");
          KimApiServiceLocator.getGroupUpdateService().addPrincipalToGroup(dewey.getPrincipalId(), workgroup1Impl.getId());
          //GroupMember groupMember = GroupMember.Builder.create(workgroup1Impl.getId(), dewey.getPrincipalId(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE).build();
          //GroupBo workgroup1Bo = GroupBo.from(workgroup1Impl);
@@ -187,7 +183,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(dewey.getPrincipalId()).size());
 
          // test nested
-         Principal user1 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
+         Principal user1 = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
 
          document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"), "ActionItemDocumentType");
          document.setTitle("");

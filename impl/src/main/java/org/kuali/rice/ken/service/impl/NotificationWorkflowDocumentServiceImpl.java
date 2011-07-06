@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
@@ -29,6 +27,8 @@ import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.util.List;
 
 /**
  * This class is responsible for interacting with KEW - this is the default implementation that
@@ -95,7 +95,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
         // param 5 - this is the "force action" requests - if set to true, this will be delivered to the recipients list regardless of
         //           whether the recipient has already taken action on this request; in our case, this doesn't really apply at this point in time,
         //           so we'll set to true just to be safe
-        Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(
+        Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(
                 recipientUserId);
         document.adHocToPrincipal(ActionRequestType.fromCode(actionRequested), annotation, principal.getPrincipalId(),
                 messageDelivery.getNotification().getProducer().getName(), true);

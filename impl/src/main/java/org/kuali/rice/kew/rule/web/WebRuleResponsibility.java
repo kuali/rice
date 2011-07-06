@@ -16,12 +16,6 @@
 
 package org.kuali.rice.kew.rule.web;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.struts.action.ActionErrors;
@@ -37,10 +31,16 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -301,7 +301,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			if (!invalidUser)
 			{
 				//chb: 10Jan2009: not using KEW IdentityHelperService b/c we want to deal w/ exception here
-				Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(getReviewer());
+				Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(getReviewer());
 				if( principal != null)
 				{
 					setRuleResponsibilityName(principal.getPrincipalId());
@@ -318,7 +318,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			boolean invalidWorkgroup = org.apache.commons.lang.StringUtils.isEmpty(getReviewer());
 			;
 			if (!invalidWorkgroup) {
-			    Group workgroup = KimApiServiceLocator.getIdentityManagementService().getGroup(getReviewerId());
+			    Group workgroup = KimApiServiceLocator.getGroupService().getGroup(getReviewerId());
 				if (workgroup == null) {
 					invalidWorkgroup = true;
 				} else {

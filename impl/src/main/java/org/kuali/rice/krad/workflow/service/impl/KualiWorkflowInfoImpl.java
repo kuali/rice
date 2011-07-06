@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.krad.workflow.service.impl;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.dto.ActionItemDTO;
@@ -34,10 +30,13 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SuppressWarnings("deprecation")
@@ -61,7 +60,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     }
 
     public RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException {
-    	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(
+    	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(
                 KRADConstants.SYSTEM_USER);
     	if (principal == null) {
     		throw new WorkflowException("Failed to locate System User with principal name 'kr'");

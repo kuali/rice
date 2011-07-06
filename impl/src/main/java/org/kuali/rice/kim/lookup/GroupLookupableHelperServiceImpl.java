@@ -52,9 +52,9 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
+import org.kuali.rice.krad.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.keyvalues.KimAttributeValuesFinder;
-import org.kuali.rice.krad.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -140,7 +140,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                     if (key.equals("principalName")) {
                         //get principalId, which we can actually use
                         Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                        String principalId = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(criteriaMap.get(key)).getPrincipalId();
+                        String principalId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(criteriaMap.get(key)).getPrincipalId();
                         predicates.add(
                                 and(
                                     equal("members.memberId", principalId),

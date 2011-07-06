@@ -16,12 +16,6 @@
 
 package org.kuali.rice.kew.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -41,6 +35,10 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This test case just ensures that deprecated document type XML elements can still be parsed properly. When the deprecated elements are eventually
@@ -109,7 +107,7 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
         	LOG.info("Testing visibility of the rule attribute for user '" + testPrincipalNames[i] + "'");
         	// Set up a new KEW UserSession in a manner similar to that of WorkflowInfoTest.
             GlobalVariables.setUserSession(null);
-            String testPrincipalId = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(testPrincipalNames[i]).getPrincipalId();
+            String testPrincipalId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(testPrincipalNames[i]).getPrincipalId();
             GlobalVariables.setUserSession(new UserSession(testPrincipalNames[i]));
             // Get the visibility of the rule attribute, which should be dependent on how the UserSession compares with the "isMemberOfWorkgroup" element.
             StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();

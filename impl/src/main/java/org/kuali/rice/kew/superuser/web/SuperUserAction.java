@@ -16,13 +16,6 @@
  */
 package org.kuali.rice.kew.superuser.web;
 
-import java.util.Collection;
-import java.util.Iterator;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
@@ -53,6 +46,12 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * A Struts Action which provides super user functionality.
@@ -448,7 +447,7 @@ public class SuperUserAction extends KewKualiAction {
                     "appspecificroute.recipient.required");
         } else {
             if (KEWConstants.PERSON.equals(recipient.getType())) {
-                Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(
+                Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(
                         recipient.getId());
                 if (principal == null) {
                     LOG.error("App Specific user recipient not found");

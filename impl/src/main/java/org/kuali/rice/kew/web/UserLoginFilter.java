@@ -25,10 +25,10 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.kim.service.AuthenticationService;
+import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthenticationException;
@@ -60,7 +60,8 @@ public class UserLoginFilter implements Filter {
 
 	private static final String MDC_USER = "user";
 	
-	private IdentityManagementService identityManagementService;
+	private IdentityService identityService;
+    private PermissionService permissionService;
 	private ConfigurationService kualiConfigurationService;
 	private ParameterService parameterService;
 	
@@ -107,7 +108,7 @@ public class UserLoginFilter implements Filter {
 				throw new AuthenticationException( "Blank User from AuthenticationService - This should never happen." );
 			}
 			
-			Principal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
+			Principal principal = getIdentityService().getPrincipalByPrincipalName( principalName );
 			if (principal == null) {
 				throw new AuthenticationException("Unknown User: " + principalName);
 			}
@@ -127,7 +128,7 @@ public class UserLoginFilter implements Filter {
 	
 	/** checks if the passed in principalId is authorized to log in. */
 	private boolean isAuthorizedToLogin(String principalId) {
-		return getIdentityManagementService().isAuthorized( 
+		return getPermissionService().isAuthorized(
 				principalId, 
 				KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, 
 				KimConstants.PermissionNames.LOG_IN, 
@@ -192,12 +193,20 @@ public class UserLoginFilter implements Filter {
 		return (request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY) != null);
 	}
 	
-    private IdentityManagementService getIdentityManagementService() {
-    	if (this.identityManagementService == null) {
-    		this.identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+    private IdentityService getIdentityService() {
+    	if (this.identityService == null) {
+    		this.identityService = KimApiServiceLocator.getIdentityService();
     	}
     	
-    	return this.identityManagementService;
+    	return this.identityService;
+    }
+
+    private PermissionService getPermissionService() {
+    	if (this.permissionService == null) {
+    		this.permissionService = KimApiServiceLocator.getPermissionService();
+    	}
+
+    	return this.permissionService;
     }
     
     private ConfigurationService getKualiConfigurationService() {

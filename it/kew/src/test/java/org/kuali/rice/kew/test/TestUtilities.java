@@ -31,7 +31,7 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -257,7 +257,7 @@ public final class TestUtilities {
      */
     public static void assertApprovals(String docId, String[] users, boolean shouldHaveApproval) throws WorkflowException {
         List<String> failedUsers = new ArrayList<String>();
-        IdentityManagementService ims = KimApiServiceLocator.getIdentityManagementService();
+        IdentityService ims = KimApiServiceLocator.getIdentityService();
         for (String user: users) {
             WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(ims.getPrincipalByPrincipalName(user).getPrincipalId(), docId);
             boolean appRqsted = doc.isApprovalRequested();

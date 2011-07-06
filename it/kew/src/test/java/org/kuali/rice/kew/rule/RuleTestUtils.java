@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -29,6 +24,10 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 
@@ -58,7 +57,7 @@ public final class RuleTestUtils {
     	
     	RuleResponsibility originalResp = responsibilities.get(0);
 
-    	Principal delegatePrincipal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(delegateUser);
+    	Principal delegatePrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(delegateUser);
 
 		// save the new rule delegation
 		// this *SHOULD* requeue

@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -31,6 +27,8 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -235,7 +233,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     }
 
     private String getPrincipalId(String principalName) {
-    	return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
+    	return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName).getPrincipalId();
     }
 	
 }

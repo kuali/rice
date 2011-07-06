@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kew.clientapp;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actions.BlanketApproveTest;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -33,6 +28,8 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -57,7 +54,7 @@ public class WorkflowInfoTest extends KEWTestCase {
     public void testGetRouteHeader() throws Exception {
      // ensure the UserSession is cleared out (could have been set up by other tests)
     GlobalVariables.setUserSession(null);
-    String ewestfalPrincipalId = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId();
+    String ewestfalPrincipalId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal").getPrincipalId();
     GlobalVariables.setUserSession(new UserSession("ewestfal"));
     WorkflowDocument document = WorkflowDocumentFactory.createDocument(ewestfalPrincipalId, "TestDocumentType");
 	String documentId = document.getDocumentId();

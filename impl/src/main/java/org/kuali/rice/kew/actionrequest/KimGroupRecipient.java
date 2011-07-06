@@ -29,7 +29,7 @@ public class KimGroupRecipient implements Recipient {
 	private Group group;
 
 	public KimGroupRecipient(String groupId) {
-		this(ActionRequestFactory.getIdentityManagementService().getGroup(groupId));
+		this(ActionRequestFactory.getGroupService().getGroup(groupId));
 	}
 
 	public KimGroupRecipient(Group group) {

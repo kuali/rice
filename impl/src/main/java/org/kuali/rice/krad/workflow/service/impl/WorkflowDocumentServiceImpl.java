@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.workflow.service.impl;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -45,6 +39,12 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -322,14 +322,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 	}
                     if (AdHocRouteRecipient.PERSON_TYPE.equals(recipient.getType())) {
                         // TODO make the 1 a constant
-                    	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
+                    	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(recipient.getId());
                 		if (principal == null) {
                 			throw new RiceRuntimeException("Could not locate principal with name '" + recipient.getId() + "'");
                 		}
                         workflowDocument.adHocToPrincipal(ActionRequestType.fromCode(recipient.getActionRequested()), currentNode, newAnnotation, principal.getPrincipalId(), "", true, notificationLabel);
                     }
                     else {
-                    	Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(recipient.getId());
+                    	Group group = KimApiServiceLocator.getGroupService().getGroup(recipient.getId());
                 		if (group == null) {
                 			throw new RiceRuntimeException("Could not locate group with id '" + recipient.getId() + "'");
                 		}

@@ -48,7 +48,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		if (principalName == null) {
 			throw new RiceIllegalArgumentException("Can't lookup a principal ID for a null principal name.");
 		}
-		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+		Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
 		if (principal == null) {
 			throw new RiceIllegalArgumentException("Given principal name of '" + principalName + "' was invalid.  Failed to lookup a corresponding principal ID.");
 		}
@@ -61,7 +61,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 
 	public String getIdForGroupName(String namespace, String groupName) {
-		Group group = KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName);
+		Group group = KimApiServiceLocator.getGroupService().getGroupByName(namespace, groupName);
 		if (group == null) {
 			throw new RiceIllegalArgumentException("Given namespace of '" + namespace + "' and name of '" + groupName + "' was invalid.  Failed to lookup a corresponding group ID.");
 		}
@@ -83,7 +83,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 	public Principal getPrincipalByPrincipalName(String principalName) {
-		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+		Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
 		if (principal == null) {
 			throw new RiceIllegalArgumentException("Could not locate a principal with the given principalName of " + principalName);
 		}
@@ -91,7 +91,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 	public Group getGroupByName(String namespaceCode, String name) {
-		Group group = KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, name);
+		Group group = KimApiServiceLocator.getGroupService().getGroupByName(namespaceCode, name);
 		if (group == null) {
 			throw new RiceIllegalArgumentException("Could not locate a group with the given namspace of '" + namespaceCode + "' and group name of '" + name + "'");
 		}

@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -34,6 +29,11 @@ import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -130,6 +130,6 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
     }
 
     private String getPrincipalId(String principalName) {
-        return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
+        return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName).getPrincipalId();
     }
 }

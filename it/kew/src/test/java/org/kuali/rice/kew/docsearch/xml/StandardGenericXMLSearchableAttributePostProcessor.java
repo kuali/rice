@@ -29,7 +29,7 @@ public class StandardGenericXMLSearchableAttributePostProcessor extends DefaultP
     
     @Override
 	public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-		WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId(), statusChangeEvent.getDocumentId());
+		WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("rkirkend").getPrincipalId(), statusChangeEvent.getDocumentId());
 		doc.setTitle("I'm a title - I should increment the lockVersion Number of this document");
 		doc.saveDocumentData();
 		return new ProcessDocReport(true);

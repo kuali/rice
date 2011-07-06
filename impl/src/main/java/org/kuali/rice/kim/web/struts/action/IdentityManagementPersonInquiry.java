@@ -59,7 +59,7 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
         String principalId = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID);
         String principalName = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_NAME);
         if ( StringUtils.isBlank(principalId) && StringUtils.isNotBlank(principalName) ) {
-        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
         	if ( principal != null ) {
         		principalId = principal.getPrincipalId();
         	}

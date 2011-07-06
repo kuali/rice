@@ -20,11 +20,11 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.ken.exception.ErrorList;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -46,14 +46,22 @@ public class BaseSendNotificationController extends MultiActionController {
     private static final String WORKGROUP_NAMESPACE_CODES_PARAM = "workgroupNamespaceCodes";
     private static final String SPLIT_REGEX = "(%2C|,)";
     
-    private static IdentityManagementService identityManagementService;
+    private static IdentityService identityService;
+    private static GroupService groupService;
     private static NamespaceService namespaceService;
 
-    protected static IdentityManagementService getIdentityManagementService() {
-        if ( identityManagementService == null ) {
-            identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+    protected static IdentityService getIdentityService() {
+        if ( identityService == null ) {
+            identityService = KimApiServiceLocator.getIdentityService();
         }
-        return identityManagementService;
+        return identityService;
+    }
+
+    protected static GroupService getGroupService() {
+        if ( groupService == null ) {
+            groupService = KimApiServiceLocator.getGroupService();
+        }
+        return groupService;
     }
     
     protected static NamespaceService getNamespaceService() {
@@ -93,7 +101,7 @@ public class BaseSendNotificationController extends MultiActionController {
 
     protected boolean isUserRecipientValid(String user, ErrorList errors) {
         boolean valid = true;
-        Principal principal = getIdentityManagementService().getPrincipalByPrincipalName(user);
+        Principal principal = getIdentityService().getPrincipalByPrincipalName(user);
         if (principal == null) {
         	valid = false;
         	errors.addError("'" + user + "' is not a valid principal name");
@@ -108,7 +116,7 @@ public class BaseSendNotificationController extends MultiActionController {
     		errors.addError((new StringBuilder()).append('\'').append(namespaceCode).append("' is not a valid namespace code").toString());
     		return false;
     	} else {
-    		Group i = getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+    		Group i = getGroupService().getGroupByName(namespaceCode, groupName);
        		if (i == null) {
        			errors.addError((new StringBuilder()).append('\'').append(groupName).append(
        					"' is not a valid group name for namespace code '").append(namespaceCode).append('\'').toString());

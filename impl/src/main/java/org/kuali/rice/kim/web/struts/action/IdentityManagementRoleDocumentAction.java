@@ -310,7 +310,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         if (StringUtils.isEmpty(newMember.getMemberId())
                 && StringUtils.isNotEmpty(newMember.getMemberName())
                 && StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-            Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(newMember.getMemberName());
             if (principal != null) {
                 newMember.setMemberId(principal.getPrincipalId());
             }
@@ -455,7 +455,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         if (StringUtils.isEmpty(newDelegationMember.getMemberId())
                 && StringUtils.isNotEmpty(newDelegationMember.getMemberName())
                 && StringUtils.equals(newDelegationMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-            Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newDelegationMember.getMemberName());
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(newDelegationMember.getMemberName());
             if (principal != null) {
                 newDelegationMember.setMemberId(principal.getPrincipalId());
             }

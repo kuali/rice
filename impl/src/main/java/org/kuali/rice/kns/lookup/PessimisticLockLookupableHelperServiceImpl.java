@@ -15,23 +15,16 @@
  */
 package org.kuali.rice.kns.lookup;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.kim.bo.Person;
-
-import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PessimisticLockService;
@@ -40,6 +33,12 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class is the lookup helper for {@link org.kuali.rice.krad.document.authorization.PessimisticLock} objects
@@ -127,7 +126,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
         //set owner's principal id and remove owner principal name field 
         String principalName = fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME);
         if (!StringUtils.isEmpty(principalName)) {
-            Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
             if (principal != null) { 
                 fieldValues.put(OWNER_PRINCIPAL_ID_PROPERTY_NAME, principal.getPrincipalId());
             }

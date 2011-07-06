@@ -15,13 +15,6 @@
  */
 package mocks;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -29,6 +22,13 @@ import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEmailServiceImpl*/ implements MockEmailNotificationService {
@@ -131,7 +131,7 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
     }
 
     public int immediateReminderEmailsSent(String networkId, String documentId, String actionRequestCd) {
-        Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+        Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
         List actionItemsSentUser = immediateReminders.get(principal.getPrincipalId());
         if (actionItemsSentUser == null) {
             return 0;

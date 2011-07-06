@@ -15,18 +15,19 @@
  */
 package org.kuali.rice.kew.workgroup;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.test.BaselineTestCase;
+
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -46,16 +47,17 @@ public class GroupXmlImportTest extends KEWTestCase {
     @Test public void testGroupImportXml() throws Exception {
     	loadXmlFile("GroupXmlImportTest.xml");
 
-        IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+        IdentityService identityService = KimApiServiceLocator.getIdentityService();
+        GroupService groupService = KimApiServiceLocator.getGroupService();
         //verify that the group was ingested
-        Group group = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestUserGroup");
+        Group group = groupService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestUserGroup");
 
         assertNotNull(group);
-        List<String> members = identityManagementService.getGroupMemberPrincipalIds(group.getId());
-        List<String> groups = identityManagementService.getMemberGroupIds(group.getId());
-        assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId(), group.getId()));
-        assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("rkirkend").getPrincipalId(), group.getId()));
-        assertTrue(identityManagementService.isMemberOfGroup("2015", group.getId()));
-        assertTrue(KimApiServiceLocator.getGroupService().isGroupMemberOfGroup(identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup").getId(), group.getId()));
+        List<String> members = groupService.getMemberPrincipalIds(group.getId());
+        List<String> groups = groupService.getMemberGroupIds(group.getId());
+        assertTrue(groupService.isMemberOfGroup(identityService.getPrincipalByPrincipalName("ewestfal").getPrincipalId(), group.getId()));
+        assertTrue(groupService.isMemberOfGroup(identityService.getPrincipalByPrincipalName("rkirkend").getPrincipalId(), group.getId()));
+        assertTrue(groupService.isMemberOfGroup("2015", group.getId()));
+        assertTrue(KimApiServiceLocator.getGroupService().isGroupMemberOfGroup(groupService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup").getId(), group.getId()));
     }
 }

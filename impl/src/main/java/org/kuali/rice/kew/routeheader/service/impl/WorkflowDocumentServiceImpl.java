@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.routeheader.service.impl;
 
-import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -73,6 +65,14 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -153,7 +153,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue adHocRouteDocumentToGroup(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String groupId,
 			String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException {
 		Principal principal = loadPrincipal(principalId);
-		final Recipient recipient = new KimGroupRecipient(KimApiServiceLocator.getIdentityManagementService().getGroup(groupId));
+		final Recipient recipient = new KimGroupRecipient(KimApiServiceLocator.getGroupService().getGroup(groupId));
 		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, forceAction, requestLabel);
 		action.performAction();
 		return finish(document);

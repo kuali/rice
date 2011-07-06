@@ -22,9 +22,10 @@ import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
@@ -66,7 +67,8 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     private static KualiWorkflowInfo workflowInfoService;
     private static ConfigurationService kualiConfigurationService;
     private static DocumentHelperService documentHelperService;
-    private static IdentityManagementService identityManagementService;
+    private static GroupService groupService;
+    private static PermissionService permissionService;
     private static DataDictionaryService dataDictionaryService;
     
     /**
@@ -81,11 +83,18 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         return personService;
     }
 
-    public static IdentityManagementService getIdentityManagementService() {
-        if ( identityManagementService == null ) {
-            identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+    public static GroupService getGroupService() {
+        if ( groupService == null ) {
+            groupService = KimApiServiceLocator.getGroupService();
         }
-        return identityManagementService;
+        return groupService;
+    }
+
+    public static PermissionService getPermissionService() {
+        if ( permissionService == null ) {
+            permissionService = KimApiServiceLocator.getPermissionService();
+        }
+        return permissionService;
     }
 
     protected DocumentHelperService getDocumentHelperService() {
@@ -378,7 +387,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
             if (user == null) {
                 GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_INVALID_ADHOC_PERSON_ID);
             }
-            else if ( !getIdentityManagementService().hasPermission(user.getPrincipalId(), KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, 
+            else if ( !getPermissionService().hasPermission(user.getPrincipalId(), KimConstants.KIM_TYPE_DEFAULT_NAMESPACE,
                     KimConstants.PermissionNames.LOG_IN, null) ) {
                 GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_INACTIVE_ADHOC_PERSON_ID);
             }
@@ -448,7 +457,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         if (workgroup.getRecipientName() != null && workgroup.getRecipientNamespaceCode() != null) {
             // validate that they are a workgroup from the workgroup service by looking them up
             try {
-                Group group = getIdentityManagementService().getGroupByName(workgroup.getRecipientNamespaceCode(), workgroup.getRecipientName());
+                Group group = getGroupService().getGroupByName(workgroup.getRecipientNamespaceCode(), workgroup.getRecipientName());
                 if (group == null || !group.isActive()) {
                     GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
                 }

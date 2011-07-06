@@ -15,23 +15,6 @@
  */
 package org.kuali.rice.kew.server;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.rmi.RemoteException;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.parameter.Parameter;
@@ -72,6 +55,18 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.rmi.RemoteException;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 
 public class WorkflowUtilityTest extends KEWTestCase {
@@ -1065,7 +1060,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        Group ruleTestGroup = KimApiServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
+        Group ruleTestGroup = KimApiServiceLocator.getGroupService().getGroup(responsibilityVO.getGroupId());
         assertEquals("Rule workgroup id is incorrect",RuleTestGeneralSetup.RULE_TEST_GROUP_ID, ruleTestGroup.getId());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
@@ -1147,7 +1142,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         RuleResponsibilityDTO responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        Group ruleTestGroup2 = KimApiServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
+        Group ruleTestGroup2 = KimApiServiceLocator.getGroupService().getGroup(responsibilityVO.getGroupId());
         assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP2,ruleTestGroup2.getName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(4),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
@@ -1203,7 +1198,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        ruleTestGroup2 = KimApiServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
+        ruleTestGroup2 = KimApiServiceLocator.getGroupService().getGroup(responsibilityVO.getGroupId());
         assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP, ruleTestGroup2.getName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_APPROVE_REQ,responsibilityVO.getActionRequestedCd());

@@ -35,14 +35,17 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.util.WebUtils;
@@ -59,9 +62,7 @@ import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.krad.document.authorization.DocumentPresentationController;
@@ -76,7 +77,6 @@ import org.kuali.rice.krad.rule.event.AddNoteEvent;
 import org.kuali.rice.krad.rule.event.SendAdHocRequestsEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -130,7 +130,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private ParameterService parameterService;
     private PessimisticLockService pessimisticLockService;
     private KualiRuleService kualiRuleService;
-    private IdentityManagementService identityManagementService;
+    private GroupService groupService;
     private AttachmentService attachmentService;
     private NoteService noteService;
     private BusinessObjectAuthorizationService businessObjectAuthorizationService;
@@ -1146,7 +1146,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 if (request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode") != null && !"".equals(request.getParameter("newAdHocRouteWorkgroup.recipientName").trim())) {
                     namespace = request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode").trim();
                 }
-                Group group = getIdentityManagementService().getGroupByName(namespace, request.getParameter(parameterName));
+                Group group = getGroupService().getGroupByName(namespace, request.getParameter(parameterName));
                 if (group != null) {
                     kualiForm.getNewAdHocRouteWorkgroup().setId(group.getId());
                     kualiForm.getNewAdHocRouteWorkgroup().setRecipientName(group.getName());
@@ -1164,7 +1164,7 @@ public class KualiDocumentActionBase extends KualiAction {
                     if (request.getParameter(namespaceParam) != null && !"".equals(request.getParameter(namespaceParam).trim())) {
                         namespace = request.getParameter(namespaceParam).trim();
                     }
-                    Group group = getIdentityManagementService().getGroupByName(namespace, request.getParameter(parameterName));
+                    Group group = getGroupService().getGroupByName(namespace, request.getParameter(parameterName));
                     if (group != null) {
                         kualiForm.getAdHocRouteWorkgroup(lineNumber).setId(group.getId());
                         kualiForm.getAdHocRouteWorkgroup(lineNumber).setRecipientName(group.getName());
@@ -1784,11 +1784,11 @@ public class KualiDocumentActionBase extends KualiAction {
         return this.kualiRuleService;
     }
 
-    protected IdentityManagementService getIdentityManagementService() {
-        if (identityManagementService == null) {
-            identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+    protected GroupService getGroupService() {
+        if (groupService == null) {
+            groupService = KimApiServiceLocator.getGroupService();
         }
-        return this.identityManagementService;
+        return this.groupService;
     }
 
     protected AttachmentService getAttachmentService() {

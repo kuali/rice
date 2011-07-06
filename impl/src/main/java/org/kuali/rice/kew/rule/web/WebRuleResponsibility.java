@@ -126,7 +126,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				// setReviewer(getWorkgroupService().getWorkgroup(new
 				// WorkflowGroupId(new
 				// Long(getRuleResponsibilityName()))).getGroupNameId().getNameId());
-				Group group = KimApiServiceLocator.getIdentityManagementService().
+				Group group = KimApiServiceLocator.getGroupService().
 	                  getGroup(getRuleResponsibilityName());
 				setReviewer(group.getName());
 				setReviewerId(group.getId());
@@ -179,7 +179,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public void setWorkgroupId(String workgroupId) {
-	    Group workgroup = KimApiServiceLocator.getIdentityManagementService().getGroup(workgroupId);
+	    Group workgroup = KimApiServiceLocator.getGroupService().getGroup(workgroupId);
 		//Workgroup workgroup = getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
 		if (workgroup != null) {
 			setReviewer(workgroup.getName());

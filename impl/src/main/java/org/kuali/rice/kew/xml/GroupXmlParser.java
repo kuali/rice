@@ -25,6 +25,8 @@ import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.IdentityService;
@@ -297,13 +299,14 @@ public class GroupXmlParser {
     }
 
     private void addGroupMembers(Group groupInfo, String key) throws XmlException {
-        IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+        GroupUpdateService groupUpdateService = KimApiServiceLocator.getGroupUpdateService();
+        GroupService groupService = KimApiServiceLocator.getGroupService();
         List<String> groupIds = memberGroupIds.get(key);
         if (groupIds != null) {
             for (String groupId : groupIds) {
-                Group group = identityManagementService.getGroup(groupId);
+                Group group = groupService.getGroup(groupId);
                 if (group != null) {
-                    identityManagementService.addGroupToGroup(group.getId(), groupInfo.getId());
+                    groupUpdateService.addGroupToGroup(group.getId(), groupInfo.getId());
                     //TODO HACK!!!!!!! Use IDMService.addPrincipalToGroup
                     /*GroupMemberBo groupMember = new GroupMemberBo();
                     groupMember.setGroupId(groupInfo.getId());
@@ -319,9 +322,9 @@ public class GroupXmlParser {
         List<String> groupNames = memberGroupNames.get(key);
         if (groupNames != null) {
             for (String groupName : groupNames) {
-                Group group = identityManagementService.getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+                Group group = groupService.getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
                 if (group != null) {
-                	identityManagementService.addGroupToGroup(group.getId(), groupInfo.getId());
+                	groupUpdateService.addGroupToGroup(group.getId(), groupInfo.getId());
                 } else {
                     throw new XmlException("Group "+groupName+" cannot be found.");
                 }
@@ -330,7 +333,7 @@ public class GroupXmlParser {
         List<String> principalIds = memberPrincipalIds.get(key);
         if (principalIds != null) {
             for (String principalId : principalIds) {
-            	identityManagementService.addPrincipalToGroup(principalId, groupInfo.getId());
+            	groupUpdateService.addPrincipalToGroup(principalId, groupInfo.getId());
             }
         }
 

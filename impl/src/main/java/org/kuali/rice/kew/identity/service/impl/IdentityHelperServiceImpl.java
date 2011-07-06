@@ -135,9 +135,9 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		if (groupId == null || groupId.isEmpty()) {
 			return null;
 		} else if (groupId instanceof WorkflowGroupId) {
-			return KimApiServiceLocator.getIdentityManagementService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
+			return KimApiServiceLocator.getGroupService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
 		} else if (groupId instanceof GroupNameId) {
-			return KimApiServiceLocator.getIdentityManagementService().getGroupByName(((GroupNameId)groupId).getNamespace(), ((GroupNameId)groupId).getNameId());
+			return KimApiServiceLocator.getGroupService().getGroupByName(((GroupNameId)groupId).getNamespace(), ((GroupNameId)groupId).getNameId());
 		}
 		throw new RiceIllegalArgumentException("Invalid GroupId type was passed: " + groupId);
 	}

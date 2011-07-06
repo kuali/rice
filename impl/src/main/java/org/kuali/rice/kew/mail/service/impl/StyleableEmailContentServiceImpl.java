@@ -161,7 +161,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         } else if (actionItem.getDelegatorWorkflowId() != null) {
             delegatorType = "workgroup";
             delegatorId = actionItem.getDelegatorGroupId().toString();
-            delegatorDisplayValue = KimApiServiceLocator.getIdentityManagementService().getGroup(actionItem.getDelegatorGroupId()).getName();
+            delegatorDisplayValue = KimApiServiceLocator.getGroupService().getGroup(actionItem.getDelegatorGroupId()).getName();
         }
         delegatorElement.setAttribute("type", delegatorType);
         // add the id element

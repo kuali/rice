@@ -412,7 +412,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         if (org.apache.commons.lang.StringUtils.isEmpty(workgroupName)) {
             return true;
         }
-        Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(id);
+        Group group = KimApiServiceLocator.getGroupService().getGroup(id);
         return group != null;
     }
 

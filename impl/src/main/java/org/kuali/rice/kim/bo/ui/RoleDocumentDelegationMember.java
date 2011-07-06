@@ -241,7 +241,7 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 	protected void populateDerivedValues() {
 		if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())){
         	Group groupInfo = null;
-        	groupInfo = KimApiServiceLocator.getIdentityManagementService().getGroup(getMemberId());
+        	groupInfo = KimApiServiceLocator.getGroupService().getGroup(getMemberId());
         	if (groupInfo != null) {
         		setMemberNamespaceCode(groupInfo.getNamespaceCode());
         	}        	

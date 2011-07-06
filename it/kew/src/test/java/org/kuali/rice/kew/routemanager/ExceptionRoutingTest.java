@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.kew.routemanager;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Collection;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -42,6 +31,11 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.test.BaselineTestCase;
+
+import javax.xml.namespace.QName;
+import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class ExceptionRoutingTest extends KEWTestCase {
@@ -80,7 +74,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
         assertEquals("Should be a single exception request", 1, actionRequests.length);
         for (int i = 0; i < actionRequests.length; i++) {
             ActionRequestDTO actionRequest = actionRequests[i];
-            Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
+            Group group = KimApiServiceLocator.getGroupService().getGroup(actionRequest.getGroupId());
             assertTrue("Request should be an exception request.", actionRequest.isExceptionRequest());
             assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
             assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
@@ -173,7 +167,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
         for (int i = 0; i < actionRequests.length; i++) {
             ActionRequestDTO actionRequest = actionRequests[i];
             if (actionRequest.isCompleteRequest()) {
-            	Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
+            	Group group = KimApiServiceLocator.getGroupService().getGroup(actionRequest.getGroupId());
                 assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
                 assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
                 assertNull("For exception routing, node instance should have a null id.", actionRequest.getNodeInstanceId());

@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kew.document;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
@@ -35,9 +30,14 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.document.MaintenanceDocument;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.
@@ -195,7 +195,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
             for (Iterator<RuleResponsibility> iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
                 RuleResponsibility responsibility = iter.next();
                 if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
-                    if (getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
+                    if (getGroupService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                     	this.putFieldError("Groups", "routetemplate.ruleservice.workgroup.invalid");
                     	isValid &= false;
                     }

@@ -110,7 +110,7 @@ public class GroupXmlExporter implements XmlExporter {
         if (memberGroupIds.size() > 0 || memberPrincipalIds.size() > 0) {
             Element membersElement = renderer.renderElement(groupElement, MEMBERS);
             for (String memberGroupId : memberGroupIds) {
-                Group memberGroup = KimApiServiceLocator.getIdentityManagementService().getGroup(memberGroupId);
+                Group memberGroup = KimApiServiceLocator.getGroupService().getGroup(memberGroupId);
                 Element groupNameElement = renderer.renderElement(membersElement, GROUP_NAME);
                 renderer.renderTextElement(groupNameElement, NAME, memberGroup.getName());
                 renderer.renderTextElement(groupNameElement, NAMESPACE, memberGroup.getNamespaceCode());

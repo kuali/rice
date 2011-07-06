@@ -1523,7 +1523,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public String getWorkgroupViewerSql(String id, String workgroupName, String whereClausePredicatePrefix) {
         String sql = "";
         if (!org.apache.commons.lang.StringUtils.isEmpty(workgroupName)) {
-            Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(id);
+            Group group = KimApiServiceLocator.getGroupService().getGroup(id);
             sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + group.getId();
         }
         return sql;

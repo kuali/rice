@@ -13,18 +13,6 @@
  */
 package org.kuali.rice.kew.actionitem.dao.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
@@ -38,6 +26,17 @@ import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * OJB implementation of {@link ActionItemDAO}.
@@ -183,7 +182,8 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
                 delegators.put(delegatorWorkflowId,new WebFriendlyRecipient(KimApiServiceLocator.getPersonService().getPerson(delegatorWorkflowId)));
             }else if (delegatorGroupId != null) {
                 if (!delegators.containsKey(delegatorGroupId)) {
-                    delegators.put(delegatorGroupId, new KimGroupRecipient(getIdentityManagementService().getGroup(delegatorGroupId)));
+                    delegators.put(delegatorGroupId, new KimGroupRecipient(KimApiServiceLocator.getGroupService().getGroup(
+                            delegatorGroupId)));
                 }
             }
         }
@@ -191,7 +191,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
-    	List<String> workgroupIds = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+    	List<String> workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
         Criteria delegatorWorkflowIdCriteria = new Criteria(ActionItem.class.getName());
         delegatorWorkflowIdCriteria.eq("delegatorWorkflowId", principalId);

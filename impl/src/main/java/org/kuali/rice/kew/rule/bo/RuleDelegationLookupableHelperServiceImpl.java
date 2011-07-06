@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -44,9 +36,9 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
@@ -64,6 +56,14 @@ import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -228,12 +228,12 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         if (!org.apache.commons.lang.StringUtils.isEmpty(groupIdParam) || !org.apache.commons.lang.StringUtils.isEmpty(groupNameParam)) {
             Group group = null;
             if (groupIdParam != null && !"".equals(groupIdParam)) {
-                group = getIdentityManagementService().getGroup(groupIdParam.trim());
+                group = getGroupService().getGroup(groupIdParam.trim());
             } else {
                 if (groupNamespaceParam == null) {
                     groupNamespaceParam = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
                 }
-                group = getIdentityManagementService().getGroupByName(groupNamespaceParam, groupNameParam.trim());
+                group = getGroupService().getGroupByName(groupNamespaceParam, groupNameParam.trim());
                 if (group == null) {
                     GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
                 } else {
@@ -368,8 +368,8 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
 
 
-    private IdentityManagementService getIdentityManagementService() {
-       return KimApiServiceLocator.getIdentityManagementService();
+    private GroupService getGroupService() {
+       return KimApiServiceLocator.getGroupService();
     }
 
     private RuleTemplateService getRuleTemplateService() {
@@ -399,7 +399,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if  (!org.apache.commons.lang.StringUtils.isEmpty(groupName) && !org.apache.commons.lang.StringUtils.isEmpty(groupNamespace)) {
-            Group group = getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = getGroupService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
             }

@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kew.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -29,6 +24,11 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -167,7 +167,7 @@ public class KewRoutingKualiForm extends KualiForm {
 
     public void setAppSpecificWorkgroupId(String workgroupId){
         if(workgroupId != null){
-            Group workgroup = KimApiServiceLocator.getIdentityManagementService().getGroup(workgroupId);
+            Group workgroup = KimApiServiceLocator.getGroupService().getGroup(workgroupId);
             if(workgroup != null){
                 getAppSpecificRouteRecipient2().setId(workgroup.getId());
             }

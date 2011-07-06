@@ -26,13 +26,19 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.List;
 
 
@@ -90,7 +96,7 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 
     public Group getGroup() {
         if (isUsingGroup()) {
-        	return KimApiServiceLocator.getIdentityManagementService().getGroup(ruleResponsibilityName);
+        	return KimApiServiceLocator.getGroupService().getGroup(ruleResponsibilityName);
         }
         return null;
     }

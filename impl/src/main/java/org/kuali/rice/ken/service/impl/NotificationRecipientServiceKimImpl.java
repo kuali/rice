@@ -19,7 +19,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ken.service.NotificationRecipientService;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
@@ -35,9 +35,9 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
     private static final Logger LOG =
         Logger.getLogger(NotificationRecipientServiceKimImpl.class);
 
-    protected IdentityManagementService getIdentityManagementService()
+    protected GroupService getGroupService()
     {
-        return KimApiServiceLocator.getIdentityManagementService();
+        return KimApiServiceLocator.getGroupService();
     }
 
     /**
@@ -49,9 +49,9 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      */
     public String[] getGroupMembers(String groupRecipientId)
     {
-        Group group = getIdentityManagementService().getGroup(groupRecipientId);
+        Group group = getGroupService().getGroup(groupRecipientId);
 
-        List<String> ids = getIdentityManagementService().getGroupMemberPrincipalIds(group.getId());
+        List<String> ids = getGroupService().getMemberPrincipalIds(group.getId());
 
         String[] array = new String[ids.size()];
         return ids.toArray(array);

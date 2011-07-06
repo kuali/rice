@@ -926,7 +926,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 if (workgroupId == null) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest workgroup null.",
                             "actionrequest.workgroup.empty", actionRequest.getActionRequestId().toString()));
-                } else if (KimApiServiceLocator.getIdentityManagementService().getGroup(workgroupId) == null) {
+                } else if (KimApiServiceLocator.getGroupService().getGroup(workgroupId) == null) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest workgroup invalid.",
                             "actionrequest.workgroup.invalid", actionRequest.getActionRequestId().toString()));
                 }

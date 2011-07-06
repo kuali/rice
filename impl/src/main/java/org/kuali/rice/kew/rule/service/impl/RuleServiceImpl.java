@@ -16,23 +16,6 @@
 
 package org.kuali.rice.kew.rule.service.impl;
 
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -79,13 +62,29 @@ import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+
+import javax.xml.namespace.QName;
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 
 public class RuleServiceImpl implements RuleService {
@@ -808,7 +807,7 @@ public class RuleServiceImpl implements RuleService {
             for (Object element : ruleBaseValues.getResponsibilities()) {
                 RuleResponsibility responsibility = (RuleResponsibility) element;
                 if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
-                    if (getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
+                    if (getGroupService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                         errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     }
                 } else if (responsibility.getPrincipal() == null && responsibility.getRole() == null) {
@@ -860,7 +859,7 @@ public class RuleServiceImpl implements RuleService {
         for (Object element : ruleBaseValues.getResponsibilities()) {
             RuleResponsibility responsibility = (RuleResponsibility) element;
             if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
-                if (getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
+                if (getGroupService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                     errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     LOG.error("Workgroup is invalid");
                 }
@@ -947,7 +946,7 @@ public class RuleServiceImpl implements RuleService {
         if (principalId != null) {
             KEWServiceLocator.getIdentityHelperService().validatePrincipalId(principalId);
             if ( (workgroupMember == null) || (workgroupMember.booleanValue()) ) {
-        		workgroupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+        		workgroupIds = getGroupService().getGroupIdsForPrincipal(principalId);
         	} else {
         		// user was passed but workgroups should not be parsed... do nothing
         	}
@@ -1195,8 +1194,8 @@ public class RuleServiceImpl implements RuleService {
         return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
     }
 
-    public IdentityManagementService getIdentityManagementService() {
-        return KimApiServiceLocator.getIdentityManagementService();
+    public GroupService getGroupService() {
+        return KimApiServiceLocator.getGroupService();
     }
 
     public ActionRequestService getActionRequestService() {

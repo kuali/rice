@@ -15,17 +15,17 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DocumentAdHocService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Implementation for {@link DocumentAdHocService}.
@@ -57,7 +57,7 @@ public class DocumentAdHocServiceImpl implements DocumentAdHocService {
 
         //populate group namespace and names on adHocRoutWorkgroups
         for (AdHocRouteWorkgroup adHocRouteWorkgroup : adHocRouteWorkgroups) {
-            Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(adHocRouteWorkgroup.getId());
+            Group group = KimApiServiceLocator.getGroupService().getGroup(adHocRouteWorkgroup.getId());
             adHocRouteWorkgroup.setRecipientName(group.getName());
             adHocRouteWorkgroup.setRecipientNamespaceCode(group.getNamespaceCode());
         }

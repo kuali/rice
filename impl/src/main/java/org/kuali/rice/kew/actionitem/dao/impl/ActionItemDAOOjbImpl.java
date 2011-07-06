@@ -13,14 +13,6 @@
  */
 package org.kuali.rice.kew.actionitem.dao.impl;
 
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
@@ -38,6 +30,14 @@ import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 /**
  * OJB implementation of {@link ActionItemDAO}.
  *
@@ -143,7 +143,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             } else if (ids[1] != null) {
                 String workgroupId = ids[1].toString();
                 if (!delegators.containsKey(workgroupId)) {
-                    delegators.put(workgroupId, new KimGroupRecipient(getIdentityManagementService().getGroup(workgroupId)));
+                    delegators.put(workgroupId, new KimGroupRecipient(KimApiServiceLocator.getGroupService().getGroup(workgroupId)));
                 }
             }
         }
@@ -151,7 +151,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
-    	List<String> workgroupIds = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+    	List<String> workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria();
         Criteria delegatorWorkflowIdCriteria = new Criteria();
         delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", principalId);

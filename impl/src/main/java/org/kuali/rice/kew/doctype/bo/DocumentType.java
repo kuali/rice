@@ -16,31 +16,6 @@
 
 package org.kuali.rice.kew.doctype.bo;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -83,11 +58,35 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.Inactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that
@@ -976,7 +975,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         if (workgroupId == null) {
             return null;
         }
-        return getIdentityManagementService().getGroup(this.workgroupId);
+        return getGroupService().getGroup(this.workgroupId);
     }
 
     public void setSuperUserWorkgroupNoInheritence(Group suWorkgroup) {
@@ -1004,7 +1003,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         if (StringUtils.isBlank(blanketApproveWorkgroupId)) {
             return null;
         }
-        return getIdentityManagementService().getGroup(blanketApproveWorkgroupId);
+        return getGroupService().getGroup(blanketApproveWorkgroupId);
     }
 
     public void setBlanketApproveWorkgroup(Group blanketApproveWorkgroup) {
@@ -1026,7 +1025,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         if (getParentDocType() != null && this.blanketApproveWorkgroupId == null) {
             return getParentDocType().getBlanketApproveWorkgroupWithInheritance();
         }
-        return getIdentityManagementService().getGroup(blanketApproveWorkgroupId);
+        return getGroupService().getGroup(blanketApproveWorkgroupId);
     }
 
     public boolean isBlanketApprover(String principalId) {
@@ -1038,7 +1037,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
             return true;
         }
         if (blanketApproveWorkgroupId != null) {
-            return getIdentityManagementService().isMemberOfGroup(principalId, blanketApproveWorkgroupId);
+            return getGroupService().isMemberOfGroup(principalId, blanketApproveWorkgroupId);
         }
         DocumentType parentDoc = getParentDocType();
         if (parentDoc != null) {
@@ -1077,7 +1076,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     	if (StringUtils.isBlank(this.reportingWorkgroupId)) {
     		return null;
     	}
-        return getIdentityManagementService().getGroup(this.reportingWorkgroupId);
+        return getGroupService().getGroup(this.reportingWorkgroupId);
     }
 
     public void setReportingWorkgroup(Group reportingWorkgroup) {
@@ -1465,7 +1464,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         if (workgroup == null) {
             return false;
         }
-        return getIdentityManagementService().isMemberOfGroup(principalId, workgroup.getId());
+        return getGroupService().isMemberOfGroup(principalId, workgroup.getId());
     }
 
     public boolean hasPreviousVersion() {
@@ -1591,8 +1590,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         this.applyRetroactively = applyRetroactively;
     }
 
-    private IdentityManagementService getIdentityManagementService() {
-        return KimApiServiceLocator.getIdentityManagementService();
+    private GroupService getGroupService() {
+        return KimApiServiceLocator.getGroupService();
     }
 
     /**

@@ -16,26 +16,6 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -70,6 +50,25 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 /**
  * Bean mapped to DB. Represents ActionRequest to a workgroup, user or role.  Contains
  * references to children/parent if a member of a graph
@@ -211,7 +210,7 @@ public class ActionRequestValue implements Serializable {
             LOG.error("Attempting to get a group with a blank group id");
             return null;
         }
-        return KimApiServiceLocator.getIdentityManagementService().getGroup(getGroupId());
+        return KimApiServiceLocator.getGroupService().getGroup(getGroupId());
     }
 
     public String getRouteLevelName() {
@@ -942,7 +941,7 @@ public class ActionRequestValue implements Serializable {
 	}
 
     public String getGroupName() {
-        return KimApiServiceLocator.getIdentityManagementService().getGroup(this.groupId).getName();
+        return KimApiServiceLocator.getGroupService().getGroup(this.groupId).getName();
     }
 
 	/**

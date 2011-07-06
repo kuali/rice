@@ -307,19 +307,19 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         if (newGroup.getGroupName() == null 
         		&& newGroup.getNamespaceCode() == null 
         		&& newGroup.getGroupId() != null) {
-        	Group tempGroup = KimApiServiceLocator.getIdentityManagementService().getGroup(newGroup.getGroupId());
+        	Group tempGroup = KimApiServiceLocator.getGroupService().getGroup(newGroup.getGroupId());
         	newGroup.setGroupName(tempGroup.getName());
 	        newGroup.setNamespaceCode(tempGroup.getNamespaceCode());
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
         } else if (newGroup.getGroupName() != null 
         		&& newGroup.getNamespaceCode() != null 
         		&& newGroup.getGroupId() == null) {
-        	Group tempGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(newGroup.getNamespaceCode(), newGroup.getGroupName());
+        	Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByName(newGroup.getNamespaceCode(), newGroup.getGroupName());
         	newGroup.setGroupId(tempGroup.getId());
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
         }
         if (getKualiRuleService().applyRules(new AddGroupEvent("",personDocumentForm.getPersonDocument(), newGroup))) {
-	        Group group = getIdentityManagementService().getGroup(newGroup.getGroupId());
+	        Group group = getGroupService().getGroup(newGroup.getGroupId());
 	        newGroup.setGroupName(group.getName());
 	        newGroup.setNamespaceCode(group.getNamespaceCode());
 	        newGroup.setKimTypeId(group.getKimTypeId());

@@ -16,13 +16,6 @@
  */
 package org.kuali.rice.kew.actionlist.web;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -35,11 +28,17 @@ import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -150,7 +149,7 @@ public class ActionListFilterAction extends KualiAction {
     		Group group;
             for (String groupId : userWorkgroups)
             {
-                group = KimApiServiceLocator.getIdentityManagementService().getGroup(groupId);
+                group = KimApiServiceLocator.getGroupService().getGroup(groupId);
                 keyValue = new ConcreteKeyValue(groupId, group.getName());
                 sortedUserWorkgroups.add(keyValue);
             }

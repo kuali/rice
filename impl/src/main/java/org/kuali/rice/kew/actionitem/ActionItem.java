@@ -242,7 +242,7 @@ public class ActionItem implements RowStyleable, Serializable {
     	if (StringUtils.isBlank(groupId)) {
     		return null;
     	}
-    	return KimApiServiceLocator.getIdentityManagementService().getGroup(groupId);
+    	return KimApiServiceLocator.getGroupService().getGroup(groupId);
     }
 
     public Group getGroup(){

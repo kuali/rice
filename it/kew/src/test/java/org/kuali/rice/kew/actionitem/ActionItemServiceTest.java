@@ -163,7 +163,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         assertEquals("Workgroup should have 5 members.", 5, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
         assertEquals("User should have 0 action item", 0, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
 
-         KimApiServiceLocator.getIdentityManagementService().addPrincipalToGroup(ewestfal.getPrincipalId(), workgroup1.getId());
+         KimApiServiceLocator.getGroupUpdateService().addPrincipalToGroup(ewestfal.getPrincipalId(), workgroup1.getId());
          assertEquals("Workgroup should have 6 members.", 6, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
 
@@ -202,7 +202,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          assertEquals("Workgroup should have 5 members.", 5, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
          assertEquals("User should have 0 action item", 0, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
 
-          KimApiServiceLocator.getIdentityManagementService().addPrincipalToGroup(user1.getPrincipalId(), workgroupSub.getId());
+          KimApiServiceLocator.getGroupUpdateService().addPrincipalToGroup(user1.getPrincipalId(), workgroupSub.getId());
           assertEquals("Workgroup should have 6 members.", 6, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
           assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
 

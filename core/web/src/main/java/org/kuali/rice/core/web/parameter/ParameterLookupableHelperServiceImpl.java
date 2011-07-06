@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.component.Component;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
@@ -66,11 +65,11 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME, parm.getComponentCode());
         permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getName());
-        allowsEdit = KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
+        allowsEdit = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(
         		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 				KRADConstants.KRAD_NAMESPACE,
 				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
-				Attributes.fromMap(permissionDetails), null);
+				permissionDetails, null);
         
         return allowsEdit;
     }

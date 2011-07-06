@@ -15,51 +15,44 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquiryCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictionsBase;
 import org.kuali.rice.kns.document.authorization.InquiryOrMaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.document.authorization.InquiryOrMaintenanceDocumentRestrictionsBase;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictionsBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.krad.inquiry.InquiryAuthorizer;
-import org.kuali.rice.krad.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryRestrictions;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.authorization.BusinessObjectAuthorizer;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentAuthorizer;
 import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentPresentationController;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
-import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationController;
+import org.kuali.rice.krad.inquiry.InquiryAuthorizer;
+import org.kuali.rice.krad.inquiry.InquiryPresentationController;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentHelperService;
@@ -70,10 +63,16 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 @Deprecated
 public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizationServiceImpl implements BusinessObjectAuthorizationService {
 	private DataDictionaryService dataDictionaryService;
-	private IdentityManagementService identityManagementService;
+	private PermissionService permissionService;
 	private BusinessObjectDictionaryService businessObjectDictionaryService;
 	private DocumentHelperService documentHelperService;
 	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
@@ -538,11 +537,11 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			} 
 		}
 		if (result == null) { 
-			result = getIdentityManagementService().isAuthorizedByTemplateName(
+			result = getPermissionService().isAuthorizedByTemplateName(
 					user.getPrincipalId(),
 					KRADConstants.KRAD_NAMESPACE,
 					KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD,
-					Attributes.fromMap(getFieldPermissionDetails(dataObjectClass, fieldName)),
+					new AttributeSet(getFieldPermissionDetails(dataObjectClass, fieldName)),
 					null);
 		}
 		return result; // should be safe to return Boolean here since the only circumstances that
@@ -559,11 +558,11 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			return false;
 
 		if ( document == null ) {
-			return getIdentityManagementService().isAuthorizedByTemplateName(
+			return getPermissionService().isAuthorizedByTemplateName(
 					user.getPrincipalId(),
 					KRADConstants.KRAD_NAMESPACE,
 					KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD,
-					Attributes.fromMap(getFieldPermissionDetails(dataObjectClass,fieldName)),
+					new AttributeSet(getFieldPermissionDetails(dataObjectClass,fieldName)),
 					null);
 		} else { // if a document was passed, evaluate the permission in the context of a document
 			return getDocumentHelperService().getDocumentAuthorizer( document )
@@ -629,12 +628,12 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 		return permissionDetails;
 	}
 
-	private IdentityManagementService getIdentityManagementService() {
-		if (identityManagementService == null) {
-			identityManagementService = KimApiServiceLocator
-					.getIdentityManagementService();
+	private PermissionService getPermissionService() {
+		if (permissionService == null) {
+			permissionService = KimApiServiceLocator
+					.getPermissionService();
 		}
-		return identityManagementService;
+		return permissionService;
 	}
 
 	private BusinessObjectDictionaryService getBusinessObjectDictionaryService() {

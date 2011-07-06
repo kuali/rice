@@ -24,7 +24,6 @@ import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import javax.persistence.EntityManager;
@@ -228,10 +227,6 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         }
         
         return results;
-    }
-
-    private IdentityManagementService getIdentityManagementService() {
-        return KimApiServiceLocator.getIdentityManagementService();
     }
 
     public EntityManager getEntityManager() {

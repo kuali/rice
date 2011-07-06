@@ -15,21 +15,12 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -39,6 +30,12 @@ import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * An abstract super class for all Struts Actions in KEW.  Adds some custom
@@ -119,8 +116,8 @@ public abstract class KSBAction extends DispatchAction {
     	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
     	AttributeSet permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
     	
-        if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
-        		KimConstants.PermissionTemplateNames.USE_SCREEN, Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifier) ))
+        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
+        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))
         {
         	throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(), 
             		methodToCall,

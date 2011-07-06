@@ -17,11 +17,12 @@ package org.kuali.rice.krad.authorization;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
+import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 
-	private static IdentityManagementService identityManagementService;
+	private static PermissionService permissionService;
 	private String permissionTemplateNamespace;
 	private String permissionTemplateName;
 	/**
@@ -63,7 +64,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 	}
 	
 	protected List<PermissionAssigneeInfo> getPermissionAssignees(Attributes qualification) {
-		return getIdentityManagementService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, qualification,  qualification);
+		return getPermissionService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, new AttributeSet(qualification.toMap()),  new AttributeSet(qualification.toMap()));
 	}
 
     @Override
@@ -85,17 +86,17 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
     public boolean hasApplicationRole(
             String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification){
         // FIXME: dangerous - data changes could cause an infinite loop - should add thread-local to trap state and abort
-        return getIdentityManagementService().isAuthorizedByTemplateName(principalId, permissionTemplateNamespace, permissionTemplateName, qualification, qualification);
+        return getPermissionService().isAuthorizedByTemplateName(principalId, permissionTemplateNamespace, permissionTemplateName, new AttributeSet(qualification.toMap()), new AttributeSet(qualification.toMap()));
     }
 
     /**
      * @return the documentService
      */
-    protected IdentityManagementService getIdentityManagementService() {
-        if (identityManagementService == null) {
-            identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+    protected PermissionService getPermissionService() {
+        if (permissionService == null) {
+            permissionService = KimApiServiceLocator.getPermissionService();
         }
-        return identityManagementService;
+        return permissionService;
     }
 
 }

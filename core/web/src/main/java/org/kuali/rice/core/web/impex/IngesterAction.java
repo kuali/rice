@@ -28,7 +28,6 @@ import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.XmlDoc;
 import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.ZipXmlDocCollection;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -212,8 +211,8 @@ public class IngesterAction extends KualiAction {
     	AttributeSet roleQualifier = new AttributeSet();
     	AttributeSet permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
 
-        if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
-        		KimConstants.PermissionTemplateNames.USE_SCREEN, Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifier)))
+        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
+        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier))
         {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(),
             		methodToCall,

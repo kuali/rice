@@ -18,7 +18,7 @@ package org.kuali.rice.ken;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ken.test.KENTestCase;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -39,9 +39,9 @@ public class KEWIntegrationTest extends KENTestCase {
 	@Test
     public void testKEWServicesAreAccessible() throws Exception {
         
-        IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
-        assertNotNull(identityManagementService);
-        LOG.info("Default KIM IdentityManagementService: " + identityManagementService);
+        IdentityService identityService = KimApiServiceLocator.getIdentityService();
+        assertNotNull(identityService);
+        LOG.info("Default KIM IdentityManagementService: " + identityService);
 
         KSBXMLService notification = (KSBXMLService) GlobalResourceLoader.getService(new QName("KEN", "sendNotificationKewXmlService"));
         assertNotNull(notification);

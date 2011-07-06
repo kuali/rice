@@ -26,7 +26,6 @@ import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -186,10 +185,6 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             }
         }
         return delegators.values();
-    }
-
-    private IdentityManagementService getIdentityManagementService() {
-        return KimApiServiceLocator.getIdentityManagementService();
     }
 
 	/**

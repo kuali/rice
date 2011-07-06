@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
@@ -41,7 +40,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -92,10 +90,10 @@ public class LookupController extends UifControllerBase {
                 Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
                 Person user = GlobalVariables.getUserSession().getPerson();
                 // check if user is allowed to lookup object
-                if (!KimApiServiceLocator.getIdentityManagementService()
+                if (!KimApiServiceLocator.getPermissionService()
                         .isAuthorizedByTemplateName(user.getPrincipalId(), KRADConstants.KRAD_NAMESPACE,
                                 KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
-                                Attributes.fromMap(KRADUtils.getNamespaceAndComponentSimpleName(dataObjectClass)),
+                                KRADUtils.getNamespaceAndComponentSimpleName(dataObjectClass),
                                 null)) {
                     throw new AuthorizationException(user.getPrincipalName(),
                             KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, dataObjectClass.getSimpleName());

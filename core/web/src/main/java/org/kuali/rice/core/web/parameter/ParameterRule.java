@@ -15,25 +15,24 @@
  */
 package org.kuali.rice.core.web.parameter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.core.api.component.Component;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
-import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill
@@ -69,11 +68,11 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getNamespaceCode());
 	        permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME, parm.getComponentCode());
 	        permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getName());
-	        allowsEdit = KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
+	        allowsEdit = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(
 	        				GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 	        				KRADConstants.KRAD_NAMESPACE,
 	        				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
-	        				Attributes.fromMap(permissionDetails), null);
+	        				permissionDetails, null);
 	        if(!allowsEdit){
 	        	putGlobalError(RiceKeyConstants.AUTHORIZATION_ERROR_PARAMETER);
 	        }

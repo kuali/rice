@@ -20,16 +20,15 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.web.struts.form.BackdoorForm;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.kns.web.struts.form.BackdoorForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -131,7 +130,7 @@ public class BackdoorAction extends KualiAction {
     	AttributeSet permissionDetails = new AttributeSet();
     	permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, KEWConstants.KEW_NAMESPACE);
     	permissionDetails.put(KimConstants.AttributeConstants.ACTION_CLASS, "org.kuali.rice.kew.web.backdoor.AdministrationAction");
-    	boolean isAdmin = KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KRADConstants.KRAD_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, Attributes.fromMap(permissionDetails), Attributes.empty());
+    	boolean isAdmin = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KRADConstants.KRAD_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, new AttributeSet());
         backdoorForm.setIsAdmin(isAdmin);
     }
 

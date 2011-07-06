@@ -1,4 +1,9 @@
 /*-- Base Styles ------ */
+/* -- note, base font style as defined in reset.css is 13px.
+
+All em sizes are a result of intended pixel size divided by the containing specified size (most often the base size).
+For instance, 11px would equal (11 / 13) which equals 0.84615385em
+*/
 
 a {
     color:#3F7826;
@@ -16,6 +21,9 @@ table td, table th {
         margin: 0;
         padding: 0;
     }
+.summary {           /* fixing a pixel specification in kuali-stacked.css */
+    font-size:0.92307692em;     /* 12px divided by 13px */
+}
 
 /* -------------------- General Layout --------------------*/
 #viewpage_div {
@@ -173,7 +181,7 @@ table td, table th {
     }
 /* form attributes */
     .constraint {
-        font-size:11px;
+        font-size:0.84615385em;    /* 11px divided by 13px */
     }
     :focus {    /*reset focus state to remove black border*/
         outline: none;
@@ -195,7 +203,7 @@ table td, table th {
         /*float:left;        removing for non-table display. Not sure why we need to pull input from inline flow */
     }
     .field-attribute .summry {
-        line-height: 18px;
+        line-height: 1.125em;
     }
 
     .labelTop {

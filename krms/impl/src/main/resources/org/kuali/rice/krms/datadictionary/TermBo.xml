@@ -5,7 +5,7 @@
 
   <bean id="TermBo" parent="TermBo-parentBean"/>
   <bean id="TermBo-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="objectClass" value="org.kuali.rice.krms.impl.repository.TermBo"/>
+    <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.TermBo"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">
       <list>

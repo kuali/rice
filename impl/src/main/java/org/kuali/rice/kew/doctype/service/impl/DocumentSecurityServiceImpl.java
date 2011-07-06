@@ -15,15 +15,9 @@
  */
 package org.kuali.rice.kew.doctype.service.impl;
 
-import java.lang.reflect.Field;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.KeyValue;
@@ -43,6 +37,12 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.UserSession;
+
+import java.lang.reflect.Field;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class DocumentSecurityServiceImpl implements DocumentSecurityService {
@@ -206,7 +206,7 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
   }
 
 	private boolean isMemberOfGroupWithName(String namespace, String groupName, String principalId) {
-		for (Group group : KimApiServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principalId)) {
+		for (Group group : KimApiServiceLocator.getGroupService().getGroupsForPrincipal(principalId)) {
 			if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getName())) {
 				return true;
 			}

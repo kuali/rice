@@ -22,8 +22,10 @@ public class RemoteTestHarness {
 
     private static final Log LOG = LogFactory.getLog(RemoteTestHarness.class);
 
+    private static String ENDPOINT_ROOT = "http://localhost"; //Default URL
+    private static String ENDPOINT_PATH = "/service";
+
     private Endpoint endpoint;
-    private static final int MAX_WAIT_ITR = 1000;
 
     @SuppressWarnings("unchecked")
     /**
@@ -35,22 +37,23 @@ public class RemoteTestHarness {
                 jaxWsAnnotatedInterface.getAnnotation(WebService.class) != null &&
                 jaxWsAnnotatedInterface.isInstance(serviceImplementation)) {
 
-            endpoint = Endpoint.publish(ServiceEndpointLocation.ENDPOINT_URL, serviceImplementation);
+            String endpointUrl = getAvailableEndpointUrl();
+            endpoint = Endpoint.publish(endpointUrl, serviceImplementation);
 
             JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
             factory.setServiceClass(jaxWsAnnotatedInterface);
-            factory.setAddress(ServiceEndpointLocation.ENDPOINT_URL);
+            factory.setAddress(endpointUrl);
 
             T serviceProxy = (T) factory.create();
             Client cxfClient = ClientProxy.getClient(serviceProxy);
             cxfClient.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
 
-            waitAndCheck(endpoint, false);
+//            waitAndCheck(endpoint, false);
 
             return serviceProxy;
         } else {
             throw new IllegalArgumentException("Passed in interface class type must be annotated with @WebService " +
-                    "and object reference must be an implementing class of that interface");
+                    "and object reference must be an implementing class of that interface.");
 
         }
     }
@@ -62,11 +65,16 @@ public class RemoteTestHarness {
     public void stopEndpoint() {
         if (endpoint != null) {
             endpoint.stop();
-            waitAndCheck(endpoint, true);
+//            waitAndCheck(endpoint, true);
         }
     }
 
-    private static void waitAndCheck(Endpoint ep, boolean published) {
+    private String getAvailableEndpointUrl() {
+        String port = Integer.toString(AvailablePortFinder.getNextAvailable());
+        return ENDPOINT_ROOT + ":" + port + ENDPOINT_PATH;
+    }
+
+    /*private static void waitAndCheck(Endpoint ep, boolean published) {
         //Thread.sleep() seems to be causing deadlock...using another mechanism for wait
         if (ep.isPublished() == published) {
             for (int i = 0; i < MAX_WAIT_ITR; i++) {
@@ -80,5 +88,5 @@ public class RemoteTestHarness {
         if (ep.isPublished() == published) {
             LOG.warn("endpoint: " + ep + " published: " + published);
         }
-    }
+    }*/
 }

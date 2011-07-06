@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -31,8 +23,8 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
@@ -45,6 +37,13 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 
@@ -209,7 +208,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
         		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
-        	Group tempGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
+        	Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
         	if (tempGroup != null) {
         		newMember.setMemberId(tempGroup.getId());
         	}
@@ -219,7 +218,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         if (StringUtils.isEmpty(newMember.getMemberId()) 
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
+        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(newMember.getMemberName());
         	if (principal != null) {
         		newMember.setMemberId(principal.getPrincipalId());
         	}
@@ -241,7 +240,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	return false;
 		}
     	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(newMember.getMemberTypeCode())){
-        	Principal principalInfo = getIdentityManagementService().getPrincipal(newMember.getMemberId());
+        	Principal principalInfo = getIdentityService().getPrincipal(newMember.getMemberId());
         	if (principalInfo == null) {
         		GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
             			new String[] {newMember.getMemberId()});
@@ -252,7 +251,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	}
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(newMember.getMemberTypeCode())){
         	Group groupInfo = null;
-        	groupInfo = getIdentityManagementService().getGroup(newMember.getMemberId());
+        	groupInfo = KimApiServiceLocator.getGroupService().getGroup(newMember.getMemberId());
         	if (groupInfo == null) {
         		GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
             			new String[] {newMember.getMemberId()});

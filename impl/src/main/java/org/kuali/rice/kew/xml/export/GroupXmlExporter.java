@@ -20,7 +20,6 @@ import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.util.xml.XmlRenderer;
 import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -103,9 +102,10 @@ public class GroupXmlExporter implements XmlExporter {
             }
         }
 
-        java.util.List<String> memberGroupIds = KimApiServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(group.getId());
+        java.util.List<String> memberGroupIds = KimApiServiceLocator.getGroupService().getDirectMemberGroupIds(group.getId());
 
-        java.util.List<String> memberPrincipalIds = KimApiServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getId());
+        java.util.List<String> memberPrincipalIds = KimApiServiceLocator.getGroupService().getDirectMemberPrincipalIds(
+                group.getId());
 
         if (memberGroupIds.size() > 0 || memberPrincipalIds.size() > 0) {
             Element membersElement = renderer.renderElement(groupElement, MEMBERS);
@@ -116,7 +116,7 @@ public class GroupXmlExporter implements XmlExporter {
                 renderer.renderTextElement(groupNameElement, NAMESPACE, memberGroup.getNamespaceCode());
             }
             for (String memberPrincipalId : memberPrincipalIds) {
-                renderer.renderTextElement(membersElement, PRINCIPAL_NAME, KimApiServiceLocator.getIdentityManagementService().getPrincipal(memberPrincipalId).getPrincipalName());
+                renderer.renderTextElement(membersElement, PRINCIPAL_NAME, KimApiServiceLocator.getIdentityService().getPrincipal(memberPrincipalId).getPrincipalName());
             }
         }
     }

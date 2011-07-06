@@ -18,7 +18,6 @@ package org.kuali.rice.kew.identity.service.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.identity.PrincipalName;
@@ -76,7 +75,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 	public Principal getPrincipal(String principalId) {
-		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+		Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
 		if (principal == null) {
 			throw new RiceIllegalArgumentException("Could not locate a principal with the given principalId of " + principalId);
 		}
@@ -148,10 +147,10 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 			return null;
 		} else if (userId instanceof WorkflowUserId) {
 			String principalId = ((WorkflowUserId)userId).getWorkflowId();
-			return KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+			return KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
 		} else if (userId instanceof PrincipalName) {
 			String principalName = ((PrincipalName)userId).getId();
-			return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+			return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
 		} else if (userId instanceof EmplId) {
 			String employeeId = ((EmplId)userId).getEmplId();
 			Person person = getPersonByEmployeeId(employeeId);

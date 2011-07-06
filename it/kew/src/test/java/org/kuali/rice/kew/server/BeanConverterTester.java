@@ -16,16 +16,6 @@
  */
 package org.kuali.rice.kew.server;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.sql.Timestamp;
-import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.util.xml.XmlException;
@@ -41,6 +31,11 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
+import static org.junit.Assert.*;
 
 public class BeanConverterTester extends KEWTestCase {
 
@@ -184,10 +179,11 @@ public class BeanConverterTester extends KEWTestCase {
     @Test public void testConvertActionItem() throws Exception {
         // get test data
         String testWorkgroupName = "TestWorkgroup";
-        Group testWorkgroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, testWorkgroupName);
+        Group testWorkgroup = KimApiServiceLocator.getGroupService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, testWorkgroupName);
         String testWorkgroupId = testWorkgroup.getId();
-        assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", KimApiServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getId()).size() > 0);
-        String workflowId = KimApiServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getId()).get(0);
+        assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", KimApiServiceLocator.getGroupService().getDirectMemberPrincipalIds(
+                testWorkgroup.getId()).size() > 0);
+        String workflowId = KimApiServiceLocator.getGroupService().getDirectMemberPrincipalIds(testWorkgroup.getId()).get(0);
         assertNotNull("User from workgroup should not be null", workflowId);
         String actionRequestCd = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
         Long actionRequestId = Long.valueOf(4);

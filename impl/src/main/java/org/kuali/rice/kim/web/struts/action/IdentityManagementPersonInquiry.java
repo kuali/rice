@@ -65,7 +65,7 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
         	}
         }
         if ( principalId != null ) {
-        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
         	if (principal != null) {
 	        	personDocumentForm.setPrincipalId(principalId);
 	        	getUiDocumentService().loadEntityToPersonDoc(personDocumentForm.getPersonDocument(), personDocumentForm.getPrincipalId() );

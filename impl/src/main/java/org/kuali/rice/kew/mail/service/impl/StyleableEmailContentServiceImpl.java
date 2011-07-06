@@ -17,22 +17,6 @@
 
 package org.kuali.rice.kew.mail.service.impl;
 
-import java.io.StringWriter;
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.style.StyleService;
@@ -54,12 +38,26 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.StringWriter;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Map;
 
 
 
@@ -152,7 +150,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         if (actionItem.getDelegatorWorkflowId() != null) {
             delegatorType = "user";
             delegatorId = actionItem.getDelegatorWorkflowId();
-            Principal delegator = KimApiServiceLocator.getIdentityManagementService().getPrincipal(delegatorId);
+            Principal delegator = KimApiServiceLocator.getIdentityService().getPrincipal(delegatorId);
             
             if (delegator == null) {
             	LOG.error("Cannot find user for id " + delegatorId);

@@ -28,7 +28,7 @@ import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.kuali.rice.kim.api.role.RoleService;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
@@ -77,7 +77,7 @@ public class PersonServiceImpl implements PersonService {
 	// KULRICE-4442 Special handling for extension objects
 	protected static final String EXTENSION = "extension";
 	
-	private IdentityManagementService identityManagementService;
+	private IdentityService identityService;
 	private RoleService roleService;
 	private BusinessObjectMetaDataService businessObjectMetaDataService;
 	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
@@ -155,10 +155,10 @@ public class PersonServiceImpl implements PersonService {
 		}
 		EntityDefault entity = null;
 		// get the corresponding principal
-		Principal principal = getIdentityManagementService().getPrincipal( principalId );
+		Principal principal = getIdentityService().getPrincipal( principalId );
 		// get the identity
 		if ( principal != null ) {
-			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
+			entity = getIdentityService().getEntityDefault( principal.getEntityId() );
 		}
 		// convert the principal and identity to a Person
 		// skip if the person was created from the DB cache
@@ -246,10 +246,10 @@ public class PersonServiceImpl implements PersonService {
 		}
 		EntityDefault entity = null;
 		// get the corresponding principal
-		Principal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
+		Principal principal = getIdentityService().getPrincipalByPrincipalName( principalName );
 		// get the identity
 		if ( principal != null ) {
-			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
+			entity = getIdentityService().getEntityDefault( principal.getEntityId() );
 		}
 		// convert the principal and identity to a Person
 		if ( entity != null ) {
@@ -397,7 +397,7 @@ public class PersonServiceImpl implements PersonService {
 
 		List<Person> people = new ArrayList<Person>(); 
 
-		EntityDefaultQueryResults qr = getIdentityManagementService().findEntityDefaults( queryBuilder.build() );
+		EntityDefaultQueryResults qr = getIdentityService().findEntityDefaults( queryBuilder.build() );
 
 		for ( EntityDefault e : qr.getResults() ) {
 			// get to get all principals for the identity as well
@@ -447,7 +447,7 @@ public class PersonServiceImpl implements PersonService {
 						String extIdTypeCode = criteria.get(KIMPropertyConstants.Person.EXTERNAL_IDENTIFIER_TYPE_CODE);
 						if ( StringUtils.isNotBlank(extIdTypeCode) ) {
 							// if found, load that external ID Type via service
-							EntityExternalIdentifierType extIdType = getIdentityManagementService().getExternalIdentifierType(extIdTypeCode);
+							EntityExternalIdentifierType extIdType = getIdentityService().getExternalIdentifierType(extIdTypeCode);
 							// if that type needs to be encrypted, encrypt the value in the criteria map
 							if ( extIdType != null && extIdType.isEncryptionRequired() ) {
 								try {
@@ -752,7 +752,7 @@ public class PersonServiceImpl implements PersonService {
                             resolvedPrincipalIdPropertyName.append(sourcePrimitivePropertyName);
                         	// get the principal - for translation of the principalName to principalId
                             String principalName = fieldValues.get( propertyName );
-                        	Principal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
+                        	Principal principal = getIdentityService().getPrincipalByPrincipalName( principalName );
                             if (principal != null ) {
                                 processedFieldValues.put(resolvedPrincipalIdPropertyName.toString(), principal.getPrincipalId());
                             } else {
@@ -823,7 +823,7 @@ public class PersonServiceImpl implements PersonService {
                          	 	}
                                 String currRelatedPersonPrincipalId = processedFieldValues.get(relatedPrincipalIdPropertyName);
                                 if ( StringUtils.isBlank( currRelatedPersonPrincipalId ) ) {
-                                	Principal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
+                                	Principal principal = getIdentityService().getPrincipalByPrincipalName( principalName );
                                 	if ( principal != null ) {
                                 		processedFieldValues.put(relatedPrincipalIdPropertyName, principal.getPrincipalId());
                                 	} else {
@@ -849,11 +849,11 @@ public class PersonServiceImpl implements PersonService {
 	
 	// OTHER METHODS
 
-	protected IdentityManagementService getIdentityManagementService() {
-		if ( identityManagementService == null ) {
-			identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+	protected IdentityService getIdentityService() {
+		if ( identityService == null ) {
+			identityService = KimApiServiceLocator.getIdentityService();
 		}
-		return identityManagementService;
+		return identityService;
 	}
 
 	protected RoleService getRoleService() {

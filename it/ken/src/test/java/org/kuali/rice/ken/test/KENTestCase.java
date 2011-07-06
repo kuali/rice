@@ -15,17 +15,11 @@
  */
 package org.kuali.rice.ken.test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -37,6 +31,10 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -144,7 +142,7 @@ public abstract class KENTestCase extends BaselineTestCase {
         @Override
         public void stop() throws Exception {
             KsbApiServiceLocator.getCacheAdministrator().flushAll();
-            KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
+            //KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
             //KimApiServiceLocator.getRoleService().flushRoleCaches();
             super.stop();
         }

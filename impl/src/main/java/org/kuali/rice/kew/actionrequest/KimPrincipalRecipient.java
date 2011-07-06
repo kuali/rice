@@ -30,7 +30,7 @@ public class KimPrincipalRecipient implements Recipient {
 	private PrincipalContract principal;
 
 	public KimPrincipalRecipient(String principalId) {
-		this(ActionRequestFactory.getIdentityManagementService().getPrincipal(principalId));
+		this(ActionRequestFactory.getIdentityService().getPrincipal(principalId));
 	}
 
 	public KimPrincipalRecipient(PrincipalContract principal) {

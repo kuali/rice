@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
@@ -38,8 +30,15 @@ import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleDelegationDAO {
@@ -197,7 +196,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         }
         if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) && searchUserInWorkgroups)
         {
-            Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
 
             if (principal == null)
             {

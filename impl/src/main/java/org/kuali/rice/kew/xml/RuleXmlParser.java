@@ -16,51 +16,6 @@
  */
 package org.kuali.rice.kew.xml;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTION_REQUESTED;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.APPROVE_POLICY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTE_CLASS_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DELEGATIONS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DELEGATION_TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOCUMENT_TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.FORCE_ACTION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.FROM_DATE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_ID;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PARENT_RESPONSIBILITY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PARENT_RULE_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRINCIPAL_ID;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRINCIPAL_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRIORITY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RESPONSIBILITIES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RESPONSIBILITY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RESPONSIBILITY_ID;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROLE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROLE_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_DELEGATION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_DELEGATIONS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_EXPRESSION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_EXTENSIONS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_TEMPLATE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.TO_DATE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.USER;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.WORKGROUP;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -80,10 +35,21 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 
 /**
  * Parses rules from XML.
@@ -465,7 +431,7 @@ public class RuleXmlParser {
         // in code below, we allow core config parameter replacement in responsibilities
         if (!StringUtils.isBlank(principalId)) {
         	principalId = Utilities.substituteConfigParameters(principalId);
-        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
             if (principal == null) {
             	throw new XmlException("Could not locate principal with the given id: " + principalId);
             }
@@ -473,7 +439,7 @@ public class RuleXmlParser {
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(principalName)) {
         	principalName = Utilities.substituteConfigParameters(principalName);
-        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
             if (principal == null) {
             	throw new XmlException("Could not locate principal with the given name: " + principalName);
             }
@@ -481,7 +447,7 @@ public class RuleXmlParser {
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(groupId)) {
             groupId = Utilities.substituteConfigParameters(groupId);
-            Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(groupId);
+            Group group = KimApiServiceLocator.getGroupService().getGroup(groupId);
             if (group == null) {
                 throw new XmlException("Could not locate group with the given id: " + groupId);
             }
@@ -498,7 +464,7 @@ public class RuleXmlParser {
         	}
             groupName = Utilities.substituteConfigParameters(groupName);
             groupNamespace = Utilities.substituteConfigParameters(groupNamespace);
-            Group group = KimApiServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KimApiServiceLocator.getGroupService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 throw new XmlException("Could not locate group with the given namespace: " + groupNamespace + " and name: " + groupName);
             }
@@ -527,7 +493,7 @@ public class RuleXmlParser {
             String workgroupNamespace = Utilities.parseGroupNamespaceCode(workgroup);
             String workgroupName = Utilities.parseGroupName(workgroup);
 
-            Group workgroupObject = KimApiServiceLocator.getIdentityManagementService().getGroupByName(workgroupNamespace, workgroupName);
+            Group workgroupObject = KimApiServiceLocator.getGroupService().getGroupByName(workgroupNamespace, workgroupName);
             if (workgroupObject == null) {
                 throw new XmlException("Could not locate workgroup: " + workgroup);
             }

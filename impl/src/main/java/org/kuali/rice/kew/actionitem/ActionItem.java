@@ -16,10 +16,20 @@
  */
 package org.kuali.rice.kew.actionitem;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.api.action.RecipientType;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.CodeTranslator;
+import org.kuali.rice.kew.web.RowStyleable;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.Person;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,21 +42,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.api.action.RecipientType;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.web.RowStyleable;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -288,7 +287,7 @@ public class ActionItem implements RowStyleable, Serializable {
     }
     
     public Principal getPrincipal(){
-        return KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        return KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
     }
 
     public void setRowStyleClass(String rowStyleClass) {

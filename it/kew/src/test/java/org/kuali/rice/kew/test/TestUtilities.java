@@ -16,26 +16,6 @@
 
 package org.kuali.rice.kew.test;
 
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.sql.DataSource;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
@@ -60,6 +40,25 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+
+import static org.junit.Assert.fail;
 
 
 /**
@@ -196,7 +195,7 @@ public final class TestUtilities {
      * Asserts that the given document id is in the given user's action list.
      */
     public static void assertInActionList(String principalId, String documentId) {
-    	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
@@ -212,7 +211,7 @@ public final class TestUtilities {
      * Asserts that the given document id is NOT in the given user's action list.
      */
     public static void assertNotInActionList(String principalId, String documentId) {
-    	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {

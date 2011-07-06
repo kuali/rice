@@ -16,15 +16,6 @@
  */
 package org.kuali.rice.kew.routeheader.service.impl;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
@@ -40,6 +31,15 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 
@@ -143,7 +143,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
         }
         else
         {
-           	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(routeHeader.getInitiatorWorkflowId());
+           	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(routeHeader.getInitiatorWorkflowId());
             if(principal == null)
             {
                	errors.add(new WorkflowServiceErrorImpl("RouteHeader initiator id invalid.", "routeheader.initiator.invalid"));

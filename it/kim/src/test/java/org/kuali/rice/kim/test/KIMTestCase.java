@@ -88,7 +88,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 	public class ClearCacheLifecycle extends BaseLifecycle {
 		@Override
 		public void stop() throws Exception {
-			KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
+			//KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
 			//KimApiServiceLocator.getRoleService().flushRoleCaches();
 			super.stop();
 		}

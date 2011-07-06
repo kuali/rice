@@ -16,12 +16,6 @@
 
 package org.kuali.rice.kew.test;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
@@ -34,6 +28,11 @@ import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.xml.namespace.QName;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Useful superclass for all KEW test cases. Handles setup of test utilities and
@@ -152,7 +151,7 @@ public abstract class KEWTestCase extends BaselineTestCase {
 		@Override
 		public void stop() throws Exception {
 			KsbApiServiceLocator.getCacheAdministrator().flushAll();
-			KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
+			//KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
 			//KimApiServiceLocator.getRoleService().flushRoleCaches();
 			super.stop();
 		}
@@ -207,14 +206,14 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	}
 
 	protected String getPrincipalIdForName(String principalName) {
-		return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
+		return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName).getPrincipalId();
 	}
 
 	protected String getPrincipalNameForId(String principalId) {
-		return KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId).getPrincipalName();
+		return KimApiServiceLocator.getIdentityService().getPrincipal(principalId).getPrincipalName();
 	}
 
 	protected String getGroupIdForName(String namespace, String groupName) {
-		return KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName).getId();
+		return KimApiServiceLocator.getGroupService().getGroupByName(namespace, groupName).getId();
 	}
 }

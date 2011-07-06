@@ -20,7 +20,7 @@ import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 	
-	private IdentityManagementService identityManagementService;
+	private IdentityService identityService;
 	
 	{
 		requiredAttributes.add( KimConstants.AttributeConstants.PRINCIPAL_ID );
@@ -69,19 +69,19 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	@Override
 	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification) {
         // check that the principal exists and is active
-        Principal principal = getIdentityManagementService().getPrincipal( principalId );
+        Principal principal = getIdentityService().getPrincipal( principalId );
         if ( principal == null || !principal.isActive() ) {
             return false;
         }
         // check that the identity is active
-        EntityDefault entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
+        EntityDefault entity = getIdentityService().getEntityDefault( principal.getEntityId() );
         return entity != null && entity.isActive();
 	}
 	
-	protected IdentityManagementService getIdentityManagementService() {
-		if ( identityManagementService == null ) {
-			identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+	protected IdentityService getIdentityService() {
+		if ( identityService == null ) {
+			identityService = KimApiServiceLocator.getIdentityService();
 		}
-		return identityManagementService;
+		return identityService;
 	}
 }

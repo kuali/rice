@@ -24,13 +24,13 @@ import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
-
 import org.kuali.rice.kim.util.KimConstants;
 import org.xml.sax.SAXException;
 
@@ -180,7 +180,7 @@ public class GroupXmlParser {
         }
 
         Group.Builder groupInfo = Group.Builder.create(groupNamespace, groupName, typeId);
-        IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+        IdentityService identityService = KimApiServiceLocator.getIdentityService();
         //groupInfo.setGroupName(element.getChildText(NAME, GROUP_NAMESPACE));
 
         String id = element.getChildText(ID, GROUP_NAMESPACE);
@@ -233,7 +233,7 @@ public class GroupXmlParser {
             String elementName = member.getName().trim();
             if (elementName.equals(PRINCIPAL_NAME)) {
                 String principalName = member.getText().trim();
-                Principal principal = identityManagementService.getPrincipalByPrincipalName(principalName);
+                Principal principal = identityService.getPrincipalByPrincipalName(principalName);
                 if (principal != null) {
                     addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getName(), principal.getPrincipalId());
                 } else {
@@ -241,7 +241,7 @@ public class GroupXmlParser {
                 }
             } else if (elementName.equals(PRINCIPAL_ID)) {
                 String xmlPrincipalId = member.getText().trim();
-                Principal principal = identityManagementService.getPrincipal(xmlPrincipalId);
+                Principal principal = identityService.getPrincipal(xmlPrincipalId);
                 if (principal != null) {
                     addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getName(), principal.getPrincipalId());
                 } else {

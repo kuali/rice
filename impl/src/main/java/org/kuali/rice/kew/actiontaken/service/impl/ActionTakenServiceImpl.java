@@ -16,11 +16,6 @@
  */
 package org.kuali.rice.kew.actiontaken.service.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
@@ -34,6 +29,11 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 
@@ -151,7 +151,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         if(StringUtils.isBlank(principalId)){
             errors.add(new WorkflowServiceErrorImpl("ActionTaken personid null.", "actiontaken.personid.empty", actionTaken.getActionTakenId().toString()));
         } else {
-        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
         	if (principal == null) {
                 errors.add(new WorkflowServiceErrorImpl("ActionTaken personid invalid.", "actiontaken.personid.invalid", actionTaken.getActionTakenId().toString()));
             }

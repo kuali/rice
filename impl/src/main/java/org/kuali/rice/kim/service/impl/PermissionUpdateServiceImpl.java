@@ -23,8 +23,6 @@ import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
@@ -95,7 +93,7 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
 	    		}
 	    	}
 	    	getBusinessObjectService().save(perm);
-	    	KimApiServiceLocator.getIdentityManagementService().flushPermissionCaches();
+	    	//KimApiServiceLocator.getIdentityManagementService().flushPermissionCaches();
 	    	flushPermissionImplCache();
     	} catch ( RuntimeException ex ) {
     		LOG.error( "Exception in savePermission: ", ex );

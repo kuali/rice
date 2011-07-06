@@ -16,11 +16,6 @@
  */
 package org.kuali.rice.kew.workgroup;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -29,11 +24,15 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.messaging.ParameterTranslator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.group.Group;
-
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -70,11 +69,11 @@ public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
 		String operation = parameters[0];
 		String principalId = parameters[1];
 		String groupId = parameters[2];
-		Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+		Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
 		if (principal == null) {
 			throw new RiceRuntimeException("Could not locate the user for the given principal id '" + principalId + "'");
 		}
-		Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(groupId);
+		Group group = KimApiServiceLocator.getGroupService().getGroup(groupId);
 		if (group == null) {
 			throw new RiceRuntimeException("Could not locate the group with the given id '" + groupId + "'");
 		}

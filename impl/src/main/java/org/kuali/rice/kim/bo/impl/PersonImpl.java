@@ -28,7 +28,7 @@ import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
@@ -55,7 +55,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	private static final long serialVersionUID = 1L;
 	
 	protected static PersonService personService;
-	protected static IdentityManagementService identityManagementService;
+	protected static IdentityService identityService;
 
 	private String lookupRoleNamespaceCode;
 	private String lookupRoleName;
@@ -119,7 +119,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	public PersonImpl( String principalId, String personEntityTypeCode ) {
-		this( getIdentityManagementService().getPrincipal(principalId), personEntityTypeCode );
+		this( getIdentityService().getPrincipal(principalId), personEntityTypeCode );
 	}
 	
 	public PersonImpl( KimEntityDefaultInfoCacheImpl p ) {
@@ -144,7 +144,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	public void setPrincipal(Principal principal, EntityDefault entity, String personEntityTypeCode) {
 		populatePrincipalInfo( principal );
 		if ( entity == null ) {
-			entity = getIdentityManagementService().getEntityDefaultInfo( principal.getEntityId() );
+			entity = getIdentityService().getEntityDefault( principal.getEntityId() );
 		}
 		populateEntityInfo( entity, principal, personEntityTypeCode );
 	}
@@ -483,13 +483,13 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 
 	/**
-	 * @return the identityManagementService
+	 * @return the identityService
 	 */
-	public static IdentityManagementService getIdentityManagementService() {
-		if ( identityManagementService == null ) {
-			identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+	public static IdentityService getIdentityService() {
+		if ( identityService == null ) {
+			identityService = KimApiServiceLocator.getIdentityService();
 		}
-		return identityManagementService;
+		return identityService;
 	}
 
 	/**

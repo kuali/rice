@@ -5,14 +5,14 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
@@ -66,7 +66,8 @@ public class RoleServiceBase {
     private LookupService lookupService;
     private RiceCacheAdministrator cacheAdministrator;
     private SequenceAccessorService sequenceAccessorService;
-    private IdentityManagementService identityManagementService;
+    private IdentityService identityService;
+    private GroupService groupService;
     private ResponsibilityInternalService responsibilityInternalService;
 
     private Map<String, KimRoleTypeService> roleTypeServiceCache = Collections.synchronizedMap(new HashMap<String, KimRoleTypeService>());
@@ -1056,9 +1057,9 @@ public class RoleServiceBase {
             return null;
         }
         if (KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
-            return getIdentityManagementService().getPrincipal(memberId);
+            return getIdentityService().getPrincipal(memberId);
         } else if (KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
-            return getIdentityManagementService().getGroup(memberId);
+            return getGroupService().getGroup(memberId);
         } else if (KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
             return getRoleBo(memberId);
         }
@@ -1351,12 +1352,20 @@ public class RoleServiceBase {
         return cacheAdministrator;
     }
 
-    protected IdentityManagementService getIdentityManagementService() {
-        if (identityManagementService == null) {
-            identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+    protected IdentityService getIdentityService() {
+        if (identityService == null) {
+            identityService = KimApiServiceLocator.getIdentityService();
         }
 
-        return identityManagementService;
+        return identityService;
+    }
+    
+    protected GroupService getGroupService() {
+        if (groupService == null) {
+            groupService = KimApiServiceLocator.getGroupService();
+        }
+
+        return groupService;
     }
 
     protected SequenceAccessorService getSequenceAccessorService() {

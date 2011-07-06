@@ -16,18 +16,6 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
@@ -43,9 +31,20 @@ import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleDAO {
@@ -254,7 +253,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         
         if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) && searchUserInWorkgroups)
         {
-            Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
 
             if (principal == null)
             {

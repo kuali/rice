@@ -36,10 +36,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-import org.kuali.rice.kim.api.group.GroupService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -205,7 +204,7 @@ public class ActionListServiceImpl implements ActionListService {
             errors.add(new WorkflowServiceErrorImpl("ActionItem person null.", "actionitem.personid.empty", actionItem
                     .getActionItemId().toString()));
         } else {
-        	Principal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
         	if (principal == null) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem person invalid.", "actionitem.personid.invalid",
                         actionItem.getActionItemId().toString()));

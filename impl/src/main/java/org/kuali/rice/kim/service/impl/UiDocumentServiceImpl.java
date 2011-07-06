@@ -40,14 +40,12 @@ import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.identity.type.EntityTypeData;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.Role;
-import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleService;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
@@ -84,7 +82,6 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.group.GroupAttributeBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
-import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
@@ -95,6 +92,7 @@ import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
@@ -102,24 +100,23 @@ import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
-
 import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
-
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
-import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DocumentHelperService;
@@ -154,7 +151,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	private RoleService roleService;
 	private BusinessObjectService businessObjectService;
 	private IdentityService identityService;
-	private IdentityManagementService identityManagementService;
+    private PermissionService permissionService;
 	private GroupService groupService;
 	private ResponsibilityService responsibilityService;
     private ResponsibilityInternalService responsibilityInternalService;
@@ -250,7 +247,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		// boservice.save(bos) does not handle deleteawarelist
 		getBusinessObjectService().save(bos);
 
-		//KimApiServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
+		//KimApiServiceLocator.getIdentityService().flushEntityPrincipalCaches();
 		IdentityManagementNotificationService service = (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
 		service.principalUpdated();
 
@@ -823,7 +820,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public boolean canModifyEntity( String currentUserPrincipalId, String toModifyPrincipalId ){
 		return (StringUtils.isNotBlank(currentUserPrincipalId) && StringUtils.isNotBlank(toModifyPrincipalId) &&
 				currentUserPrincipalId.equals(toModifyPrincipalId)) ||
-				getIdentityManagementService().isAuthorized(
+				getPermissionService().isAuthorized(
 						currentUserPrincipalId,
 						KimConstants.NAMESPACE_CODE,
 						KimConstants.PermissionNames.MODIFY_ENTITY,
@@ -834,7 +831,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public boolean canOverrideEntityPrivacyPreferences( String currentUserPrincipalId, String toModifyPrincipalId ){
 		return (StringUtils.isNotBlank(currentUserPrincipalId) && StringUtils.isNotBlank(toModifyPrincipalId) &&
 				currentUserPrincipalId.equals(toModifyPrincipalId)) ||
-				getIdentityManagementService().isAuthorized(
+				getPermissionService().isAuthorized(
 						currentUserPrincipalId,
 						KimConstants.NAMESPACE_CODE,
 						KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
@@ -1506,13 +1503,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return businessObjectService;
 	}
 
-	protected IdentityManagementService getIdentityManagementService() {
-		if ( identityManagementService == null ) {
-			identityManagementService = KimApiServiceLocator.getIdentityManagementService();
-		}
-		return identityManagementService;
-	}
-
 	protected IdentityService getIdentityService() {
 		if ( identityService == null ) {
 			identityService = KimApiServiceLocator.getIdentityService();
@@ -1722,7 +1712,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = PrincipalBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
-	 	 	Principal principalInfo = getIdentityManagementService().getPrincipal(memberId);
+	 	 	Principal principalInfo = getIdentityService().getPrincipal(memberId);
 	 	 	if (principalInfo != null) {
 	 	 		
 	 	 	}
@@ -1752,7 +1742,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
 			String fakeName = "";
-			Principal kp = KimApiServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+			Principal kp = KimApiServiceLocator.getIdentityService().getPrincipal(memberId);
 			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
 				fakeName = kp.getPrincipalName();
 			}
@@ -1767,7 +1757,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	   	String memberFullName = "";
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	Principal principalInfo = null;
-        	principalInfo = getIdentityManagementService().getPrincipal(memberId);
+        	principalInfo = getIdentityService().getPrincipal(memberId);
         	if (principalInfo != null) {
         		String principalName = principalInfo.getPrincipalName();
         		Person psn = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
@@ -1775,7 +1765,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         	}        	        	
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	Group group = null;
-        	group = getIdentityManagementService().getGroup(memberId);
+        	group = getGroupService().getGroup(memberId);
         	if (group != null) {
         		memberFullName = group.getName();
         	}
@@ -1793,7 +1783,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberNamespaceCode = "";
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	Group groupInfo = getIdentityManagementService().getGroup(memberId);
+        	Group groupInfo = getGroupService().getGroup(memberId);
         	if (groupInfo!= null) {
         		roleMemberNamespaceCode = groupInfo.getNamespaceCode();
         	}
@@ -1809,13 +1799,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     public String getMemberIdByName(String memberTypeCode, String memberNamespaceCode, String memberName){
     	String memberId = "";
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-            Principal principal = getIdentityManagementService().getPrincipalByPrincipalName(memberName);
+            Principal principal = getIdentityService().getPrincipalByPrincipalName(memberName);
             if(principal!=null) {
                 memberId = principal.getPrincipalId();
             }
 
        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	Group groupInfo = getIdentityManagementService().getGroupByName(memberNamespaceCode, memberName);
+        	Group groupInfo = getGroupService().getGroupByName(memberNamespaceCode, memberName);
         	if (groupInfo!=null) {
                 memberId = groupInfo.getId();
             }
@@ -2763,7 +2753,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	RoleMemberBo roleMemberImpl = matchingRoleMembers.get(0);
     	documentRoleMember.setRoleMemberId(roleMemberImpl.getRoleMemberId());
     	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-    		Principal principal = getIdentityManagementService().getPrincipal(memberId);
+    		Principal principal = getIdentityService().getPrincipal(memberId);
     		if (principal != null) {
     			documentRoleMember.setMemberId(principal.getPrincipalId());
         		documentRoleMember.setMemberName(principal.getPrincipalName());
@@ -2863,6 +2853,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
 		}
 		return responsibilityInternalService;
+	}
+
+   public PermissionService getPermissionService() {
+		if ( permissionService == null ) {
+				permissionService = KimApiServiceLocator.getPermissionService();
+		}
+		return permissionService;
 	}
 
     public ParameterService getParameterService() {

@@ -41,12 +41,13 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleService;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -70,7 +71,8 @@ public class ActionRequestFactory {
 
 	private static RoleService roleService;
 	private static IdentityHelperService identityHelperService;
-	private static IdentityManagementService identityManagementService;
+	private static IdentityService identityService;
+    private static GroupService groupService;
 	private static ActionRequestService actionRequestService;
 	
 	private DocumentRouteHeaderValue document;
@@ -162,7 +164,7 @@ public class ActionRequestFactory {
         
         Group notifyExclusionWorkgroup = null;
         if(!StringUtils.isBlank(groupName)){
-        	notifyExclusionWorkgroup = getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+        	notifyExclusionWorkgroup = getGroupService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
         }
         
  
@@ -207,12 +209,12 @@ public class ActionRequestFactory {
         {
             String principalId = ((KimPrincipalRecipient) recipient).getPrincipalId();
             String groupId = group.getId();
-            isMember = getIdentityManagementService().isMemberOfGroup(principalId, groupId);
+            isMember = getGroupService().isMemberOfGroup(principalId, groupId);
         }
         else if (recipient instanceof KimGroupRecipient)
         {
             String kimRecipientId = ((KimGroupRecipient) recipient).getGroup().getId();
-            isMember = getIdentityManagementService().isGroupMemberOfGroup(kimRecipientId, group.getId() );
+            isMember = getGroupService().isGroupMemberOfGroup(kimRecipientId, group.getId() );
         }
         return isMember;
     }
@@ -458,7 +460,7 @@ public class ActionRequestFactory {
     	annotation.append( " to " );
     	if (isPrincipal) {
     		annotation.append( "principal " );
-    		Principal principal = getIdentityManagementService().getPrincipal( delegate.getDelegationId() );
+    		Principal principal = getIdentityService().getPrincipal( delegate.getDelegationId() );
     		if ( principal != null ) {
     			annotation.append( principal.getPrincipalName() );
     		} else {
@@ -466,7 +468,7 @@ public class ActionRequestFactory {
     		}
     	} else if (isGroup) {
     		annotation.append( "group " );
-    		Group group = getIdentityManagementService().getGroup( delegate.getDelegationId() );
+    		Group group = getGroupService().getGroup( delegate.getDelegationId() );
     		if ( group != null ) {
     			annotation.append( group.getNamespaceCode() ).append( '/' ).append( group.getName() );
     		} else {
@@ -626,13 +628,19 @@ public class ActionRequestFactory {
 	}
 
 	/**
-	 * @return the identityManagementService
+	 * @return the identityService
 	 */
-    protected static IdentityManagementService getIdentityManagementService() {
-		if ( identityManagementService == null ) {
-			identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+    protected static IdentityService getIdentityService() {
+		if ( identityService == null ) {
+			identityService = KimApiServiceLocator.getIdentityService();
 		}
-		return identityManagementService;
+		return identityService;
 	}
 
+    protected static GroupService getGroupService() {
+		if ( groupService == null ) {
+			groupService = KimApiServiceLocator.getGroupService();
+		}
+		return groupService;
+	}
 }

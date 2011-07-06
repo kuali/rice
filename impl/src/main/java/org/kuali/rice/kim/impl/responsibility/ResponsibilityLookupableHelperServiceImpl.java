@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
+import com.google.common.collect.MapMaker;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.role.RoleBo;
@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupableHelperServiceImpl {
 
@@ -199,21 +201,24 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	/* Since most queries will only be on the template namespace and name, cache the results for 30 seconds
 	 * so that queries against the details, which are done in memory, do not require repeated database trips.
 	 */
-    private static final Map<Map<String,String>,MaxAgeSoftReference<List<UberResponsibilityBo>>> respResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<UberResponsibilityBo>>>(); 
-	private static final long RESP_CACHE_EXPIRE_SECONDS = 30L;
+    //TODO: use the concurrentMap properties rather than synchronized blocks
+    //TODO: no copying list/bos?
+    private static final long RESP_CACHE_EXPIRE_SECONDS = 30L;
+    private static final ConcurrentMap<Map<String,String>,List<UberResponsibilityBo>> respResultCache = new MapMaker().expireAfterAccess(RESP_CACHE_EXPIRE_SECONDS, TimeUnit.SECONDS).softValues().makeMap();
+
 	
 	private List<UberResponsibilityBo> getResponsibilitiesWithResponsibilitySearchCriteria(Map<String, String> responsibilitySearchCriteria, boolean unbounded){
 		String detailCriteriaStr = responsibilitySearchCriteria.remove( DETAIL_CRITERIA );
 		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
-		MaxAgeSoftReference<List<UberResponsibilityBo>> cachedResult = respResultCache.get(responsibilitySearchCriteria);
+		List<UberResponsibilityBo> cachedResult = respResultCache.get(responsibilitySearchCriteria);
 		List<UberResponsibilityBo> responsibilities = null;
-		if ( cachedResult == null || cachedResult.get() == null ) {
+		if ( cachedResult == null ) {
 			responsibilities = searchResponsibilities(responsibilitySearchCriteria, unbounded);
-			synchronized( respResultCache ) {
-				respResultCache.put(responsibilitySearchCriteria, new MaxAgeSoftReference<List<UberResponsibilityBo>>( RESP_CACHE_EXPIRE_SECONDS, responsibilities ) ); 
+            synchronized( respResultCache ) {
+				respResultCache.put(responsibilitySearchCriteria, responsibilities );
 			}
 		} else {
-			responsibilities = cachedResult.get();
+			responsibilities = cachedResult;
 		}
 		List<UberResponsibilityBo> filteredResponsibilities = new CollectionIncomplete<UberResponsibilityBo>(
 				new ArrayList<UberResponsibilityBo>(), getActualSizeIfTruncated(responsibilities)); 

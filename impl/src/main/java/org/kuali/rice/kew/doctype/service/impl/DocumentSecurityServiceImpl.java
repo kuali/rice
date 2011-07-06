@@ -87,7 +87,7 @@ public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderVa
 	  if (session.getUserSession() == null) {
 		  return false;
 	  }
-	  return KimApiServiceLocator.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
+	  return KimApiServiceLocator.getPermissionService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
   }
 
   protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, String documentId, String initiatorPrincipalId, SecuritySession session) {
@@ -237,7 +237,7 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
 			LOG.error(e.getMessage(), e);
 			return false;
 		}
-		return KimApiServiceLocator.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), permissionNamespaceCode, permissionName, permissionDetails, qualification);
+		return KimApiServiceLocator.getPermissionService().isAuthorized(session.getUserSession().getPrincipalId(), permissionNamespaceCode, permissionName, permissionDetails, qualification);
 	}
 
 	private String getReplacementString(RouteHeaderDTO routeHeader, String value) throws Exception {

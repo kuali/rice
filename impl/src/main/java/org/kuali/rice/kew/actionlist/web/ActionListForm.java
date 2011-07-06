@@ -24,7 +24,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -339,7 +338,7 @@ public class ActionListForm extends KualiForm {
         if (hdalPrinc != null) {
         	setHelpDeskActionListUserName(hdalPrinc.getPrincipalName());
         }
-        boolean isHelpDeskAuthorized = KimApiServiceLocator.getIdentityManagementService().isAuthorized(principalId, KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.VIEW_OTHER_ACTION_LIST, new AttributeSet(), new AttributeSet());
+        boolean isHelpDeskAuthorized = KimApiServiceLocator.getPermissionService().isAuthorized(principalId, KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.VIEW_OTHER_ACTION_LIST, new AttributeSet(), new AttributeSet());
         if (isHelpDeskAuthorized) {
             request.setAttribute("helpDeskActionList", "true");
         }

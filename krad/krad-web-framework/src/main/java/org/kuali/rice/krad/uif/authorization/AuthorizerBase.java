@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -39,7 +38,7 @@ import java.util.Set;
  */
 public class AuthorizerBase implements Authorizer {
 
-    private static IdentityManagementService identityManagementService;
+    private static PermissionService permissionService;
     private static PersonService personService;
     private static KualiModuleService kualiModuleService;
     private static DataDictionaryService dataDictionaryService;
@@ -117,13 +116,13 @@ public class AuthorizerBase implements Authorizer {
 
     protected final boolean permissionExistsByTemplate(Object dataObject, String namespaceCode,
             String permissionTemplateName) {
-        return getIdentityManagementService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
+        return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
                 new AttributeSet(getPermissionDetailValues(dataObject)));
     }
 
     protected final boolean permissionExistsByTemplate(String namespaceCode, String permissionTemplateName,
             Map<String, String> permissionDetails) {
-        return getIdentityManagementService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
+        return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
                 new AttributeSet(permissionDetails));
     }
 
@@ -132,21 +131,21 @@ public class AuthorizerBase implements Authorizer {
         AttributeSet combinedPermissionDetails = new AttributeSet(getPermissionDetailValues(dataObject));
         combinedPermissionDetails.putAll(permissionDetails);
 
-        return getIdentityManagementService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
+        return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
                 combinedPermissionDetails);
     }
 
     public final boolean isAuthorized(Object dataObject, String namespaceCode, String permissionName, String principalId) {
-        return getIdentityManagementService().isAuthorized(principalId, namespaceCode, permissionName,
+        return getPermissionService().isAuthorized(principalId, namespaceCode, permissionName,
                 new AttributeSet(getPermissionDetailValues(dataObject)),
                 new AttributeSet(getRoleQualification(dataObject, principalId)));
     }
 
     public final boolean isAuthorizedByTemplate(Object dataObject, String namespaceCode, String permissionTemplateName,
             String principalId) {
-        return getIdentityManagementService().isAuthorizedByTemplateName(principalId, namespaceCode,
-                permissionTemplateName, Attributes.fromMap(getPermissionDetailValues(dataObject)),
-                Attributes.fromMap((getRoleQualification(dataObject, principalId))));
+        return getPermissionService().isAuthorizedByTemplateName(principalId, namespaceCode,
+                permissionTemplateName, new AttributeSet(getPermissionDetailValues(dataObject)),
+                new AttributeSet((getRoleQualification(dataObject, principalId))));
     }
 
     public final boolean isAuthorized(Object dataObject, String namespaceCode, String permissionName,
@@ -169,7 +168,7 @@ public class AuthorizerBase implements Authorizer {
             permissionDetails = new AttributeSet(getPermissionDetailValues(dataObject));
         }
 
-        return getIdentityManagementService().isAuthorized(principalId, namespaceCode, permissionName,
+        return getPermissionService().isAuthorized(principalId, namespaceCode, permissionName,
                 permissionDetails, roleQualifiers);
     }
 
@@ -186,8 +185,8 @@ public class AuthorizerBase implements Authorizer {
             permissionDetails.putAll(collectionOrFieldLevelPermissionDetails);
         }
 
-        return getIdentityManagementService().isAuthorizedByTemplateName(principalId, namespaceCode,
-                permissionTemplateName, Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifiers));
+        return getPermissionService().isAuthorizedByTemplateName(principalId, namespaceCode,
+                permissionTemplateName, permissionDetails, roleQualifiers);
     }
 
     /**
@@ -228,11 +227,11 @@ public class AuthorizerBase implements Authorizer {
         return permissionDetails;
     }
 
-    protected static final IdentityManagementService getIdentityManagementService() {
-        if (identityManagementService == null) {
-            identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+    protected static final PermissionService getPermissionService() {
+        if (permissionService == null) {
+            permissionService = KimApiServiceLocator.getPermissionService();
         }
-        return identityManagementService;
+        return permissionService;
     }
 
     protected static final PersonService getPersonService() {

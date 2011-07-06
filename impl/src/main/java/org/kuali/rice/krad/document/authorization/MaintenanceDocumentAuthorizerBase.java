@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
@@ -29,6 +23,11 @@ import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		implements MaintenanceDocumentAuthorizer {
@@ -47,12 +46,12 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		return !permissionExistsByTemplate(KRADConstants.KRAD_NAMESPACE,
 				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
 				permissionDetails)
-				|| getIdentityManagementService()
+				|| getPermissionService()
 						.isAuthorizedByTemplateName(
 								user.getPrincipalId(),
 								KRADConstants.KRAD_NAMESPACE,
 								KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-								Attributes.fromMap(permissionDetails), Attributes.empty());
+								permissionDetails, new AttributeSet());
 	}
 
 	public final boolean canMaintain(Object dataObject, Person user) {

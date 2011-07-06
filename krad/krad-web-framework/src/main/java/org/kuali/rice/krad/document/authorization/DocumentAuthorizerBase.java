@@ -15,13 +15,8 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
@@ -34,6 +29,10 @@ import org.kuali.rice.krad.bo.authorization.BusinessObjectAuthorizerBase;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * DocumentAuthorizer containing common, reusable document-level authorization
@@ -156,10 +155,10 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		AttributeSet permissionDetails = new AttributeSet();
 		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
 				documentTypeName);
-		return getIdentityManagementService().isAuthorizedByTemplateName(
+		return getPermissionService().isAuthorizedByTemplateName(
 				user.getPrincipalId(), nameSpaceCode,
 				KimConstants.PermissionTemplateNames.INITIATE_DOCUMENT,
-				Attributes.fromMap(permissionDetails), null);
+				permissionDetails, null);
 	}
 
 	public final boolean canReceiveAdHoc(Document document, Person user,

@@ -15,13 +15,9 @@
  */
 package org.kuali.rice.krad.bo.authorization;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.authorization.BusinessObjectAuthorizer;
@@ -33,11 +29,14 @@ import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 //	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 //			.getLogger(BusinessObjectAuthorizerBase.class);
 
-	private static IdentityManagementService identityManagementService;
+	private static PermissionService permissionService;
 	private static PersonService personService;
 	private static KualiModuleService kualiModuleService;
 	private static DataDictionaryService dataDictionaryService;
@@ -95,7 +94,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	protected final boolean permissionExistsByTemplate(
 			BusinessObject businessObject, String namespaceCode,
 			String permissionTemplateName) {
-		return getIdentityManagementService()
+		return getPermissionService()
 				.isPermissionDefinedForTemplateName(
 						namespaceCode,
 						permissionTemplateName,
@@ -105,7 +104,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 
 	protected final boolean permissionExistsByTemplate(String namespaceCode,
 			String permissionTemplateName, Map<String, String> permissionDetails) {
-		return getIdentityManagementService()
+		return getPermissionService()
 				.isPermissionDefinedForTemplateName(namespaceCode,
 						permissionTemplateName,
 						new AttributeSet(permissionDetails));
@@ -117,14 +116,14 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		AttributeSet combinedPermissionDetails = new AttributeSet(
 				getPermissionDetailValues(businessObject));
 		combinedPermissionDetails.putAll(permissionDetails);
-		return getIdentityManagementService()
+		return getPermissionService()
 				.isPermissionDefinedForTemplateName(namespaceCode,
 						permissionTemplateName, combinedPermissionDetails);
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,
 			String namespaceCode, String permissionName, String principalId) {
-		return getIdentityManagementService().isAuthorized(principalId,
+		return getPermissionService().isAuthorized(principalId,
 				namespaceCode, permissionName,
 				new AttributeSet(getPermissionDetailValues(businessObject)),
 				new AttributeSet(getRoleQualification(businessObject, principalId)));
@@ -133,10 +132,10 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	public final boolean isAuthorizedByTemplate(BusinessObject dataObject,
 			String namespaceCode, String permissionTemplateName,
 			String principalId) {
-		return getIdentityManagementService().isAuthorizedByTemplateName(
+		return getPermissionService().isAuthorizedByTemplateName(
 				principalId, namespaceCode, permissionTemplateName,
-				Attributes.fromMap(getPermissionDetailValues(dataObject)),
-				Attributes.fromMap(getRoleQualification(dataObject, principalId)));
+				new AttributeSet(getPermissionDetailValues(dataObject)),
+				new AttributeSet(getRoleQualification(dataObject, principalId)));
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,
@@ -162,7 +161,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 					getPermissionDetailValues(businessObject));
 		}
 		
-		return getIdentityManagementService().isAuthorized(principalId,
+		return getPermissionService().isAuthorized(principalId,
 				namespaceCode, permissionName, permissionDetails,
 				roleQualifiers);
 	}
@@ -183,9 +182,9 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			permissionDetails.putAll(collectionOrFieldLevelPermissionDetails);
 		}
 		
-		return getIdentityManagementService().isAuthorizedByTemplateName(
+		return getPermissionService().isAuthorizedByTemplateName(
 				principalId, namespaceCode, permissionTemplateName,
-				Attributes.fromMap(permissionDetails), Attributes.fromMap(roleQualifiers));
+				permissionDetails, roleQualifiers);
 	}
 
 	/**
@@ -245,12 +244,12 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		return permissionDetails;
 	}
 
-	protected static final IdentityManagementService getIdentityManagementService() {
-		if (identityManagementService == null) {
-			identityManagementService = KimApiServiceLocator
-					.getIdentityManagementService();
+	protected static final PermissionService getPermissionService() {
+		if (permissionService == null) {
+			permissionService = KimApiServiceLocator
+					.getPermissionService();
 		}
-		return identityManagementService;
+		return permissionService;
 	}
 
 	protected static final PersonService getPersonService() {

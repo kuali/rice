@@ -15,19 +15,11 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants.PermissionNames;
 import org.kuali.rice.krad.authorization.AuthorizationConstants;
@@ -35,12 +27,23 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
-import org.kuali.rice.krad.service.*;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.PessimisticLockService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a service implementation for pessimistic locking
@@ -55,7 +58,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     private PersonService personService;
     private BusinessObjectService businessObjectService;
     private DataDictionaryService dataDictionaryService;
-    private IdentityManagementService identityManagementService;
+    private PermissionService permissionService;
 
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#delete(java.lang.String)
@@ -131,7 +134,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.krad.service.PessimisticLockService#isPessimisticLockAdminUser(org.kuali.rice.kim.bo.Person)
      */
     public boolean isPessimisticLockAdminUser(Person user) {
-    	return getIdentityManagementService().isAuthorized( user.getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null );
+    	return getPermissionService().isAuthorized( user.getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null );
     }
 
     /**
@@ -481,11 +484,11 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
 		return dataDictionaryService;
 	}
 
-	public IdentityManagementService getIdentityManagementService() {
-        if ( identityManagementService == null ) {
-        	identityManagementService = KimApiServiceLocator.getIdentityManagementService();
+	public PermissionService getPermissionService() {
+        if ( permissionService == null ) {
+        	permissionService = KimApiServiceLocator.getPermissionService();
         }
-		return identityManagementService;
+		return permissionService;
 	}
 
 

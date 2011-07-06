@@ -32,6 +32,8 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -610,7 +612,10 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     							if (session == null) {
     								throw new WorkflowRuntimeException("UserSession is null!  Attempted to render the searchable attribute outside of an established session.");
     							}
-    							visible = KimApiServiceLocator.getGroupService().isMemberOfGroup(session.getPerson().getPrincipalId(), groupNamespace, groupName);
+                                GroupService groupService = KimApiServiceLocator.getGroupService();
+
+    						    Group group = groupService.getGroupByName(groupNamespace, groupName);
+		                        visible =  group == null ? false : groupService.isMemberOfGroup(session.getPerson().getPrincipalId(), group.getId());
     						}
                         }
 					}

@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.authorization;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
@@ -139,10 +138,10 @@ public class DocumentAuthorizerBase extends AuthorizerBase {
 		AttributeSet permissionDetails = new AttributeSet();
 		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
 				documentTypeName);
-		return getIdentityManagementService().isAuthorizedByTemplateName(
+		return getPermissionService().isAuthorizedByTemplateName(
 				user.getPrincipalId(), nameSpaceCode,
 				KimConstants.PermissionTemplateNames.INITIATE_DOCUMENT,
-				Attributes.fromMap(permissionDetails), null);
+				permissionDetails, null);
 	}
 
 	public final boolean canReceiveAdHoc(Document document, Person user,

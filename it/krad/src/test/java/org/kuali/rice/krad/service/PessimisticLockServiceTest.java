@@ -87,15 +87,15 @@ public class PessimisticLockServiceTest extends KRADTestCase {
 
         String userId = "employee";
         String[] lockIdsToVerify = new String[]{"1112", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KimApiServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KimApiServiceLocator.getPermissionService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "frank";
         lockIdsToVerify = new String[]{"1111", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KimApiServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KimApiServiceLocator.getPermissionService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "fred";
         lockIdsToVerify = new String[]{"1111", "1112"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KimApiServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KimApiServiceLocator.getPermissionService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
 
         verifyDelete("employee", Arrays.asList(new String[]{"1111"}), null, false);
@@ -106,9 +106,9 @@ public class PessimisticLockServiceTest extends KRADTestCase {
 
         // test admin user can delete any lock
         userId = "fran";
-        assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KimApiServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KimApiServiceLocator.getPermissionService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         userId = "admin";
-        assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KimApiServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KimApiServiceLocator.getPermissionService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(new String[]{"1114"}), null, false);
         locks = (List<PessimisticLock>) KRADServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 0 locks left in DB", 0, locks.size());

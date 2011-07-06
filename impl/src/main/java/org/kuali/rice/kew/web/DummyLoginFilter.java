@@ -16,7 +16,11 @@
  */
 package org.kuali.rice.kew.web;
 
-import java.io.IOException;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.IdentityService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,13 +31,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.util.KRADUtils;
+import java.io.IOException;
 
 /**
  * A login filter which forwards to a login page that allows for the desired
@@ -62,7 +60,7 @@ public class DummyLoginFilter implements Filter {
         final UserSession session = KRADUtils.getUserSessionFromRequest(request);
         
         if (session == null) {
-        	IdentityManagementService auth = KimApiServiceLocator.getIdentityManagementService();
+        	IdentityService auth = KimApiServiceLocator.getIdentityService();
        		request.setAttribute("showPasswordField", Boolean.valueOf(showPassword));
             final String user = request.getParameter("__login_user");
             final String password = request.getParameter("__login_pw");

@@ -189,7 +189,7 @@ public class CollectionGroupBuilder implements Serializable {
     		}
 		}
 		
-		if(currentLine == null && !lineFields.isEmpty()){
+/*		if(currentLine == null && !lineFields.isEmpty()){
     		for(Field f: lineFields){
     		    f.addStyleClass(collectionGroup.getId() + "-addField");
     		    if(f instanceof AttributeField){
@@ -206,7 +206,7 @@ public class CollectionGroupBuilder implements Serializable {
     		        action.setFocusOnAfterSubmit(lineFields.get(0).getId());
     		    }
     		}
-		}
+		}*/
 		
 		ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex);
 

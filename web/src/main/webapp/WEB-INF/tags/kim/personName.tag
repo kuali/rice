@@ -86,7 +86,7 @@
                 <th class="infoline">
                     <c:out value="${status.index+1}" />
                 </th>
-                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].nameTypeCode"  attributeEntry="${docNameAttributes.nameTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(name.entityNameType.entityNameTypeName)}" readOnly="${readOnlyEntity or !canModify}" />
+                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].nameTypeCode"  attributeEntry="${docNameAttributes.nameTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(name.entityNameType.name)}" readOnly="${readOnlyEntity or !canModify}" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].title" attributeEntry="${docNameAttributes.title}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].firstName" attributeEntry="${docNameAttributes.firstName}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].lastName" attributeEntry="${docNameAttributes.lastName}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />

@@ -58,8 +58,6 @@ import java.util.Map;
 public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpdateService {
 	
 	private static final Logger LOG = Logger.getLogger(GroupUpdateServiceImpl.class);
-	
-	private SequenceAccessorService sequenceAccessorService;
 
 	/**
      * @see org.kuali.rice.kim.api.group.GroupUpdateService#addGroupToGroup(java.lang.String, java.lang.String)
@@ -283,38 +281,11 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 			}
 		}
 
-		// GroupInternalService handles KEW update duties
-		
-		SequenceAccessorService sas = getSequenceAccessorService();
-    	if (group.getId() == null) {
-    		group.setId(sas.getNextAvailableSequenceNumber(
-                    "KRIM_GRP_ID_S", GroupBo.class).toString());
-    	}
 		GroupBo savedGroup = KIMServiceLocatorInternal.getGroupInternalService().saveWorkgroup(group);
 		getIdentityManagementNotificationService().groupUpdated();
 		return savedGroup;
 	}
 
-	protected void saveGroupAttributes(List<GroupAttributeBo> groupAttributes) {
-        if ( groupAttributes == null ) {
-            return;
-        }
-        SequenceAccessorService sas = getSequenceAccessorService();
-        for (GroupAttributeBo groupAttribute : groupAttributes) {
-        	if (groupAttribute.getId() == null) {
-        		groupAttribute.setId(sas.getNextAvailableSequenceNumber(
-                        "KRIM_GRP_ATTR_DATA_ID_S", GroupAttributeBo.class).toString());
-        	}
-        }
-        this.businessObjectService.save( groupAttributes );
-    }
-
-	protected void deleteGroupAttribute(GroupAttributeBo groupAttribute) {
-        if ( groupAttribute == null ) {
-            return;
-        }
-        this.businessObjectService.delete( groupAttribute );
-    }
 
 	/**
 	 * This helper method gets the active group members of the specified type (see {@link KimGroupMemberTypes}).
@@ -351,13 +322,6 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 		});
 
         return new ArrayList<GroupMemberBo>(groupMembers);
-	}
-
-	protected SequenceAccessorService getSequenceAccessorService() {
-		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
-		}
-		return sequenceAccessorService;
 	}
 
     protected IdentityManagementNotificationService getIdentityManagementNotificationService() {

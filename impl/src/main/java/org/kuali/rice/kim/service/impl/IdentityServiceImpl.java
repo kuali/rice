@@ -831,9 +831,11 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
             return result;
         }
         final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-        builder.setPredicates(and(in("entityId", entityIds.toArray()),
+        builder.setPredicates(and(in("id", entityIds.toArray()),
                                   equal("active", "Y"),
-                                  equal("defaultValue", "Y")));
+                                  and(
+                                    equal("names.active", "Y"),
+                                    equal("names.defaultValue", "Y"))));
         EntityDefaultQueryResults qr = findEntityDefaults(builder.build());
         for(EntityDefault entityDefault : qr.getResults()) {
 

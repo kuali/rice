@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +24,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -54,7 +56,10 @@ public class GroupInternalServiceImpl implements GroupInternalService {
 
     public GroupBo saveWorkgroup(GroupBo group) {
     	GroupService ims = getGroupService();
-    	List<String> oldIds = ims.getMemberPrincipalIds(group.getId());
+        List<String> oldIds = Collections.EMPTY_LIST;
+    	if (StringUtils.isNotEmpty(group.getId())) {
+            oldIds = ims.getMemberPrincipalIds(group.getId());
+        }
         group = (GroupBo)getBusinessObjectService().save( group );
         List<String> newIds = ims.getMemberPrincipalIds(group.getId());
         updateForWorkgroupChange(group.getId(), oldIds, newIds);

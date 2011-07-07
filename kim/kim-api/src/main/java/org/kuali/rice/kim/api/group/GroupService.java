@@ -156,8 +156,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getGroups")
     @WebResult(name = "groups")
-    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    Map<String, Group> getGroups(@WebParam(name="groupIds") Collection<String> groupIds);
+    List<Group> getGroups(@WebParam(name="groupIds") Collection<String> groupIds);
 
 
     /**

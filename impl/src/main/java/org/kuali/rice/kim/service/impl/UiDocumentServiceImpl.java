@@ -366,7 +366,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			identityManagementPersonDocument.setAddrs(loadAddresses(identityManagementPersonDocument, principalId, entityType.getAddresses(), identityManagementPersonDocument.getPrivacy().isSuppressAddress()));
 		}
 
-		List<? extends Group> groups = getGroupsByIds(getGroupService().getDirectGroupIdsForPrincipal(identityManagementPersonDocument.getPrincipalId()));
+		List<Group> groups = getGroupService().getGroups(getGroupService().getDirectGroupIdsForPrincipal(identityManagementPersonDocument.getPrincipalId()));
 		loadGroupToPersonDoc(identityManagementPersonDocument, groups);
 		loadRoleToPersonDoc(identityManagementPersonDocument);
 		loadDelegationsToPersonDoc(identityManagementPersonDocument);
@@ -2653,20 +2653,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			KimApiServiceLocator.getRoleService().groupInactivated(identityManagementGroupDocument.getGroupId());
 		}
 
-	}
-
-	/**
-	* Looks up GroupInfo objects for each group id passed in
-	* @param groupIds the List of group ids to look up GroupInfo records on
-	* @return a List of GroupInfo records
-	*/
-	protected List<? extends Group> getGroupsByIds(List<String> groupIds) {
-		List<Group> groups = new ArrayList<Group>();
-		Map<String, Group> groupInfoMap = getGroupService().getGroups(groupIds);
-		for (String groupId : groupInfoMap.keySet()) {
-			groups.add(groupInfoMap.get(groupId));
-		}
-		return groups;
 	}
 
 	protected List<GroupMemberBo> getGroupMembers(IdentityManagementGroupDocument identityManagementGroupDocument, List<GroupMemberBo> origGroupMembers){

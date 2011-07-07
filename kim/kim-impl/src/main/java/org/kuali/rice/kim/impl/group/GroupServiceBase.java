@@ -84,18 +84,15 @@ public abstract class GroupServiceBase {
      * @see org.kuali.rice.kim.api.group.GroupService#getGroups(java.util.Collection)
      */
     //@Override
-    public Map<String, Group> getGroups(Collection<String> groupIds) {
-        Map<String, Group> result = new HashMap<String, Group>();
+    public List<Group> getGroups(Collection<String> groupIds) {
         if (CollectionUtils.isEmpty(groupIds)) {
-            return result;
+            return new ArrayList<Group>();
         }
         final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         builder.setPredicates(and(in("id", groupIds.toArray()), equal("active", "Y")));
         GroupQueryResults qr = findGroups(builder.build());
-        for (Group group : qr.getResults()) {
-            result.put(group.getId(), group);
-        }
-        return result;
+
+        return qr.getResults();
     }
 
     //@Override
@@ -191,8 +188,8 @@ public abstract class GroupServiceBase {
 	}
 
     protected void getParentGroupsInternal( String groupId, Set<Group> groups ) {
-		Map<String,Group> parentGroups = getDirectParentGroups( groupId );
-		for ( Group group : parentGroups.values() ) {
+		List<Group> parentGroups = getDirectParentGroups( groupId );
+		for ( Group group : parentGroups ) {
 			if ( !groups.contains( group ) ) {
 				groups.add( group );
 				getParentGroupsInternal( group.getId(), groups );
@@ -200,9 +197,9 @@ public abstract class GroupServiceBase {
 		}
 	}
 
-    protected Map<String,Group> getDirectParentGroups(String groupId) {
+    protected List<Group> getDirectParentGroups(String groupId) {
 		if ( groupId == null ) {
-			return Collections.emptyMap();
+			return Collections.emptyList();
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, groupId);

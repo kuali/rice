@@ -255,8 +255,10 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		}
         List<String> result = new ArrayList<String>();
         if (groupId != null) {
-            Map<String,Group> groupList = getDirectParentGroups(groupId);
-            result.addAll(groupList.keySet());
+            List<Group> groupList = getDirectParentGroups(groupId);
+            for (Group group : groupList) {
+                result.add(group.getId());
+            }
         }
 
         return result;
@@ -358,10 +360,10 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			}
 		}
 		// pull all the group information for the matching members
-		Map<String,Group> groups = getGroups(groupIds);
+		List<Group> groups = getGroups(groupIds);
 		List<Group> result = new ArrayList<Group>( groups.size() );
 		// filter by namespace if necessary
-		for ( Group group : groups.values() ) {
+		for ( Group group : groups ) {
 			if ( group.isActive() ) {
 				if ( StringUtils.isBlank(namespaceCode) || StringUtils.equals(namespaceCode, group.getNamespaceCode() ) ) {
 					result.add(group);

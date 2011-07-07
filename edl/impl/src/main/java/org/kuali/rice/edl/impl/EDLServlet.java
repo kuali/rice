@@ -29,8 +29,11 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kns.util.IncidentReportUtils;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.exception.AuthenticationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -61,6 +64,12 @@ public class EDLServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String documentId = null;
 		try {
+		    UserSession userSession = KRADUtils.getUserSessionFromRequest(request);
+		    if (userSession == null) {
+		        throw new AuthenticationException("Failed to locate a user session for request.");
+		    }
+		    GlobalVariables.setUserSession(userSession);
+		    
 		    RequestParser requestParser = new RequestParser(request);
 		    String inputCommand = requestParser.getParameterValue("command");
 		    if (StringUtils.equals(inputCommand, "initiate")){
@@ -110,6 +119,8 @@ public class EDLServlet extends HttpServlet {
 		} catch (Exception e) {
 			LOG.error("Error processing EDL", e);
 			outputError(request, response, e, documentId);
+		} finally {
+		    GlobalVariables.setUserSession(null);
 		}
 	}
 

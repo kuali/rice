@@ -1153,39 +1153,6 @@ public class DTOConverter {
         return stateVO;
     }
 
-    public static RouteNodeDTO convertRouteNode(RouteNode node) {
-        if (node == null) {
-            return null;
-        }
-        RouteNodeDTO nodeVO = new RouteNodeDTO();
-        nodeVO.setActivationType(node.getActivationType());
-        nodeVO.setBranchName(node.getBranch() != null ? node.getBranch().getName() : null);
-        nodeVO.setDocumentTypeId(node.getDocumentTypeId());
-        nodeVO.setExceptionGroupId(node.getExceptionWorkgroupId());
-        nodeVO.setFinalApprovalInd(node.getFinalApprovalInd().booleanValue());
-        nodeVO.setMandatoryRouteInd(node.getMandatoryRouteInd().booleanValue());
-        nodeVO.setNodeType(node.getNodeType());
-        nodeVO.setRouteMethodCode(node.getRouteMethodCode());
-        nodeVO.setRouteMethodName(node.getRouteMethodName());
-        nodeVO.setRouteNodeId(node.getRouteNodeId());
-        nodeVO.setRouteNodeName(node.getRouteNodeName());
-        int index = 0;
-        Long[] previousNodeIds = new Long[node.getPreviousNodes().size()];
-        for (Object element : node.getPreviousNodes()) {
-            RouteNode prevNode = (RouteNode) element;
-            previousNodeIds[index++] = prevNode.getRouteNodeId();
-        }
-        nodeVO.setPreviousNodeIds(previousNodeIds);
-        index = 0;
-        Long[] nextNodeIds = new Long[node.getNextNodes().size()];
-        for (Object element : node.getNextNodes()) {
-            RouteNode nextNode = (RouteNode) element;
-            nextNodeIds[index++] = nextNode.getRouteNodeId();
-        }
-        nodeVO.setNextNodeIds(nextNodeIds);
-        return nodeVO;
-    }
-
     public static MovePoint convertMovePointVO(MovePointDTO movePointVO) {
         return MovePoint.create(movePointVO.getStartNodeName(), movePointVO.getStepsToMove());
     }

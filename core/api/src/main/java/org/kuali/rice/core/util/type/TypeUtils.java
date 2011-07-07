@@ -16,12 +16,14 @@
 
 package org.kuali.rice.core.util.type;
 
+import com.google.common.collect.MapMaker;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Provides utilities for checking the types of objects.
@@ -86,15 +88,13 @@ public class TypeUtils {
         SIMPLE_CLASSES = Collections.unmodifiableCollection(temp);
     }
 
-    //use ConcurrentReferenceHashMap if it makes it into the jdk, since Class tokens always use identity for equality
-    //also shouldn't this be some kind of weak reference map?
-    private static final ConcurrentHashMap<Class<?>, Boolean> IS_BOOLEAN_CACHE = new ConcurrentHashMap<Class<?>, Boolean>();
-    private static final ConcurrentHashMap<Class<?>, Boolean> IS_INTEGRAL_CACHE = new ConcurrentHashMap<Class<?>, Boolean>();
-    private static final ConcurrentHashMap<Class<?>, Boolean> IS_DECIMAL_CACHE = new ConcurrentHashMap<Class<?>, Boolean>();
-    private static final ConcurrentHashMap<Class<?>, Boolean> IS_TEMPORAL_CACHE = new ConcurrentHashMap<Class<?>, Boolean>();
-    private static final ConcurrentHashMap<Class<?>, Boolean> IS_STRING_CACHE = new ConcurrentHashMap<Class<?>, Boolean>();
-    private static final ConcurrentHashMap<Class<?>, Boolean> IS_SIMPLE_CACHE = new ConcurrentHashMap<Class<?>, Boolean>();
-    private static final ConcurrentHashMap<Class<?>, Boolean> IS_CACHE_CACHE = new ConcurrentHashMap<Class<?>, Boolean>();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_BOOLEAN_CACHE = new MapMaker().softKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_INTEGRAL_CACHE = new MapMaker().softKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_DECIMAL_CACHE = new MapMaker().softKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_TEMPORAL_CACHE = new MapMaker().softKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_STRING_CACHE = new MapMaker().softKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_SIMPLE_CACHE = new MapMaker().softKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_CACHE_CACHE = new MapMaker().softKeys().makeMap();
 
     private TypeUtils() {
         throw new UnsupportedOperationException("do not call.");
@@ -164,7 +164,7 @@ public class TypeUtils {
         return is(clazz, SIMPLE_CLASSES, IS_SIMPLE_CACHE);
     }
 
-    private static boolean is(Class<?> clazz, Collection<Class<?>> clazzes, ConcurrentHashMap<Class<?>, Boolean> cache) {
+    private static boolean is(Class<?> clazz, Collection<Class<?>> clazzes, ConcurrentMap<Class<?>, Boolean> cache) {
         if (clazz == null) {
             throw new IllegalArgumentException("clazz is null");
         }

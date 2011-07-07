@@ -15,19 +15,32 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
-import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.util.HashSet;
 import java.util.Set;
+
+import org.kuali.rice.krad.uif.container.InquiryView;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InquiryPresentationControllerBase extends PresentationControllerBase {
     
+    /**
+     * Prepares a list of action flags applicable for a inquiry 
+     * 
+     * @see org.kuali.rice.krad.uif.authorization.PresentationControllerBase#getActionFlags(org.kuali.rice.krad.web.spring.form.UifFormBase)
+     */
     @Override
     public Set<String> getActionFlags(UifFormBase model) {
-        return new HashSet<String>();
+        
+        Set<String> actionFlags = super.getActionFlags(model);
+        
+        if (((InquiryView)model.getView()).isCanExport()){
+            actionFlags.add(KRADConstants.KUALI_ACTION_CAN_EXPORT);
+        }
+        
+        return actionFlags;
     }
 
 }

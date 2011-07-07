@@ -125,6 +125,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="FooterInquiry" parent="Footer">
       <property name="items">
         <list> 
+          <bean parent="ActionField" p:methodToCall="export" p:actionLabel="export" p:conditionalRender="#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]" p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);"/>	
           <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="Close" p:conditionalRender="!#view.dialogMode"/>
         </list>
       </property>  

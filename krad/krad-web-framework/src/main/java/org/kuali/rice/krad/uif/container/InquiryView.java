@@ -15,7 +15,11 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.krad.bo.Exporter;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Type of <code>View</code> that provides a read-only display of a record of
@@ -41,6 +45,7 @@ public class InquiryView extends FormView {
     private static final long serialVersionUID = 716926008488403616L;
 
     private Class<?> dataObjectClassName;
+    private boolean canExport;
 
     public InquiryView() {
         super();
@@ -65,6 +70,7 @@ public class InquiryView extends FormView {
         super.performInitialization(view);
 
         getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
+        populateExportCapabilities();
     }
 
     /**
@@ -90,6 +96,33 @@ public class InquiryView extends FormView {
      */
     public void setDataObjectClassName(Class<?> dataObjectClassName) {
         this.dataObjectClassName = dataObjectClassName;
+    }
+
+    /**
+     * Examines the BusinessObject's data dictionary entry to determine if it
+     * supports XML export or not and set's canExport appropriately.
+     *
+     */
+    protected void populateExportCapabilities() {
+        DataObjectEntry dataObjectEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(getDataObjectClassName().getName());
+        Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
+        if (exporterClass != null) {
+            try {
+                Exporter exporter = exporterClass.newInstance();
+                if (exporter.getSupportedFormats(dataObjectEntry.getDataObjectClass()).contains(KRADConstants.XML_FORMAT)) {
+                    canExport = true;
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to locate or create exporter class: " + exporterClass);
+            }
+        }
+    }
+    
+    /**
+	 * Returns true if this Inquiry supports XML export of the BusinessObject.
+	 */
+    public boolean isCanExport() {
+        return this.canExport;
     }
 
 }

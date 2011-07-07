@@ -17,12 +17,8 @@ package org.kuali.rice.krad.web.form;
 
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.krad.bo.Exporter;
-import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.inquiry.Inquirable;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Form class for <code>InquiryView</code> screens
@@ -36,34 +32,8 @@ public class InquiryForm extends UifFormBase {
     private String dataObjectClassName;
     private Object dataObject;
 
-    private boolean canExport;
-
     public InquiryForm() {
         setViewTypeName(ViewType.INQUIRY);
-    }
-
-    /**
-     * Examines the BusinessObject's data dictionary entry to determine if it
-     * supports XML export or not and set's canExport appropriately.
-     *
-     * TODO: should be moved to the view and authorization done in presentation controller
-     */
-    protected void populateExportCapabilities(String boClassName) {
-        setCanExport(false);
-        DataObjectEntry dataObjectEntry =
-                KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(boClassName);
-        Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
-        if (exporterClass != null) {
-            try {
-                Exporter exporter = exporterClass.newInstance();
-                if (exporter.getSupportedFormats(dataObjectEntry.getDataObjectClass()).contains(KRADConstants.XML_FORMAT)) {
-                    setCanExport(true);
-                }
-            } catch (Exception e) {
-                LOG.error("Failed to locate or create exporter class: " + exporterClass, e);
-                throw new RuntimeException("Failed to locate or create exporter class: " + exporterClass);
-            }
-        }
     }
 
     /**
@@ -117,11 +87,4 @@ public class InquiryForm extends UifFormBase {
         return (Inquirable) getView().getViewHelperService();
     }
 
-    public boolean isCanExport() {
-        return this.canExport;
-    }
-
-    public void setCanExport(boolean canExport) {
-        this.canExport = canExport;
-    }
 }

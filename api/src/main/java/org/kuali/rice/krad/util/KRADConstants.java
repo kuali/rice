@@ -56,7 +56,8 @@ public final class KRADConstants {
     public static final String KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS = "canSendAdHocRequests";
     public static final String KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS = "canAddAdHocRequests";
     public static final String KUALI_ACTION_CAN_SEND_NOTE_FYI = "canSendNoteFyi";
-    public static final String KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW = "canEditDocumentOverview"; 
+    public static final String KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW = "canEditDocumentOverview";
+    public static final String KUALI_ACTION_CAN_EXPORT = "canExport";
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
     
     public static final class DetailTypes {

@@ -15,7 +15,16 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import java.util.Collections;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.kuali.rice.krad.bo.Exporter;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -24,9 +33,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Controller for <code>InquiryView</code> screens which handle
@@ -85,5 +91,29 @@ public class InquiryController extends UifControllerBase {
         inquiryForm.setDataObject(dataObject);
 
         return getUIFModelAndView(inquiryForm);
+    }
+    
+    /**
+     * Handles exporting the BusinessObject for this Inquiry to XML if it has a custom XML exporter available.
+     */
+    @RequestMapping(params = "methodToCall=export")
+    public ModelAndView export(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception  {
+        InquiryForm inquiryForm = (InquiryForm) form;
+        
+        Object dataObject = inquiryForm.getDataObject();
+        
+        if (dataObject != null) {
+            DataObjectEntry dataObjectEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(inquiryForm.getDataObjectClassName());
+            Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
+            if (exporterClass != null) {
+                Exporter exporter = exporterClass.newInstance();
+                response.setContentType(KRADConstants.XML_MIME_TYPE);
+                response.setHeader("Content-disposition", "attachment; filename=export.xml");
+                exporter.export(dataObjectEntry.getDataObjectClass(), Collections.singletonList(dataObject), KRADConstants.XML_FORMAT, response.getOutputStream());
+            }
+        }
+        
+         return null;
     }
 }

@@ -28,23 +28,25 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquiryDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.datadictionary.LookupDefinition;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.exception.IntrospectionException;
 import org.kuali.rice.krad.inquiry.InquiryAuthorizer;
 import org.kuali.rice.krad.inquiry.InquiryAuthorizerBase;
 import org.kuali.rice.krad.inquiry.InquiryPresentationController;
 import org.kuali.rice.krad.inquiry.InquiryPresentationControllerBase;
-import org.kuali.rice.krad.valuefinder.ValueFinder;
-import org.kuali.rice.krad.service.*;
+import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 /**
  * This class is the service implementation for the BusinessObjectDictionary.
@@ -440,14 +442,9 @@ public class BusinessObjectDictionaryServiceImpl implements
     public String getMaintainableLabel(Class businessObjectClass) {
         String label = "";
 
-        try {
-            MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(businessObjectClass);
-            if (entry != null) {
-                label = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(entry.getDocumentTypeName()).getDocTypeLabel();
-            }
-
-        } catch (WorkflowException e) {
-            throw new RuntimeException("Caught Exception trying to get the document type", e);
+        MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(businessObjectClass);
+        if (entry != null) {
+            label = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(entry.getDocumentTypeName()).getLabel();
         }
 
         return label;

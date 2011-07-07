@@ -16,6 +16,9 @@
 
 package org.kuali.rice.kns.web.struts.action;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -26,7 +29,10 @@ import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentType;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.datadictionary.LookupDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
@@ -34,18 +40,13 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.web.struts.form.KualiHelpForm;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.HelpDefinition;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class handles requests for help text.
@@ -232,9 +233,9 @@ public class KualiHelpAction extends KualiAction {
         HelpDefinition helpDefinition = null;
         String apcHelpUrl = null;
         if (entry != null) {
-            DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(entry.getDocumentTypeName());
-            label = docType.getDocTypeLabel();
-            description = docType.getDocTypeDescription();
+            DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(entry.getDocumentTypeName());
+            label = docType.getLabel();
+            description = docType.getDescription();
             if (StringUtils.isNotBlank(docType.getHelpDefinitionUrl())) {
             	apcHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getHelpDefinitionUrl();
             }
@@ -427,7 +428,7 @@ public class KualiHelpAction extends KualiAction {
     	}
     	// handle doc search custom help urls
     	if (!StringUtils.isEmpty(helpForm.getSearchDocumentTypeName())) {
-    	    DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(helpForm.getSearchDocumentTypeName());
+    	    DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(helpForm.getSearchDocumentTypeName());
     	    if (!StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
     	        String docSearchHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getDocSearchHelpUrl();
 

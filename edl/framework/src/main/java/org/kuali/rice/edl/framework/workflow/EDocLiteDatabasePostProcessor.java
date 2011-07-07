@@ -31,11 +31,12 @@ import org.kuali.rice.edl.framework.extract.DumpDTO;
 import org.kuali.rice.edl.framework.extract.ExtractService;
 import org.kuali.rice.edl.framework.extract.FieldDTO;
 import org.kuali.rice.edl.framework.services.EdlFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -118,7 +119,7 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
 	    private void extractEDLData(String documentId, String[] nodeNames, Document documentContent) {
 	    	try {
 	    	RouteHeaderDTO routeHeader = new WorkflowInfo().getRouteHeader(documentId);
-	    	DocumentTypeDTO documentType = new WorkflowInfo().getDocTypeById(routeHeader.getDocTypeId());
+	    	DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(routeHeader.getDocTypeId());
 	    	DumpDTO dump = getExtractService().getDumpByDocumentId(routeHeader.getDocumentId());
 	    	if (dump == null) {
 	    		dump = new DumpDTO();
@@ -126,7 +127,7 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
 	    	dump.setDocId(routeHeader.getDocumentId());
 			dump.setDocCreationDate(new Timestamp(routeHeader.getDateCreated().getTimeInMillis()));
 	    	dump.setDocCurrentNodeName(StringUtils.join(nodeNames, ","));
-			dump.setDocDescription(documentType.getDocTypeDescription());
+			dump.setDocDescription(documentType.getDescription());
 			if (routeHeader.getDateLastModified() != null) {
 				dump.setDocModificationDate(new Timestamp(routeHeader.getDateLastModified().getTimeInMillis()));
 			}

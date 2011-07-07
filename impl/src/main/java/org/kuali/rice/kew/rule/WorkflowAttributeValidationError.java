@@ -92,6 +92,11 @@ public class WorkflowAttributeValidationError implements Serializable {
 		this.messageMap = messageMap;
 	}
 
-
+	public static org.kuali.rice.kew.api.document.WorkflowAttributeValidationError to(WorkflowAttributeValidationError validationError) {
+	    if (validationError == null) {
+	        return null;
+	    }
+	    return org.kuali.rice.kew.api.document.WorkflowAttributeValidationError.create(validationError.getKey(), validationError.getMessage());
+	}
 
 }

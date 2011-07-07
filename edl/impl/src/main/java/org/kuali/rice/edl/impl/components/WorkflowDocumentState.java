@@ -104,7 +104,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 				EDLXmlUtils.createTextElementOnParent(documentState, "docId", document.getDocumentId());
 				Element workflowDocumentStatus = EDLXmlUtils.getOrCreateChildElement(documentState, "workflowDocumentState", true);
 				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "status", document.getStatus().getLabel());
-				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "createDate", RiceConstants.getDefaultDateAndTimeFormat().format(document.getDateCreated()));
+				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "createDate", RiceConstants.getDefaultDateAndTimeFormat().format(document.getDateCreated().toDate()));
 				List<String> nodeNames = document.getPreviousNodeNames();
 				if (nodeNames.size() > 0) {
 				    Element previousNodes = EDLXmlUtils.getOrCreateChildElement(documentState, "previousNodes", true);

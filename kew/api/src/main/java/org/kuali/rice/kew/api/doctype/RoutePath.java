@@ -55,6 +55,15 @@ public final class RoutePath implements ModelObjectComplete, RoutePathContract {
             }
         }
     }
+    
+    public Process getPrimaryProcess() {
+        for (Process process : processes) {
+            if (process.isInitial()) {
+                return process;
+            }
+        }        
+        return null;
+    }
 
     @Override
     public List<Process> getProcesses() {
@@ -89,7 +98,9 @@ public final class RoutePath implements ModelObjectComplete, RoutePathContract {
         private Builder() {}
 
         public static Builder create() {
-            return new Builder();
+            Builder builder = new Builder();
+            builder.setProcesses(new ArrayList<Process.Builder>());
+            return builder;
         }
 
         public static Builder create(RoutePathContract contract) {

@@ -22,7 +22,6 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -38,10 +37,6 @@ public interface KualiWorkflowInfo {
     public abstract RouteHeaderDTO getRouteHeader(String principalId, String documentId) throws WorkflowException;
 
     public abstract RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException;
-
-    public abstract DocumentTypeDTO getDocTypeById(String documentTypeId) throws WorkflowException;
-
-    public abstract DocumentTypeDTO getDocTypeByName(String documentTypeName) throws WorkflowException;
 
     public abstract Long getNewResponsibilityId() throws WorkflowException;
 

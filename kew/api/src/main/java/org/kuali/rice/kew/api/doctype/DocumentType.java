@@ -33,6 +33,8 @@ import org.w3c.dom.Element;
         DocumentType.Elements.PARENT_ID,
         DocumentType.Elements.ACTIVE,
         DocumentType.Elements.DOC_HANDLER_URL,
+        DocumentType.Elements.HELP_DEFINITION_URL,
+        DocumentType.Elements.DOC_SEARCH_HELP_URL,
         DocumentType.Elements.POST_PROCESSOR_NAME,
         DocumentType.Elements.APPLICATION_ID,
         DocumentType.Elements.CURRENT,
@@ -69,6 +71,12 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
 
     @XmlElement(name = Elements.DOC_HANDLER_URL, required = false)
     private final String docHandlerUrl;
+
+    @XmlElement(name = Elements.HELP_DEFINITION_URL, required = false)
+    private final String helpDefinitionUrl;
+
+    @XmlElement(name = Elements.DOC_SEARCH_HELP_URL, required = false)
+    private final String docSearchHelpUrl;
 
     @XmlElement(name = Elements.POST_PROCESSOR_NAME, required = false)
     private final String postProcessorName;
@@ -108,6 +116,8 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
         this.parentId = null;
         this.active = false;
         this.docHandlerUrl = null;
+        this.helpDefinitionUrl = null;
+        this.docSearchHelpUrl = null;
         this.postProcessorName = null;
         this.applicationId = null;
         this.current = false;
@@ -126,6 +136,8 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
         this.parentId = builder.getParentId();
         this.active = builder.isActive();
         this.docHandlerUrl = builder.getDocHandlerUrl();
+        this.helpDefinitionUrl = builder.getHelpDefinitionUrl();
+        this.docSearchHelpUrl = builder.getDocSearchHelpUrl();
         this.postProcessorName = builder.getPostProcessorName();
         this.applicationId = builder.getApplicationId();
         this.current = builder.isCurrent();
@@ -175,6 +187,16 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
         return this.docHandlerUrl;
     }
 
+    @Override
+    public String getHelpDefinitionUrl() {
+        return this.helpDefinitionUrl;
+    }
+
+    @Override
+    public String getDocSearchHelpUrl() {
+        return this.docSearchHelpUrl;
+    }
+    
     @Override
     public String getPostProcessorName() {
         return this.postProcessorName;
@@ -232,7 +254,7 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
     public final static class Builder implements Serializable, ModelBuilder, DocumentTypeContract {
 
         private static final long serialVersionUID = 1678979180435181578L;
-        
+
         private String id;
         private String name;
         private Integer documentTypeVersion;
@@ -241,6 +263,8 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
         private String parentId;
         private boolean active;
         private String docHandlerUrl;
+        private String helpDefinitionUrl;
+        private String docSearchHelpUrl;
         private String postProcessorName;
         private String applicationId;
         private boolean current;
@@ -272,6 +296,8 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
             builder.setParentId(contract.getParentId());
             builder.setActive(contract.isActive());
             builder.setDocHandlerUrl(contract.getDocHandlerUrl());
+            builder.setHelpDefinitionUrl(contract.getHelpDefinitionUrl());
+            builder.setDocSearchHelpUrl(contract.getDocSearchHelpUrl());
             builder.setPostProcessorName(contract.getPostProcessorName());
             builder.setApplicationId(contract.getApplicationId());
             builder.setCurrent(contract.isCurrent());
@@ -324,6 +350,16 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
         @Override
         public String getDocHandlerUrl() {
             return this.docHandlerUrl;
+        }
+        
+        @Override
+        public String getHelpDefinitionUrl() {
+            return this.helpDefinitionUrl;
+        }
+
+        @Override
+        public String getDocSearchHelpUrl() {
+            return this.docSearchHelpUrl;
         }
 
         @Override
@@ -396,6 +432,14 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
             this.docHandlerUrl = docHandlerUrl;
         }
 
+        public void setHelpDefinitionUrl(String helpDefinitionUrl) {
+            this.helpDefinitionUrl = helpDefinitionUrl;
+        }
+
+        public void setDocSearchHelpUrl(String docSearchHelpUrl) {
+            this.docSearchHelpUrl = docSearchHelpUrl;
+        }
+        
         public void setPostProcessorName(String postProcessorName) {
             this.postProcessorName = postProcessorName;
         }
@@ -448,6 +492,8 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
         final static String PARENT_ID = "parentId";
         final static String ACTIVE = "active";
         final static String DOC_HANDLER_URL = "docHandlerUrl";
+        final static String HELP_DEFINITION_URL = "helpDefinitionUrl";
+        final static String DOC_SEARCH_HELP_URL = "docSearchHelpUrl";
         final static String POST_PROCESSOR_NAME = "postProcessorName";
         final static String APPLICATION_ID = "applicationId";
         final static String CURRENT = "current";

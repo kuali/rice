@@ -15,9 +15,12 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
@@ -28,9 +31,6 @@ import org.kuali.rice.krad.rule.BusinessRule;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Implementation of <code>DocumentDictionaryService</code> which reads configuration
@@ -48,9 +48,9 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
     public String getLabel(String documentTypeName) {
         String label = null;
 
-        DocumentTypeDTO docType = getDocumentType(documentTypeName);
+        DocumentType docType = getDocumentType(documentTypeName);
         if (docType != null) {
-            label = docType.getDocTypeLabel();
+            label = docType.getLabel();
         }
 
         return label;
@@ -78,9 +78,9 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
     public String getDescription(String documentTypeName) {
         String description = null;
 
-        DocumentTypeDTO docType = getDocumentType(documentTypeName);
+        DocumentType docType = getDocumentType(documentTypeName);
         if (docType != null) {
-            description = docType.getDocTypeDescription();
+            description = docType.getDescription();
         }
 
         return description;
@@ -347,13 +347,8 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
      * @param documentTypeName - document type name to retrieve document type dto
      * @return DocumentTypeDTO for given document type name
      */
-    protected DocumentTypeDTO getDocumentType(String documentTypeName) {
-        try {
-            return KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(documentTypeName);
-        } catch (WorkflowException e) {
-            throw new RuntimeException(
-                    "Caught exception attempting to get document type for doc type name '" + documentTypeName + "'", e);
-        }
+    protected DocumentType getDocumentType(String documentTypeName) {
+        return KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(documentTypeName);
     }
 
     /**

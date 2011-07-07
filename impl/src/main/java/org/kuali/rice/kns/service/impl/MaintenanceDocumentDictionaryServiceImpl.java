@@ -22,25 +22,24 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.krad.valuefinder.ValueFinder;
-import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.rule.BusinessRule;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 /**
  * This class is the service implementation for the MaintenanceDocumentDictionary structure. Defines the API for the interacting
@@ -58,12 +57,8 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
      * @param documentTypeName
      * @return
      */
-    protected DocumentTypeDTO getDocumentType(String documentTypeName) {
-        try {
-            return KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(documentTypeName);
-        } catch (WorkflowException e) {
-            throw new RuntimeException("Caught exception attempting to get document type for doc type name '" + documentTypeName + "'", e);
-        }
+    protected DocumentType getDocumentType(String documentTypeName) {
+        return KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(documentTypeName);
     }
 
     /**
@@ -72,9 +67,9 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
     public String getMaintenanceLabel(String docTypeName) {
         String label = null;
 
-        DocumentTypeDTO docType = getDocumentType(docTypeName);
+        DocumentType docType = getDocumentType(docTypeName);
         if (docType != null) {
-            label = docType.getDocTypeLabel();
+            label = docType.getLabel();
         }
 
         return label;
@@ -86,9 +81,9 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
     public String getMaintenanceDescription(String docTypeName) {
         String description = null;
 
-        DocumentTypeDTO docType = getDocumentType(docTypeName);
+        DocumentType docType = getDocumentType(docTypeName);
         if (docType != null) {
-            description = docType.getDocTypeDescription();
+            description = docType.getDescription();
         }
 
         return description;

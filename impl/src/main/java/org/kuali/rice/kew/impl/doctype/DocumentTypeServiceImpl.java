@@ -15,11 +15,15 @@
  */
 package org.kuali.rice.kew.impl.doctype;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
+import org.kuali.rice.kew.api.doctype.Process;
+import org.kuali.rice.kew.api.doctype.RoutePath;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -184,6 +188,41 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         }
         org.kuali.rice.kew.doctype.bo.DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
         return docType != null && docType.isActive();
+    }
+    
+    @Override
+    public RoutePath getRoutePathForDocumentTypeId(String documentTypeId) {
+        if (StringUtils.isBlank(documentTypeId)) {
+            throw new RiceIllegalArgumentException("documentTypeId was null or blank");
+        }
+        org.kuali.rice.kew.doctype.bo.DocumentType docType = KEWServiceLocator.getDocumentTypeService().findById(documentTypeId);
+        if (docType == null) {
+            return null;
+        }
+        RoutePath.Builder builder = RoutePath.Builder.create();
+        List<org.kuali.rice.kew.engine.node.Process> processes = docType.getProcesses();
+        for (org.kuali.rice.kew.engine.node.Process process : processes) {
+            builder.getProcesses().add(Process.Builder.create(process));
+        }
+        return builder.build();
+    }
+    
+    @Override
+    public RoutePath getRoutePathForDocumentTypeName(String documentTypeName) {
+        if (StringUtils.isBlank(documentTypeName)) {
+            throw new RiceIllegalArgumentException("documentTypeName was null or blank");
+        }
+        org.kuali.rice.kew.doctype.bo.DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        if (docType == null) {
+            return null;
+        }
+        RoutePath.Builder builder = RoutePath.Builder.create();
+        List<org.kuali.rice.kew.engine.node.Process> processes = docType.getProcesses();
+        for (org.kuali.rice.kew.engine.node.Process process : processes) {
+            builder.getProcesses().add(Process.Builder.create(process));
+        }
+        return builder.build();
+
     }
 
     public void setDocumentTypeDao(DocumentTypeDAO documentTypeDao) {

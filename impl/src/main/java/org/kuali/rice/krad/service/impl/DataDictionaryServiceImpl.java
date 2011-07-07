@@ -30,10 +30,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentType;
+import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.datadictionary.exporter.DataDictionaryMap;
-import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
@@ -46,6 +46,7 @@ import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
+import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
@@ -71,6 +72,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     private ConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
     private KualiWorkflowInfo workflowInfoService;
+    private volatile DocumentTypeService documentTypeService;
 
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#setBaselinePackages(java.lang.String)
@@ -784,15 +786,9 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public String getDocumentLabelByTypeName(String documentTypeName) {
         String label = null;
         if (StringUtils.isNotBlank(documentTypeName)) {
-            try {
-                DocumentTypeDTO documentType = getWorkflowInfoService().getDocTypeByName(documentTypeName);
-                if (documentType != null) {
-                    label = documentType.getDocTypeLabel();
-                }
-            } catch (WorkflowException e) {
-                // stop blowing up when workflow doc does not exist
-                LOG.error("Caught Workflow Exception trying to get document type '" + documentTypeName + "'", e);
-                return documentTypeName;
+            DocumentType documentType = getDocumentTypeService().getDocumentTypeByName(documentTypeName);
+            if (documentType != null) {
+                label = documentType.getLabel();
             }
         }
         return label;
@@ -916,6 +912,13 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
             workflowInfoService = KRADServiceLocatorWeb.getWorkflowInfoService();
         }
         return workflowInfoService;
+    }
+    
+    public DocumentTypeService getDocumentTypeService() {
+        if (documentTypeService == null) {
+            documentTypeService = KewApiServiceLocator.getDocumentTypeService();
+        }
+        return documentTypeService;
     }
 
     public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {

@@ -15,12 +15,17 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.dto.ProcessDTO;
+import org.kuali.rice.kew.api.doctype.Process;
+import org.kuali.rice.kew.api.doctype.RoutePath;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
@@ -29,10 +34,6 @@ import org.kuali.rice.krad.bo.authorization.BusinessObjectAuthorizerBase;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * DocumentAuthorizer containing common, reusable document-level authorization
@@ -236,21 +237,17 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	
 	protected final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
 		if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
-		    try {
-                DocumentTypeDTO docType = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
-                ProcessDTO process = docType.getRoutePath().getPrimaryProcess();
-                if (process != null) {
-                    if (process.getInitialRouteNode() == null) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-		    } catch (WorkflowException e) {
-                return false;
-            }
+		    RoutePath routePath = KewApiServiceLocator.getDocumentTypeService().getRoutePathForDocumentTypeName(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
+		    Process process = routePath.getPrimaryProcess();
+		    if (process != null) {
+		        if (process.getInitialRouteNode() == null) {
+		            return false;
+		        }
+		    } else {
+		        return false;
+		    }
 			return true;
-		}else if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)){
+		} else if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)){
 			return true;
 		}
 		return canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, user);

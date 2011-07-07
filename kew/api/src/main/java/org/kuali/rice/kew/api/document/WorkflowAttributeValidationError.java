@@ -15,22 +15,68 @@
  */
 package org.kuali.rice.kew.api.document;
 
-/**
- * TODO... annotate this for JAXB
- */
-public final class WorkflowAttributeValidationError {
+import java.io.Serializable;
+import java.util.Collection;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
+
+/**
+ * TODO...
+ */
+@XmlRootElement(name = WorkflowAttributeValidationError.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = WorkflowAttributeValidationError.Constants.TYPE_NAME, propOrder = {
+        WorkflowAttributeValidationError.Elements.KEY,
+        WorkflowAttributeValidationError.Elements.MESSAGE,
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
+public final class WorkflowAttributeValidationError implements Serializable {
+
+    private static final long serialVersionUID = 3323649177455266977L;
+
+    @XmlElement(name = Elements.KEY, required = true)
     private final String key;
+    
+    @XmlElement(name = Elements.MESSAGE, required = true)
     private final String message;
     
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
+    /**
+     * Private constructor used only by JAXB.
+     */
     public WorkflowAttributeValidationError() {
     	this.key = null;
     	this.message = null;
     }
     
-    public WorkflowAttributeValidationError(String key, String message) {
+    private WorkflowAttributeValidationError(String key, String message) {
+        if (StringUtils.isBlank(key)) {
+            throw new IllegalArgumentException("key was null or blank");
+        }
+        if (StringUtils.isBlank(message)) {
+            throw new IllegalArgumentException("message was null or blank");
+        }
         this.key = key;
         this.message = message;
+    }
+    
+    public static WorkflowAttributeValidationError create(String key, String message) {
+        return new WorkflowAttributeValidationError(key, message);
     }
     
     public String getKey() {
@@ -40,5 +86,39 @@ public final class WorkflowAttributeValidationError {
     public String getMessage() {
         return message;
     }
+    
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+    }
 
+    @Override
+    public boolean equals(Object object) {
+        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
+    /**
+     * Defines some internal constants used on this class.
+     */
+    static class Constants {
+        final static String ROOT_ELEMENT_NAME = "workflowAttributeValidationError";
+        final static String TYPE_NAME = "WorkflowAttributeValidationErrorType";
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[]{CoreConstants.CommonElements.FUTURE_ELEMENTS};
+    }
+
+    /**
+     * A private class which exposes constants which define the XML element names to use when this
+     * object is marshalled to XML.
+     */
+    static class Elements {
+        final static String KEY = "key";
+        final static String MESSAGE = "message";
+    }
+
+    
 }

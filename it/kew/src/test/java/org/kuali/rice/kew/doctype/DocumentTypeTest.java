@@ -114,11 +114,8 @@ public class DocumentTypeTest extends KEWTestCase {
         document.approve("");
 
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
-        Integer versionDocument = info.getDocTypeById(document.getDocument().getDocumentTypeId()).getDocTypeVersion();
 
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
-        //make sure our document still represents the accurate version
-        assertEquals("Document has the wrong document type version", version1, versionDocument);
     }
 
     /**

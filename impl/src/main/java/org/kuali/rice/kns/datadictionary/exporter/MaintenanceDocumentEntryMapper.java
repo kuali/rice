@@ -18,7 +18,7 @@ package org.kuali.rice.kns.datadictionary.exporter;
 import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
@@ -59,11 +59,11 @@ public class MaintenanceDocumentEntryMapper extends DocumentEntryMapper {
 
         entryMap.set("documentTypeName", entry.getDocumentTypeName());
 
-        DocumentTypeDTO docType = getDocumentType(entry.getDocumentTypeName());
-        entryMap.set("label", docType.getDocTypeLabel());
+        DocumentType docType = getDocumentType(entry.getDocumentTypeName());
+        entryMap.set("label", docType.getLabel());
 
-        if (docType.getDocTypeDescription() != null) {
-            entryMap.set("description", docType.getDocTypeDescription());
+        if (docType.getDescription() != null) {
+            entryMap.set("description", docType.getDescription());
         }
 
         DocumentHelperService documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();

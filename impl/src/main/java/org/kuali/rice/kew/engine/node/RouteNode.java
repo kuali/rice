@@ -16,22 +16,10 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.service.RuleTemplateService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -50,10 +38,25 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
+import org.kuali.rice.kew.api.doctype.RouteNodeContract;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.service.RuleTemplateService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 /**
  * Represents the prototype definition of a node in the route path of {@link DocumentType}.
@@ -68,7 +71,7 @@ import java.util.Map;
 	@NamedQuery(name="RouteNode.FindRouteNodeByName", query="select r from RouteNode as r where r.routeNodeName = :routeNodeName and r.documentTypeId = :documentTypeId"),
 	@NamedQuery(name="RouteNode.FindApprovalRouteNodes", query="select r from RouteNode as r where r.documentTypeId = :documentTypeId and r.finalApprovalInd = :finalApprovalInd")
 })
-public class RouteNode implements Serializable {    
+public class RouteNode implements Serializable, RouteNodeContract {    
 
     private static final long serialVersionUID = 4891233177051752726L;
 
@@ -397,5 +400,94 @@ public class RouteNode implements Serializable {
 	public String toString() {
 		return "RouteNode[routeNodeName="+routeNodeName+", nodeType="+nodeType+", activationType="+activationType+"]";
 	}
+
+    @Override
+    public Long getVersionNumber() {
+        if (lockVerNbr == null) {
+            return null;
+        }
+        return Long.valueOf(lockVerNbr.longValue());
+    }
+
+    @Override
+    public String getId() {
+        if (routeNodeId == null) {
+            return null;
+        }
+        return routeNodeId.toString();
+    }
+
+    @Override
+    public String getName() {
+        return getRouteNodeName();
+    }
+
+    @Override
+    public boolean isFinalApproval() {
+        if (finalApprovalInd == null) {
+            return false;
+        }
+        return finalApprovalInd.booleanValue();
+    }
+
+    @Override
+    public boolean isMandatory() {
+        if (mandatoryRouteInd == null) {
+            return false;
+        }
+        return mandatoryRouteInd.booleanValue();
+    }
+
+    @Override
+    public String getExceptionGroupId() {
+        return exceptionWorkgroupId;
+    }
+
+    @Override
+    public String getType() {
+        return nodeType;
+    }
+
+    @Override
+    public String getBranchName() {
+        if (branch == null) {
+            return null;
+        }
+        return branch.getName();
+    }
+
+    @Override
+    public String getNextDocumentStatus() {
+        return nextDocStatus;
+    }
+
+    @Override
+    public List<? extends RouteNodeConfigurationParameterContract> getConfigurationParameters() {
+        return configParams;
+    }
+
+    @Override
+    public List<String> getPreviousNodeIds() {
+        List<String> previousNodeIds = new ArrayList<String>();
+        if (previousNodes != null) {
+            for (RouteNode previousNode : previousNodes) {
+                previousNodeIds.add(previousNode.getRouteNodeId().toString());
+            }
+        }
+        return previousNodeIds;
+    }
+
+    @Override
+    public List<String> getNextNodeIds() {
+        List<String> nextNodeIds = new ArrayList<String>();
+        if (nextNodeIds != null) {
+            for (RouteNode nextNode : nextNodes) {
+                nextNodeIds.add(nextNode.getRouteNodeId().toString());
+            }
+        }
+        return nextNodeIds;
+    }
+	
+	
 
 }

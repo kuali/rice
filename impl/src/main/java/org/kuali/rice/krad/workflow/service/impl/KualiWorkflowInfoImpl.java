@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.workflow.service.impl;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.dto.ActionItemDTO;
@@ -22,7 +26,6 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -33,10 +36,6 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @SuppressWarnings("deprecation")
@@ -66,14 +65,6 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     		throw new WorkflowException("Failed to locate System User with principal name 'kr'");
     	}
     	return getWorkflowUtility().getRouteHeader(principal.getPrincipalId(), documentId);
-    }
-
-    public DocumentTypeDTO getDocTypeById(String documentTypeId) throws WorkflowException {
-    	return getWorkflowUtility().getDocTypeById(documentTypeId);
-    }
-
-    public DocumentTypeDTO getDocTypeByName(String documentTypeName) throws WorkflowException {
-    	return getWorkflowUtility().getDocTypeByName(documentTypeName);
     }
 
     public Long getNewResponsibilityId() throws WorkflowException {

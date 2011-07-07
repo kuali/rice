@@ -1,12 +1,16 @@
 package org.kuali.rice.kew.impl.action;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestType;
@@ -27,12 +31,17 @@ import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
+import org.kuali.rice.kew.api.document.PropertyDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
+import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 
@@ -619,7 +628,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         try {
             document = DocumentRouteHeaderValue.to(documentBo);
             KEWServiceLocator.getWorkflowDocumentService().deleteDocument(principalId, documentBo);
-            
+
         } catch (WorkflowException e) {
             translateException(e);
         }
@@ -760,8 +769,37 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public List<WorkflowAttributeValidationError> validateWorkflowAttributeDefinition(
             WorkflowAttributeDefinition definition) {
-        // TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-        throw new UnsupportedOperationException("implement me!!!");
+        if (definition == null) {
+            throw new RiceIllegalArgumentException("definition was null");
+        }
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Validating WorkflowAttributeDefinition [attributeName="+definition.getAttributeName()+"]");
+        }
+        AttributeDefinition attributeDefinition = DTOConverter.convertWorkflowAttributeDefinition(definition);
+        WorkflowAttribute attribute = null;
+        if (attributeDefinition != null) {
+            attribute = (WorkflowAttribute) GlobalResourceLoader.getObject(attributeDefinition.getObjectDefinition());
+        }
+        if (attribute instanceof GenericXMLRuleAttribute) {
+            Map<String, String> attributePropMap = new HashMap<String, String>();
+            GenericXMLRuleAttribute xmlAttribute = (GenericXMLRuleAttribute)attribute;
+            xmlAttribute.setRuleAttribute(attributeDefinition.getRuleAttribute());
+            for (PropertyDefinition propertyDefinition : definition.getPropertyDefinitions()) {
+                attributePropMap.put(propertyDefinition.getName(), propertyDefinition.getValue());
+            }
+            xmlAttribute.setParamMap(attributePropMap);
+    }
+        List<WorkflowAttributeValidationError> errors = new ArrayList<WorkflowAttributeValidationError>();
+        //validate inputs from client application if the attribute is capable
+        if (attribute instanceof WorkflowAttributeXmlValidator) {
+            List<org.kuali.rice.kew.rule.WorkflowAttributeValidationError> validationErrors = ((WorkflowAttributeXmlValidator)attribute).validateClientRoutingData();
+            if (validationErrors != null) {
+                for (org.kuali.rice.kew.rule.WorkflowAttributeValidationError validationError : validationErrors) {
+                    errors.add(org.kuali.rice.kew.rule.WorkflowAttributeValidationError.to(validationError));
+                }
+            }
+        }
+        return errors;
     }
 
     private void incomingParamCheck(Object object, String name) {

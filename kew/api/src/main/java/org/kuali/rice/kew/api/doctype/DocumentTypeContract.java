@@ -23,29 +23,33 @@ import org.kuali.rice.core.api.mo.common.Versioned;
 public interface DocumentTypeContract extends Identifiable, Versioned {
 
     String getName();
-    
+
     Integer getDocumentTypeVersion();
-    
+
     String getLabel();
-    
+
     String getDescription();
-    
-	String getParentId();
-	    
+
+    String getParentId();
+
     boolean isActive();
 
     String getDocHandlerUrl();
-    
+
+    String getHelpDefinitionUrl();
+
+    String getDocSearchHelpUrl();
+
     String getPostProcessorName();
 
     String getApplicationId();
-    
+
     boolean isCurrent();
-    
+
     String getBlanketApproveGroupId();
-    
+
     String getSuperUserGroupId();
-    
+
     Map<DocumentTypePolicy, String> getPolicies();
-	
+
 }

@@ -33,6 +33,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.doctype.ProcessContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
@@ -47,7 +48,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 @Entity
 @Table(name="KREW_DOC_TYP_PROC_T")
 //@Sequence(name="KREW_RTE_NODE_S",property="processId")
-public class Process implements Serializable {
+public class Process implements Serializable, ProcessContract {
 
 	private static final long serialVersionUID = -6338857095673479752L;
     
@@ -114,5 +115,29 @@ public class Process implements Serializable {
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
+
+	@Override
+    public String getId() {
+        if (processId == null) {
+            return null;
+        }
+        return processId.toString();
+    }
+
+    @Override
+    public Long getVersionNumber() {
+        if (lockVerNbr == null) {
+            return null;
+        }
+        return new Long(lockVerNbr.longValue());
+    }
+
+    @Override
+    public String getDocumentTypeId() {
+        if (documentType == null) {
+            return null;
+        }
+        return documentType.getId();
+    }
 
 }

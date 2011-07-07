@@ -15,12 +15,22 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-
-import javax.persistence.*;
 
 /**
  * A route node definition configuration parameter.  RouteNodeConfigParameters are
@@ -33,7 +43,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="KREW_RTE_NODE_CFG_PARM_T")
 @AttributeOverrides({@AttributeOverride(name="key", column=@Column(name="KEY_CD")), @AttributeOverride(name="value", column=@Column(name="VAL"))})
-public class RouteNodeConfigParam extends PersistableBusinessObjectBase implements KeyValue {
+public class RouteNodeConfigParam extends PersistableBusinessObjectBase implements KeyValue, RouteNodeConfigurationParameterContract {
     private static final long serialVersionUID = 5592421070149273014L;
 
     /**
@@ -68,8 +78,12 @@ public class RouteNodeConfigParam extends PersistableBusinessObjectBase implemen
     /**
      * @return the id
      */
-    public Long getId() {
-        return this.id;
+    @Override
+    public String getId() {
+        if (this.id == null) {
+            return null;
+        }
+        return this.id.toString();
     }
     /**
      * @param id the id to set
@@ -107,4 +121,14 @@ public class RouteNodeConfigParam extends PersistableBusinessObjectBase implemen
 	public void setValue(String value) {
 		this.value = value;
 	}
+
+    @Override
+    public String getRouteNodeId() {
+        if (routeNode == null || routeNode.getRouteNodeId() == null) {
+            return null;
+        }
+        return routeNode.getRouteNodeId().toString();
+    }
+	
+	
 }

@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kns.datadictionary.exporter;
 
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 import org.kuali.rice.krad.service.DocumentHelperService;
@@ -30,12 +30,8 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 @Deprecated
 public abstract class DocumentEntryMapper {
     
-    protected DocumentTypeDTO getDocumentType(String documentTypeName) {
-        try {
-            return KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(documentTypeName);
-        } catch (WorkflowException e) {
-            throw new RuntimeException("Caught Exception trying to get the Workflow Document Type", e);
-        }
+    protected DocumentType getDocumentType(String documentTypeName) {
+        return KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(documentTypeName);
     }
 
     /**
@@ -58,11 +54,11 @@ public abstract class DocumentEntryMapper {
 
         entryMap.set("documentTypeName", entry.getDocumentTypeName());
 
-        DocumentTypeDTO docType = getDocumentType(entry.getDocumentTypeName());
-        entryMap.set("label", docType.getDocTypeLabel());
+        DocumentType docType = getDocumentType(entry.getDocumentTypeName());
+        entryMap.set("label", docType.getLabel());
 
-        if (docType.getDocTypeDescription() != null) {
-            entryMap.set("description", docType.getDocTypeDescription());
+        if (docType.getDescription() != null) {
+            entryMap.set("description", docType.getDescription());
         }
 
         DocumentHelperService documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();

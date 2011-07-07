@@ -102,4 +102,16 @@ public interface DocumentTypeService {
     boolean isActiveByName(@WebParam(name = "documentTypeName") String documentTypeName)
             throws RiceIllegalArgumentException;
 
+    @WebMethod(operationName = "getRoutePathForDocumentTypeId")
+    @WebResult(name = "routePath")
+    @XmlElement(name = "routePath", required = false)
+    RoutePath getRoutePathForDocumentTypeId(@WebParam(name = "documentTypeId") String documentTypeId)
+            throws RiceIllegalArgumentException;
+    
+    @WebMethod(operationName = "getRoutePathForDocumentTypeName")
+    @WebResult(name = "routePath")
+    @XmlElement(name = "routePath", required = false)
+    RoutePath getRoutePathForDocumentTypeName(@WebParam(name = "documentTypeName") String documentTypeName)
+            throws RiceIllegalArgumentException;
+
 }

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.document;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
@@ -137,22 +138,17 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.krad.document.Document#getDocumentTitle()
      */
     public String getDocumentTitle() {
-        try {
-            String documentTypeLabel = KRADServiceLocatorWeb.getWorkflowInfoService().getDocTypeByName(this.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()).getDocTypeLabel();
-            if (null == documentTypeLabel) {
-                documentTypeLabel = "";
-            }
-    
-            String description = this.getDocumentHeader().getDocumentDescription();
-            if (null == description) {
-                description = "";
-            }
-    
-            return documentTypeLabel + " - " + description;
+        String documentTypeLabel = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(this.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()).getLabel();
+        if (null == documentTypeLabel) {
+            documentTypeLabel = "";
         }
-        catch (WorkflowException e) {
-            throw new RuntimeException("Caught Exception getting the document type label", e);
+    
+        String description = this.getDocumentHeader().getDocumentDescription();
+        if (null == description) {
+            description = "";
         }
+    
+        return documentTypeLabel + " - " + description;
     }
 
     /**

@@ -72,12 +72,14 @@ table td, table th {
 
 .fl-theme-ks .button-secondary2 {
 	border-color:#3F7826;
-	/*defines gradient background*/
-	background-image: -moz-linear-gradient(top, #ffffff, #e2e2e2);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #e2e2e2));
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#e2e2e2')";
-	/* fallback for < 8 versions of IE*/
-	background-color:#73C561;
+	background: rgb(255,255,255);
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1)));
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
+background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
+background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 );
+background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
 	color: #3F7826;
     cursor:pointer;
 }
@@ -86,11 +88,14 @@ table td, table th {
     -o-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius:3px;
-    background-image: -moz-linear-gradient(top, #ffffff, #e2e2e2);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #e2e2e2));
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#e2e2e2')";
-	/* fallback for < 8 versions of IE*/
-	background-color:#73C561;
+    background: rgb(255,255,255);
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1)));
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
+background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
+background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 );
+background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
 	color: #3F7826;
     border: 1px solid #999;s
 }

@@ -77,7 +77,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.State;
@@ -1185,15 +1184,6 @@ public class DTOConverter {
         }
         nodeVO.setNextNodeIds(nextNodeIds);
         return nodeVO;
-    }
-
-    public static ProcessDTO convertProcess(Process process) {
-        ProcessDTO processVO = new ProcessDTO();
-        processVO.setInitial(process.isInitial());
-        processVO.setInitialRouteNode(convertRouteNode(process.getInitialRouteNode()));
-        processVO.setName(process.getName());
-        processVO.setProcessId(process.getProcessId());
-        return processVO;
     }
 
     public static MovePoint convertMovePointVO(MovePointDTO movePointVO) {

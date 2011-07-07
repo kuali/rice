@@ -676,5 +676,15 @@ table.datatable table.datatable {
 
 
 
+.fl-font-serif.fl-font-size-150.page-action a {
 
+	margin:0em;
+}
+.fieldLine.boxLayoutVerticalItem.clearfix  .fieldLine.boxLayoutVerticalItem.clearfix span {
+	display:block;
+}
 
+span .fieldLine.boxLayoutVerticalItem.clearfix span .fieldLine.boxLayoutVerticalItem.clearfix tr .col1 {
+	background-color: inherit;
+	 text-align:right;
+}

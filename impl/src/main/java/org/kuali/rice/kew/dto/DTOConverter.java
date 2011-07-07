@@ -654,18 +654,6 @@ public class DTOConverter {
         return documentContentVO;
     }
 
-    public static RoutePathDTO convertRoutePath(DocumentType documentType) {
-        RoutePathDTO routePath = new RoutePathDTO();
-        ProcessDTO[] processes = new ProcessDTO[documentType.getProcesses().size()];
-        int index = 0;
-        for (Iterator iterator = documentType.getProcesses().iterator(); iterator.hasNext();) {
-            Process process = (Process) iterator.next();
-            processes[index++] = convertProcess(process);
-        }
-        routePath.setProcesses(processes);
-        return routePath;
-    }
-
     public static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest) {
     	return convertActionRequest(actionRequest, true);
     }

@@ -26,7 +26,6 @@ import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
@@ -106,18 +105,7 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
     public List findAllCurrentRootDocuments() {
         return null;
     }
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.doctype.DocumentTypeService#getDocumentTypeVO(java.lang.Long)
-     */
-    public DocumentTypeDTO getDocumentTypeVOById(String documentTypeId) {
-        return null;
-    }
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.doctype.DocumentTypeService#getDocumentTypeVO(java.lang.String)
-     */
-    public DocumentTypeDTO getDocumentTypeVOByName(String documentTypeName) {
-        return null;
-    }
+
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.doctype.DocumentTypeService#getRootDocumentType(org.kuali.rice.kew.doctype.DocumentType)
      */

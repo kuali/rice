@@ -345,7 +345,7 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
      * Gets the workflow document type dto for the given documentTypeName
      *
      * @param documentTypeName - document type name to retrieve document type dto
-     * @return DocumentTypeDTO for given document type name
+     * @return DocumentType for given document type name
      */
     protected DocumentType getDocumentType(String documentTypeName) {
         return KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(documentTypeName);

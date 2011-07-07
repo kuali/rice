@@ -30,7 +30,6 @@ import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
@@ -115,28 +114,6 @@ public class WorkflowInfo implements java.io.Serializable {
      */
     public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(String documentId) throws WorkflowException {
    		return getWorkflowUtility().getDocumentStatusTransitionHistory(documentId);
-    }
-
-    /**
-     * Returns the DocumentType of the document with the specified id
-     * @param documentTypeId the id of the document whose document type we should return
-     * @return the DocumentTypeVO of the document with the specified id
-     * @throws WorkflowException if an error occurs obtaining the document type
-     * @see WorkflowUtility#getDocumentType(Long)
-     */
-    public DocumentTypeDTO getDocTypeById(String documentTypeId) throws WorkflowException {
-    	return getWorkflowUtility().getDocumentType(documentTypeId);
-    }
-
-    /**
-     * Returns the DocumentType of the document type with the specified name
-     * @param documentTypeName the name of the document type whose DocumentType we should return
-     * @return the DocumentTypeVO of the document type with the specified name
-     * @throws WorkflowException if an error occurs obtaining the document type
-     * @see WorkflowUtility#getDocumentTypeByName(String)
-     */
-    public DocumentTypeDTO getDocTypeByName(String documentTypeName) throws WorkflowException {
-    	return getWorkflowUtility().getDocumentTypeByName(documentTypeName);
     }
 
     /**

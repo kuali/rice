@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 
@@ -31,8 +30,6 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  */
 public interface DocumentTypeService extends DocumentTypeQueryService, XmlExporter {
 
-    public DocumentTypeDTO getDocumentTypeVOById(String documentTypeId);
-    public DocumentTypeDTO getDocumentTypeVOByName(String documentTypeName);
     public void versionAndSave(DocumentType documentType);
     public void save(DocumentType documentType);
     public void save(DocumentType documentType, boolean flushCache);

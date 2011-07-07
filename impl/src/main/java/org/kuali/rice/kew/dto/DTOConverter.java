@@ -16,6 +16,24 @@
  */
 package org.kuali.rice.kew.dto;
 
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -102,23 +120,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -651,49 +652,6 @@ public class DTOConverter {
             handleException("Error parsing document content.", e);
         }
         return documentContentVO;
-    }
-
-    public static DocumentTypeDTO convertDocumentType(DocumentType docType) {
-        if (docType == null) {
-            return null;
-        }
-        DocumentTypeDTO docTypeVO = new DocumentTypeDTO();
-        docTypeVO.setDocTypeParentId(docType.getDocTypeParentId());
-        if (docType.getParentDocType() != null) {
-            docTypeVO.setDocTypeParentName(docType.getParentDocType().getName());
-        }
-
-        docTypeVO.setDocTypeDescription(docType.getDescription());
-        docTypeVO.setDocTypeHandlerUrl(docType.getDocHandlerUrl());
-        docTypeVO.setHelpDefinitionUrl(docType.getHelpDefinitionUrl());
-        docTypeVO.setDocSearchHelpUrl(docType.getDocSearchHelpUrl());
-        docTypeVO.setDocTypeId(docType.getDocumentTypeId());
-        docTypeVO.setDocTypeLabel(docType.getLabel());
-        docTypeVO.setName(docType.getName());
-        docTypeVO.setDocTypeVersion(docType.getVersion());
-        Boolean currentInd = docType.getCurrentInd();
-        if (currentInd == null) {
-            docTypeVO.setDocTypeCurrentInd(null);
-        } else if (currentInd.booleanValue()) {
-            docTypeVO.setDocTypeCurrentInd(KEWConstants.ACTIVE_CD);
-        } else {
-            docTypeVO.setDocTypeCurrentInd(KEWConstants.INACTIVE_CD);
-        }
-        docTypeVO.setPostProcessorName(docType.getPostProcessorName());
-        docTypeVO.setDocTypeJndiFactoryClass(null);
-        docTypeVO.setDocTypeActiveInd(docType.getActive().booleanValue());
-        if (docType.getParentDocType() != null) {
-            docTypeVO.setDocTypeActiveInherited(true);
-        } else {
-            docTypeVO.setDocTypeActiveInherited(false);
-        }     
-        Group blanketGroup = docType.getBlanketApproveWorkgroup();
-        if (blanketGroup != null) {
-            docTypeVO.setBlanketApproveGroupId(blanketGroup.getId());
-        }
-        docTypeVO.setBlanketApprovePolicy(docType.getBlanketApprovePolicy());
-        docTypeVO.setRoutePath(convertRoutePath(docType));
-        return docTypeVO;
     }
 
     public static RoutePathDTO convertRoutePath(DocumentType documentType) {

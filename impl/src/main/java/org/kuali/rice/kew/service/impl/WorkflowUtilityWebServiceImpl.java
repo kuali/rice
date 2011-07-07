@@ -16,6 +16,22 @@
 
 package org.kuali.rice.kew.service.impl;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.jws.WebService;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -44,7 +60,6 @@ import org.kuali.rice.kew.dto.DocumentLinkDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
@@ -81,21 +96,6 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-
-import javax.jws.WebService;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @SuppressWarnings({"unchecked"})
 @WebService(endpointInterface = KEWWebServiceConstants.WorkflowUtility.INTERFACE_CLASS,
@@ -212,29 +212,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         RouteNodeInstance nodeInstance = KEWServiceLocator.getRouteNodeService().findRouteNodeInstanceById(nodeInstanceId);
         return DTOConverter.convertRouteNodeInstance(nodeInstance);
-    }
-
-    public DocumentTypeDTO getDocumentType(String documentTypeId) throws WorkflowException {
-        if (documentTypeId == null) {
-            LOG.error("null documentTypeId passed in.");
-            throw new RuntimeException("null documentTypeId passed in.");
-        }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("Fetching DocumentTypeVO [documentTypeId="+documentTypeId+"]");
-        }
-        return KEWServiceLocator.getDocumentTypeService().getDocumentTypeVOById(documentTypeId);
-    }
-
-    public DocumentTypeDTO getDocumentTypeByName(String documentTypeName) throws WorkflowException {
-        if (documentTypeName == null) {
-            LOG.error("null documentTypeName passed in.");
-            throw new RuntimeException("null documentTypeName passed in");
-        }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("Fetching DocumentTypeVO [documentTypeName="+documentTypeName+"]");
-        }
-        DocumentTypeDTO documentType = KEWServiceLocator.getDocumentTypeService().getDocumentTypeVOByName(documentTypeName);
-        return documentType;
     }
 
     public Long getNewResponsibilityId() {
@@ -1116,39 +1093,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public String getClearFutureRequestsValue() {
         return KEWConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE;
     }
-    
-    public boolean hasRouteNode(String documentTypeName, String routeNodeName) throws WorkflowException {
-        if (documentTypeName == null) {
-            LOG.error("null documentTypeName passed in.");
-            throw new RuntimeException("null documentTypeName passed in");
-        }
-        if (routeNodeName == null) {
-            LOG.error("null routeNodeName passed in.");
-            throw new RuntimeException("null routeNodeName passed in");
-        }
-    	DocumentTypeDTO docType = getDocumentTypeByName(documentTypeName);
-    	if(docType==null){
-            LOG.error("docType null for the documentTypeName passed in "+documentTypeName);
-            throw new RuntimeException("docType null for the documentTypeName passed in "+documentTypeName);
-        }
-    	RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocTypeId(), routeNodeName);
-    	
-    	if(routeNode==null){
-    		if(docType.getDocTypeParentName() == null)
-    			return false;
-    		else
-    			return hasRouteNode(docType.getDocTypeParentName(), routeNodeName);	
-    	}
-    	else
-    		return true;
-    	
-    }
-
-    public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException {
-    	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
-    	return docType != null && docType.isActive();
-    }
-    
+        
 	public DocumentDetailDTO getDocumentDetailFromAppId(
 			String documentTypeName, String appId) throws WorkflowException {
         if (documentTypeName == null) {

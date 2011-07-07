@@ -37,7 +37,6 @@ import org.kuali.rice.kew.dto.DocumentLinkDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
@@ -75,14 +74,6 @@ public interface WorkflowUtility {
 
 	public RouteNodeInstanceDTO getNodeInstance(
 			@WebParam(name = "nodeInstanceId") Long nodeInstanceId)
-			throws WorkflowException;
-
-	public DocumentTypeDTO getDocumentType(
-			@WebParam(name = "documentTypeId") String documentTypeId)
-			throws WorkflowException;
-
-	public DocumentTypeDTO getDocumentTypeByName(
-			@WebParam(name = "documentTypeName") String documentTypeName)
 			throws WorkflowException;
 
 	public Long getNewResponsibilityId() throws WorkflowException;

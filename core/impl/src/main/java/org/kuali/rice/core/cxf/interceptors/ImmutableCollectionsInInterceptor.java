@@ -77,6 +77,13 @@ public class ImmutableCollectionsInInterceptor extends AbstractPhaseInterceptor<
                 }
                 Collection immutable = Collections.unmodifiableCollection(original);
                 f.set(o, immutable);
+            } else if (f.getType().isAssignableFrom(Map.class)) {
+                Map original = (Map) f.get(o);
+                if (original == null) {
+                    original = Collections.emptyMap();
+                }
+                Map immutable = Collections.unmodifiableMap(original);
+                f.set(o, immutable);
             }
 
             f.setAccessible(false);

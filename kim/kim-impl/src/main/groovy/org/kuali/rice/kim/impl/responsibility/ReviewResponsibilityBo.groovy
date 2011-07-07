@@ -16,7 +16,6 @@ package org.kuali.rice.kim.impl.responsibility
  * limitations under the License.
  */
 
-import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.util.KimConstants
 
 //strange - hacky non-PBO
@@ -46,7 +45,7 @@ class ReviewResponsibilityBo extends ResponsibilityBo {
             }
         }
 
-        Attributes respDetails = resp.getAttributes()
+        Map<String,String> respDetails = resp.getAttributes()
         documentTypeName = respDetails.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME)
         routeNodeName = respDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME)
         actionDetailsAtRoleMemberLevel = Boolean.valueOf(respDetails.get(KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL))

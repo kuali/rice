@@ -17,7 +17,6 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.type.KimType;
@@ -25,6 +24,7 @@ import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	protected boolean namespaceRequiredOnStoredAttributeSet;
 
 	@Override
-	protected List<Permission> performPermissionMatches(Attributes requestedDetails, List<Permission> permissionsList) {
+	protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails, List<Permission> permissionsList) {
 	    List<Permission> matchingPermissions = new ArrayList<Permission>();
         List<Permission> matchingBlankPermissions = new ArrayList<Permission>();
 	    String requestedAttributeValue = requestedDetails.get(exactMatchStringAttributeName);
@@ -94,23 +94,24 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	 * Overrides the superclass's version of this method in order to account for "namespaceCode" permission detail values containing wildcards.
 	 */
 	@Override
-	protected Map<String, List<String>> validateReferencesExistAndActive(KimType kimType, Attributes attributes, Map<String, String> previousValidationErrors) {
+	protected Map<String, List<String>> validateReferencesExistAndActive(KimType kimType, Map<String, String> attributes, Map<String, String> previousValidationErrors) {
 		Map<String,List<String>> errors = new HashMap<String,List<String>>();
-		Map<String, String> nonNamespaceCodeAttributes = new HashMap<String, String>(attributes.toMap());
+		Map<String, String> nonNamespaceCodeAttributes = new HashMap<String, String>(attributes);
 		// Check if "namespaceCode" is one of the permission detail values.
 		if (attributes.containsKey(NAMESPACE_CODE)) {
 			nonNamespaceCodeAttributes.remove(NAMESPACE_CODE);
             final Namespace namespace = CoreApiServiceLocator.getNamespaceService().getNamespace(attributes.get(NAMESPACE_CODE));
 			if (namespace != null) {
-			    errors.putAll(super.validateReferencesExistAndActive(kimType, Attributes.fromStrings(NAMESPACE_CODE,
+			    errors.putAll(super.validateReferencesExistAndActive(kimType, Collections.singletonMap(NAMESPACE_CODE,
                         namespace.getCode()), previousValidationErrors));
 			} else {
 				// If no namespaces were found, let the superclass generate an appropriate error.
-				errors.putAll(super.validateReferencesExistAndActive(kimType, Attributes.fromStrings(NAMESPACE_CODE, attributes.get(NAMESPACE_CODE)), previousValidationErrors));
+				errors.putAll(super.validateReferencesExistAndActive(kimType, Collections.singletonMap(NAMESPACE_CODE,
+                        attributes.get(NAMESPACE_CODE)), previousValidationErrors));
 			}
 		}
 		// Validate all non-namespaceCode attributes.
-		errors.putAll(super.validateReferencesExistAndActive(kimType, Attributes.fromMap(nonNamespaceCodeAttributes), previousValidationErrors));
+		errors.putAll(super.validateReferencesExistAndActive(kimType, nonNamespaceCodeAttributes, previousValidationErrors));
 		return errors;
 	}
 }

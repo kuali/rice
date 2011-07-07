@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.kim.impl.jaxb;
 
-import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePairValidatingAdapter;
@@ -31,6 +22,14 @@ import org.kuali.rice.core.util.jaxb.StringTrimmingAdapter;
 import org.kuali.rice.kim.api.jaxb.NameAndNamespacePairToPermTemplateIdAdapter;
 import org.kuali.rice.kim.api.jaxb.PermissionDetailListAdapter;
 import org.kuali.rice.kim.api.permission.PermissionContract;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
 
 /**
  * This class represents a &lt;permission&gt; XML element.
@@ -77,7 +76,7 @@ public class PermissionXmlDTO implements Serializable {
         this.permissionDescription = permission.getDescription();
         this.active = Boolean.valueOf(permission.isActive());
         this.permissionDetails = (permission.getAttributes() != null) ?
-                new AttributeSet(permission.getAttributes().toMap()) : new AttributeSet();
+                new AttributeSet(permission.getAttributes()) : new AttributeSet();
     }
     
     /**

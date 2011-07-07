@@ -21,7 +21,6 @@ import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupContract
 import org.kuali.rice.kim.api.group.GroupMember
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.core.api.mo.common.Attributes
 
 //@ToString
 class GroupEbo implements GroupContract, ExternalizableBusinessObject {
@@ -35,7 +34,7 @@ class GroupEbo implements GroupContract, ExternalizableBusinessObject {
 	String namespaceCode
 	List<GroupMember> members
 	List<KimAttributeData> attributeDetails
-    Attributes attributes
+    Map<String, String> attributes
     Long versionNumber
 	String objectId
 

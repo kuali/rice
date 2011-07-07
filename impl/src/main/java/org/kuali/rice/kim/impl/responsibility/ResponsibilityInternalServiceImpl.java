@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor;
@@ -37,6 +28,14 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ResponsibilityInternalServiceImpl implements ResponsibilityInternalService {
 
@@ -141,7 +140,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	}
 
     public boolean areActionsAtAssignmentLevel(Responsibility responsibility ) {
-    	Attributes details = responsibility.getAttributes();
+    	Map<String, String> details = responsibility.getAttributes();
     	if ( details == null ) {
     		return false;
     	}

@@ -19,7 +19,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
@@ -47,6 +46,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -166,7 +166,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	protected transient AttributeSet detailsAsAttributeSet = null;
 
-	public Attributes getDetails() {
+	public Map<String, String> getDetails() {
 		if ( detailsAsAttributeSet == null ) {
 			KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 			AttributeSet m = new AttributeSet();
@@ -186,7 +186,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 			}
 			detailsAsAttributeSet = m;
 		}
-		return Attributes.fromMap(detailsAsAttributeSet);
+		return detailsAsAttributeSet;
 	}
 	
 	public boolean hasDetails() {

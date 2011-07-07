@@ -15,10 +15,11 @@
  */
 package org.kuali.rice.kim.api.responsibility;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contains information related to responsibilities in the kim system.
@@ -124,7 +125,7 @@ public interface ResponsibilityActionContract {
      * The qualifying attributes for the responsibility action.  Cannot be null.
      * @return attributes
      */
-	Attributes getQualifier();
+	Map<String, String> getQualifier();
 
     /**
      * The delegates for this responsibility action. Cannot be null but can be an empty list.

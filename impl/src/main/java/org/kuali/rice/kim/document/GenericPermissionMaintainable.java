@@ -55,7 +55,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 					perm.getName(), 
 					perm.getDescription(), 
 					perm.isActive(), 
-					new AttributeSet(perm.getDetails().toMap()) );
+					new AttributeSet(perm.getDetails()) );
 		} catch ( RuntimeException ex ) {
 			LOG.error( "Exception in saveBusinessObject()", ex );
 			throw ex;

@@ -20,18 +20,17 @@ package org.kuali.rice.kim.api.role
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import javax.xml.bind.JAXBContext
+import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
-import javax.xml.bind.Marshaller
-import org.kuali.rice.core.api.mo.common.Attributes
 
 class RoleMemberTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 
     static final String ROLE_MEMBER_ID = "1";
     static final String ROLE_ID = "23";
-    static final Attributes QUALIFIER = Attributes.empty();
+    static final Map<String, String> QUALIFIER = [:]
     static final List<RoleResponsibilityAction.Builder> ROLE_RESPONSIBILITY_ACTIONS = [create_rra_builder()];
     static final String MEMBER_NAME = "Spock";
     static final String MEMBER_NAMESPACE_CODE = "KUALI";

@@ -20,7 +20,6 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.common.attribute.KimAttribute
 import org.kuali.rice.kim.api.common.template.Template
 import org.kuali.rice.kim.api.common.template.TemplateTest
@@ -141,7 +140,7 @@ class ResponsibilityTest {
 			String getName() {ResponsibilityTest.NAME}
 			String getDescription() {ResponsibilityTest.DESCRIPTION}
 			Template getTemplate() {ResponsibilityTest.TEMPLATE.build()}
-			Attributes getAttributes() { Attributes.fromStrings(ResponsibilityTest.KIM_ATTRIBUTE_1_NAME, ResponsibilityTest.ATTRIBUTES_1_VALUE)}
+			Map<String, String> getAttributes() { [(ResponsibilityTest.KIM_ATTRIBUTE_1_NAME) : ResponsibilityTest.ATTRIBUTES_1_VALUE] }
 			boolean isActive() {ResponsibilityTest.ACTIVE.toBoolean()}
 			Long getVersionNumber() {ResponsibilityTest.VERSION_NUMBER}
 			String getObjectId() {ResponsibilityTest.OBJECT_ID}

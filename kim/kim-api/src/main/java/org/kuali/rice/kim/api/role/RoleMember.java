@@ -23,9 +23,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
 import org.w3c.dom.Element;
 
@@ -40,6 +39,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @XmlRootElement(name = RoleMember.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -65,7 +65,8 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     private final String roleId;
 
     @XmlElement(name = Elements.QUALIFIER)
-    private final Attributes qualifier;
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    private final Map<String, String> qualifier;
 
     @XmlElement(name = Elements.ROLE_RESPONSIBILITY_ACTIONS)
     private final List<RoleResponsibilityAction> roleResponsibilityActions;
@@ -143,7 +144,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     /**
      * @return the qualifier
      */
-    public Attributes getQualifier() {
+    public Map<String, String> getQualifier() {
         return this.qualifier;
     }
 
@@ -187,7 +188,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
 
         private String roleMemberId;
         private String roleId;
-        private Attributes qualifier;
+        private Map<String, String> qualifier;
         private List<RoleResponsibilityAction.Builder> roleRspActions;
         private String memberId;
         private String memberTypeCode;
@@ -195,7 +196,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
         private Timestamp activeToDate;
 
         public static Builder create(String roleId, String roleMemberId, String memberId,
-                                     String memberTypeCode, Timestamp activeFromDate, Timestamp activeToDate, Attributes qualifier) {
+                                     String memberTypeCode, Timestamp activeFromDate, Timestamp activeToDate, Map<String, String> qualifier) {
             Builder b = new Builder();
             b.setRoleId(roleId);
             b.setRoleMemberId(roleMemberId);
@@ -248,11 +249,11 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
             this.roleId = roleId;
         }
 
-        public Attributes getQualifier() {
+        public Map<String, String> getQualifier() {
             return qualifier;
         }
 
-        public void setQualifier(Attributes qualifier) {
+        public void setQualifier(Map<String, String> qualifier) {
             this.qualifier = qualifier;
         }
 

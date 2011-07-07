@@ -23,19 +23,18 @@ import javax.persistence.FetchType
 import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.Table
+import javax.persistence.Transient
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupContract
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kim.bo.Person
-import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import javax.persistence.Transient
-import org.kuali.rice.kim.impl.type.KimTypeBo
-import org.kuali.rice.core.api.mo.common.Attributes
+import org.kuali.rice.kim.bo.Person
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
+import org.kuali.rice.kim.impl.type.KimTypeBo
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_GRP_T")
@@ -77,9 +76,9 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
     private List<GroupBo> memberGroups
 
     @Transient
-    Attributes attributes
+    Map<String,String> attributes
 
-    Attributes getAttributes() {
+    Map<String,String> getAttributes() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 

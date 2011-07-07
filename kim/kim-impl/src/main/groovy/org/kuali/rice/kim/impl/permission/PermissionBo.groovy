@@ -29,13 +29,12 @@ import javax.persistence.Transient
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
-import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.permission.Permission
 import org.kuali.rice.kim.api.permission.PermissionContract
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.role.RolePermissionBo
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.util.KimConstants
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name = "KRIM_PERM_T")
@@ -71,19 +70,19 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     List<PermissionAttributeBo> attributeDetails
 
     @Transient
-    Attributes attributes;
+    Map<String,String> attributes;
 
     @OneToMany(targetEntity = RolePermissionBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
     @Fetch(value = FetchMode.SELECT)
     List<RolePermissionBo> rolePermissions
 
-    Attributes getAttributes() {
+    Map<String,String> getAttributes() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 
     //TODO: rename/fix later - only including this method and attributeDetails field for Role conversion
 
-    Attributes getDetails() {
+    Map<String,String> getDetails() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 

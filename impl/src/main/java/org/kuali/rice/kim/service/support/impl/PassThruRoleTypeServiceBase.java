@@ -15,16 +15,14 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
-
-
 import org.kuali.rice.kim.api.role.RoleMembership;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService {
 
@@ -33,25 +31,25 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	public static final String UNMATCHABLE_QUALIFICATION = "!~!~!~!~!~";
 
     @Override
-	public abstract Attributes convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Attributes qualification);
+	public abstract Map<String, String> convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Map<String, String> qualification);
     
     @Override
-	public List<RoleMembership> doRoleQualifiersMatchQualification(Attributes qualification, List<RoleMembership> roleMemberList) {
+	public List<RoleMembership> doRoleQualifiersMatchQualification(Map<String, String> qualification, List<RoleMembership> roleMemberList) {
         return roleMemberList;
     }
 
     @Override
-	public boolean doesRoleQualifierMatchQualification(Attributes qualification, Attributes roleQualifier) {
+	public boolean doesRoleQualifierMatchQualification(Map<String, String> qualification, Map<String, String> roleQualifier) {
         return true;
     }
 
     @Override
-	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
         return new ArrayList<RoleMembership>(0);
     }
     
     @Override
-	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification) {
+	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification) {
         return false;
     }
 
@@ -86,12 +84,12 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return true;
     }
 
-    public Attributes translateInputAttributes(Attributes inputAttributes) {
+    public Map<String, String> translateInputAttributes(Map<String, String> inputAttributes) {
         return inputAttributes;
     }
 
     @Override
-	public Attributes validateAttributes(String kimTypeId, Attributes attributes) {
+	public Map<String, String> validateAttributes(String kimTypeId, Map<String, String> attributes) {
         return null;
     }
     
@@ -117,13 +115,13 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	}
 
     @Override
-	public boolean validateUniqueAttributes(String kimTypeId, Attributes newAttributes, Attributes oldAttributes){
+	public boolean validateUniqueAttributes(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
         return true;
     }
 
     @Override
-	public Attributes validateUnmodifiableAttributes(String kimTypeId, Attributes mainAttributes, Attributes delegationAttributes){
-        return Attributes.empty();
+	public Map<String, String> validateUnmodifiableAttributes(String kimTypeId, Map<String, String> mainAttributes, Map<String, String> delegationAttributes){
+        return Collections.emptyMap();
     }
     
     @Override
@@ -132,8 +130,8 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     }
     
 	@Override
-	public Attributes validateAttributesAgainstExisting(String kimTypeId, Attributes newAttributes, Attributes oldAttributes){
-		return Attributes.empty();
+	public Map<String, String> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
+		return Collections.emptyMap();
 	}
 
 	/**

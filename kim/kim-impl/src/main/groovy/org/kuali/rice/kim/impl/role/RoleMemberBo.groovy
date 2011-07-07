@@ -39,7 +39,6 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.api.type.KimTypeInfoService
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo
 import org.springframework.util.AutoPopulatingList
-import org.kuali.rice.core.api.mo.common.Attributes
 
 @Entity
 @Table(name = "KRIM_ROLE_MBR_T")
@@ -70,7 +69,7 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
     List<RoleResponsibilityActionBo> roleRspActions;
 
     @Transient
-    transient Attributes qualifier = null;
+    transient Map<String,String> qualifier = null;
 
 
     List<RoleMemberAttributeDataBo> getAttributes() {
@@ -84,7 +83,7 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         this.attributes = attributes;
     }
 
-    Attributes getQualifier() {
+    Map<String,String> getQualifier() {
         if (qualifier == null) {
             Role role = getRoleService().getRole(roleId);
             KimType kimType = getTypeInfoService().getKimType(role.getKimTypeId());

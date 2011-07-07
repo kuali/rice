@@ -16,7 +16,7 @@
 
 package org.kuali.rice.kim.api.group;
 
-import org.apache.commons.collections.CollectionUtils;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -24,23 +24,20 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
 
 @XmlRootElement(name = Group.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -73,7 +70,8 @@ public final class Group implements GroupContract, ModelObjectComplete {
     private final String kimTypeId;
 
     @XmlElement(name = Elements.ATTRIBUTES, required = false)
-    private final Attributes attributes;
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    private final Map<String, String> attributes;
 
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
@@ -106,7 +104,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
         name = builder.getName();
         description = builder.getDescription();
         kimTypeId = builder.getKimTypeId();
-        attributes = builder.getAttributes();
+        this.attributes = builder.getAttributes() != null ? builder.getAttributes() : Collections.<String, String>emptyMap();
         versionNumber = builder.getVersionNumber();
         objectId = builder.getObjectId();
         active = builder.isActive();
@@ -122,7 +120,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
         private String name;
         private String description;
         private String kimTypeId;
-        private Attributes attributes = Attributes.empty();
+        private Map<String, String> attributes = Collections.emptyMap();
         private boolean active;
         private Long versionNumber;
         private String objectId;
@@ -151,7 +149,9 @@ public final class Group implements GroupContract, ModelObjectComplete {
             builder.setId(contract.getId());
             builder.setDescription(contract.getDescription());
 
-            builder.setAttributes(contract.getAttributes());
+            if (contract.getAttributes() != null) {
+                builder.setAttributes(contract.getAttributes());
+            }
 
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
@@ -217,12 +217,12 @@ public final class Group implements GroupContract, ModelObjectComplete {
         }
 
         @Override
-        public Attributes getAttributes() {
+        public Map<String, String> getAttributes() {
             return attributes;
         }
 
-        public void setAttributes(Attributes attributes) {
-            this.attributes = attributes;
+        public void setAttributes(Map<String, String> attributes) {
+            this.attributes = Collections.unmodifiableMap(Maps.newHashMap(attributes));
         }
 
         @Override
@@ -299,22 +299,9 @@ public final class Group implements GroupContract, ModelObjectComplete {
     }
 
     @Override
-    public Attributes getAttributes() {
+    public Map<String, String> getAttributes() {
         return attributes;
     }
-
-    /*public AttributeSet getAttributeSet() {
-        AttributeSet attributeSet = new AttributeSet( this.attributes.size() );
-        for ( KimAttributeData attr : attributes ) {
-        	if ( attr.getKimAttribute() != null ) {
-        		attributeSet.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
-        	} else {
-        		attributeSet.put("Unknown Attribute ID: " + attr.getKimAttribute().getId(), attr.getAttributeValue());
-        	}
-        }
-
-        return attributeSet;
-    }*/
 
     @Override
     public boolean isActive() {

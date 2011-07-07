@@ -23,8 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 import org.w3c.dom.Element;
@@ -35,11 +34,12 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
+import java.util.Map;
 
 @XmlRootElement(name = RoleMembership.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -76,7 +76,8 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
     private final String roleSortingCode;
 
     @XmlElement(name=Elements.QUALIFIER)
-    private final Attributes qualifier;
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    private final Map<String, String> qualifier;
 
     @XmlElement(name=Elements.DELEGATES)
     private final List<DelegateType> delegates;
@@ -141,7 +142,7 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
         return roleSortingCode;
     }
 
-    public Attributes getQualifier() {
+    public Map<String, String> getQualifier() {
         return qualifier;
     }
 
@@ -172,14 +173,14 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
         private String memberId;
         private String memberTypeCode;
         private String roleSortingCode;
-        private Attributes qualifier;
+        private Map<String, String> qualifier;
         private List<DelegateType.Builder> delegates;
 
         private Builder() {
         }
 
         public static Builder create(String roleId, String roleMemberId, String memberId, String memberTypeCode,
-                                     Attributes qualifier) {
+                                     Map<String, String> qualifier) {
 
             Builder b = new Builder();
             b.setRoleId(roleId);
@@ -224,11 +225,11 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
             this.roleId = roleId;
         }
 
-        public Attributes getQualifier() {
+        public Map<String, String> getQualifier() {
             return this.qualifier;
         }
 
-        public void setQualifier(Attributes qualifier) {
+        public void setQualifier(Map<String, String> qualifier) {
             this.qualifier = qualifier;
         }
 

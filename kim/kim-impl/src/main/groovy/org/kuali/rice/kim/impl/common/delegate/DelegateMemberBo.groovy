@@ -12,7 +12,6 @@ import org.kuali.rice.kim.api.common.delegate.DelegateMember
 import org.kuali.rice.kim.api.common.delegate.DelegateMemberContract
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo
 import org.springframework.util.AutoPopulatingList
-import org.kuali.rice.core.api.mo.common.Attributes
 
 @Entity
 @Table(name = "KRIM_DLGN_MBR_T")
@@ -35,7 +34,7 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
      * not exposed in the DelegateMemberContract as it is not a required field in the DelegateMember DTO
      * @return
      */
-    public Attributes getQualifier() {
+    public Map<String,String> getQualifier() {
         Map<String,String> attribs = new HashMap<String,String>();
 
         if (attributes == null) {
@@ -44,7 +43,7 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
         for (DelegateMemberAttributeDataBo attr: attributes) {
             attribs.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
         }
-        return Attributes.fromMap(attribs)
+        return attribs
     }
 
 

@@ -18,7 +18,6 @@ package org.kuali.rice.kim.impl.common.attribute
 
 import javax.persistence.Transient
 import org.apache.commons.lang.StringUtils
-import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.type.KimTypeAttribute
@@ -51,9 +50,9 @@ abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implemen
         return kimType;
     }
 
-    static <T extends KimAttributeDataBo> Attributes toAttributes(Collection<T> bos) {
+    static <T extends KimAttributeDataBo> Map<String, String> toAttributes(Collection<T> bos) {
+        def m = [:]
         if(bos != null) {
-            def m = [:]
             bos.each {
                 if (it != null) {
                     KimTypeAttribute attribute = null;
@@ -67,13 +66,12 @@ abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implemen
                     }
                 }
             }
-            return Attributes.fromMap(m)
         }
-        return Attributes.empty();
+        return m;
     }
 
     /** creates a list of KimAttributeDataBos from attributes, kimTypeId, and assignedToId. */
-    static <T extends KimAttributeDataBo> List<T> createFrom(Class<T> type, Attributes attributes, String kimTypeId) {
+    static <T extends KimAttributeDataBo> List<T> createFrom(Class<T> type, Map<String, String> attributes, String kimTypeId) {
        if (attributes == null) {
            //purposely not using Collections.emptyList() b/c we do not want to return an unmodifiable list.
            return new ArrayList<T>();

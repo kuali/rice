@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
@@ -43,7 +43,7 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 	
 	@Override
 	protected List<Responsibility> performResponsibilityMatches(
-			Attributes requestedDetails,
+			Map<String, String> requestedDetails,
 			List<Responsibility> responsibilitiesList) {
 		Map<String, List<Responsibility>> potentialDocumentTypeMatches = new HashMap<String, List<Responsibility>>();
 		for (Responsibility responsibility : responsibilitiesList) {

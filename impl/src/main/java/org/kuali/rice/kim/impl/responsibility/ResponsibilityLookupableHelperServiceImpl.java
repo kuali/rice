@@ -227,7 +227,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 				filteredResponsibilities.add(responsibility);
 				populateAssignedToRoles(responsibility);
 			} else {
-				if ( isMapSubset( new AttributeSet(responsibility.getAttributes().toMap()), detailCriteria ) ) {
+				if ( isMapSubset( new AttributeSet(responsibility.getAttributes()), detailCriteria ) ) {
 					filteredResponsibilities.add(responsibility);
 					populateAssignedToRoles(responsibility);
 				}

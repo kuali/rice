@@ -10,11 +10,8 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
-import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
@@ -22,16 +19,15 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.api.common.delegate.DelegateType;
-import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
-import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
 
@@ -161,20 +157,20 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public boolean hasResponsibility(final String principalId, final String namespaceCode, final String respName, final Attributes qualification, final Attributes responsibilityDetails) {
+    public boolean hasResponsibility(final String principalId, final String namespaceCode, final String respName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
         // get all the responsibility objects whose name match that requested
         final List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, respName));
         return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
     @Override
-    public boolean hasResponsibilityByTemplateName(final String principalId, final String namespaceCode, final String respTemplateName, final Attributes qualification, final Attributes responsibilityDetails) {
+    public boolean hasResponsibilityByTemplateName(final String principalId, final String namespaceCode, final String respTemplateName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
         // get all the responsibility objects whose name match that requested
         final List<Responsibility> responsibilities = findRespsByNamespaceCodeAndTemplateName(namespaceCode, respTemplateName);
         return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
-    private boolean hasResp(final String principalId, final String namespaceCode, final List<Responsibility> responsibilities, final Attributes qualification, final Attributes responsibilityDetails) {
+    private boolean hasResp(final String principalId, final String namespaceCode, final List<Responsibility> responsibilities, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
         // now, filter the full list by the detail passed
         final List<String> ids = new ArrayList<String>();
         for (Responsibility r : getMatchingResponsibilities(responsibilities, responsibilityDetails)) {
@@ -185,20 +181,20 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public List<ResponsibilityAction> getResponsibilityActions(final String namespaceCode, final String responsibilityName, final Attributes qualification, final Attributes responsibilityDetails) {
+    public List<ResponsibilityAction> getResponsibilityActions(final String namespaceCode, final String responsibilityName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, responsibilityName));
         return getRespActions(namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
     @Override
-    public List<ResponsibilityAction> getResponsibilityActionsByTemplateName(final String namespaceCode, final String respTemplateName, final Attributes qualification, final Attributes responsibilityDetails) {
+    public List<ResponsibilityAction> getResponsibilityActionsByTemplateName(final String namespaceCode, final String respTemplateName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = findRespsByNamespaceCodeAndTemplateName(namespaceCode, respTemplateName);
         return getRespActions(namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
-    private List<ResponsibilityAction> getRespActions(final String namespaceCode, final List<Responsibility> responsibilities, final Attributes qualification, final Attributes responsibilityDetails) {
+    private List<ResponsibilityAction> getRespActions(final String namespaceCode, final List<Responsibility> responsibilities, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
         // now, filter the full list by the detail passed
         List<Responsibility> applicableResponsibilities = getMatchingResponsibilities(responsibilities, responsibilityDetails);
         List<ResponsibilityAction> results = new ArrayList<ResponsibilityAction>();
@@ -209,7 +205,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         return results;
     }
 
-    private List<ResponsibilityAction> getActionsForResponsibilityRoles(Responsibility responsibility, List<String> roleIds, Attributes qualification) {
+    private List<ResponsibilityAction> getActionsForResponsibilityRoles(Responsibility responsibility, List<String> roleIds, Map<String, String> qualification) {
         List<ResponsibilityAction> results = new ArrayList<ResponsibilityAction>();
         Collection<RoleMembership> roleMembers = roleService.getRoleMembers(roleIds,qualification);
         for (RoleMembership rm : roleMembers) {
@@ -281,7 +277,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public List<String> getRoleIdsForResponsibility(String id, Attributes qualification) {
+    public List<String> getRoleIdsForResponsibility(String id, Map<String, String> qualification) {
         if (StringUtils.isBlank(id)) {
             throw new RiceIllegalArgumentException("id is blank");
         }
@@ -345,7 +341,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
      * Compare each of the passed in responsibilities with the given responsibilityDetails.  Those that
      * match are added to the result list.
      */
-    private List<Responsibility> getMatchingResponsibilities(List<Responsibility> responsibilities, Attributes responsibilityDetails) {
+    private List<Responsibility> getMatchingResponsibilities(List<Responsibility> responsibilities, Map<String, String> responsibilityDetails) {
         // if no details passed, assume that all match
         if (responsibilityDetails == null || responsibilityDetails.isEmpty()) {
             return responsibilities;
@@ -402,7 +398,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         return results;
     }
 
-    private List<String> getRoleIdsForResponsibilities(Collection<String> ids, Attributes qualification) {
+    private List<String> getRoleIdsForResponsibilities(Collection<String> ids, Map<String, String> qualification) {
         final List<String> roleIds = getRoleIdsForPredicate(and(in("responsibilityId", ids.toArray()), equal("active", "Y")));
 
         //TODO filter with qualifiers

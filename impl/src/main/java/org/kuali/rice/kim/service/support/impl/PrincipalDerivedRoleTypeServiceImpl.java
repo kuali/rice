@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
@@ -26,7 +26,7 @@ import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -44,7 +44,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	}
 
 	@Override
-	public boolean performMatch(Attributes inputAttributes, Attributes storedAttributes) {
+	public boolean performMatch(Map<String, String> inputAttributes, Map<String, String> storedAttributes) {
 		return true;
 	}
 
@@ -52,7 +52,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	 * Since this is potentially the entire set of users, just check the qualification for the user we are interested in and return it.
 	 */
 	@Override
-    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 		ArrayList<RoleMembership> tempIdList = new ArrayList<RoleMembership>();
 		if ( qualification == null || qualification.isEmpty() ) {
 			return tempIdList;
@@ -67,7 +67,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	}
 	
 	@Override
-	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification) {
+	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification) {
         // check that the principal exists and is active
         Principal principal = getIdentityService().getPrincipal( principalId );
         if ( principal == null || !principal.isActive() ) {

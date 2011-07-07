@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.role.service.impl;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -30,6 +30,7 @@ import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -53,7 +54,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	 * @see org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@Override
-    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 		List<RoleMembership> members = new ArrayList<RoleMembership>();
 		if ( qualification != null && !qualification.isEmpty() ) {
 		    String principalId = qualification.get(KimConstants.AttributeConstants.PRINCIPAL_ID);
@@ -69,7 +70,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	@Override
 	public boolean hasApplicationRole(String principalId,
 			List<String> groupIds, String namespaceCode, String roleName,
-			Attributes qualification) {
+			Map<String, String> qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
 		try {
 			if ( (qualification != null && !qualification.isEmpty()))  {

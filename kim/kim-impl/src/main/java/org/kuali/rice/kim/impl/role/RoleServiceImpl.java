@@ -3,7 +3,6 @@ package org.kuali.rice.kim.impl.role;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
@@ -114,11 +113,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<Attributes> getRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId,
+    public List<Map<String, String>> getRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId,
                                                             @WebParam(name = "roleIds") List<String> roleIds,
-                                                            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification) {
+                                                            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Map<String, String> qualification) {
 
-        List<Attributes> results = new ArrayList<Attributes>();
+        List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 
         List<RoleMemberBo> roleMemberBoList = getStoredRoleMembersUsingExactMatchOnQualification(principalId, null, roleIds, qualification);
 
@@ -163,26 +162,26 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<Attributes> getRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification) {
+    public List<Map<String, String>> getRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Map<String, String> qualification) {
         String roleId = getRoleIdByName(namespaceCode, roleName);
         if (roleId == null) {
-            return new ArrayList<Attributes>(0);
+            return new ArrayList<Map<String, String>>(0);
         }
         return getNestedRoleQualifiersForPrincipal(principalId, Collections.singletonList(roleId), qualification);
     }
 
     @Override
-    public List<Attributes> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification) {
+    public List<Map<String, String>> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Map<String, String> qualification) {
         String roleId = getRoleIdByName(namespaceCode, roleName);
         if (roleId == null) {
-            return new ArrayList<Attributes>(0);
+            return new ArrayList<Map<String, String>>(0);
         }
         return getNestedRoleQualifiersForPrincipal(principalId, Collections.singletonList(roleId), qualification);
     }
 
     @Override
-    public List<Attributes> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId, @WebParam(name = "roleIds") List<String> roleIds, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification) {
-        List<Attributes> results = new ArrayList<Attributes>();
+    public List<Map<String, String>> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId, @WebParam(name = "roleIds") List<String> roleIds, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Map<String, String> qualification) {
+        List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 
         Map<String, RoleBo> roleBosById = getRoleBoMap(roleIds);
 
@@ -216,7 +215,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             } else if (roleMemberBo.getMemberTypeCode().equals(Role.ROLE_MEMBER_TYPE)) {
                 // find out if the user has the role
                 // need to convert qualification using this role's service
-                Attributes nestedQualification = qualification;
+                Map<String, String> nestedQualification = qualification;
                 if (roleTypeService != null) {
                     RoleBo roleBo = roleBosById.get(roleMemberBo.getRoleId());
                     // pulling from here as the nested roleBo is not necessarily (and likely is not)
@@ -256,13 +255,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<RoleMembership> getRoleMembers(@WebParam(name = "roleIds") List<String> roleIds, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification) {
+    public List<RoleMembership> getRoleMembers(@WebParam(name = "roleIds") List<String> roleIds, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Map<String, String> qualification) {
         Set<String> foundRoleTypeMembers = new HashSet<String>();
         return getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
     }
 
     @Override
-    public Collection<String> getRoleMemberPrincipalIds(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification) {
+    public Collection<String> getRoleMemberPrincipalIds(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Map<String, String> qualification) {
         Set<String> principalIds = new HashSet<String>();
         Set<String> foundRoleTypeMembers = new HashSet<String>();
         List<String> roleIds = Collections.singletonList(getRoleIdByName(namespaceCode, roleName));
@@ -277,12 +276,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public boolean principalHasRole(@WebParam(name = "principalId") String principalId, @WebParam(name = "roleIds") List<String> roleIds, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification) {
+    public boolean principalHasRole(@WebParam(name = "principalId") String principalId, @WebParam(name = "roleIds") List<String> roleIds, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Map<String, String> qualification) {
         return principalHasRole(principalId, roleIds, qualification, true);
     }
 
     @Override
-    public List<String> getPrincipalIdSubListWithRole(@WebParam(name = "principalIds") List<String> principalIds, @WebParam(name = "roleNamespaceCode") String roleNamespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification) {
+    public List<String> getPrincipalIdSubListWithRole(@WebParam(name = "principalIds") List<String> principalIds, @WebParam(name = "roleNamespaceCode") String roleNamespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Map<String, String> qualification) {
         List<String> subList = new ArrayList<String>();
         RoleBo role = getRoleBoByName(roleNamespaceCode, roleName);
         for (String principalId : principalIds) {
@@ -571,7 +570,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
 
-    protected List<RoleMembership> getRoleMembers(List<String> roleIds, Attributes qualification, boolean followDelegations, Set<String> foundRoleTypeMembers) {
+    protected List<RoleMembership> getRoleMembers(List<String> roleIds, Map<String, String> qualification, boolean followDelegations, Set<String> foundRoleTypeMembers) {
         List<RoleMembership> results = new ArrayList<RoleMembership>();
         Set<String> allRoleIds = new HashSet<String>();
         for (String roleId : roleIds) {
@@ -621,7 +620,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     // if a role member type, do a non-recursive role member check
                     // to obtain the group and principal members of that role
                     // given the qualification
-                    Attributes nestedRoleQualification = qualification;
+                    Map<String, String> nestedRoleQualification = qualification;
                     if (getRoleTypeService(roleMemberBo.getRoleId()) != null) {
                         // get the member role object
                         RoleBo memberRole = getRoleBo(mi.getMemberId());
@@ -674,7 +673,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             // get the member role object
                             RoleBo memberRole = getRoleBo(roleMemberships.getMemberId());
                             if (memberRole.isActive()) {
-                                Attributes nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
+                                Map<String, String> nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
                                         roles.get(roleMemberships.getRoleId()).getNamespaceCode(),
                                         roles.get(roleMemberships.getRoleId()).getName(),
                                         memberRole.getNamespaceCode(),
@@ -700,7 +699,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
 
-    protected boolean principalHasRole(String principalId, List<String> roleIds, Attributes qualification, boolean checkDelegations) {
+    protected boolean principalHasRole(String principalId, List<String> roleIds, Map<String, String> qualification, boolean checkDelegations) {
         if (StringUtils.isBlank(principalId)) {
             return false;
         }
@@ -797,7 +796,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 try {
                     if (roleTypeService.doesRoleQualifierMatchQualification(qualification, roleMemberBo.getQualifier())) {
                         RoleBo memberRole = getRoleBo(roleMemberBo.getMemberId());
-                        Attributes nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
+                        Map<String, String> nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
                                 roles.get(roleMemberBo.getRoleId()).getNamespaceCode(),
                                 roles.get(roleMemberBo.getRoleId()).getName(),
                                 memberRole.getNamespaceCode(),
@@ -891,7 +890,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      * For Example: dollar amount range, effective dates, document types.
      * As a subsequent step, those qualifiers are checked against the qualification passed in from the client.
      */
-    protected boolean matchesOnDelegation(Set<String> allRoleIds, String principalId, List<String> principalGroupIds, Attributes qualification) {
+    protected boolean matchesOnDelegation(Set<String> allRoleIds, String principalId, List<String> principalGroupIds, Map<String, String> qualification) {
         // get the list of delegations for the roles
         Map<String, DelegateBo> delegations = getStoredDelegationImplMapFromRoleIds(allRoleIds);
         // loop over the delegations - determine those which need to be inspected more directly
@@ -959,7 +958,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                         if (!rm.isActive(new Timestamp(new Date().getTime()))) {
                             continue;
                         }
-                        Attributes roleQualifier = rm.getQualifier();
+                        Map<String, String> roleQualifier = rm.getQualifier();
                         //it is possible that the the roleTypeService is coming from a remote application
                         // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                         try {
@@ -1090,7 +1089,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return service;
     }
 
-    protected Collection<RoleMembership> getNestedRoleMembers(Attributes qualification, RoleMembership rm, Set<String> foundRoleTypeMembers) {
+    protected Collection<RoleMembership> getNestedRoleMembers(Map<String, String> qualification, RoleMembership rm, Set<String> foundRoleTypeMembers) {
         // If this role has already been traversed, skip it
         if (foundRoleTypeMembers.contains(rm.getMemberId())) {
             return new ArrayList<RoleMembership>();  // return an empty list
@@ -1145,7 +1144,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return tempDelegationMember;
     }
 
-    private List<RoleMemberBo> getStoredRoleMembersUsingExactMatchOnQualification(String principalId, List<String> groupIds, List<String> roleIds, Attributes qualification) {
+    private List<RoleMemberBo> getStoredRoleMembersUsingExactMatchOnQualification(String principalId, List<String> groupIds, List<String> roleIds, Map<String, String> qualification) {
         List<String> copyRoleIds = new ArrayList<String>(roleIds);
         List<RoleMemberBo> roleMemberBoList = new ArrayList<RoleMemberBo>();
 
@@ -1165,7 +1164,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return roleMemberBoList;
     }
 
-    private Attributes populateQualifiersForExactMatch(Attributes defaultQualification, List<String> attributes) {
+    private Map<String, String> populateQualifiersForExactMatch(Map<String, String> defaultQualification, List<String> attributes) {
         Map<String,String> qualifiersForExactMatch = new HashMap<String,String>();
         if (defaultQualification != null && CollectionUtils.isNotEmpty(defaultQualification.keySet())) {
             for (String attributeName : attributes) {
@@ -1174,10 +1173,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 }
             }
         }
-        return Attributes.fromMap(qualifiersForExactMatch);
+        return qualifiersForExactMatch;
     }
 
-    private List<RoleMemberBo> getStoredRoleGroupsUsingExactMatchOnQualification(List<String> groupIds, Set<String> roleIds, Attributes qualification) {
+    private List<RoleMemberBo> getStoredRoleGroupsUsingExactMatchOnQualification(List<String> groupIds, Set<String> roleIds, Map<String, String> qualification) {
         List<String> copyRoleIds = new ArrayList<String>(roleIds);
         List<RoleMemberBo> roleMemberBos = new ArrayList<RoleMemberBo>();
 

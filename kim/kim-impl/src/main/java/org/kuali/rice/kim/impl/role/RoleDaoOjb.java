@@ -9,7 +9,6 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
@@ -44,7 +43,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
      * @param c             The Query Criteria object to be used
      * @param qualification The role qualification
      */
-    private void addSubCriteriaBasedOnRoleQualification(Criteria c, Attributes qualification) {
+    private void addSubCriteriaBasedOnRoleQualification(Criteria c, Map<String, String> qualification) {
         if (qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
             for (Map.Entry<String, String> qualifier : qualification.entrySet()) {
                 Criteria subCrit = new Criteria();
@@ -60,7 +59,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRolePrincipalsForPrincipalIdAndRoleIds(Collection<String> roleIds, String principalId, Attributes qualification) {
+    public List<RoleMemberBo> getRolePrincipalsForPrincipalIdAndRoleIds(Collection<String> roleIds, String principalId, Map<String, String> qualification) {
 
         Criteria c = new Criteria();
 
@@ -134,7 +133,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRoleGroupsForGroupIdsAndRoleIds(Collection<String> roleIds, Collection<String> groupIds, Attributes qualification) {
+    public List<RoleMemberBo> getRoleGroupsForGroupIdsAndRoleIds(Collection<String> roleIds, Collection<String> groupIds, Map<String, String> qualification) {
         Criteria c = new Criteria();
         if (roleIds != null && !roleIds.isEmpty()) {
             c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
@@ -234,7 +233,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode, Attributes qualification) {
+    public List<RoleMemberBo> getRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode, Map<String, String> qualification) {
         Criteria c = new Criteria();
 
         if (roleIds != null && !roleIds.isEmpty()) {
@@ -257,7 +256,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, Attributes qualification) {
+    public List<RoleMemberBo> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, Map<String, String> qualification) {
         Criteria c = new Criteria();
 
         if (roleIds != null && !roleIds.isEmpty()) {
@@ -278,7 +277,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRoleMembershipsForMemberId(String memberType, String memberId, Attributes qualification) {
+    public List<RoleMemberBo> getRoleMembershipsForMemberId(String memberType, String memberId, Map<String, String> qualification) {
         Criteria c = new Criteria();
         List<RoleMemberBo> parentRoleMembers = new ArrayList<RoleMemberBo>();
 
@@ -303,7 +302,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, List<String> groupIds, Attributes qualification) {
+    public List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, List<String> groupIds, Map<String, String> qualification) {
         Criteria c = new Criteria();
 
         if (roleIds != null && !roleIds.isEmpty()) {

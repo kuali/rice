@@ -1,5 +1,6 @@
 package org.kuali.rice.kim.api.responsibility;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -7,7 +8,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 import org.w3c.dom.Element;
@@ -18,11 +19,13 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @XmlRootElement(name = ResponsibilityAction.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -72,7 +75,8 @@ public final class ResponsibilityAction
     @XmlElement(name = Elements.FORCE_ACTION, required = true)
     private final boolean forceAction;
     @XmlElement(name = Elements.QUALIFIER, required = true)
-    private final Attributes qualifier;
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    private final Map<String, String> qualifier;
     @XmlElement(name = Elements.DELEGATES, required = true)
     private final List<DelegateType> delegates;
     @XmlElement(name = Elements.ROLE_ID, required = true)
@@ -187,7 +191,7 @@ public final class ResponsibilityAction
     }
 
     @Override
-    public Attributes getQualifier() {
+    public Map<String, String> getQualifier() {
         return this.qualifier;
     }
 
@@ -235,7 +239,7 @@ public final class ResponsibilityAction
         private String responsibilityId;
         private String responsibilityNamespaceCode;
         private boolean forceAction;
-        private Attributes qualifier;
+        private Map<String, String> qualifier;
         private List<DelegateType.Builder> delegates;
         private String roleId;
 
@@ -360,7 +364,7 @@ public final class ResponsibilityAction
         }
 
         @Override
-        public Attributes getQualifier() {
+        public Map<String, String> getQualifier() {
             return this.qualifier;
         }
 
@@ -437,11 +441,11 @@ public final class ResponsibilityAction
             this.forceAction = forceAction;
         }
 
-        public void setQualifier(Attributes qualifier) {
+        public void setQualifier(Map<String, String> qualifier) {
             if (qualifier == null) {
                 throw new IllegalArgumentException("qualifier is null");
             }
-            this.qualifier = qualifier;
+            this.qualifier = Collections.unmodifiableMap(Maps.newHashMap(qualifier));
         }
 
         public void setDelegates(List<DelegateType.Builder> delegates) {

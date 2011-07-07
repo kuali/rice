@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.kim.service.support;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.type.KimTypeService;
-import org.kuali.rice.kim.impl.permission.PermissionBo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -42,6 +41,6 @@ public interface KimPermissionTypeService extends KimTypeService {
      *   
      * TODO: clarify this description
      */
-    List<Permission> getMatchingPermissions(Attributes requestedDetails, List<Permission> permissionsList);
+    List<Permission> getMatchingPermissions(Map<String, String> requestedDetails, List<Permission> permissionsList);
 
 }

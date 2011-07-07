@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.core.util.jaxb;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "StringMapEntryListType")
@@ -39,7 +39,7 @@ public class StringMapEntryList implements Serializable {
 	}
 	
 	public StringMapEntryList(List<StringMapEntry> entries) {
-		this.entries = entries;
+		this.entries = new ArrayList<StringMapEntry>(entries);
 	}
 	
 	/**
@@ -47,8 +47,8 @@ public class StringMapEntryList implements Serializable {
 	 */
 	public List<StringMapEntry> getEntries() {
 		if (this.entries == null) {
-			return new ArrayList<StringMapEntry>();
+			return Collections.emptyList();
 		}
-		return entries;
+		return Collections.unmodifiableList(entries);
 	}
 }

@@ -28,7 +28,6 @@ import javax.persistence.Table
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
-import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.responsibility.Responsibility
 import org.kuali.rice.kim.api.responsibility.ResponsibilityContract
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
@@ -79,9 +78,9 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
     @Fetch(value = FetchMode.SELECT)
     List<RoleResponsibilityBo> roleResponsibilities
 
-    Attributes attributes
+    Map<String,String> attributes
 
-    Attributes getAttributes() {
+    Map<String,String> getAttributes() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 

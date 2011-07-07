@@ -15,14 +15,9 @@
  */
 package org.kuali.rice.kew.role;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
@@ -42,6 +37,10 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The RoleRouteModule is responsible for interfacing with the KIM
@@ -85,7 +84,8 @@ public class RoleRouteModule implements RouteModule {
 				} else {
 					responsibilityDetails.remove( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER );
 				}
-				List<ResponsibilityAction> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, Attributes.fromMap(qualifier), Attributes.fromMap(responsibilityDetails));
+				List<ResponsibilityAction> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName,
+                        qualifier, responsibilityDetails);
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("Found " + responsibilities.size() + " responsibilities from ResponsibilityService");
 				}

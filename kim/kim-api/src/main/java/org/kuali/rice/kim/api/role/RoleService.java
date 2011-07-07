@@ -15,8 +15,6 @@
 
 package org.kuali.rice.kim.api.role;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
@@ -27,6 +25,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collection;
 import java.util.List;
@@ -80,6 +80,8 @@ public interface RoleService {
 	 * Get the KIM Role objects for the role IDs in the given List.
 	 */
     @WebMethod(operationName = "getRoles")
+    @XmlElementWrapper(name = "roles", required = true)
+    @XmlElement(name = "role", required = false)
     @WebResult(name = "roles")
 	List<Role> getRoles( @WebParam(name="roleIds") List<String> roleIds );
 
@@ -118,10 +120,13 @@ public interface RoleService {
      * you are only interested in the qualifiers that are directly assigned to the principal.
      */
     @WebMethod(operationName = "getRoleQualifersForPrincipalByRoleIds")
-    @WebResult(name = "attributeSets")
-    List<Attributes> getRoleQualifiersForPrincipal(@WebParam(name="principalId") String principalId,
+    @XmlElementWrapper(name = "attributes", required = true)
+    @XmlElement(name = "attribute", required = false)
+    @WebResult(name = "attributes")
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    List<Map<String, String>> getRoleQualifiersForPrincipal(@WebParam(name="principalId") String principalId,
                                                      @WebParam(name="roleIds") List<String> roleIds,
-                                                     @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification );
+                                                     @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification );
 
     /**
      * Returns a list of role qualifiers that the given principal has without taking into consideration
@@ -129,32 +134,41 @@ public interface RoleService {
      * you are only interested in the qualifiers that are directly assigned to the principal.
      */
     @WebMethod(operationName = "getRoleQualifersForPrincipalByNamespaceAndRolename")
-    @WebResult(name = "attributeSets")
-    List<Attributes> getRoleQualifiersForPrincipal(@WebParam(name="principalId") String principalId,
+    @XmlElementWrapper(name = "attributes", required = true)
+    @XmlElement(name = "attribute", required = false)
+    @WebResult(name = "attributes")
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    List<Map<String, String>> getRoleQualifiersForPrincipal(@WebParam(name="principalId") String principalId,
                                                      @WebParam(name="namespaceCode") String namespaceCode,
                                                      @WebParam(name="roleName") String roleName,
-                                                     @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification );
+                                                     @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification );
 
     /**
      * Returns a list of role qualifiers that the given principal.  If the principal's membership
      * is via a group or role, that group or role's qualifier on the given role is returned.
      */
     @WebMethod(operationName = "getNestedRoleQualifersForPrincipalByNamespaceAndRolename")
-    @WebResult(name = "attributeSets")
-	List<Attributes> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId,
+    @XmlElementWrapper(name = "attributes", required = true)
+    @XmlElement(name = "attribute", required = false)
+    @WebResult(name = "attributes")
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+	List<Map<String, String>> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId,
                                                            @WebParam(name = "namespaceCode") String namespaceCode,
                                                            @WebParam(name = "roleName") String roleName,
-                                                           @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification);
+                                                           @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification);
 
     /**
      * Returns a list of role qualifiers that the given principal.  If the principal's membership
      * is via a group or role, that group or role's qualifier on the given role is returned.
      */
     @WebMethod(operationName = "getNestedRoleQualifiersForPrincipalByRoleIds")
-    @WebResult(name = "attributeSets")
-	List<Attributes> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId,
+    @XmlElementWrapper(name = "attributes", required = true)
+    @XmlElement(name = "attribute", required = false)
+    @WebResult(name = "attributes")
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+	List<Map<String, String>> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId,
                                                            @WebParam(name = "roleIds") List<String> roleIds,
-                                                           @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification);
+                                                           @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification);
 
 
     // --------------------
@@ -169,9 +183,11 @@ public interface RoleService {
      *
      */
     @WebMethod(operationName = "getRoleMembers")
+    @XmlElementWrapper(name = "roleMemberships", required = true)
+    @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
     List<RoleMembership> getRoleMembers( @WebParam(name="roleIds") List<String> roleIds,
-                                             @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification );
+                                             @WebParam(name="qualification")@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification );
 
     /**
 	 * This method gets all the members, then traverses down into members of type role and group to obtain the nested principal ids
@@ -179,10 +195,12 @@ public interface RoleService {
 	 * @return list of member principal ids
 	 */
     @WebMethod(operationName = "getRoleMemberPrincipalIds")
+    @XmlElementWrapper(name = "principalIds", required = true)
+    @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
     Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode,
                                                  @WebParam(name="roleName") String roleName,
-                                                 @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification);
+                                                 @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification);
 
     /**
      * Returns whether the given principal has any of the passed role IDs with the given qualification.
@@ -191,24 +209,28 @@ public interface RoleService {
     @WebResult(name = "principalHasRole")
     boolean principalHasRole( @WebParam(name="principalId") String principalId,
                               @WebParam(name="roleIds") List<String> roleIds,
-                              @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification );
+                              @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification );
 
     /**
      * Returns the subset of the given principal ID list which has the given role and qualification.
      * This is designed to be used by lookups of people by their roles.
      */
     @WebMethod(operationName = "getPrincipalIdSubListWithRole")
+    @XmlElementWrapper(name = "principalIds", required = true)
+    @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
     List<String> getPrincipalIdSubListWithRole( @WebParam(name="principalIds") List<String> principalIds,
                                                 @WebParam(name="roleNamespaceCode") String roleNamespaceCode,
                                                 @WebParam(name="roleName") String roleName,
-                                                @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) Attributes qualification );
+                                                @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification );
 
     /**
 	 *
 	 * This method gets search results for role lookup
 	 */
     @WebMethod(operationName = "getRolesSearchResults")
+    @XmlElementWrapper(name = "roles", required = true)
+    @XmlElement(name = "role", required = false)
     @WebResult(name = "roles")
 	List<Role> getRolesSearchResults(
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") Map<String,String> fieldValues);
@@ -241,6 +263,8 @@ public interface RoleService {
      *  different roles interleaved with each other.
      */
     @WebMethod(operationName = "getFirstLevelRoleMembers")
+    @XmlElementWrapper(name = "roleMemberships", required = true)
+    @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
 	List<RoleMembership> getFirstLevelRoleMembers(@WebParam(name="roleIds") List<String> roleIds);
 
@@ -250,6 +274,8 @@ public interface RoleService {
 	 * key and the values to search on as the value.
 	 */
     @WebMethod(operationName = "findRoleMemberships")
+    @XmlElementWrapper(name = "roleMemberships", required = true)
+    @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
 	List<RoleMembership> findRoleMemberships(
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues);
@@ -258,17 +284,23 @@ public interface RoleService {
 	 * Gets a list of Roles that the given member belongs to.
 	 */
     @WebMethod(operationName = "getMemberParentRoleIds")
+    @XmlElementWrapper(name = "roleIds", required = true)
+    @XmlElement(name = "roleId", required = false)
     @WebResult(name = "roleIds")
 	List<String> getMemberParentRoleIds(String memberType, String memberId);
 
 
     @WebMethod(operationName = "findRoleMembers")
-    @WebResult(name = "roleMemberInfos")
+    @XmlElementWrapper(name = "roleMembers", required = true)
+    @XmlElement(name = "roleMember", required = false)
+    @WebResult(name = "roleMembers")
 	List<RoleMember> findRoleMembers(
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues);
 
     @WebMethod(operationName = "findDelegateMembers")
-    @WebResult(name = "delegateMemberInfos")
+    @XmlElementWrapper(name = "delegateMembers", required = true)
+    @XmlElement(name = "delegateMember", required = false)
+    @WebResult(name = "delegateMembers")
     List<DelegateMember> findDelegateMembers
             (@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") java.util.Map<String, String> fieldValues);
 
@@ -278,7 +310,9 @@ public interface RoleService {
 	 * key and the values to search on as the value.
 	 */
     @WebMethod(operationName = "getDelegationMembersByDelegationId")
-    @WebResult(name = "delegateMemberInfos")
+    @XmlElementWrapper(name = "delegateMembers", required = true)
+    @XmlElement(name = "delegateMember", required = false)
+    @WebResult(name = "delegateMembers")
     List<DelegateMember> getDelegationMembersByDelegationId(
             @WebParam(name = "delegationId") String delegationId);
 
@@ -292,10 +326,14 @@ public interface RoleService {
     DelegateMember getDelegationMemberById(@WebParam(name = "delegationMemberId") String delegationMemberId);
 
     @WebMethod(operationName = "getRoleResponsibilities")
+    @XmlElementWrapper(name = "roleResponsibilities", required = true)
+    @XmlElement(name = "roleResponsibility", required = false)
     @WebResult(name = "roleResponsibilities")
 	List<RoleResponsibility> getRoleResponsibilities(@WebParam(name="roleId") String roleId);
 
     @WebMethod(operationName = "getRoleMemberResponsibilityActions")
+    @XmlElementWrapper(name = "roleResponsibilityActions", required = true)
+    @XmlElement(name = "roleResponsibilityAction", required = false)
     @WebResult(name = "roleResponsibilityActions")
 	List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(
             @WebParam(name = "roleMemberId") String roleMemberId);
@@ -313,6 +351,8 @@ public interface RoleService {
     void applicationRoleMembershipChanged( @WebParam(name="roleId") String roleId );
 
     @WebMethod(operationName = "lookupRoles")
+    @XmlElementWrapper(name = "roles", required = true)
+    @XmlElement(name = "role", required = false)
     @WebResult(name = "roles")
 	List<Role> lookupRoles(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria);
 

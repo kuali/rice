@@ -19,7 +19,6 @@ package org.kuali.rice.kew.actionrequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -57,6 +56,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -390,9 +390,9 @@ public class ActionRequestFactory {
     		annotation.setLength( 0 );
     		Role role = getRoleService().getRole(responsibility.getRoleId());
     		annotation.append( role.getNamespaceCode() ).append( ' ' ).append( role.getName() ).append( ' ' );
-    		Attributes qualifier = responsibility.getQualifier();
+    		Map<String, String> qualifier = responsibility.getQualifier();
     		if ( qualifier != null ) {
-	    		for ( String key : qualifier.toMap().keySet() ) {
+	    		for ( String key : qualifier.keySet() ) {
 	        		annotation.append( qualifier.get( key ) ).append( ' ' );
 	    		}
     		}

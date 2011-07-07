@@ -22,10 +22,8 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.core.util.AttributeSet
 import org.kuali.rice.kim.api.common.delegate.DelegateType
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeTest
-import org.kuali.rice.core.api.mo.common.Attributes
 
 public class RoleMembershipTest {
 
@@ -37,7 +35,7 @@ public class RoleMembershipTest {
     final static String MEMBER_ID = "42"
     final static String MEMBER_TYPE_CODE = "P"
     final static String ROLE_SORTING_CODE = "DESC"
-    final static Attributes QUALIFIER = Attributes.empty()
+    final static Map<String, String> QUALIFIER = [:]
     final static List<DelegateType.Builder> DELEGATES = [create_delegate_type()]
 
     private static DelegateType.Builder create_delegate_type() {

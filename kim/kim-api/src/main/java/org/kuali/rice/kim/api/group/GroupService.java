@@ -18,7 +18,6 @@ package org.kuali.rice.kim.api.group;
 
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -27,6 +26,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collection;
 import java.util.List;
@@ -49,7 +50,9 @@ public interface GroupService {
      *         non-existant principalId is supplied.
      */
     @WebMethod(operationName = "getGroupsForPrincipal")
-    @WebResult(name = "groupsForPrincipal")
+    @XmlElementWrapper(name = "groups", required = true)
+    @XmlElement(name = "group", required = false)
+    @WebResult(name = "groups")
     List<Group> getGroupsForPrincipal(@WebParam(name="principalId") String principalId) throws RiceIllegalArgumentException;
 
 
@@ -67,7 +70,9 @@ public interface GroupService {
      *         non-existant principalId is supplied.
      */
     @WebMethod(operationName = "getGroupsForPrincipalByNamespace")
-    @WebResult(name = "groupsForPrincipal")
+    @XmlElementWrapper(name = "groups", required = true)
+    @XmlElement(name = "group", required = false)
+    @WebResult(name = "groups")
     List<Group> getGroupsForPrincipalByNamespace(@WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
 
     /**
@@ -82,7 +87,9 @@ public interface GroupService {
      *         non-existent criteria is supplied.
      */
     @WebMethod(operationName = "findGroupIds")
-    @WebResult(name = "findGroupIds")
+    @XmlElementWrapper(name = "groupIds", required = true)
+    @XmlElement(name = "groupId", required = false)
+    @WebResult(name = "groupIds")
     List<String> findGroupIds(@WebParam(name = "query") QueryByCriteria queryByCriteria);
 
     /**
@@ -155,6 +162,9 @@ public interface GroupService {
      *         non-existant id is supplied.
      */
     @WebMethod(operationName = "getGroups")
+    //uncomment when returning a List type
+    //@XmlElementWrapper(name = "groups", required = true)
+    //@XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
     List<Group> getGroups(@WebParam(name="groupIds") Collection<String> groupIds);
 
@@ -202,7 +212,9 @@ public interface GroupService {
      * @return a list of Group Ids in which the principal is a member of.
      */
     @WebMethod(operationName = "getGroupIdsForPrincipal")
-    @WebResult(name = "groupIdsForPrincipal")
+    @XmlElementWrapper(name = "groupIds", required = true)
+    @XmlElement(name = "groupId", required = false)
+    @WebResult(name = "groupIds")
 	List<String> getGroupIdsForPrincipal(@WebParam(name="principalId") String principalId) throws RiceIllegalArgumentException;
 
     /**
@@ -218,7 +230,9 @@ public interface GroupService {
      * @return a list of Group Ids in which the principal is a member of, limited to the passed in namespace.
      */
     @WebMethod(operationName = "getGroupIdsForPrincipalByNamespace")
-    @WebResult(name = "groupIdsForPrincipal")
+    @XmlElementWrapper(name = "groupIds", required = true)
+    @XmlElement(name = "groupId", required = false)
+    @WebResult(name = "groupIds")
 	List<String> getGroupIdsForPrincipalByNamespace(@WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
 
 
@@ -233,7 +247,9 @@ public interface GroupService {
      * @return a list of Group Ids in which the principal is directly a member of.
      */
     @WebMethod(operationName = "getDirectGroupIdsForPrincipal")
-    @WebResult(name = "directGroupIdsForPrincipal")
+    @XmlElementWrapper(name = "groupIds", required = true)
+    @XmlElement(name = "groupId", required = false)
+    @WebResult(name = "groupIds")
     List<String> getDirectGroupIdsForPrincipal(@WebParam(name="principalId") String principalId) throws RiceIllegalArgumentException;
 
 
@@ -267,7 +283,9 @@ public interface GroupService {
      * @return List of principal ids
      */
     @WebMethod(operationName = "getMemberPrincipalIds")
-    @WebResult(name = "memberPrincipalIds")
+    @XmlElementWrapper(name = "principalIds", required = true)
+    @XmlElement(name = "principalId", required = false)
+    @WebResult(name = "principalIds")
 	List<String> getMemberPrincipalIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
@@ -280,7 +298,9 @@ public interface GroupService {
      * @return List of direct member principal ids.
      */
     @WebMethod(operationName = "getDirectMemberPrincipalIds")
-    @WebResult(name = "directMemberPrincipalIds")
+    @XmlElementWrapper(name = "principalIds", required = true)
+    @XmlElement(name = "principalId", required = false)
+    @WebResult(name = "principalIds")
 	List<String> getDirectMemberPrincipalIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
@@ -294,7 +314,9 @@ public interface GroupService {
      * @return List of group ids
      */
     @WebMethod(operationName = "getMemberGroupIds")
-    @WebResult(name = "memberGroupIds")
+    @XmlElementWrapper(name = "groupIds", required = true)
+    @XmlElement(name = "groupId", required = false)
+    @WebResult(name = "groupIds")
 	List<String> getMemberGroupIds( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
@@ -307,7 +329,9 @@ public interface GroupService {
      * @return List of direct member group ids.
      */
     @WebMethod(operationName = "getDirectMemberOfGroup")
-    @WebResult(name = "directMemberGroupIds")
+    @XmlElementWrapper(name = "groupIds", required = true)
+    @XmlElement(name = "groupId", required = false)
+    @WebResult(name = "groupIds")
 	List<String> getDirectMemberGroupIds( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
@@ -321,7 +345,9 @@ public interface GroupService {
      * @return List of parent group ids.
      */
     @WebMethod(operationName = "getParentGroupIds")
-    @WebResult(name = "parentGroupIds")
+    @XmlElementWrapper(name = "groupIds", required = true)
+    @XmlElement(name = "groupId", required = false)
+    @WebResult(name = "groupIds")
     List<String> getParentGroupIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
@@ -334,14 +360,18 @@ public interface GroupService {
      * @return List of parent group ids.
      */
     @WebMethod(operationName = "getDirectParentGroupIds")
-    @WebResult(name = "directParentGroupIds")
+    @XmlElementWrapper(name = "groupIds", required = true)
+    @XmlElement(name = "groupId", required = false)
+    @WebResult(name = "groupIds")
     List<String> getDirectParentGroupIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 	/**
 	 * Get all the attributes of the given group.
 	 */
+    @WebMethod(operationName = "getAttributes")
+    @WebResult(name = "attributes")
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    Attributes getAttributes( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
+    Map<String, String> getAttributes( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
     /**
@@ -355,6 +385,8 @@ public interface GroupService {
      * @return Collection of GroupMembers.
      */
     @WebMethod(operationName = "getMembersOfGroup")
+    @XmlElementWrapper(name = "members", required = true)
+    @XmlElement(name = "member", required = false)
     @WebResult(name = "members")
 	List<GroupMember> getMembersOfGroup( @WebParam(name="groupId") String groupIds ) throws RiceIllegalArgumentException;
 
@@ -371,6 +403,8 @@ public interface GroupService {
      * @return Collection of GroupMembers.
      */
     @WebMethod(operationName = "getMembers")
+    @XmlElementWrapper(name = "members", required = true)
+    @XmlElement(name = "member", required = false)
     @WebResult(name = "members")
 	List<GroupMember> getMembers( @WebParam(name="groupIds") List<String> groupIds ) throws RiceIllegalArgumentException;
 

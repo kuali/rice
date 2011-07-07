@@ -18,11 +18,11 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
@@ -36,16 +36,14 @@ import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
@@ -168,7 +166,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
-		return getRoleService().principalHasRole( principalId, roleIds, Attributes.fromMap(qualification) );
+		return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
     /**
@@ -186,7 +184,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
-    	return getRoleService().principalHasRole( principalId, roleIds, Attributes.fromMap(qualification) );
+    	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
     /**
@@ -198,7 +196,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	// now, filter the full list by the detail passed
     	List<PermissionBo> applicablePermissions = getMatchingPermissions( Collections.singletonList(permissions), permissionDetails );
     	List<PermissionBo> permissionsForUser =
-                getPermissionsForUser(principalId, applicablePermissions, Attributes.fromMap(qualification));
+                getPermissionsForUser(principalId, applicablePermissions, qualification);
         List<Permission> returnList = new ArrayList<Permission>();
         for (PermissionBo bo : permissionsForUser) { returnList.add(PermissionBo.to(bo));}
         return returnList;
@@ -215,7 +213,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	// now, filter the full list by the detail passed
 
     	List<PermissionBo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
-        List<PermissionBo> permissionsForUser = getPermissionsForUser(principalId, applicablePermissions, Attributes.fromMap(qualification));
+        List<PermissionBo> permissionsForUser = getPermissionsForUser(principalId, applicablePermissions,
+                qualification);
         List<Permission> returnList = new ArrayList<Permission>();
         for (PermissionBo bo : permissionsForUser) { returnList.add(PermissionBo.to(bo)); }
         return returnList;
@@ -225,7 +224,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     /**
      * Checks the list of permissions against the principal's roles and returns a subset of the list which match.
      */
-    protected List<PermissionBo> getPermissionsForUser(String principalId, List<PermissionBo> permissions, Attributes qualification) {
+    protected List<PermissionBo> getPermissionsForUser(String principalId, List<PermissionBo> permissions, Map<String, String> qualification) {
     	ArrayList<PermissionBo> results = new ArrayList<PermissionBo>();
     	List<PermissionBo> tempList = new ArrayList<PermissionBo>(1);
     	for ( PermissionBo perm : permissions ) {
@@ -293,7 +292,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
                 List<Permission> immutablePermissionList = new ArrayList<Permission>();
                 for (PermissionBo bo : permissionList) {immutablePermissionList.add(PermissionBo.to(bo));}
                 List<Permission> matchingPermissions = permissionTypeService.getMatchingPermissions(
-                        Attributes.fromMap(permissionDetails), immutablePermissionList );
+                        permissionDetails, immutablePermissionList );
                 List<PermissionBo> matchingPermissionBos = new ArrayList<PermissionBo>();
                 for (Permission perm : matchingPermissions) {matchingPermissionBos.add(PermissionBo.from(perm)); }
 				applicablePermissions.addAll(matchingPermissionBos);
@@ -312,7 +311,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return results;
     	}
-    	Collection<RoleMembership> roleMembers = getRoleService().getRoleMembers( roleIds, Attributes.fromMap(qualification) );
+    	Collection<RoleMembership> roleMembers = getRoleService().getRoleMembers( roleIds,
+                qualification );
     	for ( RoleMembership rm : roleMembers ) {
     		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
     			results.add( new PermissionAssigneeInfo( rm.getMemberId(), null, rm.getDelegates() ) );
@@ -329,7 +329,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( roleIds.isEmpty() ) {
     		return results;
     	}
-    	Collection<RoleMembership> roleMembers = getRoleService().getRoleMembers( roleIds, Attributes.fromMap(qualification));
+    	Collection<RoleMembership> roleMembers = getRoleService().getRoleMembers( roleIds,
+                qualification);
     	for ( RoleMembership rm : roleMembers ) {
     		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
     			results.add( new PermissionAssigneeInfo( rm.getMemberId(), null, rm.getDelegates() ) );

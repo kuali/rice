@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.api.permission;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -22,7 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.w3c.dom.Element;
 
@@ -32,8 +33,11 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * An immutable representation of a {@link PermissionContract}.
@@ -76,7 +80,8 @@ public final class Permission implements PermissionContract, ModelObjectComplete
     private final Template template;
 
     @XmlElement(name = Permission.Elements.ATTRIBUTES, required = false)
-    private final Attributes attributes;
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    private final Map<String, String> attributes;
 
     @XmlElement(name = Permission.Elements.ACTIVE, required = false)
     private boolean active;
@@ -119,7 +124,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         this.name = builder.getName();
         this.description = builder.getDescription();
         this.template = builder.getTemplate().build();
-        this.attributes = builder.getAttributes();
+        this.attributes = builder.getAttributes() != null ? builder.getAttributes() : Collections.<String, String>emptyMap();
         this.active = builder.isActive();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
@@ -178,7 +183,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 	 * @see org.kuali.rice.kim.api.permission.PermissionContract#getAttributes()
 	 */
 	@Override
-	public Attributes getAttributes() {
+	public Map<String, String> getAttributes() {
 		return this.attributes;
 	}
 
@@ -222,7 +227,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         private String name;
         private String description;
         private Template.Builder template;
-        private Attributes attributes;
+        private Map<String, String> attributes;
         private Long versionNumber = 1L;
         private String objectId;
         private boolean active;
@@ -247,7 +252,9 @@ public final class Permission implements PermissionContract, ModelObjectComplete
             Builder builder = new Builder(contract.getNamespaceCode(), contract.getName(), Template.Builder.create(contract.getTemplate()));
             builder.setId(contract.getId());
             builder.setDescription(contract.getDescription());
-            builder.setAttributes(contract.getAttributes());
+            if (contract.getAttributes() != null) {
+                builder.setAttributes(contract.getAttributes());
+            }
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -340,12 +347,12 @@ public final class Permission implements PermissionContract, ModelObjectComplete
         }
 
 		@Override
-		public Attributes getAttributes() {
+		public Map<String, String> getAttributes() {
 			return attributes;
 		}
 		
-		public void setAttributes(Attributes attributes) {
-            this.attributes = attributes;
+		public void setAttributes(Map<String, String> attributes) {
+            this.attributes = Collections.unmodifiableMap(Maps.newHashMap(attributes));
         }
 		
         @Override

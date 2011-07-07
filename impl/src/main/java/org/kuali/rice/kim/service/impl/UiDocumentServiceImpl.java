@@ -20,7 +20,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
@@ -2224,7 +2223,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                             (origRoleMemberImpl.getMemberTypeCode()!=null && StringUtils.equals(origRoleMemberImpl.getMemberTypeCode(), newRoleMember.getMemberTypeCode())) &&
                             !origRoleMemberImpl.isActive(new Timestamp(System.currentTimeMillis())) &&
                             !kimTypeService.validateUniqueAttributes(identityManagementRoleDocument.getKimType().getId(),
-                                    Attributes.fromMap(documentRoleMember.getQualifierAsAttributeSet()), origRoleMemberImpl.getQualifier())) {
+                                    documentRoleMember.getQualifierAsAttributeSet(), origRoleMemberImpl.getQualifier())) {
 
                             //TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
 
@@ -2558,7 +2557,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected List<GroupDocumentQualifier> loadGroupQualifiers(IdentityManagementGroupDocument IdentityManagementGroupDocument,
-			Attributes attributes){
+			Map<String, String> attributes){
 		List<GroupDocumentQualifier> pndGroupQualifiers = new ArrayList<GroupDocumentQualifier>();
 		GroupDocumentQualifier pndGroupQualifier = new GroupDocumentQualifier();
 		AttributeDefinitionMap origAttributes = IdentityManagementGroupDocument.getDefinitions();

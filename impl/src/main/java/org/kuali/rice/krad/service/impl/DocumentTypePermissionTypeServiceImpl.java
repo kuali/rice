@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -28,6 +27,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -52,7 +52,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	 *
 	 */
 	@Override
-	protected List<Permission> performPermissionMatches(Attributes requestedDetails,
+	protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails,
             List<Permission> permissionsList) {
 		// pull all the potential parent doc type names from the permission list
 		Set<String> permissionDocTypeNames = new HashSet<String>( permissionsList.size() );

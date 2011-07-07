@@ -247,7 +247,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 				filteredPermissions.add(perm);
 				populateAssignedToRoles(perm);
 			} else {
-				if ( isMapSubset( new AttributeSet(perm.getDetails().toMap()), detailCriteria ) ) {
+				if ( isMapSubset( new AttributeSet(perm.getDetails()), detailCriteria ) ) {
 					filteredPermissions.add(perm);
 					populateAssignedToRoles(perm);
 				}

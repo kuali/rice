@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -147,14 +146,14 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     /**
      * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, String, java.lang.String, AttributeSet)
      */
-    public boolean hasPermission(String principalId, String namespaceCode, String permissionName, Attributes permissionDetails) {
+    public boolean hasPermission(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails) {
     	return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, null );
     }
 
     /**
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
      */
-    public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, Attributes permissionDetails, Attributes qualification ) {
+    public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
     		return false;
@@ -169,14 +168,14 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     /**
      * @see org.kuali.rice.kim.service.PermissionService#hasPermission(String, String, String, AttributeSet)
      */
-    public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Attributes permissionDetails) {
+    public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails) {
     	return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
     }
 
     /**
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
      */
-    public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Attributes permissionDetails, Attributes qualification ) {
+    public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
     		return false;
@@ -187,7 +186,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     /**
      * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(String, String, String, AttributeSet, AttributeSet)
      */
-    public List<Permission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, Attributes permissionDetails, Attributes qualification ) {
+    public List<Permission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	// get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
@@ -198,7 +197,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     /**
      * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissionsByTemplateName(String, String, String, AttributeSet, AttributeSet)
      */
-    public List<Permission> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, Attributes permissionDetails, Attributes qualification ) {
+    public List<Permission> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	// get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
@@ -209,7 +208,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     /**
      * Checks the list of permissions against the principal's roles and returns a subset of the list which match.
      */
-    protected List<Permission> getPermissionsForUser( String principalId, List<Permission> permissions, Attributes qualification ) {
+    protected List<Permission> getPermissionsForUser( String principalId, List<Permission> permissions, Map<String, String> qualification ) {
     	ArrayList<Permission> results = new ArrayList<Permission>();
     	List<Permission> tempList = new ArrayList<Permission>(1);
     	for ( Permission perm : permissions ) {
@@ -255,7 +254,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      * Compare each of the passed in permissions with the given permissionDetails.  Those that
      * match are added to the result list.
      */
-    protected List<Permission> getMatchingPermissions( List<PermissionBo> permissions, Attributes permissionDetails ) {
+    protected List<Permission> getMatchingPermissions( List<PermissionBo> permissions, Map<String, String> permissionDetails ) {
     	List<Permission> applicablePermissions = new ArrayList<Permission>();    	
     	if ( permissionDetails == null || permissionDetails.isEmpty() ) {
     		// if no details passed, assume that all match
@@ -282,7 +281,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     /**
      * @see org.kuali.rice.kim.service.PermissionService#getPermissionAssignees(String, String, AttributeSet, AttributeSet)
      */
-    public List<Assignee> getPermissionAssignees( String namespaceCode, String permissionName, Attributes permissionDetails, Attributes qualification ) {
+    public List<Assignee> getPermissionAssignees( String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<Assignee> results = new ArrayList<Assignee>();
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails);
     	if ( roleIds.isEmpty() ) {
@@ -305,7 +304,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return results;
     }
     
-    public List<Assignee> getPermissionAssigneesForTemplateName( String namespaceCode, String permissionTemplateName, Attributes permissionDetails, Attributes qualification ) {
+    public List<Assignee> getPermissionAssigneesForTemplateName( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<Assignee> results = new ArrayList<Assignee>();
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails);
     	if ( roleIds.isEmpty() ) {
@@ -328,25 +327,25 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return results;
     }
     
-    public boolean isPermissionAssigned( String namespaceCode, String permissionName, Attributes permissionDetails ) {
+    public boolean isPermissionAssigned( String namespaceCode, String permissionName, Map<String, String> permissionDetails ) {
     	return !getRoleIdsForPermission(namespaceCode, permissionName, permissionDetails).isEmpty();
     }
     
-    public boolean isPermissionDefined( String namespaceCode, String permissionName, Attributes permissionDetails ) {
+    public boolean isPermissionDefined( String namespaceCode, String permissionName, Map<String, String> permissionDetails ) {
     	// get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
     	return !getMatchingPermissions( Collections.singletonList(permissions), permissionDetails ).isEmpty();
     }
     
-    public boolean isPermissionDefinedForTemplateName( String namespaceCode, String permissionTemplateName, Attributes permissionDetails ) {
+    public boolean isPermissionDefinedForTemplateName( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails ) {
     	// get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	return !getMatchingPermissions( Collections.singletonList(permissions), permissionDetails ).isEmpty();
     }
  
-    public List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, Attributes permissionDetails) {
+    public List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, Map<String, String> permissionDetails) {
     	// get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
@@ -359,7 +358,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return roleIds;    	
     }
 
-    protected List<String> getRoleIdsForPermissionTemplate( String namespaceCode, String permissionTemplateName, Attributes permissionDetails ) {
+    protected List<String> getRoleIdsForPermissionTemplate( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails ) {
     	// get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed

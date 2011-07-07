@@ -5,7 +5,6 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.core.api.mo.common.Attributes
 
 class ResponsibilityActionTest {
 
@@ -29,7 +28,7 @@ class ResponsibilityActionTest {
         r.responsibilityName = "aResponsibilityName"
         r.responsibilityId = "aResponsibilityId"
         r.responsibilityNamespaceCode = "aResponsibilityNamespaceCode"
-        r.qualifier = Attributes.empty()
+        r.qualifier = [:]
         r.delegates = Collections.emptyList()
         r.roleId = "aRoleId";
         return r;

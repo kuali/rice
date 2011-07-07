@@ -6,7 +6,6 @@ import org.junit.Assert
 import org.junit.Ignore
 import org.junit.Test
 import org.kuali.rice.kim.api.role.RoleMember
-import org.kuali.rice.core.api.mo.common.Attributes
 
 class RoleMemberBoTest {
 
@@ -41,7 +40,7 @@ class RoleMemberBoTest {
 
     @Test
     void test_from() {
-        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", "G", ACTIVE_FROM, ACTIVE_TO, Attributes.empty()).build()
+        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", "G", ACTIVE_FROM, ACTIVE_TO, [:]).build()
         RoleMemberBo bo = RoleMemberBo.from(immutable)
         Assert.assertEquals(bo.roleMemberId, immutable.roleMemberId)
         Assert.assertEquals(bo.roleId, immutable.roleId)
@@ -54,7 +53,7 @@ class RoleMemberBoTest {
 
     @Test
     void test_notEqualToImmutable() {
-        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", "G", ACTIVE_FROM, ACTIVE_TO, Attributes.empty()).build()
+        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", "G", ACTIVE_FROM, ACTIVE_TO, [:]).build()
         RoleMemberBo bo = RoleMemberBo.from(immutable)
         Assert.assertFalse(bo.equals(immutable))
         Assert.assertFalse(immutable.equals(bo))

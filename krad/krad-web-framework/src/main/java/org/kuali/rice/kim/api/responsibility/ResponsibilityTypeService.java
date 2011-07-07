@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kim.api.responsibility;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 import org.kuali.rice.kim.api.type.KimTypeService;
 
 import java.util.List;
-
+import java.util.Map;
 
 public interface ResponsibilityTypeService extends KimTypeService {
-    List<Responsibility> getMatchingResponsibilities(Attributes requestedDetails, List<Responsibility> responsibilities);
+    List<Responsibility> getMatchingResponsibilities(Map<String, String> requestedDetails, List<Responsibility> responsibilities);
 }

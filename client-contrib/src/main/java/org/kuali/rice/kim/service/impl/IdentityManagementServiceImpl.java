@@ -18,7 +18,6 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -42,6 +41,7 @@ import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.service.PermissionService;
 
 import java.util.List;
+import java.util.Map;
 
 public class IdentityManagementServiceImpl implements IdentityManagementService {
 	private static final Logger LOG = Logger.getLogger( IdentityManagementServiceImpl.class );
@@ -117,14 +117,14 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     }
 
     @Override
-    public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Attributes permissionDetails, Attributes qualification ) {
+    public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	if ( qualification == null || qualification.isEmpty() ) {
-    		return hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails.toMap()) );
+    		return hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails) );
     	}
     	if ( LOG.isDebugEnabled() ) {
-    		logAuthorizationCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails.toMap()), new AttributeSet(qualification.toMap()));
+    		logAuthorizationCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails), new AttributeSet(qualification));
     	}
-    	boolean isAuthorized = getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails.toMap()), new AttributeSet(qualification.toMap()) );
+    	boolean isAuthorized = getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails), new AttributeSet(qualification) );
    		if ( LOG.isDebugEnabled() ) {
    			LOG.debug( "Result: " + isAuthorized );
    		}
@@ -157,10 +157,10 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 
     @Override
 	public List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(String namespaceCode,
-			String permissionTemplateName, Attributes permissionDetails,
-			Attributes qualification) {
+			String permissionTemplateName, Map<String, String> permissionDetails,
+			Map<String, String> qualification) {
 		return this.permissionService.getPermissionAssigneesForTemplateName( namespaceCode,
-				permissionTemplateName, new AttributeSet(permissionDetails.toMap()), new AttributeSet(qualification.toMap()) );
+				permissionTemplateName, new AttributeSet(permissionDetails), new AttributeSet(qualification) );
 	}
 
     // GROUP SERVICE
@@ -379,7 +379,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	public boolean hasResponsibility(String principalId, String namespaceCode,
 			String responsibilityName, AttributeSet qualification,
 			AttributeSet responsibilityDetails) {
-		return getResponsibilityService().hasResponsibility( principalId, namespaceCode, responsibilityName, Attributes.fromMap(qualification), Attributes.fromMap(responsibilityDetails) );
+		return getResponsibilityService().hasResponsibility( principalId, namespaceCode, responsibilityName,
+                qualification, responsibilityDetails );
 	}
 
     @Override
@@ -390,21 +391,24 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     @Override
 	public List<ResponsibilityAction> getResponsibilityActions( String namespaceCode, String responsibilityName,
     		AttributeSet qualification, AttributeSet responsibilityDetails) {
-		return getResponsibilityService().getResponsibilityActions( namespaceCode, responsibilityName, Attributes.fromMap(qualification), Attributes.fromMap(responsibilityDetails) );
+		return getResponsibilityService().getResponsibilityActions( namespaceCode, responsibilityName, qualification,
+                responsibilityDetails );
 	}
 
     @Override
 	public List<ResponsibilityAction> getResponsibilityActionsByTemplateName(
 			String namespaceCode, String responsibilityTemplateName,
 			AttributeSet qualification, AttributeSet responsibilityDetails) {
-		return getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, Attributes.fromMap(qualification), Attributes.fromMap(responsibilityDetails));
+		return getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName,
+                qualification, responsibilityDetails);
 	}
 
     @Override
 	public boolean hasResponsibilityByTemplateName(String principalId,
 			String namespaceCode, String responsibilityTemplateName,
 			AttributeSet qualification, AttributeSet responsibilityDetails) {
-		return getResponsibilityService().hasResponsibilityByTemplateName(principalId, namespaceCode, responsibilityTemplateName, Attributes.fromMap(qualification), Attributes.fromMap(responsibilityDetails));
+		return getResponsibilityService().hasResponsibilityByTemplateName(principalId, namespaceCode, responsibilityTemplateName,
+                qualification, responsibilityDetails);
 	}
 
     protected void logAuthorizationCheck(String checkType, String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {

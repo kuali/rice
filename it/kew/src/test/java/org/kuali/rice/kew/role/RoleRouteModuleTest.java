@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.role;
 
 import org.junit.Test;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
@@ -775,7 +774,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 						KRADServiceLocator.getBusinessObjectService().delete(roleMember);
 					}
 				
-					List<RoleMembership> roleMemberInfos = KimApiServiceLocator.getRoleService().getRoleMembers(Collections.singletonList(role.getId()), Attributes.empty());
+					List<RoleMembership> roleMemberInfos = KimApiServiceLocator.getRoleService().getRoleMembers(Collections.singletonList(role.getId()), Collections.<String, String>emptyMap());
 					assertEquals("role member list should be empty now", 0, roleMemberInfos.size());
 				
 					// now that we've removed all members from the Role, let's trying routing the doc!

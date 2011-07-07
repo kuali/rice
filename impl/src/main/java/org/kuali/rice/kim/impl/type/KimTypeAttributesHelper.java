@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -120,7 +119,7 @@ public class KimTypeAttributesHelper implements Serializable {
 		return getDefinitionsKeyedByAttributeName().get(attributeName);
 	}
 	
-	public String getAttributeValue(Attributes aSet, String attributeName){
+	public String getAttributeValue(Map<String, String> aSet, String attributeName){
 		if(StringUtils.isEmpty(attributeName) || aSet==null) return null;
 		for(String attributeNameKey: aSet.keySet()){
 			if(attributeName.equals(attributeNameKey))

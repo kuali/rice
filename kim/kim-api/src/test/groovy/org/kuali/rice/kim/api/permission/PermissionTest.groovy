@@ -20,7 +20,6 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.core.api.mo.common.Attributes
 import org.kuali.rice.kim.api.common.attribute.KimAttribute
 import org.kuali.rice.kim.api.common.template.Template
 import org.kuali.rice.kim.api.common.template.TemplateTest
@@ -141,7 +140,7 @@ class PermissionTest {
 			String getName() {PermissionTest.NAME}
 			String getDescription() {PermissionTest.DESCRIPTION}
 			Template getTemplate() {PermissionTest.TEMPLATE.build()}
-            Attributes getAttributes() { Attributes.fromStrings(PermissionTest.KIM_ATTRIBUTE_1_NAME, PermissionTest.ATTRIBUTES_1_VALUE)}
+            Map<String, String> getAttributes() { [(PermissionTest.KIM_ATTRIBUTE_1_NAME) : PermissionTest.ATTRIBUTES_1_VALUE ] }
 			boolean isActive() {PermissionTest.ACTIVE.toBoolean()}
 			Long getVersionNumber() {PermissionTest.VERSION_NUMBER}
 			String getObjectId() {PermissionTest.OBJECT_ID}

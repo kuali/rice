@@ -17,20 +17,19 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.Maintainable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -84,7 +83,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 
         Responsibility.Builder b = Responsibility.Builder.create(resp.getNamespaceCode(), resp.getName(), Template.Builder.create(REVIEW_TEMPLATE));
         b.setDescription(resp.getDescription());
-        b.setAttributes(Attributes.fromMap(details));
+        b.setAttributes(details);
         b.setActive(resp.isActive());
 
         KimApiServiceLocator.getResponsibilityService().createResponsibility(b.build());

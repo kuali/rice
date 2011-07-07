@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.service.support.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
@@ -24,6 +23,7 @@ import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -34,7 +34,7 @@ import java.util.List;
 public class KimPermissionTypeServiceBase extends KimTypeServiceBase implements KimPermissionTypeService {
 
 	@Override
-	public final List<Permission> getMatchingPermissions(Attributes requestedDetails, List<Permission> permissionsList) {
+	public final List<Permission> getMatchingPermissions(Map<String, String> requestedDetails, List<Permission> permissionsList) {
 		requestedDetails = translateInputAttributes(requestedDetails);
 		validateRequiredAttributesAgainstReceived(requestedDetails);
 		return performPermissionMatches(requestedDetails, permissionsList);
@@ -43,10 +43,10 @@ public class KimPermissionTypeServiceBase extends KimTypeServiceBase implements 
 	/**
 	 * Internal method for matching permissions.  Override this method to customize the matching behavior.
 	 * 
-	 * This base implementation uses the {@link #performMatch(Attributes, Attributes)} method
+	 * This base implementation uses the {@link #performMatch(Map<String, String>, Map<String, String>)} method
 	 * to perform an exact match on the permission details and return all that are equal.
 	 */
-	protected List<Permission> performPermissionMatches(Attributes requestedDetails, List<Permission> permissionsList) {
+	protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails, List<Permission> permissionsList) {
 		List<Permission> matchingPermissions = new ArrayList<Permission>();
 		for (Permission permission : permissionsList) {
             PermissionBo bo = PermissionBo.from(permission);

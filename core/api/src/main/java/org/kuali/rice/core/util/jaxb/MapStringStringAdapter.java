@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.core.util.jaxb;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * Do JAXB mapping of Map<String, String> to a format like the following for a
@@ -61,6 +61,6 @@ public class MapStringStringAdapter extends XmlAdapter<StringMapEntryList, Map<S
 		for (StringMapEntry entry : entries) {
 			resultMap.put(entry.getKey(), entry.getValue());
 		}
-		return resultMap;
+		return Collections.unmodifiableMap(resultMap);
 	}
 }

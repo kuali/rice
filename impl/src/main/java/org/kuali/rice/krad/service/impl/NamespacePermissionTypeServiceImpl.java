@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
@@ -24,6 +23,7 @@ import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -45,7 +45,7 @@ public class NamespacePermissionTypeServiceImpl extends
      * If ExactMatchPriority is false, then this method will return all exact AND partial matching permissions.  By default, ExactMatchPriority will be set to true.
 	 */
 	@Override
-	protected List<Permission> performPermissionMatches(Attributes requestedDetails, List<Permission> permissionsList) {
+	protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails, List<Permission> permissionsList) {
 		List<Permission> matchingPermissions = new ArrayList<Permission>();
 		
 		String requestedNamespaceCode = requestedDetails.get(KimConstants.AttributeConstants.NAMESPACE_CODE);

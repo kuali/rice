@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.keyvalues;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -25,6 +26,7 @@ import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -45,7 +47,7 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
         if ( kimType != null ) {
 	        KimTypeService service = KIMServiceLocatorWeb.getKimTypeService(kimType);
 	        if ( service != null ) {
-				return new ArrayList<KeyValue>(service.getAttributeValidValues(kimTypeId,kimAttributeName).toKeyValues());
+				return toKeyValues(service.getAttributeValidValues(kimTypeId,kimAttributeName));
 	        } 
 	        LOG.error( "Unable to get type service " + kimType.getServiceName() );
         } else {
@@ -53,6 +55,19 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
         }
         return Collections.emptyList();
 	}
+
+    private static List<KeyValue> toKeyValues(Map<String, String> m) {
+        if (m == null) {
+            return Collections.emptyList();
+        }
+
+        final List<KeyValue> kv = new ArrayList<KeyValue>();
+        for (Map.Entry<String, String> e : m.entrySet()) {
+            kv.add(new ConcreteKeyValue(e));
+        }
+
+        return Collections.unmodifiableList(kv);
+    }
 
 	/**
 	 * @return the kimAttributeName

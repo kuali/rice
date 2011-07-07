@@ -15,12 +15,10 @@
 
 package org.kuali.rice.kim.api.role;
 
-
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
-import org.kuali.rice.core.util.AttributeSet;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RoleMemberContract extends InactivatableFromTo {
     String getMemberId();
@@ -31,7 +29,7 @@ public interface RoleMemberContract extends InactivatableFromTo {
 
     String getRoleId();
 
-    Attributes getQualifier();
+    Map<String, String> getQualifier();
 
     List<? extends RoleResponsibilityActionContract> getRoleRspActions();
 }

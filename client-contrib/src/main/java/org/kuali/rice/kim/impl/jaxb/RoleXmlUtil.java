@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kim.impl.jaxb;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.bind.UnmarshalException;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
@@ -32,6 +26,11 @@ import org.kuali.rice.kim.api.role.RoleMemberContract;
 import org.kuali.rice.kim.api.role.RoleUpdateService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimUIConstants;
+
+import javax.xml.bind.UnmarshalException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Helper class containing static methods for aiding in parsing role XML.
@@ -165,13 +164,13 @@ public final class RoleXmlUtil {
                     String memberTypeCode = roleMember.getMemberTypeCode();
                     if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
                         roleUpdateService.removePrincipalFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
-                                (roleMember.getQualifier() != null) ? new AttributeSet(roleMember.getQualifier().toMap()) : new AttributeSet());
+                                (roleMember.getQualifier() != null) ? new AttributeSet(roleMember.getQualifier()) : new AttributeSet());
                     } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
                         roleUpdateService.removeGroupFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
-                                (roleMember.getQualifier() != null) ? new AttributeSet(roleMember.getQualifier().toMap()) : new AttributeSet());
+                                (roleMember.getQualifier() != null) ? new AttributeSet(roleMember.getQualifier()) : new AttributeSet());
                     } else if (KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
                         roleUpdateService.removeRoleFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
-                                (roleMember.getQualifier() != null) ? new AttributeSet(roleMember.getQualifier().toMap()) : new AttributeSet());
+                                (roleMember.getQualifier() != null) ? new AttributeSet(roleMember.getQualifier()) : new AttributeSet());
                     }
                 }
             }

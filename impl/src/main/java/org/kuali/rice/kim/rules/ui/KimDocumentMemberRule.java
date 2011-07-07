@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -64,10 +63,10 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
         Long newMemberToTime = newMember.getActiveToDate() == null ? Long.MAX_VALUE : newMember.getActiveToDate().getTime();
         
         boolean attributesUnique;
-		Attributes errorsAttributesAgainstExisting;
+		Map<String, String> errorsAttributesAgainstExisting;
 	    int i = 0;
-	    Attributes newMemberQualifiers;
-	    Attributes oldMemberQualifiers;
+	    Map<String, String> newMemberQualifiers;
+	    Map<String, String> oldMemberQualifiers;
 	    for (KimDocumentRoleMember member: document.getMembers()){
 	    	Long memberFromTime = member.getActiveFromDate() == null ? 0L : member.getActiveFromDate().getTime();
             Long memberToTime = member.getActiveToDate() == null ? Long.MAX_VALUE : member.getActiveToDate().getTime();
@@ -76,7 +75,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
 	    			document.getKimType().getId(), newMemberQualifiers, oldMemberQualifiers);
 			validationErrors.putAll( 
-					attributeValidationHelper.convertErrorsForMappedFields(ERROR_PATH, errorsAttributesAgainstExisting).toMap());
+					attributeValidationHelper.convertErrorsForMappedFields(ERROR_PATH, errorsAttributesAgainstExisting));
 
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
 	    			document.getKimType().getId(), newMemberQualifiers, oldMemberQualifiers);
@@ -93,11 +92,12 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    }
 	    
         if ( kimTypeService != null && !newMember.isRole()) {
-    		Attributes localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
-	        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors).toMap() );
+    		Map<String, String> localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+	        validationErrors.putAll( attributeValidationHelper.convertErrors("member",
+                    attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()), localErrors) );
         }
     	if (!validationErrors.isEmpty()) {
-    		attributeValidationHelper.moveValidationErrorsToErrorMap(Attributes.fromMap(validationErrors));
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
     		rulePassed = false;
     	}
 

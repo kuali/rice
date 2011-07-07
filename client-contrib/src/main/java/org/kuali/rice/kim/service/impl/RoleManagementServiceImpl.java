@@ -17,7 +17,6 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -75,7 +74,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     }
 
     @Override
-    public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, Attributes qualification) {
+    public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, Map<String, String> qualification) {
         return getRoleService().getRoleMemberPrincipalIds(namespaceCode, roleName, qualification);
     }
 
@@ -104,17 +103,17 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     }
 
     @Override
-    public List<RoleMembership> getRoleMembers(List<String> roleIds, Attributes qualification) {
+    public List<RoleMembership> getRoleMembers(List<String> roleIds, Map<String, String> qualification) {
         return getRoleService().getRoleMembers(roleIds, qualification);
     }
 
     @Override
-    public List<Attributes> getRoleQualifiersForPrincipal(String principalId, List<String> roleIds, Attributes qualification) {
+    public List<Map<String, String>> getRoleQualifiersForPrincipal(String principalId, List<String> roleIds, Map<String, String> qualification) {
         return getRoleService().getRoleQualifiersForPrincipal(principalId, roleIds, qualification);
     }
 
     @Override
-    public List<Attributes> getRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, Attributes qualification) {
+    public List<Map<String, String>> getRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, Map<String, String> qualification) {
         return getRoleService().getRoleQualifiersForPrincipal(principalId, namespaceCode, roleName, qualification);
     }
 
@@ -125,7 +124,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     }
 
     @Override
-    public boolean principalHasRole(String principalId, List<String> roleIds, Attributes qualification) {
+    public boolean principalHasRole(String principalId, List<String> roleIds, Map<String, String> qualification) {
         if (LOG.isDebugEnabled()) {
             logPrincipalHasRoleCheck(principalId, roleIds, qualification);
         }
@@ -139,18 +138,18 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Override
     public List<String> getPrincipalIdSubListWithRole(
             List<String> principalIds, String roleNamespaceCode,
-            String roleName, Attributes qualification) {
+            String roleName, Map<String, String> qualification) {
         return getRoleService().getPrincipalIdSubListWithRole(principalIds,
                 roleNamespaceCode, roleName, qualification);
     }
 
     @Override
-    public List<Attributes> getNestedRoleQualifiersForPrincipal(String principalId, List<String> roleIds, Attributes qualification) {
+    public List<Map<String, String>> getNestedRoleQualifiersForPrincipal(String principalId, List<String> roleIds, Map<String, String> qualification) {
         return getRoleService().getNestedRoleQualifiersForPrincipal(principalId, roleIds, qualification);
     }
 
     @Override
-    public List<Attributes> getNestedRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, Attributes qualification) {
+    public List<Map<String, String>> getNestedRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, Map<String, String> qualification) {
         return getRoleService().getNestedRoleQualifiersForPrincipal(principalId, namespaceCode, roleName, qualification);
     }
 
@@ -192,7 +191,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         return getRoleService().getRolesSearchResults(fieldValues);
     }
 
-    protected void logPrincipalHasRoleCheck(String principalId, List<String> roleIds, Attributes roleQualifiers) {
+    protected void logPrincipalHasRoleCheck(String principalId, List<String> roleIds, Map<String, String> roleQualifiers) {
         StringBuilder sb = new StringBuilder();
         sb.append('\n');
         sb.append("Has Role     : ").append(roleIds).append('\n');
@@ -210,7 +209,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         sb.append('\n');
         sb.append("     Details :\n");
         if (roleQualifiers != null) {
-            sb.append(new AttributeSet(roleQualifiers.toMap()).formattedDump(15));
+            sb.append(new AttributeSet(roleQualifiers).formattedDump(15));
         } else {
             sb.append("               [null]\n");
         }

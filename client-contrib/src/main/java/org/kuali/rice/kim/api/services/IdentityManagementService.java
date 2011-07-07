@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.api.services;
 
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Type;
@@ -33,6 +32,7 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is the front end for the KIM module.  Clients of KIM should access this service from
@@ -202,8 +202,8 @@ public interface IdentityManagementService {
              String principalId,
              String namespaceCode,
              String permissionTemplateName,
-             Attributes permissionDetails,
-             Attributes qualification
+             Map<String, String> permissionDetails,
+             Map<String, String> qualification
     );
 
     /**
@@ -235,8 +235,8 @@ public interface IdentityManagementService {
     List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(
              String namespaceCode,
              String permissionTemplateName,
-             Attributes permissionDetails,
-             Attributes qualification
+             Map<String, String> permissionDetails,
+             Map<String, String> qualification
     );
 
     // ----------------------

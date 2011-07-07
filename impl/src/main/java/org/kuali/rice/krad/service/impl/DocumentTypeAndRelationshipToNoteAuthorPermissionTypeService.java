@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -31,7 +32,7 @@ public class DocumentTypeAndRelationshipToNoteAuthorPermissionTypeService
 
 	@Override
 	protected List<Permission> performPermissionMatches(
-			Attributes requestedDetails,
+			Map<String, String> requestedDetails,
 			List<Permission> permissionsList) {
 				
 		List<Permission> matchingPermissions = new ArrayList<Permission>();

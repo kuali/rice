@@ -1,8 +1,9 @@
 package org.kuali.rice.kim.api.type;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *  This is the base service interface for handling type-specific behavior.  Types can be attached
@@ -29,15 +30,15 @@ public interface KimTypeServiceTemp {
 	 * This method can be used to perform compound validations across multiple
 	 * attributes attached to an object.
 	 */
-	Attributes validateAttributes(String kimTypeId, Attributes attributes);
+	Map<String, String> validateAttributes(String kimTypeId, Map<String, String> attributes);
 
-	Attributes validateAttributesAgainstExisting(String kimTypeId, Attributes newAttributes, Attributes oldAttributes);
+	Map<String, String> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes);
 
-	Attributes validateUnmodifiableAttributes(String kimTypeId, Attributes mainAttributes, Attributes delegationAttributes);
+	Map<String, String> validateUnmodifiableAttributes(String kimTypeId, Map<String, String> mainAttributes, Map<String, String> delegationAttributes);
 
-	boolean validateUniqueAttributes(String kimTypeId, Attributes newAttributes, Attributes oldAttributes);
+	boolean validateUniqueAttributes(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes);
 
-    Attributes getAttributeValidValues(String kimTypeId, String attributeName);
+    Map<String, String> getAttributeValidValues(String kimTypeId, String attributeName);
 
     List<String> getWorkflowRoutingAttributes( String routeLevel );
 

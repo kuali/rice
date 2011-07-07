@@ -19,7 +19,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.api.mo.common.Attributes;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
 
@@ -28,7 +28,11 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This service provides operations for determining what responsibility actions
@@ -126,35 +130,50 @@ public interface ResponsibilityService {
     boolean hasResponsibility(@WebParam(name = "principalId") String principalId,
                               @WebParam(name = "namespaceCode") String namespaceCode,
                               @WebParam(name = "respName") String respName,
-                              @WebParam(name = "qualification") Attributes qualification,
-                              @WebParam(name = "responsibilityDetails") Attributes responsibilityDetails);
+                              @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                              @WebParam(name = "qualification") Map<String, String> qualification,
+                              @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                              @WebParam(name = "responsibilityDetails") Map<String, String> responsibilityDetails);
 
     @WebMethod(operationName = "hasResponsibilityByTemplateName")
     @WebResult(name = "result")
     boolean hasResponsibilityByTemplateName(@WebParam(name = "principalId") String principalId,
                                             @WebParam(name = "namespaceCode") String namespaceCode,
                                             @WebParam(name = "respTemplateName") String respTemplateName,
-                                            @WebParam(name = "qualification") Attributes qualification,
-                                            @WebParam(name = "responsibilityDetails") Attributes responsibilityDetails);
+                                            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                            @WebParam(name = "qualification") Map<String, String> qualification,
+                                            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                            @WebParam(name = "responsibilityDetails") Map<String, String> responsibilityDetails);
 
     @WebMethod(operationName = "getResponsibilityActions")
+    @XmlElementWrapper(name = "responsibilityActions", required = true)
+    @XmlElement(name = "responsibilityAction", required = false)
     @WebResult(name = "responsibilityActions")
     List<ResponsibilityAction> getResponsibilityActions(@WebParam(name = "namespaceCode") String namespaceCode,
                                                         @WebParam(name = "responsibilityName") String responsibilityName,
-                                                        @WebParam(name = "qualification") Attributes qualification,
-                                                        @WebParam(name = "responsibilityDetails") Attributes responsibilityDetails);
+                                                        @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                        @WebParam(name = "qualification") Map<String, String> qualification,
+                                                        @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                        @WebParam(name = "responsibilityDetails") Map<String, String> responsibilityDetails);
 
     @WebMethod(operationName = "getResponsibilityActionsByTemplateName")
+    @XmlElementWrapper(name = "responsibilityActions", required = true)
+    @XmlElement(name = "responsibilityAction", required = false)
     @WebResult(name = "responsibilityActions")
     List<ResponsibilityAction> getResponsibilityActionsByTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
                                                                       @WebParam(name = "responsibilityTemplateName") String respTemplateName,
-                                                                      @WebParam(name = "qualification") Attributes qualification,
-                                                                      @WebParam(name = "responsibilityDetails") Attributes responsibilityDetails);
+                                                                      @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                                      @WebParam(name = "qualification") Map<String, String> qualification,
+                                                                      @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                                      @WebParam(name = "responsibilityDetails") Map<String, String> responsibilityDetails);
 
     @WebMethod(operationName = "getRoleIdsForResponsibility")
+    @XmlElementWrapper(name = "roleIds", required = true)
+    @XmlElement(name = "roleId", required = false)
     @WebResult(name = "roleIds")
     List<String> getRoleIdsForResponsibility(@WebParam(name = "id") String id,
-                                             @WebParam(name = "qualification") Attributes qualification);
+                                             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                             @WebParam(name = "qualification") Map<String, String> qualification);
 
     /**
      * This method find Responsibilities based on a query criteria.  The criteria cannot be null.

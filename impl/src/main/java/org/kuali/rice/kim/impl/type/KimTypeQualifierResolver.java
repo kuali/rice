@@ -17,7 +17,6 @@ package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kim.api.group.Group;
@@ -111,7 +110,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 		}
 	}
 
-    protected void putMatchingAttributesIntoQualifier( AttributeSet qualifier, Attributes itemAttributes, List<String> routingAttributes ) {
+    protected void putMatchingAttributesIntoQualifier( AttributeSet qualifier, Map<String, String> itemAttributes, List<String> routingAttributes ) {
 		if ( routingAttributes != null && !routingAttributes.isEmpty() ) {
         	// pull the qualifiers off the document object (group or role member)
     		for ( String attribName : routingAttributes ) {
@@ -221,7 +220,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	return null;
 	}
 
-    protected AttributeSet getGroupQualifier( String groupId, String kimTypeId, Attributes groupAttributes, String routeLevel ) {
+    protected AttributeSet getGroupQualifier( String groupId, String kimTypeId, Map<String, String> groupAttributes, String routeLevel ) {
 		AttributeSet qualifier = new AttributeSet();        			
 		// pull the group to get its attributes for adding to the qualifier 
         qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);

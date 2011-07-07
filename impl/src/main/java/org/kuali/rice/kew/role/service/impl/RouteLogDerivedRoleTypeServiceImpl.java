@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.role.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.api.role.Role;
@@ -28,6 +27,7 @@ import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -59,7 +59,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	 *
 	 */
 	@Override
-    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
 		List<RoleMembership> members = new ArrayList<RoleMembership>();
 		if(qualification!=null && !qualification.isEmpty()){
@@ -95,7 +95,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 
 	@Override
 	public boolean hasApplicationRole(
-			String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification){
+			String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification){
 		validateRequiredAttributesAgainstReceived(qualification);
         boolean isUserInRouteLog = false;
 		if(qualification!=null && !qualification.isEmpty()){

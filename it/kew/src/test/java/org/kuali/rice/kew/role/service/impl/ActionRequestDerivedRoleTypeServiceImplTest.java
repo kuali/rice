@@ -15,11 +15,7 @@
  */
 package org.kuali.rice.kew.role.service.impl;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
@@ -28,6 +24,11 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
+import java.util.Collections;
+import java.util.Map;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the ActionRequestDerivedRoleTypeServiceImpl class. 
@@ -59,7 +60,8 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 		
 		KimDerivedRoleTypeServiceBase roleTypeService = new ActionRequestDerivedRoleTypeServiceImpl();
 		
-		Attributes qualifications = Attributes.fromStrings(KimConstants.AttributeConstants.DOCUMENT_NUMBER, ""+document.getDocumentId());
+		Map<String, String> qualifications = Collections
+                .singletonMap(KimConstants.AttributeConstants.DOCUMENT_NUMBER, "" + document.getDocumentId());
 		
 		// rkirkend should have role as an approver
 		assertTrue("rkirkend should have role.", roleTypeService.hasApplicationRole(getPrincipalIdForName("rkirkend"), null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));

@@ -15,14 +15,16 @@
  */
 package org.kuali.rice.kew.role;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
 import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
+
+import java.util.Map;
 
 public class KimDelegationTypeServiceBase extends KimTypeServiceBase implements KimDelegationTypeService {
 
 	public boolean doesDelegationQualifierMatchQualification(
-			Attributes qualification, Attributes delegationQualifier) {
+			Map<String, String> qualification, Map<String, String> delegationQualifier) {
 		boolean matches = true;
 		for (String qualificationKey : qualification.keySet()) {
 			if (delegationQualifier.containsKey(qualificationKey)) {

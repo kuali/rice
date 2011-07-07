@@ -17,7 +17,6 @@ package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
@@ -57,7 +56,7 @@ public class AttributeValidationHelper {
     	return attributeImpl;
     }
     
-	public Attributes convertAttributesToMap(List<? extends KimAttributeDataBo> attributes) {
+	public Map<String, String> convertAttributesToMap(List<? extends KimAttributeDataBo> attributes) {
 		Map<String, String> m = new HashMap<String, String>();
 		for(KimAttributeDataBo data: attributes) {
 			KimAttributeBo attrib = getAttributeDefinition(data.getKimAttributeId());
@@ -67,10 +66,10 @@ public class AttributeValidationHelper {
 				LOG.error("Unable to get attribute name for ID:" + data.getKimAttributeId());
 			}
 		}
-		return Attributes.fromMap(m);
+		return m;
 	}
 
-	public Attributes convertQualifiersToMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
+	public Map<String, String> convertQualifiersToMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
 		Map<String, String> m = new HashMap<String, String>();
 		for ( KimDocumentAttributeDataBusinessObjectBase data : qualifiers ) {
 			KimAttributeBo attrib = getAttributeDefinition( data.getKimAttrDefnId() );
@@ -80,10 +79,10 @@ public class AttributeValidationHelper {
 				LOG.error("Unable to get attribute name for ID:" + data.getKimAttrDefnId() );
 			}
 		}
-		return Attributes.fromMap(m);
+		return m;
 	}
 
-	public Attributes getBlankValueQualifiersMap(List<KimTypeAttribute> attributes) {
+	public Map<String, String> getBlankValueQualifiersMap(List<KimTypeAttribute> attributes) {
 		Map<String, String> m = new HashMap<String, String>();
 		for(KimTypeAttribute attribute: attributes){
 			KimAttributeBo attrib = getAttributeDefinition(attribute.getId());
@@ -93,10 +92,10 @@ public class AttributeValidationHelper {
 				LOG.error("Unable to get attribute name for ID:" + attribute.getId());
 			}
 		}
-		return Attributes.fromMap(m);
+		return m;
 	}
 
-	public Attributes convertQualifiersToAttrIdxMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
+	public Map<String, String> convertQualifiersToAttrIdxMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
 		Map<String, String> m = new HashMap<String, String>();
 		int i = 0;
 		for ( KimDocumentAttributeDataBusinessObjectBase data : qualifiers ) {
@@ -108,7 +107,7 @@ public class AttributeValidationHelper {
 			}
 			i++;
 		}
-		return Attributes.fromMap(m);
+		return m;
 	}
 	
 	public BusinessObjectService getBusinessObjectService() {
@@ -118,7 +117,7 @@ public class AttributeValidationHelper {
 		return businessObjectService;
 	}
 	
-    public void moveValidationErrorsToErrorMap(Attributes validationErrors) {
+    public void moveValidationErrorsToErrorMap(Map<String, String> validationErrors) {
 		// FIXME: This does not use the correct error path yet - may need to be moved up so that the error path is known
 		// Also, the above code would overwrite messages on the same attributes (namespaceCode) but on different rows
 		for ( String key : validationErrors.keySet() ) {
@@ -128,7 +127,7 @@ public class AttributeValidationHelper {
 		}
     }
 
-	public Attributes convertErrorsForMappedFields(String errorPath, Attributes localErrors) {
+	public Map<String, String> convertErrorsForMappedFields(String errorPath, Map<String, String> localErrors) {
 		Map<String, String> errors = new HashMap<String, String>();
 		if (errorPath == null) {
 			errorPath = KRADConstants.EMPTY_STRING;
@@ -143,10 +142,10 @@ public class AttributeValidationHelper {
 			String attributeDefnId = attribute==null?"":attribute.getId();
 			errors.put(errorPath+"qualifier("+attributeDefnId+").attrVal", localErrors.get(key));
 		}
-		return Attributes.fromMap(errors);
+		return errors;
 	}
 
-	public Attributes convertErrors(String errorPath, Attributes attrIdxMap, Attributes localErrors) {
+	public Map<String, String> convertErrors(String errorPath, Map<String, String> attrIdxMap, Map<String, String> localErrors) {
 		Map<String, String> errors = new HashMap<String, String>();
 		if (errorPath == null) {
 			errorPath = KRADConstants.EMPTY_STRING;
@@ -157,6 +156,6 @@ public class AttributeValidationHelper {
 		for ( String key : localErrors.keySet() ) {
 			errors.put(errorPath+"qualifiers["+attrIdxMap.get(key)+"].attrVal", localErrors.get(key));
 		}
-		return Attributes.fromMap(errors);
+		return errors;
 	}
 }

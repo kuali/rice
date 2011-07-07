@@ -17,14 +17,10 @@ package org.kuali.rice.krad.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.permission.Permission;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.permission.PermissionAttributeBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
 import org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl;
 
 import java.util.ArrayList;
@@ -53,7 +49,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 
     @Test
     public void testIngesterPermissionExampleLikeRice() {
-        Attributes requestedDetails = getUseIngesterRequestedDetails();
+        Map<String, String> requestedDetails = getUseIngesterRequestedDetails();
         
         List<PermissionBo> permissionsList = new ArrayList<PermissionBo>();
 
@@ -74,7 +70,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
      */
     @Test
     public void testIngesterPermissionExampleLikeKFS() {
-        Attributes requestedDetails = getUseIngesterRequestedDetails();
+        Map<String, String> requestedDetails = getUseIngesterRequestedDetails();
         
         List<PermissionBo> permissionsList = new ArrayList<PermissionBo>();
 
@@ -94,11 +90,11 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
      * This method recreates the requested details that would be encountered when accessing 
      * the xml ingester screen.
      */
-    private Attributes getUseIngesterRequestedDetails() {
+    private Map<String, String> getUseIngesterRequestedDetails() {
         Map<String, String> requestedDetails = new HashMap<String, String>();
         requestedDetails.put("actionClass", "org.kuali.rice.kew.batch.web.IngesterAction");
         requestedDetails.put("namespaceCode", "KR-WKFLW");
-        return Attributes.fromMap(requestedDetails);
+        return requestedDetails;
     }
 
     /**

@@ -17,7 +17,6 @@ package org.kuali.rice.kim.service.support.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
@@ -26,6 +25,7 @@ import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -41,20 +41,20 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * Performs a simple check that the qualifier on the role matches the qualification.
 	 * Extra qualification attributes are ignored.
 	 * 
-	 * @see KimRoleTypeService#doesRoleQualifierMatchQualification(Attributes, Attributes)
+	 * @see KimRoleTypeService#doesRoleQualifierMatchQualification(Map<String, String>, Map<String, String>)
 	 */
 
-	public boolean doesRoleQualifierMatchQualification(Attributes qualification, Attributes roleQualifier) {
-		Attributes translatedQualification = translateInputAttributes(qualification);
+	public boolean doesRoleQualifierMatchQualification(Map<String, String> qualification, Map<String, String> roleQualifier) {
+		Map<String, String> translatedQualification = translateInputAttributes(qualification);
 		validateRequiredAttributesAgainstReceived(translatedQualification);
 		return performMatch(translatedQualification, roleQualifier);
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#doRoleQualifiersMatchQualification(Attributes, List)
+	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#doRoleQualifiersMatchQualification(Map<String, String>, List)
 	 */
-	public List<RoleMembership> doRoleQualifiersMatchQualification(Attributes qualification, List<RoleMembership> roleMemberList) {
-		Attributes translatedQualification = translateInputAttributes(qualification);
+	public List<RoleMembership> doRoleQualifiersMatchQualification(Map<String, String> qualification, List<RoleMembership> roleMemberList) {
+		Map<String, String> translatedQualification = translateInputAttributes(qualification);
 		validateRequiredAttributesAgainstReceived(translatedQualification);
 		List<RoleMembership> matchingMemberships = new ArrayList<RoleMembership>();
 		for ( RoleMembership roleMembership : roleMemberList ) {
@@ -69,9 +69,9 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * Return an empty list since this method should not be called by the role service for this service type.
 	 * Subclasses which are application role types should override this method.
 	 * 
-	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#getRoleMembersFromApplicationRole(String, String, Attributes)
+	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#getRoleMembersFromApplicationRole(String, String, Map<String, String>)
 	 */
-	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
 		if ( !isApplicationRoleType() ) {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
@@ -82,10 +82,10 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 
 	/**
 	 * This simple initial implementation just calls  
-	 * {@link #getRoleMembersFromApplicationRole(String, String, Attributes)} and checks the results.
+	 * {@link #getRoleMembersFromApplicationRole(String, String, Map<String, String>)} and checks the results.
 	 *
 	 */
-	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification) {
+	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification) {
 		if ( !isApplicationRoleType() ) {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
 		}
@@ -123,9 +123,9 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	/**
 	 * This base implementation simply returns the passed in Attributes.
 	 * 
-	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#convertQualificationForMemberRoles(String, String, String, String, Attributes)
+	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#convertQualificationForMemberRoles(String, String, String, String, Map<String, String>)
 	 */
-	public Attributes convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Attributes qualification) {
+	public Map<String, String> convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Map<String, String> qualification) {
 		return qualification;
 	}
 	
@@ -156,8 +156,8 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * Extra qualification attributes are ignored.
 	 *
 	 */
-	public boolean doesDelegationQualifierMatchQualification(Attributes qualification, Attributes roleQualifier) {
-		Attributes translatedQualification = translateInputAttributes(qualification);
+	public boolean doesDelegationQualifierMatchQualification(Map<String, String> qualification, Map<String, String> roleQualifier) {
+		Map<String, String> translatedQualification = translateInputAttributes(qualification);
 		validateRequiredAttributesAgainstReceived(translatedQualification);
 		return performMatch(translatedQualification, roleQualifier);
 	}

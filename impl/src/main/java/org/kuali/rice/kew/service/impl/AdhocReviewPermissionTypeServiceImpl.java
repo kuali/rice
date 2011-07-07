@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
@@ -25,6 +24,7 @@ import org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill
@@ -41,7 +41,7 @@ public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermission
 
 	@Override
 	public List<Permission> performPermissionMatches(
-			Attributes requestedDetails,
+			Map<String, String> requestedDetails,
 			List<Permission> permissionsList) {
         List<Permission> matchingPermissions = new ArrayList<Permission>();
 		if (requestedDetails == null) {

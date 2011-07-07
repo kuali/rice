@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.kim.framework.type;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.type.KimTypeService;
 
 import java.util.List;
+import java.util.Map;
+
 /**
  * This is a service interface that must be used for a service related to a role type.
  * 
@@ -49,11 +51,11 @@ public interface KimRoleTypeService extends KimTypeService {
      * The contents of the passed in attribute sets should not be modified as they may be used in future calls by
      * the role service.
      */
-    boolean doesRoleQualifierMatchQualification( Attributes qualification, Attributes roleQualifier );
+    boolean doesRoleQualifierMatchQualification( Map<String, String> qualification, Map<String, String> roleQualifier );
 
-    /** Same as {@link #doesRoleQualifierMatchQualification(Attributes, Attributes)} except that it takes a list of qualifiers to check.
+    /** Same as {@link #doesRoleQualifierMatchQualification(Map<String, String>, Map<String, String>)} except that it takes a list of qualifiers to check.
      */
-    List<RoleMembership> doRoleQualifiersMatchQualification( Attributes qualification, List<RoleMembership> roleMemberList );
+    List<RoleMembership> doRoleQualifiersMatchQualification( Map<String, String> qualification, List<RoleMembership> roleMemberList );
 
     /**
      * Returns true if this role type represents an "application" role type.  That is, the members of the 
@@ -75,7 +77,7 @@ public interface KimRoleTypeService extends KimTypeService {
      * 
      * @see #isApplicationRoleType()
      */
-    List<RoleMembership> getRoleMembersFromApplicationRole( String namespaceCode, String roleName, Attributes qualification );
+    List<RoleMembership> getRoleMembersFromApplicationRole( String namespaceCode, String roleName, Map<String, String> qualification );
 
     /**
      * This method can be used to check if the given principal has this application role.  It is designed to be used in case
@@ -86,9 +88,9 @@ public interface KimRoleTypeService extends KimTypeService {
      * principalId or the groupIds parameters are blank/empty, that parameter should be ignored.
      * 
      * @see #isApplicationRoleType()
-     * @see #getRoleMembersFromApplicationRole(String, String, Attributes)
+     * @see #getRoleMembersFromApplicationRole(String, String, Map<String, String>)
      */
-    boolean hasApplicationRole( String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification );
+    boolean hasApplicationRole( String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification );
 
     /**
      * For roles where the order of members returned may be meaningful,
@@ -107,7 +109,7 @@ public interface KimRoleTypeService extends KimTypeService {
     /**
      * Takes the passed in qualifications and converts them, if necessary, for any downstream roles which may be present.
      */
-    Attributes convertQualificationForMemberRoles( String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Attributes qualification );
+    Map<String, String> convertQualificationForMemberRoles( String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Map<String, String> qualification );
     
     /**
      * Called by the role service when it is notified that a principal has been inactivated.  Can be used 

@@ -17,8 +17,6 @@ package org.kuali.rice.kim.bo.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Type;
-import org.kuali.rice.core.api.mo.common.Attributes;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
@@ -60,7 +58,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	@Transient
 	protected String detailValues;
 	@Transient
-	protected Attributes details;
+	protected Map<String, String> details;
 	
 	/**
 	 * This constructs a ...
@@ -116,10 +114,10 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 				}
 			}
 		}
-		this.details = Attributes.fromMap(details);
+		this.details = details;
 	}
 	
-	public void setDetailValues( Attributes detailsAttribs ) {
+	public void setDetailValues( Map<String, String> detailsAttribs ) {
 		StringBuffer sb = new StringBuffer();
 		if ( detailsAttribs != null ) {
 			Iterator<String> keyIter = detailsAttribs.keySet().iterator();
@@ -177,7 +175,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 		this.name = permissionName;
 	}
 
-	public void setDetails( Attributes details ) {
+	public void setDetails( Map<String, String> details ) {
 		this.details = details;
 		setDetailValues(details);
 	}
@@ -190,7 +188,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 		this.templateId = templateId;
 	}
 
-	public Attributes getDetails() {
+	public Map<String, String> getDetails() {
 		return details;
 	}
 	

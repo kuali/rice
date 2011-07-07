@@ -15,28 +15,11 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -48,6 +31,21 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -317,7 +315,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		return null;
 	}
 
-	public Attributes getQualifiersAsAttributes() {
+	public Map<String, String> getQualifiersAsAttributes() {
         Map<String, String> attributes = new HashMap<String, String>();
 		for(GroupDocumentQualifier qualifier: qualifiers){
 			if ( qualifier.getKimAttribute() != null ) {
@@ -327,7 +325,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 				attributes.put("Unknown Attribute ID: " + qualifier.getKimAttrDefnId(), qualifier.getAttrVal());
 			}
 		}
-		return Attributes.fromMap(attributes);
+		return attributes;
 	}
 	
 	public void setDefinitions(AttributeDefinitionMap definitions) {

@@ -18,7 +18,6 @@ package org.kuali.rice.kew.xml;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
@@ -221,7 +220,7 @@ public class GroupXmlParser {
                     throw new XmlException("Invalid attribute specified.");
                 }
             }
-            Attributes groupAttributes = Attributes.fromMap(attrMap);
+            Map<String, String> groupAttributes = attrMap;
             if (!groupAttributes.isEmpty()) {
                 groupInfo.setAttributes(groupAttributes);
             }

@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import com.google.common.collect.Maps;
 import org.junit.Test;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.role.Role;
@@ -31,7 +31,12 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.xml.namespace.QName;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -60,12 +65,13 @@ public class RoleServiceImplTest extends KIMTestCase {
 		//assertFalse( "p4 has no direct/higher level role r1", roleService.principalHasRole("p4", roleIds, null ));
 		AttributeSet qualification = new AttributeSet();
 		qualification.put("Attribute 2", "CHEM");
-		assertTrue( "p1 has direct role r1 with rp2 attr data", roleService.principalHasRole("p1", roleIds, Attributes.fromMap(qualification)));
+		assertTrue( "p1 has direct role r1 with rp2 attr data", roleService.principalHasRole("p1", roleIds, qualification));
 		qualification.clear();
 		//requested qualification rolls up to a higher element in some hierarchy 
 		// method not implemented yet, not quite clear how this works
 		qualification.put("Attribute 3", "PHYS");
-		assertTrue( "p1 has direct role r1 with rp2 attr data", roleService.principalHasRole("p1", roleIds, Attributes.fromMap(qualification)));
+		assertTrue( "p1 has direct role r1 with rp2 attr data", roleService.principalHasRole("p1", roleIds, Maps.newHashMap(
+                qualification)));
 	}
 
 	@Test
@@ -429,7 +435,8 @@ public class RoleServiceImplTest extends KIMTestCase {
 			roleUpdateService.assignPrincipalToRole("p8", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
 			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
-			principalRoleMemberId = assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8", Attributes.fromMap(attributeSet)), true);
+			principalRoleMemberId = assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8",
+                    attributeSet), true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.assignGroupToRole("g8", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
@@ -441,14 +448,16 @@ public class RoleServiceImplTest extends KIMTestCase {
 			roleUpdateService.assignRoleToRole("r6", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
 			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
-			roleAsMemberRoleMemberId = assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember, Attributes.fromMap(attributeSet)), true);
+			roleAsMemberRoleMemberId = assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember,
+                    attributeSet), true);
 			
 			// Ensure that deletion tasks will reset the correct caches.
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.removePrincipalFromRole("p8", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
 			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
-			assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8", Attributes.fromMap(attributeSet)), false);
+			assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8",
+                    attributeSet), false);
 			assertRoleMemberHasExpectedExistence(principalRoleMemberId, false);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
@@ -462,7 +471,8 @@ public class RoleServiceImplTest extends KIMTestCase {
 			roleUpdateService.removeRoleFromRole("r6", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
 			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
-			assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember, Attributes.fromMap(attributeSet)), false);
+			assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember,
+                    attributeSet), false);
 			assertRoleMemberHasExpectedExistence(roleAsMemberRoleMemberId, false);
 			
 			// This time, do role-assigning tasks via the "saveRoleMemberForRole" method.
@@ -470,7 +480,8 @@ public class RoleServiceImplTest extends KIMTestCase {
 			roleUpdateService.saveRoleMemberForRole(null, "p8", "P", "r3", attributeSet, null, null);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
 			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
-			principalRoleMemberId = assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8", Attributes.fromMap(attributeSet)), true);
+			principalRoleMemberId = assertRoleMemberUpdateSucceeded("p8", getStoredRolePrincipalsForPrincipalIdAndRoleIds(oneRoleId, "p8",
+                    attributeSet), true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.saveRoleMemberForRole(null, "g8", "G", "r3", attributeSet, null, null);
@@ -482,7 +493,8 @@ public class RoleServiceImplTest extends KIMTestCase {
 			roleUpdateService.saveRoleMemberForRole(null, "r6", "R", "r3", attributeSet, null, null);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
 			getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, "r3").refreshReferenceObject("members");
-			roleAsMemberRoleMemberId = assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember, Attributes.fromMap(attributeSet)), true);
+			roleAsMemberRoleMemberId = assertRoleMemberUpdateSucceeded("r6", getStoredRoleMembershipsForRoleIdsAsMembers(oneRoleIdAsMember,
+                    attributeSet), true);
 			
 			// Now perform some delegation-assigning tasks, which currently clear the role-related caches in addition to the delegation-related caches.
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);

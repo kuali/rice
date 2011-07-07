@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -41,7 +40,7 @@ public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibil
 	 */
 	@Override
 	protected List<Responsibility> performResponsibilityMatches(
-			Attributes requestedDetails,
+			Map<String, String> requestedDetails,
 			List<Responsibility> responsibilitiesList) {
 		// get the base responsibility matches based on the route level and document type
 		List<Responsibility> baseMatches = super.performResponsibilityMatches(requestedDetails,
@@ -52,7 +51,7 @@ public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibil
 		// the responsibility from the list
 		Iterator<Responsibility> respIter = baseMatches.iterator();
 		while ( respIter.hasNext() ) {
-			Map<String, String> respDetails = respIter.next().getAttributes().toMap();
+			Map<String, String> respDetails = respIter.next().getAttributes();
 			if ( respDetails.containsKey( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) && StringUtils.isNotBlank( respDetails.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER) ) ) {
 				if ( !requestedDetails.containsKey( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER )
 						|| !StringUtils.equals( respDetails.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER)

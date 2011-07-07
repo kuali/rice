@@ -24,10 +24,7 @@ import javax.xml.bind.Unmarshaller
 import junit.framework.Assert
 import org.junit.Test
 import org.kuali.rice.kim.api.common.attribute.KimAttribute
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData
-import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract
 import org.kuali.rice.kim.api.type.KimType
-import org.kuali.rice.core.api.mo.common.Attributes
 
 class GroupTest {
 
@@ -168,7 +165,7 @@ class GroupTest {
 			String getName() {GroupTest.NAME}
             String getDescription() {GroupTest.DESCRIPTION}
             String getKimTypeId() {GroupTest.KIM_TYPE_ID}
-            Attributes getAttributes() { Attributes.fromMap(attributeMap) }
+            Map<String, String> getAttributes() { attributeMap }
 			boolean isActive() { GroupTest.ACTIVE.toBoolean() }
             Long getVersionNumber() { GroupTest.VERSION_NUMBER }
 			String getObjectId() { GroupTest.OBJECT_ID }

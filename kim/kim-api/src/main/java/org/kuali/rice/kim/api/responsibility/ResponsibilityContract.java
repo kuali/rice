@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.kim.api.responsibility;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.common.template.TemplateContract;
+
+import java.util.Map;
 
 /**
  * This is the contract for a Responsibility. Represents a single Responsibility within the system.
@@ -64,5 +66,5 @@ public interface ResponsibilityContract extends Versioned, GloballyUnique, Inact
 	 * 
 	 * @return attributes
 	 */
-    Attributes getAttributes();
+    Map<String, String> getAttributes();
 }

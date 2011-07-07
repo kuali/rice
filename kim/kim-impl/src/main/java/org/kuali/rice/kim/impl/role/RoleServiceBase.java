@@ -2,7 +2,6 @@ package org.kuali.rice.kim.impl.role;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
@@ -157,7 +156,7 @@ public class RoleServiceBase {
      * @param qualification The original role qualification attribute set
      * @return Converted attributeSet containing ID/value pairs
      */
-    private Attributes convertQualifierKeys(Attributes qualification) {
+    private Map<String, String> convertQualifierKeys(Map<String, String> qualification) {
         AttributeSet convertedQualification = new AttributeSet();
         if (qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
             for (String attributeName : qualification.keySet()) {
@@ -166,7 +165,7 @@ public class RoleServiceBase {
                 }
             }
         }
-        return Attributes.fromMap(convertedQualification);
+        return convertedQualification;
     }
 
     public Set<String> getRoleTypeRoleMemberIds(String roleId) {
@@ -213,12 +212,12 @@ public class RoleServiceBase {
      * @throws IllegalArgumentException if daoActionToTake refers to an enumeration constant that is not role-member-related.
      */
     protected List<RoleMemberBo> getRoleMemberBoList(RoleDaoAction daoActionToTake, Collection<String> roleIds, String principalId,
-                                                     Collection<String> groupIds, String memberTypeCode, Attributes qualification) {
+                                                     Collection<String> groupIds, String memberTypeCode, Map<String, String> qualification) {
         List<RoleMemberBo> finalResults = new ArrayList<RoleMemberBo>();
         List<RoleMemberCacheKeyHelper> searchKeys = new ArrayList<RoleMemberCacheKeyHelper>();
         List<RoleMemberCacheKeyHelper> uncachedKeys = new ArrayList<RoleMemberCacheKeyHelper>();
         Set<String> usedKeys = new HashSet<String>();
-        Attributes convertedQualification = convertQualifierKeys(qualification);
+        Map<String, String> convertedQualification = convertQualifierKeys(qualification);
 
         if (roleIds == null || roleIds.isEmpty()) {
             roleIds = Collections.singletonList(null);
@@ -372,35 +371,35 @@ public class RoleServiceBase {
     /**
      * Calls the KimRoleDao's "getRolePrincipalsForPrincipalIdAndRoleIds" method and/or retrieves any corresponding members from the cache.
      */
-    protected List<RoleMemberBo> getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collection<String> roleIds, String principalId, Attributes qualification) {
+    protected List<RoleMemberBo> getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collection<String> roleIds, String principalId, Map<String, String> qualification) {
         return getRoleMemberBoList(RoleDaoAction.ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS, roleIds, principalId, null, null, qualification);
     }
 
     /**
      * Calls the KimRoleDao's "getRoleGroupsForGroupIdsAndRoleIds" method and/or retrieves any corresponding members from the cache.
      */
-    protected List<RoleMemberBo> getStoredRoleGroupsForGroupIdsAndRoleIds(Collection<String> roleIds, Collection<String> groupIds, Attributes qualification) {
+    protected List<RoleMemberBo> getStoredRoleGroupsForGroupIdsAndRoleIds(Collection<String> roleIds, Collection<String> groupIds, Map<String, String> qualification) {
         return getRoleMemberBoList(RoleDaoAction.ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS, roleIds, null, groupIds, null, qualification);
     }
 
     /**
      * Calls the KimRoleDao's "getRoleMembersForRoleIds" method and/or retrieves any corresponding members from the cache.
      */
-    protected List<RoleMemberBo> getStoredRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode, Attributes qualification) {
+    protected List<RoleMemberBo> getStoredRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode, Map<String, String> qualification) {
         return getRoleMemberBoList(RoleDaoAction.ROLE_MEMBERS_FOR_ROLE_IDS, roleIds, null, null, memberTypeCode, qualification);
     }
 
     /**
      * Calls the KimRoleDao's "getRoleMembershipsForRoleIdsAsMembers" method and/or retrieves any corresponding members from the cache.
      */
-    protected List<RoleMemberBo> getStoredRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, Attributes qualification) {
+    protected List<RoleMemberBo> getStoredRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, Map<String, String> qualification) {
         return getRoleMemberBoList(RoleDaoAction.ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS, roleIds, null, null, null, qualification);
     }
 
     /**
      * Calls the KimRoleDao's "getRoleMembersForRoleIdsWithFilters" method and/or retrieves any corresponding members from the cache.
      */
-    protected List<RoleMemberBo> getStoredRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, List<String> groupIds, Attributes qualification) {
+    protected List<RoleMemberBo> getStoredRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, List<String> groupIds, Map<String, String> qualification) {
         return getRoleMemberBoList(RoleDaoAction.ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS, roleIds, principalId, groupIds, null, qualification);
     }
 
@@ -1216,7 +1215,7 @@ public class RoleServiceBase {
     protected boolean doesMemberMatch(RoleMemberBo roleMember, String memberId, String memberTypeCode, AttributeSet qualifier) {
         if (roleMember.getMemberId().equals(memberId) && roleMember.getMemberTypeCode().equals(memberTypeCode)) {
             // member ID/type match
-            Attributes roleQualifier = roleMember.getQualifier();
+            Map<String, String> roleQualifier = roleMember.getQualifier();
             if ((qualifier == null || qualifier.isEmpty())
                     && (roleQualifier == null || roleQualifier.isEmpty())) {
                 return true; // blank qualifier match

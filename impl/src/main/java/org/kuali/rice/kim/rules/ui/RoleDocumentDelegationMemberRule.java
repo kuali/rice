@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
@@ -57,8 +56,8 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
             GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role Member"});
             return false;
         }
-		List<Attributes> attributeSetListToValidate = new ArrayList<Attributes>();
-		Attributes attributeSetToValidate;
+		List<Map<String, String>> attributeSetListToValidate = new ArrayList<Map<String, String>>();
+		Map<String, String> attributeSetToValidate;
 		Map<String, String> validationErrors = new HashMap<String, String>();
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(document.getKimType());
 
@@ -84,11 +83,12 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 	    }
         
         if ( kimTypeService != null && !newMember.isRole()) {
-    		Attributes localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
-	        validationErrors.putAll( attributeValidationHelper.convertErrors("delegationMember" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors).toMap() );
+    		Map<String, String> localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+	        validationErrors.putAll( attributeValidationHelper.convertErrors("delegationMember",
+                    attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()), localErrors) );
         }
     	if (!validationErrors.isEmpty()) {
-    		attributeValidationHelper.moveValidationErrorsToErrorMap(Attributes.fromMap(validationErrors));
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
     		rulePassed = false;
     	}
 		return rulePassed;

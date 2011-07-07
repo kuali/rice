@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import com.google.common.collect.Maps;
 import org.junit.Test;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -51,12 +51,14 @@ public class RoleServiceTest extends KIMTestCase {
 		//assertFalse( "p4 has no direct/higher level role r1", getRoleService().principalHasRole("p4", roleIds, null ));	
 		AttributeSet qualification = new AttributeSet();
 		qualification.put("Attribute 2", "CHEM");
-		assertTrue( "p1 has direct role r1 with rp2 attr data", getRoleService().principalHasRole("p1", roleIds, Attributes.fromMap(qualification)));
+		assertTrue( "p1 has direct role r1 with rp2 attr data", getRoleService().principalHasRole("p1", roleIds,
+                qualification));
 		qualification.clear();
 		//requested qualification rolls up to a higher element in some hierarchy 
 		// method not implemented yet, not quite clear how this works
 		qualification.put("Attribute 3", "PHYS");
-		assertTrue( "p1 has direct role r1 with rp2 attr data", getRoleService().principalHasRole("p1", roleIds, Attributes.fromMap(qualification)));
+		assertTrue( "p1 has direct role r1 with rp2 attr data", getRoleService().principalHasRole("p1", roleIds, Maps.newHashMap(
+                qualification)));
 	}
 
 	@Test

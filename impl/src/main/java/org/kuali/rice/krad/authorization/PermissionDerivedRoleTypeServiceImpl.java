@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.authorization;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
@@ -27,6 +26,7 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in.
@@ -63,12 +63,12 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 		this.permissionTemplateName = permissionTemplateName;
 	}
 	
-	protected List<PermissionAssigneeInfo> getPermissionAssignees(Attributes qualification) {
-		return getPermissionService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, new AttributeSet(qualification.toMap()),  new AttributeSet(qualification.toMap()));
+	protected List<PermissionAssigneeInfo> getPermissionAssignees(Map<String, String> qualification) {
+		return getPermissionService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, new AttributeSet(qualification),  new AttributeSet(qualification));
 	}
 
     @Override
-    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
         List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(qualification);
         List<RoleMembership> members = new ArrayList<RoleMembership>();
         for (PermissionAssigneeInfo permissionAssigneeInfo : permissionAssignees) {
@@ -84,9 +84,9 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 
     @Override
     public boolean hasApplicationRole(
-            String principalId, List<String> groupIds, String namespaceCode, String roleName, Attributes qualification){
+            String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification){
         // FIXME: dangerous - data changes could cause an infinite loop - should add thread-local to trap state and abort
-        return getPermissionService().isAuthorizedByTemplateName(principalId, permissionTemplateNamespace, permissionTemplateName, new AttributeSet(qualification.toMap()), new AttributeSet(qualification.toMap()));
+        return getPermissionService().isAuthorizedByTemplateName(principalId, permissionTemplateNamespace, permissionTemplateName, new AttributeSet(qualification), new AttributeSet(qualification));
     }
 
     /**

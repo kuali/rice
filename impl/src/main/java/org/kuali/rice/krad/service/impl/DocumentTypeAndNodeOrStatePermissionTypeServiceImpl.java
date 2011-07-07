@@ -16,14 +16,13 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.permission.Permission;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -48,7 +47,7 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
      *
 	 */
     @Override
-    protected List<Permission> performPermissionMatches(Attributes requestedDetails,
+    protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails,
             List<Permission> permissionsList) {
         List<Permission> matchingPermissions = new ArrayList<Permission>();
         // loop over the permissions, checking the non-document-related ones
@@ -64,14 +63,14 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
         return matchingPermissions;
     }
 	
-	protected boolean routeNodeMatches(Attributes requestedDetails, Attributes permissionDetails) {
+	protected boolean routeNodeMatches(Map<String, String> requestedDetails, Map<String, String> permissionDetails) {
 		if ( StringUtils.isBlank( permissionDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME) ) ) {
 			return true;
 		}
 		return StringUtils.equals( requestedDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME), permissionDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME));
 	}
 	
-	protected boolean routeStatusMatches(Attributes requestedDetails, Attributes permissionDetails) {
+	protected boolean routeStatusMatches(Map<String, String> requestedDetails, Map<String, String> permissionDetails) {
 		if ( StringUtils.isBlank( permissionDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE) ) ) {
 			return true;
 		}

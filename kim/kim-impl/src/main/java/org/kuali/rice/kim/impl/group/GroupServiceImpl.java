@@ -20,7 +20,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.mo.common.Attributes;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
@@ -265,13 +264,13 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
     @Override
-    public Attributes getAttributes(String groupId) throws RiceIllegalArgumentException {
+    public Map<String, String> getAttributes(String groupId) throws RiceIllegalArgumentException {
         if ( StringUtils.isEmpty(groupId) ) {
 			throw new RiceIllegalArgumentException("groupId is blank");
 		}
 
         if (groupId == null) {
-            return Attributes.empty();
+            return Collections.emptyMap();
         }
 
         Group group = getGroup(groupId);

@@ -15,11 +15,12 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
-import org.kuali.rice.core.api.mo.common.Attributes;
+
 import org.kuali.rice.kim.api.role.RoleMembership;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is the base class for all derived role type services 
@@ -33,7 +34,7 @@ public class KimDerivedRoleTypeServiceBase extends KimRoleTypeServiceBase {
 	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@Override
-	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Attributes qualification) {
+	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
         return new ArrayList<RoleMembership>();
 	}
 

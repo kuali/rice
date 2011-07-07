@@ -25,8 +25,6 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.NetworkInterface;
@@ -60,14 +58,6 @@ public final class RiceUtilities {
 		}
 		return defaultValue;
 	}
-	
-    public static String collectStackTrace(Throwable t) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        t.printStackTrace(pw);
-        pw.close();
-        return sw.toString();
-    }
     
     public static String getIpNumber() {
         if ( instanceIpAddress == null ) {
@@ -103,7 +93,7 @@ public final class RiceUtilities {
 	 *         true isIPV6: true ============================================ 127.0.0.1 siteLocal: false isLoopback:
 	 *         true isIPV6: false
 	 */
-	public static String getCurrentEnvironmentNetworkIp() {
+	private static String getCurrentEnvironmentNetworkIp() {
 	     Enumeration<NetworkInterface> netInterfaces = null;
 	     try {
 	          netInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -193,7 +183,7 @@ public final class RiceUtilities {
 	 * @param resourceLoc resource location; syntax supported by {@link DefaultResourceLoader}
 	 * @return a handle to the Resource
 	 */
-	public static Resource getResource(String resourceLoc) {
+	private static Resource getResource(String resourceLoc) {
 		AbsoluteFileSystemResourceLoader resourceLoader = new AbsoluteFileSystemResourceLoader();
 		resourceLoader.setClassLoader(ClassLoaderUtils.getDefaultClassLoader());
 	    return resourceLoader.getResource(resourceLoc);

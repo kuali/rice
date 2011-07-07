@@ -15,7 +15,7 @@ import java.util.Set;
  * A CXF Interceptor that binds itself to the USER_LOGICAL phase to be used on inbound
  * messages.  This interceptor is invoked in the interceptor chain after unmarshalling
  * from XML to Java has occurred.  The role of this interceptor is to ensure that any
- * Collection (and specifically List or Set) used in a @WebMethod is ultimately of the
+ * Collection (and specifically List, Set, or Map) used in a @WebMethod is ultimately of the
  * type returned from
  */
 @SuppressWarnings("unused")

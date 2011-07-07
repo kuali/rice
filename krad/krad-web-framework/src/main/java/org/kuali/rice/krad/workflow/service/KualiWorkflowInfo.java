@@ -23,7 +23,6 @@ import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 
@@ -34,9 +33,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
  * 
  */
 public interface KualiWorkflowInfo {
-    public abstract RouteHeaderDTO getRouteHeader(String principalId, String documentId) throws WorkflowException;
-
-    public abstract RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException;
 
     public abstract Long getNewResponsibilityId() throws WorkflowException;
 
@@ -49,17 +45,6 @@ public interface KualiWorkflowInfo {
     public abstract void reResolveRoleByDocTypeName(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
 
     public abstract void reResolveRoleByDocumentId(String documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
-
-    /**
-     * 
-     * Determines whether the given documentId (also known as a documentNumber, or a documentId) exists and is
-     * retrievable in workflow.
-     * 
-     * @param documentId The docHeaderId/finDocNumber you would like to test.
-     * @return True if the document exists in workflow and is retrievable without errors, False otherwise.
-     * 
-     */
-    public abstract boolean routeHeaderExists(String documentId);
 
     /**
      * Determines if a document generated (or retrieved) using the given criteria has (or will have) an action request using

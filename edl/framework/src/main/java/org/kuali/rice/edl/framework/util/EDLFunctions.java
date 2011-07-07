@@ -17,6 +17,7 @@
 package org.kuali.rice.edl.framework.util;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -44,8 +45,7 @@ public class EDLFunctions {
     	if (userSession != null) {
     		try {
     			String documentId = id.trim();
-    			WorkflowInfo workflowInfo = new WorkflowInfo();
-    			if (userSession.getPrincipalId().equals(workflowInfo.getRouteHeader(documentId).getInitiatorPrincipalId())) {
+    			if (userSession.getPrincipalId().equals(KewApiServiceLocator.getWorkflowDocumentService().getDocument(documentId).getInitiatorPrincipalId())) {
     				initiator = true;
     			}
     		} catch (Exception e) {

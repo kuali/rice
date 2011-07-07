@@ -62,7 +62,6 @@ import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleExtensionDTO;
@@ -106,29 +105,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
     private static final Logger LOG = Logger.getLogger(WorkflowUtilityWebServiceImpl.class);
 
-    public RouteHeaderDTO getRouteHeaderWithPrincipal(String principalId, String documentId) throws WorkflowException {
-        if (documentId == null) {
-            LOG.error("null documentId passed in.  Throwing RuntimeExcpetion");
-            throw new RuntimeException("Null documentId passed in.");
-        }
-        if (principalId == null) {
-            LOG.error("null principalId passed in.");
-            throw new RuntimeException("null principalId passed in");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("Fetching RouteHeaderVO [id="+documentId+", user="+principalId+"]");
-        }
-        DocumentRouteHeaderValue document = loadDocument(documentId);
-        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, principalId);
-        if (routeHeaderVO == null) {
-        	LOG.error("Returning null RouteHeaderVO [id=" + documentId + ", user=" + principalId + "]");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("Returning RouteHeaderVO [id=" + documentId + ", user=" + principalId + "]");
-        }
-        return routeHeaderVO;
-    }
-
     public AttributeSet getActionsRequested(String principalId, String documentId) {
         if (documentId == null) {
             LOG.error("null documentId passed in.  Throwing RuntimeExcpetion");
@@ -143,32 +119,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         DocumentRouteHeaderValue document = loadDocument(documentId);
         return KEWServiceLocator.getActionRequestService().getActionsRequested(document, principalId, true);
-    }
-
-    public RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException {
-        if (documentId == null) {
-            LOG.error("null documentId passed in.");
-            throw new RuntimeException("null documentId passed in");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("Fetching RouteHeaderVO [id="+documentId+"]");
-        }
-        DocumentRouteHeaderValue document = loadDocument(documentId);
-        
-        UserSession userSession = GlobalVariables.getUserSession();
-        String principalId = null;
-        if (userSession != null) { // get the principalId if we can
-        	principalId = userSession.getPrincipalId();
-        }
-        
-        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(document, principalId);
-        if (routeHeaderVO == null) {
-        	LOG.error("Returning null RouteHeaderVO [id=" + documentId + "]");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("Returning RouteHeaderVO [id=" + documentId + "]");
-        }
-        return routeHeaderVO;
     }
 
     public String getDocumentStatus(String documentId) throws WorkflowException {

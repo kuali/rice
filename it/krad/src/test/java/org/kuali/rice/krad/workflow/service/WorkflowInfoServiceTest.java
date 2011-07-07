@@ -17,26 +17,25 @@
 package org.kuali.rice.krad.workflow.service;
 
 
-import org.junit.Test;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.test.KRADTestCase;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.test.KRADTestCase;
 
 
 /**
  * This class tests the WorkflowUser service.
  */
 public class WorkflowInfoServiceTest extends KRADTestCase {
-    private static final String KNOWN_USERNAME = "KULUSER";
 
     @Test public void testRouteHeaderExists_NullId() throws IllegalArgumentException {
         boolean errorThrown = false;
         try {
-            boolean result = KRADServiceLocatorWeb.getWorkflowInfoService().routeHeaderExists(null);
-        }
-        catch (IllegalArgumentException e) {
+            KewApiServiceLocator.getWorkflowDocumentService().doesDocumentExist(null);
+        } catch (RiceIllegalArgumentException e) {
             errorThrown = true;
         }
         assertTrue("An error should have been thrown.", errorThrown);
@@ -46,9 +45,8 @@ public class WorkflowInfoServiceTest extends KRADTestCase {
         boolean errorThrown = false;
         boolean result = true;
         try {
-            result = KRADServiceLocatorWeb.getWorkflowInfoService().routeHeaderExists("-10");
-        }
-        catch (Exception e) {
+            result = KewApiServiceLocator.getWorkflowDocumentService().doesDocumentExist("-10");
+        } catch (Exception e) {
             errorThrown = true;
         }
         assertFalse("An error should not have been thrown.", errorThrown);
@@ -59,7 +57,7 @@ public class WorkflowInfoServiceTest extends KRADTestCase {
         boolean errorThrown = false;
         boolean result = true;
         try {
-            result = KRADServiceLocatorWeb.getWorkflowInfoService().routeHeaderExists("0");
+            result = KewApiServiceLocator.getWorkflowDocumentService().doesDocumentExist("0");
         }
         catch (Exception e) {
             errorThrown = true;

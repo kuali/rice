@@ -20,20 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,19 +47,6 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
 
     private WorkflowInfo getWorkflowUtility() {
         return workflowInfo;
-    }
-
-    public RouteHeaderDTO getRouteHeader(String principalId, String documentId) throws WorkflowException {
-        return getWorkflowUtility().getRouteHeader(principalId, documentId);
-    }
-
-    public RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException {
-    	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(
-                KRADConstants.SYSTEM_USER);
-    	if (principal == null) {
-    		throw new WorkflowException("Failed to locate System User with principal name 'kr'");
-    	}
-    	return getWorkflowUtility().getRouteHeader(principal.getPrincipalId(), documentId);
     }
 
     public Long getNewResponsibilityId() throws WorkflowException {
@@ -90,33 +72,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     public void reResolveRoleByDocumentId(String documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
     	getWorkflowUtility().reResolveRoleByDocumentId(documentId, roleName, qualifiedRoleNameLabel);
     }
-    
-    /**
-     * 
-     * @see org.kuali.rice.krad.workflow.service.KualiWorkflowInfo#routeHeaderExists(java.lang.Long)
-     */
-    public boolean routeHeaderExists(String documentId) {
-        if (documentId == null) {
-            throw new IllegalArgumentException("Null argument passed in for documentId.");
-        }
-
-        RouteHeaderDTO routeHeader = null;
-        try {
-            routeHeader = getRouteHeader(documentId);
-        }
-        catch (WorkflowException e) {
-            LOG.error("Caught Exception from workflow", e);
-            throw new WorkflowRuntimeException(e);
-        }
-
-        if (routeHeader == null) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-    
+        
     /**
      * @deprecated
      * @see org.kuali.rice.krad.workflow.service.KualiWorkflowInfo#documentWillHaveAtLeastOneActionRequest(org.kuali.rice.kew.dto.ReportCriteriaDTO, java.lang.String[])

@@ -31,7 +31,6 @@ import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
@@ -66,32 +65,9 @@ public class WorkflowInfo implements java.io.Serializable {
     	return workflowUtility;
 
     }
-
-    /**
-     * Returns the RouteHeaderVO of the specified document for the specified user
-     * @param principalId principalId as whom to obtain the route header VO
-     * @param documentId the id of the document whose route header VO to obtain
-     * @return the RouteHeaderVO of the specified document for the specified user
-     * @throws WorkflowException if an error occurs obtaining the route header VO
-     * @see WorkflowUtility#getRouteHeaderWithUser(String, Long)
-     */
-    public RouteHeaderDTO getRouteHeader(String principalId, String documentId) throws WorkflowException {
-    	return getWorkflowUtility().getRouteHeaderWithPrincipal(principalId, documentId);
-    }
     
     public AttributeSet getActionsRequested(String principalId, String documentId) throws WorkflowException {
     	return getWorkflowUtility().getActionsRequested(principalId, documentId);
-    }
-
-    /**
-     * Returns the RouteHeaderVO of the specified document
-     * @param documentId the id of the document whose route header VO to obtain
-     * @return the RouteHeaderVO of the specified document
-     * @throws WorkflowException if an error occurs obtaining the route header VO
-     * @see WorkflowUtility#getRouteHeader(Long)
-     */
-    public RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException {
-    	return getWorkflowUtility().getRouteHeader(documentId);
     }
 
     /**

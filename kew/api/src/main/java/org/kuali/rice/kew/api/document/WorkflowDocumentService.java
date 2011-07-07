@@ -23,12 +23,16 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
 
-
+/**
+ * TODO ... annotate for JAX-WS! 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface WorkflowDocumentService {
-	
-	// TODO implement the following methods on this service
-	
+		
 	Document getDocument(String documentId);
+	
+	boolean doesDocumentExist(String documentId);
 	
 	DocumentContent getDocumentContent(String documentId);
 	

@@ -15,12 +15,20 @@
  */
 package org.kuali.rice.kew.doctype.service.impl;
 
+import java.lang.reflect.Field;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
 import org.kuali.rice.kew.doctype.SecurityAttribute;
@@ -28,7 +36,6 @@ import org.kuali.rice.kew.doctype.SecurityPermissionInfo;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
@@ -37,12 +44,6 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.UserSession;
-
-import java.lang.reflect.Field;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 
 public class DocumentSecurityServiceImpl implements DocumentSecurityService {
@@ -218,19 +219,19 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
 			String permissionName, AttributeSet permissionDetails,
 			AttributeSet qualification, SecuritySession session)  {
 		
-		RouteHeaderDTO routeHeader;
+		Document document;
 		try {
-			routeHeader = KEWServiceLocator.getWorkflowUtilityService().getRouteHeader(documentId);
+		    document = KewApiServiceLocator.getWorkflowDocumentService().getDocument(documentId);
 			
 			for (String qualificationKey : qualification.keySet()){
 				String qualificationValue = qualification.get(qualificationKey);
-				String replacementValue = getReplacementString(routeHeader, qualificationValue);
+				String replacementValue = getReplacementString(document, qualificationValue);
 		        qualification.put(qualificationKey, replacementValue);
 			}
 			
 			for (String permissionDetailKey : permissionDetails.keySet()){
 				String detailValue = qualification.get(permissionDetailKey);
-				String replacementValue = getReplacementString(routeHeader, detailValue);
+				String replacementValue = getReplacementString(document, detailValue);
 		        qualification.put(permissionDetailKey, replacementValue);
 			}
 		} catch (Exception e) {
@@ -240,11 +241,10 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
 		return KimApiServiceLocator.getPermissionService().isAuthorized(session.getUserSession().getPrincipalId(), permissionNamespaceCode, permissionName, permissionDetails, qualification);
 	}
 
-	private String getReplacementString(RouteHeaderDTO routeHeader, String value) throws Exception {
+	private String getReplacementString(Document document, String value) throws Exception {
 		String startsWith = "${document.";
 		String endsWith = "}";
 		if (value.startsWith(startsWith)) {
-			String replacementValue = "";
 			int tokenStart = value.indexOf(startsWith);
             int tokenEnd = value.indexOf(endsWith, tokenStart + startsWith.length());
             if (tokenEnd == -1) {
@@ -252,16 +252,16 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
             }
             String token = value.substring(tokenStart + startsWith.length(), tokenEnd);
 		
-            return getRouteHeaderVariableValue(routeHeader, token);
+            return getRouteHeaderVariableValue(document, token);
 		}
 		return value;
 		
 	}
-	private String getRouteHeaderVariableValue(RouteHeaderDTO routeHeader, String variableName) throws Exception {
-		Field field = routeHeader.getClass().getDeclaredField(variableName);
+	private String getRouteHeaderVariableValue(Document document, String variableName) throws Exception {
+		Field field = document.getClass().getDeclaredField(variableName);
 		field.setAccessible(true);
-		Object fieldValue = field.get(routeHeader);
-		Class clazzType = field.getType();
+		Object fieldValue = field.get(document);
+		Class<?> clazzType = field.getType();
 		if (clazzType.equals(String.class)) {
 			return (String)fieldValue;
 		} else if (clazzType.getName().equals("boolean") || clazzType.getName().equals("java.lang.Boolean")) {

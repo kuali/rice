@@ -38,7 +38,6 @@ import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
@@ -58,15 +57,6 @@ import org.kuali.rice.kew.util.KEWWebServiceConstants;
 public interface WorkflowUtility {
 
     public DocumentDetailDTO getDocumentDetailFromAppId(String documentTypeName, String appId) throws WorkflowException;
-
-	public RouteHeaderDTO getRouteHeaderWithPrincipal(
-			@WebParam(name = "principalId") String principalId,
-			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;
-
-	public RouteHeaderDTO getRouteHeader(
-			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;
 
 	public DocumentDetailDTO getDocumentDetail(
 			@WebParam(name = "documentId") String documentId)

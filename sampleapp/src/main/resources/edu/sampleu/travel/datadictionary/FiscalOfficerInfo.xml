@@ -236,7 +236,7 @@
     </property>
   </bean>
   
-  <bean id="FiscalOfficerInfoMaintenanceDocument" parent="MaintenanceDocumentEntry">
+  <bean id="FiscalOfficerInfoMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
     <property name="dataObjectClass" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
     <property name="maintainableClass" value="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"/>
     <property name="documentTypeName" value="FiscalOfficerInfoMaintenanceDocument"/>

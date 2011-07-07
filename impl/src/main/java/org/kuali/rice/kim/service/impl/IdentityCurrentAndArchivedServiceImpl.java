@@ -80,42 +80,12 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 		return getInnerIdentityService().getAddressType(code);
 	}
 
-    @Override
-    public Type createAddressType(Type type) {
-        return getInnerIdentityService().createAddressType(type);
-    }
-
-    @Override
-    public Type updateAddressType(Type type) {
-        return getInnerIdentityService().updateAddressType(type);
-    }
-
-    @Override
-    public Type inactivateAddressType(String typeCode) {
-        return getInnerIdentityService().inactivateAddressType(typeCode);
-    }
-
     /**
 	 * @see org.kuali.rice.kim.api.services.IdentityService#getAffiliationType(java.lang.String)
 	 */
 	public EntityAffiliationType getAffiliationType(String code) {
 		return getInnerIdentityService().getAffiliationType(code);
 	}
-
-    @Override
-    public EntityAffiliationType createAffilationType(EntityAffiliationType type) {
-        return getInnerIdentityService().createAffilationType(type);
-    }
-
-    @Override
-    public EntityAffiliationType updateAffilationType(EntityAffiliationType type) {
-        return getInnerIdentityService().updateAffilationType(type);
-    }
-
-    @Override
-    public EntityAffiliationType inactivateAffilationType(String typeCode) {
-        return getInnerIdentityService().inactivateAffilationType(typeCode);
-    }
 
     /**
 	 * @see org.kuali.rice.kim.api.services.IdentityService#getCitizenshipStatus(java.lang.String)
@@ -124,25 +94,10 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 		return Type.Builder.create(getInnerIdentityService().getCitizenshipStatus(code)).build();
 	}
 
-    @Override
-    public Type createCitizenshipStatus(Type status) {
-        return getInnerIdentityService().createCitizenshipStatus(status);
-    }
-
-    @Override
-    public Type updateCitizenshipStatus(Type status) {
-        return getInnerIdentityService(). updateCitizenshipStatus(status);
-    }
-
-    @Override
-    public Type inactivateCitizenshipStatus(String statusCode) {
-        return getInnerIdentityService().inactivateCitizenshipStatus(statusCode);
-    }
-
     /**
 	 * @see org.kuali.rice.kim.api.services.IdentityService#getDefaultNamesForEntityIds(java.util.List)
 	 */
-	public Map<String, EntityName> getDefaultNamesForEntityIds(
+	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(
 			List<String> entityIds) {
 		return getInnerIdentityService().getDefaultNamesForEntityIds(entityIds);
 	}
@@ -158,8 +113,8 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
     }
 
     @Override
-    public EntityName inactivateName(String entityId, String nameTypeCode) {
-        return getInnerIdentityService().inactivateName(entityId, nameTypeCode);
+    public EntityName inactivateName(String id) {
+        return getInnerIdentityService().inactivateName(id);
     }
 
     @Override
@@ -173,8 +128,8 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
     }
 
     @Override
-    public EntityEmployment inactivateEmployment(String entityId, String employmentTypeCode, String employmentStatusCode, String affiliationId) {
-        return getInnerIdentityService().inactivateEmployment(entityId, employmentTypeCode, employmentStatusCode, affiliationId);
+    public EntityEmployment inactivateEmployment(String id) {
+        return getInnerIdentityService().inactivateEmployment(id);
     }
 
     @Override
@@ -202,21 +157,6 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 		return getInnerIdentityService().getEmailType(code);
 	}
 
-    @Override
-    public Type createEmailType(Type type) {
-        return getInnerIdentityService().createEmailType(type);
-    }
-
-    @Override
-    public Type updateEmailType(Type type) {
-        return getInnerIdentityService().updateEmailType(type);
-    }
-
-    @Override
-    public Type inactivateEmailType(String typeCode) {
-        return getInnerIdentityService().inactivateEmailType(typeCode);
-    }
-
     /**
 	 * @see org.kuali.rice.kim.api.services.IdentityService#getEmploymentStatus(java.lang.String)
 	 */
@@ -224,20 +164,6 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 		return getInnerIdentityService().getEmploymentStatus(code);
 	}
 
-    @Override
-    public Type createEmploymentStatus(Type type) {
-        return getInnerIdentityService().createEmploymentStatus(type);
-    }
-
-    @Override
-    public Type updateEmploymentStatus(Type type) {
-        return getInnerIdentityService().updateEmploymentStatus(type);
-    }
-
-    @Override
-    public Type inactivateEmploymentStatus(String statusCode) {
-        return getInnerIdentityService().inactivateEmploymentStatus(statusCode);
-    }
 
     /**
 	 * @see org.kuali.rice.kim.api.services.IdentityService#getEmploymentType(java.lang.String)
@@ -246,20 +172,6 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 		return getInnerIdentityService().getEmploymentType(code);
 	}
 
-    @Override
-    public Type createEmploymentType(Type type) {
-        return getInnerIdentityService().createEmploymentType(type);
-    }
-
-    @Override
-    public Type updateEmploymentType(Type type) {
-        return getInnerIdentityService().updateEmploymentType(type);
-    }
-
-    @Override
-    public Type inactivateEmploymentType(String typeCode) {
-        return getInnerIdentityService().inactivateEmploymentType(typeCode);
-    }
 
     /**
 	 * This method first tries the inner IdentityService impl, and resorts to
@@ -363,21 +275,6 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 		return getInnerIdentityService().getNameType(code);
 	}
 
-    @Override
-    public Type createNameType(Type type) {
-        return getInnerIdentityService().createNameType(type);
-    }
-
-    @Override
-    public Type updateNameType(Type type) {
-        return getInnerIdentityService().updateNameType(type);
-    }
-
-    @Override
-    public Type inactivateNameType(String typeCode) {
-        return getInnerIdentityService().inactivateNameType(typeCode);
-    }
-
     /**
 	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityPrivacyPreferences(java.lang.String)
 	 */
@@ -407,8 +304,8 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
     }
 
     @Override
-    public EntityCitizenship inactivateCitizenship(String entityId, String citizenshipTypeCode) {
-        return getInnerIdentityService().inactivateCitizenship(entityId, citizenshipTypeCode);
+    public EntityCitizenship inactivateCitizenship(String id) {
+        return getInnerIdentityService().inactivateCitizenship(id);
     }
 
     @Override
@@ -448,21 +345,6 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 		return getInnerIdentityService().getEntityType(code);
 	}
 
-    @Override
-    public Type createEntityType(Type type) {
-        return getInnerIdentityService().createEntityType(type);
-    }
-
-    @Override
-    public Type updateEntityType(Type type) {
-        return getInnerIdentityService().updateEntityType(type);
-    }
-
-    @Override
-    public Type inactivateEntityType(String typeCode) {
-        return getInnerIdentityService().inactivateEntityType(typeCode);
-    }
-
     /**
 	 * @see org.kuali.rice.kim.api.services.IdentityService#getExternalIdentifierType(java.lang.String)
 	 */
@@ -470,20 +352,6 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 		return getInnerIdentityService().getExternalIdentifierType(code);
 	}
 
-    @Override
-    public EntityExternalIdentifierType createExternalIdentifierType(EntityExternalIdentifierType type) {
-        return getInnerIdentityService().createExternalIdentifierType(type);
-    }
-
-    @Override
-    public EntityExternalIdentifierType updateExternalIdentifierType(EntityExternalIdentifierType type) {
-        return getInnerIdentityService().updateExternalIdentifierType(type);
-    }
-
-    @Override
-    public EntityExternalIdentifierType inactivateExternalIdentifierType(String typeCode) {
-        return getInnerIdentityService().inactivateExternalIdentifierType(typeCode);
-    }
 
 	/**
 	 * @see org.kuali.rice.kim.api.services.IdentityService#getPhoneType(java.lang.String)
@@ -491,21 +359,6 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	public Type getPhoneType(String code) {
 		return getInnerIdentityService().getPhoneType(code);
 	}
-
-    @Override
-    public Type createPhoneType(Type type) {
-        return getInnerIdentityService().createPhoneType(type);
-    }
-
-    @Override
-    public Type updatePhoneType(Type type) {
-        return getInnerIdentityService().updatePhoneType(type);
-    }
-
-    @Override
-    public Type inactivatePhoneType(String typeCode) {
-        return getInnerIdentityService().inactivatePhoneType(typeCode);
-    }
 
     /**
 	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipal(java.lang.String)
@@ -631,8 +484,8 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
     }
 
     @Override
-    public EntityAffiliation inactivateAffiliation(String entityId, String affiliationTypeCode) {
-        return getInnerIdentityService().inactivateAffiliation(entityId, affiliationTypeCode);
+    public EntityAffiliation inactivateAffiliation(String id) {
+        return getInnerIdentityService().inactivateAffiliation(id);
     }
 
 

@@ -547,11 +547,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 
 
-    private EntityAffiliationBo getEntityAffiliationBo(String entityId, String affiliationTypeCode) {
-        Map<String,Object> criteria = new HashMap<String,Object>(3);
-        criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
-        criteria.put("affiliationTypeCode", affiliationTypeCode);
-        criteria.put(KIMPropertyConstants.Entity.ACTIVE, true);
+    private EntityAffiliationBo getEntityAffiliationBo(String id) {
+        Map<String,Object> criteria = new HashMap<String,Object>();
+        criteria.put(KIMPropertyConstants.Entity.ID, id);
         return businessObjectService.findByPrimaryKey(EntityAffiliationBo.class, criteria);
     }
 
@@ -562,12 +560,12 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
         }
 
         if (StringUtils.isEmpty(affiliation.getEntityId()) || StringUtils.isBlank(affiliation.getEntityId())) {
-            throw new RiceIllegalStateException("Affiliation's entityId and entityTypeCode must be populated before creation");
+            throw new RiceIllegalStateException("Affiliation's entityId must be populated before creation");
         }  else {
             if (affiliation.getAffiliationType() == null) {
                 throw new RiceIllegalStateException("EntityAffiliation's type must be populated before creation");
             }
-            if (getEntityAffiliationBo(affiliation.getEntityId(), affiliation.getAffiliationType().getCode()) != null) {
+            if (getEntityAffiliationBo(affiliation.getId()) != null) {
                 throw new RiceIllegalStateException("the EntityAffiliation to create already exists: " + affiliation);
             }
         }
@@ -588,7 +586,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
                 throw new RiceIllegalStateException("EntityAffiliation's type must be populated before creation");
             }
             if (StringUtils.isEmpty(affiliation.getId())
-                  ||  getEntityAffiliationBo(affiliation.getEntityId(), affiliation.getAffiliationType().getCode()) == null) {
+                  ||  getEntityAffiliationBo(affiliation.getId()) == null) {
                 throw new RiceIllegalStateException("the EntityAffiliation to update already exists: " + affiliation);
             }
         }
@@ -597,17 +595,17 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 
     @Override
-    public EntityAffiliation inactivateAffiliation(String entityId, String affiliationTypeCode) {
-        EntityAffiliationBo bo = getEntityAffiliationBo(entityId, affiliationTypeCode);
+    public EntityAffiliation inactivateAffiliation(String id) {
+        EntityAffiliationBo bo = getEntityAffiliationBo(id);
         if (bo == null) {
-            throw new RiceIllegalStateException("EntityAffiliation with entityId: " + entityId + ", affiliationTypeCode: " + affiliationTypeCode + " does not exist");
+            throw new RiceIllegalStateException("EntityAffiliation with id: " + id + " does not exist");
         }
         bo.setActive(false);
         return EntityAffiliationBo.to(businessObjectService.save(bo));
     }
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#findEntity(Map, boolean)
+	 * @see org.kuali.rice.kim.api.services.IdentityService#findEntities(org.kuali.rice.core.api.criteria.QueryByCriteria)
 	 */
 	@SuppressWarnings("unchecked")
 	public EntityQueryResults findEntities(QueryByCriteria queryByCriteria) {
@@ -826,8 +824,8 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	/**
 	 * @see org.kuali.rice.kim.api.services.IdentityService#getDefaultNamesForEntityIds(java.util.List)
 	 */
-	public Map<String, EntityName> getDefaultNamesForEntityIds(List<String> entityIds) {
-		Map<String, EntityName> result = new HashMap<String, EntityName>(entityIds.size());
+	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds) {
+		Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>(entityIds.size());
 
         if (CollectionUtils.isEmpty(entityIds)) {
             return result;
@@ -836,11 +834,16 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
         builder.setPredicates(and(in("entityId", entityIds.toArray()),
                                   equal("active", "Y"),
                                   equal("defaultValue", "Y")));
-        EntityNameQueryResults qr = findNames(builder.build());
-        for (EntityName name : qr.getResults()) {
-            result.put(name.getEntityId(), name);
-        }
+        EntityDefaultQueryResults qr = findEntityDefaults(builder.build());
+        for(EntityDefault entityDefault : qr.getResults()) {
 
+            for (Principal principal : entityDefault.getPrincipals()) {
+                result.put(entityDefault.getEntityId(), EntityNamePrincipalName.Builder
+                        .create(principal.getPrincipalName(), EntityName.Builder.create(entityDefault.getName()))
+                        .build());
+                break;
+            }
+		}
 		return result;
 	}
 
@@ -1058,6 +1061,16 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
         return businessObjectService.findByPrimaryKey(EntityCitizenshipBo.class, criteria);
     }
 
+    private EntityCitizenshipBo getEntityCitizenshipBo(String id) {
+        if (StringUtils.isEmpty(id)) {
+            return null;
+        }
+        Map<String,Object> criteria = new HashMap<String,Object>();
+        criteria.put(KIMPropertyConstants.Entity.ID, id);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, true);
+        return businessObjectService.findByPrimaryKey(EntityCitizenshipBo.class, criteria);
+    }
+
     @Override
     public EntityCitizenship addCitizenshipToEntity(EntityCitizenship citizenship) {
         if (citizenship == null) {
@@ -1099,17 +1112,14 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 
     @Override
-    public EntityCitizenship inactivateCitizenship(String entityId, String citizenshipStatusCode) {
-        if (StringUtils.isEmpty(entityId)) {
-            throw new RiceIllegalArgumentException("entityId is empty");
-        }
-        if (StringUtils.isEmpty(citizenshipStatusCode)) {
-            throw new RiceIllegalArgumentException("citizenshipStatusCode is empty");
+    public EntityCitizenship inactivateCitizenship(String id) {
+        if (StringUtils.isEmpty(id)) {
+            throw new RiceIllegalArgumentException("id is empty");
         }
 
-        EntityCitizenshipBo bo = getEntityCitizenshipBo(entityId, citizenshipStatusCode);
+        EntityCitizenshipBo bo = getEntityCitizenshipBo(id);
         if (bo == null) {
-            throw new RiceIllegalStateException("the EntityCitizenship with entityId: " + entityId + ", citizenshipStatusCode: " + citizenshipStatusCode + " does not exist");
+            throw new RiceIllegalStateException("the EntityCitizenship with id: " + id + " does not exist");
         }
         bo.setActive(false);
         return EntityCitizenshipBo.to(businessObjectService.save(bo));
@@ -1251,6 +1261,17 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
         criteria.put(KIMPropertyConstants.Entity.ACTIVE, "Y");
         return businessObjectService.findByPrimaryKey(EntityNameBo.class, criteria);
     }
+
+    private EntityNameBo getEntityNameBo(String id) {
+        if (StringUtils.isEmpty(id)) {
+            return null;
+        }
+        Map<String,Object> criteria = new HashMap<String,Object>();
+        criteria.put(KIMPropertyConstants.Entity.ID, id);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, "Y");
+        return businessObjectService.findByPrimaryKey(EntityNameBo.class, criteria);
+    }
+
     @Override
     public EntityName addNameToEntity(EntityName name) {
         if (name == null) {
@@ -1283,7 +1304,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
             if (name.getNameType() == null) {
                 throw new RiceIllegalStateException("EntityName's type must be populated before update");
             }
-            if (StringUtils.isEmpty(name.getId()) || getEntityNameBo(name.getEntityId(), name.getNameType().getCode()) == null) {
+            if (StringUtils.isEmpty(name.getId()) || getEntityNameBo(name.getId()) == null) {
                 throw new RiceIllegalStateException("the EntityName to update does not exist: " + name);
             }
         }
@@ -1292,15 +1313,12 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 
     @Override
-    public EntityName inactivateName(String entityId, String nameTypeCode) {
-        if (StringUtils.isEmpty(entityId)) {
-            throw new RiceIllegalArgumentException("entityId is empty");
-        }
-        if (StringUtils.isEmpty(nameTypeCode)) {
-            throw new RiceIllegalArgumentException("nameTypeCode is empty");
+    public EntityName inactivateName(String id) {
+        if (StringUtils.isEmpty(id)) {
+            throw new RiceIllegalArgumentException("id is empty");
         }
 
-        EntityNameBo bo = getEntityNameBo(entityId, nameTypeCode);
+        EntityNameBo bo = getEntityNameBo(id);
         if (bo == null) {
             throw new RiceIllegalStateException("the EntityName to inactivate does not exist");
         }
@@ -1320,6 +1338,16 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
         criteria.put("employeeTypeCode", employmentTypeCode);
         criteria.put("employeeStatusCode", employmentStatusCode);
         criteria.put("entityAffiliationId", employmentAffiliationId);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, "Y");
+        return businessObjectService.findByPrimaryKey(EntityEmploymentBo.class, criteria);
+    }
+
+    private EntityEmploymentBo getEntityEmploymentBo(String id) {
+        if (StringUtils.isEmpty(id)) {
+            return null;
+        }
+        Map<String,Object> criteria = new HashMap<String,Object>();
+        criteria.put(KIMPropertyConstants.Entity.ID, id);
         criteria.put(KIMPropertyConstants.Entity.ACTIVE, "Y");
         return businessObjectService.findByPrimaryKey(EntityEmploymentBo.class, criteria);
     }
@@ -1368,8 +1396,8 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 
     @Override
-    public EntityEmployment inactivateEmployment(String entityId, String employmentTypeCode, String employmentStatusCode, String affiliationId) {
-        EntityEmploymentBo bo = getEntityEmploymentBo(entityId, employmentTypeCode, employmentStatusCode, affiliationId);
+    public EntityEmployment inactivateEmployment(String id) {
+        EntityEmploymentBo bo = getEntityEmploymentBo(id);
         if (bo == null) {
             throw new RiceIllegalStateException("the EntityEmployment to inactivate does not exist");
         }
@@ -1416,446 +1444,6 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
         }
         EntityBioDemographicsBo bo = EntityBioDemographicsBo.from(bioDemographics);
         return EntityBioDemographicsBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type createAddressType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isNotBlank(type.getCode()) && getAddressType(type.getCode()) != null) {
-            throw new RiceIllegalStateException("the AddressType to create already exists: " + type);
-        }
-
-        EntityAddressTypeBo bo = EntityAddressTypeBo.from(type);
-        return EntityAddressTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type updateAddressType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isEmpty(type.getCode()) || getAddressType(type.getCode()) == null) {
-            throw new RiceIllegalStateException("the Address Type does not exist: " + type);
-        }
-
-        EntityAddressTypeBo bo = EntityAddressTypeBo.from(type);
-        return EntityAddressTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type inactivateAddressType(String typeCode) {
-        if (typeCode == null) {
-            throw new RiceIllegalArgumentException("typeCode is null");
-        }
-
-        Type type = getAddressType(typeCode);
-        if (type == null) {
-            throw new RiceIllegalStateException("the Address Type does not exist: " + type);
-        }
-
-        EntityAddressTypeBo bo = EntityAddressTypeBo.from(type);
-        bo.setActive(false);
-        return EntityAddressTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public EntityAffiliationType createAffilationType(EntityAffiliationType type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isNotBlank(type.getCode()) && getAffiliationType(type.getCode()) != null) {
-            throw new RiceIllegalStateException("the AffiliationType to create already exists: " + type);
-        }
-
-        EntityAffiliationTypeBo bo = EntityAffiliationTypeBo.from(type);
-        return EntityAffiliationTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public EntityAffiliationType updateAffilationType(EntityAffiliationType type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isEmpty(type.getCode()) || getAffiliationType(type.getCode()) == null) {
-            throw new RiceIllegalStateException("the Address Type does not exist: " + type);
-        }
-
-        EntityAffiliationTypeBo bo = EntityAffiliationTypeBo.from(type);
-        return EntityAffiliationTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public EntityAffiliationType inactivateAffilationType(String typeCode) {
-        if (typeCode == null) {
-            throw new RiceIllegalArgumentException("typeCode is null");
-        }
-
-        EntityAffiliationType type = getAffiliationType(typeCode);
-        if (type == null) {
-            throw new RiceIllegalStateException("the Affiliation Type does not exist: " + type);
-        }
-
-        EntityAffiliationTypeBo bo = EntityAffiliationTypeBo.from(type);
-        bo.setActive(false);
-        return EntityAffiliationTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type createCitizenshipStatus(Type status) {
-        if (status == null) {
-            throw new RiceIllegalArgumentException("status is null");
-        }
-
-        if (StringUtils.isNotBlank(status.getCode()) && getAddressType(status.getCode()) != null) {
-            throw new RiceIllegalStateException("the CitizenshipStatus to create already exists: " + status);
-        }
-
-        EntityCitizenshipStatusBo bo = EntityCitizenshipStatusBo.from(status);
-        return EntityCitizenshipStatusBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type updateCitizenshipStatus(Type status) {
-        if (status == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isEmpty(status.getCode()) || getCitizenshipStatus(status.getCode()) == null) {
-            throw new RiceIllegalStateException("the Citizenship Status does not exist: " + status);
-        }
-
-        EntityCitizenshipStatusBo bo = EntityCitizenshipStatusBo.from(status);
-        return EntityCitizenshipStatusBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type inactivateCitizenshipStatus(String statusCode) {
-        if (statusCode == null) {
-            throw new RiceIllegalArgumentException("statusCode is null");
-        }
-
-        Type type = getCitizenshipStatus(statusCode);
-        if (type == null) {
-            throw new RiceIllegalStateException("the Citizenship Status does not exist: " + type);
-        }
-
-        EntityCitizenshipStatusBo bo = EntityCitizenshipStatusBo.from(type);
-        bo.setActive(false);
-        return EntityCitizenshipStatusBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type createEmailType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isNotBlank(type.getCode()) && getEmailType(type.getCode()) != null) {
-            throw new RiceIllegalStateException("the EmailType to create already exists: " + type);
-        }
-
-        EntityEmailTypeBo bo = EntityEmailTypeBo.from(type);
-        return EntityEmailTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type updateEmailType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isEmpty(type.getCode()) || getEmailType(type.getCode()) == null) {
-            throw new RiceIllegalStateException("the Email Type does not exist: " + type);
-        }
-
-        EntityEmailTypeBo bo = EntityEmailTypeBo.from(type);
-        return EntityEmailTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type inactivateEmailType(String typeCode) {
-        if (typeCode == null) {
-            throw new RiceIllegalArgumentException("typeCode is null");
-        }
-
-        Type type = getEmailType(typeCode);
-        if (type == null) {
-            throw new RiceIllegalStateException("the Email Type does not exist: " + type);
-        }
-
-        EntityEmailTypeBo bo = EntityEmailTypeBo.from(type);
-        bo.setActive(false);
-        return EntityEmailTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type createEmploymentStatus(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isNotBlank(type.getCode()) && getEmploymentStatus(type.getCode()) != null) {
-            throw new RiceIllegalStateException("the EmploymentStatus to create already exists: " + type);
-        }
-
-        EntityEmploymentStatusBo bo = EntityEmploymentStatusBo.from(type);
-        return EntityEmploymentStatusBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type updateEmploymentStatus(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isEmpty(type.getCode()) || getEmploymentStatus(type.getCode()) == null) {
-            throw new RiceIllegalStateException("the Employment status does not exist: " + type);
-        }
-
-        EntityEmploymentStatusBo bo = EntityEmploymentStatusBo.from(type);
-        return EntityEmploymentStatusBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type inactivateEmploymentStatus(String statusCode) {
-        if (statusCode == null) {
-            throw new RiceIllegalArgumentException("statusCode is null");
-        }
-
-        Type type = getEmploymentStatus(statusCode);
-        if (type == null) {
-            throw new RiceIllegalStateException("the Employment Status does not exist: " + type);
-        }
-
-        EntityEmploymentStatusBo bo = EntityEmploymentStatusBo.from(type);
-        bo.setActive(false);
-        return EntityEmploymentStatusBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type createEmploymentType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isNotBlank(type.getCode()) && getEmploymentType(type.getCode()) != null) {
-            throw new RiceIllegalStateException("the EmploymentType to create already exists: " + type);
-        }
-
-        EntityEmploymentTypeBo bo = EntityEmploymentTypeBo.from(type);
-        return EntityEmploymentTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type updateEmploymentType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isEmpty(type.getCode()) || getEmploymentType(type.getCode()) == null) {
-            throw new RiceIllegalStateException("the Employment Type does not exist: " + type);
-        }
-
-        EntityEmploymentTypeBo bo = EntityEmploymentTypeBo.from(type);
-        return EntityEmploymentTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type inactivateEmploymentType(String typeCode) {
-        if (typeCode == null) {
-            throw new RiceIllegalArgumentException("typeCode is null");
-        }
-
-        Type type = getEmploymentType(typeCode);
-        if (type == null) {
-            throw new RiceIllegalStateException("the Employment Type does not exist: " + type);
-        }
-
-        EntityEmploymentTypeBo bo = EntityEmploymentTypeBo.from(type);
-        bo.setActive(false);
-        return EntityEmploymentTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type createNameType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isNotBlank(type.getCode()) && getNameType(type.getCode()) != null) {
-            throw new RiceIllegalStateException("the NameType to create already exists: " + type);
-        }
-
-        EntityNameTypeBo bo = EntityNameTypeBo.from(type);
-        return EntityNameTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type updateNameType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isEmpty(type.getCode()) || getNameType(type.getCode()) == null) {
-            throw new RiceIllegalStateException("the Name Type does not exist: " + type);
-        }
-
-        EntityNameTypeBo bo = EntityNameTypeBo.from(type);
-        return EntityNameTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type inactivateNameType(String typeCode) {
-        if (typeCode == null) {
-            throw new RiceIllegalArgumentException("typeCode is null");
-        }
-
-        Type type = getNameType(typeCode);
-        if (type == null) {
-            throw new RiceIllegalStateException("the Name Type does not exist: " + type);
-        }
-
-        EntityNameTypeBo bo = EntityNameTypeBo.from(type);
-        bo.setActive(false);
-        return EntityNameTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type createEntityType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isNotBlank(type.getCode()) && getEntityType(type.getCode()) != null) {
-            throw new RiceIllegalStateException("the EntityType to create already exists: " + type);
-        }
-
-        EntityTypeBo bo = EntityTypeBo.from(type);
-        return EntityTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type updateEntityType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isEmpty(type.getCode()) || getEntityType(type.getCode()) == null) {
-            throw new RiceIllegalStateException("the Address Type does not exist: " + type);
-        }
-
-        EntityTypeBo bo = EntityTypeBo.from(type);
-        return EntityTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type inactivateEntityType(String typeCode) {
-        if (typeCode == null) {
-            throw new RiceIllegalArgumentException("typeCode is null");
-        }
-
-        Type type = getEntityType(typeCode);
-        if (type == null) {
-            throw new RiceIllegalStateException("the Entity Type does not exist: " + type);
-        }
-
-        EntityTypeBo bo = EntityTypeBo.from(type);
-        bo.setActive(false);
-        return EntityTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public EntityExternalIdentifierType createExternalIdentifierType(EntityExternalIdentifierType type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isNotBlank(type.getCode()) && getExternalIdentifierType(type.getCode()) != null) {
-            throw new RiceIllegalStateException("the EntityExternalIdentifierType to create already exists: " + type);
-        }
-
-        EntityExternalIdentifierTypeBo bo = EntityExternalIdentifierTypeBo.from(type);
-        return EntityExternalIdentifierTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public EntityExternalIdentifierType updateExternalIdentifierType(EntityExternalIdentifierType type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isEmpty(type.getCode()) || getExternalIdentifierType(type.getCode()) == null) {
-            throw new RiceIllegalStateException("the Address Type does not exist: " + type);
-        }
-
-        EntityExternalIdentifierTypeBo bo = EntityExternalIdentifierTypeBo.from(type);
-        return EntityExternalIdentifierTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public EntityExternalIdentifierType inactivateExternalIdentifierType(String typeCode) {
-        if (typeCode == null) {
-            throw new RiceIllegalArgumentException("typeCode is null");
-        }
-
-        EntityExternalIdentifierType type = getExternalIdentifierType(typeCode);
-        if (type == null) {
-            throw new RiceIllegalStateException("the External Identifier Type does not exist: " + type);
-        }
-
-        EntityExternalIdentifierTypeBo bo = EntityExternalIdentifierTypeBo.from(type);
-        bo.setActive(false);
-        return EntityExternalIdentifierTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type createPhoneType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isNotBlank(type.getCode()) && getExternalIdentifierType(type.getCode()) != null) {
-            throw new RiceIllegalStateException("the PhoneType to create already exists: " + type);
-        }
-
-        EntityPhoneTypeBo bo = EntityPhoneTypeBo.from(type);
-        return EntityPhoneTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type updatePhoneType(Type type) {
-        if (type == null) {
-            throw new RiceIllegalArgumentException("type is null");
-        }
-
-        if (StringUtils.isEmpty(type.getCode()) || getPhoneType(type.getCode()) == null) {
-            throw new RiceIllegalStateException("the Address Type does not exist: " + type);
-        }
-
-        EntityPhoneTypeBo bo = EntityPhoneTypeBo.from(type);
-        return EntityPhoneTypeBo.to(businessObjectService.save(bo));
-    }
-
-    @Override
-    public Type inactivatePhoneType(String typeCode) {
-        if (typeCode == null) {
-            throw new RiceIllegalArgumentException("typeCode is null");
-        }
-
-        Type type = getPhoneType(typeCode);
-        if (type == null) {
-            throw new RiceIllegalStateException("the Phone Type does not exist: " + type);
-        }
-
-        EntityPhoneTypeBo bo = EntityPhoneTypeBo.from(type);
-        bo.setActive(false);
-        return EntityPhoneTypeBo.to(businessObjectService.save(bo));
     }
 
 

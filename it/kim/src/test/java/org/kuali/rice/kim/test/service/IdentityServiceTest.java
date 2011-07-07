@@ -75,7 +75,7 @@ public class IdentityServiceTest extends KIMTestCase {
 			entityIds.add(entityInfo.getId());
 		}
 		
-		Map<String,EntityName> results = identityService.getDefaultNamesForEntityIds(entityIds);
+		Map<String,EntityNamePrincipalName> results = identityService.getDefaultNamesForEntityIds(entityIds);
 		assertEquals(2,results.size());
 		for (String entityId : entityIds) {
 			assertTrue(results.containsKey(entityId));

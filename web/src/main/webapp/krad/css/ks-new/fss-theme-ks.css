@@ -6,44 +6,41 @@ For instance, 11px would equal (11 / 13) which equals 0.84615385em
 */
 
 a {
-    color:#3F7826;
-    font-weight:normal;
-    cursor: pointer;
+	color:#3F7826;
+	font-weight:normal;
+	cursor: pointer;
 }
 a:hover {
-    text-decoration:underline;
+	text-decoration:underline;
 }
 table td, table th {
-    vertical-align:top;
-    text-align:left;
+	vertical-align:top;
+	text-align:left;
 }
-    #testValidationGroup1_layout td, #testValidationGroup1_layout th {              /* not sure this style will be carried forward */
-        margin: 0;
-        padding: 0;
-    }
+#testValidationGroup1_layout td, #testValidationGroup1_layout th {              /* not sure this style will be carried forward */
+	margin: 0;
+	padding: 0;
+}
 .summary {           /* fixing a pixel specification in kuali-stacked.css */
-    font-size:0.92307692em;     /* 12px divided by 13px */
+	font-size:0.92307692em;     /* 12px divided by 13px */
 }
-
 /* -------------------- General Layout --------------------*/
 #viewpage_div {
-    margin-left: 120px;
-    margin-right: 20px;
+	margin-left: 120px;
+	margin-right: 20px;
 }
 #viewheader_div {
-    margin: 10px 15px 30px 20px;
+	margin: 10px 15px 30px 20px;
 }
-
 /* Form Groups (in tables). This may be temporary for Kuali Student */
 #testValidationGroup1_layout td, #testValidationGroup1_layout th {
-    margin: 0px;
-    padding: 15px 15px 15px 0px;
+	margin: 0px;
+	padding: 15px 15px 15px 0px;
 }
 .boxLayoutHorizontalItem {
-    float:left;
-    display:block;
+	float:left;
+	display:block;
 }
-
 /*  -------------------  BUTTON STYLES  -------------------  */
 
 .fl-theme-ks .button-primary {
@@ -56,7 +53,7 @@ table td, table th {
 	background-color:#73C561;
 	/* font styling */
 	color: #2A2A2A;
-    cursor:pointer;
+	cursor:pointer;
 }
 .fl-theme-ks .button-secondary1 {
 	border-color:#469C3D;
@@ -67,43 +64,43 @@ table td, table th {
 	/* fallback for < 8 versions of IE*/
 	background-color:#73C561;
 	color: #2A2A2A;
-    cursor:pointer;
+	cursor:pointer;
 }
-
 .fl-theme-ks .button-secondary2 {
 	border-color:#3F7826;
 	background: rgb(255,255,255);
-background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1)));
-background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
-background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
-background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 );
-background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(100%, rgba(229,229,229,1)));
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5', GradientType=0 );
+	background: linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
 	color: #3F7826;
-    cursor:pointer;
+	cursor:pointer;
 }
 .ui-priority-secondary-sm {
-    -moz-border-radius:3px;
-    -o-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius:3px;
-    background: rgb(255,255,255);
-background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1)));
-background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
-background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
-background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 );
-background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
+	-moz-border-radius:3px;
+	-o-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius:3px;
+	background: rgb(255,255,255);
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(100%, rgba(229,229,229,1)));
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5', GradientType=0 );
+	background: linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
 	color: #3F7826;
-    border: 1px solid #999;s
+	border: 1px solid #999;
+s
 }
 .fl-theme-ks .button-primary a, .button-primary a:link, .button-primary a:visited {
 	color: #eeeeee;
 }
 .fl-theme-ks .ui-state-hover {
-	border-color:#07662a ;
+	border-color:#07662a;
 	/*defines gradient background*/
 	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
@@ -124,7 +121,6 @@ background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%
 	background-color:#CCC;
 	text-shadow: none;
 }
-
 .fl-theme-ks .ui-state-disabled2 {
 	border-color:#a6a6a6;
 	/*defines gradient background*/
@@ -137,545 +133,496 @@ background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%
 }
 /* Data Table Styles */
 
-    .dataTables_info {margin-top:5px;}
-    th.sorting, th.sorting_asc, th.sorting_desc, th.sorting_disabled {
-        border-top: 3px solid #000;
-        text-align:left;
-    }
-    th.sorting_asc, th.sorting_desc {
-        background-color:transparent;
-    }
-
-    .datatable thead tr {
-        background-image: url(../../images/pattern_dotted.png);
-    }
-    .datatable thead tr th.sorting, .datatable thead tr th.sorting_disabled {
-        background-color:#fff;
-    }
-    .datatable thead tr th.sorting label, .datatable thead tr th.sorting_desc label, .datatable thead tr th.sorting_asc label {
-        cursor:pointer;
-    }
-
-    th.sorting label, th.sorting_asc label, th.sorting_desc label, th.sorting_disabled label {
-        color:#3F7826;
-        font-weight:normal;
-        text-transform:uppercase;
-    }
-    .display td {
-        vertical-align:top;
-        padding:  3px 10px 3px 3px;
-    }
-    tr.even, tr.odd {
-        border-bottom: 1px dotted #000;
-    }
-
-    /* cell colors for sortable table should be white */
+    .dataTables_info {
+	margin-top:5px;
+}
+th.sorting, th.sorting_asc, th.sorting_desc, th.sorting_disabled {
+	border-top: 3px solid #000;
+	text-align:left;
+}
+th.sorting_asc, th.sorting_desc {
+	background-color:transparent;
+}
+.datatable thead tr {
+	background-image: url(../../images/pattern_dotted.png);
+}
+.datatable thead tr th.sorting, .datatable thead tr th.sorting_disabled {
+	background-color:#fff;
+}
+.datatable thead tr th.sorting label, .datatable thead tr th.sorting_desc label, .datatable thead tr th.sorting_asc label {
+	cursor:pointer;
+}
+th.sorting label, th.sorting_asc label, th.sorting_desc label, th.sorting_disabled label {
+	color:#3F7826;
+	font-weight:normal;
+	text-transform:uppercase;
+}
+.display td {
+	vertical-align:top;
+	padding:  3px 10px 3px 3px;
+}
+tr.even, tr.odd {
+	border-bottom: 1px dotted #000;
+}
+/* cell colors for sortable table should be white */
    .display tr.odd td.sorting_1, .display tr.even td.sorting_1, table.display tr.odd, table.display tr.even {
-        background-color:#ffffff;
-    }
-    /* display table */
+	background-color:#ffffff;
+}
+/* display table */
     .collection-header h2 {
-        font-family: georgia, serif;
-        font-size: 1.0em;
-    }
-    .wrap {
-        background-color: #fff;
-        border: none;
-        margin-bottom: 12px;
-        padding: 0 12px 4px;
-    }
+	font-family: georgia, serif;
+	font-size: 1.0em;
+}
+.wrap {
+	background-color: #fff;
+	border: none;
+	margin-bottom: 12px;
+	padding: 0 12px 4px;
+}
 /* form attributes */
     .constraint {
-        font-size:0.84615385em;    /* 11px divided by 13px */
-    }
-    :focus {    /*reset focus state to remove black border*/
-        outline: none;
-    }
-   input:focus, textarea:focus {
-    background: none repeat scroll 0 0 #ECFCE8;
+	font-size:0.84615385em;    /* 11px divided by 13px */
 }
-    .field_attribute label {
-        margin: 0px 5px 0px 5px;
+:focus {    /*reset focus state to remove black border*/
+	outline: none;
+}
+input:focus, textarea:focus {
+	background: none repeat scroll 0 0 #ECFCE8;
+}
+.field_attribute label {
+	margin: 0px 5px 0px 5px;
+}
+.field_attribute .labelTop label {
+	margin: 5px 5px 0px 0px;  /* field top labels should not have left-margins  -David */
+}
+.field_attribute span {
+	clear:left;/*float:left;       removing for non-table display, but may possibly break elsewhere - David */
     }
-    .field_attribute .labelTop label{
-        margin: 5px 5px 0px 0px;  /* field top labels should not have left-margins  -David */
+.field_attribute input {
+/*float:left;        removing for non-table display. Not sure why we need to pull input from inline flow */
     }
-    .field_attribute span {
-        clear:left;
-        /*float:left;       removing for non-table display, but may possibly break elsewhere - David */
-    }
-    .field_attribute input {
-        /*float:left;        removing for non-table display. Not sure why we need to pull input from inline flow */
-    }
-    .field-attribute .summry {
-        line-height: 1.125em;
-    }
-
-    .labelTop {
-        float:none;
-        display:block;
-    }
-    .labelTop label {
-        font-weight:bold;
-    }
-    .constraint {
-        /*float:left;        removing for non-table display, but may possibly break elsewhere - David */
+.field-attribute .summry {
+	line-height: 1.125em;
+}
+.labelTop {
+	float:none;
+	display:block;
+}
+.labelTop label {
+	font-weight:bold;
+}
+.constraint {
+/*float:left;        removing for non-table display, but may possibly break elsewhere - David */
     }
 /* ERRORS AND MESSAGING */
     /*
  * ErrorsField
 */
-    .errorsField{
-        padding-left: 10px;
-        overflow: hidden;
-        *zoom: 1;
-    }
-
-    .errorsFieldForContainer{
-        float: none;
-        padding-left: 10px;
-        display:inline-block;
-        zoom:1;
-        *display:inline;
-    }
-
-    .errorMessages{
-        padding-left: 20px;
-        background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
-    }
-
-    .warningMessages{
-        padding-left: 20px;
-        background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
-    }
-
-    .infoMessages{
-        padding-left: 20px;
-        background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll left top transparent;
-    }
-
-    .errorsFieldForContainer .errorMessages{
-
-        border: 1px solid red;
-        background-color: #FFE0E9;
-        margin-top: 3px;
-        margin-bottom: 3px;
-        padding-bottom: 5px;
-        padding-top: 5px;
-        padding-right: 10px;
-    }
-
-    .errorsFieldForContainer .warningMessages{
-        border: 1px solid goldenrod;
-        background-color: #F4E271;
-        margin-top: 3px;
-        margin-bottom: 3px;
-        padding-bottom: 5px;
-        padding-top: 5px;
-        padding-right: 10px;
-    }
-
-    .errorsFieldForContainer .infoMessages{
-        border: 1px solid #82CAFA;
-        background-color: #AFDCEC;
-        margin-top: 3px;
-        margin-bottom: 3px;
-        padding-bottom: 5px;
-        padding-top: 5px;
-        padding-right: 10px;
-    }
-
-    .errorsField ul{
-        list-style: none outside none;
-        margin: 0;
-    }
-
-    .errorsField li{
-        list-style: none outside none;
-        margin-left: 0;
-        padding: 1px 0;
-        line-height: 1.3em;
-    }
-
-    .errorsField .errorMessages{
-        color: #DF0000;
-        font-weight: bold;
-    }
-
-    span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError{
-        background-color: #FFE0E9 !important;
-    }
-
-    span.information, div.information, td.information{
-        background-color: #AFDCEC;
-    }
-
-    span.warning, div.warning, td.warning{
-        background-color: #F4E271;
-    }
-
-    label.clientError, a.clientError, label.serverError{
-        color: #DF0000 !important;
-    }
-
-    li label.error{
-        display: inline !important;
-    }
-
-    .clearfix:after {
-        content: ".";
-        display: block;
-        height: 0;
-        clear: both;
-        visibility: hidden;
-    }
-
+    .errorsField {
+	padding-left: 10px;
+	overflow: hidden;
+ *zoom: 1;
+}
+.errorsFieldForContainer {
+	float: none;
+	padding-left: 10px;
+	display:inline-block;
+	zoom:1;
+ *display:inline;
+}
+.errorMessages {
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
+}
+.warningMessages {
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
+}
+.infoMessages {
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll left top transparent;
+}
+.errorsFieldForContainer .errorMessages {
+	border: 1px solid red;
+	background-color: #FFE0E9;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+.errorsFieldForContainer .warningMessages {
+	border: 1px solid goldenrod;
+	background-color: #F4E271;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+.errorsFieldForContainer .infoMessages {
+	border: 1px solid #82CAFA;
+	background-color: #AFDCEC;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+.errorsField ul {
+	list-style: none outside none;
+	margin: 0;
+}
+.errorsField li {
+	list-style: none outside none;
+	margin-left: 0;
+	padding: 1px 0;
+	line-height: 1.3em;
+}
+.errorsField .errorMessages {
+	color: #DF0000;
+	font-weight: bold;
+}
+span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError {
+	background-color: #FFE0E9 !important;
+}
+span.information, div.information, td.information {
+	background-color: #AFDCEC;
+}
+span.warning, div.warning, td.warning {
+	background-color: #F4E271;
+}
+label.clientError, a.clientError, label.serverError {
+	color: #DF0000 !important;
+}
+li label.error {
+	display: inline !important;
+}
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
 /* IE specific */
-    * html .clearfix {height: 1%;}
-
-    .boxLayoutHorizontalItem{
-        margin-right: 15px;
-    }
-
-    .boxLayoutVerticalItem{
-        padding-bottom: 20px;
-        display: block;
-    }
-
-    .fieldContainerVerticalItem{
-        padding-bottom: 5px;
-        display: block;
-    }
+    * html .clearfix {
+	height: 1%;
+}
+.boxLayoutHorizontalItem {
+	margin-right: 15px;
+}
+.boxLayoutVerticalItem {
+	padding-bottom: 20px;
+	display: block;
+}
+.fieldContainerVerticalItem {
+	padding-bottom: 5px;
+	display: block;
+}
 /*
 Tab menu
 */
-    .tab-navigation-block{
-        padding: 0 !important;
-        padding-left: 20px !important;
-
-    }
-
-    .tab-navigation-block, .tab-navigation-block li{
-        border-bottom: 1px solid #C7C7C7;
-    }
-
-    .tab-navigation-block li{
-        float: left;
-        list-style: none outside none;
-        margin: 0 0.2em 1px 0;
-        padding: 0;
-        position: relative;
-        top: 2px;
-        *top: 1px;
-        white-space: nowrap;
-        clear: none;
-    }
-
-    .ui-tabs li{
-        clear: none;
-    }
-
-    .tab-navigation-block li a{
-        float: left;
-        padding: 0.5em 1em;
-        text-decoration: none;
-    }
-
-    .tab-navigation-block li.ui-state-active{
-        border-bottom: 1px solid #F6F6F6;
-        background: none;
-    }
-
-    .tab-navigation-block li.ui-state-active a{
-        color: black !important;
-    }
-
-    .ui-datepicker-trigger{
-        cursor: pointer;
-    }
-    .page-action h2 {
-        clear:left;
-    }
-    .boxLayoutHorizontalItem  {
-        margin-right:25px;
-    }
-
-.navigation-parent-div{
+    .tab-navigation-block {
+	padding: 0 !important;
+	padding-left: 20px !important;
+}
+.tab-navigation-block, .tab-navigation-block li {
+	border-bottom: 1px solid #C7C7C7;
+}
+.tab-navigation-block li {
+	float: left;
+	list-style: none outside none;
+	margin: 0 0.2em 1px 0;
+	padding: 0;
+	position: relative;
+	top: 2px;
+ *top: 1px;
+	white-space: nowrap;
+	clear: none;
+}
+.ui-tabs li {
+	clear: none;
+}
+.tab-navigation-block li a {
+	float: left;
+	padding: 0.5em 1em;
+	text-decoration: none;
+}
+.tab-navigation-block li.ui-state-active {
+	border-bottom: 1px solid #F6F6F6;
+	background: none;
+}
+.tab-navigation-block li.ui-state-active a {
+	color: black !important;
+}
+.ui-datepicker-trigger {
+	cursor: pointer;
+}
+.page-action h2 {
+	clear:left;
+}
+.boxLayoutHorizontalItem {
+	margin-right:25px;
+}
+.navigation-parent-div {
 	margin-left: 225px;
 }
-
-.navigation-div{
+.navigation-div {
 	float: left;
 	margin-left: -225px;
 }
-
 .navigation-block {
-   float: left;
-   width: 219px;
+	float: left;
+	width: 219px;
 }
 /* error messaging */
 .errorsField {
-    float:right; /* validation errors should appear to the right of the field group */
+	float:right; /* validation errors should appear to the right of the field group */
 }
 .clientError img {
-    margin-left:10px;   /* adds spacing between tab label and the icon */
+	margin-left:10px;   /* adds spacing between tab label and the icon */
 }
 /*
 Basic Navigation Menu
 */
 ul.basic-navigation {
-    list-style: none outside none;
-    padding: 0;
-    margin-left: 25px;
-    font-size: .95em;
+	list-style: none outside none;
+	padding: 0;
+	margin-left: 25px;
+	font-size: .95em;
 }
-
-ul.basic-navigation li{
-    padding: 0;
-    border-bottom: 1px solid #bebebe;
+ul.basic-navigation li {
+	padding: 0;
+	border-bottom: 1px solid #bebebe;
 }
-
 ul.basic-navigation li.basic-element h3, ul.basic-navigation li.basic-element h2 {
-    border-top: 1px solid black;
-    color: black;
-    display: block;
-    margin: 0;
-    padding: 5px 10px;
+	border-top: 1px solid black;
+	color: black;
+	display: block;
+	margin: 0;
+	padding: 5px 10px;
 	font-weight: bold;
 	font-weight: 0.9em;
 	text-transform: uppercase;
 	font-size: .9em;
 }
-
 ul.basic-navigation li.basic-element a {
-    display: block;
-    padding: 5px 10px;
+	display: block;
+	padding: 5px 10px;
 }
-
 ul.basic-navigation li.basic-element a:hover, ul.basic-navigation li.basic-element a:focus {
-    background-image: -moz-linear-gradient(top, #07662a, #044d1f);
+	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#07662a', EndColorStr='#044d1f')";
 	background-color:#060;
-    color: white;
-    text-decoration: none;
+	color: white;
+	text-decoration: none;
 }
-
 ul.basic-navigation li.basic-element a.current, ul.basic-navigation li.basic-element a.current:hover {
 	background-color:#000;
 	color: white;
 }
-
 /*
 Animated Navigation Menu
 */
 .animated-navigation h2.fl-font-serif {
-    font-family:arial, sans-serif; /* overrides the h2 to a sans-serif */
+	font-family:arial, sans-serif; /* overrides the h2 to a sans-serif */
 }
 ul.animated-navigation {
-    list-style: none outside none;
-    padding: 0;
-    margin-top: 0px;
+	list-style: none outside none;
+	padding: 0;
+	margin-top: 0px;
 }
-ul.animated-navigation li{
-    padding: 0;
+ul.animated-navigation li {
+	padding: 0;
 }
 ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animated-element h2 {
-    color: #333333;
-    display: block;
-    margin-bottom: 0;
-    padding: 0 20px 0 3px;
-    width: 200px;
+	color: #333333;
+	display: block;
+	margin-bottom: 0;
+	padding: 0 20px 0 3px;
+	width: 200px;
 	font-weight: bold;
-    margin-top: 20px;
-    font-size: .92307692em;
-    font-family:arial, sans-serif;
-    text-transform:uppercase;
-    border-top: 2px solid #000;
-    border-bottom: 1px solid #bbb;
+	margin-top: 20px;
+	font-size: .92307692em;
+	font-family:arial, sans-serif;
+	text-transform:uppercase;
+	border-top: 2px solid #000;
+	border-bottom: 1px solid #bbb;
 }
-
 ul.animated-navigation li.animated-element a {
 	background-color: #fff;
-    display: block;
+	display: block;
 	/*
 	Changing the padding here will require updating the script to correct return padding (pad_in)
 	*/
     padding: 5px 20px 5px 3px;
-    width: 200px;
-    color: #3F7826;
-    text-decoration: none;
-    border-bottom: 1px solid #bbb;
-    font-size:.92307692em;
+	width: 200px;
+	color: #3F7826;
+	text-decoration: none;
+	border-bottom: 1px solid #bbb;
+	font-size:.92307692em;
 }
-
 ul.animated-navigation li.animated-element a:hover, ul.animated-navigation li.animated-element a:focus {
-    background-image: -moz-linear-gradient(top, #07662a, #044d1f);
+	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#07662a', EndColorStr='#044d1f')";
 	background-color:#060;
-    color: white;
+	color: white;
 }
 ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.animated-element a.current:hover {
 	background-color:#000;
-    background-image:none;
+	background-image:none;
 	padding-left: 3px !important;
 	color: white;
 }
 li.animated-element {
-    list-style: none outside none;
+	list-style: none outside none;
 }
-
 /*
 Navigation Slide Control
 */
 
-.slideLink{
+.slideLink {
 	padding-left: .5em;
 	font-size: .9em;
 	float: left;
 }
-
-.collapseLink{
+.collapseLink {
 	float: right;
 	font-size: .9em;
 	padding-bottom: 5px;
-    color: #666;
+	color: #666;
 }
 #controlbtn.slideLink {
-    background:  url(../../images/icon_navCollapse.jpg) left no-repeat;
-    color: transparent;
+	background:  url(../../images/icon_navCollapse.jpg) left no-repeat;
+	color: transparent;
 }
 #controlbtn.closed {
-    background: url(../../images/icon_navExpand.jpg) right no-repeat;
+	background: url(../../images/icon_navExpand.jpg) right no-repeat;
 }
-
 /* Datepicker styles */
 #ui-datepicker-div {
-    background-color:#fff;
-    border:1px solid #ccc;
+	background-color:#fff;
+	border:1px solid #ccc;
 }
 .ui-datepicker-trigger {            /* make sure the icons appear clickable*/
-    cursor:pointer;
+	cursor:pointer;
 	background-image:url(../../images/cal_ks.gif)
 }
 .ui-datepicker-header {
-    background-image:-moz-linear-gradient(top, #99DE80, #62D255);
+	background-image:-moz-linear-gradient(top, #99DE80, #62D255);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99DE80), color-stop(1, #62D255));
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#99DE80', EndColorStr='#62D255')";
 	background-color:#81D96D;
-    padding: 5px;
-    margin: 3px;
+	padding: 5px;
+	margin: 3px;
 }
-.ui-datepicker-header .ui-state-hover{
-    background-image:none;
-    border: none;
+.ui-datepicker-header .ui-state-hover {
+	background-image:none;
+	border: none;
 }
-
 .ui-datepicker-prev {
-    float:left;
-    color:transparent
+	float:left;
+	color:transparent
 }
 .ui-datepicker-prev .ui-icon {
-    background:  url(../../images/sprite-icons.png) no-repeat scroll -23px 0 transparent;
+	background:  url(../../images/sprite-icons.png) no-repeat scroll -23px 0 transparent;
 }
 .ui-datepicker-prev:hover .ui-icon {
-    background:  url(../../images/sprite-icons-hover.png) no-repeat scroll -23px 0 transparent;
+	background:  url(../../images/sprite-icons-hover.png) no-repeat scroll -23px 0 transparent;
 }
 .ui-datepicker-next {
-    float:right;
-    color:transparent;
+	float:right;
+	color:transparent;
 }
 .ui-datepicker-next .ui-icon {
-    background:  url(../../images/sprite-icons.png) no-repeat scroll -23px -34px transparent;
+	background:  url(../../images/sprite-icons.png) no-repeat scroll -23px -34px transparent;
 }
 .ui-datepicker-next:hover .ui-icon {
-    background:  url(../../images/sprite-icons-hover.png) no-repeat scroll -23px -34px transparent;
+	background:  url(../../images/sprite-icons-hover.png) no-repeat scroll -23px -34px transparent;
 }
 .ui-datepicker-title select {
-    margin-right:5px;
+	margin-right:5px;
 }
 .ui-datepicker-buttonpane {
-    background-color: #000000;
-    padding: 5px 0;
-    text-align: center;
-    -moz-border-radius: 0 0 4px 4px;
-    -webkit-border-radius: 0 0 4px 4px;
-    -o-border-radius: 0 0 4px 4px;
-    border-radius:0 0 4px 4px;
+	background-color: #000000;
+	padding: 5px 0;
+	text-align: center;
+	-moz-border-radius: 0 0 4px 4px;
+	-webkit-border-radius: 0 0 4px 4px;
+	-o-border-radius: 0 0 4px 4px;
+	border-radius:0 0 4px 4px;
 }
 .ui-datepicker-buttonpane button {
-    margin-right: 5px;
-    margin-left:5px;
+	margin-right: 5px;
+	margin-left:5px;
 }
 .ui-datepicker-calendar .ui-state-default {
-    background: none repeat scroll 0 0 transparent;
-    border: 1px solid #CCCCCC;
-    color: #3F7826;
-    text-decoration:none;
-    display: block;
-    font-size: 0.7em;
-    font-weight: normal;
-    height: 15px;
-    padding-bottom: 0;
-    padding-top: 3px;
-    width: 24px;
-    background-image:-moz-linear-gradient(top, #f9f9f9, #f8f8f8);
+	background: none repeat scroll 0 0 transparent;
+	border: 1px solid #CCCCCC;
+	color: #3F7826;
+	text-decoration:none;
+	display: block;
+	font-size: 0.7em;
+	font-weight: normal;
+	height: 15px;
+	padding-bottom: 0;
+	padding-top: 3px;
+	width: 24px;
+	background-image:-moz-linear-gradient(top, #f9f9f9, #f8f8f8);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f9f9f9), color-stop(1, #f8f8f8));
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f9f9f9', EndColorStr='#f8f8f8')";
 	background-color:#f9f9f9;
 }
 .ui-datepicker-calendar .ui-state-hover {
-    background: none repeat scroll 0 0 transparent;
-    border: 1px solid #81D96D;
-    color: #000;
-    text-decoration:none;
-    display: block;
-    font-size: 0.7em;
-    font-weight: normal;
-    height: 15px;
-    padding-bottom: 0;
-    padding-top: 3px;
-    width: 24px;
-    background-image:-moz-linear-gradient(top, #99DE80, #62D255);
+	background: none repeat scroll 0 0 transparent;
+	border: 1px solid #81D96D;
+	color: #000;
+	text-decoration:none;
+	display: block;
+	font-size: 0.7em;
+	font-weight: normal;
+	height: 15px;
+	padding-bottom: 0;
+	padding-top: 3px;
+	width: 24px;
+	background-image:-moz-linear-gradient(top, #99DE80, #62D255);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99DE80), color-stop(1, #62D255));
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#99DE80', EndColorStr='#62D255')";
 	background-color:#81D96D;
 }
 .ui-datepicker-other-month {
-    background-color: #fff;
-    background-image: -moz-linear-gradient(center top , #FFFFFF, #ffffff);
-    border: none;
-    color: #686868;
-    opacity: 0.75;
-    text-shadow: none;
+	background-color: #fff;
+	background-image: -moz-linear-gradient(center top, #FFFFFF, #ffffff);
+	border: none;
+	color: #686868;
+	opacity: 0.75;
+	text-shadow: none;
 }
-.ui-datepicker-calendar tbody{
-    border-bottom: none;
+.ui-datepicker-calendar tbody {
+	border-bottom: none;
 }
-
 /* Tab Styles */
 .ui-tabs .ui-tabs-nav li {
-    border-bottom: 1px solid #000 !important; /* over-writing the style that removes it in tabs.css */
+	border-bottom: 1px solid #000 !important; /* over-writing the style that removes it in tabs.css */
 }
 .ui-tabs-nav li.ui-state-hover {
-    /*defines gradient background*/
+	/*defines gradient background*/
 	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#07662a', EndColorStr='#044d1f')";
 	color: #ffffff;
 	background-color:#060;
-
 }
-
-.ui-tabs-nav li.ui-state-hover a{
-    color: #ffffff;
+.ui-tabs-nav li.ui-state-hover a {
+	color: #ffffff;
 }
-
 /* Lightbox Styles */
 .view_header {          /* remove background image for lightbox headers */
-    background: none;
+	background: none;
 }
 .view_header h1 {                     /* h1 style for lightboxes */
-    font-family:arial, sans-serif;
+	font-family:arial, sans-serif;
 }
